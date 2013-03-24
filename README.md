@@ -1,0 +1,4 @@
+EndGate
+=======
+
+Game assets library
