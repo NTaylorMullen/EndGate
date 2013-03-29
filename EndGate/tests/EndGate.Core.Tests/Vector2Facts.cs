@@ -10,6 +10,100 @@ namespace EndGate.Core.Tests
     public class Vector2Facts
     {
         [Fact]
+        public void Vector2AbsWorks()
+        {
+            var v = new Vector2(3, -4);
+
+            Assert.True(v.Abs().Equivalent(new Vector2(3, 4)));
+        }
+
+        public void Vector2SignWorks()
+        {
+            var v = new Vector2(3, -4);
+
+            Assert.True(v.Sign().Equivalent(new Vector2(1, -1)));
+        }
+
+        [Fact]
+        public void Vector2ApplyWorks()
+        {
+            var v = new Vector2(1.11, 2.22);
+
+            v.Apply(Math.Round);
+
+            Assert.True(v.Equivalent(new Vector2(1, 2)));
+
+            v.Apply(val => { return val + 1; });
+
+            Assert.True(v.Equivalent(new Vector2(2, 3)));
+        }
+
+        [Fact]
+        public void Vector2TriggerWorks()
+        {
+            var v = new Vector2(2, 3);
+            double total = 0;
+            Action<double> sum = (val) =>
+            {
+                total += val;
+            };
+
+            v.Trigger(sum);
+
+            Assert.Equal(5, total);
+        }
+
+        [Fact]
+        public void Vector2CloneWorks()
+        {
+            var v = new Vector2(1, 2);
+            var v2 = v.Clone();
+
+            v2.X = 3;
+
+            Assert.NotEqual(v, v2);
+            Assert.True(v.Equivalent(new Vector2(1, 2)));
+        }
+
+        [Fact]
+        public void Vector2NormalizedWorks()
+        {
+            var v = new Vector2(12, 23);
+            var v2 = v.Normalized();
+
+            Assert.NotEqual(v, v2);
+            Assert.True(v.Equivalent(new Vector2(12, 23)));
+            Assert.Equal(1, v.Normalized().Magnitude());
+        }
+
+        [Fact]
+        public void Vector2MagnitudeWorks()
+        {
+            var v = new Vector2(2, 2);
+            double mag = v.Magnitude();
+
+            Assert.Equal(2.83, Math.Round(mag,2));
+        }
+
+        [Fact]
+        public void Vector2LengthWorks()
+        {
+            var v = new Vector2(2, 2);
+            double length = v.Length();
+
+            Assert.Equal(2.83, Math.Round(length, 2));
+        }
+
+        [Fact]
+        public void Vector2DotProductWorks()
+        {
+            var v = new Vector2(3, 4);
+            var v2 = new Vector2(8, 7);
+
+            Assert.Equal(v.Dot(v2), 52);
+        }
+
+        [Fact]
         public void Vector2AddsCorrectly()
         {
             var v = new Vector2(2, 3);

@@ -22,9 +22,80 @@ namespace EndGate.Core
             Y = action(Y);
         }
 
+        public void Trigger(Action<double> action)
+        {
+            action(X);
+            action(Y);
+        }
+
         public bool Equivalent(Vector2 v1)
         {
             return v1.X == X && v1.Y == Y;
+        }
+
+        /// <summary>
+        /// Clones the vector2
+        /// </summary>
+        /// <returns>A new Vector2s</returns>
+        public Vector2 Clone()
+        {
+            return new Vector2(X, Y);
+        }
+
+        /// <summary>
+        /// Creates a Normalized copy of the current Vector2
+        /// </summary>
+        /// <returns>A new Vector2</returns>
+        public Vector2 Normalized()
+        {
+            var magnitude = Magnitude();
+            return new Vector2(X / magnitude, Y / magnitude);
+        }
+
+        /// <summary>
+        /// Calculates the magnitude of the Vector2 (X*X + Y*Y)^.5
+        /// </summary>
+        /// <returns>A new Vector2</returns>
+        public double Magnitude()
+        {
+            return Math.Sqrt(X * X + Y * Y);
+        }
+
+        /// <summary>
+        /// Equivalent to Magnitude()
+        /// </summary>
+        /// <returns>A new Vector2</returns>
+        public double Length()
+        {
+            return Magnitude();
+        }
+
+        /// <summary>
+        /// Calculates the Dot product of the current vector and the one provided
+        /// </summary>
+        /// <param name="v1">Vector to dot product with</param>
+        /// <returns>Dot product</returns>
+        public double Dot(Vector2 v1)
+        {
+            return v1.X * X + v1.Y * Y;
+        }
+
+        /// <summary>
+        /// Returns a new vector2 which has Math.Abs(X) and Math.Abs(Y) values
+        /// </summary>
+        /// <returns>A new Vector2</returns>
+        public Vector2 Abs()
+        {
+            return new Vector2(Math.Abs(X), Math.Abs(Y));
+        }
+
+        /// <summary>
+        /// Calculates the Sign of the vector (X/|X|, Y/|Y|)
+        /// </summary>
+        /// <returns>A new Vector2</returns>
+        public Vector2 Sign()
+        {
+            return new Vector2(X / Math.Abs(X), Y / Math.Abs(Y));
         }
 
         public Vector2 Add(Number val)
