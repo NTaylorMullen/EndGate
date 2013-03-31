@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Collidable.cs" />
     <Compile Include="Assets\Number.cs" />
     <Compile Include="Assets\Vector2.cs" />
     <Compile Include="Assets\Vector3.cs" />
