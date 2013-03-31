@@ -50,16 +50,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameFacts.cs" />
+    <Compile Include="Utilities\LooperFacts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Vector2Facts.cs" />
-    <Compile Include="Vector3Facts.cs" />
+    <Compile Include="Assets\Vector2Facts.cs" />
+    <Compile Include="Assets\Vector3Facts.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\EndGate.Core\EndGate.Core.csproj">
-      <Project>{e368a93d-51b0-472a-a494-ced8bd0b7bcd}</Project>
+      <Project>{97592ef1-7fe4-4ef6-9ccf-ebb5b5b1ce4b}</Project>
       <Name>EndGate.Core</Name>
     </ProjectReference>
   </ItemGroup>
