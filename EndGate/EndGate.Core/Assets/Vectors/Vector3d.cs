@@ -1,10 +1,11 @@
 ﻿using System;
 
-namespace EndGate.Core
+namespace EndGate.Core.Assets
 {
-    public partial class Vector3
+    // Internal for now because the libraries do not fully support 3d
+    internal class Vector3d
     {
-        public Vector3(double x, double y, double z)
+        public Vector3d(double x, double y, double z)
         {
             X = x;
             Y = y;
@@ -29,7 +30,7 @@ namespace EndGate.Core
             action(Z);
         }
 
-        public bool Equivalent(Vector3 v1)
+        public bool Equivalent(Vector3d v1)
         {
             return v1.X == X && v1.Y == Y && v1.Z == Z;
         }
@@ -38,19 +39,19 @@ namespace EndGate.Core
         /// Clones the Vector3
         /// </summary>
         /// <returns>A new Vector3s</returns>
-        public Vector3 Clone()
+        public Vector3d Clone()
         {
-            return new Vector3(X, Y, Z);
+            return new Vector3d(X, Y, Z);
         }
 
         /// <summary>
         /// Creates a Normalized copy of the current Vector3
         /// </summary>
         /// <returns>A new Vector3</returns>
-        public Vector3 Normalized()
+        public Vector3d Normalized()
         {
             var magnitude = Magnitude();
-            return new Vector3(X / magnitude, Y / magnitude, Z / magnitude);
+            return new Vector3d(X / magnitude, Y / magnitude, Z / magnitude);
         }
 
         /// <summary>
@@ -76,7 +77,7 @@ namespace EndGate.Core
         /// </summary>
         /// <param name="v1">Vector to dot product with</param>
         /// <returns>Dot product</returns>
-        public double Dot(Vector3 v1)
+        public double Dot(Vector3d v1)
         {
             return v1.X * X + v1.Y * Y + v1.Z * Z;
         }
@@ -85,135 +86,140 @@ namespace EndGate.Core
         /// Returns a new Vector3 which has Math.Abs(X) and Math.Abs(Y) values
         /// </summary>
         /// <returns>A new Vector3</returns>
-        public Vector3 Abs()
+        public Vector3d Abs()
         {
-            return new Vector3(Math.Abs(X), Math.Abs(Y), Math.Abs(Z));
+            return new Vector3d(Math.Abs(X), Math.Abs(Y), Math.Abs(Z));
         }
 
         /// <summary>
         /// Calculates the Sign of the vector (X/|X|, Y/|Y|)
         /// </summary>
         /// <returns>A new Vector3</returns>
-        public Vector3 Sign()
+        public Vector3d Sign()
         {
-            return new Vector3(X / Math.Abs(X), Y / Math.Abs(Y), Z / Math.Abs(Z));
+            return new Vector3d(X / Math.Abs(X), Y / Math.Abs(Y), Z / Math.Abs(Z));
         }
 
-        public Vector3 Add(Number val)
+        public Vector3d Add(Number val)
         {
             return this + val;
         }
 
-        public Vector3 Add(Vector3 v1)
+        public Vector3d Add(Vector3d v1)
         {
             return this + v1;
         }
 
-        public Vector3 Subtract(Number val)
+        public Vector3d Subtract(Number val)
         {
             return this - val;
         }
 
-        public Vector3 SubtractFrom(Number val)
+        public Vector3d SubtractFrom(Number val)
         {
             return val - this;
         }
 
-        public Vector3 Subtract(Vector3 v1)
+        public Vector3d Subtract(Vector3d v1)
         {
             return this - v1;
         }
 
-        public Vector3 Multiply(Vector3 v1)
+        public Vector3d Multiply(Vector3d v1)
         {
             return this * v1;
         }
 
-        public Vector3 Multiply(Number val)
+        public Vector3d Multiply(Number val)
         {
             return this * val;
         }
 
-        public Vector3 Divide(Number val)
+        public Vector3d Divide(Number val)
         {
             return this / val;
         }
 
-        public Vector3 DivideFrom(Number val)
+        public Vector3d DivideFrom(Number val)
         {
             return val / this;
         }
 
-        public Vector3 Divide(Vector3 v1)
+        public Vector3d Divide(Vector3d v1)
         {
             return this / v1;
         }
 
-        public static Vector3 operator +(Vector3 v1, Vector3 v2)
+        public static Vector3d operator +(Vector3d v1, Vector3d v2)
         {
-            return new Vector3(v1.X + v2.X, v1.Y + v2.Y, v1.Z + v2.Z);
+            return new Vector3d(v1.X + v2.X, v1.Y + v2.Y, v1.Z + v2.Z);
         }
 
-        public static Vector3 operator +(Vector3 v1, Number val)
+        public static Vector3d operator +(Vector3d v1, Number val)
         {
-            return new Vector3(v1.X + val, v1.Y + val, v1.Z + val);
+            return new Vector3d(v1.X + val, v1.Y + val, v1.Z + val);
         }
 
-        public static Vector3 operator +(Number val, Vector3 v1)
+        public static Vector3d operator +(Number val, Vector3d v1)
         {
             return v1 + val;
         }
 
-        public static Vector3 operator -(Vector3 v1, Vector3 v2)
+        public static Vector3d operator -(Vector3d v1, Vector3d v2)
         {
-            return new Vector3(v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z);
+            return new Vector3d(v1.X - v2.X, v1.Y - v2.Y, v1.Z - v2.Z);
         }
 
-        public static Vector3 operator -(Vector3 v1, Number val)
+        public static Vector3d operator -(Vector3d v1, Number val)
         {
-            return new Vector3(v1.X - val, v1.Y - val, v1.Z - val);
+            return new Vector3d(v1.X - val, v1.Y - val, v1.Z - val);
         }
 
-        public static Vector3 operator -(Number val, Vector3 v1)
+        public static Vector3d operator -(Number val, Vector3d v1)
         {
-            return new Vector3(val - v1.X, val - v1.Y, val - v1.Z);
+            return new Vector3d(val - v1.X, val - v1.Y, val - v1.Z);
         }
 
-        public static Vector3 operator *(Vector3 v1, Vector3 v2)
+        public static Vector3d operator *(Vector3d v1, Vector3d v2)
         {
-            return new Vector3(v1.X * v2.X, v1.Y * v2.Y, v1.Z * v2.Z);
+            return new Vector3d(v1.X * v2.X, v1.Y * v2.Y, v1.Z * v2.Z);
         }
 
-        public static Vector3 operator *(Vector3 v1, Number val)
+        public static Vector3d operator *(Vector3d v1, Number val)
         {
-            return new Vector3(v1.X * val, v1.Y * val, v1.Z * val);
+            return new Vector3d(v1.X * val, v1.Y * val, v1.Z * val);
         }
 
-        public static Vector3 operator *(Number val, Vector3 v1)
+        public static Vector3d operator *(Number val, Vector3d v1)
         {
             return v1 * val;
         }
 
-        public static Vector3 operator /(Vector3 v1, Vector3 v2)
+        public static Vector3d operator /(Vector3d v1, Vector3d v2)
         {
-            return new Vector3(v1.X / v2.X, v1.Y / v2.Y, v1.Z / v2.Z);
+            return new Vector3d(v1.X / v2.X, v1.Y / v2.Y, v1.Z / v2.Z);
         }
 
-        public static Vector3 operator /(Vector3 v1, Number val)
+        public static Vector3d operator /(Vector3d v1, Number val)
         {
-            return new Vector3(v1.X / val, v1.Y / val, v1.Z / val);
+            return new Vector3d(v1.X / val, v1.Y / val, v1.Z / val);
         }
 
-        public static Vector3 operator /(Number val, Vector3 v1)
+        public static Vector3d operator /(Number val, Vector3d v1)
         {
-            return new Vector3(val / v1.X, val / v1.Y, val / v1.Z);
+            return new Vector3d(val / v1.X, val / v1.Y, val / v1.Z);
         }
 
-        public static Vector3 operator -(Vector3 v1)
+        public static Vector3d operator -(Vector3d v1)
         {
             return v1 * -1;
         }
 
-        public static Vector3 Zero = new Vector3(0, 0, 0);
+        public static Vector3d Zero = new Vector3d(0, 0, 0);
+
+        public override string ToString()
+        {
+            return "(" + X + ", " + Y + ", " + Z + ")";
+        }
     }
 }

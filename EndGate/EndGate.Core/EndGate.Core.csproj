@@ -39,10 +39,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Sizes\Size2d.cs" />
+    <Compile Include="BoundingObject\BoundingRectangle.cs" />
+    <Compile Include="BoundingObject\Bounds2d.cs" />
+    <Compile Include="BoundingObject\BoundingCircle.cs" />
     <Compile Include="Assets\Collidable.cs" />
     <Compile Include="Assets\Number.cs" />
-    <Compile Include="Assets\Vector2.cs" />
-    <Compile Include="Assets\Vector3.cs" />
+    <Compile Include="Assets\Vectors\Vector2d.cs" />
+    <Compile Include="Assets\Vectors\Vector3d.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameConfiguration.cs" />
     <Compile Include="GameRunner.cs" />
@@ -52,6 +56,7 @@
     <Compile Include="Utilities\Looper.cs" />
     <Compile Include="Utilities\LooperCallback.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

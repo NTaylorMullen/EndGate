@@ -1,10 +1,15 @@
 ﻿using System;
 
-namespace EndGate.Core
+namespace EndGate.Core.Assets
 {
-    public partial class Vector2
+    public class Vector2d
     {
-        public Vector2(double x, double y)
+        public Vector2d()
+            : this(0, 0)
+        {
+        }
+
+        public Vector2d(double x, double y)
         {
             X = x;
             Y = y;
@@ -25,7 +30,7 @@ namespace EndGate.Core
             action(Y);
         }
 
-        public bool Equivalent(Vector2 v1)
+        public bool Equivalent(Vector2d v1)
         {
             return v1.X == X && v1.Y == Y;
         }
@@ -34,19 +39,19 @@ namespace EndGate.Core
         /// Clones the vector2
         /// </summary>
         /// <returns>A new Vector2s</returns>
-        public Vector2 Clone()
+        public Vector2d Clone()
         {
-            return new Vector2(X, Y);
+            return new Vector2d(X, Y);
         }
 
         /// <summary>
         /// Creates a Normalized copy of the current Vector2
         /// </summary>
         /// <returns>A new Vector2</returns>
-        public Vector2 Normalized()
+        public Vector2d Normalized()
         {
             var magnitude = Magnitude();
-            return new Vector2(X / magnitude, Y / magnitude);
+            return new Vector2d(X / magnitude, Y / magnitude);
         }
 
         /// <summary>
@@ -72,7 +77,7 @@ namespace EndGate.Core
         /// </summary>
         /// <param name="v1">Vector to dot product with</param>
         /// <returns>Dot product</returns>
-        public double Dot(Vector2 v1)
+        public double Dot(Vector2d v1)
         {
             return v1.X * X + v1.Y * Y;
         }
@@ -81,135 +86,145 @@ namespace EndGate.Core
         /// Returns a new vector2 which has Math.Abs(X) and Math.Abs(Y) values
         /// </summary>
         /// <returns>A new Vector2</returns>
-        public Vector2 Abs()
+        public Vector2d Abs()
         {
-            return new Vector2(Math.Abs(X), Math.Abs(Y));
+            return new Vector2d(Math.Abs(X), Math.Abs(Y));
         }
 
         /// <summary>
         /// Calculates the Sign of the vector (X/|X|, Y/|Y|)
         /// </summary>
         /// <returns>A new Vector2</returns>
-        public Vector2 Sign()
+        public Vector2d Sign()
         {
-            return new Vector2(X / Math.Abs(X), Y / Math.Abs(Y));
+            return new Vector2d(X / Math.Abs(X), Y / Math.Abs(Y));
         }
 
-        public Vector2 Add(Number val)
+        public Vector2d Distance(Vector2d v1)
+        {
+            return new Vector2d(v1.X - X, v1.Y - Y).Abs();
+        }
+
+        public Vector2d Add(Number val)
         {
             return this + val;
         }
 
-        public Vector2 Add(Vector2 v1)
+        public Vector2d Add(Vector2d v1)
         {
             return this + v1;
         }
 
-        public Vector2 Subtract(Number val)
+        public Vector2d Subtract(Number val)
         {
             return this - val;
         }
 
-        public Vector2 SubtractFrom(Number val)
+        public Vector2d SubtractFrom(Number val)
         {
             return val - this;
         }
 
-        public Vector2 Subtract(Vector2 v1)
+        public Vector2d Subtract(Vector2d v1)
         {
             return this - v1;
         }
 
-        public Vector2 Multiply(Vector2 v1)
+        public Vector2d Multiply(Vector2d v1)
         {
             return this * v1;
         }
 
-        public Vector2 Multiply(Number val)
+        public Vector2d Multiply(Number val)
         {
             return this * val;
         }
 
-        public Vector2 Divide(Number val)
+        public Vector2d Divide(Number val)
         {
             return this / val;
         }
 
-        public Vector2 DivideFrom(Number val)
+        public Vector2d DivideFrom(Number val)
         {
             return val / this;
         }
 
-        public Vector2 Divide(Vector2 v1)
+        public Vector2d Divide(Vector2d v1)
         {
             return this / v1;
         }
 
-        public static Vector2 operator +(Vector2 v1, Vector2 v2)
+        public static Vector2d operator +(Vector2d v1, Vector2d v2)
         {
-            return new Vector2(v1.X + v2.X, v1.Y + v2.Y);
+            return new Vector2d(v1.X + v2.X, v1.Y + v2.Y);
         }
 
-        public static Vector2 operator +(Vector2 v1, Number val)
+        public static Vector2d operator +(Vector2d v1, Number val)
         {
-            return new Vector2(v1.X + val, v1.Y + val);
+            return new Vector2d(v1.X + val, v1.Y + val);
         }
 
-        public static Vector2 operator +(Number val, Vector2 v1)
+        public static Vector2d operator +(Number val, Vector2d v1)
         {
             return v1 + val;
         }
 
-        public static Vector2 operator -(Vector2 v1, Vector2 v2)
+        public static Vector2d operator -(Vector2d v1, Vector2d v2)
         {
-            return new Vector2(v1.X - v2.X, v1.Y - v2.Y);
+            return new Vector2d(v1.X - v2.X, v1.Y - v2.Y);
         }
 
-        public static Vector2 operator -(Vector2 v1, Number val)
+        public static Vector2d operator -(Vector2d v1, Number val)
         {
-            return new Vector2(v1.X - val, v1.Y - val);
+            return new Vector2d(v1.X - val, v1.Y - val);
         }
 
-        public static Vector2 operator -(Number val, Vector2 v1)
+        public static Vector2d operator -(Number val, Vector2d v1)
         {
-            return new Vector2(val - v1.X, val - v1.Y);
+            return new Vector2d(val - v1.X, val - v1.Y);
         }
 
-        public static Vector2 operator *(Vector2 v1, Vector2 v2)
+        public static Vector2d operator *(Vector2d v1, Vector2d v2)
         {
-            return new Vector2(v1.X * v2.X, v1.Y * v2.Y);
+            return new Vector2d(v1.X * v2.X, v1.Y * v2.Y);
         }
 
-        public static Vector2 operator *(Vector2 v1, Number val)
+        public static Vector2d operator *(Vector2d v1, Number val)
         {
-            return new Vector2(v1.X * val, v1.Y * val);
+            return new Vector2d(v1.X * val, v1.Y * val);
         }
 
-        public static Vector2 operator *(Number val, Vector2 v1)
+        public static Vector2d operator *(Number val, Vector2d v1)
         {
             return v1 * val;
         }
 
-        public static Vector2 operator /(Vector2 v1, Vector2 v2)
+        public static Vector2d operator /(Vector2d v1, Vector2d v2)
         {
-            return new Vector2(v1.X / v2.X, v1.Y / v2.Y);
+            return new Vector2d(v1.X / v2.X, v1.Y / v2.Y);
         }
 
-        public static Vector2 operator /(Vector2 v1, Number val)
+        public static Vector2d operator /(Vector2d v1, Number val)
         {
-            return new Vector2(v1.X / val, v1.Y / val);
+            return new Vector2d(v1.X / val, v1.Y / val);
         }
 
-        public static Vector2 operator /(Number val, Vector2 v1)
+        public static Vector2d operator /(Number val, Vector2d v1)
         {
-            return new Vector2(val / v1.X, val / v1.Y);
+            return new Vector2d(val / v1.X, val / v1.Y);
         }
 
-        public static Vector2 operator -(Vector2 v1)
+        public static Vector2d operator -(Vector2d v1)
         {
             return v1 * -1;
         }
 
-        public static Vector2 Zero = new Vector2(0, 0);
+        public static Vector2d Zero = new Vector2d(0, 0);
+
+        public override string ToString()
+        {
+            return "("+X + ", " + Y + ")";
+        }
     }
 }
