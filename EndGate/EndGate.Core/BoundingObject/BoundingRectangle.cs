@@ -26,7 +26,17 @@ namespace EndGate.Core.BoundingObject
         { 
             get
             {
-                return new Vector2d(Position.X - Size.HalfWidth, Position.Y - Size.HalfHeight);
+                var v = new Vector2d(Position.X - Size.HalfWidth, Position.Y - Size.HalfHeight);
+                if (Rotation == 0)
+                {
+                    return v;
+                }
+
+                return v.RotateAround(Position, Rotation);
+            }
+            set
+            {
+                Position = new Vector2d(value.X + Size.HalfWidth, value.Y + Size.HalfHeight);
             }
         }
 
@@ -34,7 +44,17 @@ namespace EndGate.Core.BoundingObject
         {
             get
             {
-                return new Vector2d(Position.X + Size.HalfWidth, Position.Y - Size.HalfHeight);
+                var v = new Vector2d(Position.X + Size.HalfWidth, Position.Y - Size.HalfHeight);
+                if (Rotation == 0)
+                {
+                    return v;
+                }
+
+                return v.RotateAround(Position, Rotation);
+            }
+            set
+            {
+                Position = new Vector2d(value.X - Size.HalfWidth, value.Y + Size.HalfHeight);
             }
         }
 
@@ -42,7 +62,17 @@ namespace EndGate.Core.BoundingObject
         {
             get
             {
-                return new Vector2d(Position.X - Size.HalfWidth, Position.Y + Size.HalfHeight);
+                var v = new Vector2d(Position.X - Size.HalfWidth, Position.Y + Size.HalfHeight);
+                if (Rotation == 0)
+                {
+                    return v;
+                }
+
+                return v.RotateAround(Position, Rotation);
+            }
+            set
+            {
+                Position = new Vector2d(value.X + Size.HalfWidth, value.Y - Size.HalfHeight);
             }
         }
 
@@ -50,7 +80,17 @@ namespace EndGate.Core.BoundingObject
         {
             get
             {
-                return new Vector2d(Position.X + Size.HalfWidth, Position.Y + Size.HalfHeight);
+                var v = new Vector2d(Position.X + Size.HalfWidth, Position.Y + Size.HalfHeight);
+                if (Rotation == 0)
+                {
+                    return v;
+                }
+
+                return v.RotateAround(Position, Rotation);
+            }
+            set
+            {
+                Position = new Vector2d(value.X - Size.HalfWidth, value.Y - Size.HalfHeight);
             }
         }
 
@@ -61,7 +101,22 @@ namespace EndGate.Core.BoundingObject
 
         public override bool IsCollidingWith(BoundingRectangle obj)
         {
-            throw new NotImplementedException();
+            if (Rotation == 0)
+            {
+                Vector2d myTopLeft = TopLeft,
+                         myBotRight = BotRight,
+                         theirTopLeft = obj.TopLeft,
+                         theirBotRight = obj.BotRight;
+
+                return theirTopLeft.X <= myBotRight.X && theirBotRight.X >= myTopLeft.X && theirTopLeft.Y <= myBotRight.Y && theirBotRight.Y >= myTopLeft.Y;
+
+            }
+            else if (obj.Position.Distance(Position).Magnitude() <= obj.Size.Radius) // Check if we're somewhat close to the object that we might be colliding with
+            {
+
+            }
+            
+            return false;
         }
 
         public override bool ContainsPoint(Vector2d point)

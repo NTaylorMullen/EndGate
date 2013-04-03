@@ -8,25 +8,58 @@ namespace EndGate.Core.Assets.Sizes
 {
     public class Size2d
     {
+        private double _width;
+        private double _height;
+
         public Size2d()
             : this(0)
         {
         }
 
         public Size2d(double size)
+            : this(size, size)
         {
-            Width = size;
-            Height = size;
         }
 
         public Size2d(double width, double height)
         {
-            Width = width;
-            Height = height;
+            _width = width;
+            _height = height;
+            UpdateRadius();
         }
 
-        public double Width { get; set; }
-        public double Height { get; set; }
+        private void UpdateRadius()
+        {
+            Radius = .5 * Math.Sqrt(Width * Width + Height * Height);
+        }
+
+        public double Width 
+        {
+            get
+            {
+                return _width;
+            }
+            set
+            {
+                _width = value;
+                UpdateRadius();
+            }
+        }
+
+        public double Height
+        {
+            get
+            {
+                return _height;
+            }
+            set
+            {
+                _height = value;
+                UpdateRadius();
+            }
+        }
+        
+        public double Radius { get; private set; }
 
         public Size2d Clone()
         {
@@ -200,5 +233,10 @@ namespace EndGate.Core.Assets.Sizes
         }
 
         public static Size2d Zero = new Size2d(0);
+
+        public override string ToString()
+        {
+            return "("+Width + ", " + Height + ")";
+        }
     }
 }

@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Assets\Sizes\Size2dFacts.cs" />
     <Compile Include="BoundingObjects\BoundingCircleFacts.cs" />
+    <Compile Include="BoundingObjects\BoundingRectangleFacts.cs" />
     <Compile Include="GameFacts.cs" />
     <Compile Include="Utilities\LooperFacts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

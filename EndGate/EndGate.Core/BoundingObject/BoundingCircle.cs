@@ -49,15 +49,11 @@ namespace EndGate.Core.BoundingObject
         {
             Vector2d translated = rectangle.Rotation == 0 
                                   ? Position 
-                                  : new Vector2d
-                                    {
-                                        X = Math.Cos(-rectangle.Rotation) * (Position.X - rectangle.Position.X) - Math.Sin(-rectangle.Rotation) * (Position.Y - rectangle.Position.Y) + rectangle.Position.X,
-                                        Y = Math.Sin(-rectangle.Rotation) * (Position.X - rectangle.Position.X) + Math.Cos(-rectangle.Rotation) * (Position.Y - rectangle.Position.Y) + rectangle.Position.Y
-                                    };
+                                  : Position.RotateAround(rectangle.Position, -rectangle.Rotation);
 
-            Vector2d topLeft = rectangle.TopLeft,
-                     botRight = rectangle.BotRight,
-                     closest = new Vector2d(ClosestTo(translated.X, topLeft, botRight), ClosestTo(translated.Y, topLeft, botRight));
+            Vector2d unrotatedTopLeft = new Vector2d(rectangle.Position.X - rectangle.Size.HalfWidth, rectangle.Position.Y - rectangle.Size.HalfHeight),
+                     unrotatedBotRight = new Vector2d(rectangle.Position.X + rectangle.Size.HalfWidth, rectangle.Position.Y + rectangle.Size.HalfHeight),
+                     closest = new Vector2d(ClosestTo(translated.X, unrotatedTopLeft, unrotatedBotRight), ClosestTo(translated.Y, unrotatedTopLeft, unrotatedBotRight));
 
              return translated.Distance(closest).Magnitude() < Radius;
         }

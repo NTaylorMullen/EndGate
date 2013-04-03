@@ -18,6 +18,15 @@ namespace EndGate.Core.Assets
         public double X { get; set; }
         public double Y { get; set; }
 
+        public Vector2d RotateAround(Vector2d point, double angle)
+        {
+            return new Vector2d
+            {
+                X = Math.Cos(angle) * (X - point.X) - Math.Sin(angle) * (Y - point.Y) + point.X,
+                Y = Math.Sin(angle) * (X - point.X) + Math.Cos(angle) * (Y - point.Y) + point.Y
+            };
+        }
+
         public void Apply(Func<double, double> action)
         {
             X = action(X);
@@ -218,6 +227,16 @@ namespace EndGate.Core.Assets
         public static Vector2d operator -(Vector2d v1)
         {
             return v1 * -1;
+        }
+
+        public static Vector2d operator ++(Vector2d v1)
+        {
+            return v1 + 1;
+        }
+
+        public static Vector2d operator --(Vector2d v1)
+        {
+            return v1 - 1;
         }
 
         public static Vector2d Zero = new Vector2d(0, 0);
