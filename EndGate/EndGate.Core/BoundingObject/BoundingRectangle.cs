@@ -113,7 +113,8 @@ namespace EndGate.Core.BoundingObject
             }
             else if (obj.Position.Distance(Position).Magnitude() <= obj.Size.Radius) // Check if we're somewhat close to the object that we might be colliding with
             {
-
+                var axi = new Vector2d[] { TopRight - TopLeft, TopRight - BotRight, obj.TopLeft - obj.BotLeft, obj.TopLeft - obj.TopRight };
+                var projections = axi.Select(a => 
             }
             
             return false;
