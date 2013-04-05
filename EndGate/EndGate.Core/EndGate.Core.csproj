@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Sizes\Size2d.cs" />
+    <Compile Include="Assets\Vectors\Helpers\Vector2dHelpers.cs" />
     <Compile Include="BoundingObject\BoundingRectangle.cs" />
     <Compile Include="BoundingObject\Bounds2d.cs" />
     <Compile Include="BoundingObject\BoundingCircle.cs" />

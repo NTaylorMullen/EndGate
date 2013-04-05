@@ -25,10 +25,13 @@ namespace EndGate.Core.Assets
 
         public Vector2d RotateAround(Vector2d point, double angle)
         {
+            var ca = Math.Cos(-angle);
+            var sa = Math.Sin(-angle);
+
             return new Vector2d
             {
-                X = Math.Cos(angle) * (X - point.X) - Math.Sin(angle) * (Y - point.Y) + point.X,
-                Y = Math.Sin(angle) * (X - point.X) + Math.Cos(angle) * (Y - point.Y) + point.Y
+                X = ca * (X - point.X) - sa * (Y - point.Y) + point.X,
+                Y = sa * (X - point.X) + ca * (Y - point.Y) + point.Y
             };
         }
 
