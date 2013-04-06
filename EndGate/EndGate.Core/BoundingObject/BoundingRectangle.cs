@@ -131,7 +131,7 @@ namespace EndGate.Core.BoundingObject
                     var theirProjections = Vector2dHelpers.GetMinMaxProjections(axi, theirVertices);
 
                     // No collision
-                    if (!(theirProjections.Item1 <= myProjections.Item1 || theirProjections.Item2 > myProjections.Item1))
+                    if (theirProjections.Item2 < myProjections.Item1 || myProjections.Item2 < theirProjections.Item1)
                     {
                         return false;
                     }

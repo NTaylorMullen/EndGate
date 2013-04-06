@@ -20,7 +20,7 @@ namespace EndGate.Core.Assets
 
         public Vector2d ProjectOnto(Vector2d v)
         {
-            return (this.Dot(v) / Math.Pow(v.Length(), 2)) * v;
+            return (this.Dot(v) / v.Dot(v)) * v;
         }
 
         public Vector2d RotateAround(Vector2d point, double angle)
