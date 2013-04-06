@@ -104,7 +104,7 @@ namespace EndGate.Core.BoundingObject
 
         public override bool IsCollidingWith(BoundingCircle obj)
         {
-            throw new NotImplementedException();
+            return obj.IsCollidingWith(this);
         }
 
         public override bool IsCollidingWith(BoundingRectangle obj)
@@ -145,7 +145,20 @@ namespace EndGate.Core.BoundingObject
 
         public override bool ContainsPoint(Vector2d point)
         {
-            throw new NotImplementedException();
+            double savedRotation = Rotation;
+
+            if (Rotation != 0)
+            {
+                Rotation = 0;
+                point = point.RotateAround(Position, -savedRotation);
+            }
+
+            Vector2d myTopLeft = TopLeft,
+                     myBotRight = BotRight;
+
+            Rotation = savedRotation;
+
+            return point.X <= myBotRight.X && point.X >= myTopLeft.X && point.Y <= myBotRight.Y && point.Y >= myTopLeft.Y;
         }
     }
 }

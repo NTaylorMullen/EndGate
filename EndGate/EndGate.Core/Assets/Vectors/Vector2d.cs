@@ -23,15 +23,15 @@ namespace EndGate.Core.Assets
             return (this.Dot(v) / v.Dot(v)) * v;
         }
 
-        public Vector2d RotateAround(Vector2d point, double angle)
+        public Vector2d RotateAround(Vector2d point, double angle, int precision = 2)
         {
             var ca = Math.Cos(-angle);
             var sa = Math.Sin(-angle);
 
             return new Vector2d
             {
-                X = ca * (X - point.X) - sa * (Y - point.Y) + point.X,
-                Y = sa * (X - point.X) + ca * (Y - point.Y) + point.Y
+                X = Math.Round(ca * (X - point.X) - sa * (Y - point.Y) + point.X, precision),
+                Y = Math.Round(sa * (X - point.X) + ca * (Y - point.Y) + point.Y, precision)
             };
         }
 
@@ -251,7 +251,7 @@ namespace EndGate.Core.Assets
 
         public override string ToString()
         {
-            return "("+X + ", " + Y + ")";
+            return "(" + X + ", " + Y + ")";
         }
     }
 }

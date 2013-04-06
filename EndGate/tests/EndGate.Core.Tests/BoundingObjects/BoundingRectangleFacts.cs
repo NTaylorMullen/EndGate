@@ -169,5 +169,55 @@ namespace EndGate.Core.Tests
             Assert.True(rect1.IsCollidingWith(rect2));
             Assert.True(rect2.IsCollidingWith(rect1));
         }
+
+        [Fact]
+        public void UnrotatedRectangleContainsPointWorks()
+        {
+            var rect = new BoundingRectangle(6, 4)
+            {
+                Position = new Vector2d(3, 2)
+            };
+
+            Assert.True(rect.ContainsPoint(rect.Position));
+
+            foreach (var vertex in rect.Vertices)
+            {
+                Assert.True(rect.ContainsPoint(vertex));
+            }
+
+            Assert.False(rect.ContainsPoint(new Vector2d(-1, 0)));
+            Assert.False(rect.ContainsPoint(rect.TopRight + 1));
+            Assert.False(rect.ContainsPoint(rect.BotRight + 1));
+            Assert.False(rect.ContainsPoint(rect.TopLeft - 1));
+            Assert.False(rect.ContainsPoint(rect.BotLeft - 1));
+        }
+
+        [Fact]
+        public void RotatedRectangleContainsPointWorks()
+        {
+            var rect = new BoundingRectangle(4.24, 2.83)
+            {
+                Position = new Vector2d(2.5, 2.5),
+                Rotation = -Math.PI / 4
+            };
+
+            Assert.True(rect.ContainsPoint(rect.Position));
+
+            foreach (var vertex in rect.Vertices)
+            {
+                Assert.True(rect.ContainsPoint(vertex));
+            }
+
+            Assert.False(rect.ContainsPoint(new Vector2d(-1, 0)));
+            Assert.False(rect.ContainsPoint(rect.TopRight + 1));
+            Assert.False(rect.ContainsPoint(rect.BotRight + 1));
+            Assert.False(rect.ContainsPoint(rect.TopLeft - 1));
+            Assert.False(rect.ContainsPoint(rect.BotLeft - 1));
+
+            Assert.True(rect.ContainsPoint(rect.TopRight - 1));
+            Assert.True(rect.ContainsPoint(rect.BotRight - 1));
+            Assert.True(rect.ContainsPoint(rect.TopLeft + 1));
+            Assert.True(rect.ContainsPoint(rect.BotLeft + 1));
+        }
     }
 }
