@@ -100,14 +100,19 @@ namespace EndGate.Core.BoundingObject
             {
                 Position = new Vector2d(value.X - Size.HalfWidth, value.Y - Size.HalfHeight);
             }
-        }        
-
-        public override bool IsCollidingWith(BoundingCircle obj)
-        {
-            return obj.IsCollidingWith(this);
         }
 
-        public override bool IsCollidingWith(BoundingRectangle obj)
+        public override bool Intersects(Bounds2d obj)
+        {
+            return obj.Intersects(this);
+        }
+
+        protected override bool Intersects(BoundingCircle obj)
+        {
+            return obj.Intersects(this);
+        }
+
+        protected override bool Intersects(BoundingRectangle obj)
         {
             if (Rotation == 0 && obj.Rotation == 0)
             {

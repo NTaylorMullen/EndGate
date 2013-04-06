@@ -40,12 +40,17 @@ namespace EndGate.Core.BoundingObject
             return 2 * Math.PI * Radius;
         }
 
-        public override bool IsCollidingWith(BoundingCircle circle)
+        public override bool Intersects(Bounds2d obj)
+        {
+            return obj.Intersects(this);
+        }
+
+        protected override bool Intersects(BoundingCircle circle)
         {
             return Position.Distance(circle.Position).Length() < Radius + circle.Radius;
         }
 
-        public override bool IsCollidingWith(BoundingRectangle rectangle)
+        protected override bool Intersects(BoundingRectangle rectangle)
         {
             Vector2d translated = rectangle.Rotation == 0 
                                   ? Position 

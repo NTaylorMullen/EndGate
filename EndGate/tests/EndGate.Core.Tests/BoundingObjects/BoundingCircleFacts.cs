@@ -40,15 +40,15 @@ namespace EndGate.Core.Tests
                 Position = new Vector2d(17, 5)
             };
 
-            Assert.True(circle1.IsCollidingWith(circle2));
+            Assert.True(circle1.Intersects(circle2));
 
             circle2.Position.X = -5;
 
-            Assert.True(circle1.IsCollidingWith(circle2));
+            Assert.True(circle1.Intersects(circle2));
 
             circle2.Position.X = -6;
 
-            Assert.False(circle1.IsCollidingWith(circle2));
+            Assert.False(circle1.Intersects(circle2));
         }
 
         [Fact]
@@ -64,9 +64,9 @@ namespace EndGate.Core.Tests
                 Position = new Vector2d(13, 3)
             };
 
-            Assert.False(circle.IsCollidingWith(rect));
+            Assert.False(circle.Intersects(rect));
             circle.Position.X--;
-            Assert.True(circle.IsCollidingWith(rect));
+            Assert.True(circle.Intersects(rect));
             rect.Rotation = Math.PI * .5;
             rect.Position.X = 3;
             rect.Position.Y = 5;
@@ -74,7 +74,7 @@ namespace EndGate.Core.Tests
             circle.Position.X = 8;
             circle.Position.Y = 12;
 
-            Assert.True(circle.IsCollidingWith(rect));
+            Assert.True(circle.Intersects(rect));
 
         }
 

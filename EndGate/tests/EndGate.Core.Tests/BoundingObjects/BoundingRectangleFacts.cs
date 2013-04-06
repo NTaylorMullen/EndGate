@@ -99,20 +99,20 @@ namespace EndGate.Core.Tests
                 Position = new Vector2d(5, 3)
             };
 
-            Assert.True(rect1.IsCollidingWith(rect2));
-            Assert.True(rect2.IsCollidingWith(rect1));
+            Assert.True(rect1.Intersects(rect2));
+            Assert.True(rect2.Intersects(rect1));
 
             rect2.Position += 3;
-            Assert.True(rect1.IsCollidingWith(rect2));
-            Assert.True(rect2.IsCollidingWith(rect1));
+            Assert.True(rect1.Intersects(rect2));
+            Assert.True(rect2.Intersects(rect1));
 
             rect2.Position++;
-            Assert.True(rect1.IsCollidingWith(rect2));
-            Assert.True(rect2.IsCollidingWith(rect1));
+            Assert.True(rect1.Intersects(rect2));
+            Assert.True(rect2.Intersects(rect1));
 
             rect2.Position++;
-            Assert.False(rect1.IsCollidingWith(rect2));
-            Assert.False(rect2.IsCollidingWith(rect1));
+            Assert.False(rect1.Intersects(rect2));
+            Assert.False(rect2.Intersects(rect1));
         }
 
         [Fact]
@@ -128,46 +128,46 @@ namespace EndGate.Core.Tests
                 Position = new Vector2d(9, 4)
             };
 
-            Assert.False(rect1.IsCollidingWith(rect2));
-            Assert.False(rect2.IsCollidingWith(rect1));
+            Assert.False(rect1.Intersects(rect2));
+            Assert.False(rect2.Intersects(rect1));
 
             rect2.Position.X-=2;
 
-            Assert.True(rect1.IsCollidingWith(rect2));
-            Assert.True(rect2.IsCollidingWith(rect1));
+            Assert.True(rect1.Intersects(rect2));
+            Assert.True(rect2.Intersects(rect1));
 
             rect2.Rotation = Math.PI / 2;
 
-            Assert.False(rect1.IsCollidingWith(rect2));
-            Assert.False(rect2.IsCollidingWith(rect1));
+            Assert.False(rect1.Intersects(rect2));
+            Assert.False(rect2.Intersects(rect1));
 
             rect2.Rotation = Math.PI * .75;
 
-            Assert.True(rect1.IsCollidingWith(rect2));
-            Assert.True(rect2.IsCollidingWith(rect1));
+            Assert.True(rect1.Intersects(rect2));
+            Assert.True(rect2.Intersects(rect1));
 
             rect2.Position.Y+=10;
 
-            Assert.False(rect1.IsCollidingWith(rect2));
-            Assert.False(rect2.IsCollidingWith(rect1));
+            Assert.False(rect1.Intersects(rect2));
+            Assert.False(rect2.Intersects(rect1));
 
             rect2.Position.Y -= 10;
             rect1.Position.X += 5;
 
-            Assert.True(rect1.IsCollidingWith(rect2));
-            Assert.True(rect2.IsCollidingWith(rect1));
+            Assert.True(rect1.Intersects(rect2));
+            Assert.True(rect2.Intersects(rect1));
 
             rect1.Position.X += 9;
 
-            Assert.False(rect1.IsCollidingWith(rect2));
-            Assert.False(rect2.IsCollidingWith(rect1));
+            Assert.False(rect1.Intersects(rect2));
+            Assert.False(rect2.Intersects(rect1));
 
             rect1.Rotation = 0;
             rect1.Position.X = 12;
             rect2.Rotation = Math.PI;
 
-            Assert.True(rect1.IsCollidingWith(rect2));
-            Assert.True(rect2.IsCollidingWith(rect1));
+            Assert.True(rect1.Intersects(rect2));
+            Assert.True(rect2.Intersects(rect1));
         }
 
         [Fact]
