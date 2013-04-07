@@ -89,7 +89,7 @@
   <ItemGroup>
     <Content Include="Bootstrap\bootstrap.min.css" />
     <Content Include="Bootstrap\bootstrap.min.js" />
-    <Content Include="Streaming\Broadcasting.js" />
+    <Content Include="Streaming\Streaming.js" />
     <Content Include="Streaming\Default.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="EndGate.AspNet.SignalR.Samples.Master" />

@@ -17,5 +17,5 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Scripts" runat="server">
     <script src="<%: ResolveUrl("~/signalr/hubs") %>"></script>
-    <script src="Broadcasting.js"></script>
+    <script src="Streaming.js"></script>
 </asp:Content>
