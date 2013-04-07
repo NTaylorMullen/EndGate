@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using EndGate.Core.Utilities;
 
 namespace EndGate.Core
@@ -19,42 +15,27 @@ namespace EndGate.Core
             _callbacks = new ConcurrentDictionary<long, LooperCallback>();
         }
 
-        private void TryLoopStart()
+        public static GameRunner Instance
         {
-            if (_callbacks.Count == 1)
+            get
             {
-                _gameLoop = new Looper();
-                _gameLoop.Start();
-            }
-        }
-
-        private void TryLoopStop()
-        {
-            if (_callbacks.Count == 0)
-            {
-                _gameLoop.Dispose();
-                _gameLoop = null;
+                return _instance.Value;
             }
         }
 
         public Action<int> Register(Game game)
         {
-            // We do not set the FPS initially (it's set to 0) because we want to allow the Game itself to set the UpdateRate(fps)
-            var updateCallback = new LooperCallback
-            {
-                Callback = game.PrepareUpdate
-            };
+            var updateCallback = CreateAndCacheCallback(game);
 
-            _callbacks.TryAdd(game.ID, updateCallback);
-
+            // Try to start the loop prior to adding our games callback.  This callback may be the first, hence the "Try"
             TryLoopStart();
 
+            // Add our callback to the game loop (which is now running), it will now be called on an interval dictated by updateCallback
             _gameLoop.AddCallback(updateCallback);
 
-            return (updateRate) =>
-            {
-                updateCallback.Fps = updateRate;
-            };
+            // Updating the "updateRate" is an essential element to the game configuration.
+            // If a game is running slowly we need to be able to slow down the update rate.
+            return CreateUpdateRateSetter(updateCallback);
         }
 
         public void Unregister(Game game)
@@ -66,12 +47,43 @@ namespace EndGate.Core
             TryLoopStop();
         }
 
-        public static GameRunner Instance
+        private void TryLoopStart()
         {
-            get
+            if (_callbacks.Count == 1)
             {
-                return _instance.Value;
+                _gameLoop = new Looper();
+                _gameLoop.Start();
             }
+        }
+
+        private void TryLoopStop()
+        {
+            if (_callbacks.Count == 0 && _gameLoop != null)
+            {
+                _gameLoop.Dispose();
+                _gameLoop = null;
+            }
+        }
+
+        private LooperCallback CreateAndCacheCallback(Game game)
+        {
+            var updateCallback = new LooperCallback
+            {
+                Callback = game.PrepareUpdate
+            };
+
+            // Add the callback to the callback cache
+            _callbacks.TryAdd(game.ID, updateCallback);
+
+            return updateCallback;
+        }
+
+        private Action<int> CreateUpdateRateSetter(LooperCallback callback)
+        {
+            return (updateRate) =>
+            {
+                callback.Fps = updateRate;
+            };
         }
     }
 }
