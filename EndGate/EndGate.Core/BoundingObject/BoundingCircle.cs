@@ -45,12 +45,12 @@ namespace EndGate.Core.BoundingObject
             return obj.Intersects(this);
         }
 
-        protected override bool Intersects(BoundingCircle circle)
+        public override bool Intersects(BoundingCircle circle)
         {
             return Position.Distance(circle.Position).Length() < Radius + circle.Radius;
         }
 
-        protected override bool Intersects(BoundingRectangle rectangle)
+        public override bool Intersects(BoundingRectangle rectangle)
         {
             Vector2d translated = rectangle.Rotation == 0 
                                   ? Position 

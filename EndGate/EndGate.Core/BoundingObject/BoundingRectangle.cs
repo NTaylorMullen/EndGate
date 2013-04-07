@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EndGate.Core.Assets;
-using EndGate.Core.Assets.Sizes;
 
 namespace EndGate.Core.BoundingObject
 {
@@ -42,10 +41,6 @@ namespace EndGate.Core.BoundingObject
 
                 return v.RotateAround(Position, Rotation);
             }
-            set
-            {
-                Position = new Vector2d(value.X + Size.HalfWidth, value.Y + Size.HalfHeight);
-            }
         }
 
         public Vector2d TopRight
@@ -59,10 +54,6 @@ namespace EndGate.Core.BoundingObject
                 }
 
                 return v.RotateAround(Position, Rotation);
-            }
-            set
-            {
-                Position = new Vector2d(value.X - Size.HalfWidth, value.Y + Size.HalfHeight);
             }
         }
 
@@ -96,10 +87,6 @@ namespace EndGate.Core.BoundingObject
 
                 return v.RotateAround(Position, Rotation);
             }
-            set
-            {
-                Position = new Vector2d(value.X - Size.HalfWidth, value.Y - Size.HalfHeight);
-            }
         }
 
         public override bool Intersects(Bounds2d obj)
@@ -107,12 +94,12 @@ namespace EndGate.Core.BoundingObject
             return obj.Intersects(this);
         }
 
-        protected override bool Intersects(BoundingCircle obj)
+        public override bool Intersects(BoundingCircle obj)
         {
-            return obj.Intersects(this);
+            return obj.Intersects((BoundingRectangle)this);
         }
 
-        protected override bool Intersects(BoundingRectangle obj)
+        public override bool Intersects(BoundingRectangle obj)
         {
             if (Rotation == 0 && obj.Rotation == 0)
             {

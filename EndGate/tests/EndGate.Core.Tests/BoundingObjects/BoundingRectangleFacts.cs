@@ -57,37 +57,6 @@ namespace EndGate.Core.Tests
         }
 
         [Fact]
-        public void RectangleCornersSetWorks()
-        {
-            var rect = new BoundingRectangle(6, 6);
-
-            rect.TopLeft = Vector2d.Zero;
-
-            Assert.True(rect.TopLeft.Equivalent(Vector2d.Zero));
-            Assert.True(rect.TopRight.Equivalent(new Vector2d(6, 0)));
-            Assert.True(rect.BotLeft.Equivalent(new Vector2d(0, 6)));
-            Assert.True(rect.BotRight.Equivalent(new Vector2d(6, 6)));
-
-            rect.TopRight = Vector2d.Zero;
-            Assert.True(rect.TopLeft.Equivalent(new Vector2d(-6, 0)));
-            Assert.True(rect.TopRight.Equivalent(Vector2d.Zero));
-            Assert.True(rect.BotLeft.Equivalent(new Vector2d(-6, 6)));
-            Assert.True(rect.BotRight.Equivalent(new Vector2d(0, 6)));
-
-            rect.BotLeft = Vector2d.Zero;
-            Assert.True(rect.TopLeft.Equivalent(new Vector2d(0, -6)));
-            Assert.True(rect.TopRight.Equivalent(new Vector2d(6, -6)));
-            Assert.True(rect.BotLeft.Equivalent(Vector2d.Zero));
-            Assert.True(rect.BotRight.Equivalent(new Vector2d(6, 0)));
-
-            rect.BotRight = Vector2d.Zero;
-            Assert.True(rect.TopLeft.Equivalent(new Vector2d(-6, -6)));
-            Assert.True(rect.TopRight.Equivalent(new Vector2d(0, -6)));
-            Assert.True(rect.BotLeft.Equivalent(new Vector2d(-6, 0)));
-            Assert.True(rect.BotRight.Equivalent(Vector2d.Zero));
-        }
-
-        [Fact]
         public void UnRotatedRectanglesCollideCorrectly()
         {
             var rect1 = new BoundingRectangle(10, 6)

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using EndGate.Core.Assets.Sizes;
+using EndGate.Core.Assets;
 using Xunit;
 
 namespace EndGate.Core.Tests
