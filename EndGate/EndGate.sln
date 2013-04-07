@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{49EB
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EndGate.AspNet.SignalR.Samples", "samples\EndGate.AspNet.SignalR.Samples\EndGate.AspNet.SignalR.Samples.csproj", "{94FF4E2F-B4A7-4984-9242-4438AC2B09F0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EndGate.Core.Client.JS", "EndGate.Core.Client.JS\EndGate.Core.Client.JS.csproj", "{45E9E342-1243-4C8D-A38E-E6E5FD89A947}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +38,10 @@ Global
 		{94FF4E2F-B4A7-4984-9242-4438AC2B09F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94FF4E2F-B4A7-4984-9242-4438AC2B09F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94FF4E2F-B4A7-4984-9242-4438AC2B09F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45E9E342-1243-4C8D-A38E-E6E5FD89A947}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45E9E342-1243-4C8D-A38E-E6E5FD89A947}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45E9E342-1243-4C8D-A38E-E6E5FD89A947}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45E9E342-1243-4C8D-A38E-E6E5FD89A947}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
