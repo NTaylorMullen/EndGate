@@ -106,11 +106,12 @@ namespace EndGate.Core.Tests
             Assert.True(rect2.Intersects(rect1));
 
             rect2.Rotation = Math.PI / 2;
+            rect2.Position++;
 
             Assert.False(rect1.Intersects(rect2));
             Assert.False(rect2.Intersects(rect1));
 
-            rect2.Rotation = Math.PI * .75;
+            rect2.Rotation = Math.PI;
 
             Assert.True(rect1.Intersects(rect2));
             Assert.True(rect2.Intersects(rect1));

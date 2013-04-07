@@ -20,8 +20,9 @@ namespace EndGate.Core
         {
             _gameTime = new GameTime();
             ID = Interlocked.Increment(ref GameIDs);
-            Configuration = new GameConfiguration(GameRunner.Instance.Register(this));
             CollisionManager = new CollisionManager();
+
+            Configuration = new GameConfiguration(GameRunner.Instance.Register(this));
         }
 
         internal void PrepareUpdate()
