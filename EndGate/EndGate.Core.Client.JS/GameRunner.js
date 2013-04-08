@@ -16,10 +16,13 @@ var EndGate;
                 return this.CreateUpdateRateSetter(updateCallback);
             };
             GameRunner.prototype.Unregister = function (game) {
-                var updateCallback = this._callbacks[game.ID];
-                this._gameLoop.RemoveCallback(updateCallback);
-                this._callbackCount--;
-                this.TryLoopStop();
+                var updateCallback;
+                if(this._callbacks[game.ID]) {
+                    updateCallback = this._callbacks[game.ID];
+                    this._gameLoop.RemoveCallback(updateCallback);
+                    this._callbackCount--;
+                    this.TryLoopStop();
+                }
             };
             GameRunner.prototype.TryLoopStart = function () {
                 if(this._callbackCount === 1) {

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace EndGate.Core.Tests
@@ -15,7 +11,7 @@ namespace EndGate.Core.Tests
         {
             UpdateTester game1 = null;
             var resetEvent = new ManualResetEvent(false);
-            
+
             game1 = new UpdateTester(() =>
             {
                 resetEvent.Set();
@@ -34,7 +30,7 @@ namespace EndGate.Core.Tests
             UpdateTester game1 = null;
             var resetEvent = new ManualResetEvent(false);
 
-            game1 = new UpdateTester(60,() =>
+            game1 = new UpdateTester(60, () =>
             {
                 resetEvent.Set();
                 game1.Dispose();

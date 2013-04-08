@@ -33,13 +33,17 @@ module EndGate.Core {
         }
 
         public Unregister(game: Game): void {
-            var updateCallback = this._callbacks[game.ID];
+            var updateCallback;
 
-            this._gameLoop.RemoveCallback(updateCallback);
+            if (this._callbacks[game.ID]) {
+                updateCallback = this._callbacks[game.ID];
 
-            this._callbackCount--
+                this._gameLoop.RemoveCallback(updateCallback);
 
-            this.TryLoopStop();
+                this._callbackCount--
+
+                this.TryLoopStop();
+            }
         }
 
         private TryLoopStart(): void {

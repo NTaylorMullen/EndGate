@@ -102,8 +102,10 @@
     <Content Include="Scripts\test.utilities.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Styles\qunit.css" />
+    <Content Include="Tests\Assets.js" />
     <Content Include="Tests\UnitTests\Assets\Sizes\Size2dFacts.js" />
     <Content Include="Tests\UnitTests\Assets\Vectors\Vector2dFacts.js" />
+    <Content Include="Tests\UnitTests\GameFacts.js" />
     <Content Include="Web.config" />
     <Content Include="Scripts\jquery-1.9.1.min.map" />
   </ItemGroup>
