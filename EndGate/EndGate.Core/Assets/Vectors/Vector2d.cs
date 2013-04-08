@@ -28,11 +28,10 @@ namespace EndGate.Core.Assets
             var ca = Math.Cos(-angle);
             var sa = Math.Sin(-angle);
 
-            return new Vector2d
-            {
-                X = Math.Round(ca * (X - point.X) - sa * (Y - point.Y) + point.X, precision),
-                Y = Math.Round(sa * (X - point.X) + ca * (Y - point.Y) + point.Y, precision)
-            };
+            return new Vector2d(
+                Math.Round(ca * (X - point.X) - sa * (Y - point.Y) + point.X, precision),
+                Math.Round(sa * (X - point.X) + ca * (Y - point.Y) + point.Y, precision)
+            );
         }
 
         public void Apply(Func<double, double> action)
@@ -119,7 +118,7 @@ namespace EndGate.Core.Assets
 
         public Vector2d Distance(Vector2d v1)
         {
-            return new Vector2d(v1.X - X, v1.Y - Y).Abs();
+            return new Vector2d(Math.Abs(v1.X - X), Math.Abs(v1.Y - Y));
         }
 
         public Vector2d Add(Number val)
@@ -170,6 +169,11 @@ namespace EndGate.Core.Assets
         public Vector2d Divide(Vector2d v1)
         {
             return this / v1;
+        }
+
+        public Vector2d Negate()
+        {
+            return this * -1;
         }
 
         public static Vector2d operator +(Vector2d v1, Vector2d v2)
@@ -247,7 +251,21 @@ namespace EndGate.Core.Assets
             return v1 - 1;
         }
 
-        public static Vector2d Zero = new Vector2d(0, 0);
+        public static Vector2d Zero
+        {
+            get
+            {
+                return new Vector2d(0, 0);
+            }
+        }
+
+        public static Vector2d One
+        {
+            get
+            {
+                return new Vector2d(1,1);
+            }
+        }
 
         public override string ToString()
         {

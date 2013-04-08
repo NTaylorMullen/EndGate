@@ -20,6 +20,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EndGate.AspNet.SignalR.Samp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EndGate.Core.Client.JS", "EndGate.Core.Client.JS\EndGate.Core.Client.JS.csproj", "{45E9E342-1243-4C8D-A38E-E6E5FD89A947}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EndGate.Core.Client.JS.Tests", "EndGate.Core.Client.JS.Tests\EndGate.Core.Client.JS.Tests.csproj", "{95189D2C-5919-4DFD-A243-EEAD6DFF401D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{45E9E342-1243-4C8D-A38E-E6E5FD89A947} = {45E9E342-1243-4C8D-A38E-E6E5FD89A947}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{53DD1FBD-BD6F-44C3-A41E-2E2A0E4C8956}"
+	ProjectSection(SolutionItems) = preProject
+		Build.proj = Build.proj
+		.build\MSBuild.Community.Tasks.dll = .build\MSBuild.Community.Tasks.dll
+		.build\MSBuild.Community.Tasks.targets = .build\MSBuild.Community.Tasks.targets
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,12 +54,17 @@ Global
 		{45E9E342-1243-4C8D-A38E-E6E5FD89A947}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45E9E342-1243-4C8D-A38E-E6E5FD89A947}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{45E9E342-1243-4C8D-A38E-E6E5FD89A947}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95189D2C-5919-4DFD-A243-EEAD6DFF401D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95189D2C-5919-4DFD-A243-EEAD6DFF401D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95189D2C-5919-4DFD-A243-EEAD6DFF401D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95189D2C-5919-4DFD-A243-EEAD6DFF401D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{EC353F64-70AA-4A3F-B59A-4845C808BDF9} = {C0BAA468-9EA0-4176-B9FD-151A0A8DF798}
+		{95189D2C-5919-4DFD-A243-EEAD6DFF401D} = {C0BAA468-9EA0-4176-B9FD-151A0A8DF798}
 		{94FF4E2F-B4A7-4984-9242-4438AC2B09F0} = {49EB18BE-1A16-4D27-A023-8917A910AAD3}
 	EndGlobalSection
 EndGlobal

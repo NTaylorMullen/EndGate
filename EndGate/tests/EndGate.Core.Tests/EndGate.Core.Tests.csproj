@@ -58,7 +58,7 @@
     <Compile Include="GameFacts.cs" />
     <Compile Include="Utilities\LooperFacts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Assets\Vectors\Vector2Facts.cs" />
+    <Compile Include="Assets\Vectors\Vector2dFacts.cs" />
     <Compile Include="Assets\Vectors\Vector3Facts.cs" />
   </ItemGroup>
   <ItemGroup>

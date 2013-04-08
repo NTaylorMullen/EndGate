@@ -1,1 +1,1 @@
-﻿/// <reference path="jquery-1.9.1.intellisense.js" />
+﻿/// <reference path="endGate.core.client.js" />

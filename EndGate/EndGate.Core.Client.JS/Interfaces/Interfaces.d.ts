@@ -1,0 +1,1 @@
+/// <reference path="ITyped.d.ts" />

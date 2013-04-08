@@ -59,13 +59,33 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages.config" />
-    <None Include="Scripts\jquery-1.9.1.intellisense.js" />
-    <Content Include="Scripts\jquery-1.9.1.js" />
-    <Content Include="Scripts\jquery-1.9.1.min.js" />
+    <TypeScriptCompile Include="Assets\Vectors\Vector2d.ts" />
+    <Content Include="Assets\Vectors\Vector2d.js">
+      <DependentUpon>Vector2d.ts</DependentUpon>
+    </Content>
+    <Content Include="Assets\Vectors\Vector2d.min.js">
+      <DependentUpon>Vector2d.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Interfaces\ITyped.d.ts" />
+    <TypeScriptCompile Include="Interfaces\Interfaces.d.ts" />
+    <TypeScriptCompile Include="Extensions\PrimitiveExtensions.ts" />
+    <TypeScriptCompile Include="Extensions\MathExtensions.ts" />
+    <Content Include="Extensions\MathExtensions.js">
+      <DependentUpon>MathExtensions.ts</DependentUpon>
+    </Content>
+    <Content Include="Extensions\MathExtensions.min.js">
+      <DependentUpon>MathExtensions.ts</DependentUpon>
+    </Content>
+    <Content Include="Extensions\PrimitiveExtensions.js">
+      <DependentUpon>PrimitiveExtensions.ts</DependentUpon>
+    </Content>
+    <Content Include="Extensions\PrimitiveExtensions.min.js">
+      <DependentUpon>PrimitiveExtensions.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\endGate.core.client.js" />
+    <TypeScriptCompile Include="Scripts\_references.d.ts" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
-    <Content Include="Scripts\jquery-1.9.1.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -104,6 +124,10 @@
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <Target Name="BeforeBuild">
+    <Message Text="Compiling TypeScript files" />
+    <Exec Command="tsc --out Scripts/endGate.core.client.js @(TypeScriptCompile ->'&quot;%(fullpath)&quot;', ' ')" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

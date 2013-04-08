@@ -20,6 +20,14 @@ namespace EndGate.Core.Tests
         }
 
         [Fact]
+        public void Vector2dSignWorks()
+        {
+            var v = new Vector2d(3, -4);
+
+            Assert.True(v.Sign().Equivalent(new Vector2d(1, -1)));
+        }
+        
+        [Fact]
         public void Vector2dAbsWorks()
         {
             var v = new Vector2d(3, -4);
@@ -27,25 +35,55 @@ namespace EndGate.Core.Tests
             Assert.True(v.Abs().Equivalent(new Vector2d(3, 4)));
         }
 
-        public void Vector2dSignWorks()
+        [Fact]
+        public void Vector2dDotProductWorks()
         {
-            var v = new Vector2d(3, -4);
+            var v = new Vector2d(3, 4);
+            var v2 = new Vector2d(8, 7);
 
-            Assert.True(v.Sign().Equivalent(new Vector2d(1, -1)));
+            Assert.Equal(v.Dot(v2), 52);
         }
 
         [Fact]
-        public void Vector2dApplyWorks()
+        public void Vector2dMagnitudeWorks()
         {
-            var v = new Vector2d(1.11, 2.22);
+            var v = new Vector2d(2, 2);
+            double mag = v.Magnitude();
 
-            v.Apply(Math.Round);
+            Assert.Equal(2.83, Math.Round(mag, 2));
+        }
 
+        [Fact]
+        public void Vector2dLengthWorks()
+        {
+            var v = new Vector2d(2, 2);
+            double length = v.Length();
+
+            Assert.Equal(2.83, Math.Round(length, 2));
+        }
+
+        [Fact]
+        public void Vector2dNormalizedWorks()
+        {
+            var v = new Vector2d(12, 23);
+            var v2 = v.Normalized();
+
+            Assert.NotEqual(v, v2);
+            Assert.True(v.Equivalent(new Vector2d(12, 23)));
+            Assert.Equal(1, v.Normalized().Magnitude());
+        }
+
+        [Fact]
+        public void Vector2dCloneWorks()
+        {
+            var v = new Vector2d(1, 2);
+            var v2 = v.Clone();
+
+            v2.X = 3;
+
+            Assert.NotEqual(v, v2);
+            Assert.False(v.Equivalent(v2));
             Assert.True(v.Equivalent(new Vector2d(1, 2)));
-
-            v.Apply(val => { return val + 1; });
-
-            Assert.True(v.Equivalent(new Vector2d(2, 3)));
         }
 
         [Fact]
@@ -64,53 +102,41 @@ namespace EndGate.Core.Tests
         }
 
         [Fact]
-        public void Vector2dCloneWorks()
+        public void Vector2dApplyWorks()
         {
-            var v = new Vector2d(1, 2);
-            var v2 = v.Clone();
+            var v = new Vector2d(1.11, 2.22);
 
-            v2.X = 3;
+            v.Apply(Math.Round);
 
-            Assert.NotEqual(v, v2);
             Assert.True(v.Equivalent(new Vector2d(1, 2)));
+
+            v.Apply(val => { return val + 1; });
+
+            Assert.True(v.Equivalent(new Vector2d(2, 3)));
         }
 
         [Fact]
-        public void Vector2dNormalizedWorks()
+        public void RotateAroundWorks()
         {
-            var v = new Vector2d(12, 23);
-            var v2 = v.Normalized();
+            var v1 = Vector2d.Zero;
 
-            Assert.NotEqual(v, v2);
-            Assert.True(v.Equivalent(new Vector2d(12, 23)));
-            Assert.Equal(1, v.Normalized().Magnitude());
+            // Flip
+            var rotated = v1.RotateAround(Vector2d.One, Math.PI);
+
+            Assert.NotEqual(v1, rotated);
+            Assert.False(v1.Equivalent(rotated));            
+            Assert.True(rotated.Equivalent(new Vector2d(2, 2)));
         }
 
         [Fact]
-        public void Vector2dMagnitudeWorks()
+        public void ProjectOntoWorks()
         {
-            var v = new Vector2d(2, 2);
-            double mag = v.Magnitude();
+            var v = new Vector2d(3, 7);
+            var axis = new Vector2d(8, 0);
 
-            Assert.Equal(2.83, Math.Round(mag,2));
-        }
+            var projection = v.ProjectOnto(axis);
 
-        [Fact]
-        public void Vector2dLengthWorks()
-        {
-            var v = new Vector2d(2, 2);
-            double length = v.Length();
-
-            Assert.Equal(2.83, Math.Round(length, 2));
-        }
-
-        [Fact]
-        public void Vector2dDotProductWorks()
-        {
-            var v = new Vector2d(3, 4);
-            var v2 = new Vector2d(8, 7);
-
-            Assert.Equal(v.Dot(v2), 52);
+            Assert.True(projection.Equivalent(new Vector2d(3, 0)));
         }
 
         [Fact]
