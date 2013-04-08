@@ -89,9 +89,60 @@
     <Content Include="Extensions\PrimitiveExtensions.min.js">
       <DependentUpon>PrimitiveExtensions.ts</DependentUpon>
     </Content>
+    <TypeScriptCompile Include="Extensions\WindowExtensions.ts" />
+    <Content Include="Extensions\WindowExtensions.js">
+      <DependentUpon>WindowExtensions.ts</DependentUpon>
+    </Content>
+    <Content Include="Extensions\WindowExtensions.min.js">
+      <DependentUpon>WindowExtensions.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="GameRunner.ts" />
+    <TypeScriptCompile Include="Game.ts" />
+    <Content Include="Game.js">
+      <DependentUpon>Game.ts</DependentUpon>
+    </Content>
+    <Content Include="Game.min.js">
+      <DependentUpon>Game.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="GameConfiguration.ts" />
+    <Content Include="GameConfiguration.js">
+      <DependentUpon>GameConfiguration.ts</DependentUpon>
+    </Content>
+    <Content Include="GameConfiguration.min.js">
+      <DependentUpon>GameConfiguration.ts</DependentUpon>
+    </Content>
+    <Content Include="GameRunner.js">
+      <DependentUpon>GameRunner.ts</DependentUpon>
+    </Content>
+    <Content Include="GameRunner.min.js">
+      <DependentUpon>GameRunner.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Interfaces\IDisposable.d.ts" />
+    <TypeScriptCompile Include="GameTime.ts" />
+    <Content Include="GameTime.js">
+      <DependentUpon>GameTime.ts</DependentUpon>
+    </Content>
+    <Content Include="GameTime.min.js">
+      <DependentUpon>GameTime.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Interfaces\IUpdateable.d.ts" />
     <Content Include="Scripts\endGate.core.client.js" />
     <TypeScriptCompile Include="Scripts\_references.d.ts" />
     <Content Include="Scripts\_references.js" />
+    <TypeScriptCompile Include="Utilities\Looper.ts" />
+    <Content Include="Utilities\Looper.js">
+      <DependentUpon>Looper.ts</DependentUpon>
+    </Content>
+    <Content Include="Utilities\Looper.min.js">
+      <DependentUpon>Looper.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Utilities\LooperCallback.ts" />
+    <Content Include="Utilities\LooperCallback.js">
+      <DependentUpon>LooperCallback.ts</DependentUpon>
+    </Content>
+    <Content Include="Utilities\LooperCallback.min.js">
+      <DependentUpon>LooperCallback.ts</DependentUpon>
+    </Content>
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

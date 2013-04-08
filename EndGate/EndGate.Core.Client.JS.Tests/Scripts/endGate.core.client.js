@@ -1,3 +1,27 @@
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        var GameTime = (function () {
+            function GameTime() {
+                this._type = "GameTime";
+                this.Now = new Date();
+                this._start = this.Now.getTime();
+            }
+            GameTime.prototype.Update = function () {
+                var now = new Date(), nowMs = now.getTime();
+                this.Elapsed = nowMs - this.Now.getTime();
+                this.Total = nowMs - this._start;
+                this.Now = now;
+            };
+            return GameTime;
+        })();
+        Core.GameTime = GameTime;        
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+(window).readyForRender = (function () {
+    return window.requestAnimationFrame || (window).webkitRequestAnimationFrame || (window).mozRequestAnimationFrame || (window).oRequestAnimationFrame || (window).msRequestAnimationFrame;
+})();
 Number.prototype._type = "Number";
 String.prototype._type = "String";
 Boolean.prototype._type = "Boolean";
@@ -233,3 +257,183 @@ var EndGate;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Utilities) {
+            var LooperCallback = (function () {
+                function LooperCallback(fps, callback) {
+                    this._type = "LooperCallback";
+                    this.Fps = fps;
+                    this.Callback = callback;
+                    this.TimeoutID = 0;
+                    this.ID = LooperCallback._ids++;
+                }
+                LooperCallback._ids = 0;
+                return LooperCallback;
+            })();
+            Utilities.LooperCallback = LooperCallback;            
+        })(Core.Utilities || (Core.Utilities = {}));
+        var Utilities = Core.Utilities;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Utilities) {
+            var Looper = (function () {
+                function Looper() {
+                    this._type = "Looper";
+                    this._running = false;
+                    this._callbacks = {
+                    };
+                }
+                Looper.prototype.AddCallback = function (looperCallback) {
+                    this._callbacks[looperCallback.ID] = looperCallback;
+                    if(this._running) {
+                        this.Loop(looperCallback);
+                    }
+                };
+                Looper.prototype.RemoveCallback = function (looperCallback) {
+                    if(this._callbacks[looperCallback.ID]) {
+                        window.clearTimeout(looperCallback.TimeoutID);
+                        delete this._callbacks[looperCallback.ID];
+                    } else {
+                        throw new Error("Callback does not exist.");
+                    }
+                };
+                Looper.prototype.Start = function () {
+                    this._running = true;
+                    this.Run();
+                };
+                Looper.prototype.Run = function () {
+                    for(var id in this._callbacks) {
+                        this.Loop(this._callbacks[id]);
+                    }
+                };
+                Looper.prototype.Loop = function (looperCallback) {
+                    var that = this, msTimer = 1000 / looperCallback.Fps;
+                    looperCallback.Callback();
+                    looperCallback.TimeoutID = window.setTimeout(function () {
+                        that.Loop(looperCallback);
+                    }, msTimer);
+                };
+                Looper.prototype.Dispose = function () {
+                    for(var key in this._callbacks) {
+                        this.RemoveCallback(this._callbacks[key]);
+                    }
+                    this._callbacks = {
+                    };
+                    this._running = false;
+                };
+                return Looper;
+            })();
+            Utilities.Looper = Looper;            
+        })(Core.Utilities || (Core.Utilities = {}));
+        var Utilities = Core.Utilities;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        var GameConfiguration = (function () {
+            function GameConfiguration(updateRateSetter) {
+                this._defaultUpdateRate = 40;
+                this._updateRateSetter = updateRateSetter;
+                this._updateRate = this._defaultUpdateRate;
+            }
+            GameConfiguration.prototype.UpdateRate = function (updateRate) {
+                if(typeof updateRate !== "undefined") {
+                    this._updateRate = updateRate;
+                    this._updateRateSetter(this._updateRate);
+                } else {
+                    return this._updateRate;
+                }
+            };
+            return GameConfiguration;
+        })();
+        Core.GameConfiguration = GameConfiguration;        
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        var Game = (function () {
+            function Game() {
+                this._type = "Game";
+                this._gameTime = new Core.GameTime();
+                this.ID = Game._gameIds++;
+                this.Configuration = new Core.GameConfiguration(GameRunnerInstance.Register(this));
+            }
+            Game._gameIds = 0;
+            Game.prototype.PrepareUpdate = function () {
+                this._gameTime.Update();
+                this.Update(this._gameTime);
+            };
+            Game.prototype.Update = function (gameTime) {
+            };
+            Game.prototype.Dispose = function () {
+                GameRunnerInstance.Unregister(this);
+            };
+            return Game;
+        })();
+        Core.Game = Game;        
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        var GameRunner = (function () {
+            function GameRunner() {
+                this._type = "GameRunner";
+                this._callbacks = {
+                };
+                this._gameLoop = null;
+                this._callbackCount = 0;
+            }
+            GameRunner.prototype.Register = function (game) {
+                var updateCallback = this.CreateAndCacheCallback(game);
+                this.TryLoopStart();
+                this._gameLoop.AddCallback(updateCallback);
+                return this.CreateUpdateRateSetter(updateCallback);
+            };
+            GameRunner.prototype.Unregister = function (game) {
+                var updateCallback = this._callbacks[game.ID];
+                this._gameLoop.RemoveCallback(updateCallback);
+                this._callbackCount--;
+                this.TryLoopStop();
+            };
+            GameRunner.prototype.TryLoopStart = function () {
+                if(this._callbackCount === 1) {
+                    this._gameLoop = new Core.Utilities.Looper();
+                    this._gameLoop.Start();
+                }
+            };
+            GameRunner.prototype.TryLoopStop = function () {
+                if(this._callbackCount === 0 && this._gameLoop != null) {
+                    this._gameLoop.Dispose();
+                    this._gameLoop = null;
+                }
+            };
+            GameRunner.prototype.CreateAndCacheCallback = function (game) {
+                var updateCallback = new Core.Utilities.LooperCallback(0, game.PrepareUpdate);
+                this._callbacks[game.ID] = updateCallback;
+                this._callbackCount++;
+                return updateCallback;
+            };
+            GameRunner.prototype.CreateUpdateRateSetter = function (callback) {
+                return function (updateRate) {
+                    callback.Fps = updateRate;
+                };
+            };
+            return GameRunner;
+        })();
+        Core.GameRunner = GameRunner;        
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var GameRunnerInstance = new EndGate.Core.GameRunner();
