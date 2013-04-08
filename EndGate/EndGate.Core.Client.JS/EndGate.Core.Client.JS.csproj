@@ -60,6 +60,13 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Assets\Vectors\Vector2d.ts" />
+    <TypeScriptCompile Include="Assets\Sizes\Size2d.ts" />
+    <Content Include="Assets\Sizes\Size2d.js">
+      <DependentUpon>Size2d.ts</DependentUpon>
+    </Content>
+    <Content Include="Assets\Sizes\Size2d.min.js">
+      <DependentUpon>Size2d.ts</DependentUpon>
+    </Content>
     <Content Include="Assets\Vectors\Vector2d.js">
       <DependentUpon>Vector2d.ts</DependentUpon>
     </Content>
