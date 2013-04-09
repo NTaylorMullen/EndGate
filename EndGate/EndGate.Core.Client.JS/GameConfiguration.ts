@@ -7,7 +7,7 @@ module EndGate.Core {
 
         constructor(updateRateSetter: (updateRate: number) => void ) {
             this._updateRateSetter = updateRateSetter;
-            this._updateRate = this._defaultUpdateRate;
+            this.UpdateRate(this._defaultUpdateRate);
         }
 
         public UpdateRate(updateRate?: number): number {

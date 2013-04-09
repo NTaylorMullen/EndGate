@@ -6,19 +6,25 @@ var EndGate;
                 function Looper() {
                     this._type = "Looper";
                     this._running = false;
-                    this._callbacks = {
-                    };
+                    this._callbacks = [];
                 }
                 Looper.prototype.AddCallback = function (looperCallback) {
-                    this._callbacks[looperCallback.ID] = looperCallback;
+                    this._callbacks.push(looperCallback);
                     if(this._running) {
                         this.Loop(looperCallback);
                     }
                 };
                 Looper.prototype.RemoveCallback = function (looperCallback) {
-                    if(this._callbacks[looperCallback.ID]) {
+                    var callbackFound = false, i;
+                    for(i = 0; i < this._callbacks.length; i++) {
+                        if(this._callbacks[i].ID === looperCallback.ID) {
+                            callbackFound = true;
+                            break;
+                        }
+                    }
+                    if(callbackFound) {
                         window.clearTimeout(looperCallback.TimeoutID);
-                        delete this._callbacks[looperCallback.ID];
+                        this._callbacks.splice(i, 1);
                     } else {
                         throw new Error("Callback does not exist.");
                     }
@@ -28,8 +34,8 @@ var EndGate;
                     this.Run();
                 };
                 Looper.prototype.Run = function () {
-                    for(var id in this._callbacks) {
-                        this.Loop(this._callbacks[id]);
+                    for(var i = 0; i < this._callbacks.length; i++) {
+                        this.Loop(this._callbacks[i]);
                     }
                 };
                 Looper.prototype.Loop = function (looperCallback) {
@@ -40,11 +46,10 @@ var EndGate;
                     }, msTimer);
                 };
                 Looper.prototype.Dispose = function () {
-                    for(var key in this._callbacks) {
-                        this.RemoveCallback(this._callbacks[key]);
+                    for(var i = this._callbacks.length - 1; i >= 0; i--) {
+                        this.RemoveCallback(this._callbacks[i]);
                     }
-                    this._callbacks = {
-                    };
+                    this._callbacks = [];
                     this._running = false;
                 };
                 return Looper;

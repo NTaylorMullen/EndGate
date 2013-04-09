@@ -7,15 +7,15 @@ module EndGate.Core.Utilities {
         public _type: string = "Looper";
 
         private _running: bool;
-        private _callbacks: { [s: number]: LooperCallback; };
+        private _callbacks: LooperCallback[];
 
         constructor() {
             this._running = false;
-            this._callbacks = <{ [s: number]: Utilities.LooperCallback; } >{};
+            this._callbacks = [];
         }
 
         public AddCallback(looperCallback: LooperCallback): void {
-            this._callbacks[looperCallback.ID] = looperCallback;
+            this._callbacks.push(looperCallback);
 
             if (this._running) {
                 this.Loop(looperCallback);
@@ -23,9 +23,20 @@ module EndGate.Core.Utilities {
         }
 
         public RemoveCallback(looperCallback: LooperCallback): void {
-            if (this._callbacks[looperCallback.ID]) {
+            var callbackFound: bool = false,
+                i: number;
+
+            for (i = 0; i < this._callbacks.length; i++) {
+                if(this._callbacks[i].ID === looperCallback.ID) {
+                    callbackFound = true;
+                    break;
+                }
+            }
+
+
+            if (callbackFound) {
                 window.clearTimeout(looperCallback.TimeoutID);
-                delete this._callbacks[looperCallback.ID];
+                this._callbacks.splice(i, 1);
             }
             else {
                 throw new Error("Callback does not exist.");
@@ -39,8 +50,8 @@ module EndGate.Core.Utilities {
         }
 
         private Run(): void {
-            for (var id in this._callbacks) {
-                this.Loop(this._callbacks[id]);
+            for (var i = 0; i < this._callbacks.length;i++) {
+                this.Loop(this._callbacks[i]);
             }
         }
 
@@ -56,11 +67,11 @@ module EndGate.Core.Utilities {
         }
 
         public Dispose(): void {
-            for (var key in this._callbacks) {
-                this.RemoveCallback(this._callbacks[key]);
+            for (var i = this._callbacks.length - 1; i >= 0; i--) {
+                this.RemoveCallback(this._callbacks[i]);
             }
 
-            this._callbacks = <{ [s: number]: Utilities.LooperCallback; } >{};
+            this._callbacks = [];
             this._running = false;
         }
     }

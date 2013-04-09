@@ -39,7 +39,7 @@ module EndGate.Core {
                 updateCallback = this._callbacks[game.ID];
 
                 this._gameLoop.RemoveCallback(updateCallback);
-
+                delete this._callbacks[game.ID];
                 this._callbackCount--
 
                 this.TryLoopStop();
@@ -61,7 +61,9 @@ module EndGate.Core {
         }
 
         private CreateAndCacheCallback(game: Game): Utilities.LooperCallback {
-            var updateCallback = new Utilities.LooperCallback(0, game.PrepareUpdate);
+            var updateCallback = new Utilities.LooperCallback(0, () => {
+                game.PrepareUpdate();
+            });
 
             this._callbacks[game.ID] = updateCallback;
             this._callbackCount++;
