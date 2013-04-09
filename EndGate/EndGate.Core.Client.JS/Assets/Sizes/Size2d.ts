@@ -1,5 +1,5 @@
 /// <reference path="../Vectors/Vector2d.ts" />
-/// <reference path="../../Scripts/_references.d.ts" />
+/// <reference path="../../Interfaces/ITyped.d.ts" />
 
 module EndGate.Core.Assets {
     export class Size2d implements ITyped {

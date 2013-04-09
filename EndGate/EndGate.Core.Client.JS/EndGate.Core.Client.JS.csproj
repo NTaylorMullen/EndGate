@@ -74,7 +74,6 @@
       <DependentUpon>Vector2d.ts</DependentUpon>
     </Content>
     <TypeScriptCompile Include="Interfaces\ITyped.d.ts" />
-    <TypeScriptCompile Include="Interfaces\Interfaces.d.ts" />
     <TypeScriptCompile Include="Extensions\PrimitiveExtensions.ts" />
     <TypeScriptCompile Include="Extensions\MathExtensions.ts" />
     <Content Include="Extensions\MathExtensions.js">
@@ -127,7 +126,7 @@
     </Content>
     <TypeScriptCompile Include="Interfaces\IUpdateable.d.ts" />
     <Content Include="Scripts\endGate.core.client.js" />
-    <TypeScriptCompile Include="Scripts\_references.d.ts" />
+    <Content Include="Scripts\endGate.core.client.ts" />
     <Content Include="Scripts\_references.js" />
     <TypeScriptCompile Include="Utilities\Looper.ts" />
     <Content Include="Utilities\Looper.js">
@@ -152,6 +151,8 @@
     <Content Include="Game.min.js.map">
       <DependentUpon>Game.js</DependentUpon>
     </Content>
+    <Content Include="build.ps1" />
+    <Content Include="getAllFiles.ps1" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -189,11 +190,7 @@
     <Message Text="Compiling TypeScript files" />
     <Exec Command="tsc --out Scripts/endGate.core.client.js @(TypeScriptCompile ->'&quot;%(fullpath)&quot;', ' ')" />
   </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
   <Target Name="AfterBuild">
+    <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass .\build.ps1" WorkingDirectory="$(ProjectDir)" Condition=" '$(OS)' == 'Windows_NT'" />
   </Target>
-  -->
 </Project>

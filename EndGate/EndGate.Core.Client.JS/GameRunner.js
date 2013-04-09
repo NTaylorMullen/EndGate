@@ -20,6 +20,7 @@ var EndGate;
                 if(this._callbacks[game.ID]) {
                     updateCallback = this._callbacks[game.ID];
                     this._gameLoop.RemoveCallback(updateCallback);
+                    delete this._callbacks[game.ID];
                     this._callbackCount--;
                     this.TryLoopStop();
                 }
@@ -37,7 +38,9 @@ var EndGate;
                 }
             };
             GameRunner.prototype.CreateAndCacheCallback = function (game) {
-                var updateCallback = new Core.Utilities.LooperCallback(0, game.PrepareUpdate);
+                var updateCallback = new Core.Utilities.LooperCallback(0, function () {
+                    game.PrepareUpdate();
+                });
                 this._callbacks[game.ID] = updateCallback;
                 this._callbackCount++;
                 return updateCallback;

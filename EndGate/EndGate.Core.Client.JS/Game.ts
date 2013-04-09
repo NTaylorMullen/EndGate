@@ -1,4 +1,6 @@
-/// <reference path="Interfaces/Interfaces.d.ts" />
+/// <reference path="Interfaces/IDisposable.d.ts" />
+/// <reference path="Interfaces/ITyped.d.ts" />
+/// <reference path="Interfaces/IUpdateable.d.ts" />
 /// <reference path="GameRunner.ts" />
 /// <reference path="GameConfiguration.ts" />
 

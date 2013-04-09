@@ -1,4 +1,5 @@
-/// <reference path="../../Scripts/_references.d.ts" />
+/// <reference path="../../Interfaces/ITyped.d.ts" />
+/// <reference path="../../Extensions/MathExtensions.ts" />
 
 module EndGate.Core.Assets {
     export class Vector2d implements ITyped {

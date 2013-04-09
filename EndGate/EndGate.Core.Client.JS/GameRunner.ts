@@ -1,4 +1,4 @@
-/// <reference path="Interfaces/Interfaces.d.ts" />
+/// <reference path="Interfaces/ITyped.d.ts" />
 /// <reference path="Utilities/Looper.ts" />
 /// <reference path="Utilities/LooperCallback.ts" />
 /// <reference path="Game.ts" />

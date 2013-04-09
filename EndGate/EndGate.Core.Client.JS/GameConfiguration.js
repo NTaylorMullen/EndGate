@@ -5,7 +5,7 @@ var EndGate;
             function GameConfiguration(updateRateSetter) {
                 this._defaultUpdateRate = 40;
                 this._updateRateSetter = updateRateSetter;
-                this._updateRate = this._defaultUpdateRate;
+                this.UpdateRate(this._defaultUpdateRate);
             }
             GameConfiguration.prototype.UpdateRate = function (updateRate) {
                 if(typeof updateRate !== "undefined") {

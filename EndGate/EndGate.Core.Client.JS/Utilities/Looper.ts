@@ -1,4 +1,5 @@
-/// <reference path="../Interfaces/Interfaces.d.ts" />
+/// <reference path="../Interfaces/IDisposable.d.ts" />
+/// <reference path="../Interfaces/ITyped.d.ts" />
 /// <reference path="LooperCallback.ts" />
 
 module EndGate.Core.Utilities {

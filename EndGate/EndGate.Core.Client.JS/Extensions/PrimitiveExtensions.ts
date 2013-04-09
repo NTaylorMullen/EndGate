@@ -1,4 +1,4 @@
-/// <reference path="../Scripts/_references.d.ts" />
+/// <reference path="../Interfaces/ITyped.d.ts" />
 
 interface Object extends ITyped {}
 

@@ -1,34 +1,3 @@
-var EndGate;
-(function (EndGate) {
-    (function (Core) {
-        var GameTime = (function () {
-            function GameTime() {
-                this._type = "GameTime";
-                this.Now = new Date();
-                this._start = this.Now.getTime();
-            }
-            GameTime.prototype.Update = function () {
-                var now = new Date(), nowMs = now.getTime();
-                this.Elapsed = nowMs - this.Now.getTime();
-                this.Total = nowMs - this._start;
-                this.Now = now;
-            };
-            return GameTime;
-        })();
-        Core.GameTime = GameTime;        
-    })(EndGate.Core || (EndGate.Core = {}));
-    var Core = EndGate.Core;
-})(EndGate || (EndGate = {}));
-(window).readyForRender = (function () {
-    return window.requestAnimationFrame || (window).webkitRequestAnimationFrame || (window).mozRequestAnimationFrame || (window).oRequestAnimationFrame || (window).msRequestAnimationFrame;
-})();
-Number.prototype._type = "Number";
-String.prototype._type = "String";
-Boolean.prototype._type = "Boolean";
-Array.prototype._type = "Array";
-Date.prototype._type = "Date";
-Object.prototype._type = "Object";
-Error.prototype._type = "Error";
 Math.roundTo = function (val, decimals) {
     var multiplier = Math.pow(10, decimals);
     return Math.round(val * multiplier) / multiplier;
@@ -257,6 +226,16 @@ var EndGate;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));
+Number.prototype._type = "Number";
+String.prototype._type = "String";
+Boolean.prototype._type = "Boolean";
+Array.prototype._type = "Array";
+Date.prototype._type = "Date";
+Object.prototype._type = "Object";
+Error.prototype._type = "Error";
+(window).readyForRender = (function () {
+    return window.requestAnimationFrame || (window).webkitRequestAnimationFrame || (window).mozRequestAnimationFrame || (window).oRequestAnimationFrame || (window).msRequestAnimationFrame;
+})();
 var EndGate;
 (function (EndGate) {
     (function (Core) {
@@ -337,6 +316,27 @@ var EndGate;
             Utilities.Looper = Looper;            
         })(Core.Utilities || (Core.Utilities = {}));
         var Utilities = Core.Utilities;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        var GameTime = (function () {
+            function GameTime() {
+                this._type = "GameTime";
+                this.Now = new Date();
+                this._start = this.Now.getTime();
+            }
+            GameTime.prototype.Update = function () {
+                var now = new Date(), nowMs = now.getTime();
+                this.Elapsed = nowMs - this.Now.getTime();
+                this.Total = nowMs - this._start;
+                this.Now = now;
+            };
+            return GameTime;
+        })();
+        Core.GameTime = GameTime;        
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));

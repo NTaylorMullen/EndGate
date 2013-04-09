@@ -1,4 +1,4 @@
-/// <reference path="Interfaces/Interfaces.d.ts" />
+/// <reference path="Interfaces/ITyped.d.ts" />
 
 module EndGate.Core {
 

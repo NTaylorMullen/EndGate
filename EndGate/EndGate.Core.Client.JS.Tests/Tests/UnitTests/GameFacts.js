@@ -5,12 +5,12 @@
 
     QUnit.module("Game Facts");
 
-    QUnit.asyncTimeoutTest("Classes inheriting game have update called.", testUtilities.defaultTestTimeout*13000, function (end, assert, testName) {
+    QUnit.asyncTimeoutTest("Classes inheriting game have update called.", testUtilities.defaultTestTimeout, function (end, assert, testName) {
         var onComplete,
             game = new UpdateTester(40, function () {
                 assert.ok(true, "Limit reached!");
                 game.Dispose();
-                onComplete();
+                window.setTimeout(onComplete, 1000);
             }, 40);
 
         onComplete = function () {
