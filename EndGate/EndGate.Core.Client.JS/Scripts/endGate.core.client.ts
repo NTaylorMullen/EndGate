@@ -694,7 +694,7 @@ module EndGate.Core.BoundingObject {
                 this.Size = first;
             }
         }
-        
+
         public Vertices(): Assets.Vector2d[] {
             return [this.TopLeft(), this.TopRight(), this.BotLeft(), this.BotRight()];
         }
@@ -786,7 +786,7 @@ module EndGate.Core.BoundingObject {
 
             return point.X <= myBotRight.X && point.X >= myTopLeft.X && point.Y <= myBotRight.Y && point.Y >= myTopLeft.Y;
         }
-    
+
     }
 
 }

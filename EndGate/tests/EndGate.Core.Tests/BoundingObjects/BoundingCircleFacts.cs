@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using EndGate.Core.Assets;
 using EndGate.Core.BoundingObject;
 using Xunit;
@@ -32,7 +28,7 @@ namespace EndGate.Core.Tests
         {
             var circle1 = new BoundingCircle(10)
             {
-                Position = new Vector2d(10,5)
+                Position = new Vector2d(10, 5)
             };
 
             var circle2 = new BoundingCircle(6)
