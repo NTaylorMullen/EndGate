@@ -99,16 +99,13 @@ Write-Host "Dependencies resolved as order: " + $dependencyArray
 
 $referenceReplacer = "^/// <reference path.*$"
 
-$skipEveryOther = 0;
 Write-Host "outputFile " $outputFilePath "... " -NoNewline -ForegroundColor Yellow
 Remove-Item $outputFilePath -Force -ErrorAction SilentlyContinue
 foreach ($file in $files) {
-    $skipEveryOther++;
-    if ($skipEveryOther % 2 -ne 0)
-    {
-        continue;
+    if ($file)
+    {        
+        Add-Content -Path $outputFilePath -Value "/* $file.Name */"
+        Get-Content -Path $file.FullName | Foreach-Object {$_ -replace $referenceReplacer, ""} | Add-Content -Path $outputFilePath
     }
-    Add-Content -Path $outputFilePath -Value "/* $file.Name */"
-    Get-Content -Path $file.FullName | Foreach-Object {$_ -replace $referenceReplacer, ""} | Add-Content -Path $outputFilePath
 }
 Write-Host "done" -ForegroundColor Green

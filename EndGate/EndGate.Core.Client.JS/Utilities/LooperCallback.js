@@ -9,6 +9,7 @@ var EndGate;
                     this.Callback = callback;
                     this.TimeoutID = 0;
                     this.ID = LooperCallback._ids++;
+                    this.Active = false;
                 }
                 LooperCallback._ids = 0;
                 return LooperCallback;

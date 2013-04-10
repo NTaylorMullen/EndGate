@@ -27,18 +27,30 @@ namespace EndGate.Core.Tests
         [Fact]
         public void ClassesInheritingGameAreRunIndividually()
         {
-            UpdateTester game1 = null;
-            var resetEvent = new ManualResetEvent(false);
+            UpdateTester game1 = null,
+                         game2 = null;
+
+            bool triggered1 = false,
+                 triggered2 = false;
 
             game1 = new UpdateTester(60, () =>
             {
-                resetEvent.Set();
+                triggered1 = true;
                 game1.Dispose();
             }, 60);
 
-            Assert.True(resetEvent.WaitOne(TimeSpan.FromSeconds(1.01)));
+            game2 = new UpdateTester(40, () =>
+            {
+                triggered2 = true;
+                game2.Dispose();
+            }, 40);
 
+            Thread.Sleep(TimeSpan.FromSeconds(1.01));
+
+            Assert.True(triggered1);
+            Assert.True(triggered2);
             Assert.Equal(game1.UpdateCount, 60);
+            Assert.Equal(game2.UpdateCount, 40);
         }
     }
 

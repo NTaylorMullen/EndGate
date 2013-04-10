@@ -10,12 +10,13 @@ module EndGate.Core.Utilities {
             this.Callback = callback;
             this.TimeoutID = 0;
             this.ID = LooperCallback._ids++;
+            this.Active = false;
         }
 
         public Fps: number;
         public Callback: Function;
         public TimeoutID: number;
         public ID: number;
+        public Active: bool;
     }
-
 }

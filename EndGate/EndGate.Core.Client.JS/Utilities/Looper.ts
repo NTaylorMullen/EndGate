@@ -17,6 +17,7 @@ module EndGate.Core.Utilities {
 
         public AddCallback(looperCallback: LooperCallback): void {
             this._callbacks.push(looperCallback);
+            looperCallback.Active = true;
 
             if (this._running) {
                 this.Loop(looperCallback);
@@ -37,6 +38,7 @@ module EndGate.Core.Utilities {
 
             if (callbackFound) {
                 window.clearTimeout(looperCallback.TimeoutID);
+                looperCallback.Active = false;
                 this._callbacks.splice(i, 1);
             }
             else {
@@ -62,9 +64,11 @@ module EndGate.Core.Utilities {
 
             looperCallback.Callback();
 
-            looperCallback.TimeoutID = window.setTimeout(() => {
-                that.Loop(looperCallback);
-            }, msTimer);
+            if (looperCallback.Active) {
+                looperCallback.TimeoutID = window.setTimeout(() => {
+                    that.Loop(looperCallback);
+                }, msTimer);
+            }
         }
 
         public Dispose(): void {

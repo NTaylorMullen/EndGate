@@ -194,7 +194,6 @@
   </UsingTask>
   <Target Name="BeforeBuild">
     <Copy SourceFiles="$(SolutionDir)EndGate.Core.Client.JS\Scripts\endGate.core.client.ts" DestinationFiles="Scripts\endGate.core.client.ts" Condition=" '$(OS)' == 'Windows_NT' " />
-
     <Message Text="Compiling endGate.core.client.ts" />
     <Exec Command="tsc Scripts/endGate.core.client.ts" />
   </Target>

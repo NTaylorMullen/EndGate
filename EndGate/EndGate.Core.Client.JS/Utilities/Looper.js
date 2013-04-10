@@ -10,6 +10,7 @@ var EndGate;
                 }
                 Looper.prototype.AddCallback = function (looperCallback) {
                     this._callbacks.push(looperCallback);
+                    looperCallback.Active = true;
                     if(this._running) {
                         this.Loop(looperCallback);
                     }
@@ -24,6 +25,7 @@ var EndGate;
                     }
                     if(callbackFound) {
                         window.clearTimeout(looperCallback.TimeoutID);
+                        looperCallback.Active = false;
                         this._callbacks.splice(i, 1);
                     } else {
                         throw new Error("Callback does not exist.");
@@ -41,9 +43,11 @@ var EndGate;
                 Looper.prototype.Loop = function (looperCallback) {
                     var that = this, msTimer = 1000 / looperCallback.Fps;
                     looperCallback.Callback();
-                    looperCallback.TimeoutID = window.setTimeout(function () {
-                        that.Loop(looperCallback);
-                    }, msTimer);
+                    if(looperCallback.Active) {
+                        looperCallback.TimeoutID = window.setTimeout(function () {
+                            that.Loop(looperCallback);
+                        }, msTimer);
+                    }
                 };
                 Looper.prototype.Dispose = function () {
                     for(var i = this._callbacks.length - 1; i >= 0; i--) {
