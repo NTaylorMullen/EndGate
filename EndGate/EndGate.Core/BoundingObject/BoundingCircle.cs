@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using EndGate.Core.Assets;
 
 namespace EndGate.Core.BoundingObject
@@ -52,15 +48,15 @@ namespace EndGate.Core.BoundingObject
 
         public override bool Intersects(BoundingRectangle rectangle)
         {
-            Vector2d translated = rectangle.Rotation == 0 
-                                  ? Position 
+            Vector2d translated = rectangle.Rotation == 0
+                                  ? Position
                                   : Position.RotateAround(rectangle.Position, -rectangle.Rotation);
 
             Vector2d unrotatedTopLeft = new Vector2d(rectangle.Position.X - rectangle.Size.HalfWidth, rectangle.Position.Y - rectangle.Size.HalfHeight),
                      unrotatedBotRight = new Vector2d(rectangle.Position.X + rectangle.Size.HalfWidth, rectangle.Position.Y + rectangle.Size.HalfHeight),
                      closest = new Vector2d(ClosestTo(translated.X, unrotatedTopLeft, unrotatedBotRight), ClosestTo(translated.Y, unrotatedTopLeft, unrotatedBotRight));
 
-             return translated.Distance(closest).Magnitude() < Radius;
+            return translated.Distance(closest).Magnitude() < Radius;
         }
 
         public override bool ContainsPoint(Vector2d point)

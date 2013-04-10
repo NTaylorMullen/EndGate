@@ -90,6 +90,27 @@
     <TypeScriptCompile Include="Interfaces\ITyped.d.ts" />
     <TypeScriptCompile Include="Extensions\PrimitiveExtensions.ts" />
     <TypeScriptCompile Include="Extensions\MathExtensions.ts" />
+    <TypeScriptCompile Include="BoundingObject\Bounds2d.ts" />
+    <TypeScriptCompile Include="BoundingObject\BoundingCircle.ts" />
+    <Content Include="BoundingObject\BoundingCircle.js">
+      <DependentUpon>BoundingCircle.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="BoundingObject\BoundingRectangle.ts" />
+    <Content Include="BoundingObject\BoundingCircle.min.js">
+      <DependentUpon>BoundingCircle.ts</DependentUpon>
+    </Content>
+    <Content Include="BoundingObject\BoundingRectangle.js">
+      <DependentUpon>BoundingRectangle.ts</DependentUpon>
+    </Content>
+    <Content Include="BoundingObject\BoundingRectangle.min.js">
+      <DependentUpon>BoundingRectangle.ts</DependentUpon>
+    </Content>
+    <Content Include="BoundingObject\Bounds2d.js">
+      <DependentUpon>Bounds2d.ts</DependentUpon>
+    </Content>
+    <Content Include="BoundingObject\Bounds2d.min.js">
+      <DependentUpon>Bounds2d.ts</DependentUpon>
+    </Content>
     <Content Include="Extensions\MathExtensions.js">
       <DependentUpon>MathExtensions.ts</DependentUpon>
     </Content>
@@ -139,7 +160,6 @@
       <DependentUpon>GameTime.ts</DependentUpon>
     </Content>
     <TypeScriptCompile Include="Interfaces\IUpdateable.d.ts" />
-    <Content Include="Scripts\endGate.core.client.js" />
     <Content Include="Scripts\endGate.core.client.min.js">
       <DependentUpon>endGate.core.client.ts</DependentUpon>
     </Content>
@@ -176,9 +196,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="BoundingObject\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -205,10 +223,6 @@
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
-  <Target Name="BeforeBuild">
-    <Message Text="Compiling TypeScript files" />
-    <Exec Command="tsc --out Scripts/endGate.core.client.js @(TypeScriptCompile ->'&quot;%(fullpath)&quot;', ' ')" />
-  </Target>
   <Target Name="AfterBuild">
     <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass .\build.ps1" WorkingDirectory="$(ProjectDir)" Condition=" '$(OS)' == 'Windows_NT'" />
   </Target>

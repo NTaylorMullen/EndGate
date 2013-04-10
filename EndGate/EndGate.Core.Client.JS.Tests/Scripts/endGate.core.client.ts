@@ -669,6 +669,237 @@ module EndGate.Core.Assets {
     }
 
 }
+/* BoundingRectangle.ts.Name */
+
+
+
+module EndGate.Core.BoundingObject {
+
+    import Assets = module(EndGate.Core.Assets);
+
+    export class BoundingRectangle implements ITyped extends Bounds2d {
+        public _type: string = "BoundingRectangle";
+
+        public Size: Assets.Size2d;
+
+        constructor(size: Assets.Size2d);
+        constructor(width: number, height: number);
+        constructor(first: any, second?: any) {
+            super();
+
+            if (typeof second !== "undefined") {
+                this.Size = new Assets.Size2d(first, second);
+            }
+            else {
+                this.Size = first;
+            }
+        }
+        
+        public Vertices(): Assets.Vector2d[] {
+            return [this.TopLeft(), this.TopRight(), this.BotLeft(), this.BotRight()];
+        }
+
+        public TopLeft(): Assets.Vector2d {
+            var v = new Assets.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
+            if (this.Rotation == 0) {
+                return v;
+            }
+
+            return v.RotateAround(this.Position, this.Rotation);
+        }
+
+        public TopRight(): Assets.Vector2d {
+            var v = new Assets.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
+            if (this.Rotation == 0) {
+                return v;
+            }
+
+            return v.RotateAround(this.Position, this.Rotation);
+        }
+
+        public BotLeft(): Assets.Vector2d {
+            var v = new Assets.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
+            if (this.Rotation == 0) {
+                return v;
+            }
+
+            return v.RotateAround(this.Position, this.Rotation);
+        }
+
+        public BotRight(): Assets.Vector2d {
+            var v = new Assets.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
+            if (this.Rotation == 0) {
+                return v;
+            }
+
+            return v.RotateAround(this.Position, this.Rotation);
+        }
+
+        public IntersectsCircle(circle: BoundingCircle): bool {
+            return circle.IntersectsRectangle(this);
+        }
+
+        public IntersectsRectangle(rectangle: BoundingRectangle): bool {
+            if (this.Rotation == 0 && rectangle.Rotation == 0) {
+                var myTopLeft = this.TopLeft(),
+                    myBotRight = this.BotRight(),
+                    theirTopLeft = rectangle.TopLeft(),
+                    theirBotRight = rectangle.BotRight();
+
+                return theirTopLeft.X <= myBotRight.X && theirBotRight.X >= myTopLeft.X && theirTopLeft.Y <= myBotRight.Y && theirBotRight.Y >= myTopLeft.Y;
+
+            }
+            else if (rectangle.Position.Distance(this.Position).Magnitude() <= rectangle.Size.Radius() + this.Size.Radius()) {// Check if we're somewhat close to the rectangle ect that we might be colliding with
+                var axisList: Assets.Vector2d[] = [this.TopRight().Subtract(this.TopLeft()), this.TopRight().Subtract(this.BotRight()), rectangle.TopLeft().Subtract(this.BotLeft()), rectangle.TopLeft().Subtract(this.TopRight())];
+                var myVertices = this.Vertices();
+                var theirVertices = rectangle.Vertices();
+
+                for (var i: number = 0; i < axisList.length; i++) {
+                    var axi = axisList[i];
+                    var myProjections = Assets.Vector2dHelpers.GetMinMaxProjections(axi, myVertices);
+                    var theirProjections = Assets.Vector2dHelpers.GetMinMaxProjections(axi, theirVertices);
+
+                    // No collision
+                    if (theirProjections.Max < myProjections.Min || myProjections.Max < theirProjections.Min) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public ContainsPoint(point: Assets.Vector2d): bool {
+            var savedRotation: number = this.Rotation;
+
+            if (this.Rotation != 0) {
+                this.Rotation = 0;
+                point = point.RotateAround(this.Position, -savedRotation);
+            }
+
+            var myTopLeft = this.TopLeft(),
+                myBotRight = this.BotRight();
+
+            this.Rotation = savedRotation;
+
+            return point.X <= myBotRight.X && point.X >= myTopLeft.X && point.Y <= myBotRight.Y && point.Y >= myTopLeft.Y;
+        }
+    
+    }
+
+}
+/* BoundingCircle.ts.Name */
+
+
+
+
+module EndGate.Core.BoundingObject {
+
+    import Assets = module(EndGate.Core.Assets);
+
+    export class BoundingCircle implements ITyped extends Bounds2d {
+        public _type: string = "BoundingCircle";
+
+        public Radius: number;
+
+        constructor(radius: number) {
+            super();
+
+            this.Radius = radius;
+        }
+
+        private static ClosestTo(val: number, topLeft: Assets.Vector2d, botRight: Assets.Vector2d): number
+        {
+            if (val < topLeft.X) {
+                return topLeft.X;
+            }
+            else if (val > botRight.X) {
+                return botRight.X;
+            }
+
+            return val;
+        }
+
+        public Area(): number {
+            return Math.PI * this.Radius * this.Radius;
+        }
+
+        public Circumfrence(): number {
+            return 2 * Math.PI * this.Radius;
+        }
+
+        public IntersectsCircle(circle: BoundingCircle): bool {
+            return this.Position.Distance(circle.Position).Length() < this.Radius + circle.Radius;
+        }
+
+        public IntersectsRectangle(rectangle: BoundingRectangle): bool {
+            var translated = (rectangle.Rotation === 0)
+                                  ? this.Position
+                                  : this.Position.RotateAround(rectangle.Position, -rectangle.Rotation);
+
+            var unrotatedTopLeft: Assets.Vector2d = new Assets.Vector2d(rectangle.Position.X - rectangle.Size.HalfWidth(), rectangle.Position.Y - rectangle.Size.HalfHeight()),
+                unrotatedBotRight = new Assets.Vector2d(rectangle.Position.X + rectangle.Size.HalfWidth(), rectangle.Position.Y + rectangle.Size.HalfHeight()),
+                closest = new Assets.Vector2d(BoundingCircle.ClosestTo(translated.X, unrotatedTopLeft, unrotatedBotRight), BoundingCircle.ClosestTo(translated.Y, unrotatedTopLeft, unrotatedBotRight));
+
+            return translated.Distance(closest).Magnitude() < this.Radius;
+        }
+
+        public ContainsPoint(point: Assets.Vector2d): bool {
+            return this.Position.Distance(point).Magnitude() < this.Radius;
+        }
+    }
+
+}
+/* Bounds2d.ts.Name */
+
+
+
+
+module EndGate.Core.BoundingObject {
+
+    import Assets = module(EndGate.Core.Assets);
+
+    export class Bounds2d {
+
+        public Position: Assets.Vector2d;
+        public Rotation: number;
+
+        constructor() {
+            this.Position = Assets.Vector2d.Zero();
+            this.Rotation = 0;
+        }
+
+        public ContainsPoint(point: Assets.Vector2d): bool {
+            throw new Error("This method is abstract!");
+        }
+
+        public Intersects(obj: Bounds2d): bool;
+        public Intersects(circle: BoundingCircle): bool;
+        public Intersects(rectangle: BoundingRectangle): bool;
+        public Intersects(obj: any): bool {
+            if (obj._type === "BoundingCircle") {
+                return this.IntersectsCircle(obj);
+            }
+            else if (obj._type === "BoundingRectangle") {
+                return this.IntersectsRectangle(obj);
+            }
+            else {
+                throw new Error("Cannot intersect with unidentifiable object, must be BoundingCircle or BoundingRectangle");
+            }
+        }
+
+        public IntersectsCircle(circle: BoundingCircle): bool {
+            throw new Error("This method is abstract!");
+        }
+
+        public IntersectsRectangle(rectangle: BoundingRectangle): bool {
+            throw new Error("This method is abstract!");
+        }
+    }
+
+}
 /* PrimitiveExtensions.ts.Name */
 
 

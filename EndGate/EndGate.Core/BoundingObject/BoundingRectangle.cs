@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EndGate.Core.Assets;
+﻿using EndGate.Core.Assets;
 
 namespace EndGate.Core.BoundingObject
 {
@@ -29,8 +24,8 @@ namespace EndGate.Core.BoundingObject
             }
         }
 
-        public Vector2d TopLeft 
-        { 
+        public Vector2d TopLeft
+        {
             get
             {
                 var v = new Vector2d(Position.X - Size.HalfWidth, Position.Y - Size.HalfHeight);
@@ -68,10 +63,6 @@ namespace EndGate.Core.BoundingObject
                 }
 
                 return v.RotateAround(Position, Rotation);
-            }
-            set
-            {
-                Position = new Vector2d(value.X + Size.HalfWidth, value.Y - Size.HalfHeight);
             }
         }
 
@@ -131,7 +122,7 @@ namespace EndGate.Core.BoundingObject
 
                 return true;
             }
-            
+
             return false;
         }
 
