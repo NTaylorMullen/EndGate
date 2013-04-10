@@ -24,10 +24,10 @@ namespace EndGate.Core.Tests.Assets.Vectors
             double expectedMax = vertices[1].ProjectOnto(axis).Dot(axis);
             double expectedMin = vertices[2].ProjectOnto(axis).Dot(axis);
 
-            Tuple<double, double> maxmin = Vector2dHelpers.GetMinMaxProjections(axis, vertices);
+            var maxmin = Vector2dHelpers.GetMinMaxProjections(axis, vertices);
 
-            Assert.Equal(maxmin.Item1, expectedMin);
-            Assert.Equal(maxmin.Item2, expectedMax);
+            Assert.True(maxmin.Min == expectedMin);
+            Assert.True(maxmin.Max == expectedMax);
         }
     }
 }

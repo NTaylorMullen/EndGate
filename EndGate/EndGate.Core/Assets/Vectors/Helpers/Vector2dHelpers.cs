@@ -8,7 +8,7 @@ namespace EndGate.Core.Assets
 {
     internal static class Vector2dHelpers
     {
-        public static Tuple<double, double> GetMinMaxProjections(Vector2d axis, Vector2d[] vertices)
+        public static MinMax GetMinMaxProjections(Vector2d axis, Vector2d[] vertices)
         {
             double min = vertices[0].ProjectOnto(axis).Dot(axis);
             double max = min;
@@ -28,7 +28,7 @@ namespace EndGate.Core.Assets
                 }
             }
 
-            return new Tuple<double, double>(min, max);
+            return new MinMax(min, max);
         }
     }
 }

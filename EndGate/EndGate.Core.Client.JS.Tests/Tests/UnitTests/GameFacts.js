@@ -42,7 +42,7 @@
             assert.equal(game1.UpdateCount, 60, "Game1 updated 60 times.");
             assert.equal(game2.UpdateCount, 40, "Game2 updated 40 times.");
             end();
-        }, 1010);
+        }, 1050);
 
         return function () {
             game1.Dispose();

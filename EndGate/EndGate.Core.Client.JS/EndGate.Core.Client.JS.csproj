@@ -67,6 +67,20 @@
     <Content Include="Assets\Sizes\Size2d.min.js">
       <DependentUpon>Size2d.ts</DependentUpon>
     </Content>
+    <TypeScriptCompile Include="Assets\Vectors\Helpers\Vector2dHelpers.ts" />
+    <TypeScriptCompile Include="Assets\Vectors\Helpers\MinMax.ts" />
+    <Content Include="Assets\Vectors\Helpers\MinMax.js">
+      <DependentUpon>MinMax.ts</DependentUpon>
+    </Content>
+    <Content Include="Assets\Vectors\Helpers\MinMax.min.js">
+      <DependentUpon>MinMax.ts</DependentUpon>
+    </Content>
+    <Content Include="Assets\Vectors\Helpers\Vector2dHelpers.js">
+      <DependentUpon>Vector2dHelpers.ts</DependentUpon>
+    </Content>
+    <Content Include="Assets\Vectors\Helpers\Vector2dHelpers.min.js">
+      <DependentUpon>Vector2dHelpers.ts</DependentUpon>
+    </Content>
     <Content Include="Assets\Vectors\Vector2d.js">
       <DependentUpon>Vector2d.ts</DependentUpon>
     </Content>
@@ -161,6 +175,9 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="BoundingObject\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
