@@ -91,8 +91,17 @@
     <Content Include="Global.asax" />
     <Content Include="index.html" />
     <Content Include="packages.config" />
+    <Content Include="Scripts\endGate.core.client.min.js.map">
+      <DependentUpon>endGate.core.client.js</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
-    <Content Include="Scripts\endGate.core.client.js" />
+    <TypeScriptCompile Include="Scripts\endGate.core.client.ts" />
+    <Content Include="Scripts\endGate.core.client.js">
+      <DependentUpon>endGate.core.client.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\endGate.core.client.min.js">
+      <DependentUpon>endGate.core.client.ts</DependentUpon>
+    </Content>
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
     <Content Include="Scripts\jquery.signalR-1.0.1.js" />
@@ -102,7 +111,13 @@
     <Content Include="Scripts\test.utilities.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Styles\qunit.css" />
-    <Content Include="Tests\Assets.js" />
+    <TypeScriptCompile Include="Tests\Assets.ts" />
+    <Content Include="Tests\Assets.js">
+      <DependentUpon>Assets.ts</DependentUpon>
+    </Content>
+    <Content Include="Tests\Assets.min.js">
+      <DependentUpon>Assets.ts</DependentUpon>
+    </Content>
     <Content Include="Tests\UnitTests\Assets\Sizes\Size2dFacts.js" />
     <Content Include="Tests\UnitTests\Assets\Vectors\Vector2dFacts.js" />
     <Content Include="Tests\UnitTests\GameFacts.js" />
@@ -166,20 +181,28 @@
 
             foreach (FileInfo f in fileInfos)
             {
-                var scriptTag = "<script type=\"text/javascript\" src=\"";
-                scriptTag += Uri.UnescapeDataString(f.FullName.Replace(ProjectDirectory + "\\", "").Replace("\\","/")) + "\"></script>";
+                if(!f.Name.EndsWith(".min.js"))
+                {
+                    var scriptTag = "<script type=\"text/javascript\" src=\"";
+                    scriptTag += Uri.UnescapeDataString(f.FullName.Replace(ProjectDirectory + "\\", "").Replace("\\","/")) + "\"></script>";
                 
-                ScriptTagsOutput += scriptTag+"\n";
+                    ScriptTagsOutput += scriptTag+"\n";
+                }
             }
     ]]></Code>
     </Task>
   </UsingTask>
+  <Target Name="BeforeBuild">
+    <Copy SourceFiles="$(SolutionDir)EndGate.Core.Client.JS\Scripts\endGate.core.client.ts" DestinationFiles="Scripts\endGate.core.client.ts" Condition=" '$(OS)' == 'Windows_NT' " />
+
+    <Message Text="Compiling endGate.core.client.ts" />
+    <Exec Command="tsc Scripts/endGate.core.client.ts" />
+  </Target>
   <Target Name="AfterBuild">
     <BuildScriptTags ProjectDirectory="$(MSBuildProjectDirectory)" RelativePath="$(QUnitTestsFolder)">
       <Output PropertyName="JSTests" TaskParameter="ScriptTagsOutput" />
     </BuildScriptTags>
     <FileUpdate Files="index.html" Regex="&lt;!-- ##JS## --&gt;((.|\r|\n)*?)&lt;!-- ##JS## --&gt;" ReplacementText="&lt;!-- ##JS## --&gt;$(JSTests)&lt;!-- ##JS## --&gt;" Condition=" '$(OS)' == 'Windows_NT'" />
-    <Copy SourceFiles="$(SolutionDir)EndGate.Core.Client.JS\Scripts\endGate.core.client.js" DestinationFiles="Scripts\endGate.core.client.js" Condition=" '$(OS)' == 'Windows_NT' " />
   </Target>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

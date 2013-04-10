@@ -1,9 +1,8 @@
-﻿var __extends = this.__extends || function (d, b) {
+var __extends = this.__extends || function (d, b) {
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-
 var UpdateTester = (function (_super) {
     __extends(UpdateTester, _super);
     function UpdateTester(updateRate, onUpdateLimit, updateLimit) {
@@ -15,7 +14,7 @@ var UpdateTester = (function (_super) {
     }
     UpdateTester.prototype.Update = function (gameTime) {
         this.UpdateCount++;
-        if (this.UpdateCount === this._updateLimit) {
+        if(this.UpdateCount === this._updateLimit) {
             this._onUpdateLimit();
         }
     };

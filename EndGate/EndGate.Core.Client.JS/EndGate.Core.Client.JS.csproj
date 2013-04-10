@@ -126,6 +126,9 @@
     </Content>
     <TypeScriptCompile Include="Interfaces\IUpdateable.d.ts" />
     <Content Include="Scripts\endGate.core.client.js" />
+    <Content Include="Scripts\endGate.core.client.min.js">
+      <DependentUpon>endGate.core.client.ts</DependentUpon>
+    </Content>
     <Content Include="Scripts\endGate.core.client.ts" />
     <Content Include="Scripts\_references.js" />
     <TypeScriptCompile Include="Utilities\Looper.ts" />
@@ -152,7 +155,6 @@
       <DependentUpon>Game.js</DependentUpon>
     </Content>
     <Content Include="build.ps1" />
-    <Content Include="getAllFiles.ps1" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
