@@ -1,6 +1,4 @@
-﻿var temp = true;
-
-(function (window, lib) {
+﻿(function (window, lib) {
 
     QUnit.module("Bounding Circle Facts");
 
