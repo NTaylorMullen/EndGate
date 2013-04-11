@@ -111,6 +111,20 @@
     <Content Include="BoundingObject\Bounds2d.min.js">
       <DependentUpon>Bounds2d.ts</DependentUpon>
     </Content>
+    <TypeScriptCompile Include="Collision\Collidable.ts" />
+    <Content Include="Collision\Collidable.js">
+      <DependentUpon>Collidable.ts</DependentUpon>
+    </Content>
+    <Content Include="Collision\Collidable.min.js">
+      <DependentUpon>Collidable.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Collision\CollisionData.ts" />
+    <Content Include="Collision\CollisionData.js">
+      <DependentUpon>CollisionData.ts</DependentUpon>
+    </Content>
+    <Content Include="Collision\CollisionData.min.js">
+      <DependentUpon>CollisionData.ts</DependentUpon>
+    </Content>
     <Content Include="Extensions\MathExtensions.js">
       <DependentUpon>MathExtensions.ts</DependentUpon>
     </Content>
@@ -169,6 +183,13 @@
     <Content Include="Scripts\endGate.core.client.ts" />
     <Content Include="Scripts\_references.js" />
     <TypeScriptCompile Include="Utilities\Looper.ts" />
+    <TypeScriptCompile Include="Utilities\EventHandler.ts" />
+    <Content Include="Utilities\EventHandler.js">
+      <DependentUpon>EventHandler.ts</DependentUpon>
+    </Content>
+    <Content Include="Utilities\EventHandler.min.js">
+      <DependentUpon>EventHandler.ts</DependentUpon>
+    </Content>
     <Content Include="Utilities\Looper.js">
       <DependentUpon>Looper.ts</DependentUpon>
     </Content>

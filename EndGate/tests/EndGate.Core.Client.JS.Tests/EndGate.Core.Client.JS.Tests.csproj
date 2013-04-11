@@ -124,6 +124,7 @@
     <Content Include="Tests\UnitTests\BoundingObjects\BoundingCircleFacts.js" />
     <Content Include="Tests\UnitTests\BoundingObjects\BoundingRectangleFacts.js" />
     <Content Include="Tests\UnitTests\GameFacts.js" />
+    <Content Include="Tests\UnitTests\Utilities\EventHandlerFacts.js" />
     <Content Include="Tests\UnitTests\Utilities\LooperFacts.js" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -142,7 +143,9 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Tests\UnitTests\Collision\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

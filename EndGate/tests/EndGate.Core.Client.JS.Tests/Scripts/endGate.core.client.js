@@ -672,6 +672,108 @@ var EndGate;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Utilities) {
+            var EventHandler = (function () {
+                function EventHandler() {
+                    this._type = "Event";
+                    this._actions = [];
+                    this._disposed = false;
+                }
+                EventHandler.prototype.Bind = function (action) {
+                    this._actions.push(action);
+                };
+                EventHandler.prototype.Unbind = function (action) {
+                    for(var i = 0; i < this._actions.length; i++) {
+                        if(this._actions[i] === action) {
+                            this._actions.splice(i, 1);
+                            return;
+                        }
+                    }
+                };
+                EventHandler.prototype.Trigger = function () {
+                    var args = [];
+                    for (var _i = 0; _i < (arguments.length - 0); _i++) {
+                        args[_i] = arguments[_i + 0];
+                    }
+                    for(var i = 0; i < this._actions.length; i++) {
+                        this._actions[i].apply(this, args);
+                    }
+                };
+                EventHandler.prototype.Dispose = function () {
+                    if(!this._disposed) {
+                        this._disposed = true;
+                        this._actions = [];
+                    } else {
+                        throw new Error("Cannot dispose Event twice.");
+                    }
+                };
+                return EventHandler;
+            })();
+            Utilities.EventHandler = EventHandler;            
+        })(Core.Utilities || (Core.Utilities = {}));
+        var Utilities = Core.Utilities;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Collision) {
+            var BoundingObject = EndGate.Core.BoundingObject;
+            var Utilities = EndGate.Core.Utilities;
+            var Collidable = (function () {
+                function Collidable(bounds) {
+                    this._type = "Collidable";
+                    this._disposed = false;
+                    this.Bounds = bounds;
+                    this.ID = Collidable._collidableIDs++;
+                    this.OnCollision = new Utilities.EventHandler();
+                    this.OnDisposed = new Utilities.EventHandler();
+                }
+                Collidable._collidableIDs = 0;
+                Collidable.prototype.IsCollidingWith = function (other) {
+                    return this.Bounds.Intersects(other.Bounds);
+                };
+                Collidable.prototype.Collided = function (data) {
+                    this.OnCollision.Trigger(data);
+                };
+                Collidable.prototype.Dispose = function () {
+                    if(!this._disposed) {
+                        this._disposed = true;
+                        this.OnDisposed.Trigger(this);
+                    } else {
+                        throw new Error("Cannot dispose collidable twice.");
+                    }
+                };
+                return Collidable;
+            })();
+            Collision.Collidable = Collidable;            
+        })(Core.Collision || (Core.Collision = {}));
+        var Collision = Core.Collision;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Collision) {
+            var Assets = EndGate.Core.Assets;
+            var CollisionData = (function () {
+                function CollisionData(at, w) {
+                    this.At = at;
+                    this.With = w;
+                }
+                return CollisionData;
+            })();
+            Collision.CollisionData = CollisionData;            
+        })(Core.Collision || (Core.Collision = {}));
+        var Collision = Core.Collision;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
 Number.prototype._type = "Number";
 String.prototype._type = "String";
 Boolean.prototype._type = "Boolean";
