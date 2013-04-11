@@ -16,8 +16,8 @@
 
         var maxmin = lib.Vector2dHelpers.GetMinMaxProjections(axis, vertices);
 
-        QUnit.ok(maxmin.Min == expectedMin);
-        QUnit.ok(maxmin.Max == expectedMax);
+        QUnit.ok(maxmin.Min === expectedMin);
+        QUnit.ok(maxmin.Max === expectedMax);
     });
 
 })(window, EndGate.Core.Assets);

@@ -71,7 +71,6 @@ namespace EndGate.Core.Tests
             circle.Position.Y = 12;
 
             Assert.True(circle.Intersects(rect));
-
         }
 
         [Fact]

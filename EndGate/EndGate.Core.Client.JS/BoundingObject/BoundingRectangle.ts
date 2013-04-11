@@ -31,7 +31,7 @@ module EndGate.Core.BoundingObject {
 
         public TopLeft(): Assets.Vector2d {
             var v = new Assets.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
-            if (this.Rotation == 0) {
+            if (this.Rotation === 0) {
                 return v;
             }
 
@@ -40,7 +40,7 @@ module EndGate.Core.BoundingObject {
 
         public TopRight(): Assets.Vector2d {
             var v = new Assets.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
-            if (this.Rotation == 0) {
+            if (this.Rotation === 0) {
                 return v;
             }
 
@@ -49,7 +49,7 @@ module EndGate.Core.BoundingObject {
 
         public BotLeft(): Assets.Vector2d {
             var v = new Assets.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
-            if (this.Rotation == 0) {
+            if (this.Rotation === 0) {
                 return v;
             }
 
@@ -58,7 +58,7 @@ module EndGate.Core.BoundingObject {
 
         public BotRight(): Assets.Vector2d {
             var v = new Assets.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
-            if (this.Rotation == 0) {
+            if (this.Rotation === 0) {
                 return v;
             }
 
@@ -70,7 +70,7 @@ module EndGate.Core.BoundingObject {
         }
 
         public IntersectsRectangle(rectangle: BoundingRectangle): bool {
-            if (this.Rotation == 0 && rectangle.Rotation == 0) {
+            if (this.Rotation === 0 && rectangle.Rotation === 0) {
                 var myTopLeft = this.TopLeft(),
                     myBotRight = this.BotRight(),
                     theirTopLeft = rectangle.TopLeft(),
@@ -80,7 +80,7 @@ module EndGate.Core.BoundingObject {
 
             }
             else if (rectangle.Position.Distance(this.Position).Magnitude() <= rectangle.Size.Radius() + this.Size.Radius()) {// Check if we're somewhat close to the rectangle ect that we might be colliding with
-                var axisList: Assets.Vector2d[] = [this.TopRight().Subtract(this.TopLeft()), this.TopRight().Subtract(this.BotRight()), rectangle.TopLeft().Subtract(this.BotLeft()), rectangle.TopLeft().Subtract(this.TopRight())];
+                var axisList: Assets.Vector2d[] = [this.TopRight().Subtract(this.TopLeft()), this.TopRight().Subtract(this.BotRight()), rectangle.TopLeft().Subtract(rectangle.BotLeft()), rectangle.TopLeft().Subtract(rectangle.TopRight())];
                 var myVertices = this.Vertices();
                 var theirVertices = rectangle.Vertices();
 
@@ -104,7 +104,7 @@ module EndGate.Core.BoundingObject {
         public ContainsPoint(point: Assets.Vector2d): bool {
             var savedRotation: number = this.Rotation;
 
-            if (this.Rotation != 0) {
+            if (this.Rotation !== 0) {
                 this.Rotation = 0;
                 point = point.RotateAround(this.Position, -savedRotation);
             }

@@ -29,28 +29,28 @@ var EndGate;
                 };
                 BoundingRectangle.prototype.TopLeft = function () {
                     var v = new Assets.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
-                    if(this.Rotation == 0) {
+                    if(this.Rotation === 0) {
                         return v;
                     }
                     return v.RotateAround(this.Position, this.Rotation);
                 };
                 BoundingRectangle.prototype.TopRight = function () {
                     var v = new Assets.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
-                    if(this.Rotation == 0) {
+                    if(this.Rotation === 0) {
                         return v;
                     }
                     return v.RotateAround(this.Position, this.Rotation);
                 };
                 BoundingRectangle.prototype.BotLeft = function () {
                     var v = new Assets.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
-                    if(this.Rotation == 0) {
+                    if(this.Rotation === 0) {
                         return v;
                     }
                     return v.RotateAround(this.Position, this.Rotation);
                 };
                 BoundingRectangle.prototype.BotRight = function () {
                     var v = new Assets.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
-                    if(this.Rotation == 0) {
+                    if(this.Rotation === 0) {
                         return v;
                     }
                     return v.RotateAround(this.Position, this.Rotation);
@@ -59,15 +59,15 @@ var EndGate;
                     return circle.IntersectsRectangle(this);
                 };
                 BoundingRectangle.prototype.IntersectsRectangle = function (rectangle) {
-                    if(this.Rotation == 0 && rectangle.Rotation == 0) {
+                    if(this.Rotation === 0 && rectangle.Rotation === 0) {
                         var myTopLeft = this.TopLeft(), myBotRight = this.BotRight(), theirTopLeft = rectangle.TopLeft(), theirBotRight = rectangle.BotRight();
                         return theirTopLeft.X <= myBotRight.X && theirBotRight.X >= myTopLeft.X && theirTopLeft.Y <= myBotRight.Y && theirBotRight.Y >= myTopLeft.Y;
                     } else if(rectangle.Position.Distance(this.Position).Magnitude() <= rectangle.Size.Radius() + this.Size.Radius()) {
                         var axisList = [
                             this.TopRight().Subtract(this.TopLeft()), 
                             this.TopRight().Subtract(this.BotRight()), 
-                            rectangle.TopLeft().Subtract(this.BotLeft()), 
-                            rectangle.TopLeft().Subtract(this.TopRight())
+                            rectangle.TopLeft().Subtract(rectangle.BotLeft()), 
+                            rectangle.TopLeft().Subtract(rectangle.TopRight())
                         ];
                         var myVertices = this.Vertices();
                         var theirVertices = rectangle.Vertices();
@@ -85,7 +85,7 @@ var EndGate;
                 };
                 BoundingRectangle.prototype.ContainsPoint = function (point) {
                     var savedRotation = this.Rotation;
-                    if(this.Rotation != 0) {
+                    if(this.Rotation !== 0) {
                         this.Rotation = 0;
                         point = point.RotateAround(this.Position, -savedRotation);
                     }

@@ -122,6 +122,7 @@
     <Content Include="Tests\UnitTests\Assets\Vectors\Vector2dFacts.js" />
     <Content Include="Tests\UnitTests\Assets\Vectors\Vector2dHelperFacts.js" />
     <Content Include="Tests\UnitTests\BoundingObjects\BoundingCircleFacts.js" />
+    <Content Include="Tests\UnitTests\BoundingObjects\BoundingRectangleFacts.js" />
     <Content Include="Tests\UnitTests\GameFacts.js" />
     <Content Include="Tests\UnitTests\Utilities\LooperFacts.js" />
     <Content Include="Web.config" />
