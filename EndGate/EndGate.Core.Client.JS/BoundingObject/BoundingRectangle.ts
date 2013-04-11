@@ -1,5 +1,7 @@
 /// <reference path="../Assets/Vectors/Helpers/Vector2dHelpers.ts" />
 /// <reference path="../Assets/Sizes/Size2d.ts" />
+/// <reference path="BoundingCircle.ts" />
+/// <reference path="Bounds2d.ts" />
 
 module EndGate.Core.BoundingObject {
 

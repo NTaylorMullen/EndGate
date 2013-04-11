@@ -160,6 +160,9 @@
       <DependentUpon>GameTime.ts</DependentUpon>
     </Content>
     <TypeScriptCompile Include="Interfaces\IUpdateable.d.ts" />
+    <Content Include="Scripts\endGate.core.client.js">
+      <DependentUpon>endGate.core.client.ts</DependentUpon>
+    </Content>
     <Content Include="Scripts\endGate.core.client.min.js">
       <DependentUpon>endGate.core.client.ts</DependentUpon>
     </Content>
