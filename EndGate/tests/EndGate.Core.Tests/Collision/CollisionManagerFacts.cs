@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using EndGate.Core.Assets;
 using EndGate.Core.BoundingObject;
 using EndGate.Core.Collision;
@@ -91,7 +87,7 @@ namespace EndGate.Core.Tests
         {
             var rect = new Collidable(new BoundingRectangle(new Size2d(30, 50)));
             var circle = new Collidable(new BoundingCircle(10));
-            var game = new TempGame();
+            var game = new CollisionManagerGame();
 
             game.MonitorCollision(rect);
             game.MonitorCollision(circle);
@@ -141,7 +137,7 @@ namespace EndGate.Core.Tests
             Assert.Equal(savedmanagerCollisions, managerCollisionTriggered);
         }
 
-        private class TempGame : Game
+        private class CollisionManagerGame : Game
         {
             public void MonitorCollision(Collidable obj)
             {

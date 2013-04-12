@@ -1,3 +1,5 @@
+/// <reference path="../Interfaces/ITyped.d.ts" />
+
 module EndGate.Core.Utilities {
 
     export class LooperCallback implements ITyped {

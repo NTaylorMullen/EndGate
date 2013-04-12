@@ -24,3 +24,21 @@ class UpdateTester extends EndGate.Core.Game {
         }
     }
 }
+
+var temp = false;
+
+class CollisionManagerGame extends EndGate.Core.Game
+{
+    constructor() {
+        super();
+    }
+    public MonitorCollision(obj: EndGate.Core.Collision.Collidable): void
+    {
+        this.CollisionManager.Monitor(obj);
+    }
+
+    public RegisterCollisionEvent(e: Function): void
+    {
+        this.CollisionManager.OnCollision.Bind(e);
+    }
+}

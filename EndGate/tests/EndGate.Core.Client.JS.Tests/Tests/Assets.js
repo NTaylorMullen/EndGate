@@ -20,3 +20,16 @@ var UpdateTester = (function (_super) {
     };
     return UpdateTester;
 })(EndGate.Core.Game);
+var CollisionManagerGame = (function (_super) {
+    __extends(CollisionManagerGame, _super);
+    function CollisionManagerGame() {
+        _super.call(this);
+    }
+    CollisionManagerGame.prototype.MonitorCollision = function (obj) {
+        this.CollisionManager.Monitor(obj);
+    };
+    CollisionManagerGame.prototype.RegisterCollisionEvent = function (e) {
+        this.CollisionManager.OnCollision.Bind(e);
+    };
+    return CollisionManagerGame;
+})(EndGate.Core.Game);

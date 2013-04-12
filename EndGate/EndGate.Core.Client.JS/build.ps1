@@ -97,7 +97,7 @@ $files = $dependencyArray;
 
 Write-Host "Dependencies resolved as order: " + $dependencyArray
 
-$referenceReplacer = "^/// <reference path.*$"
+$referenceReplacer = "^/// <reference( )+?path.*$"
 
 Write-Host "outputFile " $outputFilePath "... " -NoNewline -ForegroundColor Yellow
 Remove-Item $outputFilePath -Force -ErrorAction SilentlyContinue

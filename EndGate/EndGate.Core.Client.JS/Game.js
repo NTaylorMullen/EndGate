@@ -6,11 +6,13 @@ var EndGate;
                 this._type = "Game";
                 this._gameTime = new Core.GameTime();
                 this.ID = Game._gameIds++;
+                this.CollisionManager = new Core.Collision.CollisionManager();
                 this.Configuration = new Core.GameConfiguration(GameRunnerInstance.Register(this));
             }
             Game._gameIds = 0;
             Game.prototype.PrepareUpdate = function () {
                 this._gameTime.Update();
+                this.CollisionManager.Update(this._gameTime);
                 this.Update(this._gameTime);
             };
             Game.prototype.Update = function (gameTime) {

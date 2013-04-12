@@ -3,15 +3,13 @@
 
 module EndGate.Core.Utilities {
 
-    export class EventHandler implements IDisposable, ITyped {
+    export class EventHandler implements ITyped {
         public _type: string = "Event";
 
         private _actions: Function[];
-        private _disposed: bool;
 
         constructor() {
             this._actions = [];
-            this._disposed = false;
         }
 
         public Bind(action: Function): void {
@@ -30,16 +28,6 @@ module EndGate.Core.Utilities {
         public Trigger(...args: any[]): void {
             for (var i = 0; i < this._actions.length; i++) {
                 this._actions[i].apply(this, args);
-            }
-        }
-
-        public Dispose(): void {
-            if (!this._disposed) {
-                this._disposed = true;
-                this._actions = [];
-            }
-            else {
-                throw new Error("Cannot dispose Event twice.");
             }
         }
     }

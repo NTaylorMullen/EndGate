@@ -8,7 +8,7 @@ module EndGate.Core {
     export class GameRunner implements ITyped {
         public _type: string = "GameRunner";
 
-        private _callbacks: { [s: number]: Utilities.LooperCallback; };
+        private _callbacks: { [id: number]: Utilities.LooperCallback; };
         private _gameLoop: Utilities.Looper;
         private _callbackCount: number;
 

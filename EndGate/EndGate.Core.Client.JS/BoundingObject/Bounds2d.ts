@@ -1,6 +1,6 @@
 /// <reference path="../Assets/Vectors/Vector2d.ts" />
-/// <reference path="BoundingRectangle.ts" />
-/// <reference path="BoundingCircle.ts" />
+/// <reference  path="BoundingRectangle.ts" />
+/// <reference  path="BoundingCircle.ts" />
 
 module EndGate.Core.BoundingObject {
 

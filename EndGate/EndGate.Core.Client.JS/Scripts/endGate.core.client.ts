@@ -45,6 +45,8 @@ interface IUpdateable {
     Update(gameTime: EndGate.Core.GameTime): void;
 }
 /* LooperCallback.ts.Name */
+
+
 module EndGate.Core.Utilities {
 
     export class LooperCallback implements ITyped {
@@ -176,130 +178,6 @@ module EndGate.Core {
     }
 
 }
-/* Game.ts.Name */
-
-
-
-
-
-
-module EndGate.Core {
-
-    export class Game implements ITyped, IUpdateable, IDisposable {
-        public _type: string = "Game";
-
-        public ID: number;
-        public Configuration: GameConfiguration;
-
-        private static _gameIds: number = 0;
-        private _gameTime: GameTime;
-
-        constructor() {
-            this._gameTime = new GameTime();
-            this.ID = Game._gameIds++;
-
-            this.Configuration = new GameConfiguration(GameRunnerInstance.Register(this))
-        }
-
-        public PrepareUpdate(): void {
-            this._gameTime.Update();
-
-            this.Update(this._gameTime);
-        }
-
-        public Update(gameTime: GameTime): void {
-        }
-
-        public Dispose()
-        {
-            GameRunnerInstance.Unregister(this);
-        }
-    }
-
-}
-/* GameRunner.ts.Name */
-
-
-
-
-
-module EndGate.Core {    
-
-    export class GameRunner implements ITyped {
-        public _type: string = "GameRunner";
-
-        private _callbacks: { [s: number]: Utilities.LooperCallback; };
-        private _gameLoop: Utilities.Looper;
-        private _callbackCount: number;
-
-        constructor() {
-            this._callbacks = <{ [s: number]: Utilities.LooperCallback; } >{};
-            this._gameLoop = null;
-            this._callbackCount = 0;
-        }
-
-        public Register(game: Game): (updateRate: number) => void {
-            var updateCallback = this.CreateAndCacheCallback(game);
-
-            // Try to start the loop prior to adding our games callback.  This callback may be the first, hence the "Try"
-            this.TryLoopStart();
-
-            // Add our callback to the game loop (which is now running), it will now be called on an interval dictated by updateCallback
-            this._gameLoop.AddCallback(updateCallback);
-
-            // Updating the "updateRate" is an essential element to the game configuration.
-            // If a game is running slowly we need to be able to slow down the update rate.
-            return this.CreateUpdateRateSetter(updateCallback);
-        }
-
-        public Unregister(game: Game): void {
-            var updateCallback;
-
-            if (this._callbacks[game.ID]) {
-                updateCallback = this._callbacks[game.ID];
-
-                this._gameLoop.RemoveCallback(updateCallback);
-                delete this._callbacks[game.ID];
-                this._callbackCount--
-
-                this.TryLoopStop();
-            }
-        }
-
-        private TryLoopStart(): void {
-            if (this._callbackCount === 1) {
-                this._gameLoop = new Utilities.Looper();
-                this._gameLoop.Start();
-            }
-        }
-
-        private TryLoopStop(): void {
-            if (this._callbackCount === 0 && this._gameLoop != null) {
-                this._gameLoop.Dispose();
-                this._gameLoop = null;
-            }
-        }
-
-        private CreateAndCacheCallback(game: Game): Utilities.LooperCallback {
-            var updateCallback = new Utilities.LooperCallback(0, () => {
-                game.PrepareUpdate();
-            });
-
-            this._callbacks[game.ID] = updateCallback;
-            this._callbackCount++;
-
-            return updateCallback;
-        };
-
-        private CreateUpdateRateSetter(callback: Utilities.LooperCallback): (updateRate: number) => void {
-            return (updateRate) => {
-                callback.Fps = updateRate;
-            };
-        }
-    }
-}
-
-var GameRunnerInstance: EndGate.Core.GameRunner = new EndGate.Core.GameRunner();
 /* MathExtensions.ts.Name */
 interface Math {
     roundTo(val?: number, decimals?: number): number;
@@ -471,6 +349,362 @@ module EndGate.Core.Assets {
         }
     }
 }
+/* Bounds2d.ts.Name */
+
+
+
+
+module EndGate.Core.BoundingObject {
+
+    import Assets = module(EndGate.Core.Assets);
+
+    export class Bounds2d {
+
+        public Position: Assets.Vector2d;
+        public Rotation: number;
+
+        constructor() {
+            this.Position = Assets.Vector2d.Zero();
+            this.Rotation = 0;
+        }
+
+        public ContainsPoint(point: Assets.Vector2d): bool {
+            throw new Error("This method is abstract!");
+        }
+
+        public Intersects(obj: Bounds2d): bool;
+        public Intersects(circle: BoundingCircle): bool;
+        public Intersects(rectangle: BoundingRectangle): bool;
+        public Intersects(obj: any): bool {
+            if (obj._type === "BoundingCircle") {
+                return this.IntersectsCircle(obj);
+            }
+            else if (obj._type === "BoundingRectangle") {
+                return this.IntersectsRectangle(obj);
+            }
+            else {
+                throw new Error("Cannot intersect with unidentifiable object, must be BoundingCircle or BoundingRectangle");
+            }
+        }
+
+        public IntersectsCircle(circle: BoundingCircle): bool {
+            throw new Error("This method is abstract!");
+        }
+
+        public IntersectsRectangle(rectangle: BoundingRectangle): bool {
+            throw new Error("This method is abstract!");
+        }
+    }
+
+}
+/* EventHandler.ts.Name */
+
+
+
+module EndGate.Core.Utilities {
+
+    export class EventHandler implements ITyped {
+        public _type: string = "Event";
+
+        private _actions: Function[];
+
+        constructor() {
+            this._actions = [];
+        }
+
+        public Bind(action: Function): void {
+            this._actions.push(action);
+        }
+
+        public Unbind(action: Function): void {
+            for (var i = 0; i < this._actions.length; i++) {
+                if (this._actions[i] === action) {
+                    this._actions.splice(i, 1);
+                    return;
+                }
+            }
+        }
+
+        public Trigger(...args: any[]): void {
+            for (var i = 0; i < this._actions.length; i++) {
+                this._actions[i].apply(this, args);
+            }
+        }
+    }
+
+}
+/* CollisionData.ts.Name */
+
+
+
+module EndGate.Core.Collision {
+
+    import Assets = module(EndGate.Core.Assets);
+
+    export class CollisionData {
+        public At: Assets.Vector2d;
+        public With: Collidable;
+
+        constructor(at: Assets.Vector2d, w: Collidable) {
+            this.At = at;
+            this.With = w;
+        }
+    }
+
+}
+/* Collidable.ts.Name */
+
+
+
+
+
+
+module EndGate.Core.Collision {
+
+    import BoundingObject = module(EndGate.Core.BoundingObject);
+    import Utilities = module(EndGate.Core.Utilities);
+
+    export class Collidable implements IDisposable, ITyped {
+        public _type: string = "Collidable";
+
+        public Bounds: BoundingObject.Bounds2d;
+        public ID: number;
+
+        private static _collidableIDs: number = 0;
+        private _disposed: bool;
+
+        constructor(bounds: BoundingObject.Bounds2d) {
+            this._disposed = false;
+
+            this.Bounds = bounds;
+            this.ID = Collidable._collidableIDs++;
+
+            this.OnCollision = new Utilities.EventHandler();
+            this.OnDisposed = new Utilities.EventHandler();
+        }
+
+        public OnCollision: Utilities.EventHandler;
+        public OnDisposed: Utilities.EventHandler;
+
+        public IsCollidingWith(other: Collidable): bool {
+            return this.Bounds.Intersects(other.Bounds);
+        }
+
+        public Collided(data: CollisionData): void {
+            this.OnCollision.Trigger(data);
+        }
+
+        public Dispose(): void
+        {
+            if (!this._disposed) {
+                this._disposed = true;
+                this.OnDisposed.Trigger(this);
+            }
+            else {
+                throw new Error("Cannot dispose collidable twice.");
+            }
+        }
+    }
+
+}
+/* CollisionManager.ts.Name */
+
+
+
+
+
+
+
+module EndGate.Core.Collision {
+
+    import Utilities = module(EndGate.Core.Utilities);
+
+    export class CollisionManager implements IUpdateable, ITyped {
+        public _type: string = "CollisionManager";
+
+        public _collidables: Collidable[];
+
+        private _enabled: bool;
+
+        constructor() {
+            this._collidables = [];
+            this._enabled = false;
+
+            this.OnCollision = new Utilities.EventHandler();
+        }
+
+        public OnCollision: Utilities.EventHandler;
+
+        public Monitor(obj: Collidable): void {
+            this._enabled = true;
+
+            obj.OnDisposed.Bind(() => {
+                this.Unmonitor(obj);
+            });
+
+            this._collidables.push(obj);
+        }
+
+        public Unmonitor(obj: Collidable): void {
+            for (var i = 0; i < this._collidables.length; i++) {
+                if (this._collidables[i].ID === obj.ID) {
+                    this._collidables.splice(i, 1);
+                    break;
+                }
+            }
+        }
+
+        public Update(gameTime: GameTime): void {
+            var first: Collidable,
+                second: Collidable;
+
+            if (this._enabled) {
+                for (var i = 0; i < this._collidables.length; i++) {
+                    first = this._collidables[i];
+
+                    for (var j = i + 1; j < this._collidables.length; j++) {
+                        second = this._collidables[j];
+
+                        if (first.IsCollidingWith(second)) {
+                            first.Collided(new CollisionData(first.Bounds.Position.Clone(), second));
+                            second.Collided(new CollisionData(second.Bounds.Position.Clone(), first));
+                            this.OnCollision.Trigger(first, second);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+}
+/* Game.ts.Name */
+
+
+
+
+
+
+
+module EndGate.Core {
+
+    export class Game implements ITyped, IUpdateable, IDisposable {
+        public _type: string = "Game";
+
+        public ID: number;
+        public Configuration: GameConfiguration;
+        public CollisionManager: Collision.CollisionManager;
+
+        private static _gameIds: number = 0;
+        private _gameTime: GameTime;
+
+        constructor() {
+            this._gameTime = new GameTime();
+            this.ID = Game._gameIds++;
+
+            this.CollisionManager = new Collision.CollisionManager();
+            this.Configuration = new GameConfiguration(GameRunnerInstance.Register(this))
+        }
+
+        public PrepareUpdate(): void {
+            this._gameTime.Update();
+
+            this.CollisionManager.Update(this._gameTime);
+            this.Update(this._gameTime);
+        }
+
+        public Update(gameTime: GameTime): void {
+        }
+
+        public Dispose()
+        {
+            GameRunnerInstance.Unregister(this);
+        }
+    }
+
+}
+/* GameRunner.ts.Name */
+
+
+
+
+
+module EndGate.Core {    
+
+    export class GameRunner implements ITyped {
+        public _type: string = "GameRunner";
+
+        private _callbacks: { [id: number]: Utilities.LooperCallback; };
+        private _gameLoop: Utilities.Looper;
+        private _callbackCount: number;
+
+        constructor() {
+            this._callbacks = <{ [s: number]: Utilities.LooperCallback; } >{};
+            this._gameLoop = null;
+            this._callbackCount = 0;
+        }
+
+        public Register(game: Game): (updateRate: number) => void {
+            var updateCallback = this.CreateAndCacheCallback(game);
+
+            // Try to start the loop prior to adding our games callback.  This callback may be the first, hence the "Try"
+            this.TryLoopStart();
+
+            // Add our callback to the game loop (which is now running), it will now be called on an interval dictated by updateCallback
+            this._gameLoop.AddCallback(updateCallback);
+
+            // Updating the "updateRate" is an essential element to the game configuration.
+            // If a game is running slowly we need to be able to slow down the update rate.
+            return this.CreateUpdateRateSetter(updateCallback);
+        }
+
+        public Unregister(game: Game): void {
+            var updateCallback;
+
+            if (this._callbacks[game.ID]) {
+                updateCallback = this._callbacks[game.ID];
+
+                this._gameLoop.RemoveCallback(updateCallback);
+                delete this._callbacks[game.ID];
+                this._callbackCount--
+
+                this.TryLoopStop();
+            }
+        }
+
+        private TryLoopStart(): void {
+            if (this._callbackCount === 1) {
+                this._gameLoop = new Utilities.Looper();
+                this._gameLoop.Start();
+            }
+        }
+
+        private TryLoopStop(): void {
+            if (this._callbackCount === 0 && this._gameLoop != null) {
+                this._gameLoop.Dispose();
+                this._gameLoop = null;
+            }
+        }
+
+        private CreateAndCacheCallback(game: Game): Utilities.LooperCallback {
+            var updateCallback = new Utilities.LooperCallback(0, () => {
+                game.PrepareUpdate();
+            });
+
+            this._callbacks[game.ID] = updateCallback;
+            this._callbackCount++;
+
+            return updateCallback;
+        };
+
+        private CreateUpdateRateSetter(callback: Utilities.LooperCallback): (updateRate: number) => void {
+            return (updateRate) => {
+                callback.Fps = updateRate;
+            };
+        }
+    }
+}
+
+var GameRunnerInstance: EndGate.Core.GameRunner = new EndGate.Core.GameRunner();
 /* Size2d.ts.Name */
 
 
@@ -669,54 +903,6 @@ module EndGate.Core.Assets {
     }
 
 }
-/* Bounds2d.ts.Name */
-
-
-
-
-module EndGate.Core.BoundingObject {
-
-    import Assets = module(EndGate.Core.Assets);
-
-    export class Bounds2d {
-
-        public Position: Assets.Vector2d;
-        public Rotation: number;
-
-        constructor() {
-            this.Position = Assets.Vector2d.Zero();
-            this.Rotation = 0;
-        }
-
-        public ContainsPoint(point: Assets.Vector2d): bool {
-            throw new Error("This method is abstract!");
-        }
-
-        public Intersects(obj: Bounds2d): bool;
-        public Intersects(circle: BoundingCircle): bool;
-        public Intersects(rectangle: BoundingRectangle): bool;
-        public Intersects(obj: any): bool {
-            if (obj._type === "BoundingCircle") {
-                return this.IntersectsCircle(obj);
-            }
-            else if (obj._type === "BoundingRectangle") {
-                return this.IntersectsRectangle(obj);
-            }
-            else {
-                throw new Error("Cannot intersect with unidentifiable object, must be BoundingCircle or BoundingRectangle");
-            }
-        }
-
-        public IntersectsCircle(circle: BoundingCircle): bool {
-            throw new Error("This method is abstract!");
-        }
-
-        public IntersectsRectangle(rectangle: BoundingRectangle): bool {
-            throw new Error("This method is abstract!");
-        }
-    }
-
-}
 /* BoundingCircle.ts.Name */
 
 
@@ -899,128 +1085,6 @@ module EndGate.Core.BoundingObject {
             return point.X <= myBotRight.X && point.X >= myTopLeft.X && point.Y <= myBotRight.Y && point.Y >= myTopLeft.Y;
         }
 
-    }
-
-}
-/* EventHandler.ts.Name */
-
-
-
-module EndGate.Core.Utilities {
-
-    export class EventHandler implements IDisposable, ITyped {
-        public _type: string = "Event";
-
-        private _actions: Function[];
-        private _disposed: bool;
-
-        constructor() {
-            this._actions = [];
-            this._disposed = false;
-        }
-
-        public Bind(action: Function): void {
-            this._actions.push(action);
-        }
-
-        public Unbind(action: Function): void {
-            for (var i = 0; i < this._actions.length; i++) {
-                if (this._actions[i] === action) {
-                    this._actions.splice(i, 1);
-                    return;
-                }
-            }
-        }
-
-        public Trigger(...args: any[]): void {
-            for (var i = 0; i < this._actions.length; i++) {
-                this._actions[i].apply(this, args);
-            }
-        }
-
-        public Dispose(): void {
-            if (!this._disposed) {
-                this._disposed = true;
-                this._actions = [];
-            }
-            else {
-                throw new Error("Cannot dispose Event twice.");
-            }
-        }
-    }
-
-}
-/* Collidable.ts.Name */
-
-
-
-
-
-
-module EndGate.Core.Collision {
-
-    import BoundingObject = module(EndGate.Core.BoundingObject);
-    import Utilities = module(EndGate.Core.Utilities);
-
-    export class Collidable implements IDisposable, ITyped {
-        public _type: string = "Collidable";
-
-        public Bounds: BoundingObject.Bounds2d;
-        public ID: number;
-
-        private static _collidableIDs: number = 0;
-        private _disposed: bool;
-
-        constructor(bounds: BoundingObject.Bounds2d) {
-            this._disposed = false;
-
-            this.Bounds = bounds;
-            this.ID = Collidable._collidableIDs++;
-
-            this.OnCollision = new Utilities.EventHandler();
-            this.OnDisposed = new Utilities.EventHandler();
-        }
-
-        public OnCollision: Utilities.EventHandler;
-        public OnDisposed: Utilities.EventHandler;
-
-        public IsCollidingWith(other: Collidable): bool {
-            return this.Bounds.Intersects(other.Bounds);
-        }
-
-        public Collided(data: CollisionData): void {
-            this.OnCollision.Trigger(data);
-        }
-
-        public Dispose(): void
-        {
-            if (!this._disposed) {
-                this._disposed = true;
-                this.OnDisposed.Trigger(this);
-            }
-            else {
-                throw new Error("Cannot dispose collidable twice.");
-            }
-        }
-    }
-
-}
-/* CollisionData.ts.Name */
-
-
-
-module EndGate.Core.Collision {
-
-    import Assets = module(EndGate.Core.Assets);
-
-    export class CollisionData {
-        public At: Assets.Vector2d;
-        public With: Collidable;
-
-        constructor(at: Assets.Vector2d, w: Collidable) {
-            this.At = at;
-            this.With = w;
-        }
     }
 
 }

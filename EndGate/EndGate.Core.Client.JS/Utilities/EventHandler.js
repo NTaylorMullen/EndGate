@@ -6,7 +6,6 @@ var EndGate;
                 function EventHandler() {
                     this._type = "Event";
                     this._actions = [];
-                    this._disposed = false;
                 }
                 EventHandler.prototype.Bind = function (action) {
                     this._actions.push(action);
@@ -26,14 +25,6 @@ var EndGate;
                     }
                     for(var i = 0; i < this._actions.length; i++) {
                         this._actions[i].apply(this, args);
-                    }
-                };
-                EventHandler.prototype.Dispose = function () {
-                    if(!this._disposed) {
-                        this._disposed = true;
-                        this._actions = [];
-                    } else {
-                        throw new Error("Cannot dispose Event twice.");
                     }
                 };
                 return EventHandler;

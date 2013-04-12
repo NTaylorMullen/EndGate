@@ -135,91 +135,6 @@ var EndGate;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));
-var EndGate;
-(function (EndGate) {
-    (function (Core) {
-        var Game = (function () {
-            function Game() {
-                this._type = "Game";
-                this._gameTime = new Core.GameTime();
-                this.ID = Game._gameIds++;
-                this.Configuration = new Core.GameConfiguration(GameRunnerInstance.Register(this));
-            }
-            Game._gameIds = 0;
-            Game.prototype.PrepareUpdate = function () {
-                this._gameTime.Update();
-                this.Update(this._gameTime);
-            };
-            Game.prototype.Update = function (gameTime) {
-            };
-            Game.prototype.Dispose = function () {
-                GameRunnerInstance.Unregister(this);
-            };
-            return Game;
-        })();
-        Core.Game = Game;        
-    })(EndGate.Core || (EndGate.Core = {}));
-    var Core = EndGate.Core;
-})(EndGate || (EndGate = {}));
-var EndGate;
-(function (EndGate) {
-    (function (Core) {
-        var GameRunner = (function () {
-            function GameRunner() {
-                this._type = "GameRunner";
-                this._callbacks = {
-                };
-                this._gameLoop = null;
-                this._callbackCount = 0;
-            }
-            GameRunner.prototype.Register = function (game) {
-                var updateCallback = this.CreateAndCacheCallback(game);
-                this.TryLoopStart();
-                this._gameLoop.AddCallback(updateCallback);
-                return this.CreateUpdateRateSetter(updateCallback);
-            };
-            GameRunner.prototype.Unregister = function (game) {
-                var updateCallback;
-                if(this._callbacks[game.ID]) {
-                    updateCallback = this._callbacks[game.ID];
-                    this._gameLoop.RemoveCallback(updateCallback);
-                    delete this._callbacks[game.ID];
-                    this._callbackCount--;
-                    this.TryLoopStop();
-                }
-            };
-            GameRunner.prototype.TryLoopStart = function () {
-                if(this._callbackCount === 1) {
-                    this._gameLoop = new Core.Utilities.Looper();
-                    this._gameLoop.Start();
-                }
-            };
-            GameRunner.prototype.TryLoopStop = function () {
-                if(this._callbackCount === 0 && this._gameLoop != null) {
-                    this._gameLoop.Dispose();
-                    this._gameLoop = null;
-                }
-            };
-            GameRunner.prototype.CreateAndCacheCallback = function (game) {
-                var updateCallback = new Core.Utilities.LooperCallback(0, function () {
-                    game.PrepareUpdate();
-                });
-                this._callbacks[game.ID] = updateCallback;
-                this._callbackCount++;
-                return updateCallback;
-            };
-            GameRunner.prototype.CreateUpdateRateSetter = function (callback) {
-                return function (updateRate) {
-                    callback.Fps = updateRate;
-                };
-            };
-            return GameRunner;
-        })();
-        Core.GameRunner = GameRunner;        
-    })(EndGate.Core || (EndGate.Core = {}));
-    var Core = EndGate.Core;
-})(EndGate || (EndGate = {}));
-var GameRunnerInstance = new EndGate.Core.GameRunner();
 Math.roundTo = function (val, decimals) {
     var multiplier = Math.pow(10, decimals);
     return Math.round(val * multiplier) / multiplier;
@@ -341,6 +256,274 @@ var EndGate;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (BoundingObject) {
+            var Assets = EndGate.Core.Assets;
+            var Bounds2d = (function () {
+                function Bounds2d() {
+                    this.Position = Assets.Vector2d.Zero();
+                    this.Rotation = 0;
+                }
+                Bounds2d.prototype.ContainsPoint = function (point) {
+                    throw new Error("This method is abstract!");
+                };
+                Bounds2d.prototype.Intersects = function (obj) {
+                    if(obj._type === "BoundingCircle") {
+                        return this.IntersectsCircle(obj);
+                    } else if(obj._type === "BoundingRectangle") {
+                        return this.IntersectsRectangle(obj);
+                    } else {
+                        throw new Error("Cannot intersect with unidentifiable object, must be BoundingCircle or BoundingRectangle");
+                    }
+                };
+                Bounds2d.prototype.IntersectsCircle = function (circle) {
+                    throw new Error("This method is abstract!");
+                };
+                Bounds2d.prototype.IntersectsRectangle = function (rectangle) {
+                    throw new Error("This method is abstract!");
+                };
+                return Bounds2d;
+            })();
+            BoundingObject.Bounds2d = Bounds2d;            
+        })(Core.BoundingObject || (Core.BoundingObject = {}));
+        var BoundingObject = Core.BoundingObject;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Utilities) {
+            var EventHandler = (function () {
+                function EventHandler() {
+                    this._type = "Event";
+                    this._actions = [];
+                }
+                EventHandler.prototype.Bind = function (action) {
+                    this._actions.push(action);
+                };
+                EventHandler.prototype.Unbind = function (action) {
+                    for(var i = 0; i < this._actions.length; i++) {
+                        if(this._actions[i] === action) {
+                            this._actions.splice(i, 1);
+                            return;
+                        }
+                    }
+                };
+                EventHandler.prototype.Trigger = function () {
+                    var args = [];
+                    for (var _i = 0; _i < (arguments.length - 0); _i++) {
+                        args[_i] = arguments[_i + 0];
+                    }
+                    for(var i = 0; i < this._actions.length; i++) {
+                        this._actions[i].apply(this, args);
+                    }
+                };
+                return EventHandler;
+            })();
+            Utilities.EventHandler = EventHandler;            
+        })(Core.Utilities || (Core.Utilities = {}));
+        var Utilities = Core.Utilities;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Collision) {
+            var Assets = EndGate.Core.Assets;
+            var CollisionData = (function () {
+                function CollisionData(at, w) {
+                    this.At = at;
+                    this.With = w;
+                }
+                return CollisionData;
+            })();
+            Collision.CollisionData = CollisionData;            
+        })(Core.Collision || (Core.Collision = {}));
+        var Collision = Core.Collision;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Collision) {
+            var BoundingObject = EndGate.Core.BoundingObject;
+            var Utilities = EndGate.Core.Utilities;
+            var Collidable = (function () {
+                function Collidable(bounds) {
+                    this._type = "Collidable";
+                    this._disposed = false;
+                    this.Bounds = bounds;
+                    this.ID = Collidable._collidableIDs++;
+                    this.OnCollision = new Utilities.EventHandler();
+                    this.OnDisposed = new Utilities.EventHandler();
+                }
+                Collidable._collidableIDs = 0;
+                Collidable.prototype.IsCollidingWith = function (other) {
+                    return this.Bounds.Intersects(other.Bounds);
+                };
+                Collidable.prototype.Collided = function (data) {
+                    this.OnCollision.Trigger(data);
+                };
+                Collidable.prototype.Dispose = function () {
+                    if(!this._disposed) {
+                        this._disposed = true;
+                        this.OnDisposed.Trigger(this);
+                    } else {
+                        throw new Error("Cannot dispose collidable twice.");
+                    }
+                };
+                return Collidable;
+            })();
+            Collision.Collidable = Collidable;            
+        })(Core.Collision || (Core.Collision = {}));
+        var Collision = Core.Collision;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Collision) {
+            var Utilities = EndGate.Core.Utilities;
+            var CollisionManager = (function () {
+                function CollisionManager() {
+                    this._type = "CollisionManager";
+                    this._collidables = [];
+                    this._enabled = false;
+                    this.OnCollision = new Utilities.EventHandler();
+                }
+                CollisionManager.prototype.Monitor = function (obj) {
+                    var _this = this;
+                    this._enabled = true;
+                    obj.OnDisposed.Bind(function () {
+                        _this.Unmonitor(obj);
+                    });
+                    this._collidables.push(obj);
+                };
+                CollisionManager.prototype.Unmonitor = function (obj) {
+                    for(var i = 0; i < this._collidables.length; i++) {
+                        if(this._collidables[i].ID === obj.ID) {
+                            this._collidables.splice(i, 1);
+                            break;
+                        }
+                    }
+                };
+                CollisionManager.prototype.Update = function (gameTime) {
+                    var first, second;
+                    if(this._enabled) {
+                        for(var i = 0; i < this._collidables.length; i++) {
+                            first = this._collidables[i];
+                            for(var j = i + 1; j < this._collidables.length; j++) {
+                                second = this._collidables[j];
+                                if(first.IsCollidingWith(second)) {
+                                    first.Collided(new Collision.CollisionData(first.Bounds.Position.Clone(), second));
+                                    second.Collided(new Collision.CollisionData(second.Bounds.Position.Clone(), first));
+                                    this.OnCollision.Trigger(first, second);
+                                }
+                            }
+                        }
+                    }
+                };
+                return CollisionManager;
+            })();
+            Collision.CollisionManager = CollisionManager;            
+        })(Core.Collision || (Core.Collision = {}));
+        var Collision = Core.Collision;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        var Game = (function () {
+            function Game() {
+                this._type = "Game";
+                this._gameTime = new Core.GameTime();
+                this.ID = Game._gameIds++;
+                this.CollisionManager = new Core.Collision.CollisionManager();
+                this.Configuration = new Core.GameConfiguration(GameRunnerInstance.Register(this));
+            }
+            Game._gameIds = 0;
+            Game.prototype.PrepareUpdate = function () {
+                this._gameTime.Update();
+                this.CollisionManager.Update(this._gameTime);
+                this.Update(this._gameTime);
+            };
+            Game.prototype.Update = function (gameTime) {
+            };
+            Game.prototype.Dispose = function () {
+                GameRunnerInstance.Unregister(this);
+            };
+            return Game;
+        })();
+        Core.Game = Game;        
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        var GameRunner = (function () {
+            function GameRunner() {
+                this._type = "GameRunner";
+                this._callbacks = {
+                };
+                this._gameLoop = null;
+                this._callbackCount = 0;
+            }
+            GameRunner.prototype.Register = function (game) {
+                var updateCallback = this.CreateAndCacheCallback(game);
+                this.TryLoopStart();
+                this._gameLoop.AddCallback(updateCallback);
+                return this.CreateUpdateRateSetter(updateCallback);
+            };
+            GameRunner.prototype.Unregister = function (game) {
+                var updateCallback;
+                if(this._callbacks[game.ID]) {
+                    updateCallback = this._callbacks[game.ID];
+                    this._gameLoop.RemoveCallback(updateCallback);
+                    delete this._callbacks[game.ID];
+                    this._callbackCount--;
+                    this.TryLoopStop();
+                }
+            };
+            GameRunner.prototype.TryLoopStart = function () {
+                if(this._callbackCount === 1) {
+                    this._gameLoop = new Core.Utilities.Looper();
+                    this._gameLoop.Start();
+                }
+            };
+            GameRunner.prototype.TryLoopStop = function () {
+                if(this._callbackCount === 0 && this._gameLoop != null) {
+                    this._gameLoop.Dispose();
+                    this._gameLoop = null;
+                }
+            };
+            GameRunner.prototype.CreateAndCacheCallback = function (game) {
+                var updateCallback = new Core.Utilities.LooperCallback(0, function () {
+                    game.PrepareUpdate();
+                });
+                this._callbacks[game.ID] = updateCallback;
+                this._callbackCount++;
+                return updateCallback;
+            };
+            GameRunner.prototype.CreateUpdateRateSetter = function (callback) {
+                return function (updateRate) {
+                    callback.Fps = updateRate;
+                };
+            };
+            return GameRunner;
+        })();
+        Core.GameRunner = GameRunner;        
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var GameRunnerInstance = new EndGate.Core.GameRunner();
 var EndGate;
 (function (EndGate) {
     (function (Core) {
@@ -498,42 +681,6 @@ var EndGate;
     (function (Core) {
         (function (BoundingObject) {
             var Assets = EndGate.Core.Assets;
-            var Bounds2d = (function () {
-                function Bounds2d() {
-                    this.Position = Assets.Vector2d.Zero();
-                    this.Rotation = 0;
-                }
-                Bounds2d.prototype.ContainsPoint = function (point) {
-                    throw new Error("This method is abstract!");
-                };
-                Bounds2d.prototype.Intersects = function (obj) {
-                    if(obj._type === "BoundingCircle") {
-                        return this.IntersectsCircle(obj);
-                    } else if(obj._type === "BoundingRectangle") {
-                        return this.IntersectsRectangle(obj);
-                    } else {
-                        throw new Error("Cannot intersect with unidentifiable object, must be BoundingCircle or BoundingRectangle");
-                    }
-                };
-                Bounds2d.prototype.IntersectsCircle = function (circle) {
-                    throw new Error("This method is abstract!");
-                };
-                Bounds2d.prototype.IntersectsRectangle = function (rectangle) {
-                    throw new Error("This method is abstract!");
-                };
-                return Bounds2d;
-            })();
-            BoundingObject.Bounds2d = Bounds2d;            
-        })(Core.BoundingObject || (Core.BoundingObject = {}));
-        var BoundingObject = Core.BoundingObject;
-    })(EndGate.Core || (EndGate.Core = {}));
-    var Core = EndGate.Core;
-})(EndGate || (EndGate = {}));
-var EndGate;
-(function (EndGate) {
-    (function (Core) {
-        (function (BoundingObject) {
-            var Assets = EndGate.Core.Assets;
             var BoundingCircle = (function (_super) {
                 __extends(BoundingCircle, _super);
                 function BoundingCircle(radius) {
@@ -669,108 +816,6 @@ var EndGate;
             BoundingObject.BoundingRectangle = BoundingRectangle;            
         })(Core.BoundingObject || (Core.BoundingObject = {}));
         var BoundingObject = Core.BoundingObject;
-    })(EndGate.Core || (EndGate.Core = {}));
-    var Core = EndGate.Core;
-})(EndGate || (EndGate = {}));
-var EndGate;
-(function (EndGate) {
-    (function (Core) {
-        (function (Utilities) {
-            var EventHandler = (function () {
-                function EventHandler() {
-                    this._type = "Event";
-                    this._actions = [];
-                    this._disposed = false;
-                }
-                EventHandler.prototype.Bind = function (action) {
-                    this._actions.push(action);
-                };
-                EventHandler.prototype.Unbind = function (action) {
-                    for(var i = 0; i < this._actions.length; i++) {
-                        if(this._actions[i] === action) {
-                            this._actions.splice(i, 1);
-                            return;
-                        }
-                    }
-                };
-                EventHandler.prototype.Trigger = function () {
-                    var args = [];
-                    for (var _i = 0; _i < (arguments.length - 0); _i++) {
-                        args[_i] = arguments[_i + 0];
-                    }
-                    for(var i = 0; i < this._actions.length; i++) {
-                        this._actions[i].apply(this, args);
-                    }
-                };
-                EventHandler.prototype.Dispose = function () {
-                    if(!this._disposed) {
-                        this._disposed = true;
-                        this._actions = [];
-                    } else {
-                        throw new Error("Cannot dispose Event twice.");
-                    }
-                };
-                return EventHandler;
-            })();
-            Utilities.EventHandler = EventHandler;            
-        })(Core.Utilities || (Core.Utilities = {}));
-        var Utilities = Core.Utilities;
-    })(EndGate.Core || (EndGate.Core = {}));
-    var Core = EndGate.Core;
-})(EndGate || (EndGate = {}));
-var EndGate;
-(function (EndGate) {
-    (function (Core) {
-        (function (Collision) {
-            var BoundingObject = EndGate.Core.BoundingObject;
-            var Utilities = EndGate.Core.Utilities;
-            var Collidable = (function () {
-                function Collidable(bounds) {
-                    this._type = "Collidable";
-                    this._disposed = false;
-                    this.Bounds = bounds;
-                    this.ID = Collidable._collidableIDs++;
-                    this.OnCollision = new Utilities.EventHandler();
-                    this.OnDisposed = new Utilities.EventHandler();
-                }
-                Collidable._collidableIDs = 0;
-                Collidable.prototype.IsCollidingWith = function (other) {
-                    return this.Bounds.Intersects(other.Bounds);
-                };
-                Collidable.prototype.Collided = function (data) {
-                    this.OnCollision.Trigger(data);
-                };
-                Collidable.prototype.Dispose = function () {
-                    if(!this._disposed) {
-                        this._disposed = true;
-                        this.OnDisposed.Trigger(this);
-                    } else {
-                        throw new Error("Cannot dispose collidable twice.");
-                    }
-                };
-                return Collidable;
-            })();
-            Collision.Collidable = Collidable;            
-        })(Core.Collision || (Core.Collision = {}));
-        var Collision = Core.Collision;
-    })(EndGate.Core || (EndGate.Core = {}));
-    var Core = EndGate.Core;
-})(EndGate || (EndGate = {}));
-var EndGate;
-(function (EndGate) {
-    (function (Core) {
-        (function (Collision) {
-            var Assets = EndGate.Core.Assets;
-            var CollisionData = (function () {
-                function CollisionData(at, w) {
-                    this.At = at;
-                    this.With = w;
-                }
-                return CollisionData;
-            })();
-            Collision.CollisionData = CollisionData;            
-        })(Core.Collision || (Core.Collision = {}));
-        var Collision = Core.Collision;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));

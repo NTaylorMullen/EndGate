@@ -125,6 +125,13 @@
     <Content Include="Collision\CollisionData.min.js">
       <DependentUpon>CollisionData.ts</DependentUpon>
     </Content>
+    <TypeScriptCompile Include="Collision\CollisionManager.ts" />
+    <Content Include="Collision\CollisionManager.js">
+      <DependentUpon>CollisionManager.ts</DependentUpon>
+    </Content>
+    <Content Include="Collision\CollisionManager.min.js">
+      <DependentUpon>CollisionManager.ts</DependentUpon>
+    </Content>
     <Content Include="Extensions\MathExtensions.js">
       <DependentUpon>MathExtensions.ts</DependentUpon>
     </Content>
