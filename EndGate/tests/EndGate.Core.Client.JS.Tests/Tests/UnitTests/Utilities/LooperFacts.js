@@ -27,7 +27,7 @@
                 assert.ok(false, "Loop did not finish in time!");
                 end();
             }
-        }, 1050);
+        }, 1100);
 
         return function () {
             gameLoop.Dispose();
@@ -64,7 +64,7 @@
                 assert.ok(false, "Loop did not finish in time!");
                 end();
             }
-        }, 1050);
+        }, 1100);
 
         return function () {
             gameLoop.Dispose();

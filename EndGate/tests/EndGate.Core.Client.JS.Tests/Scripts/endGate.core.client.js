@@ -826,6 +826,8 @@ Array.prototype._type = "Array";
 Date.prototype._type = "Date";
 Object.prototype._type = "Object";
 Error.prototype._type = "Error";
-(window).readyForRender = (function () {
-    return window.requestAnimationFrame || (window).webkitRequestAnimationFrame || (window).mozRequestAnimationFrame || (window).oRequestAnimationFrame || (window).msRequestAnimationFrame;
+window.callWhenReady = (function () {
+    return (window.requestAnimationFrame || (window).webkitRequestAnimationFrame || (window).mozRequestAnimationFrame || (window).oRequestAnimationFrame || (window).msRequestAnimationFrame || function (callback) {
+        window.setTimeout(callback, 0);
+    });
 })();

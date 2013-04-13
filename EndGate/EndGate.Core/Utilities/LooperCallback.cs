@@ -32,7 +32,8 @@ namespace EndGate.Core.Utilities
             set
             {
                 _fps = value;
-                TriggerFrequency = 1000 / _fps;
+
+                TriggerFrequency = (_fps != 0) ? 1000 / _fps : 0;
             }
         }
     }

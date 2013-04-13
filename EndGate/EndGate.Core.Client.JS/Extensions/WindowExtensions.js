@@ -1,3 +1,5 @@
-(window).readyForRender = (function () {
-    return window.requestAnimationFrame || (window).webkitRequestAnimationFrame || (window).mozRequestAnimationFrame || (window).oRequestAnimationFrame || (window).msRequestAnimationFrame;
+window.callWhenReady = (function () {
+    return (window.requestAnimationFrame || (window).webkitRequestAnimationFrame || (window).mozRequestAnimationFrame || (window).oRequestAnimationFrame || (window).msRequestAnimationFrame || function (callback) {
+        window.setTimeout(callback, 0);
+    });
 })();

@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using EndGate.Core.Utilities;
 using Xunit;
 
@@ -53,8 +48,8 @@ namespace EndGate.Core.Tests
                 {
                     resetEvent.Set();
                 }
-            }); 
-            
+            });
+
             gameLoop.AddCallback(looperCallback1);
             gameLoop.AddCallback(looperCallback2);
             gameLoop.Start();
