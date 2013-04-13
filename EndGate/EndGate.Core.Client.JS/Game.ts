@@ -4,6 +4,7 @@
 /// <reference path="GameRunner.ts" />
 /// <reference path="GameConfiguration.ts" />
 /// <reference path="Collision/CollisionManager.ts" />
+/// <reference path="Rendering/Scene.ts" />
 
 module EndGate.Core {
 
@@ -13,14 +14,16 @@ module EndGate.Core {
         public ID: number;
         public Configuration: GameConfiguration;
         public CollisionManager: Collision.CollisionManager;
+        public Scene: Rendering.Scene;
 
         private static _gameIds: number = 0;
         private _gameTime: GameTime;
 
-        constructor() {
+        constructor(gameCanvas?:HTMLCanvasElement) {
             this._gameTime = new GameTime();
             this.ID = Game._gameIds++;
 
+            this.Scene = new Rendering.Scene(gameCanvas);
             this.CollisionManager = new Collision.CollisionManager();
             this.Configuration = new GameConfiguration(GameRunnerInstance.Register(this))
         }
@@ -35,8 +38,18 @@ module EndGate.Core {
         public Update(gameTime: GameTime): void {
         }
 
+        public PrepareDraw(): void {
+            this.Scene.Draw();
+
+            this.Draw();
+        }
+
+        public Draw(): void {
+        }
+
         public Dispose()
         {
+            this.Scene.Dispose();
             GameRunnerInstance.Unregister(this);
         }
     }

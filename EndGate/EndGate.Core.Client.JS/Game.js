@@ -2,10 +2,11 @@ var EndGate;
 (function (EndGate) {
     (function (Core) {
         var Game = (function () {
-            function Game() {
+            function Game(gameCanvas) {
                 this._type = "Game";
                 this._gameTime = new Core.GameTime();
                 this.ID = Game._gameIds++;
+                this.Scene = new Core.Rendering.Scene(gameCanvas);
                 this.CollisionManager = new Core.Collision.CollisionManager();
                 this.Configuration = new Core.GameConfiguration(GameRunnerInstance.Register(this));
             }
@@ -17,7 +18,14 @@ var EndGate;
             };
             Game.prototype.Update = function (gameTime) {
             };
+            Game.prototype.PrepareDraw = function () {
+                this.Scene.Draw();
+                this.Draw();
+            };
+            Game.prototype.Draw = function () {
+            };
             Game.prototype.Dispose = function () {
+                this.Scene.Dispose();
                 GameRunnerInstance.Unregister(this);
             };
             return Game;

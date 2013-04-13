@@ -27,56 +27,74 @@ var EndGate;
 var EndGate;
 (function (EndGate) {
     (function (Core) {
-        (function (Utilities) {
+        (function (Loopers) {
             var LooperCallback = (function () {
-                function LooperCallback(fps, callback) {
+                function LooperCallback(callback) {
                     this._type = "LooperCallback";
-                    this.Fps = fps;
                     this.Callback = callback;
-                    this.TimeoutID = 0;
                     this.ID = LooperCallback._ids++;
-                    this.Active = false;
                 }
                 LooperCallback._ids = 0;
                 return LooperCallback;
             })();
-            Utilities.LooperCallback = LooperCallback;            
-        })(Core.Utilities || (Core.Utilities = {}));
-        var Utilities = Core.Utilities;
+            Loopers.LooperCallback = LooperCallback;            
+        })(Core.Loopers || (Core.Loopers = {}));
+        var Loopers = Core.Loopers;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));
 var EndGate;
 (function (EndGate) {
     (function (Core) {
-        (function (Utilities) {
+            })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Loopers) {
+            var TimedCallback = (function (_super) {
+                __extends(TimedCallback, _super);
+                function TimedCallback(fps, callback) {
+                                _super.call(this, callback);
+                    this._type = "TimedCallback";
+                    this.Fps = fps;
+                    this.TimeoutID = 0;
+                    this.Active = false;
+                }
+                return TimedCallback;
+            })(Loopers.LooperCallback);
+            Loopers.TimedCallback = TimedCallback;            
+        })(Core.Loopers || (Core.Loopers = {}));
+        var Loopers = Core.Loopers;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Loopers) {
             var Looper = (function () {
                 function Looper() {
                     this._type = "Looper";
                     this._running = false;
                     this._callbacks = [];
                 }
-                Looper.prototype.AddCallback = function (looperCallback) {
-                    this._callbacks.push(looperCallback);
-                    looperCallback.Active = true;
+                Looper.prototype.AddCallback = function (timedCallback) {
+                    this._callbacks.push(timedCallback);
+                    timedCallback.Active = true;
                     if(this._running) {
-                        this.Loop(looperCallback);
+                        this.Loop(timedCallback);
                     }
                 };
-                Looper.prototype.RemoveCallback = function (looperCallback) {
-                    var callbackFound = false, i;
-                    for(i = 0; i < this._callbacks.length; i++) {
-                        if(this._callbacks[i].ID === looperCallback.ID) {
-                            callbackFound = true;
-                            break;
+                Looper.prototype.RemoveCallback = function (timedCallback) {
+                    for(var i = 0; i < this._callbacks.length; i++) {
+                        if(this._callbacks[i].ID === timedCallback.ID) {
+                            window.clearTimeout(timedCallback.TimeoutID);
+                            timedCallback.Active = false;
+                            this._callbacks.splice(i, 1);
+                            return;
                         }
-                    }
-                    if(callbackFound) {
-                        window.clearTimeout(looperCallback.TimeoutID);
-                        looperCallback.Active = false;
-                        this._callbacks.splice(i, 1);
-                    } else {
-                        throw new Error("Callback does not exist.");
                     }
                 };
                 Looper.prototype.Start = function () {
@@ -88,12 +106,12 @@ var EndGate;
                         this.Loop(this._callbacks[i]);
                     }
                 };
-                Looper.prototype.Loop = function (looperCallback) {
-                    var that = this, msTimer = 1000 / looperCallback.Fps;
-                    looperCallback.Callback();
-                    if(looperCallback.Active) {
-                        looperCallback.TimeoutID = window.setTimeout(function () {
-                            that.Loop(looperCallback);
+                Looper.prototype.Loop = function (timedCallback) {
+                    var that = this, msTimer = 1000 / timedCallback.Fps;
+                    timedCallback.Callback();
+                    if(timedCallback.Active) {
+                        timedCallback.TimeoutID = window.setTimeout(function () {
+                            that.Loop(timedCallback);
                         }, msTimer);
                     }
                 };
@@ -106,9 +124,70 @@ var EndGate;
                 };
                 return Looper;
             })();
-            Utilities.Looper = Looper;            
-        })(Core.Utilities || (Core.Utilities = {}));
-        var Utilities = Core.Utilities;
+            Loopers.Looper = Looper;            
+        })(Core.Loopers || (Core.Loopers = {}));
+        var Loopers = Core.Loopers;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+window.OnRepaintCompleted = (function () {
+    return (window.requestAnimationFrame || (window).webkitRequestAnimationFrame || (window).mozRequestAnimationFrame || (window).oRequestAnimationFrame || (window).msRequestAnimationFrame || function (callback) {
+        window.setTimeout(callback, 0);
+    });
+})();
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Loopers) {
+            var RepaintLooper = (function () {
+                function RepaintLooper() {
+                    this._type = "RepaintLooper";
+                    this._running = false;
+                    this._callbacksModified = false;
+                    this._callbacks = [];
+                }
+                RepaintLooper.prototype.Start = function () {
+                    this._running = true;
+                    this.Run();
+                };
+                RepaintLooper.prototype.Run = function () {
+                    var _this = this;
+                    if(this._running) {
+                        this._callbacksModified = false;
+                        for(var i = 0; i < this._callbacks.length; i++) {
+                            this._callbacks[i].Callback();
+                            if(this._callbacksModified) {
+                                break;
+                            }
+                        }
+                        window.OnRepaintCompleted(function () {
+                            _this.Run();
+                        });
+                    }
+                };
+                RepaintLooper.prototype.AddCallback = function (looperCallback) {
+                    this._callbacksModified = true;
+                    this._callbacks.push(looperCallback);
+                };
+                RepaintLooper.prototype.RemoveCallback = function (looperCallback) {
+                    for(var i = 0; i < this._callbacks.length; i++) {
+                        if(this._callbacks[i].ID === looperCallback.ID) {
+                            this._callbacksModified = true;
+                            this._callbacks.splice(i, 1);
+                            return;
+                        }
+                    }
+                };
+                RepaintLooper.prototype.Dispose = function () {
+                    this._callbacksModified = true;
+                    this._callbacks = [];
+                    this._running = false;
+                };
+                return RepaintLooper;
+            })();
+            Loopers.RepaintLooper = RepaintLooper;            
+        })(Core.Loopers || (Core.Loopers = {}));
+        var Loopers = Core.Loopers;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));
@@ -440,11 +519,114 @@ var EndGate;
 var EndGate;
 (function (EndGate) {
     (function (Core) {
+            })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+            })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Rendering) {
+            var Renderer2d = (function () {
+                function Renderer2d(renderOnto) {
+                    this._visibleCanvas = renderOnto;
+                    this._visibleContext = renderOnto.getContext("2d");
+                    this._bufferCanvas = document.createElement("canvas");
+                    this.UpdateBufferSize();
+                    this._disposed = false;
+                }
+                Renderer2d.prototype.Render = function (renderables) {
+                    if(this._bufferCanvas.width !== this._visibleCanvas.width || this._bufferCanvas.height !== this._visibleCanvas.height) {
+                        this.UpdateBufferSize();
+                    }
+                    this._bufferContext.clearRect(0, 0, this._bufferCanvas.width, this._bufferCanvas.height);
+                    for(var i = 0; i < renderables.length; i++) {
+                        renderables[i].Draw(this._bufferContext);
+                    }
+                    this._visibleContext.drawImage(this._bufferCanvas, 0, 0);
+                };
+                Renderer2d.prototype.Dispose = function () {
+                    if(!this._disposed) {
+                        this._disposed = true;
+                        this._visibleCanvas.parentNode.removeChild(this._visibleCanvas);
+                    }
+                };
+                Renderer2d.prototype.UpdateBufferSize = function () {
+                    this._bufferCanvas.width = this._visibleCanvas.width;
+                    this._bufferCanvas.height = this._visibleCanvas.height;
+                };
+                return Renderer2d;
+            })();
+            Rendering.Renderer2d = Renderer2d;            
+        })(Core.Rendering || (Core.Rendering = {}));
+        var Rendering = Core.Rendering;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Rendering) {
+            var Scene = (function () {
+                function Scene(drawArea) {
+                    this._type = "Scene";
+                    this._actors = [];
+                    if(typeof drawArea === "undefined") {
+                        drawArea = this.CreateDefaultDrawArea();
+                    }
+                    this._renderer = new Rendering.Renderer2d(drawArea);
+                    this._disposed = false;
+                }
+                Scene.prototype.Add = function (actor) {
+                    this._actors.push(actor);
+                };
+                Scene.prototype.Remove = function (actor) {
+                    for(var i = 0; i < this._actors.length; i++) {
+                        if(this._actors[i] === actor) {
+                            this._actors.splice(i, 1);
+                            return;
+                        }
+                    }
+                };
+                Scene.prototype.Draw = function () {
+                    this._renderer.Render(this._actors);
+                };
+                Scene.prototype.Dispose = function () {
+                    if(!this._disposed) {
+                        this._disposed = true;
+                        this._actors = [];
+                        this._renderer.Dispose();
+                    }
+                };
+                Scene.prototype.CreateDefaultDrawArea = function () {
+                    var drawArea = document.createElement("canvas");
+                    drawArea.width = window.innerWidth;
+                    drawArea.height = window.innerHeight;
+                    document.getElementsByTagName('body')[0].appendChild(drawArea);
+                    return drawArea;
+                };
+                return Scene;
+            })();
+            Rendering.Scene = Scene;            
+        })(Core.Rendering || (Core.Rendering = {}));
+        var Rendering = Core.Rendering;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
         var Game = (function () {
-            function Game() {
+            function Game(gameCanvas) {
                 this._type = "Game";
                 this._gameTime = new Core.GameTime();
                 this.ID = Game._gameIds++;
+                this.Scene = new Core.Rendering.Scene(gameCanvas);
                 this.CollisionManager = new Core.Collision.CollisionManager();
                 this.Configuration = new Core.GameConfiguration(GameRunnerInstance.Register(this));
             }
@@ -456,7 +638,14 @@ var EndGate;
             };
             Game.prototype.Update = function (gameTime) {
             };
+            Game.prototype.PrepareDraw = function () {
+                this.Scene.Draw();
+                this.Draw();
+            };
+            Game.prototype.Draw = function () {
+            };
             Game.prototype.Dispose = function () {
+                this.Scene.Dispose();
                 GameRunnerInstance.Unregister(this);
             };
             return Game;
@@ -471,46 +660,64 @@ var EndGate;
         var GameRunner = (function () {
             function GameRunner() {
                 this._type = "GameRunner";
-                this._callbacks = {
+                this._updateCallbacks = {
                 };
-                this._gameLoop = null;
+                this._drawCallbacks = {
+                };
+                this._updateLoop = null;
+                this._drawLoop = null;
                 this._callbackCount = 0;
             }
             GameRunner.prototype.Register = function (game) {
-                var updateCallback = this.CreateAndCacheCallback(game);
+                var updateCallback = this.CreateAndCacheUpdateCallback(game);
+                var drawCallback = this.CreateAndCacheDrawCallback(game);
+                this._callbackCount++;
                 this.TryLoopStart();
-                this._gameLoop.AddCallback(updateCallback);
+                this._updateLoop.AddCallback(updateCallback);
+                this._drawLoop.AddCallback(drawCallback);
                 return this.CreateUpdateRateSetter(updateCallback);
             };
             GameRunner.prototype.Unregister = function (game) {
-                var updateCallback;
-                if(this._callbacks[game.ID]) {
-                    updateCallback = this._callbacks[game.ID];
-                    this._gameLoop.RemoveCallback(updateCallback);
-                    delete this._callbacks[game.ID];
+                var updateCallback, drawCallback;
+                if(this._updateCallbacks[game.ID]) {
+                    updateCallback = this._updateCallbacks[game.ID];
+                    drawCallback = this._drawCallbacks[game.ID];
+                    this._updateLoop.RemoveCallback(updateCallback);
+                    this._drawLoop.RemoveCallback(drawCallback);
+                    delete this._updateCallbacks[game.ID];
+                    delete this._drawCallbacks[game.ID];
                     this._callbackCount--;
                     this.TryLoopStop();
                 }
             };
             GameRunner.prototype.TryLoopStart = function () {
                 if(this._callbackCount === 1) {
-                    this._gameLoop = new Core.Utilities.Looper();
-                    this._gameLoop.Start();
+                    this._updateLoop = new Core.Loopers.Looper();
+                    this._updateLoop.Start();
+                    this._drawLoop.Start();
                 }
             };
             GameRunner.prototype.TryLoopStop = function () {
-                if(this._callbackCount === 0 && this._gameLoop != null) {
-                    this._gameLoop.Dispose();
-                    this._gameLoop = null;
+                if(this._callbackCount === 0 && this._updateLoop != null) {
+                    this._updateLoop.Dispose();
+                    this._updateLoop = null;
+                    this._drawLoop.Dispose();
+                    this._drawLoop = null;
                 }
             };
-            GameRunner.prototype.CreateAndCacheCallback = function (game) {
-                var updateCallback = new Core.Utilities.LooperCallback(0, function () {
+            GameRunner.prototype.CreateAndCacheUpdateCallback = function (game) {
+                var updateCallback = new Core.Loopers.TimedCallback(0, function () {
                     game.PrepareUpdate();
                 });
-                this._callbacks[game.ID] = updateCallback;
-                this._callbackCount++;
+                this._updateCallbacks[game.ID] = updateCallback;
                 return updateCallback;
+            };
+            GameRunner.prototype.CreateAndCacheDrawCallback = function (game) {
+                var drawCallback = new Core.Loopers.LooperCallback(function () {
+                    game.PrepareDraw();
+                });
+                this._drawCallbacks[game.ID] = drawCallback;
+                return drawCallback;
             };
             GameRunner.prototype.CreateUpdateRateSetter = function (callback) {
                 return function (updateRate) {
@@ -826,8 +1033,3 @@ Array.prototype._type = "Array";
 Date.prototype._type = "Date";
 Object.prototype._type = "Object";
 Error.prototype._type = "Error";
-window.callWhenReady = (function () {
-    return (window.requestAnimationFrame || (window).webkitRequestAnimationFrame || (window).mozRequestAnimationFrame || (window).oRequestAnimationFrame || (window).msRequestAnimationFrame || function (callback) {
-        window.setTimeout(callback, 0);
-    });
-})();

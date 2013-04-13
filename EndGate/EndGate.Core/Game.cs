@@ -2,7 +2,6 @@
 using System.Threading;
 using EndGate.Core.Collision;
 using EndGate.Core.Interfaces;
-using EndGate.Core.Utilities;
 
 namespace EndGate.Core
 {

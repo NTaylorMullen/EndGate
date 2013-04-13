@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 
-namespace EndGate.Core.Utilities
+namespace EndGate.Core.Loopers
 {
-    internal class Looper : IDisposable
+    internal class Looper : ILooper
     {
         private object _updateLock;
         private long _running;
 
         // Used to stop callback execution on callback additions or looper stops (within a Callback itself)
         private bool _callbacksModified;
-        private List<LooperCallback> _callbacks;
+        private List<TimedCallback> _callbacks;
 
         public Looper()
         {
@@ -20,10 +20,10 @@ namespace EndGate.Core.Utilities
             _updateLock = new object();
             _running = 0;
             _callbacksModified = false;
-            _callbacks = new List<LooperCallback>();
+            _callbacks = new List<TimedCallback>();
         }
 
-        public void AddCallback(LooperCallback callback)
+        public void AddCallback(TimedCallback callback)
         {
             lock (_updateLock)
             {
@@ -32,7 +32,7 @@ namespace EndGate.Core.Utilities
             }
         }
 
-        public void RemoveCallback(LooperCallback callback)
+        public void RemoveCallback(TimedCallback callback)
         {
             lock (_updateLock)
             {
@@ -66,7 +66,7 @@ namespace EndGate.Core.Utilities
 
                         _callbacksModified = false;
 
-                        foreach (LooperCallback callback in _callbacks)
+                        foreach (TimedCallback callback in _callbacks)
                         {
                             elapsedTime = timer.ElapsedMilliseconds - callback.LastTriggered;
 

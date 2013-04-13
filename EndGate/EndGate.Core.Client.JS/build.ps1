@@ -104,7 +104,7 @@ Remove-Item $outputFilePath -Force -ErrorAction SilentlyContinue
 foreach ($file in $files) {
     if ($file)
     {        
-        Add-Content -Path $outputFilePath -Value "/* $file.Name */"
+        Add-Content -Path $outputFilePath -Value "/* $file */"
         Get-Content -Path $file.FullName | Foreach-Object {$_ -replace $referenceReplacer, ""} | Add-Content -Path $outputFilePath
     }
 }

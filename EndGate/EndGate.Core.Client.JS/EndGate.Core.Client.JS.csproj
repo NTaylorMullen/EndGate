@@ -181,6 +181,35 @@
       <DependentUpon>GameTime.ts</DependentUpon>
     </Content>
     <TypeScriptCompile Include="Interfaces\IUpdateable.d.ts" />
+    <TypeScriptCompile Include="Rendering\Scene.ts" />
+    <TypeScriptCompile Include="Rendering\Renderer2d.ts" />
+    <TypeScriptCompile Include="Rendering\IRenderer.d.ts" />
+    <TypeScriptCompile Include="Loopers\TimedCallback.ts" />
+    <Content Include="Loopers\TimedCallback.js">
+      <DependentUpon>TimedCallback.ts</DependentUpon>
+    </Content>
+    <Content Include="Loopers\TimedCallback.min.js">
+      <DependentUpon>TimedCallback.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Rendering\IRenderable.d.ts" />
+    <Content Include="Rendering\IRenderable.d.js">
+      <DependentUpon>IRenderable.d.ts</DependentUpon>
+    </Content>
+    <Content Include="Rendering\IRenderer.d.js">
+      <DependentUpon>IRenderer.d.ts</DependentUpon>
+    </Content>
+    <Content Include="Rendering\Renderer2d.js">
+      <DependentUpon>Renderer2d.ts</DependentUpon>
+    </Content>
+    <Content Include="Rendering\Renderer2d.min.js">
+      <DependentUpon>Renderer2d.ts</DependentUpon>
+    </Content>
+    <Content Include="Rendering\Scene.js">
+      <DependentUpon>Scene.ts</DependentUpon>
+    </Content>
+    <Content Include="Rendering\Scene.min.js">
+      <DependentUpon>Scene.ts</DependentUpon>
+    </Content>
     <Content Include="Scripts\endGate.core.client.js">
       <DependentUpon>endGate.core.client.ts</DependentUpon>
     </Content>
@@ -189,7 +218,7 @@
     </Content>
     <Content Include="Scripts\endGate.core.client.ts" />
     <Content Include="Scripts\_references.js" />
-    <TypeScriptCompile Include="Utilities\Looper.ts" />
+    <TypeScriptCompile Include="Loopers\Looper.ts" />
     <TypeScriptCompile Include="Utilities\EventHandler.ts" />
     <Content Include="Utilities\EventHandler.js">
       <DependentUpon>EventHandler.ts</DependentUpon>
@@ -197,18 +226,29 @@
     <Content Include="Utilities\EventHandler.min.js">
       <DependentUpon>EventHandler.ts</DependentUpon>
     </Content>
-    <Content Include="Utilities\Looper.js">
+    <TypeScriptCompile Include="Loopers\ILooper.d.ts" />
+    <Content Include="Loopers\ILooper.d.js">
+      <DependentUpon>ILooper.d.ts</DependentUpon>
+    </Content>
+    <Content Include="Loopers\Looper.js">
       <DependentUpon>Looper.ts</DependentUpon>
     </Content>
-    <Content Include="Utilities\Looper.min.js">
+    <Content Include="Loopers\Looper.min.js">
       <DependentUpon>Looper.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="Utilities\LooperCallback.ts" />
-    <Content Include="Utilities\LooperCallback.js">
+    <TypeScriptCompile Include="Loopers\LooperCallback.ts" />
+    <Content Include="Loopers\LooperCallback.js">
       <DependentUpon>LooperCallback.ts</DependentUpon>
     </Content>
-    <Content Include="Utilities\LooperCallback.min.js">
+    <Content Include="Loopers\LooperCallback.min.js">
       <DependentUpon>LooperCallback.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Loopers\RepaintLooper.ts" />
+    <Content Include="Loopers\RepaintLooper.js">
+      <DependentUpon>RepaintLooper.ts</DependentUpon>
+    </Content>
+    <Content Include="Loopers\RepaintLooper.min.js">
+      <DependentUpon>RepaintLooper.ts</DependentUpon>
     </Content>
     <Content Include="Web.config" />
   </ItemGroup>

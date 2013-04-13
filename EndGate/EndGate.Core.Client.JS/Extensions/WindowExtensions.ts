@@ -1,8 +1,8 @@
 interface Window {
-    callWhenReady(callback: Function): void;
+    OnRepaintCompleted(callback: Function): void;
 }
 
-window.callWhenReady = () => {
+window.OnRepaintCompleted = () => {
     return (
         window.requestAnimationFrame ||
         (<any>window).webkitRequestAnimationFrame ||

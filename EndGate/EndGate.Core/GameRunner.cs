@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using EndGate.Core.Utilities;
+using EndGate.Core.Loopers;
 
 namespace EndGate.Core
 {
     internal class GameRunner
     {
         private static Lazy<GameRunner> _instance = new Lazy<GameRunner>(() => new GameRunner());
-        private ConcurrentDictionary<long, LooperCallback> _callbacks;
-        private Looper _gameLoop;
+        private ConcurrentDictionary<long, TimedCallback> _callbacks;
+        private Looper _updateLoop;
 
         public GameRunner()
         {
-            _callbacks = new ConcurrentDictionary<long, LooperCallback>();
+            _callbacks = new ConcurrentDictionary<long, TimedCallback>();
         }
 
         public static GameRunner Instance
@@ -31,7 +31,7 @@ namespace EndGate.Core
             TryLoopStart();
 
             // Add our callback to the game loop (which is now running), it will now be called on an interval dictated by updateCallback
-            _gameLoop.AddCallback(updateCallback);
+            _updateLoop.AddCallback(updateCallback);
 
             // Updating the "updateRate" is an essential element to the game configuration.
             // If a game is running slowly we need to be able to slow down the update rate.
@@ -40,9 +40,9 @@ namespace EndGate.Core
 
         public void Unregister(Game game)
         {
-            LooperCallback updateCallback;
+            TimedCallback updateCallback;
             _callbacks.TryRemove(game.ID, out updateCallback);
-            _gameLoop.RemoveCallback(updateCallback);
+            _updateLoop.RemoveCallback(updateCallback);
 
             TryLoopStop();
         }
@@ -51,23 +51,23 @@ namespace EndGate.Core
         {
             if (_callbacks.Count == 1)
             {
-                _gameLoop = new Looper();
-                _gameLoop.Start();
+                _updateLoop = new Looper();
+                _updateLoop.Start();
             }
         }
 
         private void TryLoopStop()
         {
-            if (_callbacks.Count == 0 && _gameLoop != null)
+            if (_callbacks.Count == 0 && _updateLoop != null)
             {
-                _gameLoop.Dispose();
-                _gameLoop = null;
+                _updateLoop.Dispose();
+                _updateLoop = null;
             }
         }
 
-        private LooperCallback CreateAndCacheCallback(Game game)
+        private TimedCallback CreateAndCacheCallback(Game game)
         {
-            var updateCallback = new LooperCallback
+            var updateCallback = new TimedCallback
             {
                 Callback = game.PrepareUpdate
             };
@@ -78,7 +78,7 @@ namespace EndGate.Core
             return updateCallback;
         }
 
-        private Action<int> CreateUpdateRateSetter(LooperCallback callback)
+        private Action<int> CreateUpdateRateSetter(TimedCallback callback)
         {
             return (updateRate) =>
             {

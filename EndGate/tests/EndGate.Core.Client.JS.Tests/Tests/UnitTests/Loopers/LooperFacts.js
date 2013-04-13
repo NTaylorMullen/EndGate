@@ -10,7 +10,7 @@
                 assert.equal(updates, 30, "Updates have hit 30!");
                 end();
             },
-            looperCallback = new lib.LooperCallback(30, function () {
+            timedCallback = new lib.TimedCallback(30, function () {
                 updates++;
                 if (updates >= 30) {
                     triggered = true;
@@ -19,7 +19,7 @@
                 }
             });
 
-        gameLoop.AddCallback(looperCallback);
+        gameLoop.AddCallback(timedCallback);
         gameLoop.Start();
 
         window.setTimeout(function () {
@@ -42,10 +42,10 @@
                 assert.equal(updates, -30, "Updates have hit -30!");
                 end();
             },
-            looperCallback1 = new lib.LooperCallback(30, function () {
+            timedCallback1 = new lib.TimedCallback(30, function () {
                 updates++;                
             }),
-            looperCallback2 = new lib.LooperCallback(60, function () {
+            timedCallback2 = new lib.TimedCallback(60, function () {
                 updates--;
 
                 if (updates <= -30) {
@@ -55,8 +55,8 @@
                 }
             });
 
-        gameLoop.AddCallback(looperCallback1);
-        gameLoop.AddCallback(looperCallback2);
+        gameLoop.AddCallback(timedCallback1);
+        gameLoop.AddCallback(timedCallback2);
         gameLoop.Start();
 
         window.setTimeout(function () {
@@ -71,4 +71,4 @@
         };
     });
 
-})(window, EndGate.Core.Utilities);
+})(window, EndGate.Core.Loopers);

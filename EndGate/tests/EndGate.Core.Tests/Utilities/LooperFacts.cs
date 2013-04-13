@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading;
-using EndGate.Core.Utilities;
+using EndGate.Core.Loopers;
 using Xunit;
 
 namespace EndGate.Core.Tests
@@ -13,7 +13,7 @@ namespace EndGate.Core.Tests
             long updates = 0;
             var resetEvent = new ManualResetEvent(false);
             var gameLoop = new Looper();
-            var looperCallback = new LooperCallback(30, () =>
+            var timedCallback = new TimedCallback(30, () =>
             {
                 updates++;
                 if (updates >= 30)
@@ -21,7 +21,7 @@ namespace EndGate.Core.Tests
                     resetEvent.Set();
                 }
             });
-            gameLoop.AddCallback(looperCallback);
+            gameLoop.AddCallback(timedCallback);
             gameLoop.Start();
 
             Assert.True(resetEvent.WaitOne(TimeSpan.FromSeconds(1.01)));
@@ -36,11 +36,11 @@ namespace EndGate.Core.Tests
             long updates = 0;
             var resetEvent = new ManualResetEvent(false);
             var gameLoop = new Looper();
-            var looperCallback1 = new LooperCallback(30, () =>
+            var timedCallback1 = new TimedCallback(30, () =>
             {
                 updates++;
             });
-            var looperCallback2 = new LooperCallback(60, () =>
+            var timedCallback2 = new TimedCallback(60, () =>
             {
                 updates--;
 
@@ -50,14 +50,14 @@ namespace EndGate.Core.Tests
                 }
             });
 
-            gameLoop.AddCallback(looperCallback1);
-            gameLoop.AddCallback(looperCallback2);
+            gameLoop.AddCallback(timedCallback1);
+            gameLoop.AddCallback(timedCallback2);
             gameLoop.Start();
 
             Assert.True(resetEvent.WaitOne(TimeSpan.FromSeconds(1.01)));
             gameLoop.Dispose();
 
-            // Since looperCallback2 is executing twice as fast as looperCallback1 it will negate the value of updates
+            // Since timedCallback2 is executing twice as fast as timedCallback1 it will negate the value of updates
             Assert.Equal(updates, -30);
         }
     }

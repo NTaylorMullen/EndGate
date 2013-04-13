@@ -1,12 +1,12 @@
-/* IDisposable.d.ts.Name */
+/* IDisposable.d.ts */
 interface IDisposable {
     Dispose(): void;
 }
-/* ITyped.d.ts.Name */
+/* ITyped.d.ts */
 interface ITyped {
     _type: string;
 }
-/* GameTime.ts.Name */
+/* GameTime.ts */
 
 
 module EndGate.Core {
@@ -38,83 +38,103 @@ module EndGate.Core {
     }
 
 }
-/* IUpdateable.d.ts.Name */
+/* IUpdateable.d.ts */
 
 
 interface IUpdateable {
     Update(gameTime: EndGate.Core.GameTime): void;
 }
-/* LooperCallback.ts.Name */
+/* LooperCallback.ts */
 
 
-module EndGate.Core.Utilities {
+module EndGate.Core.Loopers {
 
     export class LooperCallback implements ITyped {
         public _type: string = "LooperCallback";
 
         private static _ids: number = 0;
 
-        constructor(fps: number, callback: Function) {
-            this.Fps = fps;
+        constructor(callback: Function) {
             this.Callback = callback;
-            this.TimeoutID = 0;
             this.ID = LooperCallback._ids++;
+        }
+
+        public Callback: Function;
+        public ID: number;
+    }
+}
+/* ILooper.d.ts */
+
+
+
+
+module EndGate.Core.Loopers {
+
+    export interface ILooper extends IDisposable, ITyped {
+        Start(): void;
+        AddCallback(callback: LooperCallback): void;
+        RemoveCallback(callback: LooperCallback): void;
+    }
+
+}
+/* TimedCallback.ts */
+
+
+
+module EndGate.Core.Loopers {
+
+    export class TimedCallback implements ITyped extends LooperCallback {
+        public _type: string = "TimedCallback";
+
+        constructor(fps: number, callback: Function) {
+            super(callback);
+
+            this.Fps = fps;
+            this.TimeoutID = 0;
             this.Active = false;
         }
 
         public Fps: number;
-        public Callback: Function;
         public TimeoutID: number;
-        public ID: number;
         public Active: bool;
     }
+
 }
-/* Looper.ts.Name */
+/* Looper.ts */
 
 
 
 
-module EndGate.Core.Utilities {
+module EndGate.Core.Loopers {
 
-    export class Looper implements IDisposable, ITyped {
+    export class Looper implements ILooper {
         public _type: string = "Looper";
 
         private _running: bool;
-        private _callbacks: LooperCallback[];
+        private _callbacks: TimedCallback[];
 
         constructor() {
             this._running = false;
             this._callbacks = [];
         }
 
-        public AddCallback(looperCallback: LooperCallback): void {
-            this._callbacks.push(looperCallback);
-            looperCallback.Active = true;
+        public AddCallback(timedCallback: TimedCallback): void {
+            this._callbacks.push(timedCallback);
+            timedCallback.Active = true;
 
             if (this._running) {
-                this.Loop(looperCallback);
+                this.Loop(timedCallback);
             }
         }
 
-        public RemoveCallback(looperCallback: LooperCallback): void {
-            var callbackFound: bool = false,
-                i: number;
-
-            for (i = 0; i < this._callbacks.length; i++) {
-                if(this._callbacks[i].ID === looperCallback.ID) {
-                    callbackFound = true;
-                    break;
+        public RemoveCallback(timedCallback: TimedCallback): void {
+            for (var i = 0; i < this._callbacks.length; i++) {
+                if(this._callbacks[i].ID === timedCallback.ID) {
+                    window.clearTimeout(timedCallback.TimeoutID);
+                    timedCallback.Active = false;
+                    this._callbacks.splice(i, 1);
+                    return;
                 }
-            }
-
-
-            if (callbackFound) {
-                window.clearTimeout(looperCallback.TimeoutID);
-                looperCallback.Active = false;
-                this._callbacks.splice(i, 1);
-            }
-            else {
-                throw new Error("Callback does not exist.");
             }
         }
 
@@ -130,20 +150,21 @@ module EndGate.Core.Utilities {
             }
         }
 
-        private Loop(looperCallback: LooperCallback): void {
+        private Loop(timedCallback: TimedCallback): void {
             var that = this,
-                msTimer = 1000 / looperCallback.Fps;
+                msTimer = 1000 / timedCallback.Fps;
 
-            looperCallback.Callback();
+            timedCallback.Callback();
 
-            if (looperCallback.Active) {
-                looperCallback.TimeoutID = window.setTimeout(() => {
-                    that.Loop(looperCallback);
+            if (timedCallback.Active) {
+                timedCallback.TimeoutID = window.setTimeout(() => {
+                    that.Loop(timedCallback);
                 }, msTimer);
             }
         }
 
         public Dispose(): void {
+            // We need to "remove" every callback to stop each of their timeouts
             for (var i = this._callbacks.length - 1; i >= 0; i--) {
                 this.RemoveCallback(this._callbacks[i]);
             }
@@ -153,7 +174,98 @@ module EndGate.Core.Utilities {
         }
     }
 }
-/* GameConfiguration.ts.Name */
+/* WindowExtensions.ts */
+interface Window {
+    OnRepaintCompleted(callback: Function): void;
+}
+
+window.OnRepaintCompleted = () => {
+    return (
+        window.requestAnimationFrame ||
+        (<any>window).webkitRequestAnimationFrame ||
+        (<any>window).mozRequestAnimationFrame ||
+        (<any>window).oRequestAnimationFrame ||
+        (<any>window).msRequestAnimationFrame ||
+        function (callback) {
+            window.setTimeout(callback, 0);
+        }
+    );
+} ();
+/* RepaintLooper.ts */
+
+
+
+
+module EndGate.Core.Loopers {
+
+    // This looper uses the request animation frame to run its internal loop
+    // The method has been aliased as "OnRepaintCompleted" via the WindowExtensions
+    export class RepaintLooper implements ILooper {
+        public _type: string = "RepaintLooper";
+
+        private _running: bool;
+        private _callbacksModified: bool;
+        private _callbacks: LooperCallback[];
+
+        constructor() {
+            this._running = false;
+            this._callbacksModified = false;
+            this._callbacks = [];
+        }
+
+        public Start(): void {
+            this._running = true;
+            this.Run();
+        }
+
+        private Run(): void {
+            if (this._running) {
+                this._callbacksModified = false;
+
+                for (var i = 0; i < this._callbacks.length; i++) {
+                    this._callbacks[i].Callback();
+
+                    if (this._callbacksModified) {
+                        break;
+                    }
+                }
+
+                // We want to maintain the "this" context, also we need to continuously bind
+                // the method due to how the underlying native function works
+                window.OnRepaintCompleted(() =>
+                {
+                    this.Run();
+                });
+            }
+        }
+
+        public AddCallback(looperCallback: LooperCallback): void {
+            // This doesn't necessarily need to be here (it wont do any harm) but in order for
+            // consistency sake I'm putting it in
+            this._callbacksModified = true;
+
+            this._callbacks.push(looperCallback);
+        }
+
+        public RemoveCallback(looperCallback: LooperCallback): void {           
+            for (var i = 0; i < this._callbacks.length; i++) {
+                if (this._callbacks[i].ID === looperCallback.ID) {
+                    this._callbacksModified = true;
+                    this._callbacks.splice(i, 1);
+                    return;
+                }
+            }
+        }
+
+        public Dispose(): void {
+            this._callbacksModified = true;
+            this._callbacks = [];
+            this._running = false;
+        }
+    }
+
+}
+/* GameConfiguration.ts */
 module EndGate.Core {
 
     export class GameConfiguration {
@@ -178,7 +290,7 @@ module EndGate.Core {
     }
 
 }
-/* MathExtensions.ts.Name */
+/* MathExtensions.ts */
 interface Math {
     roundTo(val?: number, decimals?: number): number;
 }
@@ -188,7 +300,7 @@ Math.roundTo = function (val?: number, decimals?: number): number {
 
     return Math.round(val * multiplier) / multiplier;
 };
-/* Vector2d.ts.Name */
+/* Vector2d.ts */
 
 
 
@@ -349,7 +461,7 @@ module EndGate.Core.Assets {
         }
     }
 }
-/* Bounds2d.ts.Name */
+/* Bounds2d.ts */
 
 
 
@@ -397,7 +509,7 @@ module EndGate.Core.BoundingObject {
     }
 
 }
-/* EventHandler.ts.Name */
+/* EventHandler.ts */
 
 
 
@@ -433,7 +545,7 @@ module EndGate.Core.Utilities {
     }
 
 }
-/* CollisionData.ts.Name */
+/* CollisionData.ts */
 
 
 
@@ -452,7 +564,7 @@ module EndGate.Core.Collision {
     }
 
 }
-/* Collidable.ts.Name */
+/* Collidable.ts */
 
 
 
@@ -507,7 +619,7 @@ module EndGate.Core.Collision {
     }
 
 }
-/* CollisionManager.ts.Name */
+/* CollisionManager.ts */
 
 
 
@@ -577,7 +689,153 @@ module EndGate.Core.Collision {
     }
 
 }
-/* Game.ts.Name */
+/* IRenderable.d.ts */
+module EndGate.Core.Rendering {
+
+    export interface IRenderable {
+        Draw(context: CanvasRenderingContext2D): void;
+    }
+
+}
+/* IRenderer.d.ts */
+
+
+
+module EndGate.Core.Rendering {
+
+    export interface IRenderer extends IDisposable {
+        Render(renderables: IRenderable[]): void;
+    }
+
+}
+/* Renderer2d.ts */
+
+
+
+module EndGate.Core.Rendering {
+
+    export class Renderer2d implements IRenderer {
+        // These essentially are used to create a double buffer for rendering
+        private _visibleCanvas: HTMLCanvasElement;
+        private _visibleContext: CanvasRenderingContext2D;
+        private _bufferCanvas: HTMLCanvasElement;
+        private _bufferContext: CanvasRenderingContext2D;
+
+        private _disposed: bool;
+
+        constructor(renderOnto: HTMLCanvasElement) {
+            this._visibleCanvas = renderOnto;
+            this._visibleContext = renderOnto.getContext("2d");
+
+            // Create an equally sized canvas for a buffer
+            this._bufferCanvas = <HTMLCanvasElement>document.createElement("canvas");
+            this.UpdateBufferSize();
+
+            this._disposed = false;
+        }
+
+        public Render(renderables: IRenderable[]): void {
+            // Check if our visible canvas has changed size
+            if (this._bufferCanvas.width !== this._visibleCanvas.width || this._bufferCanvas.height !== this._visibleCanvas.height) {
+                this.UpdateBufferSize();
+            }
+
+            // We do not save or restore the canvas state because we want to let the
+            // dev decide how they manipulate the canvas
+
+            // Clear our buffer to prepare it for new drawings
+            this._bufferContext.clearRect(0, 0, this._bufferCanvas.width, this._bufferCanvas.height);
+
+            for (var i = 0; i < renderables.length; i++) {
+                renderables[i].Draw(this._bufferContext);
+            }
+
+            this._visibleContext.drawImage(this._bufferCanvas, 0, 0);
+        }
+
+        public Dispose(): void {
+            if (!this._disposed) {
+                this._disposed = true;
+
+                this._visibleCanvas.parentNode.removeChild(this._visibleCanvas);
+            }
+        }
+
+        private UpdateBufferSize()
+        {
+            this._bufferCanvas.width = this._visibleCanvas.width;
+            this._bufferCanvas.height = this._visibleCanvas.height;
+        }
+    }
+
+}
+/* Scene.ts */
+
+
+
+
+
+
+
+module EndGate.Core.Rendering {
+    
+    export class Scene implements ITyped, IDisposable {
+        public _type: string = "Scene";
+
+        private _actors: IRenderable[];
+        private _renderer: IRenderer;
+
+        private _disposed: bool;
+
+        constructor(drawArea?: HTMLCanvasElement) {
+            this._actors = [];
+
+            if (typeof drawArea === "undefined") {
+                drawArea = this.CreateDefaultDrawArea();
+            }
+
+            this._renderer = new Renderer2d(drawArea);
+            this._disposed = false;
+        }
+
+        public Add(actor: IRenderable): void {
+            this._actors.push(actor);
+        }
+
+        public Remove(actor: IRenderable): void {
+            for (var i = 0; i < this._actors.length; i++) {
+                if (this._actors[i] === actor) {
+                    this._actors.splice(i, 1);
+                    return;
+                }
+            }
+        }
+
+        public Draw(): void {
+            this._renderer.Render(this._actors);
+        }
+
+        public Dispose(): void {
+            if (!this._disposed) {
+                this._disposed = true;
+                this._actors = [];
+                this._renderer.Dispose();
+            }
+        }
+
+        private CreateDefaultDrawArea(): HTMLCanvasElement {
+            var drawArea = <HTMLCanvasElement>document.createElement("canvas");
+            drawArea.width = window.innerWidth;
+            drawArea.height = window.innerHeight;
+            document.getElementsByTagName('body')[0].appendChild(drawArea);
+
+            return drawArea;
+        }
+    }
+
+}
+/* Game.ts */
+
 
 
 
@@ -593,14 +851,16 @@ module EndGate.Core {
         public ID: number;
         public Configuration: GameConfiguration;
         public CollisionManager: Collision.CollisionManager;
+        public Scene: Rendering.Scene;
 
         private static _gameIds: number = 0;
         private _gameTime: GameTime;
 
-        constructor() {
+        constructor(gameCanvas?:HTMLCanvasElement) {
             this._gameTime = new GameTime();
             this.ID = Game._gameIds++;
 
+            this.Scene = new Rendering.Scene(gameCanvas);
             this.CollisionManager = new Collision.CollisionManager();
             this.Configuration = new GameConfiguration(GameRunnerInstance.Register(this))
         }
@@ -615,14 +875,25 @@ module EndGate.Core {
         public Update(gameTime: GameTime): void {
         }
 
+        public PrepareDraw(): void {
+            this.Scene.Draw();
+
+            this.Draw();
+        }
+
+        public Draw(): void {
+        }
+
         public Dispose()
         {
+            this.Scene.Dispose();
             GameRunnerInstance.Unregister(this);
         }
     }
 
 }
-/* GameRunner.ts.Name */
+/* GameRunner.ts */
+
 
 
 
@@ -633,24 +904,32 @@ module EndGate.Core {
     export class GameRunner implements ITyped {
         public _type: string = "GameRunner";
 
-        private _callbacks: { [id: number]: Utilities.LooperCallback; };
-        private _gameLoop: Utilities.Looper;
+        private _updateCallbacks: { [id: number]: Loopers.TimedCallback; };
+        private _drawCallbacks: { [id: number]: Loopers.LooperCallback; };
+        private _updateLoop: Loopers.Looper;
+        private _drawLoop: Loopers.RepaintLooper;
         private _callbackCount: number;
 
         constructor() {
-            this._callbacks = <{ [s: number]: Utilities.LooperCallback; } >{};
-            this._gameLoop = null;
+            this._updateCallbacks = <{ [s: number]: Loopers.TimedCallback; } >{};
+            this._drawCallbacks = <{ [s: number]: Loopers.LooperCallback; } >{};
+            this._updateLoop = null;
+            this._drawLoop = null;
             this._callbackCount = 0;
         }
 
         public Register(game: Game): (updateRate: number) => void {
-            var updateCallback = this.CreateAndCacheCallback(game);
+            var updateCallback = this.CreateAndCacheUpdateCallback(game);
+            var drawCallback = this.CreateAndCacheDrawCallback(game);
+
+            this._callbackCount++;
 
             // Try to start the loop prior to adding our games callback.  This callback may be the first, hence the "Try"
             this.TryLoopStart();
 
             // Add our callback to the game loop (which is now running), it will now be called on an interval dictated by updateCallback
-            this._gameLoop.AddCallback(updateCallback);
+            this._updateLoop.AddCallback(updateCallback);
+            this._drawLoop.AddCallback(drawCallback);
 
             // Updating the "updateRate" is an essential element to the game configuration.
             // If a game is running slowly we need to be able to slow down the update rate.
@@ -658,13 +937,18 @@ module EndGate.Core {
         }
 
         public Unregister(game: Game): void {
-            var updateCallback;
+            var updateCallback,
+                drawCallback;
 
-            if (this._callbacks[game.ID]) {
-                updateCallback = this._callbacks[game.ID];
+            if (this._updateCallbacks[game.ID]) {
+                updateCallback = this._updateCallbacks[game.ID];
+                drawCallback = this._drawCallbacks[game.ID];
 
-                this._gameLoop.RemoveCallback(updateCallback);
-                delete this._callbacks[game.ID];
+                this._updateLoop.RemoveCallback(updateCallback);
+                this._drawLoop.RemoveCallback(drawCallback);
+                delete this._updateCallbacks[game.ID];
+                delete this._drawCallbacks[game.ID];
+
                 this._callbackCount--
 
                 this.TryLoopStop();
@@ -673,30 +957,42 @@ module EndGate.Core {
 
         private TryLoopStart(): void {
             if (this._callbackCount === 1) {
-                this._gameLoop = new Utilities.Looper();
-                this._gameLoop.Start();
+                this._updateLoop = new Loopers.Looper();
+                this._updateLoop.Start();
+                this._drawLoop.Start();
             }
         }
 
         private TryLoopStop(): void {
-            if (this._callbackCount === 0 && this._gameLoop != null) {
-                this._gameLoop.Dispose();
-                this._gameLoop = null;
+            if (this._callbackCount === 0 && this._updateLoop != null) {
+                this._updateLoop.Dispose();
+                this._updateLoop = null;
+                this._drawLoop.Dispose();
+                this._drawLoop = null;
             }
         }
 
-        private CreateAndCacheCallback(game: Game): Utilities.LooperCallback {
-            var updateCallback = new Utilities.LooperCallback(0, () => {
+        private CreateAndCacheUpdateCallback(game: Game): Loopers.TimedCallback {
+            var updateCallback = new Loopers.TimedCallback(0, () => {
                 game.PrepareUpdate();
             });
 
-            this._callbacks[game.ID] = updateCallback;
-            this._callbackCount++;
+            this._updateCallbacks[game.ID] = updateCallback;            
 
             return updateCallback;
         };
 
-        private CreateUpdateRateSetter(callback: Utilities.LooperCallback): (updateRate: number) => void {
+        private CreateAndCacheDrawCallback(game: Game): Loopers.LooperCallback {
+            var drawCallback = new Loopers.LooperCallback(() => {
+                game.PrepareDraw();
+            });
+
+            this._drawCallbacks[game.ID] = drawCallback;
+
+            return drawCallback;
+        }
+
+        private CreateUpdateRateSetter(callback: Loopers.TimedCallback): (updateRate: number) => void {
             return (updateRate) => {
                 callback.Fps = updateRate;
             };
@@ -705,7 +1001,7 @@ module EndGate.Core {
 }
 
 var GameRunnerInstance: EndGate.Core.GameRunner = new EndGate.Core.GameRunner();
-/* Size2d.ts.Name */
+/* Size2d.ts */
 
 
 
@@ -859,7 +1155,7 @@ module EndGate.Core.Assets {
         }
     }
 }
-/* MinMax.ts.Name */
+/* MinMax.ts */
 module EndGate.Core.Assets {
 
     export class MinMax {
@@ -873,7 +1169,7 @@ module EndGate.Core.Assets {
     }
 
 }
-/* Vector2dHelpers.ts.Name */
+/* Vector2dHelpers.ts */
 
 
 
@@ -903,7 +1199,7 @@ module EndGate.Core.Assets {
     }
 
 }
-/* BoundingCircle.ts.Name */
+/* BoundingCircle.ts */
 
 
 
@@ -965,7 +1261,7 @@ module EndGate.Core.BoundingObject {
     }
 
 }
-/* BoundingRectangle.ts.Name */
+/* BoundingRectangle.ts */
 
 
 
@@ -1088,7 +1384,7 @@ module EndGate.Core.BoundingObject {
     }
 
 }
-/* PrimitiveExtensions.ts.Name */
+/* PrimitiveExtensions.ts */
 
 
 interface Object extends ITyped {}
@@ -1100,20 +1396,3 @@ Array.prototype._type = "Array";
 Date.prototype._type = "Date";
 Object.prototype._type = "Object";
 Error.prototype._type = "Error";
-/* WindowExtensions.ts.Name */
-interface Window {
-    callWhenReady(callback: Function): void;
-}
-
-window.callWhenReady = () => {
-    return (
-        window.requestAnimationFrame ||
-        (<any>window).webkitRequestAnimationFrame ||
-        (<any>window).mozRequestAnimationFrame ||
-        (<any>window).oRequestAnimationFrame ||
-        (<any>window).msRequestAnimationFrame ||
-        function (callback) {
-            window.setTimeout(callback, 0);
-        }
-    );
-} ();

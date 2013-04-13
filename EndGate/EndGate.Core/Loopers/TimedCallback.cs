@@ -4,25 +4,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EndGate.Core.Utilities
+namespace EndGate.Core.Loopers
 {
-    internal class LooperCallback
+    internal class TimedCallback : LooperCallback
     {
         private int _fps;
 
-        public LooperCallback()
+        public TimedCallback()
         {
         }
 
-        public LooperCallback(int fps, Action callback)
+        public TimedCallback(int fps, Action callback) :
+            base(callback)
         {
             Fps = fps;
-            Callback = callback;
         }
 
         public int TriggerFrequency { get; private set; }
         public long LastTriggered { get; set; }
-        public Action Callback { get; set; }
         public int Fps
         {
             get

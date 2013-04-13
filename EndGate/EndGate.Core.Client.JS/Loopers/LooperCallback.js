@@ -1,22 +1,19 @@
 var EndGate;
 (function (EndGate) {
     (function (Core) {
-        (function (Utilities) {
+        (function (Loopers) {
             var LooperCallback = (function () {
-                function LooperCallback(fps, callback) {
+                function LooperCallback(callback) {
                     this._type = "LooperCallback";
-                    this.Fps = fps;
                     this.Callback = callback;
-                    this.TimeoutID = 0;
                     this.ID = LooperCallback._ids++;
-                    this.Active = false;
                 }
                 LooperCallback._ids = 0;
                 return LooperCallback;
             })();
-            Utilities.LooperCallback = LooperCallback;            
-        })(Core.Utilities || (Core.Utilities = {}));
-        var Utilities = Core.Utilities;
+            Loopers.LooperCallback = LooperCallback;            
+        })(Core.Loopers || (Core.Loopers = {}));
+        var Loopers = Core.Loopers;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));
