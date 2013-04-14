@@ -18,6 +18,7 @@ module EndGate.Core.Rendering {
 
             // Create an equally sized canvas for a buffer
             this._bufferCanvas = <HTMLCanvasElement>document.createElement("canvas");
+            this._bufferContext = this._bufferCanvas.getContext("2d");
             this.UpdateBufferSize();
 
             this._disposed = false;

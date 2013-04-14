@@ -7,6 +7,7 @@ var EndGate;
                 this._gameTime = new Core.GameTime();
                 this.ID = Game._gameIds++;
                 this.Scene = new Core.Rendering.Scene(gameCanvas);
+                this.Scene.Add(this);
                 this.CollisionManager = new Core.Collision.CollisionManager();
                 this.Configuration = new Core.GameConfiguration(GameRunnerInstance.Register(this));
             }
@@ -20,9 +21,8 @@ var EndGate;
             };
             Game.prototype.PrepareDraw = function () {
                 this.Scene.Draw();
-                this.Draw();
             };
-            Game.prototype.Draw = function () {
+            Game.prototype.Draw = function (context) {
             };
             Game.prototype.Dispose = function () {
                 this.Scene.Dispose();

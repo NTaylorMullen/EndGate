@@ -38,6 +38,7 @@ var EndGate;
                 if(this._callbackCount === 1) {
                     this._updateLoop = new Core.Loopers.Looper();
                     this._updateLoop.Start();
+                    this._drawLoop = new Core.Loopers.RepaintLooper();
                     this._drawLoop.Start();
                 }
             };

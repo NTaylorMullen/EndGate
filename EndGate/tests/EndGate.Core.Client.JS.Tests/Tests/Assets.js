@@ -20,6 +20,22 @@ var UpdateTester = (function (_super) {
     };
     return UpdateTester;
 })(EndGate.Core.Game);
+var DrawTester = (function (_super) {
+    __extends(DrawTester, _super);
+    function DrawTester(onDrawLimit, drawLimit) {
+        _super.call(this);
+        this.DrawCount = 0;
+        this._onDrawLimit = onDrawLimit;
+        this._drawLimit = drawLimit;
+    }
+    DrawTester.prototype.Draw = function (context) {
+        this.DrawCount++;
+        if(this.DrawCount === this._drawLimit) {
+            this._onDrawLimit();
+        }
+    };
+    return DrawTester;
+})(EndGate.Core.Game);
 var CollisionManagerGame = (function (_super) {
     __extends(CollisionManagerGame, _super);
     function CollisionManagerGame() {

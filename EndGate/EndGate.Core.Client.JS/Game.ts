@@ -1,6 +1,7 @@
 /// <reference path="Interfaces/IDisposable.d.ts" />
 /// <reference path="Interfaces/ITyped.d.ts" />
 /// <reference path="Interfaces/IUpdateable.d.ts" />
+/// <reference path="Rendering/IRenderable.d.ts" />
 /// <reference path="GameRunner.ts" />
 /// <reference path="GameConfiguration.ts" />
 /// <reference path="Collision/CollisionManager.ts" />
@@ -8,7 +9,7 @@
 
 module EndGate.Core {
 
-    export class Game implements ITyped, IUpdateable, IDisposable {
+    export class Game implements ITyped, IUpdateable, IDisposable, Rendering.IRenderable {
         public _type: string = "Game";
 
         public ID: number;
@@ -24,6 +25,8 @@ module EndGate.Core {
             this.ID = Game._gameIds++;
 
             this.Scene = new Rendering.Scene(gameCanvas);
+            this.Scene.Add(this);
+
             this.CollisionManager = new Collision.CollisionManager();
             this.Configuration = new GameConfiguration(GameRunnerInstance.Register(this))
         }
@@ -40,11 +43,10 @@ module EndGate.Core {
 
         public PrepareDraw(): void {
             this.Scene.Draw();
-
-            this.Draw();
         }
 
-        public Draw(): void {
+        // This is called by the scene
+        public Draw(context: CanvasRenderingContext2D): void {
         }
 
         public Dispose()

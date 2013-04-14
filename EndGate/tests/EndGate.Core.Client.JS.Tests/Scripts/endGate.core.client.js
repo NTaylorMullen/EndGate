@@ -27,6 +27,12 @@ var EndGate;
 var EndGate;
 (function (EndGate) {
     (function (Core) {
+            })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
         (function (Loopers) {
             var LooperCallback = (function () {
                 function LooperCallback(callback) {
@@ -525,18 +531,13 @@ var EndGate;
 var EndGate;
 (function (EndGate) {
     (function (Core) {
-            })(EndGate.Core || (EndGate.Core = {}));
-    var Core = EndGate.Core;
-})(EndGate || (EndGate = {}));
-var EndGate;
-(function (EndGate) {
-    (function (Core) {
         (function (Rendering) {
             var Renderer2d = (function () {
                 function Renderer2d(renderOnto) {
                     this._visibleCanvas = renderOnto;
                     this._visibleContext = renderOnto.getContext("2d");
                     this._bufferCanvas = document.createElement("canvas");
+                    this._bufferContext = this._bufferCanvas.getContext("2d");
                     this.UpdateBufferSize();
                     this._disposed = false;
                 }
@@ -627,6 +628,7 @@ var EndGate;
                 this._gameTime = new Core.GameTime();
                 this.ID = Game._gameIds++;
                 this.Scene = new Core.Rendering.Scene(gameCanvas);
+                this.Scene.Add(this);
                 this.CollisionManager = new Core.Collision.CollisionManager();
                 this.Configuration = new Core.GameConfiguration(GameRunnerInstance.Register(this));
             }
@@ -640,9 +642,8 @@ var EndGate;
             };
             Game.prototype.PrepareDraw = function () {
                 this.Scene.Draw();
-                this.Draw();
             };
-            Game.prototype.Draw = function () {
+            Game.prototype.Draw = function (context) {
             };
             Game.prototype.Dispose = function () {
                 this.Scene.Dispose();
@@ -694,6 +695,7 @@ var EndGate;
                 if(this._callbackCount === 1) {
                     this._updateLoop = new Core.Loopers.Looper();
                     this._updateLoop.Start();
+                    this._drawLoop = new Core.Loopers.RepaintLooper();
                     this._drawLoop.Start();
                 }
             };

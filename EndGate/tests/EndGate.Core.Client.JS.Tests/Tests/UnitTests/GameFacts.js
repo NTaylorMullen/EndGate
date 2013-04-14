@@ -22,7 +22,25 @@
         };
     });
 
-    QUnit.asyncTimeoutTest("Classes inheriting game are run individually.", testUtilities.defaultTestTimeout, function (end, assert, testName) {
+    QUnit.asyncTimeoutTest("Classes inheriting game have draw called.", testUtilities.defaultTestTimeout, function (end, assert, testName) {
+        var onComplete,
+            game = new DrawTester(function () {
+                assert.ok(true, "Limit reached!");
+                game.Dispose();
+                window.setTimeout(onComplete, 1000);
+            }, 40);
+
+        onComplete = function () {
+            assert.equal(game.DrawCount, 40, "Game drew 40 times!");
+            end();
+        };
+
+        return function () {
+            game.Dispose();
+        };
+    });
+
+    QUnit.asyncTimeoutTest("Classes inheriting game have update run individually.", testUtilities.defaultTestTimeout, function (end, assert, testName) {
         var triggered1 = false,
             triggered2 = false,
             game1 = new UpdateTester(60, function () {
@@ -42,7 +60,38 @@
             assert.equal(game1.UpdateCount, 60, "Game1 updated 60 times.");
             assert.equal(game2.UpdateCount, 40, "Game2 updated 40 times.");
             end();
-        }, 1050);
+        }, 1200);
+
+        return function () {
+            game1.Dispose();
+            game2.Dispose();
+        };
+    });
+
+    QUnit.asyncTimeoutTest("Classes inheriting game have draw run individually.", testUtilities.defaultTestTimeout, function (end, assert, testName) {
+        var triggered1 = false,
+            triggered2 = false,
+            tryComplete;
+            game1 = new DrawTester(function () {
+                assert.ok(true, "Limit reached for game1!");
+                triggered1 = true;
+                game1.Dispose();
+                tryComplete();
+            }, 60),
+            game2 = new DrawTester(function () {
+                assert.ok(true, "Limit reached for game2!");
+                triggered2 = true;
+                game2.Dispose();
+                tryComplete();
+            }, 40);
+
+        tryComplete = function () {
+            if (triggered1 && triggered2) {
+                assert.equal(game1.DrawCount, 60, "Game1 drew 60 times.");
+                assert.equal(game2.DrawCount, 40, "Game2 drew 40 times.");
+                end();
+            }
+        };
 
         return function () {
             game1.Dispose();

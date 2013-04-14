@@ -25,7 +25,27 @@ class UpdateTester extends EndGate.Core.Game {
     }
 }
 
-var temp = false;
+class DrawTester extends EndGate.Core.Game {
+    public DrawCount: number;
+
+    private _onDrawLimit: Function;
+    private _drawLimit: number;
+
+    constructor(onDrawLimit: Function, drawLimit: number) {
+        super();
+
+        this.DrawCount = 0;
+        this._onDrawLimit = onDrawLimit;
+        this._drawLimit = drawLimit;
+    }
+
+    public Draw(context: CanvasRenderingContext2D) {
+        this.DrawCount++;
+        if (this.DrawCount === this._drawLimit) {
+            this._onDrawLimit();
+        }
+    }
+}
 
 class CollisionManagerGame extends EndGate.Core.Game
 {

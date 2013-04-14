@@ -126,6 +126,7 @@
         }, 1000);
 
         return function () {
+            game.Dispose();
         };
     });
 

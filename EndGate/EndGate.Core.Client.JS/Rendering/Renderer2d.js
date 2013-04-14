@@ -7,6 +7,7 @@ var EndGate;
                     this._visibleCanvas = renderOnto;
                     this._visibleContext = renderOnto.getContext("2d");
                     this._bufferCanvas = document.createElement("canvas");
+                    this._bufferContext = this._bufferCanvas.getContext("2d");
                     this.UpdateBufferSize();
                     this._disposed = false;
                 }

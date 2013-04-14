@@ -44,6 +44,14 @@ module EndGate.Core {
 interface IUpdateable {
     Update(gameTime: EndGate.Core.GameTime): void;
 }
+/* IRenderable.d.ts */
+module EndGate.Core.Rendering {
+
+    export interface IRenderable {
+        Draw(context: CanvasRenderingContext2D): void;
+    }
+
+}
 /* LooperCallback.ts */
 
 
@@ -689,14 +697,6 @@ module EndGate.Core.Collision {
     }
 
 }
-/* IRenderable.d.ts */
-module EndGate.Core.Rendering {
-
-    export interface IRenderable {
-        Draw(context: CanvasRenderingContext2D): void;
-    }
-
-}
 /* IRenderer.d.ts */
 
 
@@ -729,6 +729,7 @@ module EndGate.Core.Rendering {
 
             // Create an equally sized canvas for a buffer
             this._bufferCanvas = <HTMLCanvasElement>document.createElement("canvas");
+            this._bufferContext = this._bufferCanvas.getContext("2d");
             this.UpdateBufferSize();
 
             this._disposed = false;
@@ -843,9 +844,10 @@ module EndGate.Core.Rendering {
 
 
 
+
 module EndGate.Core {
 
-    export class Game implements ITyped, IUpdateable, IDisposable {
+    export class Game implements ITyped, IUpdateable, IDisposable, Rendering.IRenderable {
         public _type: string = "Game";
 
         public ID: number;
@@ -861,6 +863,8 @@ module EndGate.Core {
             this.ID = Game._gameIds++;
 
             this.Scene = new Rendering.Scene(gameCanvas);
+            this.Scene.Add(this);
+
             this.CollisionManager = new Collision.CollisionManager();
             this.Configuration = new GameConfiguration(GameRunnerInstance.Register(this))
         }
@@ -877,11 +881,10 @@ module EndGate.Core {
 
         public PrepareDraw(): void {
             this.Scene.Draw();
-
-            this.Draw();
         }
 
-        public Draw(): void {
+        // This is called by the scene
+        public Draw(context: CanvasRenderingContext2D): void {
         }
 
         public Dispose()
@@ -959,6 +962,7 @@ module EndGate.Core {
             if (this._callbackCount === 1) {
                 this._updateLoop = new Loopers.Looper();
                 this._updateLoop.Start();
+                this._drawLoop = new Loopers.RepaintLooper();
                 this._drawLoop.Start();
             }
         }

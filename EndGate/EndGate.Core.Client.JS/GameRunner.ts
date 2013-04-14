@@ -64,6 +64,7 @@ module EndGate.Core {
             if (this._callbackCount === 1) {
                 this._updateLoop = new Loopers.Looper();
                 this._updateLoop.Start();
+                this._drawLoop = new Loopers.RepaintLooper();
                 this._drawLoop.Start();
             }
         }
