@@ -131,7 +131,10 @@ module EndGate.Core.Loopers {
             timedCallback.Active = true;
 
             if (this._running) {
-                this.Loop(timedCallback);
+                // Let initial call stack unwind before initiating the loop
+                window.setTimeout(() => {
+                    this.Loop(timedCallback);
+                }, 0);
             }
         }
 
@@ -154,7 +157,9 @@ module EndGate.Core.Loopers {
 
         private Run(): void {
             for (var i = 0; i < this._callbacks.length;i++) {
-                this.Loop(this._callbacks[i]);
+                window.setTimeout(() => {
+                    this.Loop(this._callbacks[i]);
+                }, 0);
             }
         }
 
@@ -301,6 +306,7 @@ module EndGate.Core {
 /* MathExtensions.ts */
 interface Math {
     roundTo(val?: number, decimals?: number): number;
+    twoPI: number;
 }
 
 Math.roundTo = function (val?: number, decimals?: number): number {
@@ -308,6 +314,8 @@ Math.roundTo = function (val?: number, decimals?: number): number {
 
     return Math.round(val * multiplier) / multiplier;
 };
+
+Math.twoPI = Math.PI * 2;
 /* Vector2d.ts */
 
 
@@ -476,8 +484,6 @@ module EndGate.Core.Assets {
 
 module EndGate.Core.BoundingObject {
 
-    import Assets = module(EndGate.Core.Assets);
-
     export class Bounds2d {
 
         public Position: Assets.Vector2d;
@@ -559,8 +565,6 @@ module EndGate.Core.Utilities {
 
 module EndGate.Core.Collision {
 
-    import Assets = module(EndGate.Core.Assets);
-
     export class CollisionData {
         public At: Assets.Vector2d;
         public With: Collidable;
@@ -580,9 +584,6 @@ module EndGate.Core.Collision {
 
 
 module EndGate.Core.Collision {
-
-    import BoundingObject = module(EndGate.Core.BoundingObject);
-    import Utilities = module(EndGate.Core.Utilities);
 
     export class Collidable implements IDisposable, ITyped {
         public _type: string = "Collidable";
@@ -636,8 +637,6 @@ module EndGate.Core.Collision {
 
 
 module EndGate.Core.Collision {
-
-    import Utilities = module(EndGate.Core.Utilities);
 
     export class CollisionManager implements IUpdateable, ITyped {
         public _type: string = "CollisionManager";
@@ -751,6 +750,7 @@ module EndGate.Core.Rendering {
                 renderables[i].Draw(this._bufferContext);
             }
 
+            this._visibleContext.clearRect(0, 0, this._visibleCanvas.width, this._visibleCanvas.height);
             this._visibleContext.drawImage(this._bufferCanvas, 0, 0);
         }
 
@@ -1210,8 +1210,6 @@ module EndGate.Core.Assets {
 
 module EndGate.Core.BoundingObject {
 
-    import Assets = module(EndGate.Core.Assets);
-
     export class BoundingCircle implements ITyped extends Bounds2d {
         public _type: string = "BoundingCircle";
 
@@ -1272,8 +1270,6 @@ module EndGate.Core.BoundingObject {
 
 
 module EndGate.Core.BoundingObject {
-
-    import Assets = module(EndGate.Core.Assets);
 
     export class BoundingRectangle implements ITyped extends Bounds2d {
         public _type: string = "BoundingRectangle";
@@ -1504,9 +1500,6 @@ module EndGate.Core.Graphics {
 
 module EndGate.Core.Graphics {
 
-    import Rendering = module(EndGate.Core.Rendering);
-    import Assets = module(EndGate.Core.Assets);
-
     export class Graphic2d implements ITyped, Rendering.IRenderable {
         public _type: string = "Graphic2d";
 
@@ -1525,6 +1518,12 @@ module EndGate.Core.Graphics {
         public StartDraw(context: CanvasRenderingContext2D): void {
             context.save();
             this.State.SetContextState(context);
+
+            if (this.Rotation !== 0) {
+                context.translate(this.Position.X, this.Position.Y);
+                context.rotate(this.Rotation);
+                context.translate(-this.Position.X, -this.Position.Y);
+            }
         }
 
         public EndDraw(context: CanvasRenderingContext2D): void {
@@ -1536,30 +1535,79 @@ module EndGate.Core.Graphics {
     }
 
 }
+/* Shape.ts */
+
+
+module EndGate.Core.Graphics.Shapes  {
+
+    export class Shape extends Graphic2d {
+        public _type: string = "Shape";
+
+        constructor(position: Assets.Vector2d, size: Assets.Size2d) {
+            super(position, size);
+        }
+
+        public Color(color: string): string {
+            return this.State.FillStyle(color);
+        }
+    }
+}
+/* Circle.ts */
+
+
+
+
+module EndGate.Core.Graphics.Shapes {
+
+    export class Circle extends Shape {
+        public _type: string = "Circle";
+
+        private _radius: number;
+
+        constructor(x: number, y: number, radius: number) {
+            super(new Assets.Vector2d(x, y), new Assets.Size2d(radius * 2, radius * 2));
+
+            this._radius = radius;
+        }
+
+        public Radius(val?: number): number {
+            if (typeof val !== "undefined") {
+                this._radius = val;
+                this.Size.Width = val * 2;
+                this.Size.Height = val * 2;
+            }
+
+            return this._radius;
+        }
+
+        public Draw(context: CanvasRenderingContext2D): void {
+            this.StartDraw(context);
+
+            context.arc(this.Position.X, this.Position.Y, this._radius, 0, Math.twoPI);
+
+            this.EndDraw(context);
+        }
+    }
+
+}
 /* Rectangle.ts */
 
 
 
 
-module EndGate.Core.Graphics {
+module EndGate.Core.Graphics.Shapes {
 
-    import Assets = module(EndGate.Core.Assets);
-
-    export class Rectangle extends Graphic2d {
+    export class Rectangle extends Shape {
         public _type: string = "Rectangle";
 
         constructor(x: number, y: number, width: number, height: number) {
             super(new Assets.Vector2d(x, y), new Assets.Size2d(width, height));            
         }
 
-        public Color(color: string): string {
-            return this.State.FillStyle(color);
-        }
-
         public Draw(context: CanvasRenderingContext2D): void {
             this.StartDraw(context);
 
-
+            context.fillRect(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
 
             this.EndDraw(context);
         }

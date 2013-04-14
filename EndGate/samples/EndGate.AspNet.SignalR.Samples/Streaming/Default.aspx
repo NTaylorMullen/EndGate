@@ -2,7 +2,7 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <ul class="breadcrumb">
-        <li><a href="<%: ResolveUrl("~/") %>">SignalR Compression Samples</a> <span class="divider">/</span></li>
+        <li><a href="<%: ResolveUrl("~/") %>">EndGate using SignalR Samples</a> <span class="divider">/</span></li>
         <li class="active">Streaming</li>
     </ul>
 

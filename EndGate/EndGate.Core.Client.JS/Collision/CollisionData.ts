@@ -3,8 +3,6 @@
 
 module EndGate.Core.Collision {
 
-    import Assets = module(EndGate.Core.Assets);
-
     export class CollisionData {
         public At: Assets.Vector2d;
         public With: Collidable;

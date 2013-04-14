@@ -40,6 +40,7 @@ module EndGate.Core.Rendering {
                 renderables[i].Draw(this._bufferContext);
             }
 
+            this._visibleContext.clearRect(0, 0, this._visibleCanvas.width, this._visibleCanvas.height);
             this._visibleContext.drawImage(this._bufferCanvas, 0, 0);
         }
 

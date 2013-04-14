@@ -4,8 +4,6 @@
 
 module EndGate.Core.BoundingObject {
 
-    import Assets = module(EndGate.Core.Assets);
-
     export class BoundingCircle implements ITyped extends Bounds2d {
         public _type: string = "BoundingCircle";
 

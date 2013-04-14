@@ -5,9 +5,9 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace EndGate.AspNet.SignalR.Samples.ShapeCreator
+namespace EndGate.Core.Client.JS.Samples.Samples
 {
-    public partial class Default : System.Web.UI.Page
+    public partial class EndGate_Core_Samples : System.Web.UI.MasterPage
     {
         protected void Page_Load(object sender, EventArgs e)
         {

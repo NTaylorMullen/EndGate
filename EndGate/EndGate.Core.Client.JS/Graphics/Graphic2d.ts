@@ -6,9 +6,6 @@
 
 module EndGate.Core.Graphics {
 
-    import Rendering = module(EndGate.Core.Rendering);
-    import Assets = module(EndGate.Core.Assets);
-
     export class Graphic2d implements ITyped, Rendering.IRenderable {
         public _type: string = "Graphic2d";
 
@@ -27,6 +24,12 @@ module EndGate.Core.Graphics {
         public StartDraw(context: CanvasRenderingContext2D): void {
             context.save();
             this.State.SetContextState(context);
+
+            if (this.Rotation !== 0) {
+                context.translate(this.Position.X, this.Position.Y);
+                context.rotate(this.Rotation);
+                context.translate(-this.Position.X, -this.Position.Y);
+            }
         }
 
         public EndDraw(context: CanvasRenderingContext2D): void {

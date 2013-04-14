@@ -4,8 +4,6 @@
 
 module EndGate.Core.BoundingObject {
 
-    import Assets = module(EndGate.Core.Assets);
-
     export class Bounds2d {
 
         public Position: Assets.Vector2d;

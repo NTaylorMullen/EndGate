@@ -19,6 +19,7 @@ var EndGate;
                     for(var i = 0; i < renderables.length; i++) {
                         renderables[i].Draw(this._bufferContext);
                     }
+                    this._visibleContext.clearRect(0, 0, this._visibleCanvas.width, this._visibleCanvas.height);
                     this._visibleContext.drawImage(this._bufferCanvas, 0, 0);
                 };
                 Renderer2d.prototype.Dispose = function () {
@@ -39,3 +40,4 @@ var EndGate;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));
+//@ sourceMappingURL=Renderer2d.js.map

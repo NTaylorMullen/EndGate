@@ -7,8 +7,6 @@
 
 module EndGate.Core.Collision {
 
-    import Utilities = module(EndGate.Core.Utilities);
-
     export class CollisionManager implements IUpdateable, ITyped {
         public _type: string = "CollisionManager";
 

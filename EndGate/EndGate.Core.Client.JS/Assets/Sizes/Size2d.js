@@ -105,3 +105,4 @@ var EndGate;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));
+//@ sourceMappingURL=Size2d.js.map

@@ -9,10 +9,13 @@ var EndGate;
                     this._callbacks = [];
                 }
                 Looper.prototype.AddCallback = function (timedCallback) {
+                    var _this = this;
                     this._callbacks.push(timedCallback);
                     timedCallback.Active = true;
                     if(this._running) {
-                        this.Loop(timedCallback);
+                        window.setTimeout(function () {
+                            _this.Loop(timedCallback);
+                        }, 0);
                     }
                 };
                 Looper.prototype.RemoveCallback = function (timedCallback) {
@@ -30,8 +33,11 @@ var EndGate;
                     this.Run();
                 };
                 Looper.prototype.Run = function () {
+                    var _this = this;
                     for(var i = 0; i < this._callbacks.length; i++) {
-                        this.Loop(this._callbacks[i]);
+                        window.setTimeout(function () {
+                            _this.Loop(_this._callbacks[i]);
+                        }, 0);
                     }
                 };
                 Looper.prototype.Loop = function (timedCallback) {
@@ -58,3 +64,4 @@ var EndGate;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));
+//@ sourceMappingURL=Looper.js.map

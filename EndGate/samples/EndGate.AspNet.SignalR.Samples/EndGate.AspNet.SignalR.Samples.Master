@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
-    <title>SignalR Compression</title>
+    <title>EndGate.Core.Samples using SignalR</title>
     <link href="~/Bootstrap/bootstrap.min.css" rel="stylesheet" />
 
     <asp:ContentPlaceHolder ID="HeadContent" runat="server">
@@ -32,7 +32,6 @@
 
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="<%: ResolveUrl("~/Scripts/jquery-1.9.1.js") %>"></script>
-    <script src="<%: ResolveUrl("~/Bootstrap/bootstrap.min.js") %>"></script>
     <script src="<%: ResolveUrl("~/Scripts/jquery.signalR-1.0.1.js") %>"></script>
     <asp:ContentPlaceHolder runat="server" ID="Scripts"></asp:ContentPlaceHolder>
 </body>

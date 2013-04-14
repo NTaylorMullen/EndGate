@@ -2,8 +2,6 @@ var EndGate;
 (function (EndGate) {
     (function (Core) {
         (function (Graphics) {
-            var Rendering = EndGate.Core.Rendering;
-            var Assets = EndGate.Core.Assets;
             var Graphic2d = (function () {
                 function Graphic2d(position, size) {
                     this._type = "Graphic2d";
@@ -15,6 +13,11 @@ var EndGate;
                 Graphic2d.prototype.StartDraw = function (context) {
                     context.save();
                     this.State.SetContextState(context);
+                    if(this.Rotation !== 0) {
+                        context.translate(this.Position.X, this.Position.Y);
+                        context.rotate(this.Rotation);
+                        context.translate(-this.Position.X, -this.Position.Y);
+                    }
                 };
                 Graphic2d.prototype.EndDraw = function (context) {
                     context.restore();
@@ -29,3 +32,4 @@ var EndGate;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));
+//@ sourceMappingURL=Graphic2d.js.map

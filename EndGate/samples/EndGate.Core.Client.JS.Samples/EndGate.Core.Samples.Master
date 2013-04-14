@@ -1,0 +1,40 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="EndGate.Core.Samples.master.cs" Inherits="EndGate.Core.Client.JS.Samples.Samples.EndGate_Core_Samples" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <title>EndGate.Core.Client.JS Samples</title>
+    <link href="~/Bootstrap/bootstrap.min.css" rel="stylesheet" />
+
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="brand" href="/">EndGate JavaScript Client</a>
+                <div class="nav-collapse collapse">
+                    <ul class="nav">
+                        <li class="active"><a href="/">Samples</a></li>
+                        <li><a href="https://github.com/NTaylorMullen/EndGate" target="_blank">Source Code</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <asp:ContentPlaceHolder ID="MainContent" runat="server">
+        </asp:ContentPlaceHolder>
+    </div>
+
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="<%: ResolveUrl("~/Scripts/jquery-1.9.1.js") %>"></script>
+    <script src="<%: ResolveUrl("~/Scripts/endGate.core.client.js") %>"></script>
+
+    <asp:ContentPlaceHolder runat="server" ID="Scripts"></asp:ContentPlaceHolder>
+</body>
+</html>
+

@@ -20,7 +20,10 @@ module EndGate.Core.Loopers {
             timedCallback.Active = true;
 
             if (this._running) {
-                this.Loop(timedCallback);
+                // Let initial call stack unwind before initiating the loop
+                window.setTimeout(() => {
+                    this.Loop(timedCallback);
+                }, 0);
             }
         }
 
@@ -43,7 +46,9 @@ module EndGate.Core.Loopers {
 
         private Run(): void {
             for (var i = 0; i < this._callbacks.length;i++) {
-                this.Loop(this._callbacks[i]);
+                window.setTimeout(() => {
+                    this.Loop(this._callbacks[i]);
+                }, 0);
             }
         }
 

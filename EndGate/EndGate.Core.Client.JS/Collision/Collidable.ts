@@ -6,9 +6,6 @@
 
 module EndGate.Core.Collision {
 
-    import BoundingObject = module(EndGate.Core.BoundingObject);
-    import Utilities = module(EndGate.Core.Utilities);
-
     export class Collidable implements IDisposable, ITyped {
         public _type: string = "Collidable";
 

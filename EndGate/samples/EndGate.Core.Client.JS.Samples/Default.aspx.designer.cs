@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace EndGate.AspNet.SignalR.Samples.ShapeCreator
+namespace EndGate.Core.Client.JS.Samples
 {
 
 

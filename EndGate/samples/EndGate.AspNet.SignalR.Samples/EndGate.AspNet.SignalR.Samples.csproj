@@ -89,7 +89,6 @@
   <ItemGroup>
     <Content Include="Bootstrap\bootstrap.min.css" />
     <Content Include="Bootstrap\bootstrap.min.js" />
-    <Content Include="ShapeCreator\Default.aspx" />
     <Content Include="Streaming\Streaming.js" />
     <Content Include="Streaming\Default.aspx" />
     <Content Include="Default.aspx" />
@@ -105,13 +104,6 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ShapeCreator\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ShapeCreator\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Streaming\Streamer.cs" />
     <Compile Include="Streaming\StreamingHub.cs" />
     <Compile Include="Streaming\Default.aspx.cs">

@@ -186,6 +186,13 @@
     <TypeScriptCompile Include="Rendering\IRenderer.d.ts" />
     <TypeScriptCompile Include="Loopers\TimedCallback.ts" />
     <TypeScriptCompile Include="Graphics\Graphic2d.ts" />
+    <TypeScriptCompile Include="Graphics\Shapes\Circle.ts" />
+    <Content Include="Graphics\Shapes\Circle.js">
+      <DependentUpon>Circle.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Shapes\Circle.min.js">
+      <DependentUpon>Circle.ts</DependentUpon>
+    </Content>
     <Content Include="Graphics\Graphic2d.js">
       <DependentUpon>Graphic2d.ts</DependentUpon>
     </Content>
@@ -198,6 +205,13 @@
     </Content>
     <Content Include="Graphics\Graphic2dState.min.js">
       <DependentUpon>Graphic2dState.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Graphics\Shapes\Shape.ts" />
+    <Content Include="Graphics\Shapes\Shape.js">
+      <DependentUpon>Shape.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Shapes\Shape.min.js">
+      <DependentUpon>Shape.ts</DependentUpon>
     </Content>
     <Content Include="Loopers\TimedCallback.js">
       <DependentUpon>TimedCallback.ts</DependentUpon>
@@ -212,11 +226,11 @@
     <Content Include="Rendering\IRenderer.d.js">
       <DependentUpon>IRenderer.d.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="Graphics\Rectangle.ts" />
-    <Content Include="Graphics\Rectangle.js">
+    <TypeScriptCompile Include="Graphics\Shapes\Rectangle.ts" />
+    <Content Include="Graphics\Shapes\Rectangle.js">
       <DependentUpon>Rectangle.ts</DependentUpon>
     </Content>
-    <Content Include="Graphics\Rectangle.min.js">
+    <Content Include="Graphics\Shapes\Rectangle.min.js">
       <DependentUpon>Rectangle.ts</DependentUpon>
     </Content>
     <Content Include="Rendering\Renderer2d.js">
@@ -281,6 +295,27 @@
       <DependentUpon>Game.js</DependentUpon>
     </Content>
     <Content Include="build.ps1" />
+    <Content Include="Loopers\Looper.js.map">
+      <DependentUpon>Looper.ts</DependentUpon>
+    </Content>
+    <Content Include="Rendering\Renderer2d.js.map">
+      <DependentUpon>Renderer2d.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Shapes\Rectangle.js.map">
+      <DependentUpon>Rectangle.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Graphic2d.js.map">
+      <DependentUpon>Graphic2d.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Shapes\Circle.js.map">
+      <DependentUpon>Circle.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Shapes\Shape.js.map">
+      <DependentUpon>Shape.ts</DependentUpon>
+    </Content>
+    <Content Include="Extensions\MathExtensions.js.map">
+      <DependentUpon>MathExtensions.ts</DependentUpon>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
