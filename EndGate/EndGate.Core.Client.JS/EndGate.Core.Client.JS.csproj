@@ -185,6 +185,20 @@
     <TypeScriptCompile Include="Rendering\Renderer2d.ts" />
     <TypeScriptCompile Include="Rendering\IRenderer.d.ts" />
     <TypeScriptCompile Include="Loopers\TimedCallback.ts" />
+    <TypeScriptCompile Include="Graphics\Graphic2d.ts" />
+    <Content Include="Graphics\Graphic2d.js">
+      <DependentUpon>Graphic2d.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Graphic2d.min.js">
+      <DependentUpon>Graphic2d.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Graphics\Graphic2dState.ts" />
+    <Content Include="Graphics\Graphic2dState.js">
+      <DependentUpon>Graphic2dState.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Graphic2dState.min.js">
+      <DependentUpon>Graphic2dState.ts</DependentUpon>
+    </Content>
     <Content Include="Loopers\TimedCallback.js">
       <DependentUpon>TimedCallback.ts</DependentUpon>
     </Content>
@@ -197,6 +211,13 @@
     </Content>
     <Content Include="Rendering\IRenderer.d.js">
       <DependentUpon>IRenderer.d.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Graphics\Rectangle.ts" />
+    <Content Include="Graphics\Rectangle.js">
+      <DependentUpon>Rectangle.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Rectangle.min.js">
+      <DependentUpon>Rectangle.ts</DependentUpon>
     </Content>
     <Content Include="Rendering\Renderer2d.js">
       <DependentUpon>Renderer2d.ts</DependentUpon>
