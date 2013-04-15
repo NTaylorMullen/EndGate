@@ -24,6 +24,6 @@
     </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Scripts" runat="server">
-    <script src="graphicsRendering.js"></script>
-    <script src="main.js"></script>
+    <script src="assetsGraphicsRendering.js"></script>
+    <script src="mainGraphicsRendering.js"></script>
 </asp:Content>

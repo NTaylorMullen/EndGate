@@ -17,6 +17,12 @@
             <p>Demonstrates how to use the client to render graphics.</p>
             <p><a class="btn" href="Samples/GraphicsRendering">View sample &raquo;</a></p>
         </div>
+
+        <div class="span4">
+            <h3>Layering</h3>
+            <p>Demonstrates how to control the layering of graphics.</p>
+            <p><a class="btn" href="Samples/Layering">View sample &raquo;</a></p>
+        </div>
     </div>
 
     <div class="clear"></div>

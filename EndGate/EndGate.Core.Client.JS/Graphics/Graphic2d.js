@@ -7,6 +7,7 @@ var EndGate;
                     this._type = "Graphic2d";
                     this.Position = position;
                     this.Size = size;
+                    this.ZIndex = 0;
                     this.Rotation = 0;
                     this.State = new Graphics.Graphic2dState();
                 }

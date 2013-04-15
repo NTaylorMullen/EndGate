@@ -4,11 +4,13 @@
 module EndGate.Core.Rendering {
 
     export class Renderer2d implements IRenderer {
+        private static _zindexSort: (a: IRenderable, b: IRenderable) => number = (a: IRenderable, b: IRenderable) => { return a.ZIndex - b.ZIndex; };
+
         // These essentially are used to create a double buffer for rendering
         private _visibleCanvas: HTMLCanvasElement;
         private _visibleContext: CanvasRenderingContext2D;
         private _bufferCanvas: HTMLCanvasElement;
-        private _bufferContext: CanvasRenderingContext2D;
+        private _bufferContext: CanvasRenderingContext2D;        
 
         private _disposed: bool;
 
@@ -29,6 +31,9 @@ module EndGate.Core.Rendering {
             if (this._bufferCanvas.width !== this._visibleCanvas.width || this._bufferCanvas.height !== this._visibleCanvas.height) {
                 this.UpdateBufferSize();
             }
+
+            // Sort the renderables by the ZIndex so we draw in the correct order (for layering);
+            renderables.sort(Renderer2d._zindexSort);
 
             // We do not save or restore the canvas state because we want to let the
             // dev decide how they manipulate the canvas

@@ -3,3 +3,4 @@ window.OnRepaintCompleted = (function () {
         window.setTimeout(callback, 0);
     });
 })();
+//@ sourceMappingURL=WindowExtensions.js.map

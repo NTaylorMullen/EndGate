@@ -2,10 +2,9 @@ var EndGate;
 (function (EndGate) {
     (function (Core) {
         (function (BoundingObject) {
-            var Assets = EndGate.Core.Assets;
             var Bounds2d = (function () {
                 function Bounds2d() {
-                    this.Position = Assets.Vector2d.Zero();
+                    this.Position = Core.Assets.Vector2d.Zero();
                     this.Rotation = 0;
                 }
                 Bounds2d.prototype.ContainsPoint = function (point) {
@@ -34,3 +33,4 @@ var EndGate;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));
+//@ sourceMappingURL=Bounds2d.js.map

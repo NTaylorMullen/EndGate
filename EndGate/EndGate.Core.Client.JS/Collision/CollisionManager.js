@@ -2,13 +2,12 @@ var EndGate;
 (function (EndGate) {
     (function (Core) {
         (function (Collision) {
-            var Utilities = EndGate.Core.Utilities;
             var CollisionManager = (function () {
                 function CollisionManager() {
                     this._type = "CollisionManager";
                     this._collidables = [];
                     this._enabled = false;
-                    this.OnCollision = new Utilities.EventHandler();
+                    this.OnCollision = new Core.Utilities.EventHandler();
                 }
                 CollisionManager.prototype.Monitor = function (obj) {
                     var _this = this;
@@ -50,3 +49,4 @@ var EndGate;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));
+//@ sourceMappingURL=CollisionManager.js.map

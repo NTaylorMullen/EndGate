@@ -5,6 +5,7 @@ var EndGate;
             function Game(gameCanvas) {
                 this._type = "Game";
                 this._gameTime = new Core.GameTime();
+                this.ZIndex = -1000;
                 this.ID = Game._gameIds++;
                 this.Scene = new Core.Rendering.Scene(gameCanvas);
                 this.Scene.Add(this);
@@ -34,3 +35,4 @@ var EndGate;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));
+//@ sourceMappingURL=Game.js.map

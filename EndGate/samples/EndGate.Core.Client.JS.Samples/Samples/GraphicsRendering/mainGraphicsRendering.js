@@ -15,11 +15,10 @@
         for(var i = 0; i < circlesToAdd; i++) {
             renderer.AddRandomCircle();
         }
-        clearInput();
     });
     $("#clearItems").click(function () {
         renderer.Clear();
         clearInput();
     });
 })($, window);
-//@ sourceMappingURL=main.js.map
+//@ sourceMappingURL=mainGraphicsRendering.js.map

@@ -63,30 +63,39 @@
     <Content Include="Bootstrap\bootstrap.min.js" />
     <Content Include="Default.aspx" />
     <Content Include="packages.config" />
-    <Content Include="Samples\GraphicsRendering\graphicsRendering.js.map">
-      <DependentUpon>graphicsRendering.ts</DependentUpon>
+    <TypeScriptCompile Include="Samples\GraphicsRendering\mainGraphicsRendering.ts" />
+    <TypeScriptCompile Include="Samples\GraphicsRendering\assetsGraphicsRendering.ts" />
+    <Content Include="Samples\GraphicsRendering\assetsGraphicsRendering.js">
+      <DependentUpon>assetsGraphicsRendering.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\GraphicsRendering\main.js.map">
-      <DependentUpon>main.ts</DependentUpon>
+    <Content Include="Samples\GraphicsRendering\assetsGraphicsRendering.min.js">
+      <DependentUpon>assetsGraphicsRendering.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\GraphicsRendering\mainGraphicsRendering.js">
+      <DependentUpon>mainGraphicsRendering.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\GraphicsRendering\assetsGraphicsRendering.js.map">
+      <DependentUpon>assetsGraphicsRendering.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\endGate.core.client.js.map">
+      <DependentUpon>endGate.core.client.ts</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Samples\GraphicsRendering\Default.aspx" />
     <TypeScriptCompile Include="Scripts\endGate.core.client.ts" />
-    <TypeScriptCompile Include="Samples\GraphicsRendering\graphicsRendering.ts" />
-    <Content Include="Samples\GraphicsRendering\graphicsRendering.js">
-      <DependentUpon>graphicsRendering.ts</DependentUpon>
+    <TypeScriptCompile Include="Samples\Layering\assetsLayering.ts" />
+    <Content Include="Samples\Layering\assetsLayering.js">
+      <DependentUpon>assetsLayering.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\GraphicsRendering\graphicsRendering.min.js">
-      <DependentUpon>graphicsRendering.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Samples\GraphicsRendering\main.ts" />
-    <Content Include="Samples\GraphicsRendering\main.js">
-      <DependentUpon>main.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\GraphicsRendering\main.min.js">
-      <DependentUpon>main.ts</DependentUpon>
+    <Content Include="Samples\Layering\Default.aspx" />
+    <TypeScriptCompile Include="Samples\Layering\mainLayering.ts" />
+    <Content Include="Samples\Layering\mainLayering.js">
+      <DependentUpon>mainLayering.ts</DependentUpon>
     </Content>
     <Content Include="Scripts\endGate.core.client.js">
+      <DependentUpon>endGate.core.client.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\endGate.core.client.min.js">
       <DependentUpon>endGate.core.client.ts</DependentUpon>
     </Content>
     <Content Include="Scripts\jquery-1.9.1.js" />
@@ -116,6 +125,13 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Samples\GraphicsRendering\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Samples\Layering\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Samples\Layering\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
   </ItemGroup>

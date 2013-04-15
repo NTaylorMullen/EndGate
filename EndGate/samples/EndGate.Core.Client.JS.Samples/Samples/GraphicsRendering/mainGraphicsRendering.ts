@@ -1,5 +1,5 @@
 /// <reference path="../../Scripts/jquery.d.ts" />
-/// <reference path="graphicsRendering.ts" />
+/// <reference path="assetsGraphicsRendering.ts" />
 
 (function ($, window) {
     var canvas: HTMLCanvasElement = <HTMLCanvasElement>document.createElement("canvas"),
@@ -10,7 +10,7 @@
             numOfRectangles.val("");
             numOfCircles.val("");
         },
-        renderer;
+        renderer = null;
 
     canvas.width = holder.width();
     canvas.height = holder.height();
@@ -30,8 +30,6 @@
         for (var i = 0; i < circlesToAdd; i++) {
             renderer.AddRandomCircle();
         }
-
-        clearInput();
     });
 
     $("#clearItems").click(() => {

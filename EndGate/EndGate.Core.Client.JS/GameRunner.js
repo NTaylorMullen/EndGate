@@ -76,3 +76,4 @@ var EndGate;
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));
 var GameRunnerInstance = new EndGate.Core.GameRunner();
+//@ sourceMappingURL=GameRunner.js.map

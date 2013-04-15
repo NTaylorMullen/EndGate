@@ -316,6 +316,9 @@
     <Content Include="Extensions\MathExtensions.js.map">
       <DependentUpon>MathExtensions.ts</DependentUpon>
     </Content>
+    <Content Include="Game.js.map">
+      <DependentUpon>Game.ts</DependentUpon>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

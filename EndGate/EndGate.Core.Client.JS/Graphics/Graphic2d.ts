@@ -11,12 +11,14 @@ module EndGate.Core.Graphics {
 
         public Size: Assets.Size2d;
         public Position: Assets.Vector2d;
+        public ZIndex: number;
         public Rotation: number;
         public State: Graphic2dState;
 
         constructor(position: Assets.Vector2d, size: Assets.Size2d) {
             this.Position = position;
             this.Size = size;
+            this.ZIndex = 0;
             this.Rotation = 0;
             this.State = new Graphic2dState();
         }

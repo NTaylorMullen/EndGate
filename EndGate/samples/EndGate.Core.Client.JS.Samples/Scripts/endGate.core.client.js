@@ -543,10 +543,14 @@ var EndGate;
                     this.UpdateBufferSize();
                     this._disposed = false;
                 }
+                Renderer2d._zindexSort = function (a, b) {
+                    return a.ZIndex - b.ZIndex;
+                };
                 Renderer2d.prototype.Render = function (renderables) {
                     if(this._bufferCanvas.width !== this._visibleCanvas.width || this._bufferCanvas.height !== this._visibleCanvas.height) {
                         this.UpdateBufferSize();
                     }
+                    renderables.sort(Renderer2d._zindexSort);
                     this._bufferContext.clearRect(0, 0, this._bufferCanvas.width, this._bufferCanvas.height);
                     for(var i = 0; i < renderables.length; i++) {
                         renderables[i].Draw(this._bufferContext);
@@ -629,6 +633,7 @@ var EndGate;
             function Game(gameCanvas) {
                 this._type = "Game";
                 this._gameTime = new Core.GameTime();
+                this.ZIndex = -1000;
                 this.ID = Game._gameIds++;
                 this.Scene = new Core.Rendering.Scene(gameCanvas);
                 this.Scene.Add(this);
@@ -1173,6 +1178,7 @@ var EndGate;
                     this._type = "Graphic2d";
                     this.Position = position;
                     this.Size = size;
+                    this.ZIndex = 0;
                     this.Rotation = 0;
                     this.State = new Graphics.Graphic2dState();
                 }

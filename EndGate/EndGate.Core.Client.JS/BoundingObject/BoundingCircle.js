@@ -7,7 +7,6 @@ var EndGate;
 (function (EndGate) {
     (function (Core) {
         (function (BoundingObject) {
-            var Assets = EndGate.Core.Assets;
             var BoundingCircle = (function (_super) {
                 __extends(BoundingCircle, _super);
                 function BoundingCircle(radius) {
@@ -34,7 +33,7 @@ var EndGate;
                 };
                 BoundingCircle.prototype.IntersectsRectangle = function (rectangle) {
                     var translated = (rectangle.Rotation === 0) ? this.Position : this.Position.RotateAround(rectangle.Position, -rectangle.Rotation);
-                    var unrotatedTopLeft = new Assets.Vector2d(rectangle.Position.X - rectangle.Size.HalfWidth(), rectangle.Position.Y - rectangle.Size.HalfHeight()), unrotatedBotRight = new Assets.Vector2d(rectangle.Position.X + rectangle.Size.HalfWidth(), rectangle.Position.Y + rectangle.Size.HalfHeight()), closest = new Assets.Vector2d(BoundingCircle.ClosestTo(translated.X, unrotatedTopLeft, unrotatedBotRight), BoundingCircle.ClosestTo(translated.Y, unrotatedTopLeft, unrotatedBotRight));
+                    var unrotatedTopLeft = new Core.Assets.Vector2d(rectangle.Position.X - rectangle.Size.HalfWidth(), rectangle.Position.Y - rectangle.Size.HalfHeight()), unrotatedBotRight = new Core.Assets.Vector2d(rectangle.Position.X + rectangle.Size.HalfWidth(), rectangle.Position.Y + rectangle.Size.HalfHeight()), closest = new Core.Assets.Vector2d(BoundingCircle.ClosestTo(translated.X, unrotatedTopLeft, unrotatedBotRight), BoundingCircle.ClosestTo(translated.Y, unrotatedTopLeft, unrotatedBotRight));
                     return translated.Distance(closest).Magnitude() < this.Radius;
                 };
                 BoundingCircle.prototype.ContainsPoint = function (point) {
@@ -48,3 +47,4 @@ var EndGate;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));
+//@ sourceMappingURL=BoundingCircle.js.map

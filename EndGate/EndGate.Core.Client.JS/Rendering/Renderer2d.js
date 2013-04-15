@@ -11,10 +11,14 @@ var EndGate;
                     this.UpdateBufferSize();
                     this._disposed = false;
                 }
+                Renderer2d._zindexSort = function (a, b) {
+                    return a.ZIndex - b.ZIndex;
+                };
                 Renderer2d.prototype.Render = function (renderables) {
                     if(this._bufferCanvas.width !== this._visibleCanvas.width || this._bufferCanvas.height !== this._visibleCanvas.height) {
                         this.UpdateBufferSize();
                     }
+                    renderables.sort(Renderer2d._zindexSort);
                     this._bufferContext.clearRect(0, 0, this._bufferCanvas.width, this._bufferCanvas.height);
                     for(var i = 0; i < renderables.length; i++) {
                         renderables[i].Draw(this._bufferContext);

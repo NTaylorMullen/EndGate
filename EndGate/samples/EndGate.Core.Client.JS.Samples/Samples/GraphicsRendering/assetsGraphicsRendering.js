@@ -8,8 +8,12 @@ var MovingShape = (function () {
         this.Graphic = graphic;
         this._velocity = velocity;
         this._directionInterval = directionInterval;
-        this._rotationMultiplier = 1;
         this._lastChangedDirection = new Date().getTime();
+        if(graphic._type === "Circle") {
+            this._rotationMultiplier = 0;
+        } else {
+            this._rotationMultiplier = 1;
+        }
     }
     MovingShape.RotationSpeed = Math.PI;
     MovingShape.prototype.Update = function (gameTime) {
@@ -68,7 +72,7 @@ var GraphicsRenderer = (function (_super) {
         return new EndGate.Core.Assets.Size2d(Math.floor((Math.random() * this._width * .1) + 5), Math.floor((Math.random() * this._height * .1) + 5));
     };
     GraphicsRenderer.prototype.GetRandomRadius = function () {
-        return Math.floor(Math.random() * this._width * .1) + 5;
+        return Math.floor(Math.random() * this._width * .05) + 5;
     };
     GraphicsRenderer.prototype.GetRandomColor = function () {
         return "rgb(" + (Math.floor(Math.random() * 250) + 1) + ", " + (Math.floor(Math.random() * 250) + 1) + ", " + (Math.floor(Math.random() * 250) + 1) + ")";
@@ -86,4 +90,4 @@ var GraphicsRenderer = (function (_super) {
     };
     return GraphicsRenderer;
 })(EndGate.Core.Game);
-//@ sourceMappingURL=graphicsRendering.js.map
+//@ sourceMappingURL=assetsGraphicsRendering.js.map

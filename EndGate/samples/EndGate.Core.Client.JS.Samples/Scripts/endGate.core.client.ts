@@ -48,6 +48,7 @@ interface IUpdateable {
 module EndGate.Core.Rendering {
 
     export interface IRenderable {
+        ZIndex: number;
         Draw(context: CanvasRenderingContext2D): void;
     }
 
@@ -714,11 +715,13 @@ module EndGate.Core.Rendering {
 module EndGate.Core.Rendering {
 
     export class Renderer2d implements IRenderer {
+        private static _zindexSort: (a: IRenderable, b: IRenderable) => number = (a: IRenderable, b: IRenderable) => { return a.ZIndex - b.ZIndex; };
+
         // These essentially are used to create a double buffer for rendering
         private _visibleCanvas: HTMLCanvasElement;
         private _visibleContext: CanvasRenderingContext2D;
         private _bufferCanvas: HTMLCanvasElement;
-        private _bufferContext: CanvasRenderingContext2D;
+        private _bufferContext: CanvasRenderingContext2D;        
 
         private _disposed: bool;
 
@@ -739,6 +742,9 @@ module EndGate.Core.Rendering {
             if (this._bufferCanvas.width !== this._visibleCanvas.width || this._bufferCanvas.height !== this._visibleCanvas.height) {
                 this.UpdateBufferSize();
             }
+
+            // Sort the renderables by the ZIndex so we draw in the correct order (for layering);
+            renderables.sort(Renderer2d._zindexSort);
 
             // We do not save or restore the canvas state because we want to let the
             // dev decide how they manipulate the canvas
@@ -850,6 +856,7 @@ module EndGate.Core {
     export class Game implements ITyped, IUpdateable, IDisposable, Rendering.IRenderable {
         public _type: string = "Game";
 
+        public ZIndex: number;
         public ID: number;
         public Configuration: GameConfiguration;
         public CollisionManager: Collision.CollisionManager;
@@ -860,6 +867,8 @@ module EndGate.Core {
 
         constructor(gameCanvas?:HTMLCanvasElement) {
             this._gameTime = new GameTime();
+            // Call draw on Game LAST
+            this.ZIndex = -1000;
             this.ID = Game._gameIds++;
 
             this.Scene = new Rendering.Scene(gameCanvas);
@@ -1505,12 +1514,14 @@ module EndGate.Core.Graphics {
 
         public Size: Assets.Size2d;
         public Position: Assets.Vector2d;
+        public ZIndex: number;
         public Rotation: number;
         public State: Graphic2dState;
 
         constructor(position: Assets.Vector2d, size: Assets.Size2d) {
             this.Position = position;
             this.Size = size;
+            this.ZIndex = 0;
             this.Rotation = 0;
             this.State = new Graphic2dState();
         }

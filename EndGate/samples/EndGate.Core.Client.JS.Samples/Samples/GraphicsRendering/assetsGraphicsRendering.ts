@@ -14,8 +14,15 @@ class MovingShape implements IUpdateable {
         this.Graphic = graphic;
         this._velocity = velocity;
         this._directionInterval = directionInterval;
-        this._rotationMultiplier = 1;
         this._lastChangedDirection = new Date().getTime();
+
+        // No need to rotate circles
+        if (graphic._type === "Circle") {
+            this._rotationMultiplier = 0;
+        }
+        else {
+            this._rotationMultiplier = 1;
+        }
     }
 
     public Update(gameTime: EndGate.Core.GameTime): void {
@@ -104,7 +111,7 @@ class GraphicsRenderer extends EndGate.Core.Game {
     }
 
     private GetRandomRadius(): number {
-        return Math.floor(Math.random() * this._width *.05) + 5
+        return Math.floor(Math.random() * this._width * .05) + 5
     }
 
     private GetRandomColor(): string {

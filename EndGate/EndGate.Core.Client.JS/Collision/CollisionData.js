@@ -2,7 +2,6 @@ var EndGate;
 (function (EndGate) {
     (function (Core) {
         (function (Collision) {
-            var Assets = EndGate.Core.Assets;
             var CollisionData = (function () {
                 function CollisionData(at, w) {
                     this.At = at;
@@ -16,3 +15,4 @@ var EndGate;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));
+//@ sourceMappingURL=CollisionData.js.map

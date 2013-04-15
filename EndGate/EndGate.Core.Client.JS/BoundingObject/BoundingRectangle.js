@@ -7,14 +7,13 @@ var EndGate;
 (function (EndGate) {
     (function (Core) {
         (function (BoundingObject) {
-            var Assets = EndGate.Core.Assets;
             var BoundingRectangle = (function (_super) {
                 __extends(BoundingRectangle, _super);
                 function BoundingRectangle(first, second) {
                                 _super.call(this);
                     this._type = "BoundingRectangle";
                     if(typeof second !== "undefined") {
-                        this.Size = new Assets.Size2d(first, second);
+                        this.Size = new Core.Assets.Size2d(first, second);
                     } else {
                         this.Size = first;
                     }
@@ -28,28 +27,28 @@ var EndGate;
                     ];
                 };
                 BoundingRectangle.prototype.TopLeft = function () {
-                    var v = new Assets.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
+                    var v = new Core.Assets.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
                     if(this.Rotation === 0) {
                         return v;
                     }
                     return v.RotateAround(this.Position, this.Rotation);
                 };
                 BoundingRectangle.prototype.TopRight = function () {
-                    var v = new Assets.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
+                    var v = new Core.Assets.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
                     if(this.Rotation === 0) {
                         return v;
                     }
                     return v.RotateAround(this.Position, this.Rotation);
                 };
                 BoundingRectangle.prototype.BotLeft = function () {
-                    var v = new Assets.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
+                    var v = new Core.Assets.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
                     if(this.Rotation === 0) {
                         return v;
                     }
                     return v.RotateAround(this.Position, this.Rotation);
                 };
                 BoundingRectangle.prototype.BotRight = function () {
-                    var v = new Assets.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
+                    var v = new Core.Assets.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
                     if(this.Rotation === 0) {
                         return v;
                     }
@@ -73,8 +72,8 @@ var EndGate;
                         var theirVertices = rectangle.Vertices();
                         for(var i = 0; i < axisList.length; i++) {
                             var axi = axisList[i];
-                            var myProjections = Assets.Vector2dHelpers.GetMinMaxProjections(axi, myVertices);
-                            var theirProjections = Assets.Vector2dHelpers.GetMinMaxProjections(axi, theirVertices);
+                            var myProjections = Core.Assets.Vector2dHelpers.GetMinMaxProjections(axi, myVertices);
+                            var theirProjections = Core.Assets.Vector2dHelpers.GetMinMaxProjections(axi, theirVertices);
                             if(theirProjections.Max < myProjections.Min || myProjections.Max < theirProjections.Min) {
                                 return false;
                             }
@@ -101,3 +100,4 @@ var EndGate;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));
+//@ sourceMappingURL=BoundingRectangle.js.map
