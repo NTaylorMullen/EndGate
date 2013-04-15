@@ -319,6 +319,9 @@
     <Content Include="Game.js.map">
       <DependentUpon>Game.ts</DependentUpon>
     </Content>
+    <Content Include="Extensions\PrimitiveExtensions.js.map">
+      <DependentUpon>PrimitiveExtensions.ts</DependentUpon>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

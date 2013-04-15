@@ -13,6 +13,12 @@
     <!-- Samples -->
     <div class="row">
         <div class="span4">
+            <h3>Shapes</h3>
+            <p>Demonstrates how to use the shapes graphics library.</p>
+            <p><a class="btn" href="Samples/Shapes">View sample &raquo;</a></p>
+        </div>
+        
+        <div class="span4">
             <h3>Graphics Rendering</h3>
             <p>Demonstrates how to use the client to render graphics.</p>
             <p><a class="btn" href="Samples/GraphicsRendering">View sample &raquo;</a></p>
