@@ -9,8 +9,8 @@ module EndGate.Core.Graphics.Shapes {
 
         private _radius: number;
 
-        constructor(x: number, y: number, radius: number) {
-            super(new Assets.Vector2d(x, y), new Assets.Size2d(radius * 2, radius * 2));
+        constructor(x: number, y: number, radius: number, color?: string) {
+            super(new Assets.Vector2d(x, y), new Assets.Size2d(radius * 2, radius * 2), color);
 
             this._radius = radius;
         }

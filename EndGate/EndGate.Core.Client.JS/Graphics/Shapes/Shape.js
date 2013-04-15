@@ -10,9 +10,12 @@ var EndGate;
             (function (Shapes) {
                 var Shape = (function (_super) {
                     __extends(Shape, _super);
-                    function Shape(position, size) {
+                    function Shape(position, size, color) {
                                         _super.call(this, position, size);
                         this._type = "Shape";
+                        if(typeof color !== "undefined") {
+                            this.Color(color);
+                        }
                     }
                     Shape.prototype.Color = function (color) {
                         return this.State.FillStyle(color);

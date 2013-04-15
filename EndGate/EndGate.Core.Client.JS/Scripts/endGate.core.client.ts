@@ -158,9 +158,11 @@ module EndGate.Core.Loopers {
 
         private Run(): void {
             for (var i = 0; i < this._callbacks.length;i++) {
-                window.setTimeout(() => {
-                    this.Loop(this._callbacks[i]);
-                }, 0);
+                window.setTimeout(((index) => {
+                    return () => {
+                        this.Loop(this._callbacks[index]);
+                    };
+                })(i), 0);
             }
         }
 
@@ -1554,8 +1556,12 @@ module EndGate.Core.Graphics.Shapes  {
     export class Shape extends Graphic2d {
         public _type: string = "Shape";
 
-        constructor(position: Assets.Vector2d, size: Assets.Size2d) {
+        constructor(position: Assets.Vector2d, size: Assets.Size2d, color?: string) {
             super(position, size);
+
+            if (typeof color !== "undefined") {
+                this.Color(color);
+            }
         }
 
         public Color(color: string): string {
@@ -1575,8 +1581,8 @@ module EndGate.Core.Graphics.Shapes {
 
         private _radius: number;
 
-        constructor(x: number, y: number, radius: number) {
-            super(new Assets.Vector2d(x, y), new Assets.Size2d(radius * 2, radius * 2));
+        constructor(x: number, y: number, radius: number, color?: string) {
+            super(new Assets.Vector2d(x, y), new Assets.Size2d(radius * 2, radius * 2), color);
 
             this._radius = radius;
         }
@@ -1614,8 +1620,8 @@ module EndGate.Core.Graphics.Shapes {
     export class Rectangle extends Shape {
         public _type: string = "Rectangle";
 
-        constructor(x: number, y: number, width: number, height: number) {
-            super(new Assets.Vector2d(x, y), new Assets.Size2d(width, height));            
+        constructor(x: number, y: number, width: number, height: number, color?: string) {
+            super(new Assets.Vector2d(x, y), new Assets.Size2d(width, height), color);
         }
 
         public Draw(context: CanvasRenderingContext2D): void {

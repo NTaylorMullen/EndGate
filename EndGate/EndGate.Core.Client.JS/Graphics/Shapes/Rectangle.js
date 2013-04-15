@@ -10,8 +10,8 @@ var EndGate;
             (function (Shapes) {
                 var Rectangle = (function (_super) {
                     __extends(Rectangle, _super);
-                    function Rectangle(x, y, width, height) {
-                        _super.call(this, new Core.Assets.Vector2d(x, y), new Core.Assets.Size2d(width, height));
+                    function Rectangle(x, y, width, height, color) {
+                                        _super.call(this, new Core.Assets.Vector2d(x, y), new Core.Assets.Size2d(width, height), color);
                         this._type = "Rectangle";
                     }
                     Rectangle.prototype.Draw = function (context) {
@@ -20,7 +20,7 @@ var EndGate;
                         this.EndDraw(context);
                     };
                     return Rectangle;
-                })(Shape);
+                })(Shapes.Shape);
                 Shapes.Rectangle = Rectangle;                
             })(Graphics.Shapes || (Graphics.Shapes = {}));
             var Shapes = Graphics.Shapes;

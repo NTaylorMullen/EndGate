@@ -75,11 +75,8 @@ class GraphicsRenderer extends EndGate.Core.Game {
             randomSize = this.GetRandomSize(),
             randomVel = this.GetRandomVelocity(),
             randomChange = this.GetRandomIntervalChange(),
-            rect = new EndGate.Core.Graphics.Shapes.Rectangle(randomPos.X, randomPos.Y, randomSize.Width, randomSize.Height),
-            randomColor = this.GetRandomColor(),
+            rect = new EndGate.Core.Graphics.Shapes.Rectangle(randomPos.X, randomPos.Y, randomSize.Width, randomSize.Height, this.GetRandomColor()),
             shape;
-
-        rect.Color(randomColor);
 
         shape = new MovingShape(rect, randomVel, randomChange);
         this._shapes.push(shape);
@@ -91,11 +88,8 @@ class GraphicsRenderer extends EndGate.Core.Game {
             randomRadius = this.GetRandomRadius(),
             randomVel = this.GetRandomVelocity(),
             randomChange = this.GetRandomIntervalChange(),
-            circle = new EndGate.Core.Graphics.Shapes.Circle(randomPos.X, randomPos.Y, randomRadius),
-            randomColor = this.GetRandomColor(),
+            circle = new EndGate.Core.Graphics.Shapes.Circle(randomPos.X, randomPos.Y, randomRadius, this.GetRandomColor()),
             shape;
-
-        circle.Color(randomColor);
 
         shape = new MovingShape(circle, randomVel, randomChange);
         this._shapes.push(shape);

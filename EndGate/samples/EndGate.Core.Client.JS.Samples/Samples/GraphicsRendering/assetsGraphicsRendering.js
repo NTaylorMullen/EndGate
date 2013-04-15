@@ -52,15 +52,13 @@ var GraphicsRenderer = (function (_super) {
         this._shapes = [];
     };
     GraphicsRenderer.prototype.AddRandomRectangle = function () {
-        var randomPos = this.GetRandomPosition(), randomSize = this.GetRandomSize(), randomVel = this.GetRandomVelocity(), randomChange = this.GetRandomIntervalChange(), rect = new EndGate.Core.Graphics.Shapes.Rectangle(randomPos.X, randomPos.Y, randomSize.Width, randomSize.Height), randomColor = this.GetRandomColor(), shape;
-        rect.Color(randomColor);
+        var randomPos = this.GetRandomPosition(), randomSize = this.GetRandomSize(), randomVel = this.GetRandomVelocity(), randomChange = this.GetRandomIntervalChange(), rect = new EndGate.Core.Graphics.Shapes.Rectangle(randomPos.X, randomPos.Y, randomSize.Width, randomSize.Height, this.GetRandomColor()), shape;
         shape = new MovingShape(rect, randomVel, randomChange);
         this._shapes.push(shape);
         this.Scene.Add(rect);
     };
     GraphicsRenderer.prototype.AddRandomCircle = function () {
-        var randomPos = this.GetRandomPosition(), randomRadius = this.GetRandomRadius(), randomVel = this.GetRandomVelocity(), randomChange = this.GetRandomIntervalChange(), circle = new EndGate.Core.Graphics.Shapes.Circle(randomPos.X, randomPos.Y, randomRadius), randomColor = this.GetRandomColor(), shape;
-        circle.Color(randomColor);
+        var randomPos = this.GetRandomPosition(), randomRadius = this.GetRandomRadius(), randomVel = this.GetRandomVelocity(), randomChange = this.GetRandomIntervalChange(), circle = new EndGate.Core.Graphics.Shapes.Circle(randomPos.X, randomPos.Y, randomRadius, this.GetRandomColor()), shape;
         shape = new MovingShape(circle, randomVel, randomChange);
         this._shapes.push(shape);
         this.Scene.Add(circle);

@@ -46,9 +46,11 @@ module EndGate.Core.Loopers {
 
         private Run(): void {
             for (var i = 0; i < this._callbacks.length;i++) {
-                window.setTimeout(() => {
-                    this.Loop(this._callbacks[i]);
-                }, 0);
+                window.setTimeout(((index) => {
+                    return () => {
+                        this.Loop(this._callbacks[index]);
+                    };
+                })(i), 0);
             }
         }
 

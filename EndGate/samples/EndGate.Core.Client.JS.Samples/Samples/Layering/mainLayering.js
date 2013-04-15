@@ -10,14 +10,11 @@
     canvasCenter = new EndGate.Core.Assets.Vector2d(canvas.width / 2, canvas.height / 2);
     holder.append(canvas);
     layerer = new Layerer(canvas);
-    redRect = new EndGate.Core.Graphics.Shapes.Rectangle(canvasCenter.X - rectWidth / 3, canvasCenter.Y, rectWidth, rectHeight);
-    redRect.Color("red");
+    redRect = new EndGate.Core.Graphics.Shapes.Rectangle(canvasCenter.X - rectWidth / 3, canvasCenter.Y, rectWidth, rectHeight, "red");
     redRect.Rotation = Math.PI / 4;
-    greenRect = new EndGate.Core.Graphics.Shapes.Rectangle(canvasCenter.X + rectWidth / 3, canvasCenter.Y, rectWidth, rectHeight);
-    greenRect.Color("green");
+    greenRect = new EndGate.Core.Graphics.Shapes.Rectangle(canvasCenter.X + rectWidth / 3, canvasCenter.Y, rectWidth, rectHeight, "green");
     greenRect.Rotation = -Math.PI / 4;
-    blueCircle = new EndGate.Core.Graphics.Shapes.Circle(canvasCenter.X, canvasCenter.Y, circleRadius);
-    blueCircle.Color("blue");
+    blueCircle = new EndGate.Core.Graphics.Shapes.Circle(canvasCenter.X, canvasCenter.Y, circleRadius, "blue");
     layerer.Scene.Add(redRect);
     layerer.Scene.Add(greenRect);
     layerer.Scene.Add(blueCircle);

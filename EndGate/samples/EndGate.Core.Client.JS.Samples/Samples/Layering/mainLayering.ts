@@ -14,6 +14,7 @@
         circleRadius: number = 100,
         bindControls: Function = (controlHolderID: string, model: EndGate.Core.Graphics.Shapes.Shape) => {
             $("#" + controlHolderID + " .addZIndex, #" + controlHolderID + " .subtractZIndex").click(function() {
+                // The ZIndex is the property we set to control the layering of the renderer
                 model.ZIndex = $(this).hasClass("addZIndex") ? model.ZIndex + 1 : model.ZIndex - 1;
                 $("#" + controlHolderID + " .zindex").html(model.ZIndex.toString());
             });
@@ -27,14 +28,11 @@
 
     layerer = new Layerer(canvas);
 
-    redRect = new EndGate.Core.Graphics.Shapes.Rectangle(canvasCenter.X - rectWidth/3, canvasCenter.Y, rectWidth, rectHeight);
-    redRect.Color("red");
+    redRect = new EndGate.Core.Graphics.Shapes.Rectangle(canvasCenter.X - rectWidth/3, canvasCenter.Y, rectWidth, rectHeight, "red");
     redRect.Rotation = Math.PI / 4;
-    greenRect = new EndGate.Core.Graphics.Shapes.Rectangle(canvasCenter.X + rectWidth / 3, canvasCenter.Y, rectWidth, rectHeight);
-    greenRect.Color("green");
+    greenRect = new EndGate.Core.Graphics.Shapes.Rectangle(canvasCenter.X + rectWidth / 3, canvasCenter.Y, rectWidth, rectHeight, "green");
     greenRect.Rotation = -Math.PI / 4;
-    blueCircle = new EndGate.Core.Graphics.Shapes.Circle(canvasCenter.X, canvasCenter.Y, circleRadius);
-    blueCircle.Color("blue");
+    blueCircle = new EndGate.Core.Graphics.Shapes.Circle(canvasCenter.X, canvasCenter.Y, circleRadius, "blue");
 
     layerer.Scene.Add(redRect);
     layerer.Scene.Add(greenRect);

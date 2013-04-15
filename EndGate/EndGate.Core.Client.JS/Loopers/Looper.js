@@ -35,9 +35,11 @@ var EndGate;
                 Looper.prototype.Run = function () {
                     var _this = this;
                     for(var i = 0; i < this._callbacks.length; i++) {
-                        window.setTimeout(function () {
-                            _this.Loop(_this._callbacks[i]);
-                        }, 0);
+                        window.setTimeout((function (index) {
+                            return function () {
+                                _this.Loop(_this._callbacks[index]);
+                            };
+                        })(i), 0);
                     }
                 };
                 Looper.prototype.Loop = function (timedCallback) {

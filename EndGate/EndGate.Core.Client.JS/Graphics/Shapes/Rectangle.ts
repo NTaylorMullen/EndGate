@@ -7,8 +7,8 @@ module EndGate.Core.Graphics.Shapes {
     export class Rectangle extends Shape {
         public _type: string = "Rectangle";
 
-        constructor(x: number, y: number, width: number, height: number) {
-            super(new Assets.Vector2d(x, y), new Assets.Size2d(width, height));            
+        constructor(x: number, y: number, width: number, height: number, color?: string) {
+            super(new Assets.Vector2d(x, y), new Assets.Size2d(width, height), color);
         }
 
         public Draw(context: CanvasRenderingContext2D): void {

@@ -90,4 +90,50 @@
         QUnit.equal(holder.children.length, 0);
     });
 
+    QUnit.test("Renderer draws items in the order of their ZIndexes.", function () {
+        var holder = document.createElement("div"),
+            drawArea = document.createElement("canvas"),
+            renderer2d = new lib.Renderer2d(drawArea),
+            draws1At = null,
+            draws2At = null,
+            renderable1 = {
+                ZIndex: -1,
+                Draw: function (context) {
+                    draws1At = new Date().getTime();
+
+                    var sum;
+                    for (var i = 0; i < 1000000; i++) {
+                        sum += i / Math.PI
+                    }
+                }
+            },
+            renderable2 = {
+                ZIndex: 0,
+                Draw: function (context) {
+                    draws2At = new Date().getTime();
+
+                    var sum;
+                    for (var i = 0; i < 1000000; i++) {
+                        sum += i / Math.PI
+                    }
+                }
+            },
+            renderables = [renderable1, renderable2];
+
+        holder.appendChild(drawArea);
+
+        renderer2d.Render(renderables);
+
+        // Smaller millisecond times mean further in the past
+        QUnit.ok(draws2At > draws1At);
+
+        renderable1.ZIndex = 1;
+
+        renderer2d.Render(renderables);
+
+        QUnit.ok(draws2At < draws1At);
+
+        renderer2d.Dispose();
+    });
+
 })(window, EndGate.Core.Rendering);

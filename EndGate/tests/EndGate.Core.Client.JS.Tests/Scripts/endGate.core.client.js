@@ -113,9 +113,11 @@ var EndGate;
                 Looper.prototype.Run = function () {
                     var _this = this;
                     for(var i = 0; i < this._callbacks.length; i++) {
-                        window.setTimeout(function () {
-                            _this.Loop(_this._callbacks[i]);
-                        }, 0);
+                        window.setTimeout((function (index) {
+                            return function () {
+                                _this.Loop(_this._callbacks[index]);
+                            };
+                        })(i), 0);
                     }
                 };
                 Looper.prototype.Loop = function (timedCallback) {
@@ -1211,9 +1213,12 @@ var EndGate;
             (function (Shapes) {
                 var Shape = (function (_super) {
                     __extends(Shape, _super);
-                    function Shape(position, size) {
+                    function Shape(position, size, color) {
                                         _super.call(this, position, size);
                         this._type = "Shape";
+                        if(typeof color !== "undefined") {
+                            this.Color(color);
+                        }
                     }
                     Shape.prototype.Color = function (color) {
                         return this.State.FillStyle(color);
@@ -1235,8 +1240,8 @@ var EndGate;
             (function (Shapes) {
                 var Circle = (function (_super) {
                     __extends(Circle, _super);
-                    function Circle(x, y, radius) {
-                                        _super.call(this, new Core.Assets.Vector2d(x, y), new Core.Assets.Size2d(radius * 2, radius * 2));
+                    function Circle(x, y, radius, color) {
+                                        _super.call(this, new Core.Assets.Vector2d(x, y), new Core.Assets.Size2d(radius * 2, radius * 2), color);
                         this._type = "Circle";
                         this._radius = radius;
                     }
@@ -1273,8 +1278,8 @@ var EndGate;
             (function (Shapes) {
                 var Rectangle = (function (_super) {
                     __extends(Rectangle, _super);
-                    function Rectangle(x, y, width, height) {
-                                        _super.call(this, new Core.Assets.Vector2d(x, y), new Core.Assets.Size2d(width, height));
+                    function Rectangle(x, y, width, height, color) {
+                                        _super.call(this, new Core.Assets.Vector2d(x, y), new Core.Assets.Size2d(width, height), color);
                         this._type = "Rectangle";
                     }
                     Rectangle.prototype.Draw = function (context) {

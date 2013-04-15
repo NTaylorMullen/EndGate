@@ -10,8 +10,8 @@ var EndGate;
             (function (Shapes) {
                 var Circle = (function (_super) {
                     __extends(Circle, _super);
-                    function Circle(x, y, radius) {
-                                        _super.call(this, new Core.Assets.Vector2d(x, y), new Core.Assets.Size2d(radius * 2, radius * 2));
+                    function Circle(x, y, radius, color) {
+                                        _super.call(this, new Core.Assets.Vector2d(x, y), new Core.Assets.Size2d(radius * 2, radius * 2), color);
                         this._type = "Circle";
                         this._radius = radius;
                     }
