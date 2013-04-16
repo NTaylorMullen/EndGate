@@ -5,7 +5,9 @@
 class ShapeBuilder extends EndGate.Core.Game {
     public Shape: EndGate.Core.Graphics.Shapes.Shape;
 
-    constructor(private _canvas: HTMLCanvasElement, targetBuilders: JQuery) {
+    private _shapeAnimator: ShapeAnimator;
+
+    constructor(private _canvas: HTMLCanvasElement, targetBuilders: JQuery, targetAnimators: JQuery, defaultPosition: EndGate.Core.Assets.Vector2d, defaultSize: EndGate.Core.Assets.Size2d, defaultRotation: number, defaultOpacity: number, syncSliders: Function) {
         super(_canvas);
         var that = this,
             builderClicked = function () {
@@ -19,6 +21,12 @@ class ShapeBuilder extends EndGate.Core.Game {
         });
 
         $(targetBuilders[0]).click();
+
+        this._shapeAnimator = new ShapeAnimator(targetAnimators, defaultPosition, defaultSize, defaultRotation, defaultOpacity, syncSliders);
+    }
+
+    public Update(gameTime: EndGate.Core.GameTime): void {
+        this._shapeAnimator.ApplyAnimation(this.Shape, gameTime);
     }
 
     private BuildShape(builder: HTMLElement): void {
@@ -38,7 +46,7 @@ class ShapeBuilder extends EndGate.Core.Game {
             newShape.Rotation = this.Shape.Rotation;
             this.Scene.Remove(this.Shape);
         }
-        
+
         this.Shape = newShape;
         this.Scene.Add(this.Shape);
     }
@@ -99,7 +107,98 @@ class CustomSlider {
         this.SliderChange();
     }
 
+    public UpdateSlider(val: number): void {
+        this._target.slider("value", val);
+    }
+
     private SliderChange(): void {
         this.onsliderchange(parseInt(this._target.slider("value")));
+    }
+}
+
+class ShapeAnimator {
+    public static AnimationSpeed: number = 50;
+    public static RotationSpeed: number = Math.PI / 4;
+    public static ChangeDirectionEvery: number = 3000;
+    public Direction: number = 1;
+    public CurrentAnimations: { [animation: string]: bool; } = {
+        Position: false,
+        Rotation: false,
+        Size: false,
+        Opacity: false
+    };
+    private _lastChanged: number;
+
+    constructor(shapeAnimators: JQuery, private _defaultPosition: EndGate.Core.Assets.Vector2d, private _defaultSize: EndGate.Core.Assets.Size2d, private _defaultRotation: number, private _defaultOpacity: number, private _syncSliders: Function) {
+        var that = this,
+            animatorClicked = function () {
+                var $this = $(this),
+                    animation = $this.attr("animation");
+
+                if ($this.hasClass("btn-success")) {
+                    that.CurrentAnimations[animation] = false;
+                    $this.removeClass("btn-success");
+                }
+                else {
+                    that.CurrentAnimations[animation] = true;
+                    $this.addClass("btn-success");
+                }
+            };
+
+        $.each(shapeAnimators, function (i, btn) {
+            $(this).click(animatorClicked);
+        });
+
+        this._lastChanged = new Date().getTime();
+    }
+
+    public ApplyAnimation(shape: EndGate.Core.Graphics.Shapes.Shape, gameTime: EndGate.Core.GameTime): void {
+        if (gameTime.Now.getTime() - this._lastChanged > ShapeAnimator.ChangeDirectionEvery) {
+            this.Direction *= -1;
+            this._lastChanged = gameTime.Now.getTime();
+            console.log("Changing direction: " + this.Direction);
+        }
+
+        for (var key in this.CurrentAnimations) {
+            if (this.CurrentAnimations[key]) {
+                this[key](shape, gameTime);
+                this._syncSliders(key);
+            }
+        }            
+    }
+
+    private Position(shape: EndGate.Core.Graphics.Shapes.Shape, gameTime: EndGate.Core.GameTime): void {
+        var incrementor = ShapeAnimator.AnimationSpeed * gameTime.ElapsedSecond,
+            direction = shape.Position.Subtract(this._defaultPosition).Abs().Sign();
+
+        if (direction.Magnitude() === 0) {
+            direction = EndGate.Core.Assets.Vector2d.One();
+        }
+
+        shape.Position = shape.Position.Add(direction.Multiply(this.Direction).Multiply(incrementor));
+    }
+
+    private Size(shape: EndGate.Core.Graphics.Shapes.Shape, gameTime: EndGate.Core.GameTime): void {
+        var incrementor = ShapeAnimator.AnimationSpeed * gameTime.ElapsedSecond,
+            direction = EndGate.Core.Assets.Size2d.One();
+
+        shape.Size = shape.Size.Add(direction.Multiply(this.Direction).Multiply(incrementor));
+    }
+
+    private Rotation(shape: EndGate.Core.Graphics.Shapes.Shape, gameTime: EndGate.Core.GameTime): void {
+        var incrementor = ShapeAnimator.RotationSpeed * gameTime.ElapsedSecond,
+            direction = 1;
+
+        shape.Rotation += direction * this.Direction * incrementor;
+    }
+
+    private Opacity(shape: EndGate.Core.Graphics.Shapes.Shape, gameTime: EndGate.Core.GameTime): void {
+        var incrementor = .33 * gameTime.ElapsedSecond;
+
+        shape.Opacity(shape.Opacity() + incrementor * this.Direction);
+
+        if (shape.Opacity() > 1) {
+            shape.Opacity(1);
+        }
     }
 }

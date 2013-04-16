@@ -78,10 +78,23 @@
             <div id="widthSlider" class="slider-horizontal"></div>
             <div id="heightSlider" class="slider-horizontal"></div>
         </div>
+        <div class="span2 well text-center" style="margin-bottom: 0px; height: 148px;">
+            <h4 class="text-center">Animate</h4>
+            <p>
+                <button animation="Position" class="shapeAnimator btn" style="width: 100%;">Position</button>
+                </p>
+            <p>
+                <button animation="Rotation" class="shapeAnimator btn" style="width: 100%;">Rotation</button>
+            </p>
+            <p>
+                <button animation="Size" class="shapeAnimator btn" style="width: 45%;">Size</button>
+                <button animation="Opacity" class="shapeAnimator btn" style="width: 45%;">Opac</button>
+            </p>
+        </div>
     </div>
 
     <div class="row">
-        <div class="span3 well ui-widget-content" style="margin-left: 0px; height: 446px; width:180px;">
+        <div class="span3 well ui-widget-content" style="margin-left: 0px; height: 446px; width: 180px;">
             <div class="span2 well" style="margin-left: 0px; height: 148px;">
                 <h4 class="text-center">Border</h4>
                 <div id="borderThickness" class="slider-horizontal"></div>
@@ -100,7 +113,7 @@
                 <div id="shadowBlur" class="slider-horizontal"></div>
             </div>
         </div>
-        <div id="gameHolder" class="well span8" style="height: 446px; width:678px;">
+        <div id="gameHolder" class="well span8" style="height: 446px; width: 678px;">
         </div>
     </div>
 </asp:Content>

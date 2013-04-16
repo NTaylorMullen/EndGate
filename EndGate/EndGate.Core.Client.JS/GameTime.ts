@@ -9,6 +9,7 @@ module EndGate.Core {
         // Time in milliseconds
         public Total: number;
         public Elapsed: number;
+        public ElapsedSecond: number;
 
         // Start time in milliseconds
         private _start: number;
@@ -23,6 +24,7 @@ module EndGate.Core {
                 nowMs = now.getTime();
 
             this.Elapsed = nowMs - this.Now.getTime();
+            this.ElapsedSecond = this.Elapsed / 1000;
             this.Total = nowMs - this._start;
             this.Now = now;
         }

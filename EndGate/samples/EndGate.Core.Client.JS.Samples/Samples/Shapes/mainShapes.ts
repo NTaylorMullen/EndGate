@@ -19,14 +19,39 @@
         shadowXSlider: CustomSlider,
         shadowYSlider: CustomSlider,
         shadowColorPicker: ColorPicker,
-        shadowBlurSlider: CustomSlider;
+        shadowBlurSlider: CustomSlider,
+        syncSliders: Function,
+        ensureValue = function (val, min, max) {
+            return Math.min(Math.max(val, min), max);
+        },
+        slidersAnimationMappings = {
+            Position: function () {
+                xPositionSlider.UpdateSlider(ensureValue(shapeBuilder.Shape.Position.X, 0, canvas.width / 2));
+                yPositionSlider.UpdateSlider(ensureValue(shapeBuilder.Shape.Position.Y, 0, canvas.height / 2));
+            },
+            Rotation: function () {
+                rotationSlider.UpdateSlider(ensureValue(shapeBuilder.Shape.Rotation * 100, -628, 628));
+            },
+            Size: function () {
+                widthSlider.UpdateSlider(ensureValue(shapeBuilder.Shape.Size.Width, 0, canvas.width));
+                heightSlider.UpdateSlider(ensureValue(shapeBuilder.Shape.Size.Height, 0, canvas.height));
+            },
+            Opacity: function () {
+                opacitySlider.UpdateSlider(ensureValue(shapeBuilder.Shape.Opacity() * 100, 0, 100));
+            }
+        };
 
     canvas.width = holder.width();
     canvas.height = holder.height();
 
-    holder.append(canvas);
+    holder.append(canvas);    
 
-    shapeBuilder = new ShapeBuilder(canvas, $(".shapeBuilder"));
+    syncSliders = function (animation) {
+        slidersAnimationMappings[animation]();
+    };
+
+    shapeBuilder = new ShapeBuilder(canvas, $(".shapeBuilder"), $(".shapeAnimator"), new EndGate.Core.Assets.Vector2d(canvas.width / 2, canvas.height / 2), new EndGate.Core.Assets.Size2d(100, 100), 0, 1, syncSliders);
+
     shapeColorPicker = new ColorPicker($("#redColorPicker"), $("#greenColorPicker"), $("#blueColorPicker"), [127, 0, 127], (newcolor: string) => {
         shapeBuilder.Shape.Color(newcolor);
     });
