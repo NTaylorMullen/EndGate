@@ -34,9 +34,7 @@ var EndGate;
                         return this.State.GlobalAlpha(alpha);
                     };
                     Shape.prototype.StartDraw = function (context) {
-                        if(this._stroke) {
-                            context.beginPath();
-                        }
+                        context.beginPath();
                         _super.prototype.StartDraw.call(this, context);
                     };
                     Shape.prototype.EndDraw = function (context) {
@@ -45,6 +43,7 @@ var EndGate;
                         }
                         if(this._stroke) {
                             context.stroke();
+                        } else {
                             context.closePath();
                         }
                         _super.prototype.EndDraw.call(this, context);

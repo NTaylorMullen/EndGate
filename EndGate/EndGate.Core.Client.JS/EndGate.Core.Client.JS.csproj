@@ -322,6 +322,69 @@
     <Content Include="Extensions\PrimitiveExtensions.js.map">
       <DependentUpon>PrimitiveExtensions.ts</DependentUpon>
     </Content>
+    <Content Include="Assets\Vectors\Helpers\MinMax.js.map">
+      <DependentUpon>MinMax.ts</DependentUpon>
+    </Content>
+    <Content Include="Assets\Vectors\Helpers\Vector2dHelpers.js.map">
+      <DependentUpon>Vector2dHelpers.ts</DependentUpon>
+    </Content>
+    <Content Include="Assets\Vectors\Vector2d.js.map">
+      <DependentUpon>Vector2d.ts</DependentUpon>
+    </Content>
+    <Content Include="Extensions\WindowExtensions.js.map">
+      <DependentUpon>WindowExtensions.ts</DependentUpon>
+    </Content>
+    <Content Include="Assets\Sizes\Size2d.js.map">
+      <DependentUpon>Size2d.ts</DependentUpon>
+    </Content>
+    <Content Include="BoundingObject\BoundingCircle.js.map">
+      <DependentUpon>BoundingCircle.ts</DependentUpon>
+    </Content>
+    <Content Include="Collision\CollisionManager.js.map">
+      <DependentUpon>CollisionManager.ts</DependentUpon>
+    </Content>
+    <Content Include="Loopers\LooperCallback.js.map">
+      <DependentUpon>LooperCallback.ts</DependentUpon>
+    </Content>
+    <Content Include="Rendering\Scene.js.map">
+      <DependentUpon>Scene.ts</DependentUpon>
+    </Content>
+    <Content Include="BoundingObject\Bounds2d.js.map">
+      <DependentUpon>Bounds2d.ts</DependentUpon>
+    </Content>
+    <Content Include="Collision\Collidable.js.map">
+      <DependentUpon>Collidable.ts</DependentUpon>
+    </Content>
+    <Content Include="GameTime.js.map">
+      <DependentUpon>GameTime.ts</DependentUpon>
+    </Content>
+    <Content Include="Collision\CollisionData.js.map">
+      <DependentUpon>CollisionData.ts</DependentUpon>
+    </Content>
+    <Content Include="Loopers\RepaintLooper.js.map">
+      <DependentUpon>RepaintLooper.ts</DependentUpon>
+    </Content>
+    <Content Include="Utilities\EventHandler.js.map">
+      <DependentUpon>EventHandler.ts</DependentUpon>
+    </Content>
+    <Content Include="BoundingObject\BoundingRectangle.js.map">
+      <DependentUpon>BoundingRectangle.ts</DependentUpon>
+    </Content>
+    <Content Include="GameRunner.js.map">
+      <DependentUpon>GameRunner.ts</DependentUpon>
+    </Content>
+    <Content Include="Loopers\TimedCallback.js.map">
+      <DependentUpon>TimedCallback.ts</DependentUpon>
+    </Content>
+    <Content Include="GameConfiguration.js.map">
+      <DependentUpon>GameConfiguration.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Graphic2dState.js.map">
+      <DependentUpon>Graphic2dState.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\endGate.core.client.js.map">
+      <DependentUpon>endGate.core.client.ts</DependentUpon>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

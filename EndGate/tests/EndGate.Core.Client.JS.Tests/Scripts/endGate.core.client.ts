@@ -1590,9 +1590,7 @@ module EndGate.Core.Graphics.Shapes  {
         }
 
         public StartDraw(context: CanvasRenderingContext2D): void {
-            if (this._stroke) {
-                context.beginPath();
-            }
+            context.beginPath();
 
             super.StartDraw(context);
         }
@@ -1604,6 +1602,8 @@ module EndGate.Core.Graphics.Shapes  {
             
             if (this._stroke) {
                 context.stroke();
+            }
+            else {
                 context.closePath();
             }
 

@@ -16,7 +16,7 @@ var EndGate;
                     }
                     Rectangle.prototype.Draw = function (context) {
                         this.StartDraw(context);
-                        context.fillRect(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
+                        context.rect(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
                         this.EndDraw(context);
                     };
                     return Rectangle;
