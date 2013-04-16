@@ -1219,12 +1219,39 @@ var EndGate;
                         this._fill = true;
                         return this.State.FillStyle(color);
                     };
+                    Shape.prototype.Border = function (thickness, color) {
+                        return [
+                            this.BorderThickness(thickness), 
+                            this.BorderColor(color)
+                        ];
+                    };
+                    Shape.prototype.BorderThickness = function (thickness) {
+                        return this.State.LineWidth(thickness);
+                    };
                     Shape.prototype.BorderColor = function (color) {
                         this._stroke = true;
                         return this.State.StrokeStyle(color);
                     };
-                    Shape.prototype.BorderThickness = function (thickness) {
-                        return this.State.LineWidth(thickness);
+                    Shape.prototype.Shadow = function (x, y, color, blur) {
+                        return [
+                            this.ShadowX(x), 
+                            this.ShadowY(y), 
+                            this.ShadowColor(color), 
+                            this.ShadowBlur(blur)
+                        ];
+                    };
+                    Shape.prototype.ShadowColor = function (color) {
+                        this._fill = true;
+                        return this.State.ShadowColor(color);
+                    };
+                    Shape.prototype.ShadowX = function (val) {
+                        return this.State.ShadowOffsetX(val);
+                    };
+                    Shape.prototype.ShadowY = function (val) {
+                        return this.State.ShadowOffsetY(val);
+                    };
+                    Shape.prototype.ShadowBlur = function (val) {
+                        return this.State.ShadowBlur(val);
                     };
                     Shape.prototype.Opacity = function (alpha) {
                         return this.State.GlobalAlpha(alpha);
@@ -1243,6 +1270,13 @@ var EndGate;
                             context.closePath();
                         }
                         _super.prototype.EndDraw.call(this, context);
+                    };
+                    Shape.prototype.BuildPath = function (context) {
+                    };
+                    Shape.prototype.Draw = function (context) {
+                        this.StartDraw(context);
+                        this.BuildPath(context);
+                        this.EndDraw(context);
                     };
                     return Shape;
                 })(Graphics.Graphic2d);
@@ -1274,13 +1308,8 @@ var EndGate;
                         }
                         return this._radius;
                     };
-                    Circle.prototype.Draw = function (context) {
-                        this.StartDraw(context);
-                        context.beginPath();
+                    Circle.prototype.BuildPath = function (context) {
                         context.arc(this.Position.X, this.Position.Y, this._radius, 0, Math.twoPI);
-                        context.closePath();
-                        context.fill();
-                        this.EndDraw(context);
                     };
                     return Circle;
                 })(Shapes.Shape);
@@ -1303,10 +1332,8 @@ var EndGate;
                                         _super.call(this, new Core.Assets.Vector2d(x, y), new Core.Assets.Size2d(width, height), color);
                         this._type = "Rectangle";
                     }
-                    Rectangle.prototype.Draw = function (context) {
-                        this.StartDraw(context);
+                    Rectangle.prototype.BuildPath = function (context) {
                         context.rect(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
-                        this.EndDraw(context);
                     };
                     return Rectangle;
                 })(Shapes.Shape);

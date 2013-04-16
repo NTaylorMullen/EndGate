@@ -25,16 +25,8 @@ module EndGate.Core.Graphics.Shapes {
             return this._radius;
         }
 
-        public Draw(context: CanvasRenderingContext2D): void {
-            this.StartDraw(context);
-
-            context.beginPath();
+        public BuildPath(context: CanvasRenderingContext2D): void {
             context.arc(this.Position.X, this.Position.Y, this._radius, 0, Math.twoPI);
-            context.closePath();
-            context.fill();
-
-            this.EndDraw(context);
         }
     }
-
 }

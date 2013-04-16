@@ -23,13 +23,8 @@ var EndGate;
                         }
                         return this._radius;
                     };
-                    Circle.prototype.Draw = function (context) {
-                        this.StartDraw(context);
-                        context.beginPath();
+                    Circle.prototype.BuildPath = function (context) {
                         context.arc(this.Position.X, this.Position.Y, this._radius, 0, Math.twoPI);
-                        context.closePath();
-                        context.fill();
-                        this.EndDraw(context);
                     };
                     return Circle;
                 })(Shapes.Shape);

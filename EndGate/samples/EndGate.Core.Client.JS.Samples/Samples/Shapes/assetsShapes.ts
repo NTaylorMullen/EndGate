@@ -32,8 +32,8 @@ class ShapeBuilder extends EndGate.Core.Game {
         else {
             newShape = new shapeType(this.Shape.Position.X, this.Shape.Position.Y, this.Shape.Size.Width, this.Shape.Size.Height);
             newShape.Color(this.Shape.Color());
-            newShape.BorderColor(this.Shape.BorderColor());
-            newShape.BorderThickness(this.Shape.BorderThickness());
+            newShape.Border(this.Shape.BorderThickness(), this.Shape.BorderColor());
+            newShape.Shadow(this.Shape.ShadowX(), this.Shape.ShadowY(), this.Shape.ShadowColor(), this.Shape.ShadowBlur());
             newShape.Opacity(this.Shape.Opacity());
             newShape.Rotation = this.Shape.Rotation;
             this.Scene.Remove(this.Shape);

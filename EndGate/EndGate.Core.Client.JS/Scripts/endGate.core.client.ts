@@ -1575,14 +1575,39 @@ module EndGate.Core.Graphics.Shapes  {
             this._fill = true;
             return this.State.FillStyle(color);
         }
+        
+        public Border(thickness?: number, color?: string): any[]{
+            return [this.BorderThickness(thickness), this.BorderColor(color)];
+        }
+
+        public BorderThickness(thickness?: number): number {
+            return this.State.LineWidth(thickness);
+        }
 
         public BorderColor(color?: string): string {
             this._stroke = true;
             return this.State.StrokeStyle(color);
         }
 
-        public BorderThickness(thickness?: number): number {
-            return this.State.LineWidth(thickness);
+        public Shadow(x?: number, y?: number, color?: string, blur?: number): any[] {
+            return [this.ShadowX(x), this.ShadowY(y), this.ShadowColor(color), this.ShadowBlur(blur)];
+        }
+
+        public ShadowColor(color?: string): string {
+            this._fill = true;
+            return this.State.ShadowColor(color);
+        }
+
+        public ShadowX(val?: number): number {
+            return this.State.ShadowOffsetX(val);
+        }
+
+        public ShadowY(val?: number): number {
+            return this.State.ShadowOffsetY(val);
+        }
+
+        public ShadowBlur(val?: number): number {
+            return this.State.ShadowBlur(val);
         }
 
         public Opacity(alpha?: number): number {
@@ -1608,6 +1633,17 @@ module EndGate.Core.Graphics.Shapes  {
             }
 
             super.EndDraw(context);
+        }
+
+        // This should be overridden if you want to build a proper shape
+        public BuildPath(context: CanvasRenderingContext2D): void {
+        }
+
+        // You can override this Draw if you want to implement your own logic for applying styles and drawing (do not recommend overriding)
+        public Draw(context: CanvasRenderingContext2D): void {
+            this.StartDraw(context);
+            this.BuildPath(context);
+            this.EndDraw(context);
         }
     }
 }
@@ -1639,18 +1675,10 @@ module EndGate.Core.Graphics.Shapes {
             return this._radius;
         }
 
-        public Draw(context: CanvasRenderingContext2D): void {
-            this.StartDraw(context);
-
-            context.beginPath();
+        public BuildPath(context: CanvasRenderingContext2D): void {
             context.arc(this.Position.X, this.Position.Y, this._radius, 0, Math.twoPI);
-            context.closePath();
-            context.fill();
-
-            this.EndDraw(context);
         }
     }
-
 }
 /* Rectangle.ts */
 
@@ -1666,12 +1694,8 @@ module EndGate.Core.Graphics.Shapes {
             super(new Assets.Vector2d(x, y), new Assets.Size2d(width, height), color);
         }
 
-        public Draw(context: CanvasRenderingContext2D): void {
-            this.StartDraw(context);
-
+        public BuildPath(context: CanvasRenderingContext2D): void {
             context.rect(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
-
-            this.EndDraw(context);
         }
     }
 

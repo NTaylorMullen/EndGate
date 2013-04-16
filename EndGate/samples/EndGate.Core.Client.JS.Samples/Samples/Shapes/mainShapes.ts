@@ -15,7 +15,11 @@
         yPositionSlider: CustomSlider,
         opacitySlider: CustomSlider,
         widthSlider: CustomSlider,
-        heightSlider: CustomSlider;
+        heightSlider: CustomSlider,
+        shadowXSlider: CustomSlider,
+        shadowYSlider: CustomSlider,
+        shadowColorPicker: ColorPicker,
+        shadowBlurSlider: CustomSlider;
 
     canvas.width = holder.width();
     canvas.height = holder.height();
@@ -49,6 +53,18 @@
     });
     borderThicknessSlider = new CustomSlider($("#borderThickness"), 0, 100, 7, (newThickness) => {
         shapeBuilder.Shape.BorderThickness(newThickness);
+    });
+    shadowXSlider = new CustomSlider($("#shadowX"), -30, 30, 20, (newX: number) => {
+        shapeBuilder.Shape.ShadowX(newX);
+    });
+    shadowYSlider = new CustomSlider($("#shadowY"), -30, 30, 10, (newY: number) => {
+        shapeBuilder.Shape.ShadowY(newY);
+    });
+    shadowColorPicker = new ColorPicker($("#shadowColorRed"), $("#shadowColorGreen"), $("#shadowColorBlue"), [0, 0, 100], (newcolor: string) => {
+        shapeBuilder.Shape.ShadowColor(newcolor);
+    });
+    shadowBlurSlider = new CustomSlider($("#shadowBlur"), 0, 300, 55, (newBlur: number) => {
+        shapeBuilder.Shape.ShadowBlur(newBlur);
     });
 
 })($, window);

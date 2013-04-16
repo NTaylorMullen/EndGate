@@ -14,10 +14,8 @@ var EndGate;
                                         _super.call(this, new Core.Assets.Vector2d(x, y), new Core.Assets.Size2d(width, height), color);
                         this._type = "Rectangle";
                     }
-                    Rectangle.prototype.Draw = function (context) {
-                        this.StartDraw(context);
+                    Rectangle.prototype.BuildPath = function (context) {
                         context.rect(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
-                        this.EndDraw(context);
                     };
                     return Rectangle;
                 })(Shapes.Shape);
