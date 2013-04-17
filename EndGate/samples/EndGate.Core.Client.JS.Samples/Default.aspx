@@ -19,9 +19,9 @@
         </div>
         
         <div class="span4">
-            <h3>Graphics Rendering</h3>
-            <p>Demonstrates how to use the client to render graphics.</p>
-            <p><a class="btn" href="Samples/GraphicsRendering">View sample &raquo;</a></p>
+            <h3>Collision Detection</h3>
+            <p>Demonstrates how to use the client to detect collisions.</p>
+            <p><a class="btn" href="Samples/CollisionDetection">View sample &raquo;</a></p>
         </div>
 
         <div class="span4">

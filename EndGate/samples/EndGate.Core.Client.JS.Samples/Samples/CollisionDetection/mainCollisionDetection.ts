@@ -1,5 +1,5 @@
 /// <reference path="../../Scripts/jquery.d.ts" />
-/// <reference path="assetsGraphicsRendering.ts" />
+/// <reference path="assetsCollisionDetection.ts" />
 
 (function ($, window) {
     var canvas: HTMLCanvasElement = <HTMLCanvasElement>document.createElement("canvas"),
@@ -18,6 +18,8 @@
     holder.append(canvas);
 
     renderer = new GraphicsRenderer(canvas);
+
+    renderer.AddRandomRectangle();
 
     $("#addItems").click(() => {
         var rectanglesToAdd = parseInt(numOfRectangles.val()) || 0,

@@ -6,6 +6,7 @@
 module EndGate.Core.BoundingObject {
 
     export class Bounds2d implements IBounds2d {
+        public _boundsType: string = "Bounds2d";
 
         public Position: Assets.Vector2d;
         public Rotation: number;
@@ -23,10 +24,10 @@ module EndGate.Core.BoundingObject {
         public Intersects(circle: BoundingCircle): bool;
         public Intersects(rectangle: BoundingRectangle): bool;
         public Intersects(obj: any): bool {
-            if (obj._type === "BoundingCircle") {
+            if (obj._boundsType === "BoundingCircle") {
                 return this.IntersectsCircle(obj);
             }
-            else if (obj._type === "BoundingRectangle") {
+            else if (obj._boundsType === "BoundingRectangle") {
                 return this.IntersectsRectangle(obj);
             }
             else {

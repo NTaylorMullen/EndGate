@@ -5,15 +5,18 @@ var EndGate;
             var Collidable = (function () {
                 function Collidable(bounds) {
                     this._type = "Collidable";
+                    this._boundsType = "Collidable";
+                    for(var property in bounds) {
+                        this[property] = bounds[property];
+                    }
                     this._disposed = false;
-                    this.Bounds = bounds;
                     this.ID = Collidable._collidableIDs++;
                     this.OnCollision = new Core.Utilities.EventHandler();
                     this.OnDisposed = new Core.Utilities.EventHandler();
                 }
                 Collidable._collidableIDs = 0;
                 Collidable.prototype.IsCollidingWith = function (other) {
-                    return this.Bounds.Intersects(other.Bounds);
+                    return this.Intersects(other);
                 };
                 Collidable.prototype.Collided = function (data) {
                     this.OnCollision.Trigger(data);
@@ -25,6 +28,24 @@ var EndGate;
                     } else {
                         throw new Error("Cannot dispose collidable twice.");
                     }
+                };
+                Collidable.prototype.ContainsPoint = function (point) {
+                    throw new Error("This method is abstract!");
+                };
+                Collidable.prototype.Intersects = function (obj) {
+                    if(obj._type === "BoundingCircle") {
+                        return this.IntersectsCircle(obj);
+                    } else if(obj._type === "BoundingRectangle") {
+                        return this.IntersectsRectangle(obj);
+                    } else {
+                        throw new Error("Cannot intersect with unidentifiable object, must be BoundingCircle or BoundingRectangle");
+                    }
+                };
+                Collidable.prototype.IntersectsCircle = function (circle) {
+                    throw new Error("This method is abstract!");
+                };
+                Collidable.prototype.IntersectsRectangle = function (rectangle) {
+                    throw new Error("This method is abstract!");
                 };
                 return Collidable;
             })();

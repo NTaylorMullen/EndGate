@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace EndGate.Core.Client.JS.Samples.Samples.ShapeCreator
+namespace EndGate.Core.Client.JS.Samples.Samples.CollisionDetection
 {
     public partial class Default : System.Web.UI.Page
     {

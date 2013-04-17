@@ -490,6 +490,7 @@ module EndGate.Core.Assets {
 module EndGate.Core.BoundingObject {
 
     export class Bounds2d implements IBounds2d {
+        public _boundsType: string = "Bounds2d";
 
         public Position: Assets.Vector2d;
         public Rotation: number;
@@ -507,10 +508,10 @@ module EndGate.Core.BoundingObject {
         public Intersects(circle: BoundingCircle): bool;
         public Intersects(rectangle: BoundingRectangle): bool;
         public Intersects(obj: any): bool {
-            if (obj._type === "BoundingCircle") {
+            if (obj._boundsType === "BoundingCircle") {
                 return this.IntersectsCircle(obj);
             }
-            else if (obj._type === "BoundingRectangle") {
+            else if (obj._boundsType === "BoundingRectangle") {
                 return this.IntersectsRectangle(obj);
             }
             else {
@@ -528,175 +529,46 @@ module EndGate.Core.BoundingObject {
     }
 
 }
-/* EventHandler.ts */
+/* MinMax.ts */
+module EndGate.Core.Assets {
 
+    export class MinMax {
+        public Min: number;
+        public Max: number;
 
-
-module EndGate.Core.Utilities {
-
-    export class EventHandler implements ITyped {
-        public _type: string = "Event";
-
-        private _actions: Function[];
-
-        constructor() {
-            this._actions = [];
-        }
-
-        public Bind(action: Function): void {
-            this._actions.push(action);
-        }
-
-        public Unbind(action: Function): void {
-            for (var i = 0; i < this._actions.length; i++) {
-                if (this._actions[i] === action) {
-                    this._actions.splice(i, 1);
-                    return;
-                }
-            }
-        }
-
-        public Trigger(...args: any[]): void {
-            for (var i = 0; i < this._actions.length; i++) {
-                this._actions[i].apply(this, args);
-            }
+        constructor(min: number, max: number) {
+            this.Min = min;
+            this.Max = max;
         }
     }
 
 }
-/* CollisionData.ts */
+/* Vector2dHelpers.ts */
 
 
 
-module EndGate.Core.Collision {
+module EndGate.Core.Assets {
 
-    export class CollisionData {
-        public At: Assets.Vector2d;
-        public With: Collidable;
-
-        constructor(at: Assets.Vector2d, w: Collidable) {
-            this.At = at;
-            this.With = w;
-        }
-    }
-
-}
-/* Collidable.ts */
-
-
-
-
-
-
-module EndGate.Core.Collision {
-
-    export class Collidable implements IDisposable, ITyped {
-        public _type: string = "Collidable";
-
-        public Bounds: BoundingObject.Bounds2d;
-        public ID: number;
-
-        private static _collidableIDs: number = 0;
-        private _disposed: bool;
-
-        constructor(bounds: BoundingObject.Bounds2d) {
-            this._disposed = false;
-
-            this.Bounds = bounds;
-            this.ID = Collidable._collidableIDs++;
-
-            this.OnCollision = new Utilities.EventHandler();
-            this.OnDisposed = new Utilities.EventHandler();
-        }
-
-        public OnCollision: Utilities.EventHandler;
-        public OnDisposed: Utilities.EventHandler;
-
-        public IsCollidingWith(other: Collidable): bool {
-            return this.Bounds.Intersects(other.Bounds);
-        }
-
-        public Collided(data: CollisionData): void {
-            this.OnCollision.Trigger(data);
-        }
-
-        public Dispose(): void
+    export class Vector2dHelpers {
+        public static GetMinMaxProjections(axis: Vector2d, vertices: Vector2d[]): MinMax
         {
-            if (!this._disposed) {
-                this._disposed = true;
-                this.OnDisposed.Trigger(this);
-            }
-            else {
-                throw new Error("Cannot dispose collidable twice.");
-            }
-        }
-    }
+            var min: number = vertices[0].ProjectOnto(axis).Dot(axis);
+            var max: number = min;
 
-}
-/* CollisionManager.ts */
+            for (var i: number = 1; i < vertices.length; i++)
+            {
+                var vertex: Vector2d = vertices[i];
+                var value: number = vertex.ProjectOnto(axis).Dot(axis);
 
-
-
-
-
-
-
-module EndGate.Core.Collision {
-
-    export class CollisionManager implements IUpdateable, ITyped {
-        public _type: string = "CollisionManager";
-
-        public _collidables: Collidable[];
-
-        private _enabled: bool;
-
-        constructor() {
-            this._collidables = [];
-            this._enabled = false;
-
-            this.OnCollision = new Utilities.EventHandler();
-        }
-
-        public OnCollision: Utilities.EventHandler;
-
-        public Monitor(obj: Collidable): void {
-            this._enabled = true;
-
-            obj.OnDisposed.Bind(() => {
-                this.Unmonitor(obj);
-            });
-
-            this._collidables.push(obj);
-        }
-
-        public Unmonitor(obj: Collidable): void {
-            for (var i = 0; i < this._collidables.length; i++) {
-                if (this._collidables[i].ID === obj.ID) {
-                    this._collidables.splice(i, 1);
-                    break;
+                if (value < min) {
+                    min = value;
+                }
+                else if (value > max) {
+                    max = value;
                 }
             }
-        }
 
-        public Update(gameTime: GameTime): void {
-            var first: Collidable,
-                second: Collidable;
-
-            if (this._enabled) {
-                for (var i = 0; i < this._collidables.length; i++) {
-                    first = this._collidables[i];
-
-                    for (var j = i + 1; j < this._collidables.length; j++) {
-                        second = this._collidables[j];
-
-                        if (first.IsCollidingWith(second)) {
-                            first.Collided(new CollisionData(first.Bounds.Position.Clone(), second));
-                            second.Collided(new CollisionData(second.Bounds.Position.Clone(), first));
-                            this.OnCollision.Trigger(first, second);
-                        }
-                    }
-                }
-            }
+            return new MinMax(min, max);
         }
     }
 
@@ -855,7 +727,183 @@ module EndGate.Core.Assets {
         }
     }
 }
+/* BoundingCircle.ts */
+
+
+
+
+module EndGate.Core.BoundingObject {
+
+    export class BoundingCircle implements ITyped extends Bounds2d {
+        public _type: string = "BoundingCircle";
+        public _boundsType: string = "BoundingCircle";
+
+        public Radius: number;
+
+        constructor(position: Assets.Vector2d, radius: number) {
+            super(position);
+
+            this.Radius = radius;
+        }
+
+        private static ClosestTo(val: number, topLeft: Assets.Vector2d, botRight: Assets.Vector2d): number
+        {
+            if (val < topLeft.X) {
+                return topLeft.X;
+            }
+            else if (val > botRight.X) {
+                return botRight.X;
+            }
+
+            return val;
+        }
+
+        public Area(): number {
+            return Math.PI * this.Radius * this.Radius;
+        }
+
+        public Circumfrence(): number {
+            return 2 * Math.PI * this.Radius;
+        }
+
+        public IntersectsCircle(circle: EndGate.Core.BoundingObject.BoundingCircle): bool {
+            return this.Position.Distance(circle.Position).Length() < this.Radius + circle.Radius;
+        }
+
+        public IntersectsRectangle(rectangle: EndGate.Core.BoundingObject.BoundingRectangle): bool {
+            var translated = (rectangle.Rotation === 0)
+                                  ? this.Position
+                                  : this.Position.RotateAround(rectangle.Position, -rectangle.Rotation);
+
+            var unrotatedTopLeft: Assets.Vector2d = new Assets.Vector2d(rectangle.Position.X - rectangle.Size.HalfWidth(), rectangle.Position.Y - rectangle.Size.HalfHeight()),
+                unrotatedBotRight = new Assets.Vector2d(rectangle.Position.X + rectangle.Size.HalfWidth(), rectangle.Position.Y + rectangle.Size.HalfHeight()),
+                closest = new Assets.Vector2d(BoundingCircle.ClosestTo(translated.X, unrotatedTopLeft, unrotatedBotRight), BoundingCircle.ClosestTo(translated.Y, unrotatedTopLeft, unrotatedBotRight));
+
+            return translated.Distance(closest).Magnitude() < this.Radius;
+        }
+
+        public ContainsPoint(point: Assets.Vector2d): bool {
+            return this.Position.Distance(point).Magnitude() < this.Radius;
+        }
+    }
+
+}
+/* BoundingRectangle.ts */
+
+
+
+
+
+module EndGate.Core.BoundingObject {
+
+    export class BoundingRectangle implements ITyped extends Bounds2d {
+        public _type: string = "BoundingRectangle";
+        public _boundsType: string = "BoundingRectangle";
+
+        public Size: Assets.Size2d;
+
+        constructor(position: Assets.Vector2d, size: Assets.Size2d) {
+            super(position);
+            this.Size = size;
+        }
+
+        public Vertices(): Assets.Vector2d[] {
+            return [this.TopLeft(), this.TopRight(), this.BotLeft(), this.BotRight()];
+        }
+
+        public TopLeft(): Assets.Vector2d {
+            var v = new Assets.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
+            if (this.Rotation === 0) {
+                return v;
+            }
+
+            return v.RotateAround(this.Position, this.Rotation);
+        }
+
+        public TopRight(): Assets.Vector2d {
+            var v = new Assets.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
+            if (this.Rotation === 0) {
+                return v;
+            }
+
+            return v.RotateAround(this.Position, this.Rotation);
+        }
+
+        public BotLeft(): Assets.Vector2d {
+            var v = new Assets.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
+            if (this.Rotation === 0) {
+                return v;
+            }
+
+            return v.RotateAround(this.Position, this.Rotation);
+        }
+
+        public BotRight(): Assets.Vector2d {
+            var v = new Assets.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
+            if (this.Rotation === 0) {
+                return v;
+            }
+
+            return v.RotateAround(this.Position, this.Rotation);
+        }
+
+        public IntersectsCircle(circle: EndGate.Core.BoundingObject.BoundingCircle): bool {
+            return circle.IntersectsRectangle(this);
+        }
+
+        public IntersectsRectangle(rectangle: EndGate.Core.BoundingObject.BoundingRectangle): bool {
+            if (this.Rotation === 0 && rectangle.Rotation === 0) {
+                var myTopLeft = this.TopLeft(),
+                    myBotRight = this.BotRight(),
+                    theirTopLeft = rectangle.TopLeft(),
+                    theirBotRight = rectangle.BotRight();
+
+                return theirTopLeft.X <= myBotRight.X && theirBotRight.X >= myTopLeft.X && theirTopLeft.Y <= myBotRight.Y && theirBotRight.Y >= myTopLeft.Y;
+
+            }
+            else if (rectangle.Position.Distance(this.Position).Magnitude() <= rectangle.Size.Radius() + this.Size.Radius()) {// Check if we're somewhat close to the rectangle ect that we might be colliding with
+                var axisList: Assets.Vector2d[] = [this.TopRight().Subtract(this.TopLeft()), this.TopRight().Subtract(this.BotRight()), rectangle.TopLeft().Subtract(rectangle.BotLeft()), rectangle.TopLeft().Subtract(rectangle.TopRight())];
+                var myVertices = this.Vertices();
+                var theirVertices = rectangle.Vertices();
+
+                for (var i: number = 0; i < axisList.length; i++) {
+                    var axi = axisList[i];
+                    var myProjections = Assets.Vector2dHelpers.GetMinMaxProjections(axi, myVertices);
+                    var theirProjections = Assets.Vector2dHelpers.GetMinMaxProjections(axi, theirVertices);
+
+                    // No collision
+                    if (theirProjections.Max < myProjections.Min || myProjections.Max < theirProjections.Min) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public ContainsPoint(point: Assets.Vector2d): bool {
+            var savedRotation: number = this.Rotation;
+
+            if (this.Rotation !== 0) {
+                this.Rotation = 0;
+                point = point.RotateAround(this.Position, -savedRotation);
+            }
+
+            var myTopLeft = this.TopLeft(),
+                myBotRight = this.BotRight();
+
+            this.Rotation = savedRotation;
+
+            return point.X <= myBotRight.X && point.X >= myTopLeft.X && point.Y <= myBotRight.Y && point.Y >= myTopLeft.Y;
+        }
+
+    }
+
+}
 /* IBounds2d.d.ts */
+
 
 
 
@@ -863,6 +911,7 @@ module EndGate.Core.Assets {
 module EndGate.Core.BoundingObject {
 
     export interface IBounds2d {
+        _boundsType: string;
 
         Position: Assets.Vector2d;
         Rotation: number;        
@@ -877,6 +926,220 @@ module EndGate.Core.BoundingObject {
         IntersectsCircle(circle: BoundingCircle): bool;
 
         IntersectsRectangle(rectangle: BoundingRectangle): bool;
+    }
+
+}
+/* EventHandler.ts */
+
+
+
+module EndGate.Core.Utilities {
+
+    export class EventHandler implements ITyped {
+        public _type: string = "Event";
+
+        private _actions: Function[];
+
+        constructor() {
+            this._actions = [];
+        }
+
+        public Bind(action: Function): void {
+            this._actions.push(action);
+        }
+
+        public Unbind(action: Function): void {
+            for (var i = 0; i < this._actions.length; i++) {
+                if (this._actions[i] === action) {
+                    this._actions.splice(i, 1);
+                    return;
+                }
+            }
+        }
+
+        public Trigger(...args: any[]): void {
+            for (var i = 0; i < this._actions.length; i++) {
+                this._actions[i].apply(this, args);
+            }
+        }
+    }
+
+}
+/* CollisionData.ts */
+
+
+
+module EndGate.Core.Collision {
+
+    export class CollisionData {
+        public At: Assets.Vector2d;
+        public With: Collidable;
+
+        constructor(at: Assets.Vector2d, w: Collidable) {
+            this.At = at;
+            this.With = w;
+        }
+    }
+
+}
+/* Collidable.ts */
+
+
+
+
+
+
+
+
+module EndGate.Core.Collision {
+
+    export class Collidable implements IDisposable, ITyped, BoundingObject.IBounds2d {        
+        public _type: string = "Collidable";
+        public _boundsType: string = "Collidable";
+
+        public Position: Assets.Vector2d;
+        public Rotation: number;
+        public ID: number;
+
+        private static _collidableIDs: number = 0;
+        private _disposed: bool;
+
+        constructor(bounds: BoundingObject.IBounds2d) {
+            // This is the #1 hack of this library. Since currently TypeScript does not support
+            // generics yet (0.9 hasn't been released yet) I need replace all of the IBounds2d
+            // functions with ones that have been passed through.
+            for (var property in bounds) {
+                this[property] = bounds[property];
+            }
+
+            this._disposed = false;
+            this.ID = Collidable._collidableIDs++;
+
+            this.OnCollision = new Utilities.EventHandler();
+            this.OnDisposed = new Utilities.EventHandler();
+        }
+
+        public OnCollision: Utilities.EventHandler;
+        public OnDisposed: Utilities.EventHandler;
+
+        public IsCollidingWith(other: BoundingObject.IBounds2d): bool {
+            return this.Intersects(other);
+        }
+
+        public Collided(data: CollisionData): void {
+            this.OnCollision.Trigger(data);
+        }
+
+        public Dispose(): void
+        {
+            if (!this._disposed) {
+                this._disposed = true;
+                this.OnDisposed.Trigger(this);
+            }
+            else {
+                throw new Error("Cannot dispose collidable twice.");
+            }
+        }
+
+        // *****        These are all replaced within the constructor by the bounds2d that are passed down to this layer.       *****
+
+        private ContainsPoint(point: Assets.Vector2d): bool {
+            throw new Error("This method is abstract!");
+        }
+
+        private Intersects(obj: BoundingObject.IBounds2d): bool;
+        private Intersects(circle: BoundingObject.BoundingCircle): bool;
+        private Intersects(rectangle: BoundingObject.BoundingRectangle): bool;
+        private Intersects(obj: any): bool {
+            if (obj._type === "BoundingCircle") {
+                return this.IntersectsCircle(obj);
+            }
+            else if (obj._type === "BoundingRectangle") {
+                return this.IntersectsRectangle(obj);
+            }
+            else {
+                throw new Error("Cannot intersect with unidentifiable object, must be BoundingCircle or BoundingRectangle");
+            }
+        }
+
+        private IntersectsCircle(circle: BoundingObject.BoundingCircle): bool {
+            throw new Error("This method is abstract!");
+        }
+
+        private IntersectsRectangle(rectangle: BoundingObject.BoundingRectangle): bool {
+            throw new Error("This method is abstract!");
+        }
+
+        // *****        These are all replaced within the constructor by the bounds2d that are passed down to this layer.       *****
+    }
+
+}
+/* CollisionManager.ts */
+
+
+
+
+
+
+
+
+module EndGate.Core.Collision {
+
+    export class CollisionManager implements IUpdateable, ITyped {
+        public _type: string = "CollisionManager";
+
+        public _collidables: Collidable[];
+
+        private _enabled: bool;
+
+        constructor() {
+            this._collidables = [];
+            this._enabled = false;
+
+            this.OnCollision = new Utilities.EventHandler();
+        }
+
+        public OnCollision: Utilities.EventHandler;
+
+        public Monitor(obj: Collidable): void {
+            this._enabled = true;
+
+            obj.OnDisposed.Bind(() => {
+                this.Unmonitor(obj);
+            });
+
+            this._collidables.push(obj);
+        }
+
+        public Unmonitor(obj: Collidable): void {
+            for (var i = 0; i < this._collidables.length; i++) {
+                if (this._collidables[i].ID === obj.ID) {
+                    this._collidables.splice(i, 1);
+                    break;
+                }
+            }
+        }
+
+        public Update(gameTime: GameTime): void {
+            var first: Collidable,
+                second: Collidable;
+
+            if (this._enabled) {
+                for (var i = 0; i < this._collidables.length; i++) {
+                    first = this._collidables[i];
+
+                    for (var j = i + 1; j < this._collidables.length; j++) {
+                        second = this._collidables[j];
+
+                        if (first.IsCollidingWith(second)) {
+                            first.Collided(new CollisionData(first.Position.Clone(), second));
+                            second.Collided(new CollisionData(second.Position.Clone(), first));
+                            this.OnCollision.Trigger(first, second);
+                        }
+                    }
+                }
+            }
+        }
     }
 
 }
@@ -987,6 +1250,7 @@ module EndGate.Core.Graphics {
 
     export class Graphic2d implements ITyped, Rendering.IRenderable, BoundingObject.IBounds2d {
         public _type: string = "Graphic2d";
+        public _boundsType: string = "Graphic2d";
 
         public Position: Assets.Vector2d;
         public ZIndex: number;
@@ -1382,223 +1646,6 @@ module EndGate.Core {
 }
 
 var GameRunnerInstance: EndGate.Core.GameRunner = new EndGate.Core.GameRunner();
-/* MinMax.ts */
-module EndGate.Core.Assets {
-
-    export class MinMax {
-        public Min: number;
-        public Max: number;
-
-        constructor(min: number, max: number) {
-            this.Min = min;
-            this.Max = max;
-        }
-    }
-
-}
-/* Vector2dHelpers.ts */
-
-
-
-module EndGate.Core.Assets {
-
-    export class Vector2dHelpers {
-        public static GetMinMaxProjections(axis: Vector2d, vertices: Vector2d[]): MinMax
-        {
-            var min: number = vertices[0].ProjectOnto(axis).Dot(axis);
-            var max: number = min;
-
-            for (var i: number = 1; i < vertices.length; i++)
-            {
-                var vertex: Vector2d = vertices[i];
-                var value: number = vertex.ProjectOnto(axis).Dot(axis);
-
-                if (value < min) {
-                    min = value;
-                }
-                else if (value > max) {
-                    max = value;
-                }
-            }
-
-            return new MinMax(min, max);
-        }
-    }
-
-}
-/* BoundingCircle.ts */
-
-
-
-
-module EndGate.Core.BoundingObject {
-
-    export class BoundingCircle implements ITyped extends Bounds2d {
-        public _type: string = "BoundingCircle";
-
-        public Radius: number;
-
-        constructor(position: Assets.Vector2d, radius: number) {
-            super(position);
-
-            this.Radius = radius;
-        }
-
-        private static ClosestTo(val: number, topLeft: Assets.Vector2d, botRight: Assets.Vector2d): number
-        {
-            if (val < topLeft.X) {
-                return topLeft.X;
-            }
-            else if (val > botRight.X) {
-                return botRight.X;
-            }
-
-            return val;
-        }
-
-        public Area(): number {
-            return Math.PI * this.Radius * this.Radius;
-        }
-
-        public Circumfrence(): number {
-            return 2 * Math.PI * this.Radius;
-        }
-
-        public IntersectsCircle(circle: BoundingCircle): bool {
-            return this.Position.Distance(circle.Position).Length() < this.Radius + circle.Radius;
-        }
-
-        public IntersectsRectangle(rectangle: BoundingRectangle): bool {
-            var translated = (rectangle.Rotation === 0)
-                                  ? this.Position
-                                  : this.Position.RotateAround(rectangle.Position, -rectangle.Rotation);
-
-            var unrotatedTopLeft: Assets.Vector2d = new Assets.Vector2d(rectangle.Position.X - rectangle.Size.HalfWidth(), rectangle.Position.Y - rectangle.Size.HalfHeight()),
-                unrotatedBotRight = new Assets.Vector2d(rectangle.Position.X + rectangle.Size.HalfWidth(), rectangle.Position.Y + rectangle.Size.HalfHeight()),
-                closest = new Assets.Vector2d(BoundingCircle.ClosestTo(translated.X, unrotatedTopLeft, unrotatedBotRight), BoundingCircle.ClosestTo(translated.Y, unrotatedTopLeft, unrotatedBotRight));
-
-            return translated.Distance(closest).Magnitude() < this.Radius;
-        }
-
-        public ContainsPoint(point: Assets.Vector2d): bool {
-            return this.Position.Distance(point).Magnitude() < this.Radius;
-        }
-    }
-
-}
-/* BoundingRectangle.ts */
-
-
-
-
-
-module EndGate.Core.BoundingObject {
-
-    export class BoundingRectangle implements ITyped extends Bounds2d {
-        public _type: string = "BoundingRectangle";
-
-        public Size: Assets.Size2d;
-
-        constructor(position: Assets.Vector2d, size: Assets.Size2d) {
-            super(position);
-            this.Size = size;
-        }
-
-        public Vertices(): Assets.Vector2d[] {
-            return [this.TopLeft(), this.TopRight(), this.BotLeft(), this.BotRight()];
-        }
-
-        public TopLeft(): Assets.Vector2d {
-            var v = new Assets.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
-            if (this.Rotation === 0) {
-                return v;
-            }
-
-            return v.RotateAround(this.Position, this.Rotation);
-        }
-
-        public TopRight(): Assets.Vector2d {
-            var v = new Assets.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
-            if (this.Rotation === 0) {
-                return v;
-            }
-
-            return v.RotateAround(this.Position, this.Rotation);
-        }
-
-        public BotLeft(): Assets.Vector2d {
-            var v = new Assets.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
-            if (this.Rotation === 0) {
-                return v;
-            }
-
-            return v.RotateAround(this.Position, this.Rotation);
-        }
-
-        public BotRight(): Assets.Vector2d {
-            var v = new Assets.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
-            if (this.Rotation === 0) {
-                return v;
-            }
-
-            return v.RotateAround(this.Position, this.Rotation);
-        }
-
-        public IntersectsCircle(circle: BoundingCircle): bool {
-            return circle.IntersectsRectangle(this);
-        }
-
-        public IntersectsRectangle(rectangle: BoundingRectangle): bool {
-            if (this.Rotation === 0 && rectangle.Rotation === 0) {
-                var myTopLeft = this.TopLeft(),
-                    myBotRight = this.BotRight(),
-                    theirTopLeft = rectangle.TopLeft(),
-                    theirBotRight = rectangle.BotRight();
-
-                return theirTopLeft.X <= myBotRight.X && theirBotRight.X >= myTopLeft.X && theirTopLeft.Y <= myBotRight.Y && theirBotRight.Y >= myTopLeft.Y;
-
-            }
-            else if (rectangle.Position.Distance(this.Position).Magnitude() <= rectangle.Size.Radius() + this.Size.Radius()) {// Check if we're somewhat close to the rectangle ect that we might be colliding with
-                var axisList: Assets.Vector2d[] = [this.TopRight().Subtract(this.TopLeft()), this.TopRight().Subtract(this.BotRight()), rectangle.TopLeft().Subtract(rectangle.BotLeft()), rectangle.TopLeft().Subtract(rectangle.TopRight())];
-                var myVertices = this.Vertices();
-                var theirVertices = rectangle.Vertices();
-
-                for (var i: number = 0; i < axisList.length; i++) {
-                    var axi = axisList[i];
-                    var myProjections = Assets.Vector2dHelpers.GetMinMaxProjections(axi, myVertices);
-                    var theirProjections = Assets.Vector2dHelpers.GetMinMaxProjections(axi, theirVertices);
-
-                    // No collision
-                    if (theirProjections.Max < myProjections.Min || myProjections.Max < theirProjections.Min) {
-                        return false;
-                    }
-                }
-
-                return true;
-            }
-
-            return false;
-        }
-
-        public ContainsPoint(point: Assets.Vector2d): bool {
-            var savedRotation: number = this.Rotation;
-
-            if (this.Rotation !== 0) {
-                this.Rotation = 0;
-                point = point.RotateAround(this.Position, -savedRotation);
-            }
-
-            var myTopLeft = this.TopLeft(),
-                myBotRight = this.BotRight();
-
-            this.Rotation = savedRotation;
-
-            return point.X <= myBotRight.X && point.X >= myTopLeft.X && point.Y <= myBotRight.Y && point.Y >= myTopLeft.Y;
-        }
-
-    }
-
-}
 /* PrimitiveExtensions.ts */
 
 

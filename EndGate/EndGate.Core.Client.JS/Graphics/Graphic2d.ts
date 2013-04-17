@@ -9,6 +9,7 @@ module EndGate.Core.Graphics {
 
     export class Graphic2d implements ITyped, Rendering.IRenderable, BoundingObject.IBounds2d {
         public _type: string = "Graphic2d";
+        public _boundsType: string = "Graphic2d";
 
         public Position: Assets.Vector2d;
         public ZIndex: number;

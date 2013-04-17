@@ -7,6 +7,7 @@ module EndGate.Core.BoundingObject {
 
     export class BoundingRectangle implements ITyped extends Bounds2d {
         public _type: string = "BoundingRectangle";
+        public _boundsType: string = "BoundingRectangle";
 
         public Size: Assets.Size2d;
 
@@ -55,11 +56,13 @@ module EndGate.Core.BoundingObject {
             return v.RotateAround(this.Position, this.Rotation);
         }
 
-        public IntersectsCircle(circle: BoundingCircle): bool {
+        // For some reason when compiled into a single .ts file if this isn't fully declared it doesn't compile
+        public IntersectsCircle(circle: EndGate.Core.BoundingObject.BoundingCircle): bool {
             return circle.IntersectsRectangle(this);
         }
 
-        public IntersectsRectangle(rectangle: BoundingRectangle): bool {
+        // For some reason when compiled into a single .ts file if this isn't fully declared it doesn't compile
+        public IntersectsRectangle(rectangle: EndGate.Core.BoundingObject.BoundingRectangle): bool {
             if (this.Rotation === 0 && rectangle.Rotation === 0) {
                 var myTopLeft = this.TopLeft(),
                     myBotRight = this.BotRight(),

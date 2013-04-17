@@ -16,13 +16,13 @@
         cm.Monitor(circle);
 
         rect.OnCollision.Bind(function(collisionData) {
-            QUnit.ok(rect.Bounds.Position.Equivalent(collisionData.At));
+            QUnit.ok(rect.Position.Equivalent(collisionData.At));
             QUnit.ok(circle === collisionData.With);
             rectCollisionTriggered = true;
         });
 
         circle.OnCollision.Bind(function(collisionData) {
-            QUnit.ok(circle.Bounds.Position.Equivalent(collisionData.At));
+            QUnit.ok(circle.Position.Equivalent(collisionData.At));
             QUnit.deepEqual(rect, collisionData.With);
             circleCollisionTriggered = true;
         });
@@ -84,13 +84,13 @@
         game.MonitorCollision(circle);        
 
         rect.OnCollision.Bind(function(collisionData){
-            assert.ok(rect.Bounds.Position.Equivalent(collisionData.At));
+            assert.ok(rect.Position.Equivalent(collisionData.At));
             assert.deepEqual(circle, collisionData.With);
             rectCollisionTriggered++;
         });
 
         circle.OnCollision.Bind(function(collisionData) {
-            assert.ok(circle.Bounds.Position.Equivalent(collisionData.At));
+            assert.ok(circle.Position.Equivalent(collisionData.At));
             assert.deepEqual(rect, collisionData.With);
             circleCollisionTriggered++;
         });

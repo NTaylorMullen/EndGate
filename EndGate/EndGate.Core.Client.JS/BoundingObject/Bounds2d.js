@@ -4,6 +4,7 @@ var EndGate;
         (function (BoundingObject) {
             var Bounds2d = (function () {
                 function Bounds2d(position) {
+                    this._boundsType = "Bounds2d";
                     this.Position = position;
                     this.Rotation = 0;
                 }
@@ -11,9 +12,9 @@ var EndGate;
                     throw new Error("This method is abstract!");
                 };
                 Bounds2d.prototype.Intersects = function (obj) {
-                    if(obj._type === "BoundingCircle") {
+                    if(obj._boundsType === "BoundingCircle") {
                         return this.IntersectsCircle(obj);
-                    } else if(obj._type === "BoundingRectangle") {
+                    } else if(obj._boundsType === "BoundingRectangle") {
                         return this.IntersectsRectangle(obj);
                     } else {
                         throw new Error("Cannot intersect with unidentifiable object, must be BoundingCircle or BoundingRectangle");

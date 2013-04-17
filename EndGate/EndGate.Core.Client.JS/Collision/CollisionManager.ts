@@ -54,8 +54,8 @@ module EndGate.Core.Collision {
                         second = this._collidables[j];
 
                         if (first.IsCollidingWith(second)) {
-                            first.Collided(new CollisionData(first.Bounds.Position.Clone(), second));
-                            second.Collided(new CollisionData(second.Bounds.Position.Clone(), first));
+                            first.Collided(new CollisionData(first.Position.Clone(), second));
+                            second.Collided(new CollisionData(second.Position.Clone(), first));
                             this.OnCollision.Trigger(first, second);
                         }
                     }

@@ -125,19 +125,17 @@
     <Content Include="Content\themes\base\minified\jquery.ui.tooltip.min.css" />
     <Content Include="Default.aspx" />
     <Content Include="packages.config" />
-    <TypeScriptCompile Include="Samples\GraphicsRendering\mainGraphicsRendering.ts" />
-    <TypeScriptCompile Include="Samples\GraphicsRendering\assetsGraphicsRendering.ts" />
-    <Content Include="Samples\GraphicsRendering\assetsGraphicsRendering.js">
-      <DependentUpon>assetsGraphicsRendering.ts</DependentUpon>
+    <TypeScriptCompile Include="Samples\CollisionDetection\assetsCollisionDetection.ts" />
+    <Content Include="Samples\CollisionDetection\assetsCollisionDetection.js">
+      <DependentUpon>assetsCollisionDetection.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\GraphicsRendering\assetsGraphicsRendering.min.js">
-      <DependentUpon>assetsGraphicsRendering.ts</DependentUpon>
+    <Content Include="Samples\CollisionDetection\assetsCollisionDetection.min.js">
+      <DependentUpon>assetsCollisionDetection.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\GraphicsRendering\mainGraphicsRendering.js">
-      <DependentUpon>mainGraphicsRendering.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\GraphicsRendering\assetsGraphicsRendering.js.map">
-      <DependentUpon>assetsGraphicsRendering.ts</DependentUpon>
+    <Content Include="Samples\CollisionDetection\Default.aspx" />
+    <TypeScriptCompile Include="Samples\CollisionDetection\mainCollisionDetection.ts" />
+    <Content Include="Samples\CollisionDetection\mainCollisionDetection.js">
+      <DependentUpon>mainCollisionDetection.ts</DependentUpon>
     </Content>
     <TypeScriptCompile Include="Samples\Shapes\assetsShapes.ts" />
     <Content Include="Samples\Shapes\assetsShapes.js">
@@ -160,8 +158,10 @@
     <Content Include="Scripts\endGate.core.client.min.js.map">
       <DependentUpon>endGate.core.client.js</DependentUpon>
     </Content>
+    <Content Include="Samples\CollisionDetection\assetsCollisionDetection.js.map">
+      <DependentUpon>assetsCollisionDetection.ts</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
-    <Content Include="Samples\GraphicsRendering\Default.aspx" />
     <TypeScriptCompile Include="Scripts\endGate.core.client.ts" />
     <TypeScriptCompile Include="Samples\Layering\assetsLayering.ts" />
     <Content Include="Samples\Layering\assetsLayering.js">
@@ -203,11 +203,11 @@
       <DependentUpon>EndGate.Core.Samples.Master</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Samples\GraphicsRendering\Default.aspx.cs">
+    <Compile Include="Samples\CollisionDetection\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Samples\GraphicsRendering\Default.aspx.designer.cs">
+    <Compile Include="Samples\CollisionDetection\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="Samples\Layering\Default.aspx.cs">

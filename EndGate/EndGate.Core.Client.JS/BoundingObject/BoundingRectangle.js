@@ -12,6 +12,7 @@ var EndGate;
                 function BoundingRectangle(position, size) {
                                 _super.call(this, position);
                     this._type = "BoundingRectangle";
+                    this._boundsType = "BoundingRectangle";
                     this.Size = size;
                 }
                 BoundingRectangle.prototype.Vertices = function () {

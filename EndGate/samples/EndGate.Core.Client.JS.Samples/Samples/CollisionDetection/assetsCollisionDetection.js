@@ -3,8 +3,18 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var MovingShape = (function () {
+var MovingShape = (function (_super) {
+    __extends(MovingShape, _super);
     function MovingShape(graphic, velocity, directionInterval) {
+        _super.call(this, graphic);
+        this._fadeSpeed = 2;
+        this._collisionBorderThickness = 5;
+        this._collisionColorAlpha = 0;
+        this._collisionColor = [
+            255, 
+            0, 
+            0
+        ];
         this.Graphic = graphic;
         this._velocity = velocity;
         this._directionInterval = directionInterval;
@@ -14,20 +24,30 @@ var MovingShape = (function () {
         } else {
             this._rotationMultiplier = 1;
         }
+        (this.Graphic).Border(this._collisionBorderThickness, "rgba(" + this._collisionColor + ",0,0," + this._collisionColorAlpha + ")");
     }
     MovingShape.RotationSpeed = Math.PI;
+    MovingShape.prototype.Collided = function (data) {
+        this._collisionColorAlpha = 1;
+        var strColor = ((data.With).Graphic).Color().replace("rgb(", "").replace(")", "").split(",");
+        for(var i = 0; i < strColor.length; i++) {
+            this._collisionColor[i] = parseInt(strColor[i]);
+        }
+        _super.prototype.Collided.call(this, data);
+    };
     MovingShape.prototype.Update = function (gameTime) {
-        var percentOfSecond = gameTime.Elapsed / 1000;
         if(gameTime.Now.getTime() - this._lastChangedDirection >= this._directionInterval) {
             this._velocity = this._velocity.Multiply(-1);
             this._rotationMultiplier *= -1;
             this._lastChangedDirection = gameTime.Now.getTime();
         }
-        this.Graphic.Rotation += percentOfSecond * MovingShape.RotationSpeed * this._rotationMultiplier;
-        this.Graphic.Position = this.Graphic.Position.Add(this._velocity.Multiply(percentOfSecond));
+        this._collisionColorAlpha = Math.max(this._collisionColorAlpha - gameTime.ElapsedSecond * this._fadeSpeed, 0);
+        (this.Graphic).BorderColor("rgba(" + this._collisionColor[0] + "," + this._collisionColor[1] + "," + this._collisionColor[2] + "," + this._collisionColorAlpha + ")");
+        this.Graphic.Rotation = this.Rotation = this.Rotation + gameTime.ElapsedSecond * MovingShape.RotationSpeed * this._rotationMultiplier;
+        this.Graphic.Position = this.Position = this.Graphic.Position.Add(this._velocity.Multiply(gameTime.ElapsedSecond));
     };
     return MovingShape;
-})();
+})(EndGate.Core.Collision.Collidable);
 var GraphicsRenderer = (function (_super) {
     __extends(GraphicsRenderer, _super);
     function GraphicsRenderer(canvas) {
@@ -56,12 +76,14 @@ var GraphicsRenderer = (function (_super) {
         shape = new MovingShape(rect, randomVel, randomChange);
         this._shapes.push(shape);
         this.Scene.Add(rect);
+        this.CollisionManager.Monitor(shape);
     };
     GraphicsRenderer.prototype.AddRandomCircle = function () {
         var randomPos = this.GetRandomPosition(), randomRadius = this.GetRandomRadius(), randomVel = this.GetRandomVelocity(), randomChange = this.GetRandomIntervalChange(), circle = new EndGate.Core.Graphics.Shapes.Circle(randomPos.X, randomPos.Y, randomRadius, this.GetRandomColor()), shape;
         shape = new MovingShape(circle, randomVel, randomChange);
         this._shapes.push(shape);
         this.Scene.Add(circle);
+        this.CollisionManager.Monitor(shape);
     };
     GraphicsRenderer.prototype.GetRandomPosition = function () {
         return new EndGate.Core.Assets.Vector2d(Math.floor((Math.random() * this._width) + 1), Math.floor((Math.random() * this._height) + 1));
@@ -88,4 +110,4 @@ var GraphicsRenderer = (function (_super) {
     };
     return GraphicsRenderer;
 })(EndGate.Core.Game);
-//@ sourceMappingURL=assetsGraphicsRendering.js.map
+//@ sourceMappingURL=assetsCollisionDetection.js.map

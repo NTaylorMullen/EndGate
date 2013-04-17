@@ -1,14 +1,14 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/EndGate.Core.Samples.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="EndGate.Core.Client.JS.Samples.Samples.ShapeCreator.Default" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/EndGate.Core.Samples.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="EndGate.Core.Client.JS.Samples.Samples.CollisionDetection.Default" %>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <ul class="breadcrumb">
         <li><a href="<%: ResolveUrl("~/") %>">EndGate JavaScript Samples</a> <span class="divider">/</span></li>
-        <li class="active">Graphics Rendering</li>
+        <li class="active">Collision Detection</li>
     </ul>
 
     <div class="page-header">
-        <h2>Graphics Rendering</h2>
-        <p>Demonstrates how to use the client to render graphics.</p>
+        <h2>Collision Detection</h2>
+        <p>Demonstrates how to use the client to detect collisions.</p>
     </div>
 
     <div class="row form-search well">
@@ -24,6 +24,6 @@
     </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Scripts" runat="server">
-    <script src="assetsGraphicsRendering.js"></script>
-    <script src="mainGraphicsRendering.js"></script>
+    <script src="assetsCollisionDetection.js"></script>
+    <script src="mainCollisionDetection.js"></script>
 </asp:Content>

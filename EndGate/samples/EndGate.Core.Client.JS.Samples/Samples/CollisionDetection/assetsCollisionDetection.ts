@@ -1,6 +1,6 @@
 /// <reference path="../../Scripts/endGate.core.client.ts" />
 
-class MovingShape implements IUpdateable {
+class MovingShape implements IUpdateable extends EndGate.Core.Collision.Collidable {
     // Rotate 180 deg every second
     private static RotationSpeed: number = Math.PI;
 
@@ -10,7 +10,14 @@ class MovingShape implements IUpdateable {
     private _lastChangedDirection: number;
     private _rotationMultiplier: number;
 
+    private _fadeSpeed: number = 2;
+    private _collisionBorderThickness: number = 5;
+    private _collisionColorAlpha: number = 0;
+    private _collisionColor: number[] = [255,0,0];
+
     constructor(graphic: EndGate.Core.Graphics.Graphic2d, velocity: EndGate.Core.Assets.Vector2d, directionInterval: number) {
+        super(graphic);
+
         this.Graphic = graphic;
         this._velocity = velocity;
         this._directionInterval = directionInterval;
@@ -23,19 +30,36 @@ class MovingShape implements IUpdateable {
         else {
             this._rotationMultiplier = 1;
         }
+
+        (<EndGate.Core.Graphics.Shapes.Shape>this.Graphic).Border(this._collisionBorderThickness, "rgba(" + this._collisionColor + ",0,0," + this._collisionColorAlpha + ")");
+    }
+
+    public Collided(data: EndGate.Core.Collision.CollisionData): void {
+        this._collisionColorAlpha = 1;
+
+        var strColor = (<EndGate.Core.Graphics.Shapes.Shape>(<MovingShape>data.With).Graphic).Color().replace("rgb(", "").replace(")", "").split(",");
+
+        for (var i = 0; i < strColor.length; i++) {
+            this._collisionColor[i] = parseInt(strColor[i]);
+        }
+
+        super.Collided(data);
     }
 
     public Update(gameTime: EndGate.Core.GameTime): void {
-        var percentOfSecond = gameTime.Elapsed / 1000;
-
         if (gameTime.Now.getTime() - this._lastChangedDirection >= this._directionInterval) {
             this._velocity = this._velocity.Multiply(-1);
             this._rotationMultiplier *= -1;
             this._lastChangedDirection = gameTime.Now.getTime();
         }
 
-        this.Graphic.Rotation += percentOfSecond * MovingShape.RotationSpeed * this._rotationMultiplier;
-        this.Graphic.Position = this.Graphic.Position.Add(this._velocity.Multiply(percentOfSecond));
+        this._collisionColorAlpha = Math.max(this._collisionColorAlpha - gameTime.ElapsedSecond * this._fadeSpeed, 0);
+
+        (<EndGate.Core.Graphics.Shapes.Shape>this.Graphic).BorderColor("rgba(" + this._collisionColor[0] + "," + this._collisionColor[1] + "," + this._collisionColor[2] + "," + this._collisionColorAlpha + ")");
+
+        this.Graphic.Rotation = this.Rotation = this.Rotation + gameTime.ElapsedSecond * MovingShape.RotationSpeed * this._rotationMultiplier;
+        this.Graphic.Position = this.Position = this.Graphic.Position.Add(this._velocity.Multiply(gameTime.ElapsedSecond));
+
     }
 }
 
@@ -80,7 +104,10 @@ class GraphicsRenderer extends EndGate.Core.Game {
 
         shape = new MovingShape(rect, randomVel, randomChange);
         this._shapes.push(shape);
+
         this.Scene.Add(rect);
+
+        this.CollisionManager.Monitor(shape);
     }
 
     public AddRandomCircle(): void {
@@ -94,6 +121,8 @@ class GraphicsRenderer extends EndGate.Core.Game {
         shape = new MovingShape(circle, randomVel, randomChange);
         this._shapes.push(shape);
         this.Scene.Add(circle);
+
+        this.CollisionManager.Monitor(shape);
     }
 
     private GetRandomPosition(): EndGate.Core.Assets.Vector2d {

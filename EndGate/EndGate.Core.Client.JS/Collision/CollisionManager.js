@@ -33,8 +33,8 @@ var EndGate;
                             for(var j = i + 1; j < this._collidables.length; j++) {
                                 second = this._collidables[j];
                                 if(first.IsCollidingWith(second)) {
-                                    first.Collided(new Collision.CollisionData(first.Bounds.Position.Clone(), second));
-                                    second.Collided(new Collision.CollisionData(second.Bounds.Position.Clone(), first));
+                                    first.Collided(new Collision.CollisionData(first.Position.Clone(), second));
+                                    second.Collided(new Collision.CollisionData(second.Position.Clone(), first));
                                     this.OnCollision.Trigger(first, second);
                                 }
                             }

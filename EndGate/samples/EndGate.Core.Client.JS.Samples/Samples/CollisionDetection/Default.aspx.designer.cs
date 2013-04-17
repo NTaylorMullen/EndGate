@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace EndGate.Core.Client.JS.Samples.Samples.ShapeCreator
+namespace EndGate.Core.Client.JS.Samples.Samples.CollisionDetection
 {
 
 

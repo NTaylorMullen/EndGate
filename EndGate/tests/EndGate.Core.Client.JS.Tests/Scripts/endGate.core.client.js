@@ -357,6 +357,7 @@ var EndGate;
         (function (BoundingObject) {
             var Bounds2d = (function () {
                 function Bounds2d(position) {
+                    this._boundsType = "Bounds2d";
                     this.Position = position;
                     this.Rotation = 0;
                 }
@@ -364,9 +365,9 @@ var EndGate;
                     throw new Error("This method is abstract!");
                 };
                 Bounds2d.prototype.Intersects = function (obj) {
-                    if(obj._type === "BoundingCircle") {
+                    if(obj._boundsType === "BoundingCircle") {
                         return this.IntersectsCircle(obj);
-                    } else if(obj._type === "BoundingRectangle") {
+                    } else if(obj._boundsType === "BoundingRectangle") {
                         return this.IntersectsRectangle(obj);
                     } else {
                         throw new Error("Cannot intersect with unidentifiable object, must be BoundingCircle or BoundingRectangle");
@@ -389,141 +390,45 @@ var EndGate;
 var EndGate;
 (function (EndGate) {
     (function (Core) {
-        (function (Utilities) {
-            var EventHandler = (function () {
-                function EventHandler() {
-                    this._type = "Event";
-                    this._actions = [];
+        (function (Assets) {
+            var MinMax = (function () {
+                function MinMax(min, max) {
+                    this.Min = min;
+                    this.Max = max;
                 }
-                EventHandler.prototype.Bind = function (action) {
-                    this._actions.push(action);
-                };
-                EventHandler.prototype.Unbind = function (action) {
-                    for(var i = 0; i < this._actions.length; i++) {
-                        if(this._actions[i] === action) {
-                            this._actions.splice(i, 1);
-                            return;
-                        }
-                    }
-                };
-                EventHandler.prototype.Trigger = function () {
-                    var args = [];
-                    for (var _i = 0; _i < (arguments.length - 0); _i++) {
-                        args[_i] = arguments[_i + 0];
-                    }
-                    for(var i = 0; i < this._actions.length; i++) {
-                        this._actions[i].apply(this, args);
-                    }
-                };
-                return EventHandler;
+                return MinMax;
             })();
-            Utilities.EventHandler = EventHandler;            
-        })(Core.Utilities || (Core.Utilities = {}));
-        var Utilities = Core.Utilities;
+            Assets.MinMax = MinMax;            
+        })(Core.Assets || (Core.Assets = {}));
+        var Assets = Core.Assets;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));
 var EndGate;
 (function (EndGate) {
     (function (Core) {
-        (function (Collision) {
-            var CollisionData = (function () {
-                function CollisionData(at, w) {
-                    this.At = at;
-                    this.With = w;
-                }
-                return CollisionData;
-            })();
-            Collision.CollisionData = CollisionData;            
-        })(Core.Collision || (Core.Collision = {}));
-        var Collision = Core.Collision;
-    })(EndGate.Core || (EndGate.Core = {}));
-    var Core = EndGate.Core;
-})(EndGate || (EndGate = {}));
-var EndGate;
-(function (EndGate) {
-    (function (Core) {
-        (function (Collision) {
-            var Collidable = (function () {
-                function Collidable(bounds) {
-                    this._type = "Collidable";
-                    this._disposed = false;
-                    this.Bounds = bounds;
-                    this.ID = Collidable._collidableIDs++;
-                    this.OnCollision = new Core.Utilities.EventHandler();
-                    this.OnDisposed = new Core.Utilities.EventHandler();
-                }
-                Collidable._collidableIDs = 0;
-                Collidable.prototype.IsCollidingWith = function (other) {
-                    return this.Bounds.Intersects(other.Bounds);
-                };
-                Collidable.prototype.Collided = function (data) {
-                    this.OnCollision.Trigger(data);
-                };
-                Collidable.prototype.Dispose = function () {
-                    if(!this._disposed) {
-                        this._disposed = true;
-                        this.OnDisposed.Trigger(this);
-                    } else {
-                        throw new Error("Cannot dispose collidable twice.");
-                    }
-                };
-                return Collidable;
-            })();
-            Collision.Collidable = Collidable;            
-        })(Core.Collision || (Core.Collision = {}));
-        var Collision = Core.Collision;
-    })(EndGate.Core || (EndGate.Core = {}));
-    var Core = EndGate.Core;
-})(EndGate || (EndGate = {}));
-var EndGate;
-(function (EndGate) {
-    (function (Core) {
-        (function (Collision) {
-            var CollisionManager = (function () {
-                function CollisionManager() {
-                    this._type = "CollisionManager";
-                    this._collidables = [];
-                    this._enabled = false;
-                    this.OnCollision = new Core.Utilities.EventHandler();
-                }
-                CollisionManager.prototype.Monitor = function (obj) {
-                    var _this = this;
-                    this._enabled = true;
-                    obj.OnDisposed.Bind(function () {
-                        _this.Unmonitor(obj);
-                    });
-                    this._collidables.push(obj);
-                };
-                CollisionManager.prototype.Unmonitor = function (obj) {
-                    for(var i = 0; i < this._collidables.length; i++) {
-                        if(this._collidables[i].ID === obj.ID) {
-                            this._collidables.splice(i, 1);
-                            break;
+        (function (Assets) {
+            var Vector2dHelpers = (function () {
+                function Vector2dHelpers() { }
+                Vector2dHelpers.GetMinMaxProjections = function GetMinMaxProjections(axis, vertices) {
+                    var min = vertices[0].ProjectOnto(axis).Dot(axis);
+                    var max = min;
+                    for(var i = 1; i < vertices.length; i++) {
+                        var vertex = vertices[i];
+                        var value = vertex.ProjectOnto(axis).Dot(axis);
+                        if(value < min) {
+                            min = value;
+                        } else if(value > max) {
+                            max = value;
                         }
                     }
+                    return new Assets.MinMax(min, max);
                 };
-                CollisionManager.prototype.Update = function (gameTime) {
-                    var first, second;
-                    if(this._enabled) {
-                        for(var i = 0; i < this._collidables.length; i++) {
-                            first = this._collidables[i];
-                            for(var j = i + 1; j < this._collidables.length; j++) {
-                                second = this._collidables[j];
-                                if(first.IsCollidingWith(second)) {
-                                    first.Collided(new Collision.CollisionData(first.Bounds.Position.Clone(), second));
-                                    second.Collided(new Collision.CollisionData(second.Bounds.Position.Clone(), first));
-                                    this.OnCollision.Trigger(first, second);
-                                }
-                            }
-                        }
-                    }
-                };
-                return CollisionManager;
+                return Vector2dHelpers;
             })();
-            Collision.CollisionManager = CollisionManager;            
-        })(Core.Collision || (Core.Collision = {}));
-        var Collision = Core.Collision;
+            Assets.Vector2dHelpers = Vector2dHelpers;            
+        })(Core.Assets || (Core.Assets = {}));
+        var Assets = Core.Assets;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));
@@ -637,7 +542,308 @@ var EndGate;
 var EndGate;
 (function (EndGate) {
     (function (Core) {
+        (function (BoundingObject) {
+            var BoundingCircle = (function (_super) {
+                __extends(BoundingCircle, _super);
+                function BoundingCircle(position, radius) {
+                                _super.call(this, position);
+                    this._type = "BoundingCircle";
+                    this._boundsType = "BoundingCircle";
+                    this.Radius = radius;
+                }
+                BoundingCircle.ClosestTo = function ClosestTo(val, topLeft, botRight) {
+                    if(val < topLeft.X) {
+                        return topLeft.X;
+                    } else if(val > botRight.X) {
+                        return botRight.X;
+                    }
+                    return val;
+                };
+                BoundingCircle.prototype.Area = function () {
+                    return Math.PI * this.Radius * this.Radius;
+                };
+                BoundingCircle.prototype.Circumfrence = function () {
+                    return 2 * Math.PI * this.Radius;
+                };
+                BoundingCircle.prototype.IntersectsCircle = function (circle) {
+                    return this.Position.Distance(circle.Position).Length() < this.Radius + circle.Radius;
+                };
+                BoundingCircle.prototype.IntersectsRectangle = function (rectangle) {
+                    var translated = (rectangle.Rotation === 0) ? this.Position : this.Position.RotateAround(rectangle.Position, -rectangle.Rotation);
+                    var unrotatedTopLeft = new Core.Assets.Vector2d(rectangle.Position.X - rectangle.Size.HalfWidth(), rectangle.Position.Y - rectangle.Size.HalfHeight()), unrotatedBotRight = new Core.Assets.Vector2d(rectangle.Position.X + rectangle.Size.HalfWidth(), rectangle.Position.Y + rectangle.Size.HalfHeight()), closest = new Core.Assets.Vector2d(BoundingCircle.ClosestTo(translated.X, unrotatedTopLeft, unrotatedBotRight), BoundingCircle.ClosestTo(translated.Y, unrotatedTopLeft, unrotatedBotRight));
+                    return translated.Distance(closest).Magnitude() < this.Radius;
+                };
+                BoundingCircle.prototype.ContainsPoint = function (point) {
+                    return this.Position.Distance(point).Magnitude() < this.Radius;
+                };
+                return BoundingCircle;
+            })(BoundingObject.Bounds2d);
+            BoundingObject.BoundingCircle = BoundingCircle;            
+        })(Core.BoundingObject || (Core.BoundingObject = {}));
+        var BoundingObject = Core.BoundingObject;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (BoundingObject) {
+            var BoundingRectangle = (function (_super) {
+                __extends(BoundingRectangle, _super);
+                function BoundingRectangle(position, size) {
+                                _super.call(this, position);
+                    this._type = "BoundingRectangle";
+                    this._boundsType = "BoundingRectangle";
+                    this.Size = size;
+                }
+                BoundingRectangle.prototype.Vertices = function () {
+                    return [
+                        this.TopLeft(), 
+                        this.TopRight(), 
+                        this.BotLeft(), 
+                        this.BotRight()
+                    ];
+                };
+                BoundingRectangle.prototype.TopLeft = function () {
+                    var v = new Core.Assets.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
+                    if(this.Rotation === 0) {
+                        return v;
+                    }
+                    return v.RotateAround(this.Position, this.Rotation);
+                };
+                BoundingRectangle.prototype.TopRight = function () {
+                    var v = new Core.Assets.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
+                    if(this.Rotation === 0) {
+                        return v;
+                    }
+                    return v.RotateAround(this.Position, this.Rotation);
+                };
+                BoundingRectangle.prototype.BotLeft = function () {
+                    var v = new Core.Assets.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
+                    if(this.Rotation === 0) {
+                        return v;
+                    }
+                    return v.RotateAround(this.Position, this.Rotation);
+                };
+                BoundingRectangle.prototype.BotRight = function () {
+                    var v = new Core.Assets.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
+                    if(this.Rotation === 0) {
+                        return v;
+                    }
+                    return v.RotateAround(this.Position, this.Rotation);
+                };
+                BoundingRectangle.prototype.IntersectsCircle = function (circle) {
+                    return circle.IntersectsRectangle(this);
+                };
+                BoundingRectangle.prototype.IntersectsRectangle = function (rectangle) {
+                    if(this.Rotation === 0 && rectangle.Rotation === 0) {
+                        var myTopLeft = this.TopLeft(), myBotRight = this.BotRight(), theirTopLeft = rectangle.TopLeft(), theirBotRight = rectangle.BotRight();
+                        return theirTopLeft.X <= myBotRight.X && theirBotRight.X >= myTopLeft.X && theirTopLeft.Y <= myBotRight.Y && theirBotRight.Y >= myTopLeft.Y;
+                    } else if(rectangle.Position.Distance(this.Position).Magnitude() <= rectangle.Size.Radius() + this.Size.Radius()) {
+                        var axisList = [
+                            this.TopRight().Subtract(this.TopLeft()), 
+                            this.TopRight().Subtract(this.BotRight()), 
+                            rectangle.TopLeft().Subtract(rectangle.BotLeft()), 
+                            rectangle.TopLeft().Subtract(rectangle.TopRight())
+                        ];
+                        var myVertices = this.Vertices();
+                        var theirVertices = rectangle.Vertices();
+                        for(var i = 0; i < axisList.length; i++) {
+                            var axi = axisList[i];
+                            var myProjections = Core.Assets.Vector2dHelpers.GetMinMaxProjections(axi, myVertices);
+                            var theirProjections = Core.Assets.Vector2dHelpers.GetMinMaxProjections(axi, theirVertices);
+                            if(theirProjections.Max < myProjections.Min || myProjections.Max < theirProjections.Min) {
+                                return false;
+                            }
+                        }
+                        return true;
+                    }
+                    return false;
+                };
+                BoundingRectangle.prototype.ContainsPoint = function (point) {
+                    var savedRotation = this.Rotation;
+                    if(this.Rotation !== 0) {
+                        this.Rotation = 0;
+                        point = point.RotateAround(this.Position, -savedRotation);
+                    }
+                    var myTopLeft = this.TopLeft(), myBotRight = this.BotRight();
+                    this.Rotation = savedRotation;
+                    return point.X <= myBotRight.X && point.X >= myTopLeft.X && point.Y <= myBotRight.Y && point.Y >= myTopLeft.Y;
+                };
+                return BoundingRectangle;
+            })(BoundingObject.Bounds2d);
+            BoundingObject.BoundingRectangle = BoundingRectangle;            
+        })(Core.BoundingObject || (Core.BoundingObject = {}));
+        var BoundingObject = Core.BoundingObject;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
             })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Utilities) {
+            var EventHandler = (function () {
+                function EventHandler() {
+                    this._type = "Event";
+                    this._actions = [];
+                }
+                EventHandler.prototype.Bind = function (action) {
+                    this._actions.push(action);
+                };
+                EventHandler.prototype.Unbind = function (action) {
+                    for(var i = 0; i < this._actions.length; i++) {
+                        if(this._actions[i] === action) {
+                            this._actions.splice(i, 1);
+                            return;
+                        }
+                    }
+                };
+                EventHandler.prototype.Trigger = function () {
+                    var args = [];
+                    for (var _i = 0; _i < (arguments.length - 0); _i++) {
+                        args[_i] = arguments[_i + 0];
+                    }
+                    for(var i = 0; i < this._actions.length; i++) {
+                        this._actions[i].apply(this, args);
+                    }
+                };
+                return EventHandler;
+            })();
+            Utilities.EventHandler = EventHandler;            
+        })(Core.Utilities || (Core.Utilities = {}));
+        var Utilities = Core.Utilities;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Collision) {
+            var CollisionData = (function () {
+                function CollisionData(at, w) {
+                    this.At = at;
+                    this.With = w;
+                }
+                return CollisionData;
+            })();
+            Collision.CollisionData = CollisionData;            
+        })(Core.Collision || (Core.Collision = {}));
+        var Collision = Core.Collision;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Collision) {
+            var Collidable = (function () {
+                function Collidable(bounds) {
+                    this._type = "Collidable";
+                    this._boundsType = "Collidable";
+                    for(var property in bounds) {
+                        this[property] = bounds[property];
+                    }
+                    this._disposed = false;
+                    this.ID = Collidable._collidableIDs++;
+                    this.OnCollision = new Core.Utilities.EventHandler();
+                    this.OnDisposed = new Core.Utilities.EventHandler();
+                }
+                Collidable._collidableIDs = 0;
+                Collidable.prototype.IsCollidingWith = function (other) {
+                    return this.Intersects(other);
+                };
+                Collidable.prototype.Collided = function (data) {
+                    this.OnCollision.Trigger(data);
+                };
+                Collidable.prototype.Dispose = function () {
+                    if(!this._disposed) {
+                        this._disposed = true;
+                        this.OnDisposed.Trigger(this);
+                    } else {
+                        throw new Error("Cannot dispose collidable twice.");
+                    }
+                };
+                Collidable.prototype.ContainsPoint = function (point) {
+                    throw new Error("This method is abstract!");
+                };
+                Collidable.prototype.Intersects = function (obj) {
+                    if(obj._type === "BoundingCircle") {
+                        return this.IntersectsCircle(obj);
+                    } else if(obj._type === "BoundingRectangle") {
+                        return this.IntersectsRectangle(obj);
+                    } else {
+                        throw new Error("Cannot intersect with unidentifiable object, must be BoundingCircle or BoundingRectangle");
+                    }
+                };
+                Collidable.prototype.IntersectsCircle = function (circle) {
+                    throw new Error("This method is abstract!");
+                };
+                Collidable.prototype.IntersectsRectangle = function (rectangle) {
+                    throw new Error("This method is abstract!");
+                };
+                return Collidable;
+            })();
+            Collision.Collidable = Collidable;            
+        })(Core.Collision || (Core.Collision = {}));
+        var Collision = Core.Collision;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Collision) {
+            var CollisionManager = (function () {
+                function CollisionManager() {
+                    this._type = "CollisionManager";
+                    this._collidables = [];
+                    this._enabled = false;
+                    this.OnCollision = new Core.Utilities.EventHandler();
+                }
+                CollisionManager.prototype.Monitor = function (obj) {
+                    var _this = this;
+                    this._enabled = true;
+                    obj.OnDisposed.Bind(function () {
+                        _this.Unmonitor(obj);
+                    });
+                    this._collidables.push(obj);
+                };
+                CollisionManager.prototype.Unmonitor = function (obj) {
+                    for(var i = 0; i < this._collidables.length; i++) {
+                        if(this._collidables[i].ID === obj.ID) {
+                            this._collidables.splice(i, 1);
+                            break;
+                        }
+                    }
+                };
+                CollisionManager.prototype.Update = function (gameTime) {
+                    var first, second;
+                    if(this._enabled) {
+                        for(var i = 0; i < this._collidables.length; i++) {
+                            first = this._collidables[i];
+                            for(var j = i + 1; j < this._collidables.length; j++) {
+                                second = this._collidables[j];
+                                if(first.IsCollidingWith(second)) {
+                                    first.Collided(new Collision.CollisionData(first.Position.Clone(), second));
+                                    second.Collided(new Collision.CollisionData(second.Position.Clone(), first));
+                                    this.OnCollision.Trigger(first, second);
+                                }
+                            }
+                        }
+                    }
+                };
+                return CollisionManager;
+            })();
+            Collision.CollisionManager = CollisionManager;            
+        })(Core.Collision || (Core.Collision = {}));
+        var Collision = Core.Collision;
+    })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));
 var EndGate;
@@ -775,6 +981,7 @@ var EndGate;
             var Graphic2d = (function () {
                 function Graphic2d(bounds) {
                     this._type = "Graphic2d";
+                    this._boundsType = "Graphic2d";
                     for(var property in bounds) {
                         this[property] = bounds[property];
                     }
@@ -1046,188 +1253,6 @@ var EndGate;
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));
 var GameRunnerInstance = new EndGate.Core.GameRunner();
-var EndGate;
-(function (EndGate) {
-    (function (Core) {
-        (function (Assets) {
-            var MinMax = (function () {
-                function MinMax(min, max) {
-                    this.Min = min;
-                    this.Max = max;
-                }
-                return MinMax;
-            })();
-            Assets.MinMax = MinMax;            
-        })(Core.Assets || (Core.Assets = {}));
-        var Assets = Core.Assets;
-    })(EndGate.Core || (EndGate.Core = {}));
-    var Core = EndGate.Core;
-})(EndGate || (EndGate = {}));
-var EndGate;
-(function (EndGate) {
-    (function (Core) {
-        (function (Assets) {
-            var Vector2dHelpers = (function () {
-                function Vector2dHelpers() { }
-                Vector2dHelpers.GetMinMaxProjections = function GetMinMaxProjections(axis, vertices) {
-                    var min = vertices[0].ProjectOnto(axis).Dot(axis);
-                    var max = min;
-                    for(var i = 1; i < vertices.length; i++) {
-                        var vertex = vertices[i];
-                        var value = vertex.ProjectOnto(axis).Dot(axis);
-                        if(value < min) {
-                            min = value;
-                        } else if(value > max) {
-                            max = value;
-                        }
-                    }
-                    return new Assets.MinMax(min, max);
-                };
-                return Vector2dHelpers;
-            })();
-            Assets.Vector2dHelpers = Vector2dHelpers;            
-        })(Core.Assets || (Core.Assets = {}));
-        var Assets = Core.Assets;
-    })(EndGate.Core || (EndGate.Core = {}));
-    var Core = EndGate.Core;
-})(EndGate || (EndGate = {}));
-var EndGate;
-(function (EndGate) {
-    (function (Core) {
-        (function (BoundingObject) {
-            var BoundingCircle = (function (_super) {
-                __extends(BoundingCircle, _super);
-                function BoundingCircle(position, radius) {
-                                _super.call(this, position);
-                    this._type = "BoundingCircle";
-                    this.Radius = radius;
-                }
-                BoundingCircle.ClosestTo = function ClosestTo(val, topLeft, botRight) {
-                    if(val < topLeft.X) {
-                        return topLeft.X;
-                    } else if(val > botRight.X) {
-                        return botRight.X;
-                    }
-                    return val;
-                };
-                BoundingCircle.prototype.Area = function () {
-                    return Math.PI * this.Radius * this.Radius;
-                };
-                BoundingCircle.prototype.Circumfrence = function () {
-                    return 2 * Math.PI * this.Radius;
-                };
-                BoundingCircle.prototype.IntersectsCircle = function (circle) {
-                    return this.Position.Distance(circle.Position).Length() < this.Radius + circle.Radius;
-                };
-                BoundingCircle.prototype.IntersectsRectangle = function (rectangle) {
-                    var translated = (rectangle.Rotation === 0) ? this.Position : this.Position.RotateAround(rectangle.Position, -rectangle.Rotation);
-                    var unrotatedTopLeft = new Core.Assets.Vector2d(rectangle.Position.X - rectangle.Size.HalfWidth(), rectangle.Position.Y - rectangle.Size.HalfHeight()), unrotatedBotRight = new Core.Assets.Vector2d(rectangle.Position.X + rectangle.Size.HalfWidth(), rectangle.Position.Y + rectangle.Size.HalfHeight()), closest = new Core.Assets.Vector2d(BoundingCircle.ClosestTo(translated.X, unrotatedTopLeft, unrotatedBotRight), BoundingCircle.ClosestTo(translated.Y, unrotatedTopLeft, unrotatedBotRight));
-                    return translated.Distance(closest).Magnitude() < this.Radius;
-                };
-                BoundingCircle.prototype.ContainsPoint = function (point) {
-                    return this.Position.Distance(point).Magnitude() < this.Radius;
-                };
-                return BoundingCircle;
-            })(BoundingObject.Bounds2d);
-            BoundingObject.BoundingCircle = BoundingCircle;            
-        })(Core.BoundingObject || (Core.BoundingObject = {}));
-        var BoundingObject = Core.BoundingObject;
-    })(EndGate.Core || (EndGate.Core = {}));
-    var Core = EndGate.Core;
-})(EndGate || (EndGate = {}));
-var EndGate;
-(function (EndGate) {
-    (function (Core) {
-        (function (BoundingObject) {
-            var BoundingRectangle = (function (_super) {
-                __extends(BoundingRectangle, _super);
-                function BoundingRectangle(position, size) {
-                                _super.call(this, position);
-                    this._type = "BoundingRectangle";
-                    this.Size = size;
-                }
-                BoundingRectangle.prototype.Vertices = function () {
-                    return [
-                        this.TopLeft(), 
-                        this.TopRight(), 
-                        this.BotLeft(), 
-                        this.BotRight()
-                    ];
-                };
-                BoundingRectangle.prototype.TopLeft = function () {
-                    var v = new Core.Assets.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
-                    if(this.Rotation === 0) {
-                        return v;
-                    }
-                    return v.RotateAround(this.Position, this.Rotation);
-                };
-                BoundingRectangle.prototype.TopRight = function () {
-                    var v = new Core.Assets.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
-                    if(this.Rotation === 0) {
-                        return v;
-                    }
-                    return v.RotateAround(this.Position, this.Rotation);
-                };
-                BoundingRectangle.prototype.BotLeft = function () {
-                    var v = new Core.Assets.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
-                    if(this.Rotation === 0) {
-                        return v;
-                    }
-                    return v.RotateAround(this.Position, this.Rotation);
-                };
-                BoundingRectangle.prototype.BotRight = function () {
-                    var v = new Core.Assets.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
-                    if(this.Rotation === 0) {
-                        return v;
-                    }
-                    return v.RotateAround(this.Position, this.Rotation);
-                };
-                BoundingRectangle.prototype.IntersectsCircle = function (circle) {
-                    return circle.IntersectsRectangle(this);
-                };
-                BoundingRectangle.prototype.IntersectsRectangle = function (rectangle) {
-                    if(this.Rotation === 0 && rectangle.Rotation === 0) {
-                        var myTopLeft = this.TopLeft(), myBotRight = this.BotRight(), theirTopLeft = rectangle.TopLeft(), theirBotRight = rectangle.BotRight();
-                        return theirTopLeft.X <= myBotRight.X && theirBotRight.X >= myTopLeft.X && theirTopLeft.Y <= myBotRight.Y && theirBotRight.Y >= myTopLeft.Y;
-                    } else if(rectangle.Position.Distance(this.Position).Magnitude() <= rectangle.Size.Radius() + this.Size.Radius()) {
-                        var axisList = [
-                            this.TopRight().Subtract(this.TopLeft()), 
-                            this.TopRight().Subtract(this.BotRight()), 
-                            rectangle.TopLeft().Subtract(rectangle.BotLeft()), 
-                            rectangle.TopLeft().Subtract(rectangle.TopRight())
-                        ];
-                        var myVertices = this.Vertices();
-                        var theirVertices = rectangle.Vertices();
-                        for(var i = 0; i < axisList.length; i++) {
-                            var axi = axisList[i];
-                            var myProjections = Core.Assets.Vector2dHelpers.GetMinMaxProjections(axi, myVertices);
-                            var theirProjections = Core.Assets.Vector2dHelpers.GetMinMaxProjections(axi, theirVertices);
-                            if(theirProjections.Max < myProjections.Min || myProjections.Max < theirProjections.Min) {
-                                return false;
-                            }
-                        }
-                        return true;
-                    }
-                    return false;
-                };
-                BoundingRectangle.prototype.ContainsPoint = function (point) {
-                    var savedRotation = this.Rotation;
-                    if(this.Rotation !== 0) {
-                        this.Rotation = 0;
-                        point = point.RotateAround(this.Position, -savedRotation);
-                    }
-                    var myTopLeft = this.TopLeft(), myBotRight = this.BotRight();
-                    this.Rotation = savedRotation;
-                    return point.X <= myBotRight.X && point.X >= myTopLeft.X && point.Y <= myBotRight.Y && point.Y >= myTopLeft.Y;
-                };
-                return BoundingRectangle;
-            })(BoundingObject.Bounds2d);
-            BoundingObject.BoundingRectangle = BoundingRectangle;            
-        })(Core.BoundingObject || (Core.BoundingObject = {}));
-        var BoundingObject = Core.BoundingObject;
-    })(EndGate.Core || (EndGate.Core = {}));
-    var Core = EndGate.Core;
-})(EndGate || (EndGate = {}));
 var EndGate;
 (function (EndGate) {
     (function (Core) {

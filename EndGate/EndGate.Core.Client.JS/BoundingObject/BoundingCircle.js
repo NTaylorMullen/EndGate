@@ -12,6 +12,7 @@ var EndGate;
                 function BoundingCircle(position, radius) {
                                 _super.call(this, position);
                     this._type = "BoundingCircle";
+                    this._boundsType = "BoundingCircle";
                     this.Radius = radius;
                 }
                 BoundingCircle.ClosestTo = function ClosestTo(val, topLeft, botRight) {

@@ -6,6 +6,7 @@ module EndGate.Core.BoundingObject {
 
     export class BoundingCircle implements ITyped extends Bounds2d {
         public _type: string = "BoundingCircle";
+        public _boundsType: string = "BoundingCircle";
 
         public Radius: number;
 
@@ -35,11 +36,13 @@ module EndGate.Core.BoundingObject {
             return 2 * Math.PI * this.Radius;
         }
 
-        public IntersectsCircle(circle: BoundingCircle): bool {
+        // For some reason when compiled into a single .ts file if this isn't fully declared it doesn't compile
+        public IntersectsCircle(circle: EndGate.Core.BoundingObject.BoundingCircle): bool {
             return this.Position.Distance(circle.Position).Length() < this.Radius + circle.Radius;
         }
 
-        public IntersectsRectangle(rectangle: BoundingRectangle): bool {
+        // For some reason when compiled into a single .ts file if this isn't fully declared it doesn't compile
+        public IntersectsRectangle(rectangle: EndGate.Core.BoundingObject.BoundingRectangle): bool {
             var translated = (rectangle.Rotation === 0)
                                   ? this.Position
                                   : this.Position.RotateAround(rectangle.Position, -rectangle.Rotation);
