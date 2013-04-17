@@ -29,9 +29,9 @@ var ShapeBuilder = (function (_super) {
             newShape = new shapeType(this._canvas.width / 2, this._canvas.height / 2, 200, 200);
         } else {
             if(shapeTypeName !== "Circle") {
-                newShape = new shapeType(this.Shape.Position.X, this.Shape.Position.Y, this.Shape.Size.Width, this.Shape.Size.Height);
+                newShape = new shapeType(this.Shape.Position.X, this.Shape.Position.Y, (this.Shape).Radius * 2, (this.Shape).Radius * 2);
             } else {
-                newShape = new shapeType(this.Shape.Position.X, this.Shape.Position.Y, Math.min(this.Shape.Size.Width, this.Shape.Size.Height) / 2);
+                newShape = new shapeType(this.Shape.Position.X, this.Shape.Position.Y, Math.min((this.Shape).Size.Width, (this.Shape).Size.Height) / 2);
                 window.setTimeout((function (sizeSync) {
                     return function () {
                         sizeSync("Size");
@@ -168,8 +168,12 @@ var ShapeAnimator = (function () {
         shape.Position = shape.Position.Add(direction.Multiply(this.Direction).Multiply(incrementor));
     };
     ShapeAnimator.prototype.Size = function (shape, gameTime) {
-        var incrementor = ShapeAnimator.AnimationSpeed * gameTime.ElapsedSecond, direction = EndGate.Core.Assets.Size2d.One();
-        shape.Size = shape.Size.Add(direction.Multiply(this.Direction).Multiply(incrementor));
+        var incrementor = ShapeAnimator.AnimationSpeed * gameTime.ElapsedSecond;
+        if(shape._type === "Circle") {
+            shape.Radius += this.Direction * incrementor;
+        } else {
+            shape.Size = shape.Size.Add(this.Direction * incrementor);
+        }
     };
     ShapeAnimator.prototype.Rotation = function (shape, gameTime) {
         var incrementor = ShapeAnimator.RotationSpeed * gameTime.ElapsedSecond, direction = 1;

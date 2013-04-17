@@ -3,8 +3,8 @@ var EndGate;
     (function (Core) {
         (function (BoundingObject) {
             var Bounds2d = (function () {
-                function Bounds2d() {
-                    this.Position = Core.Assets.Vector2d.Zero();
+                function Bounds2d(position) {
+                    this.Position = position;
                     this.Rotation = 0;
                 }
                 Bounds2d.prototype.ContainsPoint = function (point) {

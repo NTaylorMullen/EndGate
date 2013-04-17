@@ -9,10 +9,9 @@
 
 module EndGate.Core {
 
-    export class Game implements ITyped, IUpdateable, IDisposable, Rendering.IRenderable {
+    export class Game implements ITyped, IUpdateable, IDisposable {
         public _type: string = "Game";
 
-        public ZIndex: number;
         public ID: number;
         public Configuration: GameConfiguration;
         public CollisionManager: Collision.CollisionManager;
@@ -24,11 +23,11 @@ module EndGate.Core {
         constructor(gameCanvas?:HTMLCanvasElement) {
             this._gameTime = new GameTime();
             // Call draw on Game LAST
-            this.ZIndex = -1000;
             this.ID = Game._gameIds++;
 
-            this.Scene = new Rendering.Scene(gameCanvas);
-            this.Scene.Add(this);
+            this.Scene = new Rendering.Scene(gameCanvas, context => {
+                this.Draw(context);
+            });
 
             this.CollisionManager = new Collision.CollisionManager();
             this.Configuration = new GameConfiguration(GameRunnerInstance.Register(this))

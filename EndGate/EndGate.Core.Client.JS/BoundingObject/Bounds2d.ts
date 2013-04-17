@@ -1,16 +1,17 @@
 /// <reference path="../Assets/Vectors/Vector2d.ts" />
+/// <reference  path="IBounds2d.d.ts" />
 /// <reference  path="BoundingRectangle.ts" />
 /// <reference  path="BoundingCircle.ts" />
 
 module EndGate.Core.BoundingObject {
 
-    export class Bounds2d {
+    export class Bounds2d implements IBounds2d {
 
         public Position: Assets.Vector2d;
         public Rotation: number;
 
-        constructor() {
-            this.Position = Assets.Vector2d.Zero();
+        constructor(position: Assets.Vector2d) {
+            this.Position = position;
             this.Rotation = 0;
         }
 

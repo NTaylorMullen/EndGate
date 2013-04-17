@@ -9,8 +9,8 @@ var EndGate;
         (function (BoundingObject) {
             var BoundingCircle = (function (_super) {
                 __extends(BoundingCircle, _super);
-                function BoundingCircle(radius) {
-                                _super.call(this);
+                function BoundingCircle(position, radius) {
+                                _super.call(this, position);
                     this._type = "BoundingCircle";
                     this.Radius = radius;
                 }

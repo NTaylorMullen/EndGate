@@ -10,8 +10,8 @@ var EndGate;
             (function (Shapes) {
                 var Shape = (function (_super) {
                     __extends(Shape, _super);
-                    function Shape(position, size, color) {
-                                        _super.call(this, position, size);
+                    function Shape(bounds, color) {
+                                        _super.call(this, bounds);
                         this._type = "Shape";
                         this._fill = false;
                         this._stroke = false;

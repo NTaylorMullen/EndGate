@@ -9,8 +9,8 @@ module EndGate.Core.BoundingObject {
 
         public Radius: number;
 
-        constructor(radius: number) {
-            super();
+        constructor(position: Assets.Vector2d, radius: number) {
+            super(position);
 
             this.Radius = radius;
         }

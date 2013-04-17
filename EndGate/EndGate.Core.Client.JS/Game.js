@@ -3,12 +3,13 @@ var EndGate;
     (function (Core) {
         var Game = (function () {
             function Game(gameCanvas) {
+                var _this = this;
                 this._type = "Game";
                 this._gameTime = new Core.GameTime();
-                this.ZIndex = -1000;
                 this.ID = Game._gameIds++;
-                this.Scene = new Core.Rendering.Scene(gameCanvas);
-                this.Scene.Add(this);
+                this.Scene = new Core.Rendering.Scene(gameCanvas, function (context) {
+                    _this.Draw(context);
+                });
                 this.CollisionManager = new Core.Collision.CollisionManager();
                 this.Configuration = new Core.GameConfiguration(GameRunnerInstance.Register(this));
             }

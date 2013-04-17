@@ -18,13 +18,14 @@ var EndGate;
                     if(this._bufferCanvas.width !== this._visibleCanvas.width || this._bufferCanvas.height !== this._visibleCanvas.height) {
                         this.UpdateBufferSize();
                     }
-                    renderables.sort(Renderer2d._zindexSort);
+                    this._visibleContext.clearRect(0, 0, this._visibleCanvas.width, this._visibleCanvas.height);
+                    this._visibleContext.drawImage(this._bufferCanvas, 0, 0);
                     this._bufferContext.clearRect(0, 0, this._bufferCanvas.width, this._bufferCanvas.height);
+                    renderables.sort(Renderer2d._zindexSort);
                     for(var i = 0; i < renderables.length; i++) {
                         renderables[i].Draw(this._bufferContext);
                     }
-                    this._visibleContext.clearRect(0, 0, this._visibleCanvas.width, this._visibleCanvas.height);
-                    this._visibleContext.drawImage(this._bufferCanvas, 0, 0);
+                    return this._bufferContext;
                 };
                 Renderer2d.prototype.Dispose = function () {
                     if(!this._disposed) {

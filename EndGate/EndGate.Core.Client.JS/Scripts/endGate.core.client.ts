@@ -311,7 +311,6 @@ module EndGate.Core {
 /* MathExtensions.ts */
 interface Math {
     roundTo(val?: number, decimals?: number): number;
-    twoPI: number;
 }
 
 Math.roundTo = function (val?: number, decimals?: number): number {
@@ -320,7 +319,7 @@ Math.roundTo = function (val?: number, decimals?: number): number {
     return Math.round(val * multiplier) / multiplier;
 };
 
-Math.twoPI = Math.PI * 2;
+(<any>Math).twoPI = Math.PI * 2;
 /* Vector2d.ts */
 
 
@@ -487,15 +486,16 @@ module EndGate.Core.Assets {
 
 
 
+
 module EndGate.Core.BoundingObject {
 
-    export class Bounds2d {
+    export class Bounds2d implements IBounds2d {
 
         public Position: Assets.Vector2d;
         public Rotation: number;
 
-        constructor() {
-            this.Position = Assets.Vector2d.Zero();
+        constructor(position: Assets.Vector2d) {
+            this.Position = position;
             this.Rotation = 0;
         }
 
@@ -701,323 +701,6 @@ module EndGate.Core.Collision {
     }
 
 }
-/* IRenderer.d.ts */
-
-
-
-module EndGate.Core.Rendering {
-
-    export interface IRenderer extends IDisposable {
-        Render(renderables: IRenderable[]): void;
-    }
-
-}
-/* Renderer2d.ts */
-
-
-
-module EndGate.Core.Rendering {
-
-    export class Renderer2d implements IRenderer {
-        private static _zindexSort: (a: IRenderable, b: IRenderable) => number = (a: IRenderable, b: IRenderable) => { return a.ZIndex - b.ZIndex; };
-
-        // These essentially are used to create a double buffer for rendering
-        private _visibleCanvas: HTMLCanvasElement;
-        private _visibleContext: CanvasRenderingContext2D;
-        private _bufferCanvas: HTMLCanvasElement;
-        private _bufferContext: CanvasRenderingContext2D;        
-
-        private _disposed: bool;
-
-        constructor(renderOnto: HTMLCanvasElement) {
-            this._visibleCanvas = renderOnto;
-            this._visibleContext = renderOnto.getContext("2d");
-
-            // Create an equally sized canvas for a buffer
-            this._bufferCanvas = <HTMLCanvasElement>document.createElement("canvas");
-            this._bufferContext = this._bufferCanvas.getContext("2d");
-            this.UpdateBufferSize();
-
-            this._disposed = false;
-        }
-
-        public Render(renderables: IRenderable[]): void {
-            // Check if our visible canvas has changed size
-            if (this._bufferCanvas.width !== this._visibleCanvas.width || this._bufferCanvas.height !== this._visibleCanvas.height) {
-                this.UpdateBufferSize();
-            }
-
-            // Sort the renderables by the ZIndex so we draw in the correct order (for layering);
-            renderables.sort(Renderer2d._zindexSort);
-
-            // We do not save or restore the canvas state because we want to let the
-            // dev decide how they manipulate the canvas
-
-            // Clear our buffer to prepare it for new drawings
-            this._bufferContext.clearRect(0, 0, this._bufferCanvas.width, this._bufferCanvas.height);
-
-            for (var i = 0; i < renderables.length; i++) {
-                renderables[i].Draw(this._bufferContext);
-            }
-
-            this._visibleContext.clearRect(0, 0, this._visibleCanvas.width, this._visibleCanvas.height);
-            this._visibleContext.drawImage(this._bufferCanvas, 0, 0);
-        }
-
-        public Dispose(): void {
-            if (!this._disposed) {
-                this._disposed = true;
-
-                this._visibleCanvas.parentNode.removeChild(this._visibleCanvas);
-            }
-        }
-
-        private UpdateBufferSize()
-        {
-            this._bufferCanvas.width = this._visibleCanvas.width;
-            this._bufferCanvas.height = this._visibleCanvas.height;
-        }
-    }
-
-}
-/* Scene.ts */
-
-
-
-
-
-
-
-module EndGate.Core.Rendering {
-    
-    export class Scene implements ITyped, IDisposable {
-        public _type: string = "Scene";
-
-        private _actors: IRenderable[];
-        private _renderer: IRenderer;
-
-        private _disposed: bool;
-
-        constructor(drawArea?: HTMLCanvasElement) {
-            this._actors = [];
-
-            if (typeof drawArea === "undefined") {
-                drawArea = this.CreateDefaultDrawArea();
-            }
-
-            this._renderer = new Renderer2d(drawArea);
-            this._disposed = false;
-        }
-
-        public Add(actor: IRenderable): void {
-            this._actors.push(actor);
-        }
-
-        public Remove(actor: IRenderable): void {
-            for (var i = 0; i < this._actors.length; i++) {
-                if (this._actors[i] === actor) {
-                    this._actors.splice(i, 1);
-                    return;
-                }
-            }
-        }
-
-        public Draw(): void {
-            this._renderer.Render(this._actors);
-        }
-
-        public Dispose(): void {
-            if (!this._disposed) {
-                this._disposed = true;
-                this._actors = [];
-                this._renderer.Dispose();
-            }
-        }
-
-        private CreateDefaultDrawArea(): HTMLCanvasElement {
-            var drawArea = <HTMLCanvasElement>document.createElement("canvas");
-            drawArea.width = window.innerWidth;
-            drawArea.height = window.innerHeight;
-            document.getElementsByTagName('body')[0].appendChild(drawArea);
-
-            return drawArea;
-        }
-    }
-
-}
-/* Game.ts */
-
-
-
-
-
-
-
-
-
-module EndGate.Core {
-
-    export class Game implements ITyped, IUpdateable, IDisposable, Rendering.IRenderable {
-        public _type: string = "Game";
-
-        public ZIndex: number;
-        public ID: number;
-        public Configuration: GameConfiguration;
-        public CollisionManager: Collision.CollisionManager;
-        public Scene: Rendering.Scene;
-
-        private static _gameIds: number = 0;
-        private _gameTime: GameTime;
-
-        constructor(gameCanvas?:HTMLCanvasElement) {
-            this._gameTime = new GameTime();
-            // Call draw on Game LAST
-            this.ZIndex = -1000;
-            this.ID = Game._gameIds++;
-
-            this.Scene = new Rendering.Scene(gameCanvas);
-            this.Scene.Add(this);
-
-            this.CollisionManager = new Collision.CollisionManager();
-            this.Configuration = new GameConfiguration(GameRunnerInstance.Register(this))
-        }
-
-        public PrepareUpdate(): void {
-            this._gameTime.Update();
-
-            this.CollisionManager.Update(this._gameTime);
-            this.Update(this._gameTime);
-        }
-
-        public Update(gameTime: GameTime): void {
-        }
-
-        public PrepareDraw(): void {
-            this.Scene.Draw();
-        }
-
-        // This is called by the scene
-        public Draw(context: CanvasRenderingContext2D): void {
-        }
-
-        public Dispose()
-        {
-            this.Scene.Dispose();
-            GameRunnerInstance.Unregister(this);
-        }
-    }
-
-}
-/* GameRunner.ts */
-
-
-
-
-
-
-module EndGate.Core {    
-
-    export class GameRunner implements ITyped {
-        public _type: string = "GameRunner";
-
-        private _updateCallbacks: { [id: number]: Loopers.TimedCallback; };
-        private _drawCallbacks: { [id: number]: Loopers.LooperCallback; };
-        private _updateLoop: Loopers.Looper;
-        private _drawLoop: Loopers.RepaintLooper;
-        private _callbackCount: number;
-
-        constructor() {
-            this._updateCallbacks = <{ [s: number]: Loopers.TimedCallback; } >{};
-            this._drawCallbacks = <{ [s: number]: Loopers.LooperCallback; } >{};
-            this._updateLoop = null;
-            this._drawLoop = null;
-            this._callbackCount = 0;
-        }
-
-        public Register(game: Game): (updateRate: number) => void {
-            var updateCallback = this.CreateAndCacheUpdateCallback(game);
-            var drawCallback = this.CreateAndCacheDrawCallback(game);
-
-            this._callbackCount++;
-
-            // Try to start the loop prior to adding our games callback.  This callback may be the first, hence the "Try"
-            this.TryLoopStart();
-
-            // Add our callback to the game loop (which is now running), it will now be called on an interval dictated by updateCallback
-            this._updateLoop.AddCallback(updateCallback);
-            this._drawLoop.AddCallback(drawCallback);
-
-            // Updating the "updateRate" is an essential element to the game configuration.
-            // If a game is running slowly we need to be able to slow down the update rate.
-            return this.CreateUpdateRateSetter(updateCallback);
-        }
-
-        public Unregister(game: Game): void {
-            var updateCallback,
-                drawCallback;
-
-            if (this._updateCallbacks[game.ID]) {
-                updateCallback = this._updateCallbacks[game.ID];
-                drawCallback = this._drawCallbacks[game.ID];
-
-                this._updateLoop.RemoveCallback(updateCallback);
-                this._drawLoop.RemoveCallback(drawCallback);
-                delete this._updateCallbacks[game.ID];
-                delete this._drawCallbacks[game.ID];
-
-                this._callbackCount--
-
-                this.TryLoopStop();
-            }
-        }
-
-        private TryLoopStart(): void {
-            if (this._callbackCount === 1) {
-                this._updateLoop = new Loopers.Looper();
-                this._updateLoop.Start();
-                this._drawLoop = new Loopers.RepaintLooper();
-                this._drawLoop.Start();
-            }
-        }
-
-        private TryLoopStop(): void {
-            if (this._callbackCount === 0 && this._updateLoop != null) {
-                this._updateLoop.Dispose();
-                this._updateLoop = null;
-                this._drawLoop.Dispose();
-                this._drawLoop = null;
-            }
-        }
-
-        private CreateAndCacheUpdateCallback(game: Game): Loopers.TimedCallback {
-            var updateCallback = new Loopers.TimedCallback(0, () => {
-                game.PrepareUpdate();
-            });
-
-            this._updateCallbacks[game.ID] = updateCallback;            
-
-            return updateCallback;
-        };
-
-        private CreateAndCacheDrawCallback(game: Game): Loopers.LooperCallback {
-            var drawCallback = new Loopers.LooperCallback(() => {
-                game.PrepareDraw();
-            });
-
-            this._drawCallbacks[game.ID] = drawCallback;
-
-            return drawCallback;
-        }
-
-        private CreateUpdateRateSetter(callback: Loopers.TimedCallback): (updateRate: number) => void {
-            return (updateRate) => {
-                callback.Fps = updateRate;
-            };
-        }
-    }
-}
-
-var GameRunnerInstance: EndGate.Core.GameRunner = new EndGate.Core.GameRunner();
 /* Size2d.ts */
 
 
@@ -1172,6 +855,533 @@ module EndGate.Core.Assets {
         }
     }
 }
+/* IBounds2d.d.ts */
+
+
+
+
+module EndGate.Core.BoundingObject {
+
+    export interface IBounds2d {
+
+        Position: Assets.Vector2d;
+        Rotation: number;        
+
+        ContainsPoint(point: Assets.Vector2d): bool;
+
+        Intersects(obj: Bounds2d): bool;
+        Intersects(circle: BoundingCircle): bool;
+        Intersects(rectangle: BoundingRectangle): bool;
+        Intersects(obj: any): bool;
+
+        IntersectsCircle(circle: BoundingCircle): bool;
+
+        IntersectsRectangle(rectangle: BoundingRectangle): bool;
+    }
+
+}
+/* Graphic2dState.ts */
+
+
+module EndGate.Core.Graphics {
+
+    export enum LineCapType { butt, round, square };
+    export enum LineJoinType { bevel, round, miter };
+    export enum TextAlignType { center, end, left, right, start };
+    export enum TextBaselineType { alphabetic, top, hanging, middle, ideographic, bottom };
+
+    export class Graphic2dState implements ITyped {
+        public _type: string ="Graphic2dState";
+
+        private _cachedState: { [property: string]: any; };
+
+        constructor() {
+            this._cachedState = {};
+        }
+        
+        public StrokeStyle(value?: string): string {
+            return this.GetOrSetCache("strokeStyle", value);
+        }
+
+        public FillStyle(value?: string): string {
+            return this.GetOrSetCache("fillStyle", value);
+        }
+
+        public GlobalAlpha(value?: number): number {
+            return this.GetOrSetCache("globalAlpha", value);
+        }
+
+        public LineWidth(value?: number): number {
+            return this.GetOrSetCache("lineWidth", value);
+        }
+
+        public LineCap(value?: LineCapType): LineCapType {
+            return this.GetOrSetCache("lineCap", value);
+        }
+
+        public LineJoin(value?: LineJoinType): LineJoinType {
+            return this.GetOrSetCache("lineJoin", value);
+        }
+
+        public MiterLimit(value?: number): number {
+            return this.GetOrSetCache("miterLimit", value);
+        }
+        
+        public ShadowOffsetX(value?: number): number {
+            return this.GetOrSetCache("shadowOffsetX", value);
+        }
+
+        public ShadowOffsetY(value?: number): number {
+            return this.GetOrSetCache("shadowOffsetY", value);
+        }
+
+        public ShadowBlur(value?: number): number {
+            return this.GetOrSetCache("shadowBlur", value);
+        }
+
+        public ShadowColor(value?: string): string {
+            return this.GetOrSetCache("shadowColor", value);
+        }
+
+        public GlobalCompositeOperation(value?: string): string {
+            return this.GetOrSetCache("globalCompositeOperation", value);
+        }
+
+        public Font(value?: string): string {
+            return this.GetOrSetCache("font", value);
+        }
+
+        public TextAlign(value?: TextAlignType): TextAlignType {
+            return this.GetOrSetCache("textAlign", value);
+        }
+
+        public TextBaseline(value?: TextBaselineType): TextBaselineType {
+            return this.GetOrSetCache("textBaseline", value);
+        }
+
+        public SetContextState(context: CanvasRenderingContext2D): void {
+            for (var key in this._cachedState) {
+                context[key] = this._cachedState[key];
+            }
+        }
+
+        private GetOrSetCache(property: string, value: any): any {
+            if (typeof value !== "undefined") {
+                this._cachedState[property] = value;
+            }
+
+            return this._cachedState[property];
+        }
+    }
+
+}
+/* Graphic2d.ts */
+
+
+
+
+
+
+
+module EndGate.Core.Graphics {
+
+    export class Graphic2d implements ITyped, Rendering.IRenderable, BoundingObject.IBounds2d {
+        public _type: string = "Graphic2d";
+
+        public Position: Assets.Vector2d;
+        public ZIndex: number;
+        public Rotation: number;
+        public State: Graphic2dState;
+
+        constructor(bounds: BoundingObject.IBounds2d) {
+            // This is the #1 hack of this library. Since currently TypeScript does not support
+            // generics yet (0.9 hasn't been released yet) I need replace all of the IBounds2d
+            // functions with ones that have been passed through.
+            for (var property in bounds) {
+                this[property] = bounds[property];
+            }
+
+            this.ZIndex = 0;
+            this.State = new Graphic2dState();
+        }
+
+        public StartDraw(context: CanvasRenderingContext2D): void {
+            context.save();
+            this.State.SetContextState(context);
+
+            if (this.Rotation !== 0) {
+                context.translate(this.Position.X, this.Position.Y);
+                context.rotate(this.Rotation);
+                context.translate(-this.Position.X, -this.Position.Y);
+            }
+        }
+
+        public EndDraw(context: CanvasRenderingContext2D): void {
+            context.restore();
+        }
+
+        public Draw(context: CanvasRenderingContext2D): void {
+        }
+
+        // *****        These are all replaced within the constructor by the bounds2d that are passed down to this layer.       *****
+
+        public ContainsPoint(point: Assets.Vector2d): bool {
+            throw new Error("This method is abstract!");
+        }
+
+        public Intersects(obj: BoundingObject.Bounds2d): bool;
+        public Intersects(circle: BoundingObject.BoundingCircle): bool;
+        public Intersects(rectangle: BoundingObject.BoundingRectangle): bool;
+        public Intersects(obj: any): bool {
+            if (obj._type === "BoundingCircle") {
+                return this.IntersectsCircle(obj);
+            }
+            else if (obj._type === "BoundingRectangle") {
+                return this.IntersectsRectangle(obj);
+            }
+            else {
+                throw new Error("Cannot intersect with unidentifiable object, must be BoundingCircle or BoundingRectangle");
+            }
+        }
+
+        public IntersectsCircle(circle: BoundingObject.BoundingCircle): bool {
+            throw new Error("This method is abstract!");
+        }
+
+        public IntersectsRectangle(rectangle: BoundingObject.BoundingRectangle): bool {
+            throw new Error("This method is abstract!");
+        }
+
+        // *****        These are all replaced within the constructor by the bounds2d that are passed down to this layer.       *****
+    }
+
+}
+/* IRenderer.d.ts */
+
+
+
+module EndGate.Core.Rendering {
+
+    export interface IRenderer extends IDisposable {
+        Render(renderables: IRenderable[]): CanvasRenderingContext2D;
+    }
+
+}
+/* Renderer2d.ts */
+
+
+
+module EndGate.Core.Rendering {
+
+    export class Renderer2d implements IRenderer {
+        private static _zindexSort: (a: IRenderable, b: IRenderable) => number = (a: IRenderable, b: IRenderable) => { return a.ZIndex - b.ZIndex; };
+
+        // These essentially are used to create a double buffer for rendering
+        private _visibleCanvas: HTMLCanvasElement;
+        private _visibleContext: CanvasRenderingContext2D;
+        private _bufferCanvas: HTMLCanvasElement;
+        private _bufferContext: CanvasRenderingContext2D;        
+
+        private _disposed: bool;
+
+        constructor(renderOnto: HTMLCanvasElement) {
+            this._visibleCanvas = renderOnto;
+            this._visibleContext = renderOnto.getContext("2d");
+
+            // Create an equally sized canvas for a buffer
+            this._bufferCanvas = <HTMLCanvasElement>document.createElement("canvas");
+            this._bufferContext = this._bufferCanvas.getContext("2d");
+            this.UpdateBufferSize();
+
+            this._disposed = false;
+        }
+
+        public Render(renderables: IRenderable[]): CanvasRenderingContext2D {
+            // Check if our visible canvas has changed size
+            if (this._bufferCanvas.width !== this._visibleCanvas.width || this._bufferCanvas.height !== this._visibleCanvas.height) {
+                this.UpdateBufferSize();
+            }
+
+            // Push buffer to screen
+            this._visibleContext.clearRect(0, 0, this._visibleCanvas.width, this._visibleCanvas.height);
+            this._visibleContext.drawImage(this._bufferCanvas, 0, 0);
+            // Clear our buffer to prepare it for new drawings
+            this._bufferContext.clearRect(0, 0, this._bufferCanvas.width, this._bufferCanvas.height);
+
+            // Sort the renderables by the ZIndex so we draw in the correct order (for layering);
+            renderables.sort(Renderer2d._zindexSort);
+
+            // We do not save or restore the canvas state because we want to let the
+            // dev decide how they manipulate the canvas            
+
+            for (var i = 0; i < renderables.length; i++) {
+                renderables[i].Draw(this._bufferContext);
+            }
+
+            return this._bufferContext;            
+        }
+
+        public Dispose(): void {
+            if (!this._disposed) {
+                this._disposed = true;
+
+                this._visibleCanvas.parentNode.removeChild(this._visibleCanvas);
+            }
+        }
+
+        private UpdateBufferSize()
+        {
+            this._bufferCanvas.width = this._visibleCanvas.width;
+            this._bufferCanvas.height = this._visibleCanvas.height;
+        }
+    }
+
+}
+/* Scene.ts */
+
+
+
+
+
+
+
+module EndGate.Core.Rendering {
+    
+    export class Scene implements ITyped, IDisposable {
+        public _type: string = "Scene";
+
+        private _actors: Graphics.Graphic2d[];
+        private _renderer: IRenderer;
+        private _onDraw: (context: CanvasRenderingContext2D) => void;
+
+        private _disposed: bool;
+
+        constructor(drawArea?: HTMLCanvasElement, onDraw?: (context: CanvasRenderingContext2D) => void) {
+            this._actors = [];
+
+            if (typeof drawArea === "undefined") {
+                drawArea = this.CreateDefaultDrawArea();
+            }
+
+            if (typeof onDraw === "undefined") {
+                this._onDraw = _ => { };
+            }
+            else {
+                this._onDraw = onDraw;
+            }
+
+            this._renderer = new Renderer2d(drawArea);
+            this._disposed = false;
+        }
+
+        public Add(actor: Graphics.Graphic2d): void {
+            this._actors.push(actor);
+        }
+
+        public Remove(actor: Graphics.Graphic2d): void {
+            for (var i = 0; i < this._actors.length; i++) {
+                if (this._actors[i] === actor) {
+                    this._actors.splice(i, 1);
+                    return;
+                }
+            }
+        }
+
+        public Draw(): void {
+            this._onDraw(this._renderer.Render(this._actors));
+        }
+
+        public Dispose(): void {
+            if (!this._disposed) {
+                this._disposed = true;
+                this._actors = [];
+                this._renderer.Dispose();
+            }
+        }
+
+        private CreateDefaultDrawArea(): HTMLCanvasElement {
+            var drawArea = <HTMLCanvasElement>document.createElement("canvas");
+            drawArea.width = window.innerWidth;
+            drawArea.height = window.innerHeight;
+            document.getElementsByTagName('body')[0].appendChild(drawArea);
+
+            return drawArea;
+        }
+    }
+
+}
+/* Game.ts */
+
+
+
+
+
+
+
+
+
+module EndGate.Core {
+
+    export class Game implements ITyped, IUpdateable, IDisposable {
+        public _type: string = "Game";
+
+        public ID: number;
+        public Configuration: GameConfiguration;
+        public CollisionManager: Collision.CollisionManager;
+        public Scene: Rendering.Scene;
+
+        private static _gameIds: number = 0;
+        private _gameTime: GameTime;
+
+        constructor(gameCanvas?:HTMLCanvasElement) {
+            this._gameTime = new GameTime();
+            // Call draw on Game LAST
+            this.ID = Game._gameIds++;
+
+            this.Scene = new Rendering.Scene(gameCanvas, context => {
+                this.Draw(context);
+            });
+
+            this.CollisionManager = new Collision.CollisionManager();
+            this.Configuration = new GameConfiguration(GameRunnerInstance.Register(this))
+        }
+
+        public PrepareUpdate(): void {
+            this._gameTime.Update();
+
+            this.CollisionManager.Update(this._gameTime);
+            this.Update(this._gameTime);
+        }
+
+        public Update(gameTime: GameTime): void {
+        }
+
+        public PrepareDraw(): void {
+            this.Scene.Draw();
+        }
+
+        // This is called by the scene
+        public Draw(context: CanvasRenderingContext2D): void {
+        }
+
+        public Dispose()
+        {
+            this.Scene.Dispose();
+            GameRunnerInstance.Unregister(this);
+        }
+    }
+
+}
+/* GameRunner.ts */
+
+
+
+
+
+
+module EndGate.Core {    
+
+    export class GameRunner implements ITyped {
+        public _type: string = "GameRunner";
+
+        private _updateCallbacks: { [id: number]: Loopers.TimedCallback; };
+        private _drawCallbacks: { [id: number]: Loopers.LooperCallback; };
+        private _updateLoop: Loopers.Looper;
+        private _drawLoop: Loopers.RepaintLooper;
+        private _callbackCount: number;
+
+        constructor() {
+            this._updateCallbacks = <{ [s: number]: Loopers.TimedCallback; } >{};
+            this._drawCallbacks = <{ [s: number]: Loopers.LooperCallback; } >{};
+            this._updateLoop = null;
+            this._drawLoop = null;
+            this._callbackCount = 0;
+        }
+
+        public Register(game: Game): (updateRate: number) => void {
+            var updateCallback = this.CreateAndCacheUpdateCallback(game);
+            var drawCallback = this.CreateAndCacheDrawCallback(game);
+
+            this._callbackCount++;
+
+            // Try to start the loop prior to adding our games callback.  This callback may be the first, hence the "Try"
+            this.TryLoopStart();
+
+            // Add our callback to the game loop (which is now running), it will now be called on an interval dictated by updateCallback
+            this._updateLoop.AddCallback(updateCallback);
+            this._drawLoop.AddCallback(drawCallback);
+
+            // Updating the "updateRate" is an essential element to the game configuration.
+            // If a game is running slowly we need to be able to slow down the update rate.
+            return this.CreateUpdateRateSetter(updateCallback);
+        }
+
+        public Unregister(game: Game): void {
+            var updateCallback,
+                drawCallback;
+
+            if (this._updateCallbacks[game.ID]) {
+                updateCallback = this._updateCallbacks[game.ID];
+                drawCallback = this._drawCallbacks[game.ID];
+
+                this._updateLoop.RemoveCallback(updateCallback);
+                this._drawLoop.RemoveCallback(drawCallback);
+                delete this._updateCallbacks[game.ID];
+                delete this._drawCallbacks[game.ID];
+
+                this._callbackCount--
+
+                this.TryLoopStop();
+            }
+        }
+
+        private TryLoopStart(): void {
+            if (this._callbackCount === 1) {
+                this._updateLoop = new Loopers.Looper();
+                this._updateLoop.Start();
+                this._drawLoop = new Loopers.RepaintLooper();
+                this._drawLoop.Start();
+            }
+        }
+
+        private TryLoopStop(): void {
+            if (this._callbackCount === 0 && this._updateLoop != null) {
+                this._updateLoop.Dispose();
+                this._updateLoop = null;
+                this._drawLoop.Dispose();
+                this._drawLoop = null;
+            }
+        }
+
+        private CreateAndCacheUpdateCallback(game: Game): Loopers.TimedCallback {
+            var updateCallback = new Loopers.TimedCallback(0, () => {
+                game.PrepareUpdate();
+            });
+
+            this._updateCallbacks[game.ID] = updateCallback;            
+
+            return updateCallback;
+        };
+
+        private CreateAndCacheDrawCallback(game: Game): Loopers.LooperCallback {
+            var drawCallback = new Loopers.LooperCallback(() => {
+                game.PrepareDraw();
+            });
+
+            this._drawCallbacks[game.ID] = drawCallback;
+
+            return drawCallback;
+        }
+
+        private CreateUpdateRateSetter(callback: Loopers.TimedCallback): (updateRate: number) => void {
+            return (updateRate) => {
+                callback.Fps = updateRate;
+            };
+        }
+    }
+}
+
+var GameRunnerInstance: EndGate.Core.GameRunner = new EndGate.Core.GameRunner();
 /* MinMax.ts */
 module EndGate.Core.Assets {
 
@@ -1228,8 +1438,8 @@ module EndGate.Core.BoundingObject {
 
         public Radius: number;
 
-        constructor(radius: number) {
-            super();
+        constructor(position: Assets.Vector2d, radius: number) {
+            super(position);
 
             this.Radius = radius;
         }
@@ -1289,17 +1499,9 @@ module EndGate.Core.BoundingObject {
 
         public Size: Assets.Size2d;
 
-        constructor(size: Assets.Size2d);
-        constructor(width: number, height: number);
-        constructor(first: any, second?: any) {
-            super();
-
-            if (typeof second !== "undefined") {
-                this.Size = new Assets.Size2d(first, second);
-            }
-            else {
-                this.Size = first;
-            }
+        constructor(position: Assets.Vector2d, size: Assets.Size2d) {
+            super(position);
+            this.Size = size;
         }
 
         public Vertices(): Assets.Vector2d[] {
@@ -1411,147 +1613,6 @@ Date.prototype._type = "Date";
 Object.prototype._type = "Object";
 Error.prototype._type = "Error";
 */
-/* Graphic2dState.ts */
-
-
-module EndGate.Core.Graphics {
-
-    export enum LineCapType { butt, round, square };
-    export enum LineJoinType { bevel, round, miter };
-    export enum TextAlignType { center, end, left, right, start };
-    export enum TextBaselineType { alphabetic, top, hanging, middle, ideographic, bottom };
-
-    export class Graphic2dState implements ITyped {
-        public _type: string ="Graphic2dState";
-
-        private _cachedState: { [property: string]: any; };
-
-        constructor() {
-            this._cachedState = {};
-        }
-        
-        public StrokeStyle(value?: string): string {
-            return this.GetOrSetCache("strokeStyle", value);
-        }
-
-        public FillStyle(value?: string): string {
-            return this.GetOrSetCache("fillStyle", value);
-        }
-
-        public GlobalAlpha(value?: number): number {
-            return this.GetOrSetCache("globalAlpha", value);
-        }
-
-        public LineWidth(value?: number): number {
-            return this.GetOrSetCache("lineWidth", value);
-        }
-
-        public LineCap(value?: LineCapType): LineCapType {
-            return this.GetOrSetCache("lineCap", value);
-        }
-
-        public LineJoin(value?: LineJoinType): LineJoinType {
-            return this.GetOrSetCache("lineJoin", value);
-        }
-
-        public MiterLimit(value?: number): number {
-            return this.GetOrSetCache("miterLimit", value);
-        }
-        
-        public ShadowOffsetX(value?: number): number {
-            return this.GetOrSetCache("shadowOffsetX", value);
-        }
-
-        public ShadowOffsetY(value?: number): number {
-            return this.GetOrSetCache("shadowOffsetY", value);
-        }
-
-        public ShadowBlur(value?: number): number {
-            return this.GetOrSetCache("shadowBlur", value);
-        }
-
-        public ShadowColor(value?: string): string {
-            return this.GetOrSetCache("shadowColor", value);
-        }
-
-        public GlobalCompositeOperation(value?: string): string {
-            return this.GetOrSetCache("globalCompositeOperation", value);
-        }
-
-        public Font(value?: string): string {
-            return this.GetOrSetCache("font", value);
-        }
-
-        public TextAlign(value?: TextAlignType): TextAlignType {
-            return this.GetOrSetCache("textAlign", value);
-        }
-
-        public TextBaseline(value?: TextBaselineType): TextBaselineType {
-            return this.GetOrSetCache("textBaseline", value);
-        }
-
-        public SetContextState(context: CanvasRenderingContext2D): void {
-            for (var key in this._cachedState) {
-                context[key] = this._cachedState[key];
-            }
-        }
-
-        private GetOrSetCache(property: string, value: any): any {
-            if (typeof value !== "undefined") {
-                this._cachedState[property] = value;
-            }
-
-            return this._cachedState[property];
-        }
-    }
-
-}
-/* Graphic2d.ts */
-
-
-
-
-
-
-module EndGate.Core.Graphics {
-
-    export class Graphic2d implements ITyped, Rendering.IRenderable {
-        public _type: string = "Graphic2d";
-
-        public Size: Assets.Size2d;
-        public Position: Assets.Vector2d;
-        public ZIndex: number;
-        public Rotation: number;
-        public State: Graphic2dState;
-
-        constructor(position: Assets.Vector2d, size: Assets.Size2d) {
-            this.Position = position;
-            this.Size = size;
-            this.ZIndex = 0;
-            this.Rotation = 0;
-            this.State = new Graphic2dState();
-        }
-
-        public StartDraw(context: CanvasRenderingContext2D): void {
-            context.save();
-            this.State.SetContextState(context);
-
-            if (this.Rotation !== 0) {
-                context.translate(this.Position.X, this.Position.Y);
-                context.rotate(this.Rotation);
-                context.translate(-this.Position.X, -this.Position.Y);
-            }
-        }
-
-        public EndDraw(context: CanvasRenderingContext2D): void {
-            context.restore();
-        }
-
-        public Draw(context: CanvasRenderingContext2D): void {
-        }        
-    }
-
-}
 /* Shape.ts */
 
 
@@ -1562,8 +1623,8 @@ module EndGate.Core.Graphics.Shapes  {
         private _fill: bool;
         private _stroke: bool;
 
-        constructor(position: Assets.Vector2d, size: Assets.Size2d, color?: string) {
-            super(position, size);
+        constructor(bounds: BoundingObject.IBounds2d, color?: string) {
+            super(bounds);
 
             this._fill = false;
             this._stroke = false;
@@ -1654,51 +1715,25 @@ module EndGate.Core.Graphics.Shapes  {
 
 
 
+
 module EndGate.Core.Graphics.Shapes {
 
     export class Circle extends Shape {
         public _type: string = "Circle";
 
-        private _radius: number;
+        public Radius: number;
 
         constructor(x: number, y: number, radius: number, color?: string) {
-            super(new Assets.Vector2d(x, y), new Assets.Size2d(radius * 2, radius * 2), color);
-
-            this._radius = radius;
-        }
-
-        public Radius(val?: number): number {
-            if (typeof val !== "undefined") {
-                this._radius = val;
-                this.Size.Width = this.Size.Height = val * 2;
-            }
-
-            return this._radius;
-        }
-
-        public Draw(context: CanvasRenderingContext2D): void {
-            this.SyncSize();
-
-            super.Draw(context);
+            super(new BoundingObject.BoundingCircle(new Assets.Vector2d(x, y), radius), color);
         }
 
         public BuildPath(context: CanvasRenderingContext2D): void {           
-            context.arc(this.Position.X, this.Position.Y, this._radius, 0, Math.twoPI);
-        }
-
-        private SyncSize() {
-            var circumfrence = this._radius * 2;
-
-            if (circumfrence !== this.Size.Width) {
-                this.Radius(this.Size.Width / 2);
-            }
-            else if (circumfrence !== this.Size.Height) {
-                this.Radius(this.Size.Height / 2);
-            }
+            context.arc(this.Position.X, this.Position.Y, this.Radius, 0, (<any>Math).twoPI);
         }
     }
 }
 /* Rectangle.ts */
+
 
 
 
@@ -1708,8 +1743,10 @@ module EndGate.Core.Graphics.Shapes {
     export class Rectangle extends Shape {
         public _type: string = "Rectangle";
 
+        public Size: Assets.Size2d;
+
         constructor(x: number, y: number, width: number, height: number, color?: string) {
-            super(new Assets.Vector2d(x, y), new Assets.Size2d(width, height), color);
+            super(new BoundingObject.BoundingRectangle(new Assets.Vector2d(x, y), new Assets.Size2d(width, height)), color);
         }
 
         public BuildPath(context: CanvasRenderingContext2D): void {

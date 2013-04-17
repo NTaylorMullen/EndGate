@@ -9,14 +9,10 @@ var EndGate;
         (function (BoundingObject) {
             var BoundingRectangle = (function (_super) {
                 __extends(BoundingRectangle, _super);
-                function BoundingRectangle(first, second) {
-                                _super.call(this);
+                function BoundingRectangle(position, size) {
+                                _super.call(this, position);
                     this._type = "BoundingRectangle";
-                    if(typeof second !== "undefined") {
-                        this.Size = new Core.Assets.Size2d(first, second);
-                    } else {
-                        this.Size = first;
-                    }
+                    this.Size = size;
                 }
                 BoundingRectangle.prototype.Vertices = function () {
                     return [

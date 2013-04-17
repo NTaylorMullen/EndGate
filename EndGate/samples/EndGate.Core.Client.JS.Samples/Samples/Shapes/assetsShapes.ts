@@ -3,7 +3,7 @@
 /// <reference path="../../Scripts/endGate.core.client.ts" />
 
 class ShapeBuilder extends EndGate.Core.Game {
-    public Shape: EndGate.Core.Graphics.Shapes.Shape;
+    public Shape: any;
 
     private _shapeAnimator: ShapeAnimator;
 
@@ -40,10 +40,10 @@ class ShapeBuilder extends EndGate.Core.Game {
         }
         else {
             if (shapeTypeName !== "Circle") {
-                newShape = new shapeType(this.Shape.Position.X, this.Shape.Position.Y, this.Shape.Size.Width, this.Shape.Size.Height);
+                newShape = new shapeType(this.Shape.Position.X, this.Shape.Position.Y, (<any>this.Shape).Radius * 2, (<any>this.Shape).Radius * 2);
             }
             else {
-                newShape = new shapeType(this.Shape.Position.X, this.Shape.Position.Y, Math.min(this.Shape.Size.Width, this.Shape.Size.Height) / 2);
+                newShape = new shapeType(this.Shape.Position.X, this.Shape.Position.Y, Math.min((<any>this.Shape).Size.Width, (<any>this.Shape).Size.Height) / 2);
                 window.setTimeout((function (sizeSync) {
                     return function () {
                         sizeSync("Size");
@@ -189,11 +189,15 @@ class ShapeAnimator {
         shape.Position = shape.Position.Add(direction.Multiply(this.Direction).Multiply(incrementor));
     }
 
-    private Size(shape: EndGate.Core.Graphics.Shapes.Shape, gameTime: EndGate.Core.GameTime): void {
-        var incrementor = ShapeAnimator.AnimationSpeed * gameTime.ElapsedSecond,
-            direction = EndGate.Core.Assets.Size2d.One();
+    private Size(shape: any, gameTime: EndGate.Core.GameTime): void {
+        var incrementor = ShapeAnimator.AnimationSpeed * gameTime.ElapsedSecond;
 
-        shape.Size = shape.Size.Add(direction.Multiply(this.Direction).Multiply(incrementor));
+        if (shape._type === "Circle") {
+            shape.Radius += this.Direction * incrementor;
+        }
+        else {
+            shape.Size = shape.Size.Add(this.Direction * incrementor);
+        }
     }
 
     private Rotation(shape: EndGate.Core.Graphics.Shapes.Shape, gameTime: EndGate.Core.GameTime): void {

@@ -10,17 +10,9 @@ module EndGate.Core.BoundingObject {
 
         public Size: Assets.Size2d;
 
-        constructor(size: Assets.Size2d);
-        constructor(width: number, height: number);
-        constructor(first: any, second?: any) {
-            super();
-
-            if (typeof second !== "undefined") {
-                this.Size = new Assets.Size2d(first, second);
-            }
-            else {
-                this.Size = first;
-            }
+        constructor(position: Assets.Vector2d, size: Assets.Size2d) {
+            super(position);
+            this.Size = size;
         }
 
         public Vertices(): Assets.Vector2d[] {

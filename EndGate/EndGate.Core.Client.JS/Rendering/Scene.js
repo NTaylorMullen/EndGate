@@ -3,11 +3,17 @@ var EndGate;
     (function (Core) {
         (function (Rendering) {
             var Scene = (function () {
-                function Scene(drawArea) {
+                function Scene(drawArea, onDraw) {
                     this._type = "Scene";
                     this._actors = [];
                     if(typeof drawArea === "undefined") {
                         drawArea = this.CreateDefaultDrawArea();
+                    }
+                    if(typeof onDraw === "undefined") {
+                        this._onDraw = function (_) {
+                        };
+                    } else {
+                        this._onDraw = onDraw;
                     }
                     this._renderer = new Rendering.Renderer2d(drawArea);
                     this._disposed = false;
@@ -24,7 +30,7 @@ var EndGate;
                     }
                 };
                 Scene.prototype.Draw = function () {
-                    this._renderer.Render(this._actors);
+                    this._onDraw(this._renderer.Render(this._actors));
                 };
                 Scene.prototype.Dispose = function () {
                     if(!this._disposed) {

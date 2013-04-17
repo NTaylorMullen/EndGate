@@ -1,6 +1,5 @@
 interface Math {
     roundTo(val?: number, decimals?: number): number;
-    twoPI: number;
 }
 
 Math.roundTo = function (val?: number, decimals?: number): number {
@@ -9,4 +8,4 @@ Math.roundTo = function (val?: number, decimals?: number): number {
     return Math.round(val * multiplier) / multiplier;
 };
 
-Math.twoPI = Math.PI * 2;
+(<any>Math).twoPI = Math.PI * 2;

@@ -4,7 +4,7 @@
 module EndGate.Core.Rendering {
 
     export interface IRenderer extends IDisposable {
-        Render(renderables: IRenderable[]): void;
+        Render(renderables: IRenderable[]): CanvasRenderingContext2D;
     }
 
 }

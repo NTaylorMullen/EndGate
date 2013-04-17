@@ -33,8 +33,20 @@
                 rotationSlider.UpdateSlider(ensureValue(shapeBuilder.Shape.Rotation * 100, -628, 628));
             },
             Size: function () {
-                widthSlider.UpdateSlider(ensureValue(shapeBuilder.Shape.Size.Width, 0, canvas.width));
-                heightSlider.UpdateSlider(ensureValue(shapeBuilder.Shape.Size.Height, 0, canvas.height));
+                var newWidth,
+                    newHeight;
+
+                if (shapeBuilder.Shape._type === "Circle") {
+                    newWidth = shapeBuilder.Shape.Radius;
+                    newHeight = shapeBuilder.Shape.Radius;
+                }
+                else {
+                    newWidth = shapeBuilder.Shape.Size.Width;
+                    newHeight = shapeBuilder.Shape.Size.Height;
+                }
+
+                widthSlider.UpdateSlider(ensureValue(newWidth, 0, canvas.width));
+                heightSlider.UpdateSlider(ensureValue(newHeight, 0, canvas.height));
             },
             Opacity: function () {
                 opacitySlider.UpdateSlider(ensureValue(shapeBuilder.Shape.Opacity() * 100, 0, 100));
@@ -68,10 +80,20 @@
         shapeBuilder.Shape.Opacity(newAlpha / 100);
     });
     widthSlider = new CustomSlider($("#widthSlider"), 0, canvas.width, shapeBuilder.Shape.Size.Width, (newWidth: number) => {
-        shapeBuilder.Shape.Size.Width = newWidth;
+        if (shapeBuilder.Shape._type === "Circle") {
+            shapeBuilder.Shape.Radius = newWidth;
+        }
+        else {
+            shapeBuilder.Shape.Size.Width = newWidth;
+        }
     });
     heightSlider = new CustomSlider($("#heightSlider"), 0, canvas.height, shapeBuilder.Shape.Size.Height, (newHeight: number) => {
-        shapeBuilder.Shape.Size.Height = newHeight;
+        if (shapeBuilder.Shape._type === "Circle") {
+            shapeBuilder.Shape.Radius = newHeight;
+        }
+        else {
+            shapeBuilder.Shape.Size.Height = newHeight;
+        }
     });
     borderColorPicker = new ColorPicker($("#borderRed"), $("#borderGreen"), $("#borderBlue"), [0, 0, 0], (newcolor: string) => {
         shapeBuilder.Shape.BorderColor(newcolor);

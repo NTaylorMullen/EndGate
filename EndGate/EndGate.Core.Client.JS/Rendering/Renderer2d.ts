@@ -26,27 +26,29 @@ module EndGate.Core.Rendering {
             this._disposed = false;
         }
 
-        public Render(renderables: IRenderable[]): void {
+        public Render(renderables: IRenderable[]): CanvasRenderingContext2D {
             // Check if our visible canvas has changed size
             if (this._bufferCanvas.width !== this._visibleCanvas.width || this._bufferCanvas.height !== this._visibleCanvas.height) {
                 this.UpdateBufferSize();
             }
 
+            // Push buffer to screen
+            this._visibleContext.clearRect(0, 0, this._visibleCanvas.width, this._visibleCanvas.height);
+            this._visibleContext.drawImage(this._bufferCanvas, 0, 0);
+            // Clear our buffer to prepare it for new drawings
+            this._bufferContext.clearRect(0, 0, this._bufferCanvas.width, this._bufferCanvas.height);
+
             // Sort the renderables by the ZIndex so we draw in the correct order (for layering);
             renderables.sort(Renderer2d._zindexSort);
 
             // We do not save or restore the canvas state because we want to let the
-            // dev decide how they manipulate the canvas
-
-            // Clear our buffer to prepare it for new drawings
-            this._bufferContext.clearRect(0, 0, this._bufferCanvas.width, this._bufferCanvas.height);
+            // dev decide how they manipulate the canvas            
 
             for (var i = 0; i < renderables.length; i++) {
                 renderables[i].Draw(this._bufferContext);
             }
 
-            this._visibleContext.clearRect(0, 0, this._visibleCanvas.width, this._visibleCanvas.height);
-            this._visibleContext.drawImage(this._bufferCanvas, 0, 0);
+            return this._bufferContext;            
         }
 
         public Dispose(): void {

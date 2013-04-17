@@ -3,12 +3,12 @@ var EndGate;
     (function (Core) {
         (function (Graphics) {
             var Graphic2d = (function () {
-                function Graphic2d(position, size) {
+                function Graphic2d(bounds) {
                     this._type = "Graphic2d";
-                    this.Position = position;
-                    this.Size = size;
+                    for(var property in bounds) {
+                        this[property] = bounds[property];
+                    }
                     this.ZIndex = 0;
-                    this.Rotation = 0;
                     this.State = new Graphics.Graphic2dState();
                 }
                 Graphic2d.prototype.StartDraw = function (context) {
@@ -24,6 +24,24 @@ var EndGate;
                     context.restore();
                 };
                 Graphic2d.prototype.Draw = function (context) {
+                };
+                Graphic2d.prototype.ContainsPoint = function (point) {
+                    throw new Error("This method is abstract!");
+                };
+                Graphic2d.prototype.Intersects = function (obj) {
+                    if(obj._type === "BoundingCircle") {
+                        return this.IntersectsCircle(obj);
+                    } else if(obj._type === "BoundingRectangle") {
+                        return this.IntersectsRectangle(obj);
+                    } else {
+                        throw new Error("Cannot intersect with unidentifiable object, must be BoundingCircle or BoundingRectangle");
+                    }
+                };
+                Graphic2d.prototype.IntersectsCircle = function (circle) {
+                    throw new Error("This method is abstract!");
+                };
+                Graphic2d.prototype.IntersectsRectangle = function (rectangle) {
+                    throw new Error("This method is abstract!");
                 };
                 return Graphic2d;
             })();
