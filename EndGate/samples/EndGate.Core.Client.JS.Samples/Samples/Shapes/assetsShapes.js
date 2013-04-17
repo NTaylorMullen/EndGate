@@ -5,9 +5,10 @@ var __extends = this.__extends || function (d, b) {
 };
 var ShapeBuilder = (function (_super) {
     __extends(ShapeBuilder, _super);
-    function ShapeBuilder(_canvas, targetBuilders, targetAnimators, defaultPosition, defaultSize, defaultRotation, defaultOpacity, syncSliders) {
+    function ShapeBuilder(_canvas, targetBuilders, targetAnimators, defaultPosition, defaultSize, defaultRotation, defaultOpacity, _syncSliders) {
         _super.call(this, _canvas);
         this._canvas = _canvas;
+        this._syncSliders = _syncSliders;
         var that = this, builderClicked = function () {
             targetBuilders.removeClass("disabled");
             $(this).addClass("disabled");
@@ -17,17 +18,26 @@ var ShapeBuilder = (function (_super) {
             $(val).click(builderClicked);
         });
         $(targetBuilders[0]).click();
-        this._shapeAnimator = new ShapeAnimator(targetAnimators, defaultPosition, defaultSize, defaultRotation, defaultOpacity, syncSliders);
+        this._shapeAnimator = new ShapeAnimator(targetAnimators, defaultPosition, defaultSize, defaultRotation, defaultOpacity, this._syncSliders);
     }
     ShapeBuilder.prototype.Update = function (gameTime) {
         this._shapeAnimator.ApplyAnimation(this.Shape, gameTime);
     };
     ShapeBuilder.prototype.BuildShape = function (builder) {
-        var shapeType = EndGate.Core.Graphics.Shapes[$(builder).attr("shape")], newShape;
+        var shapeTypeName = $(builder).attr("shape"), shapeType = EndGate.Core.Graphics.Shapes[shapeTypeName], newShape;
         if(!this.Shape) {
             newShape = new shapeType(this._canvas.width / 2, this._canvas.height / 2, 200, 200);
         } else {
-            newShape = new shapeType(this.Shape.Position.X, this.Shape.Position.Y, this.Shape.Size.Width, this.Shape.Size.Height);
+            if(shapeTypeName !== "Circle") {
+                newShape = new shapeType(this.Shape.Position.X, this.Shape.Position.Y, this.Shape.Size.Width, this.Shape.Size.Height);
+            } else {
+                newShape = new shapeType(this.Shape.Position.X, this.Shape.Position.Y, Math.min(this.Shape.Size.Width, this.Shape.Size.Height) / 2);
+                window.setTimeout((function (sizeSync) {
+                    return function () {
+                        sizeSync("Size");
+                    };
+                })(this._syncSliders), 0);
+            }
             newShape.Color(this.Shape.Color());
             newShape.Border(this.Shape.BorderThickness(), this.Shape.BorderColor());
             newShape.Shadow(this.Shape.ShadowX(), this.Shape.ShadowY(), this.Shape.ShadowColor(), this.Shape.ShadowBlur());

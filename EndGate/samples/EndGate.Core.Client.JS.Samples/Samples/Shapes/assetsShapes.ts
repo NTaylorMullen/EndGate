@@ -7,7 +7,7 @@ class ShapeBuilder extends EndGate.Core.Game {
 
     private _shapeAnimator: ShapeAnimator;
 
-    constructor(private _canvas: HTMLCanvasElement, targetBuilders: JQuery, targetAnimators: JQuery, defaultPosition: EndGate.Core.Assets.Vector2d, defaultSize: EndGate.Core.Assets.Size2d, defaultRotation: number, defaultOpacity: number, syncSliders: Function) {
+    constructor(private _canvas: HTMLCanvasElement, targetBuilders: JQuery, targetAnimators: JQuery, defaultPosition: EndGate.Core.Assets.Vector2d, defaultSize: EndGate.Core.Assets.Size2d, defaultRotation: number, defaultOpacity: number, private _syncSliders: Function) {
         super(_canvas);
         var that = this,
             builderClicked = function () {
@@ -22,7 +22,7 @@ class ShapeBuilder extends EndGate.Core.Game {
 
         $(targetBuilders[0]).click();
 
-        this._shapeAnimator = new ShapeAnimator(targetAnimators, defaultPosition, defaultSize, defaultRotation, defaultOpacity, syncSliders);
+        this._shapeAnimator = new ShapeAnimator(targetAnimators, defaultPosition, defaultSize, defaultRotation, defaultOpacity, this._syncSliders);
     }
 
     public Update(gameTime: EndGate.Core.GameTime): void {
@@ -30,7 +30,8 @@ class ShapeBuilder extends EndGate.Core.Game {
     }
 
     private BuildShape(builder: HTMLElement): void {
-        var shapeType = EndGate.Core.Graphics.Shapes[$(builder).attr("shape")],
+        var shapeTypeName = $(builder).attr("shape"),
+            shapeType = EndGate.Core.Graphics.Shapes[shapeTypeName],
             newShape: EndGate.Core.Graphics.Shapes.Shape;
 
         // If there is no current shape
@@ -38,7 +39,17 @@ class ShapeBuilder extends EndGate.Core.Game {
             newShape = new shapeType(this._canvas.width / 2, this._canvas.height / 2, 200, 200);
         }
         else {
-            newShape = new shapeType(this.Shape.Position.X, this.Shape.Position.Y, this.Shape.Size.Width, this.Shape.Size.Height);
+            if (shapeTypeName !== "Circle") {
+                newShape = new shapeType(this.Shape.Position.X, this.Shape.Position.Y, this.Shape.Size.Width, this.Shape.Size.Height);
+            }
+            else {
+                newShape = new shapeType(this.Shape.Position.X, this.Shape.Position.Y, Math.min(this.Shape.Size.Width, this.Shape.Size.Height) / 2);
+                window.setTimeout((function (sizeSync) {
+                    return function () {
+                        sizeSync("Size");
+                    };
+                })(this._syncSliders), 0);
+            }
             newShape.Color(this.Shape.Color());
             newShape.Border(this.Shape.BorderThickness(), this.Shape.BorderColor());
             newShape.Shadow(this.Shape.ShadowX(), this.Shape.ShadowY(), this.Shape.ShadowColor(), this.Shape.ShadowBlur());

@@ -1670,15 +1670,31 @@ module EndGate.Core.Graphics.Shapes {
         public Radius(val?: number): number {
             if (typeof val !== "undefined") {
                 this._radius = val;
-                this.Size.Width = val * 2;
-                this.Size.Height = val * 2;
+                this.Size.Width = this.Size.Height = val * 2;
             }
 
             return this._radius;
         }
 
-        public BuildPath(context: CanvasRenderingContext2D): void {
+        public Draw(context: CanvasRenderingContext2D): void {
+            this.SyncSize();
+
+            super.Draw(context);
+        }
+
+        public BuildPath(context: CanvasRenderingContext2D): void {           
             context.arc(this.Position.X, this.Position.Y, this._radius, 0, Math.twoPI);
+        }
+
+        private SyncSize() {
+            var circumfrence = this._radius * 2;
+
+            if (circumfrence !== this.Size.Width) {
+                this.Radius(this.Size.Width / 2);
+            }
+            else if (circumfrence !== this.Size.Height) {
+                this.Radius(this.Size.Height / 2);
+            }
         }
     }
 }

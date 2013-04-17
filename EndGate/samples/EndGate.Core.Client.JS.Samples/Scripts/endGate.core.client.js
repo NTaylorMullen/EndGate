@@ -1304,13 +1304,24 @@ var EndGate;
                     Circle.prototype.Radius = function (val) {
                         if(typeof val !== "undefined") {
                             this._radius = val;
-                            this.Size.Width = val * 2;
-                            this.Size.Height = val * 2;
+                            this.Size.Width = this.Size.Height = val * 2;
                         }
                         return this._radius;
                     };
+                    Circle.prototype.Draw = function (context) {
+                        this.SyncSize();
+                        _super.prototype.Draw.call(this, context);
+                    };
                     Circle.prototype.BuildPath = function (context) {
                         context.arc(this.Position.X, this.Position.Y, this._radius, 0, Math.twoPI);
+                    };
+                    Circle.prototype.SyncSize = function () {
+                        var circumfrence = this._radius * 2;
+                        if(circumfrence !== this.Size.Width) {
+                            this.Radius(this.Size.Width / 2);
+                        } else if(circumfrence !== this.Size.Height) {
+                            this.Radius(this.Size.Height / 2);
+                        }
                     };
                     return Circle;
                 })(Shapes.Shape);
