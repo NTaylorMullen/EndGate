@@ -11,9 +11,11 @@ class ShapeBuilder extends EndGate.Core.Game {
         super(_canvas);
         var that = this,
             builderClicked = function () {
-                targetBuilders.removeClass("disabled");
-                $(this).addClass("disabled");
-                that.BuildShape($(this)[0]);
+                if (!$(this).hasClass("disabled")) {
+                    targetBuilders.removeClass("disabled");
+                    $(this).addClass("disabled");
+                    that.BuildShape($(this)[0]);
+                }
             };
 
         $.each(targetBuilders, function (index, val) {

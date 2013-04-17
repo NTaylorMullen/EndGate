@@ -10,9 +10,11 @@ var ShapeBuilder = (function (_super) {
         this._canvas = _canvas;
         this._syncSliders = _syncSliders;
         var that = this, builderClicked = function () {
-            targetBuilders.removeClass("disabled");
-            $(this).addClass("disabled");
-            that.BuildShape($(this)[0]);
+            if(!$(this).hasClass("disabled")) {
+                targetBuilders.removeClass("disabled");
+                $(this).addClass("disabled");
+                that.BuildShape($(this)[0]);
+            }
         };
         $.each(targetBuilders, function (index, val) {
             $(val).click(builderClicked);

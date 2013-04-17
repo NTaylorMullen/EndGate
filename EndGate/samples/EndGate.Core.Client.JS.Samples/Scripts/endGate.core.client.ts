@@ -766,10 +766,12 @@ module EndGate.Core.BoundingObject {
             return 2 * Math.PI * this.Radius;
         }
 
+        // For some reason when compiled into a single .ts file if this isn't fully declared it doesn't compile
         public IntersectsCircle(circle: EndGate.Core.BoundingObject.BoundingCircle): bool {
             return this.Position.Distance(circle.Position).Length() < this.Radius + circle.Radius;
         }
 
+        // For some reason when compiled into a single .ts file if this isn't fully declared it doesn't compile
         public IntersectsRectangle(rectangle: EndGate.Core.BoundingObject.BoundingRectangle): bool {
             var translated = (rectangle.Rotation === 0)
                                   ? this.Position
@@ -847,10 +849,12 @@ module EndGate.Core.BoundingObject {
             return v.RotateAround(this.Position, this.Rotation);
         }
 
+        // For some reason when compiled into a single .ts file if this isn't fully declared it doesn't compile
         public IntersectsCircle(circle: EndGate.Core.BoundingObject.BoundingCircle): bool {
             return circle.IntersectsRectangle(this);
         }
 
+        // For some reason when compiled into a single .ts file if this isn't fully declared it doesn't compile
         public IntersectsRectangle(rectangle: EndGate.Core.BoundingObject.BoundingRectangle): bool {
             if (this.Rotation === 0 && rectangle.Rotation === 0) {
                 var myTopLeft = this.TopLeft(),
@@ -990,10 +994,9 @@ module EndGate.Core.Collision {
 
 
 
-
 module EndGate.Core.Collision {
 
-    export class Collidable implements IDisposable, ITyped, BoundingObject.IBounds2d {        
+    export class Collidable implements IDisposable, ITyped, BoundingObject.IBounds2d {
         public _type: string = "Collidable";
         public _boundsType: string = "Collidable";
 
@@ -1030,8 +1033,7 @@ module EndGate.Core.Collision {
             this.OnCollision.Trigger(data);
         }
 
-        public Dispose(): void
-        {
+        public Dispose(): void {
             if (!this._disposed) {
                 this._disposed = true;
                 this.OnDisposed.Trigger(this);
@@ -1075,7 +1077,6 @@ module EndGate.Core.Collision {
 
 }
 /* CollisionManager.ts */
-
 
 
 
