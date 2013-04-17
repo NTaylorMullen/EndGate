@@ -112,10 +112,6 @@
       <DependentUpon>Bounds2d.ts</DependentUpon>
     </Content>
     <TypeScriptCompile Include="Collision\Collidable.ts" />
-    <TypeScriptCompile Include="BoundingObject\IBounds2d.d.ts" />
-    <Content Include="BoundingObject\IBounds2d.d.js">
-      <DependentUpon>IBounds2d.d.ts</DependentUpon>
-    </Content>
     <Content Include="Collision\Collidable.js">
       <DependentUpon>Collidable.ts</DependentUpon>
     </Content>

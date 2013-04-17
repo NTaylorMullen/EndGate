@@ -6,7 +6,7 @@ var __extends = this.__extends || function (d, b) {
 var MovingShape = (function (_super) {
     __extends(MovingShape, _super);
     function MovingShape(graphic, velocity, directionInterval) {
-        _super.call(this, graphic);
+        _super.call(this, graphic.Bounds);
         this._fadeSpeed = 2;
         this._collisionBorderThickness = 5;
         this._collisionColorAlpha = 0;
@@ -43,8 +43,8 @@ var MovingShape = (function (_super) {
         }
         this._collisionColorAlpha = Math.max(this._collisionColorAlpha - gameTime.ElapsedSecond * this._fadeSpeed, 0);
         (this.Graphic).BorderColor("rgba(" + this._collisionColor[0] + "," + this._collisionColor[1] + "," + this._collisionColor[2] + "," + this._collisionColorAlpha + ")");
-        this.Graphic.Rotation = this.Rotation = this.Rotation + gameTime.ElapsedSecond * MovingShape.RotationSpeed * this._rotationMultiplier;
-        this.Graphic.Position = this.Position = this.Graphic.Position.Add(this._velocity.Multiply(gameTime.ElapsedSecond));
+        this.Graphic.Rotation = this.Bounds.Rotation = this.Graphic.Rotation + gameTime.ElapsedSecond * MovingShape.RotationSpeed * this._rotationMultiplier;
+        this.Graphic.Position = this.Bounds.Position = this.Graphic.Position.Add(this._velocity.Multiply(gameTime.ElapsedSecond));
     };
     return MovingShape;
 })(EndGate.Core.Collision.Collidable);

@@ -108,8 +108,7 @@ module EndGate.Core.BoundingObject {
             this.Rotation = savedRotation;
 
             return point.X <= myBotRight.X && point.X >= myTopLeft.X && point.Y <= myBotRight.Y && point.Y >= myTopLeft.Y;
-        }
-
+        }        
     }
 
 }

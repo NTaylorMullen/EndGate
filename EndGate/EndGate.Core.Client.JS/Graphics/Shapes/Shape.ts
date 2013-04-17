@@ -1,3 +1,4 @@
+/// <reference path="../../BoundingObject/Bounds2d.ts" />
 /// <reference path="../Graphic2d.ts" />
 
 module EndGate.Core.Graphics.Shapes  {
@@ -7,7 +8,7 @@ module EndGate.Core.Graphics.Shapes  {
         private _fill: bool;
         private _stroke: bool;
 
-        constructor(bounds: BoundingObject.IBounds2d, color?: string) {
+        constructor(bounds: BoundingObject.Bounds2d, color?: string) {
             super(bounds);
 
             this._fill = false;

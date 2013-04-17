@@ -12,6 +12,8 @@ module EndGate.Core.Graphics.Shapes {
 
         constructor(x: number, y: number, radius: number, color?: string) {
             super(new BoundingObject.BoundingCircle(new Assets.Vector2d(x, y), radius), color);
+
+            this.Radius = radius;
         }
 
         public BuildPath(context: CanvasRenderingContext2D): void {           

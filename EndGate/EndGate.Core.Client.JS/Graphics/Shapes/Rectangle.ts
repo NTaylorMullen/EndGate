@@ -12,6 +12,8 @@ module EndGate.Core.Graphics.Shapes {
 
         constructor(x: number, y: number, width: number, height: number, color?: string) {
             super(new BoundingObject.BoundingRectangle(new Assets.Vector2d(x, y), new Assets.Size2d(width, height)), color);
+
+            this.Size = (<BoundingObject.BoundingRectangle>this._bounds).Size;
         }
 
         public BuildPath(context: CanvasRenderingContext2D): void {

@@ -16,7 +16,7 @@ class MovingShape implements IUpdateable extends EndGate.Core.Collision.Collidab
     private _collisionColor: number[] = [255,0,0];
 
     constructor(graphic: EndGate.Core.Graphics.Graphic2d, velocity: EndGate.Core.Assets.Vector2d, directionInterval: number) {
-        super(graphic);
+        super(graphic.Bounds);
 
         this.Graphic = graphic;
         this._velocity = velocity;
@@ -57,9 +57,8 @@ class MovingShape implements IUpdateable extends EndGate.Core.Collision.Collidab
 
         (<EndGate.Core.Graphics.Shapes.Shape>this.Graphic).BorderColor("rgba(" + this._collisionColor[0] + "," + this._collisionColor[1] + "," + this._collisionColor[2] + "," + this._collisionColorAlpha + ")");
 
-        this.Graphic.Rotation = this.Rotation = this.Rotation + gameTime.ElapsedSecond * MovingShape.RotationSpeed * this._rotationMultiplier;
-        this.Graphic.Position = this.Position = this.Graphic.Position.Add(this._velocity.Multiply(gameTime.ElapsedSecond));
-
+        this.Graphic.Rotation = this.Bounds.Rotation = this.Graphic.Rotation + gameTime.ElapsedSecond * MovingShape.RotationSpeed * this._rotationMultiplier;
+        this.Graphic.Position = this.Bounds.Position = this.Graphic.Position.Add(this._velocity.Multiply(gameTime.ElapsedSecond));
     }
 }
 
