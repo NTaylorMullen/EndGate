@@ -648,60 +648,6 @@ var EndGate;
 (function (EndGate) {
     (function (Core) {
         (function (Graphics) {
-            (function (LineCapType) {
-                LineCapType._map = [];
-                LineCapType._map[0] = "butt";
-                LineCapType.butt = 0;
-                LineCapType._map[1] = "round";
-                LineCapType.round = 1;
-                LineCapType._map[2] = "square";
-                LineCapType.square = 2;
-            })(Graphics.LineCapType || (Graphics.LineCapType = {}));
-            var LineCapType = Graphics.LineCapType;
-            ;
-            (function (LineJoinType) {
-                LineJoinType._map = [];
-                LineJoinType._map[0] = "bevel";
-                LineJoinType.bevel = 0;
-                LineJoinType._map[1] = "round";
-                LineJoinType.round = 1;
-                LineJoinType._map[2] = "miter";
-                LineJoinType.miter = 2;
-            })(Graphics.LineJoinType || (Graphics.LineJoinType = {}));
-            var LineJoinType = Graphics.LineJoinType;
-            ;
-            (function (TextAlignType) {
-                TextAlignType._map = [];
-                TextAlignType._map[0] = "center";
-                TextAlignType.center = 0;
-                TextAlignType._map[1] = "end";
-                TextAlignType.end = 1;
-                TextAlignType._map[2] = "left";
-                TextAlignType.left = 2;
-                TextAlignType._map[3] = "right";
-                TextAlignType.right = 3;
-                TextAlignType._map[4] = "start";
-                TextAlignType.start = 4;
-            })(Graphics.TextAlignType || (Graphics.TextAlignType = {}));
-            var TextAlignType = Graphics.TextAlignType;
-            ;
-            (function (TextBaselineType) {
-                TextBaselineType._map = [];
-                TextBaselineType._map[0] = "alphabetic";
-                TextBaselineType.alphabetic = 0;
-                TextBaselineType._map[1] = "top";
-                TextBaselineType.top = 1;
-                TextBaselineType._map[2] = "hanging";
-                TextBaselineType.hanging = 2;
-                TextBaselineType._map[3] = "middle";
-                TextBaselineType.middle = 3;
-                TextBaselineType._map[4] = "ideographic";
-                TextBaselineType.ideographic = 4;
-                TextBaselineType._map[5] = "bottom";
-                TextBaselineType.bottom = 5;
-            })(Graphics.TextBaselineType || (Graphics.TextBaselineType = {}));
-            var TextBaselineType = Graphics.TextBaselineType;
-            ;
             var Graphic2dState = (function () {
                 function Graphic2dState() {
                     this._type = "Graphic2dState";
@@ -1525,16 +1471,91 @@ var EndGate;
                 NoopTripInvoker._noop = function () {
                 };
                 NoopTripInvoker.prototype.Invoke = function () {
-                    this._invoker();
+                    var args = [];
+                    for (var _i = 0; _i < (arguments.length - 0); _i++) {
+                        args[_i] = arguments[_i + 0];
+                    }
+                    this._invoker.apply(this, args);
                 };
                 NoopTripInvoker.prototype.Trip = function () {
                     this._invoker = this._action;
+                };
+                NoopTripInvoker.prototype.Reset = function () {
+                    this._invoker = NoopTripInvoker._noop;
                 };
                 return NoopTripInvoker;
             })();
             Utilities.NoopTripInvoker = NoopTripInvoker;            
         })(Core.Utilities || (Core.Utilities = {}));
         var Utilities = Core.Utilities;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Graphics) {
+            (function (Text) {
+                var Text2d = (function (_super) {
+                    __extends(Text2d, _super);
+                    function Text2d(position, text, color) {
+                        if (typeof color === "undefined") { color = "black"; }
+                        var _this = this;
+                                        _super.call(this, position);
+                        this._text = text;
+                        this._stroker = new Core.Utilities.NoopTripInvoker(function (context) {
+                            context.strokeText(_this._text, _this.Position.X, _this.Position.Y);
+                        });
+                        this.Align("center");
+                        this.Baseline("middle");
+                        this.Color(color);
+                    }
+                    Text2d.prototype.Align = function (alignment) {
+                        return this.State.TextAlign(alignment);
+                    };
+                    Text2d.prototype.Baseline = function (baseline) {
+                        return this.State.TextBaseline(baseline);
+                    };
+                    Text2d.prototype.Color = function (color) {
+                        return this.State.FillStyle(color);
+                    };
+                    Text2d.prototype.Text = function (text) {
+                        if(typeof text !== "undefined") {
+                            this._text = text;
+                        }
+                        return this._text;
+                    };
+                    Text2d.prototype.Border = function (thickness, color) {
+                        return [
+                            this.BorderThickness(thickness), 
+                            this.BorderColor(color)
+                        ];
+                    };
+                    Text2d.prototype.BorderThickness = function (thickness) {
+                        if(thickness === 0) {
+                            this._stroker.Reset();
+                        } else {
+                            this._stroker.Trip();
+                        }
+                        return this.State.LineWidth(thickness);
+                    };
+                    Text2d.prototype.BorderColor = function (color) {
+                        this._stroker.Trip();
+                        return this.State.StrokeStyle(color);
+                    };
+                    Text2d.prototype.Draw = function (context) {
+                        _super.prototype.StartDraw.call(this, context);
+                        context.fillText(this._text, this.Position.X, this.Position.Y);
+                        this._stroker.Invoke(context);
+                        _super.prototype.EndDraw.call(this, context);
+                    };
+                    return Text2d;
+                })(Graphics.Graphic2d);
+                Text.Text2d = Text2d;                
+            })(Graphics.Text || (Graphics.Text = {}));
+            var Text = Graphics.Text;
+        })(Core.Graphics || (Core.Graphics = {}));
+        var Graphics = Core.Graphics;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));

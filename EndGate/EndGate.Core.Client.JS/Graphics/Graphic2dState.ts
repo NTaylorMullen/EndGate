@@ -2,11 +2,6 @@
 
 module EndGate.Core.Graphics {
 
-    export enum LineCapType { butt, round, square };
-    export enum LineJoinType { bevel, round, miter };
-    export enum TextAlignType { center, end, left, right, start };
-    export enum TextBaselineType { alphabetic, top, hanging, middle, ideographic, bottom };
-
     export class Graphic2dState implements ITyped {
         public _type: string ="Graphic2dState";
 
@@ -32,11 +27,11 @@ module EndGate.Core.Graphics {
             return this.GetOrSetCache("lineWidth", value);
         }
 
-        public LineCap(value?: LineCapType): LineCapType {
+        public LineCap(value?: string): string {
             return this.GetOrSetCache("lineCap", value);
         }
 
-        public LineJoin(value?: LineJoinType): LineJoinType {
+        public LineJoin(value?: string): string {
             return this.GetOrSetCache("lineJoin", value);
         }
 
@@ -68,11 +63,11 @@ module EndGate.Core.Graphics {
             return this.GetOrSetCache("font", value);
         }
 
-        public TextAlign(value?: TextAlignType): TextAlignType {
+        public TextAlign(value?: string): string {
             return this.GetOrSetCache("textAlign", value);
         }
 
-        public TextBaseline(value?: TextBaselineType): TextBaselineType {
+        public TextBaseline(value?: string): string {
             return this.GetOrSetCache("textBaseline", value);
         }
 

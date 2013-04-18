@@ -1,4 +1,4 @@
-/// <reference path="../../BoundingObject/Bounds2d.ts" />
+/// <reference path="../../Assets/Vectors/Vector2d.ts" />
 /// <reference path="../Graphic2d.ts" />
 
 module EndGate.Core.Graphics.Shapes  {

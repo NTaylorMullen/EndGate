@@ -10,12 +10,16 @@ module EndGate.Core.Utilities {
             this._action = action;
         }
 
-        public Invoke() {
-            this._invoker();
+        public Invoke(...args: any[]) {
+            this._invoker.apply(this, args);
         }
 
         public Trip() {
             this._invoker = this._action;
+        }
+
+        public Reset() {
+            this._invoker = NoopTripInvoker._noop;
         }
     }
 

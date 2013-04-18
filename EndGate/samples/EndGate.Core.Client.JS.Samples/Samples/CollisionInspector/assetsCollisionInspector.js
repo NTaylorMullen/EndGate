@@ -11,14 +11,17 @@ var CollidableShape = (function (_super) {
         this._collisionBorderThickness = 4;
         this._lastCollision = null;
         this.Graphic = graphic;
+        this.TextPosition = new EndGate.Core.Graphics.Text.Text2d(graphic.Position, graphic.Position.toString());
         this.Graphic.BorderColor(this._collisionBorderColor);
         this.Graphic.BorderThickness(0);
     }
     CollidableShape.prototype.Move = function (position) {
-        this.Bounds.Position = this.Graphic.Position = position;
+        this.Bounds.Position = this.Graphic.Position = this.TextPosition.Position = position;
+        this.TextPosition.Position.Apply(Math.round);
+        this.TextPosition.Text(this.TextPosition.Position.toString());
     };
     CollidableShape.prototype.Rotate = function (rotation) {
-        this.Bounds.Rotation = this.Graphic.Rotation = this.Graphic.Rotation + rotation;
+        this.Bounds.Rotation = this.Graphic.Rotation = this.TextPosition.Rotation = this.Graphic.Rotation + rotation;
     };
     CollidableShape.prototype.Collided = function (data) {
         this.Graphic.BorderThickness(this._collisionBorderThickness);
@@ -80,8 +83,9 @@ var CollisionInspector = (function (_super) {
     }
     CollisionInspector.prototype.Add = function (shape) {
         this._collidableShapes.push(shape);
-        shape.Graphic.ZIndex = this._decreasingZIndex--;
+        shape.Graphic.ZIndex = shape.TextPosition.ZIndex = this._decreasingZIndex--;
         this.Scene.Add(shape.Graphic);
+        this.Scene.Add(shape.TextPosition);
         this.CollisionManager.Monitor(shape);
     };
     CollisionInspector.prototype.Update = function (gameTime) {

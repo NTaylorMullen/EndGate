@@ -10,10 +10,17 @@ var EndGate;
                 NoopTripInvoker._noop = function () {
                 };
                 NoopTripInvoker.prototype.Invoke = function () {
-                    this._invoker();
+                    var args = [];
+                    for (var _i = 0; _i < (arguments.length - 0); _i++) {
+                        args[_i] = arguments[_i + 0];
+                    }
+                    this._invoker.apply(this, args);
                 };
                 NoopTripInvoker.prototype.Trip = function () {
                     this._invoker = this._action;
+                };
+                NoopTripInvoker.prototype.Reset = function () {
+                    this._invoker = NoopTripInvoker._noop;
                 };
                 return NoopTripInvoker;
             })();

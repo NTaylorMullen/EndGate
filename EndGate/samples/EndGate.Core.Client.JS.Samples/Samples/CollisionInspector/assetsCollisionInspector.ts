@@ -3,6 +3,7 @@
 
 class CollidableShape implements EndGate.Core.IUpdateable extends EndGate.Core.Collision.Collidable {
     public Graphic: EndGate.Core.Graphics.Shapes.Shape;
+    public TextPosition: EndGate.Core.Graphics.Text.Text2d;
     private _collisionBorderColor: string = "black";
     private _collisionBorderThickness: number = 4;
     private _lastCollision: EndGate.Core.Collision.CollisionData = null;
@@ -11,17 +12,23 @@ class CollidableShape implements EndGate.Core.IUpdateable extends EndGate.Core.C
         super(bounds);
 
         this.Graphic = graphic;
+        this.TextPosition = new EndGate.Core.Graphics.Text.Text2d(graphic.Position, graphic.Position.toString());
+
         this.Graphic.BorderColor(this._collisionBorderColor);
         this.Graphic.BorderThickness(0);
     }
 
     public Move(position: EndGate.Core.Assets.Vector2d): void {
         // Update the graphic location and the bounds location
-        this.Bounds.Position = this.Graphic.Position = position;
+        this.Bounds.Position = this.Graphic.Position = this.TextPosition.Position = position;
+
+        // Round the position and then update its text
+        this.TextPosition.Position.Apply(Math.round);
+        this.TextPosition.Text(this.TextPosition.Position.toString());
     }
 
     public Rotate(rotation: number) {
-        this.Bounds.Rotation = this.Graphic.Rotation = this.Graphic.Rotation + rotation;
+        this.Bounds.Rotation = this.Graphic.Rotation = this.TextPosition.Rotation = this.Graphic.Rotation + rotation;
     }
 
     public Collided(data: EndGate.Core.Collision.CollisionData): void {        
@@ -100,10 +107,11 @@ class CollisionInspector extends EndGate.Core.Game {
         this._collidableShapes.push(shape);
         // Keep decreasing the zindex so the highest value is always closest to the front, meaning 
         // we will always return items that are in the viewing area even if they overlap.
-        shape.Graphic.ZIndex = this._decreasingZIndex--;
+        shape.Graphic.ZIndex = shape.TextPosition.ZIndex = this._decreasingZIndex--;
 
         // For drawing the shape
         this.Scene.Add(shape.Graphic);
+        this.Scene.Add(shape.TextPosition);
 
         // For detecting collision amongst the shapes
         this.CollisionManager.Monitor(shape);

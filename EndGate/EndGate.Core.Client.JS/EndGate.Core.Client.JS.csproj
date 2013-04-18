@@ -211,6 +211,13 @@
     <TypeScriptCompile Include="Input\Mouse\MouseButton.ts" />
     <TypeScriptCompile Include="Input\Mouse\IMouseClickEvent.d.ts" />
     <TypeScriptCompile Include="Input\InputManager.ts" />
+    <TypeScriptCompile Include="Graphics\Text\Text2d.ts" />
+    <Content Include="Graphics\Text\Text2d.js">
+      <DependentUpon>Text2d.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Text\Text2d.min.js">
+      <DependentUpon>Text2d.ts</DependentUpon>
+    </Content>
     <Content Include="Input\InputManager.js">
       <DependentUpon>InputManager.ts</DependentUpon>
     </Content>
@@ -417,6 +424,9 @@
     </Content>
     <Content Include="Input\InputManager.js.map">
       <DependentUpon>InputManager.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Text\Text2d.js.map">
+      <DependentUpon>Text2d.ts</DependentUpon>
     </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
