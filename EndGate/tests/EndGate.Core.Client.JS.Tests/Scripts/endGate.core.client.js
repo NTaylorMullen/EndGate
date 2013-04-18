@@ -27,6 +27,9 @@ var EndGate;
 })(EndGate || (EndGate = {}));
 var EndGate;
 (function (EndGate) {
+    })(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
     (function (Core) {
             })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;

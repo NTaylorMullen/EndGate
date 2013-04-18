@@ -32,6 +32,11 @@
     </div>
     <div class="row">
         <div class="span4">
+            <h3>Collision Inspector</h3>
+            <p>Allows the dragging and rotating of shapes to inspect collisions closely.</p>
+            <p><a class="btn" href="Samples/CollisionInspector">View sample &raquo;</a></p>
+        </div>
+        <div class="span4">
             <h3>Mouse Input</h3>
             <p>Demonstrates how to use a games mouse input handler.</p>
             <p><a class="btn" href="Samples/MouseInput">View sample &raquo;</a></p>

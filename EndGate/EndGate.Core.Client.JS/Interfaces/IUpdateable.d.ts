@@ -1,5 +1,9 @@
 /// <reference path="../GameTime.ts" />
 
-interface IUpdateable {
-    Update(gameTime: EndGate.Core.GameTime): void;
+module EndGate.Core {
+
+    export interface IUpdateable {
+        Update(gameTime: EndGate.Core.GameTime): void;
+    }
+
 }

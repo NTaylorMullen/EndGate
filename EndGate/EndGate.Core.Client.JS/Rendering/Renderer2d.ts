@@ -4,7 +4,7 @@
 module EndGate.Core.Rendering {
 
     export class Renderer2d implements IRenderer {
-        private static _zindexSort: (a: IRenderable, b: IRenderable) => number = (a: IRenderable, b: IRenderable) => { return a.ZIndex - b.ZIndex; };
+        public static _zindexSort: (a: IRenderable, b: IRenderable) => number = (a: IRenderable, b: IRenderable) => { return a.ZIndex - b.ZIndex; };
 
         // These essentially are used to create a double buffer for rendering
         private _visibleCanvas: HTMLCanvasElement;

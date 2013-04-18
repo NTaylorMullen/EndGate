@@ -139,6 +139,15 @@
     </Content>
     <TypeScriptCompile Include="Samples\Shapes\assetsShapes.ts" />
     <TypeScriptCompile Include="Samples\MouseInput\assetsMouseInput.ts" />
+    <TypeScriptCompile Include="Samples\CollisionInspector\assetsCollisionInspector.ts" />
+    <Content Include="Samples\CollisionInspector\assetsCollisionInspector.js">
+      <DependentUpon>assetsCollisionInspector.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\CollisionInspector\Default.aspx" />
+    <TypeScriptCompile Include="Samples\CollisionInspector\mainCollisionInspector.ts" />
+    <Content Include="Samples\CollisionInspector\mainCollisionInspector.js">
+      <DependentUpon>mainCollisionInspector.ts</DependentUpon>
+    </Content>
     <Content Include="Samples\MouseInput\assetsMouseInput.js">
       <DependentUpon>assetsMouseInput.ts</DependentUpon>
     </Content>
@@ -223,6 +232,13 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Samples\CollisionDetection\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Samples\CollisionInspector\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Samples\CollisionInspector\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="Samples\Layering\Default.aspx.cs">

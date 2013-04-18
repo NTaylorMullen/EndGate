@@ -43,8 +43,12 @@ module EndGate.Core {
 /* IUpdateable.d.ts */
 
 
-interface IUpdateable {
-    Update(gameTime: EndGate.Core.GameTime): void;
+module EndGate.Core {
+
+    export interface IUpdateable {
+        Update(gameTime: EndGate.Core.GameTime): void;
+    }
+
 }
 /* IRenderable.d.ts */
 module EndGate.Core.Rendering {
@@ -1021,7 +1025,7 @@ module EndGate.Core.Rendering {
 module EndGate.Core.Rendering {
 
     export class Renderer2d implements IRenderer {
-        private static _zindexSort: (a: IRenderable, b: IRenderable) => number = (a: IRenderable, b: IRenderable) => { return a.ZIndex - b.ZIndex; };
+        public static _zindexSort: (a: IRenderable, b: IRenderable) => number = (a: IRenderable, b: IRenderable) => { return a.ZIndex - b.ZIndex; };
 
         // These essentially are used to create a double buffer for rendering
         private _visibleCanvas: HTMLCanvasElement;
@@ -1247,7 +1251,7 @@ module EndGate.Core.Input.Mouse {
             this._target.onmousemove = this.BuildEvent(this.OnMove, this.BuildMouseEvent);
 
             // OnScroll, in order to detect horizontal scrolling need to hack a bit (browser sniffing)
-            // IE, we only work on IE9+ so we use the wheel property
+            // if we were just doing vertical scrolling we could settle with the else statement in this block
             if ((/MSIE/i.test(navigator.userAgent))) {
                 this._target.addEventListener("wheel", this.BuildEvent(this.OnScroll, (e: any) => {
                     e.wheelDeltaX = -e.deltaX;

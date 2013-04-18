@@ -1,6 +1,6 @@
 /// <reference path="../../Scripts/endGate.core.client.ts" />
 
-class MovingShape implements IUpdateable extends EndGate.Core.Collision.Collidable {
+class MovingShape implements EndGate.Core.IUpdateable extends EndGate.Core.Collision.Collidable {
     // Rotate 180 deg every second
     private static RotationSpeed: number = Math.PI;
 
