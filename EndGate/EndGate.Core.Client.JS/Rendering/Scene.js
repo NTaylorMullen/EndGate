@@ -15,7 +15,8 @@ var EndGate;
                     } else {
                         this._onDraw = onDraw;
                     }
-                    this._renderer = new Rendering.Renderer2d(drawArea);
+                    this.DrawArea = drawArea;
+                    this._renderer = new Rendering.Renderer2d(this.DrawArea);
                     this._disposed = false;
                 }
                 Scene.prototype.Add = function (actor) {

@@ -9,18 +9,15 @@ module EndGate.Core.Graphics {
 
     export class Graphic2d implements ITyped, Rendering.IRenderable {
         public _type: string = "Graphic2d";
-        public _boundsType: string = "Graphic2d";
 
         public ZIndex: number;
         public Position: Assets.Vector2d;
         public Rotation: number;
         public State: Graphic2dState;
-        public _bounds: BoundingObject.Bounds2d;
 
-        constructor(bounds: BoundingObject.Bounds2d) {
-            this.Position = bounds.Position.Clone();
-            this.Rotation = bounds.Rotation;
-            this._bounds = bounds;
+        constructor(position: Assets.Vector2d) {
+            this.Position = position;
+            this.Rotation = 0;
             this.ZIndex = 0;
             this.State = new Graphic2dState();
         }

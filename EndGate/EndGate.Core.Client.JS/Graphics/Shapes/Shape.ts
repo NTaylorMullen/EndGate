@@ -8,8 +8,8 @@ module EndGate.Core.Graphics.Shapes  {
         private _fill: bool;
         private _stroke: bool;
 
-        constructor(bounds: BoundingObject.Bounds2d, color?: string) {
-            super(bounds);
+        constructor(position: Assets.Vector2d, color?: string) {
+            super(position);
 
             this._fill = false;
             this._stroke = false;

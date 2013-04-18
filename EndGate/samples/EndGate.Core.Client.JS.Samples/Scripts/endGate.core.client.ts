@@ -538,22 +538,31 @@ module EndGate.Core.Utilities {
         public _type: string = "Event";
 
         private _actions: Function[];
+        private _hasBindings: bool;
 
         constructor() {
             this._actions = [];
+            this._hasBindings = false;
         }
 
         public Bind(action: Function): void {
             this._actions.push(action);
+            this._hasBindings = true;
         }
 
         public Unbind(action: Function): void {
             for (var i = 0; i < this._actions.length; i++) {
                 if (this._actions[i] === action) {
                     this._actions.splice(i, 1);
+
+                    this._hasBindings = this._actions.length > 0;
                     return;
                 }
             }
+        }
+
+        public HasBindings(): bool {
+            return this._hasBindings;
         }
 
         public Trigger(...args: any[]): void {
@@ -593,7 +602,6 @@ module EndGate.Core.Collision {
 
     export class Collidable implements IDisposable, ITyped {
         public _type: string = "Collidable";
-        public _boundsType: string = "Collidable";
 
         public Bounds: BoundingObject.Bounds2d;
         public ID: number;
@@ -962,18 +970,15 @@ module EndGate.Core.Graphics {
 
     export class Graphic2d implements ITyped, Rendering.IRenderable {
         public _type: string = "Graphic2d";
-        public _boundsType: string = "Graphic2d";
 
         public ZIndex: number;
         public Position: Assets.Vector2d;
         public Rotation: number;
         public State: Graphic2dState;
-        public _bounds: BoundingObject.Bounds2d;
 
-        constructor(bounds: BoundingObject.Bounds2d) {
-            this.Position = bounds.Position.Clone();
-            this.Rotation = bounds.Rotation;
-            this._bounds = bounds;
+        constructor(position: Assets.Vector2d) {
+            this.Position = position;
+            this.Rotation = 0;
             this.ZIndex = 0;
             this.State = new Graphic2dState();
         }
@@ -1092,6 +1097,8 @@ module EndGate.Core.Rendering {
     export class Scene implements ITyped, IDisposable {
         public _type: string = "Scene";
 
+        public DrawArea: HTMLCanvasElement;
+
         private _actors: Graphics.Graphic2d[];
         private _renderer: IRenderer;
         private _onDraw: (context: CanvasRenderingContext2D) => void;
@@ -1112,7 +1119,8 @@ module EndGate.Core.Rendering {
                 this._onDraw = onDraw;
             }
 
-            this._renderer = new Renderer2d(drawArea);
+            this.DrawArea = drawArea;
+            this._renderer = new Renderer2d(this.DrawArea);
             this._disposed = false;
         }
 
@@ -1152,7 +1160,180 @@ module EndGate.Core.Rendering {
     }
 
 }
+/* MouseButton.ts */
+module EndGate.Core.Input.Mouse {
+
+    export class MouseButton {
+        public static Left: string = "Left";
+        public static Middle: string = "Middle";
+        public static Right: string = "Right";
+    }
+
+}
+/* IMouseEvent.d.ts */
+
+
+module EndGate.Core.Input.Mouse {
+
+    export interface IMouseEvent {
+        Position: Assets.Vector2d;
+    }
+
+}
+/* IMouseClickEvent.d.ts */
+
+
+
+module EndGate.Core.Input.Mouse {
+
+    export interface IMouseClickEvent extends IMouseEvent {
+        Button: string;
+    }
+
+}
+/* IMouseScrollEvent.d.ts */
+
+
+
+module EndGate.Core.Input.Mouse {
+
+    export interface IMouseScrollEvent extends IMouseEvent{
+        Direction: Assets.Vector2d;
+    }
+
+}
+/* MouseHandler.ts */
+
+
+
+
+
+
+
+module EndGate.Core.Input.Mouse {
+
+    export class MouseHandler {
+        // Used to determine mouse buttons without using extra conditional statements, performance enhancer
+        private static MouseButtonArray = [null, MouseButton.Left, MouseButton.Middle, MouseButton.Right];
+
+        private _target: HTMLCanvasElement;
+
+        constructor(target: HTMLCanvasElement) {
+            this._target = target;
+
+            this.OnClick = new Utilities.EventHandler();
+            this.OnDoubleClick = new Utilities.EventHandler();
+            this.OnDown = new Utilities.EventHandler();
+            this.OnUp = new Utilities.EventHandler();
+            this.OnMove = new Utilities.EventHandler();
+            this.OnScroll = new Utilities.EventHandler();
+
+            this.Wire();
+        }
+
+        public OnClick: Utilities.EventHandler;
+        public OnDoubleClick: Utilities.EventHandler;
+        public OnDown: Utilities.EventHandler;
+        public OnUp: Utilities.EventHandler;
+        public OnMove: Utilities.EventHandler;
+
+        public OnScroll: Utilities.EventHandler;
+
+        private Wire(): void {
+            this._target.onclick = this._target.oncontextmenu = this.BuildEvent(this.OnClick, this.BuildMouseClickEvent);
+            this._target.ondblclick = this.BuildEvent(this.OnDoubleClick, this.BuildMouseClickEvent);
+            this._target.onmousedown = this.BuildEvent(this.OnDown, this.BuildMouseClickEvent);
+            this._target.onmouseup = this.BuildEvent(this.OnUp, this.BuildMouseClickEvent);
+            this._target.onmousemove = this.BuildEvent(this.OnMove, this.BuildMouseEvent);
+
+            // OnScroll, in order to detect horizontal scrolling need to hack a bit (browser sniffing)
+            // if we were just doing vertical scrolling we could settle with the else statement in this block
+            if ((/MSIE/i.test(navigator.userAgent))) {
+                this._target.addEventListener("wheel", this.BuildEvent(this.OnScroll, (e: any) => {
+                    e.wheelDeltaX = -e.deltaX;
+                    e.wheelDeltaY = -e.deltaY;
+                    return this.BuildMouseScrollEvent(e);
+                }), false);
+            }
+            else if ((/Firefox/i.test(navigator.userAgent))) {
+                this._target.addEventListener("DOMMouseScroll", this.BuildEvent(this.OnScroll, (e: any) => {
+                    e.wheelDeltaX = e.axis === 1 ? -e.detail : 0;
+                    e.wheelDeltaY = e.axis === 2 ? -e.detail : 0;
+                    return this.BuildMouseScrollEvent(e);
+                }), false);
+            }
+            else {
+                this._target.addEventListener("mousewheel", this.BuildEvent(this.OnScroll, this.BuildMouseScrollEvent), false);
+            }
+        }
+
+        private BuildEvent(eventHandler: Utilities.EventHandler, mouseEventBuilder: (mouseEvent: MouseEvent) => IMouseEvent, returnValue: bool = false): (e: MouseEvent) => void {
+            return (e: MouseEvent) => {
+                if (eventHandler.HasBindings()) {
+                    eventHandler.Trigger(mouseEventBuilder.call(this, e));
+                }
+
+                return returnValue;
+            }
+        }
+
+        private BuildMouseScrollEvent(event: MouseWheelEvent): IMouseScrollEvent {
+            return {
+                Position: this.GetMousePosition(event),
+                Direction: this.GetMouseScrollDierction(event)
+            };
+        }
+
+        private BuildMouseEvent(event: MouseEvent): IMouseEvent {
+            return {
+                Position: this.GetMousePosition(event)
+            };
+        }
+
+        private BuildMouseClickEvent(event: MouseEvent): IMouseClickEvent {
+            return {
+                Position: this.GetMousePosition(event),
+                Button: this.GetMouseButton(event)
+            };
+        }
+
+        private GetMousePosition(event: MouseEvent): Assets.Vector2d {
+            return new Assets.Vector2d(
+                event.offsetX ? (event.offsetX) : event.pageX - this._target.offsetLeft,
+                event.offsetY ? (event.offsetY) : event.pageY - this._target.offsetTop
+            );
+        }
+
+        private GetMouseButton(event: MouseEvent): string {
+            if (event.which) {
+                return MouseHandler.MouseButtonArray[event.which];
+            }
+
+            return MouseButton.Right;
+        }
+
+        private GetMouseScrollDierction(event: any): Assets.Vector2d{
+            return new Assets.Vector2d(-Math.max(-1, Math.min(1, event.wheelDeltaX)), -Math.max(-1, Math.min(1, event.wheelDeltaY)));
+        }
+    }
+
+}
+/* InputManager.ts */
+
+
+module EndGate.Core.Input {
+
+    export class InputManager {
+        public Mouse: Mouse.MouseHandler;
+
+        constructor(canvas: HTMLCanvasElement) {
+            this.Mouse = new Mouse.MouseHandler(canvas);
+        }
+    }
+
+}
 /* Game.ts */
+
 
 
 
@@ -1171,6 +1352,7 @@ module EndGate.Core {
         public Configuration: GameConfiguration;
         public CollisionManager: Collision.CollisionManager;
         public Scene: Rendering.Scene;
+        public Input: Input.InputManager;
 
         private static _gameIds: number = 0;
         private _gameTime: GameTime;
@@ -1184,6 +1366,7 @@ module EndGate.Core {
                 this.Draw(context);
             });
 
+            this.Input = new Input.InputManager(this.Scene.DrawArea);
             this.CollisionManager = new Collision.CollisionManager();
             this.Configuration = new GameConfiguration(GameRunnerInstance.Register(this))
         }
@@ -1504,7 +1687,6 @@ module EndGate.Core.BoundingObject {
                     theirBotRight = rectangle.BotRight();
 
                 return theirTopLeft.X <= myBotRight.X && theirBotRight.X >= myTopLeft.X && theirTopLeft.Y <= myBotRight.Y && theirBotRight.Y >= myTopLeft.Y;
-
             }
             else if (rectangle.Position.Distance(this.Position).Magnitude() <= rectangle.Size.Radius() + this.Size.Radius()) {// Check if we're somewhat close to the rectangle ect that we might be colliding with
                 var axisList: Assets.Vector2d[] = [this.TopRight().Subtract(this.TopLeft()), this.TopRight().Subtract(this.BotRight()), rectangle.TopLeft().Subtract(rectangle.BotLeft()), rectangle.TopLeft().Subtract(rectangle.TopRight())];
@@ -1546,20 +1728,6 @@ module EndGate.Core.BoundingObject {
     }
 
 }
-/* PrimitiveExtensions.ts */
-
-
-//interface Object extends ITyped {}
-
-/* Commented out all of this because it causes errors with JQuery
-Number.prototype._type = "Number";
-String.prototype._type = "String";
-Boolean.prototype._type = "Boolean";
-Array.prototype._type = "Array";
-Date.prototype._type = "Date";
-Object.prototype._type = "Object";
-Error.prototype._type = "Error";
-*/
 /* Shape.ts */
 
 
@@ -1571,8 +1739,8 @@ module EndGate.Core.Graphics.Shapes  {
         private _fill: bool;
         private _stroke: bool;
 
-        constructor(bounds: BoundingObject.Bounds2d, color?: string) {
-            super(bounds);
+        constructor(position: Assets.Vector2d, color?: string) {
+            super(position);
 
             this._fill = false;
             this._stroke = false;
@@ -1672,7 +1840,7 @@ module EndGate.Core.Graphics.Shapes {
         public Radius: number;
 
         constructor(x: number, y: number, radius: number, color?: string) {
-            super(new BoundingObject.BoundingCircle(new Assets.Vector2d(x, y), radius), color);
+            super(new Assets.Vector2d(x, y), color);
 
             this.Radius = radius;
         }
@@ -1696,13 +1864,36 @@ module EndGate.Core.Graphics.Shapes {
         public Size: Assets.Size2d;
 
         constructor(x: number, y: number, width: number, height: number, color?: string) {
-            super(new BoundingObject.BoundingRectangle(new Assets.Vector2d(x, y), new Assets.Size2d(width, height)), color);
+            super(new Assets.Vector2d(x, y), color);
 
-            this.Size = (<BoundingObject.BoundingRectangle>this._bounds).Size;
+            this.Size = new Assets.Size2d(width, height);
         }
 
         public BuildPath(context: CanvasRenderingContext2D): void {
             context.rect(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
+        }
+    }
+
+}
+/* NoopTripInvoker.ts */
+module EndGate.Core.Utilities {
+
+    export class NoopTripInvoker {
+        private static _noop: Function = () => { };
+        private _invoker: Function;
+        private _action: Function;
+
+        constructor(action: Function) {
+            this._invoker = NoopTripInvoker._noop;
+            this._action = action;
+        }
+
+        public Invoke() {
+            this._invoker();
+        }
+
+        public Trip() {
+            this._invoker = this._action;
         }
     }
 

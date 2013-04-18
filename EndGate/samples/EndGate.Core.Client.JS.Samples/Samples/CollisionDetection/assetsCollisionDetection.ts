@@ -16,7 +16,14 @@ class MovingShape implements IUpdateable extends EndGate.Core.Collision.Collidab
     private _collisionColor: number[] = [255,0,0];
 
     constructor(graphic: EndGate.Core.Graphics.Graphic2d, velocity: EndGate.Core.Assets.Vector2d, directionInterval: number) {
-        super(graphic.Bounds);
+        super(null);
+
+        if (graphic._type === "Rectangle") {
+            this.Bounds = new EndGate.Core.BoundingObject.BoundingRectangle(graphic.Position, (<EndGate.Core.Graphics.Shapes.Rectangle>graphic).Size);
+        }
+        else if (graphic._type === "Circle") {
+            this.Bounds = new EndGate.Core.BoundingObject.BoundingCircle(graphic.Position, (<EndGate.Core.Graphics.Shapes.Circle>graphic).Radius);
+        }
 
         this.Graphic = graphic;
         this._velocity = velocity;

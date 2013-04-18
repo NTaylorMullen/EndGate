@@ -10,6 +10,8 @@ module EndGate.Core.Rendering {
     export class Scene implements ITyped, IDisposable {
         public _type: string = "Scene";
 
+        public DrawArea: HTMLCanvasElement;
+
         private _actors: Graphics.Graphic2d[];
         private _renderer: IRenderer;
         private _onDraw: (context: CanvasRenderingContext2D) => void;
@@ -30,7 +32,8 @@ module EndGate.Core.Rendering {
                 this._onDraw = onDraw;
             }
 
-            this._renderer = new Renderer2d(drawArea);
+            this.DrawArea = drawArea;
+            this._renderer = new Renderer2d(this.DrawArea);
             this._disposed = false;
         }
 

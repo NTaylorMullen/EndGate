@@ -13,12 +13,15 @@
                 secondTriggered = true;
             };
 
+        QUnit.ok(!e.HasBindings());
+
         e.Bind(first);
         e.Bind(second);
         e.Trigger();
 
         QUnit.ok(firstTriggered);
         QUnit.ok(secondTriggered);
+        QUnit.ok(e.HasBindings());
     });
 
     QUnit.test("Events can be bound, triggered, and then unbound and not triggered.", function () {
@@ -31,6 +34,8 @@
             second = function () {
                 secondTriggered = true;
             };
+
+        QUnit.ok(!e.HasBindings());
 
         e.Bind(first);
         e.Bind(second);
@@ -47,6 +52,7 @@
 
         QUnit.ok(!firstTriggered);
         QUnit.ok(secondTriggered);
+        QUnit.ok(e.HasBindings());
     });
 
     QUnit.test("Events can be bound with args, triggered, and then unbound and not triggered.", function () {
@@ -72,6 +78,9 @@
 
         QUnit.equal(resultA, 11);
         QUnit.equal(resultB, 288);
+
+        e.Unbind(multiply);
+        QUnit.ok(!e.HasBindings());
     });
 
 })(window, EndGate.Core.Utilities);

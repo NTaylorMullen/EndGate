@@ -395,17 +395,23 @@ var EndGate;
                 function EventHandler() {
                     this._type = "Event";
                     this._actions = [];
+                    this._hasBindings = false;
                 }
                 EventHandler.prototype.Bind = function (action) {
                     this._actions.push(action);
+                    this._hasBindings = true;
                 };
                 EventHandler.prototype.Unbind = function (action) {
                     for(var i = 0; i < this._actions.length; i++) {
                         if(this._actions[i] === action) {
                             this._actions.splice(i, 1);
+                            this._hasBindings = this._actions.length > 0;
                             return;
                         }
                     }
+                };
+                EventHandler.prototype.HasBindings = function () {
+                    return this._hasBindings;
                 };
                 EventHandler.prototype.Trigger = function () {
                     var args = [];
@@ -448,7 +454,6 @@ var EndGate;
             var Collidable = (function () {
                 function Collidable(bounds) {
                     this._type = "Collidable";
-                    this._boundsType = "Collidable";
                     this._disposed = false;
                     this.Bounds = bounds;
                     this.ID = Collidable._collidableIDs++;
@@ -769,12 +774,10 @@ var EndGate;
     (function (Core) {
         (function (Graphics) {
             var Graphic2d = (function () {
-                function Graphic2d(bounds) {
+                function Graphic2d(position) {
                     this._type = "Graphic2d";
-                    this._boundsType = "Graphic2d";
-                    this.Position = bounds.Position.Clone();
-                    this.Rotation = bounds.Rotation;
-                    this._bounds = bounds;
+                    this.Position = position;
+                    this.Rotation = 0;
                     this.ZIndex = 0;
                     this.State = new Graphics.Graphic2dState();
                 }
@@ -870,7 +873,8 @@ var EndGate;
                     } else {
                         this._onDraw = onDraw;
                     }
-                    this._renderer = new Rendering.Renderer2d(drawArea);
+                    this.DrawArea = drawArea;
+                    this._renderer = new Rendering.Renderer2d(this.DrawArea);
                     this._disposed = false;
                 }
                 Scene.prototype.Add = function (actor) {
@@ -912,6 +916,163 @@ var EndGate;
 var EndGate;
 (function (EndGate) {
     (function (Core) {
+        (function (Input) {
+            (function (Mouse) {
+                var MouseButton = (function () {
+                    function MouseButton() { }
+                    MouseButton.Left = "Left";
+                    MouseButton.Middle = "Middle";
+                    MouseButton.Right = "Right";
+                    return MouseButton;
+                })();
+                Mouse.MouseButton = MouseButton;                
+            })(Input.Mouse || (Input.Mouse = {}));
+            var Mouse = Input.Mouse;
+        })(Core.Input || (Core.Input = {}));
+        var Input = Core.Input;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Input) {
+                    })(Core.Input || (Core.Input = {}));
+        var Input = Core.Input;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Input) {
+                    })(Core.Input || (Core.Input = {}));
+        var Input = Core.Input;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Input) {
+                    })(Core.Input || (Core.Input = {}));
+        var Input = Core.Input;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Input) {
+            (function (Mouse) {
+                var MouseHandler = (function () {
+                    function MouseHandler(target) {
+                        this._target = target;
+                        this.OnClick = new Core.Utilities.EventHandler();
+                        this.OnDoubleClick = new Core.Utilities.EventHandler();
+                        this.OnDown = new Core.Utilities.EventHandler();
+                        this.OnUp = new Core.Utilities.EventHandler();
+                        this.OnMove = new Core.Utilities.EventHandler();
+                        this.OnScroll = new Core.Utilities.EventHandler();
+                        this.Wire();
+                    }
+                    MouseHandler.MouseButtonArray = [
+                        null, 
+                        Mouse.MouseButton.Left, 
+                        Mouse.MouseButton.Middle, 
+                        Mouse.MouseButton.Right
+                    ];
+                    MouseHandler.prototype.Wire = function () {
+                        var _this = this;
+                        this._target.onclick = this._target.oncontextmenu = this.BuildEvent(this.OnClick, this.BuildMouseClickEvent);
+                        this._target.ondblclick = this.BuildEvent(this.OnDoubleClick, this.BuildMouseClickEvent);
+                        this._target.onmousedown = this.BuildEvent(this.OnDown, this.BuildMouseClickEvent);
+                        this._target.onmouseup = this.BuildEvent(this.OnUp, this.BuildMouseClickEvent);
+                        this._target.onmousemove = this.BuildEvent(this.OnMove, this.BuildMouseEvent);
+                        if((/MSIE/i.test(navigator.userAgent))) {
+                            this._target.addEventListener("wheel", this.BuildEvent(this.OnScroll, function (e) {
+                                e.wheelDeltaX = -e.deltaX;
+                                e.wheelDeltaY = -e.deltaY;
+                                return _this.BuildMouseScrollEvent(e);
+                            }), false);
+                        } else if((/Firefox/i.test(navigator.userAgent))) {
+                            this._target.addEventListener("DOMMouseScroll", this.BuildEvent(this.OnScroll, function (e) {
+                                e.wheelDeltaX = e.axis === 1 ? -e.detail : 0;
+                                e.wheelDeltaY = e.axis === 2 ? -e.detail : 0;
+                                return _this.BuildMouseScrollEvent(e);
+                            }), false);
+                        } else {
+                            this._target.addEventListener("mousewheel", this.BuildEvent(this.OnScroll, this.BuildMouseScrollEvent), false);
+                        }
+                    };
+                    MouseHandler.prototype.BuildEvent = function (eventHandler, mouseEventBuilder, returnValue) {
+                        if (typeof returnValue === "undefined") { returnValue = false; }
+                        var _this = this;
+                        return function (e) {
+                            if(eventHandler.HasBindings()) {
+                                eventHandler.Trigger(mouseEventBuilder.call(_this, e));
+                            }
+                            return returnValue;
+                        };
+                    };
+                    MouseHandler.prototype.BuildMouseScrollEvent = function (event) {
+                        return {
+                            Position: this.GetMousePosition(event),
+                            Direction: this.GetMouseScrollDierction(event)
+                        };
+                    };
+                    MouseHandler.prototype.BuildMouseEvent = function (event) {
+                        return {
+                            Position: this.GetMousePosition(event)
+                        };
+                    };
+                    MouseHandler.prototype.BuildMouseClickEvent = function (event) {
+                        return {
+                            Position: this.GetMousePosition(event),
+                            Button: this.GetMouseButton(event)
+                        };
+                    };
+                    MouseHandler.prototype.GetMousePosition = function (event) {
+                        return new Core.Assets.Vector2d(event.offsetX ? (event.offsetX) : event.pageX - this._target.offsetLeft, event.offsetY ? (event.offsetY) : event.pageY - this._target.offsetTop);
+                    };
+                    MouseHandler.prototype.GetMouseButton = function (event) {
+                        if(event.which) {
+                            return MouseHandler.MouseButtonArray[event.which];
+                        }
+                        return Mouse.MouseButton.Right;
+                    };
+                    MouseHandler.prototype.GetMouseScrollDierction = function (event) {
+                        return new Core.Assets.Vector2d(-Math.max(-1, Math.min(1, event.wheelDeltaX)), -Math.max(-1, Math.min(1, event.wheelDeltaY)));
+                    };
+                    return MouseHandler;
+                })();
+                Mouse.MouseHandler = MouseHandler;                
+            })(Input.Mouse || (Input.Mouse = {}));
+            var Mouse = Input.Mouse;
+        })(Core.Input || (Core.Input = {}));
+        var Input = Core.Input;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Input) {
+            var InputManager = (function () {
+                function InputManager(canvas) {
+                    this.Mouse = new Input.Mouse.MouseHandler(canvas);
+                }
+                return InputManager;
+            })();
+            Input.InputManager = InputManager;            
+        })(Core.Input || (Core.Input = {}));
+        var Input = Core.Input;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
         var Game = (function () {
             function Game(gameCanvas) {
                 var _this = this;
@@ -921,6 +1082,7 @@ var EndGate;
                 this.Scene = new Core.Rendering.Scene(gameCanvas, function (context) {
                     _this.Draw(context);
                 });
+                this.Input = new Core.Input.InputManager(this.Scene.DrawArea);
                 this.CollisionManager = new Core.Collision.CollisionManager();
                 this.Configuration = new Core.GameConfiguration(GameRunnerInstance.Register(this));
             }
@@ -1216,8 +1378,8 @@ var EndGate;
             (function (Shapes) {
                 var Shape = (function (_super) {
                     __extends(Shape, _super);
-                    function Shape(bounds, color) {
-                                        _super.call(this, bounds);
+                    function Shape(position, color) {
+                                        _super.call(this, position);
                         this._type = "Shape";
                         this._fill = false;
                         this._stroke = false;
@@ -1306,7 +1468,7 @@ var EndGate;
                 var Circle = (function (_super) {
                     __extends(Circle, _super);
                     function Circle(x, y, radius, color) {
-                                        _super.call(this, new Core.BoundingObject.BoundingCircle(new Core.Assets.Vector2d(x, y), radius), color);
+                                        _super.call(this, new Core.Assets.Vector2d(x, y), color);
                         this._type = "Circle";
                         this.Radius = radius;
                     }
@@ -1331,9 +1493,9 @@ var EndGate;
                 var Rectangle = (function (_super) {
                     __extends(Rectangle, _super);
                     function Rectangle(x, y, width, height, color) {
-                                        _super.call(this, new Core.BoundingObject.BoundingRectangle(new Core.Assets.Vector2d(x, y), new Core.Assets.Size2d(width, height)), color);
+                                        _super.call(this, new Core.Assets.Vector2d(x, y), color);
                         this._type = "Rectangle";
-                        this.Size = (this._bounds).Size;
+                        this.Size = new Core.Assets.Size2d(width, height);
                     }
                     Rectangle.prototype.BuildPath = function (context) {
                         context.rect(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
@@ -1345,6 +1507,31 @@ var EndGate;
             var Shapes = Graphics.Shapes;
         })(Core.Graphics || (Core.Graphics = {}));
         var Graphics = Core.Graphics;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Utilities) {
+            var NoopTripInvoker = (function () {
+                function NoopTripInvoker(action) {
+                    this._invoker = NoopTripInvoker._noop;
+                    this._action = action;
+                }
+                NoopTripInvoker._noop = function () {
+                };
+                NoopTripInvoker.prototype.Invoke = function () {
+                    this._invoker();
+                };
+                NoopTripInvoker.prototype.Trip = function () {
+                    this._invoker = this._action;
+                };
+                return NoopTripInvoker;
+            })();
+            Utilities.NoopTripInvoker = NoopTripInvoker;            
+        })(Core.Utilities || (Core.Utilities = {}));
+        var Utilities = Core.Utilities;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));

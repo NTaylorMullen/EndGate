@@ -11,9 +11,9 @@ var EndGate;
                 var Rectangle = (function (_super) {
                     __extends(Rectangle, _super);
                     function Rectangle(x, y, width, height, color) {
-                                        _super.call(this, new Core.BoundingObject.BoundingRectangle(new Core.Assets.Vector2d(x, y), new Core.Assets.Size2d(width, height)), color);
+                                        _super.call(this, new Core.Assets.Vector2d(x, y), color);
                         this._type = "Rectangle";
-                        this.Size = (this.Bounds).Size;
+                        this.Size = new Core.Assets.Size2d(width, height);
                     }
                     Rectangle.prototype.BuildPath = function (context) {
                         context.rect(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height);

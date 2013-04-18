@@ -138,6 +138,18 @@
       <DependentUpon>mainCollisionDetection.ts</DependentUpon>
     </Content>
     <TypeScriptCompile Include="Samples\Shapes\assetsShapes.ts" />
+    <TypeScriptCompile Include="Samples\MouseInput\assetsMouseInput.ts" />
+    <Content Include="Samples\MouseInput\assetsMouseInput.js">
+      <DependentUpon>assetsMouseInput.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MouseInput\assetsMouseInput.min.js">
+      <DependentUpon>assetsMouseInput.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MouseInput\Default.aspx" />
+    <TypeScriptCompile Include="Samples\MouseInput\mainMouseInput.ts" />
+    <Content Include="Samples\MouseInput\mainMouseInput.js">
+      <DependentUpon>mainMouseInput.ts</DependentUpon>
+    </Content>
     <Content Include="Samples\Shapes\assetsShapes.js">
       <DependentUpon>assetsShapes.ts</DependentUpon>
     </Content>
@@ -160,6 +172,9 @@
     </Content>
     <Content Include="Samples\CollisionDetection\assetsCollisionDetection.js.map">
       <DependentUpon>assetsCollisionDetection.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MouseInput\assetsMouseInput.js.map">
+      <DependentUpon>assetsMouseInput.ts</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <TypeScriptCompile Include="Scripts\endGate.core.client.ts" />
@@ -215,6 +230,13 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Samples\Layering\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Samples\MouseInput\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Samples\MouseInput\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="Samples\Shapes\Default.aspx.cs">

@@ -130,6 +130,7 @@
     <Content Include="Tests\UnitTests\Rendering\SceneFacts.js" />
     <Content Include="Tests\UnitTests\Utilities\EventHandlerFacts.js" />
     <Content Include="Tests\UnitTests\Loopers\LooperFacts.js" />
+    <Content Include="Tests\UnitTests\Utilities\NoopTripInvokerFacts.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

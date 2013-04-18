@@ -9,7 +9,6 @@ module EndGate.Core.Collision {
 
     export class Collidable implements IDisposable, ITyped {
         public _type: string = "Collidable";
-        public _boundsType: string = "Collidable";
 
         public Bounds: BoundingObject.Bounds2d;
         public ID: number;

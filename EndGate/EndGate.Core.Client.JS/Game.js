@@ -10,6 +10,7 @@ var EndGate;
                 this.Scene = new Core.Rendering.Scene(gameCanvas, function (context) {
                     _this.Draw(context);
                 });
+                this.Input = new Core.Input.InputManager(this.Scene.DrawArea);
                 this.CollisionManager = new Core.Collision.CollisionManager();
                 this.Configuration = new Core.GameConfiguration(GameRunnerInstance.Register(this));
             }

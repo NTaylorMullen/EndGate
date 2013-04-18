@@ -6,6 +6,7 @@
 /// <reference path="GameConfiguration.ts" />
 /// <reference path="Collision/CollisionManager.ts" />
 /// <reference path="Rendering/Scene.ts" />
+/// <reference path="Input/InputManager.ts" />
 
 module EndGate.Core {
 
@@ -16,6 +17,7 @@ module EndGate.Core {
         public Configuration: GameConfiguration;
         public CollisionManager: Collision.CollisionManager;
         public Scene: Rendering.Scene;
+        public Input: Input.InputManager;
 
         private static _gameIds: number = 0;
         private _gameTime: GameTime;
@@ -29,6 +31,7 @@ module EndGate.Core {
                 this.Draw(context);
             });
 
+            this.Input = new Input.InputManager(this.Scene.DrawArea);
             this.CollisionManager = new Collision.CollisionManager();
             this.Configuration = new GameConfiguration(GameRunnerInstance.Register(this))
         }

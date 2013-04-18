@@ -6,7 +6,7 @@ var __extends = this.__extends || function (d, b) {
 var MovingShape = (function (_super) {
     __extends(MovingShape, _super);
     function MovingShape(graphic, velocity, directionInterval) {
-        _super.call(this, graphic.Bounds);
+        _super.call(this, null);
         this._fadeSpeed = 2;
         this._collisionBorderThickness = 5;
         this._collisionColorAlpha = 0;
@@ -15,6 +15,11 @@ var MovingShape = (function (_super) {
             0, 
             0
         ];
+        if(graphic._type === "Rectangle") {
+            this.Bounds = new EndGate.Core.BoundingObject.BoundingRectangle(graphic.Position, (graphic).Size);
+        } else if(graphic._type === "Circle") {
+            this.Bounds = new EndGate.Core.BoundingObject.BoundingCircle(graphic.Position, (graphic).Radius);
+        }
         this.Graphic = graphic;
         this._velocity = velocity;
         this._directionInterval = directionInterval;

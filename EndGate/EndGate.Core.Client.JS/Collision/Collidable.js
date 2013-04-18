@@ -5,7 +5,6 @@ var EndGate;
             var Collidable = (function () {
                 function Collidable(bounds) {
                     this._type = "Collidable";
-                    this._boundsType = "Collidable";
                     this._disposed = false;
                     this.Bounds = bounds;
                     this.ID = Collidable._collidableIDs++;

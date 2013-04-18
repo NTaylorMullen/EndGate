@@ -88,7 +88,6 @@
       <DependentUpon>Vector2d.ts</DependentUpon>
     </Content>
     <TypeScriptCompile Include="Interfaces\ITyped.d.ts" />
-    <TypeScriptCompile Include="Extensions\PrimitiveExtensions.ts" />
     <TypeScriptCompile Include="Extensions\MathExtensions.ts" />
     <TypeScriptCompile Include="BoundingObject\Bounds2d.ts" />
     <TypeScriptCompile Include="BoundingObject\BoundingCircle.ts" />
@@ -137,12 +136,6 @@
     </Content>
     <Content Include="Extensions\MathExtensions.min.js">
       <DependentUpon>MathExtensions.ts</DependentUpon>
-    </Content>
-    <Content Include="Extensions\PrimitiveExtensions.js">
-      <DependentUpon>PrimitiveExtensions.ts</DependentUpon>
-    </Content>
-    <Content Include="Extensions\PrimitiveExtensions.min.js">
-      <DependentUpon>PrimitiveExtensions.ts</DependentUpon>
     </Content>
     <TypeScriptCompile Include="Extensions\WindowExtensions.ts" />
     <Content Include="Extensions\WindowExtensions.js">
@@ -212,6 +205,30 @@
     </Content>
     <Content Include="Graphics\Shapes\Shape.min.js">
       <DependentUpon>Shape.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Input\Mouse\MouseHandler.ts" />
+    <TypeScriptCompile Include="Input\Mouse\IMouseEvent.d.ts" />
+    <TypeScriptCompile Include="Input\Mouse\MouseButton.ts" />
+    <TypeScriptCompile Include="Input\Mouse\IMouseClickEvent.d.ts" />
+    <TypeScriptCompile Include="Input\InputManager.ts" />
+    <Content Include="Input\InputManager.js">
+      <DependentUpon>InputManager.ts</DependentUpon>
+    </Content>
+    <Content Include="Input\InputManager.min.js">
+      <DependentUpon>InputManager.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Input\Mouse\IMouseScrollEvent.d.ts" />
+    <Content Include="Input\Mouse\MouseButton.js">
+      <DependentUpon>MouseButton.ts</DependentUpon>
+    </Content>
+    <Content Include="Input\Mouse\MouseButton.min.js">
+      <DependentUpon>MouseButton.ts</DependentUpon>
+    </Content>
+    <Content Include="Input\Mouse\MouseHandler.js">
+      <DependentUpon>MouseHandler.ts</DependentUpon>
+    </Content>
+    <Content Include="Input\Mouse\MouseHandler.min.js">
+      <DependentUpon>MouseHandler.ts</DependentUpon>
     </Content>
     <Content Include="Loopers\TimedCallback.js">
       <DependentUpon>TimedCallback.ts</DependentUpon>
@@ -285,6 +302,13 @@
     <Content Include="Loopers\RepaintLooper.min.js">
       <DependentUpon>RepaintLooper.ts</DependentUpon>
     </Content>
+    <TypeScriptCompile Include="Utilities\NoopTripInvoker.ts" />
+    <Content Include="Utilities\NoopTripInvoker.js">
+      <DependentUpon>NoopTripInvoker.ts</DependentUpon>
+    </Content>
+    <Content Include="Utilities\NoopTripInvoker.min.js">
+      <DependentUpon>NoopTripInvoker.ts</DependentUpon>
+    </Content>
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -318,9 +342,6 @@
     </Content>
     <Content Include="Game.js.map">
       <DependentUpon>Game.ts</DependentUpon>
-    </Content>
-    <Content Include="Extensions\PrimitiveExtensions.js.map">
-      <DependentUpon>PrimitiveExtensions.ts</DependentUpon>
     </Content>
     <Content Include="Assets\Vectors\Helpers\MinMax.js.map">
       <DependentUpon>MinMax.ts</DependentUpon>
@@ -384,6 +405,18 @@
     </Content>
     <Content Include="Scripts\endGate.core.client.js.map">
       <DependentUpon>endGate.core.client.ts</DependentUpon>
+    </Content>
+    <Content Include="Input\Mouse\MouseHandler.js.map">
+      <DependentUpon>MouseHandler.ts</DependentUpon>
+    </Content>
+    <Content Include="Utilities\NoopTripInvoker.js.map">
+      <DependentUpon>NoopTripInvoker.ts</DependentUpon>
+    </Content>
+    <Content Include="Input\Mouse\MouseButton.js.map">
+      <DependentUpon>MouseButton.ts</DependentUpon>
+    </Content>
+    <Content Include="Input\InputManager.js.map">
+      <DependentUpon>InputManager.ts</DependentUpon>
     </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

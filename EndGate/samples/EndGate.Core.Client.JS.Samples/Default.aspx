@@ -30,6 +30,13 @@
             <p><a class="btn" href="Samples/Layering">View sample &raquo;</a></p>
         </div>
     </div>
+    <div class="row">
+        <div class="span4">
+            <h3>Mouse Input</h3>
+            <p>Demonstrates how to use a games mouse input handler.</p>
+            <p><a class="btn" href="Samples/MouseInput">View sample &raquo;</a></p>
+        </div>
+    </div>
 
     <div class="clear"></div>
 </asp:Content>

@@ -3,12 +3,10 @@ var EndGate;
     (function (Core) {
         (function (Graphics) {
             var Graphic2d = (function () {
-                function Graphic2d(bounds) {
+                function Graphic2d(position) {
                     this._type = "Graphic2d";
-                    this._boundsType = "Graphic2d";
-                    this.Position = bounds.Position.Clone();
-                    this.Rotation = bounds.Rotation;
-                    this.Bounds = bounds;
+                    this.Position = position;
+                    this.Rotation = 0;
                     this.ZIndex = 0;
                     this.State = new Graphics.Graphic2dState();
                 }
