@@ -1519,6 +1519,9 @@ var EndGate;
                     Text2d.prototype.Color = function (color) {
                         return this.State.FillStyle(color);
                     };
+                    Text2d.prototype.Font = function (font) {
+                        return this.State.Font(font);
+                    };
                     Text2d.prototype.Text = function (text) {
                         if(typeof text !== "undefined") {
                             this._text = text;

@@ -1937,6 +1937,10 @@ module EndGate.Core.Graphics.Text {
             return this.State.FillStyle(color);
         }
 
+        public Font(font: string): string {
+            return this.State.Font(font);
+        }
+
         public Text(text?: string): string {
             if (typeof text !== "undefined") {
                 this._text = text;

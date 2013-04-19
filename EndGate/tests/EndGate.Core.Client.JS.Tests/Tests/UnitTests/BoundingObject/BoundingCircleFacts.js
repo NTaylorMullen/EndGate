@@ -44,9 +44,14 @@
         circle.Position.Y = 12;
 
         QUnit.ok(circle.Intersects(rect));
+
+        circle = new bo.BoundingCircle(new assets.Vector2d(156, 165), 50);
+        rect = new bo.BoundingRectangle(new assets.Vector2d(300, 200), new assets.Size2d(200, 100));
+
+        QUnit.ok(circle.Intersects(rect));
     });
 
-    QUnit.test("Is colliding with other rectangle works", function () {
+    QUnit.test("Contain point works", function () {
         var circle = new bo.BoundingCircle(new assets.Vector2d(10, 5), 10);
 
         QUnit.ok(!circle.ContainsPoint(assets.Vector2d.Zero()));

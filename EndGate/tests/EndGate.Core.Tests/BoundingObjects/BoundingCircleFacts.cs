@@ -57,9 +57,9 @@ namespace EndGate.Core.Tests
 
             var circle = new BoundingCircle(3)
             {
-                Position = new Vector2d(13, 3)
+                Position = new Vector2d(14, 3)
             };
-
+            
             Assert.False(circle.Intersects(rect));
             circle.Position.X--;
             Assert.True(circle.Intersects(rect));
@@ -71,6 +71,21 @@ namespace EndGate.Core.Tests
             circle.Position.Y = 12;
 
             Assert.True(circle.Intersects(rect));
+
+            circle = new BoundingCircle(50) {
+                Position = new Vector2d(156, 165)
+            };
+            rect = new BoundingRectangle(new Size2d(200, 100))
+            {
+                Position = new Vector2d(300, 200)
+            };
+
+            Assert.True(circle.Intersects(rect));
+
+            circle.Position.X = 300;
+            circle.Position.Y = 350;
+
+            Assert.False(circle.Intersects(rect));
         }
 
         [Fact]
