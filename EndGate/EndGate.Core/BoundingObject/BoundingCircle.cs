@@ -12,20 +12,6 @@ namespace EndGate.Core.BoundingObject
 
         public double Radius { get; set; }
 
-        private static double ClosestTo(double val, Vector2d topLeft, Vector2d botRight)
-        {
-            if (val < topLeft.X)
-            {
-                return topLeft.X;
-            }
-            else if (val > botRight.X)
-            {
-                return botRight.X;
-            }
-
-            return val;
-        }
-
         public double Area()
         {
             return Math.PI * Radius * Radius;
@@ -47,16 +33,22 @@ namespace EndGate.Core.BoundingObject
         }
 
         public override bool Intersects(BoundingRectangle rectangle)
-        {
+        {            
             Vector2d translated = rectangle.Rotation == 0
                                   ? Position
-                                  : Position.RotateAround(rectangle.Position, -rectangle.Rotation);
+                                  : Position.RotateAround(rectangle.Position, rectangle.Rotation);
 
-            Vector2d unrotatedTopLeft = new Vector2d(rectangle.Position.X - rectangle.Size.HalfWidth, rectangle.Position.Y - rectangle.Size.HalfHeight),
-                     unrotatedBotRight = new Vector2d(rectangle.Position.X + rectangle.Size.HalfWidth, rectangle.Position.Y + rectangle.Size.HalfHeight),
-                     closest = new Vector2d(ClosestTo(translated.X, unrotatedTopLeft, unrotatedBotRight), ClosestTo(translated.Y, unrotatedTopLeft, unrotatedBotRight));
+            var circleDistance = translated.Distance(rectangle.Position);
 
-            return translated.Distance(closest).Magnitude() < Radius;
+            if (circleDistance.X > (rectangle.Size.HalfWidth + this.Radius)) { return false; }
+            if (circleDistance.Y > (rectangle.Size.HalfHeight + this.Radius)) { return false; }
+
+            if (circleDistance.X <= (rectangle.Size.HalfWidth)) { return true; }
+            if (circleDistance.Y <= (rectangle.Size.HalfHeight)) { return true; }
+
+            var cornerDistance_sq = Math.Pow(circleDistance.X - rectangle.Size.HalfWidth, 2) + Math.Pow(circleDistance.Y - rectangle.Size.HalfHeight, 2);
+
+            return (cornerDistance_sq <= (this.Radius * this.Radius));
         }
 
         public override bool ContainsPoint(Vector2d point)
