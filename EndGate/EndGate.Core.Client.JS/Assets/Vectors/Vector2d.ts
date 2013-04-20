@@ -26,8 +26,8 @@ module EndGate.Core.Assets {
         }
 
         public RotateAround(point: Vector2d, angle: number, precision: number = 2) {
-            var ca = Math.cos(-angle);
-            var sa = Math.sin(-angle);
+            var ca = Math.cos(angle);
+            var sa = Math.sin(angle);
 
             return new Vector2d(
                 Math.roundTo(ca * (this.X - point.X) - sa * (this.Y - point.Y) + point.X, precision),

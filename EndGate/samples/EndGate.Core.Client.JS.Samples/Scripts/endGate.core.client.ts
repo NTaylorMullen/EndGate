@@ -353,8 +353,8 @@ module EndGate.Core.Assets {
         }
 
         public RotateAround(point: Vector2d, angle: number, precision: number = 2) {
-            var ca = Math.cos(-angle);
-            var sa = Math.sin(-angle);
+            var ca = Math.cos(angle);
+            var sa = Math.sin(angle);
 
             return new Vector2d(
                 Math.roundTo(ca * (this.X - point.X) - sa * (this.Y - point.Y) + point.X, precision),
@@ -1586,7 +1586,7 @@ module EndGate.Core.BoundingObject {
         public IntersectsRectangle(rectangle: EndGate.Core.BoundingObject.BoundingRectangle): bool {
             var translated = (rectangle.Rotation === 0)
                                   ? this.Position
-                                  : this.Position.RotateAround(rectangle.Position, rectangle.Rotation);
+                                  : this.Position.RotateAround(rectangle.Position, -rectangle.Rotation);
 
             var circleDistance = translated.Distance(rectangle.Position);
 

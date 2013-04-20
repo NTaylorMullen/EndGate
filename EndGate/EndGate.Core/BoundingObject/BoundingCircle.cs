@@ -36,7 +36,7 @@ namespace EndGate.Core.BoundingObject
         {            
             Vector2d translated = rectangle.Rotation == 0
                                   ? Position
-                                  : Position.RotateAround(rectangle.Position, rectangle.Rotation);
+                                  : Position.RotateAround(rectangle.Position, -rectangle.Rotation);
 
             var circleDistance = translated.Distance(rectangle.Position);
 

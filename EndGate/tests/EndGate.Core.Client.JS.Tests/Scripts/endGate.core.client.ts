@@ -353,8 +353,8 @@ module EndGate.Core.Assets {
         }
 
         public RotateAround(point: Vector2d, angle: number, precision: number = 2) {
-            var ca = Math.cos(-angle);
-            var sa = Math.sin(-angle);
+            var ca = Math.cos(angle);
+            var sa = Math.sin(angle);
 
             return new Vector2d(
                 Math.roundTo(ca * (this.X - point.X) - sa * (this.Y - point.Y) + point.X, precision),
@@ -1569,18 +1569,6 @@ module EndGate.Core.BoundingObject {
             this.Radius = radius;
         }
 
-        private static ClosestTo(val: number, topLeft: Assets.Vector2d, botRight: Assets.Vector2d): number
-        {
-            if (val < topLeft.X) {
-                return topLeft.X;
-            }
-            else if (val > botRight.X) {
-                return botRight.X;
-            }
-
-            return val;
-        }
-
         public Area(): number {
             return Math.PI * this.Radius * this.Radius;
         }
@@ -1600,11 +1588,17 @@ module EndGate.Core.BoundingObject {
                                   ? this.Position
                                   : this.Position.RotateAround(rectangle.Position, -rectangle.Rotation);
 
-            var unrotatedTopLeft: Assets.Vector2d = new Assets.Vector2d(rectangle.Position.X - rectangle.Size.HalfWidth(), rectangle.Position.Y - rectangle.Size.HalfHeight()),
-                unrotatedBotRight = new Assets.Vector2d(rectangle.Position.X + rectangle.Size.HalfWidth(), rectangle.Position.Y + rectangle.Size.HalfHeight()),
-                closest = new Assets.Vector2d(BoundingCircle.ClosestTo(translated.X, unrotatedTopLeft, unrotatedBotRight), BoundingCircle.ClosestTo(translated.Y, unrotatedTopLeft, unrotatedBotRight));
+            var circleDistance = translated.Distance(rectangle.Position);
 
-            return translated.Distance(closest).Magnitude() < this.Radius;
+            if (circleDistance.X > (rectangle.Size.HalfWidth() + this.Radius)) { return false; }
+            if (circleDistance.Y > (rectangle.Size.HalfHeight() + this.Radius)) { return false; }
+
+            if (circleDistance.X <= (rectangle.Size.HalfWidth())) { return true; }
+            if (circleDistance.Y <= (rectangle.Size.HalfHeight())) { return true; }
+
+            var cornerDistance_sq = Math.pow(circleDistance.X - rectangle.Size.HalfWidth(), 2) + Math.pow(circleDistance.Y - rectangle.Size.HalfHeight(), 2);
+
+            return (cornerDistance_sq <= (this.Radius * this.Radius));
         }
 
         public ContainsPoint(point: Assets.Vector2d): bool {

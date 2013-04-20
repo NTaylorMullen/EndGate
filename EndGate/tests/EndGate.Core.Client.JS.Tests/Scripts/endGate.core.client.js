@@ -258,8 +258,8 @@ var EndGate;
                 };
                 Vector2d.prototype.RotateAround = function (point, angle, precision) {
                     if (typeof precision === "undefined") { precision = 2; }
-                    var ca = Math.cos(-angle);
-                    var sa = Math.sin(-angle);
+                    var ca = Math.cos(angle);
+                    var sa = Math.sin(angle);
                     return new Vector2d(Math.roundTo(ca * (this.X - point.X) - sa * (this.Y - point.Y) + point.X, precision), Math.roundTo(sa * (this.X - point.X) + ca * (this.Y - point.Y) + point.Y, precision));
                 };
                 Vector2d.prototype.Apply = function (action) {
@@ -1193,14 +1193,6 @@ var EndGate;
                     this._boundsType = "BoundingCircle";
                     this.Radius = radius;
                 }
-                BoundingCircle.ClosestTo = function ClosestTo(val, topLeft, botRight) {
-                    if(val < topLeft.X) {
-                        return topLeft.X;
-                    } else if(val > botRight.X) {
-                        return botRight.X;
-                    }
-                    return val;
-                };
                 BoundingCircle.prototype.Area = function () {
                     return Math.PI * this.Radius * this.Radius;
                 };
@@ -1212,8 +1204,21 @@ var EndGate;
                 };
                 BoundingCircle.prototype.IntersectsRectangle = function (rectangle) {
                     var translated = (rectangle.Rotation === 0) ? this.Position : this.Position.RotateAround(rectangle.Position, -rectangle.Rotation);
-                    var unrotatedTopLeft = new Core.Assets.Vector2d(rectangle.Position.X - rectangle.Size.HalfWidth(), rectangle.Position.Y - rectangle.Size.HalfHeight()), unrotatedBotRight = new Core.Assets.Vector2d(rectangle.Position.X + rectangle.Size.HalfWidth(), rectangle.Position.Y + rectangle.Size.HalfHeight()), closest = new Core.Assets.Vector2d(BoundingCircle.ClosestTo(translated.X, unrotatedTopLeft, unrotatedBotRight), BoundingCircle.ClosestTo(translated.Y, unrotatedTopLeft, unrotatedBotRight));
-                    return translated.Distance(closest).Magnitude() < this.Radius;
+                    var circleDistance = translated.Distance(rectangle.Position);
+                    if(circleDistance.X > (rectangle.Size.HalfWidth() + this.Radius)) {
+                        return false;
+                    }
+                    if(circleDistance.Y > (rectangle.Size.HalfHeight() + this.Radius)) {
+                        return false;
+                    }
+                    if(circleDistance.X <= (rectangle.Size.HalfWidth())) {
+                        return true;
+                    }
+                    if(circleDistance.Y <= (rectangle.Size.HalfHeight())) {
+                        return true;
+                    }
+                    var cornerDistance_sq = Math.pow(circleDistance.X - rectangle.Size.HalfWidth(), 2) + Math.pow(circleDistance.Y - rectangle.Size.HalfHeight(), 2);
+                    return (cornerDistance_sq <= (this.Radius * this.Radius));
                 };
                 BoundingCircle.prototype.ContainsPoint = function (point) {
                     return this.Position.Distance(point).Magnitude() < this.Radius;

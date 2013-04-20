@@ -33,7 +33,7 @@ module EndGate.Core.BoundingObject {
         public IntersectsRectangle(rectangle: EndGate.Core.BoundingObject.BoundingRectangle): bool {
             var translated = (rectangle.Rotation === 0)
                                   ? this.Position
-                                  : this.Position.RotateAround(rectangle.Position, rectangle.Rotation);
+                                  : this.Position.RotateAround(rectangle.Position, -rectangle.Rotation);
 
             var circleDistance = translated.Distance(rectangle.Position);
 

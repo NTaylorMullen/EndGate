@@ -258,8 +258,8 @@ var EndGate;
                 };
                 Vector2d.prototype.RotateAround = function (point, angle, precision) {
                     if (typeof precision === "undefined") { precision = 2; }
-                    var ca = Math.cos(-angle);
-                    var sa = Math.sin(-angle);
+                    var ca = Math.cos(angle);
+                    var sa = Math.sin(angle);
                     return new Vector2d(Math.roundTo(ca * (this.X - point.X) - sa * (this.Y - point.Y) + point.X, precision), Math.roundTo(sa * (this.X - point.X) + ca * (this.Y - point.Y) + point.Y, precision));
                 };
                 Vector2d.prototype.Apply = function (action) {
@@ -1203,7 +1203,7 @@ var EndGate;
                     return this.Position.Distance(circle.Position).Length() < this.Radius + circle.Radius;
                 };
                 BoundingCircle.prototype.IntersectsRectangle = function (rectangle) {
-                    var translated = (rectangle.Rotation === 0) ? this.Position : this.Position.RotateAround(rectangle.Position, rectangle.Rotation);
+                    var translated = (rectangle.Rotation === 0) ? this.Position : this.Position.RotateAround(rectangle.Position, -rectangle.Rotation);
                     var circleDistance = translated.Distance(rectangle.Position);
                     if(circleDistance.X > (rectangle.Size.HalfWidth() + this.Radius)) {
                         return false;

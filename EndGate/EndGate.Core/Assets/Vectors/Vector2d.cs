@@ -25,8 +25,8 @@ namespace EndGate.Core.Assets
 
         public Vector2d RotateAround(Vector2d point, double angle, int precision = 2)
         {
-            var ca = Math.Cos(-angle);
-            var sa = Math.Sin(-angle);
+            var ca = Math.Cos(angle);
+            var sa = Math.Sin(angle);
 
             return new Vector2d(
                 Math.Round(ca * (X - point.X) - sa * (Y - point.Y) + point.X, precision),
