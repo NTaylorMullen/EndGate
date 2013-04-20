@@ -19,7 +19,7 @@
 
     QUnit.test("Rotated Rectangle Corners Get works", function () {
         var rect = new bo.BoundingRectangle(new assets.Vector2d(3, 2), new assets.Size2d(4, 2));
-        rect.Rotation = Math.PI / 2;
+        rect.Rotation = -Math.PI / 2;
 
         var topLeft = rect.TopLeft().Clone();
         topRight = rect.TopRight().Clone(),
@@ -78,6 +78,7 @@
         QUnit.ok(!rect2.Intersects(rect1));
 
         rect2.Rotation = Math.PI;
+        rect2.Position = rect2.Position.Subtract(1);
 
         QUnit.ok(rect1.Intersects(rect2));
         QUnit.ok(rect2.Intersects(rect1));
@@ -132,7 +133,7 @@
             vertices,
             vertex;
 
-        rect.Rotation = -Math.PI / 4;
+        rect.Rotation = Math.PI / 4;
 
         vertices = rect.Vertices();
 
@@ -144,7 +145,9 @@
         }
 
         QUnit.ok(!rect.ContainsPoint(new assets.Vector2d(-1, 0)));
+
         QUnit.ok(!rect.ContainsPoint(rect.TopRight().Add(1)));
+
         QUnit.ok(!rect.ContainsPoint(rect.BotRight().Add(1)));
         QUnit.ok(!rect.ContainsPoint(rect.TopLeft().Subtract(1)));
         QUnit.ok(!rect.ContainsPoint(rect.BotLeft().Subtract(1)));

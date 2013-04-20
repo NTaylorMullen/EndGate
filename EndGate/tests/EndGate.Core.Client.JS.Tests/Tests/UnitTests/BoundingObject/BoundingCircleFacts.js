@@ -31,7 +31,7 @@
 
     QUnit.test("Is colliding with other rectangle works", function () {
         var rect = new bo.BoundingRectangle(new assets.Vector2d(5, 3), new assets.Size2d(10, 6));
-        var circle = new bo.BoundingCircle(new assets.Vector2d(13, 3), 3);
+        var circle = new bo.BoundingCircle(new assets.Vector2d(14, 3), 3);
 
         QUnit.ok(!circle.Intersects(rect));
         circle.Position.X--;

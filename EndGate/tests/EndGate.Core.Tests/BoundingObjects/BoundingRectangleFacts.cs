@@ -37,7 +37,7 @@ namespace EndGate.Core.Tests
             var rect = new BoundingRectangle(4, 2)
             {
                 Position = new Vector2d(3, 2),
-                Rotation = Math.PI / 2
+                Rotation = -Math.PI / 2
             };
 
             var topLeft = rect.TopLeft.Clone();
@@ -112,6 +112,7 @@ namespace EndGate.Core.Tests
             Assert.False(rect2.Intersects(rect1));
 
             rect2.Rotation = Math.PI;
+            rect2.Position--;
 
             Assert.True(rect1.Intersects(rect2));
             Assert.True(rect2.Intersects(rect1));
@@ -168,7 +169,7 @@ namespace EndGate.Core.Tests
             var rect = new BoundingRectangle(4.24, 2.83)
             {
                 Position = new Vector2d(2.5, 2.5),
-                Rotation = -Math.PI / 4
+                Rotation = Math.PI / 4
             };
 
             Assert.True(rect.ContainsPoint(rect.Position));
