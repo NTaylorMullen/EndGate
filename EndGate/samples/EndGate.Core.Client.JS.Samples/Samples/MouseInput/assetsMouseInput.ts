@@ -38,7 +38,7 @@ class MouseMonitor extends EndGate.Core.Game {
 
         this.Input.Mouse.OnUp.Bind((clickEvent: EndGate.Core.Input.Mouse.IMouseClickEvent) => {
             lastMouseEvent.text(clickEvent.Button + " button up at " + clickEvent.Position.toString());
-            this.MarkLocationWithRectangle(clickEvent.Position, new EndGate.Core.Assets.Size2d(this._radiusSize * 4, this._radiusSize* 4), this._inbetweenColors[clickEvent.Button]);
+            this.MarkLocationWithRectangle(clickEvent.Position, new EndGate.Core.Assets.Size2d(this._radiusSize * 4, this._radiusSize * 4), this._inbetweenColors[clickEvent.Button]);
         });
 
         this.Input.Mouse.OnMove.Bind((clickEvent: EndGate.Core.Input.Mouse.IMouseEvent) => {

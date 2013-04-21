@@ -6,7 +6,7 @@
 
     var canvas: HTMLCanvasElement = < HTMLCanvasElement > document.createElement("canvas"),
         holder: JQuery = $("#gameHolder"),
-        shapeBuilder: ShapeBuilder = null,
+        shapeBuilder: ShapeBuilder,
         shapeColorPicker: ColorPicker,
         borderColorPicker: ColorPicker,
         borderThicknessSlider: CustomSlider,
@@ -56,7 +56,7 @@
     canvas.width = holder.width();
     canvas.height = holder.height();
 
-    holder.append(canvas);    
+    holder.append(canvas);
 
     syncSliders = function (animation) {
         slidersAnimationMappings[animation]();

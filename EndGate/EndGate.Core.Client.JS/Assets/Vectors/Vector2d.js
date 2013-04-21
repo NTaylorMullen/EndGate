@@ -19,8 +19,8 @@ var EndGate;
                 };
                 Vector2d.prototype.RotateAround = function (point, angle, precision) {
                     if (typeof precision === "undefined") { precision = 2; }
-                    var ca = Math.cos(-angle);
-                    var sa = Math.sin(-angle);
+                    var ca = Math.cos(angle);
+                    var sa = Math.sin(angle);
                     return new Vector2d(Math.roundTo(ca * (this.X - point.X) - sa * (this.Y - point.Y) + point.X, precision), Math.roundTo(sa * (this.X - point.X) + ca * (this.Y - point.Y) + point.Y, precision));
                 };
                 Vector2d.prototype.Apply = function (action) {

@@ -138,7 +138,6 @@
       <DependentUpon>mainCollisionDetection.ts</DependentUpon>
     </Content>
     <TypeScriptCompile Include="Samples\Shapes\assetsShapes.ts" />
-    <TypeScriptCompile Include="Samples\MouseInput\assetsMouseInput.ts" />
     <TypeScriptCompile Include="Samples\CollisionInspector\assetsCollisionInspector.ts" />
     <Content Include="Samples\CollisionInspector\assetsCollisionInspector.js">
       <DependentUpon>assetsCollisionInspector.ts</DependentUpon>
@@ -148,10 +147,8 @@
     <Content Include="Samples\CollisionInspector\mainCollisionInspector.js">
       <DependentUpon>mainCollisionInspector.ts</DependentUpon>
     </Content>
+    <TypeScriptCompile Include="Samples\MouseInput\assetsMouseInput.ts" />
     <Content Include="Samples\MouseInput\assetsMouseInput.js">
-      <DependentUpon>assetsMouseInput.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\MouseInput\assetsMouseInput.min.js">
       <DependentUpon>assetsMouseInput.ts</DependentUpon>
     </Content>
     <Content Include="Samples\MouseInput\Default.aspx" />
@@ -170,6 +167,15 @@
     <Content Include="Samples\Shapes\mainShapes.js">
       <DependentUpon>mainShapes.ts</DependentUpon>
     </Content>
+    <TypeScriptCompile Include="Samples\Text\assetsText.ts" />
+    <Content Include="Samples\Text\assetsText.js">
+      <DependentUpon>assetsText.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\Text\Default.aspx" />
+    <TypeScriptCompile Include="Samples\Text\mainText.ts" />
+    <Content Include="Samples\Text\mainText.js">
+      <DependentUpon>mainText.ts</DependentUpon>
+    </Content>
     <Content Include="Scripts\endGate.core.client.js.map">
       <DependentUpon>endGate.core.client.ts</DependentUpon>
     </Content>
@@ -182,9 +188,8 @@
     <Content Include="Samples\CollisionDetection\assetsCollisionDetection.js.map">
       <DependentUpon>assetsCollisionDetection.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\MouseInput\assetsMouseInput.js.map">
-      <DependentUpon>assetsMouseInput.ts</DependentUpon>
-    </Content>
+    <None Include="Properties\PublishProfiles\endgate-samples - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\endgate-samples - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <TypeScriptCompile Include="Scripts\endGate.core.client.ts" />
     <TypeScriptCompile Include="Samples\Layering\assetsLayering.ts" />
@@ -260,6 +265,13 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Samples\Shapes\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Samples\Text\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Samples\Text\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
   </ItemGroup>

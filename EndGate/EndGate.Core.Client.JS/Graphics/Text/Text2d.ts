@@ -1,12 +1,16 @@
 /// <reference path="../../Assets/Vectors/Vector2d.ts" />
 /// <reference path="../Graphic2d.ts" />
 /// <reference path="../../Utilities/NoopTripInvoker.ts" />
+/// <reference path="FontSettings.ts" />
 
 module EndGate.Core.Graphics.Text {
 
     export class Text2d extends Graphic2d {
+        public FontSettings: FontSettings;
+
         private _text: string;
         private _stroker: Utilities.NoopTripInvoker;
+
 
         constructor(position: Assets.Vector2d, text: string, color: string = "black") {
             super(position);
@@ -16,6 +20,7 @@ module EndGate.Core.Graphics.Text {
                 context.strokeText(this._text, this.Position.X, this.Position.Y);
             });
 
+            this.FontSettings = new FontSettings();
             this.Align("center");
             this.Baseline("middle");
             this.Color(color);
@@ -33,8 +38,28 @@ module EndGate.Core.Graphics.Text {
             return this.State.FillStyle(color);
         }
 
-        public Font(font: string): string {
-            return this.State.Font(font);
+        public Shadow(x?: number, y?: number, color?: string, blur?: number): any[] {
+            return [this.ShadowX(x), this.ShadowY(y), this.ShadowColor(color), this.ShadowBlur(blur)];
+        }
+
+        public ShadowColor(color?: string): string {
+            return this.State.ShadowColor(color);
+        }
+
+        public ShadowX(val?: number): number {
+            return this.State.ShadowOffsetX(val);
+        }
+
+        public ShadowY(val?: number): number {
+            return this.State.ShadowOffsetY(val);
+        }
+
+        public ShadowBlur(val?: number): number {
+            return this.State.ShadowBlur(val);
+        }
+
+        public Opacity(alpha?: number): number {
+            return this.State.GlobalAlpha(alpha);
         }
 
         public Text(text?: string): string {
@@ -68,6 +93,7 @@ module EndGate.Core.Graphics.Text {
         public Draw(context: CanvasRenderingContext2D): void {
             super.StartDraw(context);
 
+            this.State.Font(this.FontSettings._BuildFont());
             context.fillText(this._text, this.Position.X, this.Position.Y);
             this._stroker.Invoke(context);
 

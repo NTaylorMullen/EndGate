@@ -19,9 +19,9 @@
         </div>
         
         <div class="span4">
-            <h3>Collision Detection</h3>
-            <p>Demonstrates how to use the client to detect collisions.</p>
-            <p><a class="btn" href="Samples/CollisionDetection">View sample &raquo;</a></p>
+            <h3>Text</h3>
+            <p>Demonstrates how to use the Text2d object within the graphics library.</p>
+            <p><a class="btn" href="Samples/Text">View sample &raquo;</a></p>
         </div>
 
         <div class="span4">
@@ -31,6 +31,12 @@
         </div>
     </div>
     <div class="row">
+        <div class="span4">
+            <h3>Collision Detection</h3>
+            <p>Demonstrates how to use the client to detect collisions.</p>
+            <p><a class="btn" href="Samples/CollisionDetection">View sample &raquo;</a></p>
+        </div>
+
         <div class="span4">
             <h3>Collision Inspector</h3>
             <p>Allows the dragging and rotating of shapes to inspect collisions closely.</p>

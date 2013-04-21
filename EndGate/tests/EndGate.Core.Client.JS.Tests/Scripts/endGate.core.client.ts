@@ -1868,6 +1868,237 @@ module EndGate.Core.Graphics.Shapes {
     }
 
 }
+/* FontFamily.ts */
+module EndGate.Core.Graphics.Text {
+
+    export enum FontFamily {
+        Antiqua,
+        Arial,
+        Avqest,
+        Blackletter,
+        Calibri,
+        ComicSans,
+        Courier,
+        Decorative,
+        Fraktur,
+        Frosty,
+        Garamond,
+        Georgia,
+        Helvetica,
+        Impact,
+        Minion,
+        Modern,
+        Monospace,
+        Palatino,
+        Roman,
+        Script,
+        Swiss,
+        TimesNewRoman,
+        Verdana
+    };
+
+    export enum FontFamilyType {
+        Sans,
+        Serif,
+        SansSerif
+    };
+
+    export class FontFamilyHelper {
+        public static _families: { [family: number]: string; };
+
+        constructor() {
+            FontFamilyHelper._families = (<{ [family: number]: string; } >{});
+
+            for (var family in FontFamily) {
+                if (family !== "_map") {
+                    FontFamilyHelper._families[FontFamily[family]] = family;
+                }
+            }
+
+            FontFamilyHelper._families[FontFamily["TimesNewRoman"]] = "Times New Roman";
+        }
+
+        public static Get(family: FontFamily): string {
+            return FontFamilyHelper._families[family];
+        }
+    }
+
+    export class FontFamilyTypeHelper {
+        public static _familyTypes: { [familyType: number]: string; };
+
+        constructor() {
+            FontFamilyTypeHelper._familyTypes = (<{ [family: number]: string; } >{});
+
+            for (var familyType in FontFamilyType) {
+                if (familyType !== "_map") {
+                    FontFamilyTypeHelper._familyTypes[FontFamily[familyType]] = familyType;
+                }
+            }
+
+            FontFamilyTypeHelper._familyTypes[FontFamily["SansSerif"]] = "sans-serif";
+        }
+
+        public static Get(familyType: FontFamilyType): string {
+            return FontFamilyTypeHelper._familyTypes[familyType];
+        }
+    }
+
+}
+/* FontMeasurement.ts */
+module EndGate.Core.Graphics.Text {
+
+    export enum FontMeasurement {
+        Ems,
+        Pixels,
+        Points,
+        Percent
+    };
+
+}
+/* FontVariant.ts */
+module EndGate.Core.Graphics.Text {
+
+    export enum FontVariant {
+        Normal,
+        SmallCaps
+    };
+
+    export class FontVariantHelper {
+        public static _variants: { [variant: number]: string; };
+
+        constructor() {
+            FontVariantHelper._variants = (<{ [family: number]: string; } >{});
+
+            for (var family in FontVariant) {
+                if (family !== "_map") {
+                    FontVariantHelper._variants[FontVariant[family]] = family;
+                }
+            }
+
+            FontVariantHelper._variants["SmallCaps"] = "Times New Roman";
+        }
+
+        public static Get(variant: FontVariant): string {
+            return FontVariantHelper._variants[variant];
+        }
+    }
+
+}
+
+/* FontStyle.ts */
+module EndGate.Core.Graphics.Text {
+
+    export enum FontStyle {
+        Normal,
+        Italic,
+        Oblique
+    }
+
+    export class FontStyleHelper {
+        public static _styles: { [family: number]: string; };
+
+        constructor() {
+            FontStyleHelper._styles = (<{ [family: number]: string; } >{});
+
+            for (var style in FontStyle) {
+                if (style !== "_map") {
+                    FontStyleHelper._styles[FontStyle[style]] = style;
+                }
+            }
+        }
+
+        public static Get(style: FontStyle): string {
+            return FontStyleHelper._styles[style];
+        }
+    }
+
+}
+
+/* FontSettings.ts */
+
+
+
+
+
+module EndGate.Core.Graphics.Text {
+
+    export class FontSettings {
+        private _cachedState: { [property: string]: any; };
+        private _cachedFont: string;
+        private _refreshCache: bool;
+
+        constructor() {
+            this._cachedState = {
+                fontSize: "10px",
+                fontFamily: "",
+                fontFamilyType: "sans-serif",
+                fontVariant: "",
+                fontWeight: "",
+                fontStyle: ""
+            };
+
+            this._refreshCache = true;
+            this._BuildFont();
+        }
+
+        public FontSize(size?: number, measurement: FontMeasurement = FontMeasurement.Points): string {
+            return this.GetOrSetCache("fontSize", size.toString() + FontMeasurement["_map"][measurement]);
+        }
+
+        public FontFamily(family?: FontFamily, familyType?: FontFamilyType): string {
+            return this.GetOrSetCache("fontFamily", FontFamilyHelper.Get(family));
+        }
+
+        public FontFamilyType(fontFamilyType?: FontFamilyType): string {
+            return this.GetOrSetCache("fontFamilyType", FontFamilyTypeHelper.Get(fontFamilyType));
+        }
+
+        public FontVariant(variant?: FontVariant): string {
+            return this.GetOrSetCache("fontVariant", FontVariantHelper.Get(variant));
+        }
+
+        public FontWeight(weight?: string): string {
+            return this.GetOrSetCache("fontWeight", weight);
+        }
+
+        public FontStyle(style?: FontStyle): string {
+            return this.GetOrSetCache("fontStyle", FontStyleHelper.Get(style));
+        }
+
+        public _BuildFont(): string {
+            var font;
+
+            if (this._refreshCache) {
+                font = this._cachedState["fontSize"] + " " + this._cachedState["fontVariant"] + " " + this._cachedState["fontWeight"] + " " + this._cachedState["fontStyle"];
+
+                if (this._cachedState["fontFamily"]) {
+                    font += this._cachedState["fontFamily"];
+
+                    if (this._cachedState["fontFamilyType"]) {
+                        font += ", " + this._cachedState["fontFamilyType"];
+                    }
+                }
+                else if (this._cachedState["fontFamilyType"]) {
+                    font += this._cachedState["fontFamilyType"];
+                }
+
+                this._cachedFont = font.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+                this._refreshCache = false;
+            }
+
+            return this._cachedFont;
+        }
+
+        private GetOrSetCache(property: string, value: any): any {
+            if (typeof value !== "undefined") {
+                this._cachedState[property] = value;
+                this._refreshCache = true;
+            }
+
+            return this._cachedState[property];
+        }
+    }
+}
 /* NoopTripInvoker.ts */
 module EndGate.Core.Utilities {
 
@@ -1900,11 +2131,15 @@ module EndGate.Core.Utilities {
 
 
 
+
 module EndGate.Core.Graphics.Text {
 
     export class Text2d extends Graphic2d {
+        public FontSettings: FontSettings;
+
         private _text: string;
         private _stroker: Utilities.NoopTripInvoker;
+
 
         constructor(position: Assets.Vector2d, text: string, color: string = "black") {
             super(position);
@@ -1914,6 +2149,7 @@ module EndGate.Core.Graphics.Text {
                 context.strokeText(this._text, this.Position.X, this.Position.Y);
             });
 
+            this.FontSettings = new FontSettings();
             this.Align("center");
             this.Baseline("middle");
             this.Color(color);
@@ -1931,8 +2167,28 @@ module EndGate.Core.Graphics.Text {
             return this.State.FillStyle(color);
         }
 
-        public Font(font: string): string {
-            return this.State.Font(font);
+        public Shadow(x?: number, y?: number, color?: string, blur?: number): any[] {
+            return [this.ShadowX(x), this.ShadowY(y), this.ShadowColor(color), this.ShadowBlur(blur)];
+        }
+
+        public ShadowColor(color?: string): string {
+            return this.State.ShadowColor(color);
+        }
+
+        public ShadowX(val?: number): number {
+            return this.State.ShadowOffsetX(val);
+        }
+
+        public ShadowY(val?: number): number {
+            return this.State.ShadowOffsetY(val);
+        }
+
+        public ShadowBlur(val?: number): number {
+            return this.State.ShadowBlur(val);
+        }
+
+        public Opacity(alpha?: number): number {
+            return this.State.GlobalAlpha(alpha);
         }
 
         public Text(text?: string): string {
@@ -1966,6 +2222,7 @@ module EndGate.Core.Graphics.Text {
         public Draw(context: CanvasRenderingContext2D): void {
             super.StartDraw(context);
 
+            this.State.Font(this.FontSettings._BuildFont());
             context.fillText(this._text, this.Position.X, this.Position.Y);
             this._stroker.Invoke(context);
 

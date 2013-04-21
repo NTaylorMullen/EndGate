@@ -18,6 +18,7 @@ var EndGate;
                         this._stroker = new Core.Utilities.NoopTripInvoker(function (context) {
                             context.strokeText(_this._text, _this.Position.X, _this.Position.Y);
                         });
+                        this.FontSettings = new Text.FontSettings();
                         this.Align("center");
                         this.Baseline("middle");
                         this.Color(color);
@@ -31,8 +32,28 @@ var EndGate;
                     Text2d.prototype.Color = function (color) {
                         return this.State.FillStyle(color);
                     };
-                    Text2d.prototype.Font = function (font) {
-                        return this.State.Font(font);
+                    Text2d.prototype.Shadow = function (x, y, color, blur) {
+                        return [
+                            this.ShadowX(x), 
+                            this.ShadowY(y), 
+                            this.ShadowColor(color), 
+                            this.ShadowBlur(blur)
+                        ];
+                    };
+                    Text2d.prototype.ShadowColor = function (color) {
+                        return this.State.ShadowColor(color);
+                    };
+                    Text2d.prototype.ShadowX = function (val) {
+                        return this.State.ShadowOffsetX(val);
+                    };
+                    Text2d.prototype.ShadowY = function (val) {
+                        return this.State.ShadowOffsetY(val);
+                    };
+                    Text2d.prototype.ShadowBlur = function (val) {
+                        return this.State.ShadowBlur(val);
+                    };
+                    Text2d.prototype.Opacity = function (alpha) {
+                        return this.State.GlobalAlpha(alpha);
                     };
                     Text2d.prototype.Text = function (text) {
                         if(typeof text !== "undefined") {
@@ -60,6 +81,7 @@ var EndGate;
                     };
                     Text2d.prototype.Draw = function (context) {
                         _super.prototype.StartDraw.call(this, context);
+                        this.State.Font(this.FontSettings._BuildFont());
                         context.fillText(this._text, this.Position.X, this.Position.Y);
                         this._stroker.Invoke(context);
                         _super.prototype.EndDraw.call(this, context);

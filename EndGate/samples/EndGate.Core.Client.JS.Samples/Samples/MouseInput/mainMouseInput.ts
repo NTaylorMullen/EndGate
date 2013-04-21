@@ -6,7 +6,7 @@
         holder: JQuery = $("#gameHolder"),
         lastMouseEvent: JQuery = $("#lastMouseEvent"),
         mouseMonitor: MouseMonitor = null;
-        
+
     canvas.width = holder.width();
     canvas.height = holder.height();
 

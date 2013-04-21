@@ -11,8 +11,9 @@ var EndGate;
                 var Circle = (function (_super) {
                     __extends(Circle, _super);
                     function Circle(x, y, radius, color) {
-                                        _super.call(this, new Core.BoundingObject.BoundingCircle(new Core.Assets.Vector2d(x, y), radius), color);
+                                        _super.call(this, new Core.Assets.Vector2d(x, y), color);
                         this._type = "Circle";
+                        this.Radius = radius;
                     }
                     Circle.prototype.BuildPath = function (context) {
                         context.arc(this.Position.X, this.Position.Y, this.Radius, 0, (Math).twoPI);

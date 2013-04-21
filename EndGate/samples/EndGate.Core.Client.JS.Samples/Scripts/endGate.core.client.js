@@ -1467,6 +1467,280 @@ var EndGate;
 var EndGate;
 (function (EndGate) {
     (function (Core) {
+        (function (Graphics) {
+            (function (Text) {
+                (function (FontFamily) {
+                    FontFamily._map = [];
+                    FontFamily._map[0] = "Antiqua";
+                    FontFamily.Antiqua = 0;
+                    FontFamily._map[1] = "Arial";
+                    FontFamily.Arial = 1;
+                    FontFamily._map[2] = "Avqest";
+                    FontFamily.Avqest = 2;
+                    FontFamily._map[3] = "Blackletter";
+                    FontFamily.Blackletter = 3;
+                    FontFamily._map[4] = "Calibri";
+                    FontFamily.Calibri = 4;
+                    FontFamily._map[5] = "ComicSans";
+                    FontFamily.ComicSans = 5;
+                    FontFamily._map[6] = "Courier";
+                    FontFamily.Courier = 6;
+                    FontFamily._map[7] = "Decorative";
+                    FontFamily.Decorative = 7;
+                    FontFamily._map[8] = "Fraktur";
+                    FontFamily.Fraktur = 8;
+                    FontFamily._map[9] = "Frosty";
+                    FontFamily.Frosty = 9;
+                    FontFamily._map[10] = "Garamond";
+                    FontFamily.Garamond = 10;
+                    FontFamily._map[11] = "Georgia";
+                    FontFamily.Georgia = 11;
+                    FontFamily._map[12] = "Helvetica";
+                    FontFamily.Helvetica = 12;
+                    FontFamily._map[13] = "Impact";
+                    FontFamily.Impact = 13;
+                    FontFamily._map[14] = "Minion";
+                    FontFamily.Minion = 14;
+                    FontFamily._map[15] = "Modern";
+                    FontFamily.Modern = 15;
+                    FontFamily._map[16] = "Monospace";
+                    FontFamily.Monospace = 16;
+                    FontFamily._map[17] = "Palatino";
+                    FontFamily.Palatino = 17;
+                    FontFamily._map[18] = "Roman";
+                    FontFamily.Roman = 18;
+                    FontFamily._map[19] = "Script";
+                    FontFamily.Script = 19;
+                    FontFamily._map[20] = "Swiss";
+                    FontFamily.Swiss = 20;
+                    FontFamily._map[21] = "TimesNewRoman";
+                    FontFamily.TimesNewRoman = 21;
+                    FontFamily._map[22] = "Verdana";
+                    FontFamily.Verdana = 22;
+                })(Text.FontFamily || (Text.FontFamily = {}));
+                var FontFamily = Text.FontFamily;
+                ;
+                var FontFamilyHelper = (function () {
+                    function FontFamilyHelper() { }
+                    FontFamilyHelper._Initialize = function _Initialize() {
+                        FontFamilyHelper._families = ({
+                        });
+                        for(var family in FontFamily) {
+                            if(family !== "_map") {
+                                FontFamilyHelper._families[FontFamily[family]] = family;
+                            }
+                        }
+                        FontFamilyHelper._families[FontFamily["TimesNewRoman"]] = "Times New Roman";
+                    };
+                    FontFamilyHelper.Get = function Get(family) {
+                        return FontFamilyHelper._families[family];
+                    };
+                    return FontFamilyHelper;
+                })();
+                Text.FontFamilyHelper = FontFamilyHelper;                
+                FontFamilyHelper._Initialize();
+            })(Graphics.Text || (Graphics.Text = {}));
+            var Text = Graphics.Text;
+        })(Core.Graphics || (Core.Graphics = {}));
+        var Graphics = Core.Graphics;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Graphics) {
+            (function (Text) {
+                (function (FontMeasurement) {
+                    FontMeasurement._map = [];
+                    FontMeasurement._map[0] = "Ems";
+                    FontMeasurement.Ems = 0;
+                    FontMeasurement._map[1] = "Pixels";
+                    FontMeasurement.Pixels = 1;
+                    FontMeasurement._map[2] = "Points";
+                    FontMeasurement.Points = 2;
+                    FontMeasurement._map[3] = "Percent";
+                    FontMeasurement.Percent = 3;
+                })(Text.FontMeasurement || (Text.FontMeasurement = {}));
+                var FontMeasurement = Text.FontMeasurement;
+                ;
+                var FontMeasurementHelper = (function () {
+                    function FontMeasurementHelper() { }
+                    FontMeasurementHelper._Initialize = function _Initialize() {
+                        FontMeasurementHelper._measurements = [
+                            "em", 
+                            "px", 
+                            "pt", 
+                            "%"
+                        ];
+                    };
+                    FontMeasurementHelper.Get = function Get(measurement) {
+                        return FontMeasurementHelper._measurements[measurement];
+                    };
+                    return FontMeasurementHelper;
+                })();
+                Text.FontMeasurementHelper = FontMeasurementHelper;                
+                FontMeasurementHelper._Initialize();
+            })(Graphics.Text || (Graphics.Text = {}));
+            var Text = Graphics.Text;
+        })(Core.Graphics || (Core.Graphics = {}));
+        var Graphics = Core.Graphics;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Graphics) {
+            (function (Text) {
+                (function (FontVariant) {
+                    FontVariant._map = [];
+                    FontVariant._map[0] = "Normal";
+                    FontVariant.Normal = 0;
+                    FontVariant._map[1] = "SmallCaps";
+                    FontVariant.SmallCaps = 1;
+                })(Text.FontVariant || (Text.FontVariant = {}));
+                var FontVariant = Text.FontVariant;
+                ;
+                var FontVariantHelper = (function () {
+                    function FontVariantHelper() { }
+                    FontVariantHelper._Initialize = function _Initialize() {
+                        FontVariantHelper._variants = ({
+                        });
+                        for(var family in FontVariant) {
+                            if(family !== "_map") {
+                                FontVariantHelper._variants[FontVariant[family]] = family;
+                            }
+                        }
+                        FontVariantHelper._variants["SmallCaps"] = "Times New Roman";
+                    };
+                    FontVariantHelper.Get = function Get(variant) {
+                        return FontVariantHelper._variants[variant];
+                    };
+                    return FontVariantHelper;
+                })();
+                Text.FontVariantHelper = FontVariantHelper;                
+                FontVariantHelper._Initialize();
+            })(Graphics.Text || (Graphics.Text = {}));
+            var Text = Graphics.Text;
+        })(Core.Graphics || (Core.Graphics = {}));
+        var Graphics = Core.Graphics;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Graphics) {
+            (function (Text) {
+                (function (FontStyle) {
+                    FontStyle._map = [];
+                    FontStyle._map[0] = "Normal";
+                    FontStyle.Normal = 0;
+                    FontStyle._map[1] = "Italic";
+                    FontStyle.Italic = 1;
+                    FontStyle._map[2] = "Oblique";
+                    FontStyle.Oblique = 2;
+                })(Text.FontStyle || (Text.FontStyle = {}));
+                var FontStyle = Text.FontStyle;
+                var FontStyleHelper = (function () {
+                    function FontStyleHelper() { }
+                    FontStyleHelper._Initialize = function _Initialize() {
+                        FontStyleHelper._styles = ({
+                        });
+                        for(var style in FontStyle) {
+                            if(style !== "_map") {
+                                FontStyleHelper._styles[FontStyle[style]] = style;
+                            }
+                        }
+                    };
+                    FontStyleHelper.Get = function Get(style) {
+                        return FontStyleHelper._styles[style];
+                    };
+                    return FontStyleHelper;
+                })();
+                Text.FontStyleHelper = FontStyleHelper;                
+                FontStyleHelper._Initialize();
+            })(Graphics.Text || (Graphics.Text = {}));
+            var Text = Graphics.Text;
+        })(Core.Graphics || (Core.Graphics = {}));
+        var Graphics = Core.Graphics;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Graphics) {
+            (function (Text) {
+                var FontSettings = (function () {
+                    function FontSettings() {
+                        this._cachedState = {
+                            fontSize: "10px",
+                            fontFamily: "",
+                            fontVariant: "",
+                            fontWeight: "",
+                            fontStyle: ""
+                        };
+                        this._refreshCache = true;
+                        this._BuildFont();
+                    }
+                    FontSettings.prototype.FontSize = function (size, measurement) {
+                        if (typeof measurement === "undefined") { measurement = Text.FontMeasurement.Points; }
+                        if(size !== undefined) {
+                            return this.GetOrSetCache("fontSize", size.toString() + Text.FontMeasurementHelper.Get(measurement));
+                        }
+                        return this._cachedState["fontSize"];
+                    };
+                    FontSettings.prototype.FontFamily = function (family) {
+                        return this.GetOrSetCache("fontFamily", Text.FontFamilyHelper.Get(family));
+                    };
+                    FontSettings.prototype.FontVariant = function (variant) {
+                        return this.GetOrSetCache("fontVariant", Text.FontVariantHelper.Get(variant));
+                    };
+                    FontSettings.prototype.FontWeight = function (weight) {
+                        return this.GetOrSetCache("fontWeight", weight);
+                    };
+                    FontSettings.prototype.FontStyle = function (style) {
+                        return this.GetOrSetCache("fontStyle", Text.FontStyleHelper.Get(style));
+                    };
+                    FontSettings.prototype._BuildFont = function () {
+                        var font;
+                        if(this._refreshCache) {
+                            font = this._cachedState["fontWeight"] + " " + this._cachedState["fontStyle"] + " " + this._cachedState["fontSize"] + " " + this._cachedState["fontVariant"];
+                            if(this._cachedState["fontFamily"]) {
+                                font += this._cachedState["fontFamily"];
+                                if(this._cachedState["fontFamilyType"]) {
+                                    font += ", " + this._cachedState["fontFamilyType"];
+                                }
+                            } else if(this._cachedState["fontFamilyType"]) {
+                                font += this._cachedState["fontFamilyType"];
+                            }
+                            this._cachedFont = font.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+                            this._refreshCache = false;
+                        }
+                        return this._cachedFont;
+                    };
+                    FontSettings.prototype.GetOrSetCache = function (property, value) {
+                        if(typeof value !== "undefined") {
+                            this._cachedState[property] = value;
+                            this._refreshCache = true;
+                        }
+                        return this._cachedState[property];
+                    };
+                    return FontSettings;
+                })();
+                Text.FontSettings = FontSettings;                
+            })(Graphics.Text || (Graphics.Text = {}));
+            var Text = Graphics.Text;
+        })(Core.Graphics || (Core.Graphics = {}));
+        var Graphics = Core.Graphics;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
         (function (Utilities) {
             var NoopTripInvoker = (function () {
                 function NoopTripInvoker(action) {
@@ -1511,6 +1785,7 @@ var EndGate;
                         this._stroker = new Core.Utilities.NoopTripInvoker(function (context) {
                             context.strokeText(_this._text, _this.Position.X, _this.Position.Y);
                         });
+                        this.FontSettings = new Text.FontSettings();
                         this.Align("center");
                         this.Baseline("middle");
                         this.Color(color);
@@ -1524,8 +1799,28 @@ var EndGate;
                     Text2d.prototype.Color = function (color) {
                         return this.State.FillStyle(color);
                     };
-                    Text2d.prototype.Font = function (font) {
-                        return this.State.Font(font);
+                    Text2d.prototype.Shadow = function (x, y, color, blur) {
+                        return [
+                            this.ShadowX(x), 
+                            this.ShadowY(y), 
+                            this.ShadowColor(color), 
+                            this.ShadowBlur(blur)
+                        ];
+                    };
+                    Text2d.prototype.ShadowColor = function (color) {
+                        return this.State.ShadowColor(color);
+                    };
+                    Text2d.prototype.ShadowX = function (val) {
+                        return this.State.ShadowOffsetX(val);
+                    };
+                    Text2d.prototype.ShadowY = function (val) {
+                        return this.State.ShadowOffsetY(val);
+                    };
+                    Text2d.prototype.ShadowBlur = function (val) {
+                        return this.State.ShadowBlur(val);
+                    };
+                    Text2d.prototype.Opacity = function (alpha) {
+                        return this.State.GlobalAlpha(alpha);
                     };
                     Text2d.prototype.Text = function (text) {
                         if(typeof text !== "undefined") {
@@ -1553,6 +1848,7 @@ var EndGate;
                     };
                     Text2d.prototype.Draw = function (context) {
                         _super.prototype.StartDraw.call(this, context);
+                        this.State.Font(this.FontSettings._BuildFont());
                         context.fillText(this._text, this.Position.X, this.Position.Y);
                         this._stroker.Invoke(context);
                         _super.prototype.EndDraw.call(this, context);
@@ -1567,3 +1863,4 @@ var EndGate;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));
+//@ sourceMappingURL=endGate.core.client.js.map

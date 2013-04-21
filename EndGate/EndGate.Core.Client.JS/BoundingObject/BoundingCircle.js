@@ -25,7 +25,7 @@ var EndGate;
                     return this.Position.Distance(circle.Position).Length() < this.Radius + circle.Radius;
                 };
                 BoundingCircle.prototype.IntersectsRectangle = function (rectangle) {
-                    var translated = (rectangle.Rotation === 0) ? this.Position : this.Position.RotateAround(rectangle.Position, rectangle.Rotation);
+                    var translated = (rectangle.Rotation === 0) ? this.Position : this.Position.RotateAround(rectangle.Position, -rectangle.Rotation);
                     var circleDistance = translated.Distance(rectangle.Position);
                     if(circleDistance.X > (rectangle.Size.HalfWidth() + this.Radius)) {
                         return false;

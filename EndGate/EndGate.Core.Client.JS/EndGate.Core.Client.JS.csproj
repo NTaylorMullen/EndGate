@@ -212,6 +212,41 @@
     <TypeScriptCompile Include="Input\Mouse\IMouseClickEvent.d.ts" />
     <TypeScriptCompile Include="Input\InputManager.ts" />
     <TypeScriptCompile Include="Graphics\Text\Text2d.ts" />
+    <TypeScriptCompile Include="Graphics\Text\FontSettings.ts" />
+    <TypeScriptCompile Include="Graphics\Text\FontMeasurement.ts" />
+    <TypeScriptCompile Include="Graphics\Text\FontFamily.ts" />
+    <Content Include="Graphics\Text\FontFamily.js">
+      <DependentUpon>FontFamily.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Text\FontFamily.min.js">
+      <DependentUpon>FontFamily.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Text\FontMeasurement.js">
+      <DependentUpon>FontMeasurement.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Text\FontMeasurement.min.js">
+      <DependentUpon>FontMeasurement.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Text\FontSettings.js">
+      <DependentUpon>FontSettings.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Text\FontSettings.min.js">
+      <DependentUpon>FontSettings.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Graphics\Text\FontVariant.ts" />
+    <TypeScriptCompile Include="Graphics\Text\FontStyle.ts" />
+    <Content Include="Graphics\Text\FontStyle.js">
+      <DependentUpon>FontStyle.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Text\FontStyle.min.js">
+      <DependentUpon>FontStyle.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Text\FontVariant.js">
+      <DependentUpon>FontVariant.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Text\FontVariant.min.js">
+      <DependentUpon>FontVariant.ts</DependentUpon>
+    </Content>
     <Content Include="Graphics\Text\Text2d.js">
       <DependentUpon>Text2d.ts</DependentUpon>
     </Content>
@@ -427,6 +462,21 @@
     </Content>
     <Content Include="Graphics\Text\Text2d.js.map">
       <DependentUpon>Text2d.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Text\FontSettings.js.map">
+      <DependentUpon>FontSettings.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Text\FontMeasurement.js.map">
+      <DependentUpon>FontMeasurement.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Text\FontFamily.js.map">
+      <DependentUpon>FontFamily.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Text\FontVariant.js.map">
+      <DependentUpon>FontVariant.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Text\FontStyle.js.map">
+      <DependentUpon>FontStyle.ts</DependentUpon>
     </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
