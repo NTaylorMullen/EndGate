@@ -49,5 +49,13 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="span4">
+            <h3>Keyboard Input</h3>
+            <p>Demonstrates how to use a games keyboard input handler.</p>
+            <p><a class="btn" href="Samples/KeyboardInput">View sample &raquo;</a></p>
+        </div>
+    </div>
+
     <div class="clear"></div>
 </asp:Content>

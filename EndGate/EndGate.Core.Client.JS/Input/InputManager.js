@@ -5,6 +5,7 @@ var EndGate;
             var InputManager = (function () {
                 function InputManager(canvas) {
                     this.Mouse = new Input.Mouse.MouseHandler(canvas);
+                    this.Keyboard = new Input.Keyboard.KeyboardHandler();
                 }
                 return InputManager;
             })();

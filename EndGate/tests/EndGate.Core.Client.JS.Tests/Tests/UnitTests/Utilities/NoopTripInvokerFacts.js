@@ -1,4 +1,4 @@
-﻿(function (window, lib) {
+﻿ (function (window, lib) {
 
     QUnit.module("Noop Trip Invoker Facts");
 
@@ -92,6 +92,88 @@
         tripInvoker.Invoke();
 
         QUnit.equal(triggered, true);
+    });
+
+    QUnit.test("Invoke Once doesn't allow multiple invokes", function () {
+        var triggered = 0,
+            tripInvoker = new EndGate.Core.Utilities.NoopTripInvoker(function () {
+                triggered++;
+            });
+
+        QUnit.equal(triggered, 0);
+
+        tripInvoker.Trip();
+
+        tripInvoker.InvokeOnce();
+        tripInvoker.Invoke();
+        tripInvoker.InvokeOnce();
+        tripInvoker.Invoke();
+
+        QUnit.equal(triggered, 1);
+
+        tripInvoker.Trip();
+
+        tripInvoker.Invoke();
+        tripInvoker.Invoke();
+        tripInvoker.InvokeOnce()
+        tripInvoker.Invoke();
+
+        QUnit.equal(triggered, 4);
+    });
+
+    QUnit.test("Constructor trip argument causes object to already be tripped.", function () {
+        var triggered = 0,
+            tripInvoker = new EndGate.Core.Utilities.NoopTripInvoker(function () {
+                triggered++;
+            }, true);
+
+        QUnit.equal(triggered, 0);
+
+        tripInvoker.InvokeOnce();
+        tripInvoker.Invoke();
+        tripInvoker.InvokeOnce();
+        tripInvoker.Invoke();
+
+        QUnit.equal(triggered, 1);
+
+        tripInvoker.Trip();
+
+        tripInvoker.Invoke();
+        tripInvoker.Invoke();
+        tripInvoker.InvokeOnce()
+        tripInvoker.Invoke();
+
+        QUnit.equal(triggered, 4);
+    });
+
+    QUnit.test("Constructor trip argument causes object to already be tripped.", function () {
+        var triggered = 0,
+            tripInvoker = new EndGate.Core.Utilities.NoopTripInvoker(function () {
+                triggered++;
+            }, true);
+
+        QUnit.equal(triggered, 0);
+
+        tripInvoker.Invoke();
+        tripInvoker.Invoke();
+
+        QUnit.equal(triggered, 2);
+
+        tripInvoker.Reset();
+
+        tripInvoker.Invoke();
+        tripInvoker.Invoke();
+        tripInvoker.InvokeOnce()
+        tripInvoker.Invoke();
+
+        QUnit.equal(triggered, 2);
+
+        tripInvoker.Trip();
+
+        tripInvoker.InvokeOnce();
+        tripInvoker.Invoke();
+
+        QUnit.equal(triggered, 3);
     });
 
 })(window, EndGate.Core.Utilities);

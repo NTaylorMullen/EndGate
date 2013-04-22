@@ -1,6 +1,10 @@
 /* IDisposable.d.ts */
-interface IDisposable {
-    Dispose(): void;
+module EndGate.Core {
+
+    export interface IDisposable {
+        Dispose(): void;
+    }
+
 }
 /* ITyped.d.ts */
 interface ITyped {
@@ -1317,16 +1321,341 @@ module EndGate.Core.Input.Mouse {
     }
 
 }
+/* NoopTripInvoker.ts */
+module EndGate.Core.Utilities {
+
+    export class NoopTripInvoker {
+        private static _noop: Function = () => { };
+        private _invoker: Function;
+        private _action: Function;
+
+        constructor(action: Function, tripped: bool = false) {
+            this._invoker = NoopTripInvoker._noop;
+            this._action = action;
+
+            if (tripped) {
+                this.Trip();
+            }
+        }
+
+        public Invoke(...args: any[]) {
+            this._invoker.apply(this, args);
+        }
+
+        public InvokeOnce(...args: any[]) {
+            this._invoker.apply(this, args);
+            this.Reset();
+        }
+
+        public Trip() {
+            this._invoker = this._action;
+        }
+
+        public Reset() {
+            this._invoker = NoopTripInvoker._noop;
+        }
+    }
+
+}
+/* KeyboardModifiers.ts */
+
+
+module EndGate.Core.Input.Keyboard {
+
+    export class KeyboardModifiers {
+        public Ctrl: bool;
+        public Alt: bool;
+        public Shift: bool;
+
+        constructor(ctrl: bool, alt: bool, shift: bool) {
+            this.Ctrl = ctrl;
+            this.Alt = alt;
+            this.Shift = shift;
+        }
+
+        public Equivalent(modifier: KeyboardModifiers): bool {
+            return this.Ctrl === modifier.Ctrl && this.Alt === modifier.Alt && this.Shift === modifier.Shift;
+        }
+
+        public static BuildFromCommandString(keyCommand: string): KeyboardModifiers {
+            var ctrl = (keyCommand.toLowerCase().indexOf("ctrl+") >= 0) ? true : false,
+                alt = (keyCommand.toLowerCase().indexOf("alt+") >= 0) ? true : false,
+                shift = (keyCommand.toLowerCase().indexOf("shift+") >= 0) ? true : false;
+
+            return new KeyboardModifiers(ctrl, alt, shift);
+        }
+    }
+
+}
+/* KeyboardCommandEvent.ts */
+
+
+
+module EndGate.Core.Input.Keyboard {
+    var shiftValues: { [unmodified: string]: string; } = {
+        "`": "~",
+        "1": "!",
+        "2": "@",
+        "3": "#",
+        "4": "$",
+        "5": "%",
+        "6": "^",
+        "7": "&",
+        "8": "*",
+        "9": "(",
+        "0": ")",
+        "-": "_",
+        "=": "+",
+        ";": ":",
+        "'": "\"",
+        ",": "<",
+        ".": ">",
+        "/": "?",
+        "\\": "|"
+    },
+        specialKeys: { [name: string]: string; } = {
+            "esc": 27,
+            "escape": 27,
+            "tab": 9,
+            "space": 32,
+            "return": 13,
+            "enter": 13,
+            "backspace": 8,
+            "insert": 45,
+            "home": 36,
+            "delete": 46,
+            "end": 35,
+            "left": 37,
+            "up": 38,
+            "right": 39,
+            "down": 40,
+            "f1": 112,
+            "f2": 113,
+            "f3": 114,
+            "f4": 115,
+            "f5": 116,
+            "f6": 117,
+            "f7": 118,
+            "f8": 119,
+            "f9": 120,
+            "f10": 121,
+            "f11": 122,
+            "f12": 123
+        };
+
+    export class KeyboardCommandEvent {
+        public Key: string;
+        public Modifiers: KeyboardModifiers;
+
+        constructor(keyEvent: KeyboardEvent) {
+            var code,
+                character;
+
+            this.Modifiers = new KeyboardModifiers(keyEvent.ctrlKey, keyEvent.altKey, keyEvent.shiftKey);
+
+            if (keyEvent.keyCode) {
+                code = keyEvent.keyCode;
+            }
+            else if (keyEvent.which) {
+                code = keyEvent.which;
+            }
+
+            if (!(character = specialKeys[code])) {
+                character = String.fromCharCode(code).toLowerCase();
+
+                if (this.Modifiers.Shift && shiftValues[character]) {
+                    character = shiftValues[character];
+                }
+            }
+
+            this.Key = character;
+        }
+
+        public Matches(command: KeyboardCommand): bool {
+            return this.Key === command.Key && command.Modifiers.Equivalent(this.Modifiers);
+        }
+    }
+
+}
+/* KeyboardCommandHelper.ts */
+
+
+
+module EndGate.Core.Input.Keyboard {
+    
+    export class KeyboardCommandHelper {
+        public static ParseKey(command: string): string {
+            var arr = command.split("+");
+
+            if (arr.length > 1) {
+                return arr[arr.length - 1];
+            }
+
+            return arr[0];
+        }
+    }
+
+}
+/* KeyboardCommand.ts */
+
+
+
+
+
+
+module EndGate.Core.Input.Keyboard {
+
+    export class KeyboardCommand implements IDisposable {
+        public Key: string;
+        public Action: Function;
+        public Modifiers: KeyboardModifiers;
+
+        private _onDisposeInvoker: Utilities.NoopTripInvoker;
+
+        constructor(command: string, action: Function) {
+            this.Action = action;
+            this.Modifiers = KeyboardModifiers.BuildFromCommandString(command);
+            this.Key = KeyboardCommandHelper.ParseKey(command);
+
+            this.OnDispose = new Utilities.EventHandler();
+            this._onDisposeInvoker = new Utilities.NoopTripInvoker(() => {
+                this.OnDispose.Trigger();
+            }, true);
+        }
+
+        public OnDispose: Utilities.EventHandler;
+
+        public Dispose(): void {
+            this._onDisposeInvoker.InvokeOnce();
+        }
+    }
+
+}
+/* KeyboardHandler.ts */
+
+
+
+
+module EndGate.Core.Input.Keyboard {
+
+    export class KeyboardHandler {
+        private static _keyboardCommandIds: number = 0;
+        private _target: HTMLCanvasElement;
+        private _onPressCommands: { [id: number]: KeyboardCommand; };
+        private _onDownCommands: { [id: number]: KeyboardCommand; };
+        private _onUpCommands: { [id: number]: KeyboardCommand; };
+
+        constructor() {
+            this._onPressCommands = (<any>{});
+            this._onDownCommands = (<any>{});
+            this._onUpCommands = (<any>{});
+
+            this.OnKeyPress = new Utilities.EventHandler();
+            this.OnKeyDown = new Utilities.EventHandler();
+            this.OnKeyUp = new Utilities.EventHandler();
+
+            this.Wire();
+        }
+
+        public OnKeyPress: Utilities.EventHandler;
+        public OnKeyDown: Utilities.EventHandler;
+        public OnKeyUp: Utilities.EventHandler;
+
+        public OnCommandPress(keyCommand: string, action: Function): KeyboardCommand {
+            return this.UpdateCache(keyCommand, action, this._onPressCommands);
+        }
+
+        public OnCommandDown(keyCommand: string, action: Function): KeyboardCommand {
+            return this.UpdateCache(keyCommand, action, this._onDownCommands);
+        }
+
+        public OnCommandUp(keyCommand: string, action: Function): KeyboardCommand {
+            return this.UpdateCache(keyCommand, action, this._onUpCommands);
+        }
+
+        private UpdateCache(keyCommand: string, action: Function, store: { [id: number]: KeyboardCommand; }): KeyboardCommand {
+            var command = new KeyboardCommand(keyCommand, action),
+                commandId = KeyboardHandler._keyboardCommandIds++;
+
+            command.OnDispose.Bind(() => {
+                delete store[commandId];
+            });
+
+            store[commandId] = command;
+
+            return command;
+        }
+
+        private Wire(): void {
+            document.onkeypress = this.BuildKeyEvent(this._onPressCommands, this.OnKeyPress);
+
+            document.onkeydown = this.BuildKeyEvent(this._onDownCommands, this.OnKeyDown);
+
+            document.onkeyup = this.BuildKeyEvent(this._onUpCommands, this.OnKeyUp);
+        }
+
+        private FocusingTextArea(ke: KeyboardEvent): bool {
+            var element;
+
+            if (ke.target) {
+                element = ke.target;
+            }
+            else if (ke.srcElement) {
+                element = ke.srcElement;
+            }
+
+            if (element.nodeType === 3) {
+                element = element.parentNode;
+            }
+
+            if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                return true;
+            }
+
+            return false;
+        }
+
+        private BuildKeyEvent(store: { [id: number]: KeyboardCommand; }, eventHandler: Utilities.EventHandler): (ke: KeyboardEvent) => void {
+            return (ke: KeyboardEvent) => {
+                var keyboardCommandEvent: KeyboardCommandEvent,
+                    propogate: bool = true;
+
+                //Don't enable shortcut keys in Input, Text area fields
+                if (this.FocusingTextArea(ke)) {
+                    return;
+                }
+
+                keyboardCommandEvent = new KeyboardCommandEvent(ke);
+
+                eventHandler.Trigger(keyboardCommandEvent);
+
+                for (var keyboardCommandId in store) {
+                    if (keyboardCommandEvent.Matches(store[keyboardCommandId])) {
+                        store[keyboardCommandId].Action();
+                        ke.preventDefault();
+                        propogate = false;
+                    }
+                }
+
+                return propogate;
+            };
+        }
+    }
+
+}
 /* InputManager.ts */
+
 
 
 module EndGate.Core.Input {
 
     export class InputManager {
         public Mouse: Mouse.MouseHandler;
+        public Keyboard: Keyboard.KeyboardHandler;
 
         constructor(canvas: HTMLCanvasElement) {
             this.Mouse = new Mouse.MouseHandler(canvas);
+            this.Keyboard = new Keyboard.KeyboardHandler();
         }
     }
 
@@ -1897,16 +2226,10 @@ module EndGate.Core.Graphics.Text {
         Verdana
     };
 
-    export enum FontFamilyType {
-        Sans,
-        Serif,
-        SansSerif
-    };
-
     export class FontFamilyHelper {
         public static _families: { [family: number]: string; };
 
-        constructor() {
+        public static _Initialize() {
             FontFamilyHelper._families = (<{ [family: number]: string; } >{});
 
             for (var family in FontFamily) {
@@ -1923,25 +2246,7 @@ module EndGate.Core.Graphics.Text {
         }
     }
 
-    export class FontFamilyTypeHelper {
-        public static _familyTypes: { [familyType: number]: string; };
-
-        constructor() {
-            FontFamilyTypeHelper._familyTypes = (<{ [family: number]: string; } >{});
-
-            for (var familyType in FontFamilyType) {
-                if (familyType !== "_map") {
-                    FontFamilyTypeHelper._familyTypes[FontFamily[familyType]] = familyType;
-                }
-            }
-
-            FontFamilyTypeHelper._familyTypes[FontFamily["SansSerif"]] = "sans-serif";
-        }
-
-        public static Get(familyType: FontFamilyType): string {
-            return FontFamilyTypeHelper._familyTypes[familyType];
-        }
-    }
+    FontFamilyHelper._Initialize();
 
 }
 /* FontMeasurement.ts */
@@ -1954,6 +2259,19 @@ module EndGate.Core.Graphics.Text {
         Percent
     };
 
+    export class FontMeasurementHelper {
+        public static _measurements: string[];
+
+        public static _Initialize() {
+            FontMeasurementHelper._measurements = ["em", "px", "pt", "%"];
+        }
+
+        public static Get(measurement: FontMeasurement): string {
+            return FontMeasurementHelper._measurements[measurement];
+        }
+    }
+
+    FontMeasurementHelper._Initialize();
 }
 /* FontVariant.ts */
 module EndGate.Core.Graphics.Text {
@@ -1966,7 +2284,7 @@ module EndGate.Core.Graphics.Text {
     export class FontVariantHelper {
         public static _variants: { [variant: number]: string; };
 
-        constructor() {
+        public static _Initialize() {
             FontVariantHelper._variants = (<{ [family: number]: string; } >{});
 
             for (var family in FontVariant) {
@@ -1983,6 +2301,8 @@ module EndGate.Core.Graphics.Text {
         }
     }
 
+    FontVariantHelper._Initialize();
+
 }
 
 /* FontStyle.ts */
@@ -1997,7 +2317,7 @@ module EndGate.Core.Graphics.Text {
     export class FontStyleHelper {
         public static _styles: { [family: number]: string; };
 
-        constructor() {
+        public static _Initialize() {
             FontStyleHelper._styles = (<{ [family: number]: string; } >{});
 
             for (var style in FontStyle) {
@@ -2011,6 +2331,8 @@ module EndGate.Core.Graphics.Text {
             return FontStyleHelper._styles[style];
         }
     }
+
+    FontStyleHelper._Initialize();
 
 }
 
@@ -2030,8 +2352,7 @@ module EndGate.Core.Graphics.Text {
         constructor() {
             this._cachedState = {
                 fontSize: "10px",
-                fontFamily: "",
-                fontFamilyType: "sans-serif",
+                fontFamily: "Times New Roman",
                 fontVariant: "",
                 fontWeight: "",
                 fontStyle: ""
@@ -2042,15 +2363,15 @@ module EndGate.Core.Graphics.Text {
         }
 
         public FontSize(size?: number, measurement: FontMeasurement = FontMeasurement.Points): string {
-            return this.GetOrSetCache("fontSize", size.toString() + FontMeasurement["_map"][measurement]);
+            if (size !== undefined) {
+                return this.GetOrSetCache("fontSize", size.toString() + FontMeasurementHelper.Get(measurement));
+            }
+            
+            return this._cachedState["fontSize"];
         }
 
-        public FontFamily(family?: FontFamily, familyType?: FontFamilyType): string {
+        public FontFamily(family?: FontFamily): string {
             return this.GetOrSetCache("fontFamily", FontFamilyHelper.Get(family));
-        }
-
-        public FontFamilyType(fontFamilyType?: FontFamilyType): string {
-            return this.GetOrSetCache("fontFamilyType", FontFamilyTypeHelper.Get(fontFamilyType));
         }
 
         public FontVariant(variant?: FontVariant): string {
@@ -2069,7 +2390,7 @@ module EndGate.Core.Graphics.Text {
             var font;
 
             if (this._refreshCache) {
-                font = this._cachedState["fontSize"] + " " + this._cachedState["fontVariant"] + " " + this._cachedState["fontWeight"] + " " + this._cachedState["fontStyle"];
+                font = this._cachedState["fontWeight"] + " " + this._cachedState["fontStyle"] + " " + this._cachedState["fontSize"] + " " + this._cachedState["fontVariant"];
 
                 if (this._cachedState["fontFamily"]) {
                     font += this._cachedState["fontFamily"];
@@ -2098,33 +2419,6 @@ module EndGate.Core.Graphics.Text {
             return this._cachedState[property];
         }
     }
-}
-/* NoopTripInvoker.ts */
-module EndGate.Core.Utilities {
-
-    export class NoopTripInvoker {
-        private static _noop: Function = () => { };
-        private _invoker: Function;
-        private _action: Function;
-
-        constructor(action: Function) {
-            this._invoker = NoopTripInvoker._noop;
-            this._action = action;
-        }
-
-        public Invoke(...args: any[]) {
-            this._invoker.apply(this, args);
-        }
-
-        public Trip() {
-            this._invoker = this._action;
-        }
-
-        public Reset() {
-            this._invoker = NoopTripInvoker._noop;
-        }
-    }
-
 }
 /* Text2d.ts */
 

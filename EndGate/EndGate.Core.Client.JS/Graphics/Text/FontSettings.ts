@@ -13,7 +13,7 @@ module EndGate.Core.Graphics.Text {
         constructor() {
             this._cachedState = {
                 fontSize: "10px",
-                fontFamily: "",
+                fontFamily: "Times New Roman",
                 fontVariant: "",
                 fontWeight: "",
                 fontStyle: ""

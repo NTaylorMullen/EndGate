@@ -260,6 +260,41 @@
       <DependentUpon>InputManager.ts</DependentUpon>
     </Content>
     <TypeScriptCompile Include="Input\Mouse\IMouseScrollEvent.d.ts" />
+    <TypeScriptCompile Include="Input\Keyboard\KeyboardHandler.ts" />
+    <TypeScriptCompile Include="Input\Keyboard\KeyboardCommand.ts" />
+    <Content Include="Input\Keyboard\KeyboardCommand.js">
+      <DependentUpon>KeyboardCommand.ts</DependentUpon>
+    </Content>
+    <Content Include="Input\Keyboard\KeyboardCommand.min.js">
+      <DependentUpon>KeyboardCommand.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Input\Keyboard\KeyboardCommandHelper.ts" />
+    <TypeScriptCompile Include="Input\Keyboard\KeyboardCommandEvent.ts" />
+    <Content Include="Input\Keyboard\KeyboardCommandEvent.js">
+      <DependentUpon>KeyboardCommandEvent.ts</DependentUpon>
+    </Content>
+    <Content Include="Input\Keyboard\KeyboardCommandEvent.min.js">
+      <DependentUpon>KeyboardCommandEvent.ts</DependentUpon>
+    </Content>
+    <Content Include="Input\Keyboard\KeyboardCommandHelper.js">
+      <DependentUpon>KeyboardCommandHelper.ts</DependentUpon>
+    </Content>
+    <Content Include="Input\Keyboard\KeyboardCommandHelper.min.js">
+      <DependentUpon>KeyboardCommandHelper.ts</DependentUpon>
+    </Content>
+    <Content Include="Input\Keyboard\KeyboardHandler.js">
+      <DependentUpon>KeyboardHandler.ts</DependentUpon>
+    </Content>
+    <Content Include="Input\Keyboard\KeyboardHandler.min.js">
+      <DependentUpon>KeyboardHandler.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Input\Keyboard\KeyboardModifiers.ts" />
+    <Content Include="Input\Keyboard\KeyboardModifiers.js">
+      <DependentUpon>KeyboardModifiers.ts</DependentUpon>
+    </Content>
+    <Content Include="Input\Keyboard\KeyboardModifiers.min.js">
+      <DependentUpon>KeyboardModifiers.ts</DependentUpon>
+    </Content>
     <Content Include="Input\Mouse\MouseButton.js">
       <DependentUpon>MouseButton.ts</DependentUpon>
     </Content>
@@ -477,6 +512,21 @@
     </Content>
     <Content Include="Graphics\Text\FontStyle.js.map">
       <DependentUpon>FontStyle.ts</DependentUpon>
+    </Content>
+    <Content Include="Input\Keyboard\KeyboardHandler.js.map">
+      <DependentUpon>KeyboardHandler.ts</DependentUpon>
+    </Content>
+    <Content Include="Input\Keyboard\KeyboardCommand.js.map">
+      <DependentUpon>KeyboardCommand.ts</DependentUpon>
+    </Content>
+    <Content Include="Input\Keyboard\KeyboardModifiers.js.map">
+      <DependentUpon>KeyboardModifiers.ts</DependentUpon>
+    </Content>
+    <Content Include="Input\Keyboard\KeyboardCommandHelper.js.map">
+      <DependentUpon>KeyboardCommandHelper.ts</DependentUpon>
+    </Content>
+    <Content Include="Input\Keyboard\KeyboardCommandEvent.js.map">
+      <DependentUpon>KeyboardCommandEvent.ts</DependentUpon>
     </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

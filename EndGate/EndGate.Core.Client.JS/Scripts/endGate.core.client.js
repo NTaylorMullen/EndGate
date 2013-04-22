@@ -5,6 +5,9 @@ var __extends = this.__extends || function (d, b) {
 };
 var EndGate;
 (function (EndGate) {
+    })(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
     (function (Core) {
         var GameTime = (function () {
             function GameTime() {
@@ -1006,10 +1009,305 @@ var EndGate;
 var EndGate;
 (function (EndGate) {
     (function (Core) {
+        (function (Utilities) {
+            var NoopTripInvoker = (function () {
+                function NoopTripInvoker(action, tripped) {
+                    if (typeof tripped === "undefined") { tripped = false; }
+                    this._invoker = NoopTripInvoker._noop;
+                    this._action = action;
+                    if(tripped) {
+                        this.Trip();
+                    }
+                }
+                NoopTripInvoker._noop = function () {
+                };
+                NoopTripInvoker.prototype.Invoke = function () {
+                    var args = [];
+                    for (var _i = 0; _i < (arguments.length - 0); _i++) {
+                        args[_i] = arguments[_i + 0];
+                    }
+                    this._invoker.apply(this, args);
+                };
+                NoopTripInvoker.prototype.InvokeOnce = function () {
+                    var args = [];
+                    for (var _i = 0; _i < (arguments.length - 0); _i++) {
+                        args[_i] = arguments[_i + 0];
+                    }
+                    this._invoker.apply(this, args);
+                    this.Reset();
+                };
+                NoopTripInvoker.prototype.Trip = function () {
+                    this._invoker = this._action;
+                };
+                NoopTripInvoker.prototype.Reset = function () {
+                    this._invoker = NoopTripInvoker._noop;
+                };
+                return NoopTripInvoker;
+            })();
+            Utilities.NoopTripInvoker = NoopTripInvoker;            
+        })(Core.Utilities || (Core.Utilities = {}));
+        var Utilities = Core.Utilities;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Input) {
+            (function (Keyboard) {
+                var KeyboardModifiers = (function () {
+                    function KeyboardModifiers(ctrl, alt, shift) {
+                        this.Ctrl = ctrl;
+                        this.Alt = alt;
+                        this.Shift = shift;
+                    }
+                    KeyboardModifiers.prototype.Equivalent = function (modifier) {
+                        return this.Ctrl === modifier.Ctrl && this.Alt === modifier.Alt && this.Shift === modifier.Shift;
+                    };
+                    KeyboardModifiers.BuildFromCommandString = function BuildFromCommandString(keyCommand) {
+                        var ctrl = (keyCommand.toLowerCase().indexOf("ctrl+") >= 0) ? true : false, alt = (keyCommand.toLowerCase().indexOf("alt+") >= 0) ? true : false, shift = (keyCommand.toLowerCase().indexOf("shift+") >= 0) ? true : false;
+                        return new KeyboardModifiers(ctrl, alt, shift);
+                    };
+                    return KeyboardModifiers;
+                })();
+                Keyboard.KeyboardModifiers = KeyboardModifiers;                
+            })(Input.Keyboard || (Input.Keyboard = {}));
+            var Keyboard = Input.Keyboard;
+        })(Core.Input || (Core.Input = {}));
+        var Input = Core.Input;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Input) {
+            (function (Keyboard) {
+                var shiftValues = {
+                    "~": "`",
+                    "!": "1",
+                    "@": "2",
+                    "#": "3",
+                    "$": "4",
+                    "%": "5",
+                    "^": "6",
+                    "&": "7",
+                    "*": "8",
+                    "(": "9",
+                    ")": "0",
+                    "_": "-",
+                    "+": "=",
+                    ":": ";",
+                    "\"": "'",
+                    "<": ",",
+                    ">": ".",
+                    "?": "/",
+                    "|": "\\"
+                }, specialKeys = {
+                    "27": "esc",
+                    "27": "escape",
+                    "9": "tab",
+                    "32": "space",
+                    "13": "return",
+                    "13": "enter",
+                    "8": "backspace",
+                    "45": "insert",
+                    "36": "home",
+                    "46": "delete",
+                    "35": "end",
+                    "37": "left",
+                    "38": "up",
+                    "39": "right",
+                    "40": "down",
+                    "112": "f1",
+                    "113": "f2",
+                    "114": "f3",
+                    "115": "f4",
+                    "116": "f5",
+                    "117": "f6",
+                    "118": "f7",
+                    "119": "f8",
+                    "120": "f9",
+                    "121": "f10",
+                    "122": "f11",
+                    "123": "f12"
+                };
+                var KeyboardCommandEvent = (function () {
+                    function KeyboardCommandEvent(keyEvent) {
+                        var code, character;
+                        this.Modifiers = new Keyboard.KeyboardModifiers(keyEvent.ctrlKey, keyEvent.altKey, keyEvent.shiftKey);
+                        if(keyEvent.keyCode) {
+                            code = keyEvent.keyCode;
+                        } else if(keyEvent.which) {
+                            code = keyEvent.which;
+                        }
+                        if(!(character = specialKeys[code])) {
+                            character = String.fromCharCode(code).toLowerCase();
+                            if(this.Modifiers.Shift && shiftValues[character]) {
+                                character = shiftValues[character];
+                            }
+                        }
+                        this.Key = character;
+                    }
+                    KeyboardCommandEvent.prototype.Matches = function (command) {
+                        return this.Key.toLowerCase() === command.Key.toLowerCase() && command.Modifiers.Equivalent(this.Modifiers);
+                    };
+                    return KeyboardCommandEvent;
+                })();
+                Keyboard.KeyboardCommandEvent = KeyboardCommandEvent;                
+            })(Input.Keyboard || (Input.Keyboard = {}));
+            var Keyboard = Input.Keyboard;
+        })(Core.Input || (Core.Input = {}));
+        var Input = Core.Input;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Input) {
+            (function (Keyboard) {
+                var KeyboardCommandHelper = (function () {
+                    function KeyboardCommandHelper() { }
+                    KeyboardCommandHelper.ParseKey = function ParseKey(command) {
+                        var arr = command.split("+");
+                        if(arr.length > 1) {
+                            return arr[arr.length - 1];
+                        }
+                        return arr[0];
+                    };
+                    return KeyboardCommandHelper;
+                })();
+                Keyboard.KeyboardCommandHelper = KeyboardCommandHelper;                
+            })(Input.Keyboard || (Input.Keyboard = {}));
+            var Keyboard = Input.Keyboard;
+        })(Core.Input || (Core.Input = {}));
+        var Input = Core.Input;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Input) {
+            (function (Keyboard) {
+                var KeyboardCommand = (function () {
+                    function KeyboardCommand(command, action) {
+                        var _this = this;
+                        this.Action = action;
+                        this.Modifiers = Keyboard.KeyboardModifiers.BuildFromCommandString(command);
+                        this.Key = Keyboard.KeyboardCommandHelper.ParseKey(command);
+                        this.OnDispose = new Core.Utilities.EventHandler();
+                        this._onDisposeInvoker = new Core.Utilities.NoopTripInvoker(function () {
+                            _this.OnDispose.Trigger();
+                        }, true);
+                    }
+                    KeyboardCommand.prototype.Dispose = function () {
+                        this._onDisposeInvoker.InvokeOnce();
+                    };
+                    return KeyboardCommand;
+                })();
+                Keyboard.KeyboardCommand = KeyboardCommand;                
+            })(Input.Keyboard || (Input.Keyboard = {}));
+            var Keyboard = Input.Keyboard;
+        })(Core.Input || (Core.Input = {}));
+        var Input = Core.Input;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Input) {
+            (function (Keyboard) {
+                var KeyboardHandler = (function () {
+                    function KeyboardHandler() {
+                        this._onPressCommands = ({
+                        });
+                        this._onDownCommands = ({
+                        });
+                        this._onUpCommands = ({
+                        });
+                        this.OnKeyPress = new Core.Utilities.EventHandler();
+                        this.OnKeyDown = new Core.Utilities.EventHandler();
+                        this.OnKeyUp = new Core.Utilities.EventHandler();
+                        this.Wire();
+                    }
+                    KeyboardHandler._keyboardCommandIds = 0;
+                    KeyboardHandler.prototype.OnCommandPress = function (keyCommand, action) {
+                        return this.UpdateCache(keyCommand, action, this._onPressCommands);
+                    };
+                    KeyboardHandler.prototype.OnCommandDown = function (keyCommand, action) {
+                        return this.UpdateCache(keyCommand, action, this._onDownCommands);
+                    };
+                    KeyboardHandler.prototype.OnCommandUp = function (keyCommand, action) {
+                        return this.UpdateCache(keyCommand, action, this._onUpCommands);
+                    };
+                    KeyboardHandler.prototype.UpdateCache = function (keyCommand, action, store) {
+                        var command = new Keyboard.KeyboardCommand(keyCommand, action), commandId = KeyboardHandler._keyboardCommandIds++;
+                        command.OnDispose.Bind(function () {
+                            delete store[commandId];
+                        });
+                        store[commandId] = command;
+                        return command;
+                    };
+                    KeyboardHandler.prototype.Wire = function () {
+                        document.onkeypress = this.BuildKeyEvent(this._onPressCommands, this.OnKeyPress);
+                        document.onkeydown = this.BuildKeyEvent(this._onDownCommands, this.OnKeyDown);
+                        document.onkeyup = this.BuildKeyEvent(this._onUpCommands, this.OnKeyUp);
+                    };
+                    KeyboardHandler.prototype.FocusingTextArea = function (ke) {
+                        var element;
+                        if(ke.target) {
+                            element = ke.target;
+                        } else if(ke.srcElement) {
+                            element = ke.srcElement;
+                        }
+                        if(element.nodeType === 3) {
+                            element = element.parentNode;
+                        }
+                        if(element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                            return true;
+                        }
+                        return false;
+                    };
+                    KeyboardHandler.prototype.BuildKeyEvent = function (store, eventHandler) {
+                        var _this = this;
+                        return function (ke) {
+                            var keyboardCommandEvent, propogate = true;
+                            if(_this.FocusingTextArea(ke)) {
+                                return;
+                            }
+                            keyboardCommandEvent = new Keyboard.KeyboardCommandEvent(ke);
+                            eventHandler.Trigger(keyboardCommandEvent);
+                            for(var keyboardCommandId in store) {
+                                if(keyboardCommandEvent.Matches(store[keyboardCommandId])) {
+                                    store[keyboardCommandId].Action();
+                                    ke.preventDefault();
+                                    propogate = false;
+                                }
+                            }
+                            return propogate;
+                        };
+                    };
+                    return KeyboardHandler;
+                })();
+                Keyboard.KeyboardHandler = KeyboardHandler;                
+            })(Input.Keyboard || (Input.Keyboard = {}));
+            var Keyboard = Input.Keyboard;
+        })(Core.Input || (Core.Input = {}));
+        var Input = Core.Input;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
         (function (Input) {
             var InputManager = (function () {
                 function InputManager(canvas) {
                     this.Mouse = new Input.Mouse.MouseHandler(canvas);
+                    this.Keyboard = new Input.Keyboard.KeyboardHandler();
                 }
                 return InputManager;
             })();
@@ -1677,7 +1975,7 @@ var EndGate;
                     function FontSettings() {
                         this._cachedState = {
                             fontSize: "10px",
-                            fontFamily: "",
+                            fontFamily: "Times New Roman",
                             fontVariant: "",
                             fontWeight: "",
                             fontStyle: ""
@@ -1735,38 +2033,6 @@ var EndGate;
             var Text = Graphics.Text;
         })(Core.Graphics || (Core.Graphics = {}));
         var Graphics = Core.Graphics;
-    })(EndGate.Core || (EndGate.Core = {}));
-    var Core = EndGate.Core;
-})(EndGate || (EndGate = {}));
-var EndGate;
-(function (EndGate) {
-    (function (Core) {
-        (function (Utilities) {
-            var NoopTripInvoker = (function () {
-                function NoopTripInvoker(action) {
-                    this._invoker = NoopTripInvoker._noop;
-                    this._action = action;
-                }
-                NoopTripInvoker._noop = function () {
-                };
-                NoopTripInvoker.prototype.Invoke = function () {
-                    var args = [];
-                    for (var _i = 0; _i < (arguments.length - 0); _i++) {
-                        args[_i] = arguments[_i + 0];
-                    }
-                    this._invoker.apply(this, args);
-                };
-                NoopTripInvoker.prototype.Trip = function () {
-                    this._invoker = this._action;
-                };
-                NoopTripInvoker.prototype.Reset = function () {
-                    this._invoker = NoopTripInvoker._noop;
-                };
-                return NoopTripInvoker;
-            })();
-            Utilities.NoopTripInvoker = NoopTripInvoker;            
-        })(Core.Utilities || (Core.Utilities = {}));
-        var Utilities = Core.Utilities;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));

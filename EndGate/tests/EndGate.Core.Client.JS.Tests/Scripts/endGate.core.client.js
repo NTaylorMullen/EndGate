@@ -5,6 +5,9 @@ var __extends = this.__extends || function (d, b) {
 };
 var EndGate;
 (function (EndGate) {
+    })(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
     (function (Core) {
         var GameTime = (function () {
             function GameTime() {
@@ -1006,10 +1009,305 @@ var EndGate;
 var EndGate;
 (function (EndGate) {
     (function (Core) {
+        (function (Utilities) {
+            var NoopTripInvoker = (function () {
+                function NoopTripInvoker(action, tripped) {
+                    if (typeof tripped === "undefined") { tripped = false; }
+                    this._invoker = NoopTripInvoker._noop;
+                    this._action = action;
+                    if(tripped) {
+                        this.Trip();
+                    }
+                }
+                NoopTripInvoker._noop = function () {
+                };
+                NoopTripInvoker.prototype.Invoke = function () {
+                    var args = [];
+                    for (var _i = 0; _i < (arguments.length - 0); _i++) {
+                        args[_i] = arguments[_i + 0];
+                    }
+                    this._invoker.apply(this, args);
+                };
+                NoopTripInvoker.prototype.InvokeOnce = function () {
+                    var args = [];
+                    for (var _i = 0; _i < (arguments.length - 0); _i++) {
+                        args[_i] = arguments[_i + 0];
+                    }
+                    this._invoker.apply(this, args);
+                    this.Reset();
+                };
+                NoopTripInvoker.prototype.Trip = function () {
+                    this._invoker = this._action;
+                };
+                NoopTripInvoker.prototype.Reset = function () {
+                    this._invoker = NoopTripInvoker._noop;
+                };
+                return NoopTripInvoker;
+            })();
+            Utilities.NoopTripInvoker = NoopTripInvoker;            
+        })(Core.Utilities || (Core.Utilities = {}));
+        var Utilities = Core.Utilities;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Input) {
+            (function (Keyboard) {
+                var KeyboardModifiers = (function () {
+                    function KeyboardModifiers(ctrl, alt, shift) {
+                        this.Ctrl = ctrl;
+                        this.Alt = alt;
+                        this.Shift = shift;
+                    }
+                    KeyboardModifiers.prototype.Equivalent = function (modifier) {
+                        return this.Ctrl === modifier.Ctrl && this.Alt === modifier.Alt && this.Shift === modifier.Shift;
+                    };
+                    KeyboardModifiers.BuildFromCommandString = function BuildFromCommandString(keyCommand) {
+                        var ctrl = (keyCommand.toLowerCase().indexOf("ctrl+") >= 0) ? true : false, alt = (keyCommand.toLowerCase().indexOf("alt+") >= 0) ? true : false, shift = (keyCommand.toLowerCase().indexOf("shift+") >= 0) ? true : false;
+                        return new KeyboardModifiers(ctrl, alt, shift);
+                    };
+                    return KeyboardModifiers;
+                })();
+                Keyboard.KeyboardModifiers = KeyboardModifiers;                
+            })(Input.Keyboard || (Input.Keyboard = {}));
+            var Keyboard = Input.Keyboard;
+        })(Core.Input || (Core.Input = {}));
+        var Input = Core.Input;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Input) {
+            (function (Keyboard) {
+                var shiftValues = {
+                    "`": "~",
+                    "1": "!",
+                    "2": "@",
+                    "3": "#",
+                    "4": "$",
+                    "5": "%",
+                    "6": "^",
+                    "7": "&",
+                    "8": "*",
+                    "9": "(",
+                    "0": ")",
+                    "-": "_",
+                    "=": "+",
+                    ";": ":",
+                    "'": "\"",
+                    ",": "<",
+                    ".": ">",
+                    "/": "?",
+                    "\\": "|"
+                }, specialKeys = {
+                    "esc": 27,
+                    "escape": 27,
+                    "tab": 9,
+                    "space": 32,
+                    "return": 13,
+                    "enter": 13,
+                    "backspace": 8,
+                    "insert": 45,
+                    "home": 36,
+                    "delete": 46,
+                    "end": 35,
+                    "left": 37,
+                    "up": 38,
+                    "right": 39,
+                    "down": 40,
+                    "f1": 112,
+                    "f2": 113,
+                    "f3": 114,
+                    "f4": 115,
+                    "f5": 116,
+                    "f6": 117,
+                    "f7": 118,
+                    "f8": 119,
+                    "f9": 120,
+                    "f10": 121,
+                    "f11": 122,
+                    "f12": 123
+                };
+                var KeyboardCommandEvent = (function () {
+                    function KeyboardCommandEvent(keyEvent) {
+                        var code, character;
+                        this.Modifiers = new Keyboard.KeyboardModifiers(keyEvent.ctrlKey, keyEvent.altKey, keyEvent.shiftKey);
+                        if(keyEvent.keyCode) {
+                            code = keyEvent.keyCode;
+                        } else if(keyEvent.which) {
+                            code = keyEvent.which;
+                        }
+                        if(!(character = specialKeys[code])) {
+                            character = String.fromCharCode(code).toLowerCase();
+                            if(this.Modifiers.Shift && shiftValues[character]) {
+                                character = shiftValues[character];
+                            }
+                        }
+                        this.Key = character;
+                    }
+                    KeyboardCommandEvent.prototype.Matches = function (command) {
+                        return this.Key === command.Key && command.Modifiers.Equivalent(this.Modifiers);
+                    };
+                    return KeyboardCommandEvent;
+                })();
+                Keyboard.KeyboardCommandEvent = KeyboardCommandEvent;                
+            })(Input.Keyboard || (Input.Keyboard = {}));
+            var Keyboard = Input.Keyboard;
+        })(Core.Input || (Core.Input = {}));
+        var Input = Core.Input;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Input) {
+            (function (Keyboard) {
+                var KeyboardCommandHelper = (function () {
+                    function KeyboardCommandHelper() { }
+                    KeyboardCommandHelper.ParseKey = function ParseKey(command) {
+                        var arr = command.split("+");
+                        if(arr.length > 1) {
+                            return arr[arr.length - 1];
+                        }
+                        return arr[0];
+                    };
+                    return KeyboardCommandHelper;
+                })();
+                Keyboard.KeyboardCommandHelper = KeyboardCommandHelper;                
+            })(Input.Keyboard || (Input.Keyboard = {}));
+            var Keyboard = Input.Keyboard;
+        })(Core.Input || (Core.Input = {}));
+        var Input = Core.Input;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Input) {
+            (function (Keyboard) {
+                var KeyboardCommand = (function () {
+                    function KeyboardCommand(command, action) {
+                        var _this = this;
+                        this.Action = action;
+                        this.Modifiers = Keyboard.KeyboardModifiers.BuildFromCommandString(command);
+                        this.Key = Keyboard.KeyboardCommandHelper.ParseKey(command);
+                        this.OnDispose = new Core.Utilities.EventHandler();
+                        this._onDisposeInvoker = new Core.Utilities.NoopTripInvoker(function () {
+                            _this.OnDispose.Trigger();
+                        }, true);
+                    }
+                    KeyboardCommand.prototype.Dispose = function () {
+                        this._onDisposeInvoker.InvokeOnce();
+                    };
+                    return KeyboardCommand;
+                })();
+                Keyboard.KeyboardCommand = KeyboardCommand;                
+            })(Input.Keyboard || (Input.Keyboard = {}));
+            var Keyboard = Input.Keyboard;
+        })(Core.Input || (Core.Input = {}));
+        var Input = Core.Input;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Input) {
+            (function (Keyboard) {
+                var KeyboardHandler = (function () {
+                    function KeyboardHandler() {
+                        this._onPressCommands = ({
+                        });
+                        this._onDownCommands = ({
+                        });
+                        this._onUpCommands = ({
+                        });
+                        this.OnKeyPress = new Core.Utilities.EventHandler();
+                        this.OnKeyDown = new Core.Utilities.EventHandler();
+                        this.OnKeyUp = new Core.Utilities.EventHandler();
+                        this.Wire();
+                    }
+                    KeyboardHandler._keyboardCommandIds = 0;
+                    KeyboardHandler.prototype.OnCommandPress = function (keyCommand, action) {
+                        return this.UpdateCache(keyCommand, action, this._onPressCommands);
+                    };
+                    KeyboardHandler.prototype.OnCommandDown = function (keyCommand, action) {
+                        return this.UpdateCache(keyCommand, action, this._onDownCommands);
+                    };
+                    KeyboardHandler.prototype.OnCommandUp = function (keyCommand, action) {
+                        return this.UpdateCache(keyCommand, action, this._onUpCommands);
+                    };
+                    KeyboardHandler.prototype.UpdateCache = function (keyCommand, action, store) {
+                        var command = new Keyboard.KeyboardCommand(keyCommand, action), commandId = KeyboardHandler._keyboardCommandIds++;
+                        command.OnDispose.Bind(function () {
+                            delete store[commandId];
+                        });
+                        store[commandId] = command;
+                        return command;
+                    };
+                    KeyboardHandler.prototype.Wire = function () {
+                        document.onkeypress = this.BuildKeyEvent(this._onPressCommands, this.OnKeyPress);
+                        document.onkeydown = this.BuildKeyEvent(this._onDownCommands, this.OnKeyDown);
+                        document.onkeyup = this.BuildKeyEvent(this._onUpCommands, this.OnKeyUp);
+                    };
+                    KeyboardHandler.prototype.FocusingTextArea = function (ke) {
+                        var element;
+                        if(ke.target) {
+                            element = ke.target;
+                        } else if(ke.srcElement) {
+                            element = ke.srcElement;
+                        }
+                        if(element.nodeType === 3) {
+                            element = element.parentNode;
+                        }
+                        if(element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                            return true;
+                        }
+                        return false;
+                    };
+                    KeyboardHandler.prototype.BuildKeyEvent = function (store, eventHandler) {
+                        var _this = this;
+                        return function (ke) {
+                            var keyboardCommandEvent, propogate = true;
+                            if(_this.FocusingTextArea(ke)) {
+                                return;
+                            }
+                            keyboardCommandEvent = new Keyboard.KeyboardCommandEvent(ke);
+                            eventHandler.Trigger(keyboardCommandEvent);
+                            for(var keyboardCommandId in store) {
+                                if(keyboardCommandEvent.Matches(store[keyboardCommandId])) {
+                                    store[keyboardCommandId].Action();
+                                    ke.preventDefault();
+                                    propogate = false;
+                                }
+                            }
+                            return propogate;
+                        };
+                    };
+                    return KeyboardHandler;
+                })();
+                Keyboard.KeyboardHandler = KeyboardHandler;                
+            })(Input.Keyboard || (Input.Keyboard = {}));
+            var Keyboard = Input.Keyboard;
+        })(Core.Input || (Core.Input = {}));
+        var Input = Core.Input;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
         (function (Input) {
             var InputManager = (function () {
                 function InputManager(canvas) {
                     this.Mouse = new Input.Mouse.MouseHandler(canvas);
+                    this.Keyboard = new Input.Keyboard.KeyboardHandler();
                 }
                 return InputManager;
             })();
@@ -1520,19 +1818,9 @@ var EndGate;
                 })(Text.FontFamily || (Text.FontFamily = {}));
                 var FontFamily = Text.FontFamily;
                 ;
-                (function (FontFamilyType) {
-                    FontFamilyType._map = [];
-                    FontFamilyType._map[0] = "Sans";
-                    FontFamilyType.Sans = 0;
-                    FontFamilyType._map[1] = "Serif";
-                    FontFamilyType.Serif = 1;
-                    FontFamilyType._map[2] = "SansSerif";
-                    FontFamilyType.SansSerif = 2;
-                })(Text.FontFamilyType || (Text.FontFamilyType = {}));
-                var FontFamilyType = Text.FontFamilyType;
-                ;
                 var FontFamilyHelper = (function () {
-                    function FontFamilyHelper() {
+                    function FontFamilyHelper() { }
+                    FontFamilyHelper._Initialize = function _Initialize() {
                         FontFamilyHelper._families = ({
                         });
                         for(var family in FontFamily) {
@@ -1541,30 +1829,14 @@ var EndGate;
                             }
                         }
                         FontFamilyHelper._families[FontFamily["TimesNewRoman"]] = "Times New Roman";
-                    }
+                    };
                     FontFamilyHelper.Get = function Get(family) {
                         return FontFamilyHelper._families[family];
                     };
                     return FontFamilyHelper;
                 })();
                 Text.FontFamilyHelper = FontFamilyHelper;                
-                var FontFamilyTypeHelper = (function () {
-                    function FontFamilyTypeHelper() {
-                        FontFamilyTypeHelper._familyTypes = ({
-                        });
-                        for(var familyType in FontFamilyType) {
-                            if(familyType !== "_map") {
-                                FontFamilyTypeHelper._familyTypes[FontFamily[familyType]] = familyType;
-                            }
-                        }
-                        FontFamilyTypeHelper._familyTypes[FontFamily["SansSerif"]] = "sans-serif";
-                    }
-                    FontFamilyTypeHelper.Get = function Get(familyType) {
-                        return FontFamilyTypeHelper._familyTypes[familyType];
-                    };
-                    return FontFamilyTypeHelper;
-                })();
-                Text.FontFamilyTypeHelper = FontFamilyTypeHelper;                
+                FontFamilyHelper._Initialize();
             })(Graphics.Text || (Graphics.Text = {}));
             var Text = Graphics.Text;
         })(Core.Graphics || (Core.Graphics = {}));
@@ -1590,6 +1862,23 @@ var EndGate;
                 })(Text.FontMeasurement || (Text.FontMeasurement = {}));
                 var FontMeasurement = Text.FontMeasurement;
                 ;
+                var FontMeasurementHelper = (function () {
+                    function FontMeasurementHelper() { }
+                    FontMeasurementHelper._Initialize = function _Initialize() {
+                        FontMeasurementHelper._measurements = [
+                            "em", 
+                            "px", 
+                            "pt", 
+                            "%"
+                        ];
+                    };
+                    FontMeasurementHelper.Get = function Get(measurement) {
+                        return FontMeasurementHelper._measurements[measurement];
+                    };
+                    return FontMeasurementHelper;
+                })();
+                Text.FontMeasurementHelper = FontMeasurementHelper;                
+                FontMeasurementHelper._Initialize();
             })(Graphics.Text || (Graphics.Text = {}));
             var Text = Graphics.Text;
         })(Core.Graphics || (Core.Graphics = {}));
@@ -1612,7 +1901,8 @@ var EndGate;
                 var FontVariant = Text.FontVariant;
                 ;
                 var FontVariantHelper = (function () {
-                    function FontVariantHelper() {
+                    function FontVariantHelper() { }
+                    FontVariantHelper._Initialize = function _Initialize() {
                         FontVariantHelper._variants = ({
                         });
                         for(var family in FontVariant) {
@@ -1621,13 +1911,14 @@ var EndGate;
                             }
                         }
                         FontVariantHelper._variants["SmallCaps"] = "Times New Roman";
-                    }
+                    };
                     FontVariantHelper.Get = function Get(variant) {
                         return FontVariantHelper._variants[variant];
                     };
                     return FontVariantHelper;
                 })();
                 Text.FontVariantHelper = FontVariantHelper;                
+                FontVariantHelper._Initialize();
             })(Graphics.Text || (Graphics.Text = {}));
             var Text = Graphics.Text;
         })(Core.Graphics || (Core.Graphics = {}));
@@ -1651,7 +1942,8 @@ var EndGate;
                 })(Text.FontStyle || (Text.FontStyle = {}));
                 var FontStyle = Text.FontStyle;
                 var FontStyleHelper = (function () {
-                    function FontStyleHelper() {
+                    function FontStyleHelper() { }
+                    FontStyleHelper._Initialize = function _Initialize() {
                         FontStyleHelper._styles = ({
                         });
                         for(var style in FontStyle) {
@@ -1659,13 +1951,14 @@ var EndGate;
                                 FontStyleHelper._styles[FontStyle[style]] = style;
                             }
                         }
-                    }
+                    };
                     FontStyleHelper.Get = function Get(style) {
                         return FontStyleHelper._styles[style];
                     };
                     return FontStyleHelper;
                 })();
                 Text.FontStyleHelper = FontStyleHelper;                
+                FontStyleHelper._Initialize();
             })(Graphics.Text || (Graphics.Text = {}));
             var Text = Graphics.Text;
         })(Core.Graphics || (Core.Graphics = {}));
@@ -1682,8 +1975,7 @@ var EndGate;
                     function FontSettings() {
                         this._cachedState = {
                             fontSize: "10px",
-                            fontFamily: "",
-                            fontFamilyType: "sans-serif",
+                            fontFamily: "Times New Roman",
                             fontVariant: "",
                             fontWeight: "",
                             fontStyle: ""
@@ -1693,13 +1985,13 @@ var EndGate;
                     }
                     FontSettings.prototype.FontSize = function (size, measurement) {
                         if (typeof measurement === "undefined") { measurement = Text.FontMeasurement.Points; }
-                        return this.GetOrSetCache("fontSize", size.toString() + Text.FontMeasurement["_map"][measurement]);
+                        if(size !== undefined) {
+                            return this.GetOrSetCache("fontSize", size.toString() + Text.FontMeasurementHelper.Get(measurement));
+                        }
+                        return this._cachedState["fontSize"];
                     };
-                    FontSettings.prototype.FontFamily = function (family, familyType) {
+                    FontSettings.prototype.FontFamily = function (family) {
                         return this.GetOrSetCache("fontFamily", Text.FontFamilyHelper.Get(family));
-                    };
-                    FontSettings.prototype.FontFamilyType = function (fontFamilyType) {
-                        return this.GetOrSetCache("fontFamilyType", Text.FontFamilyTypeHelper.Get(fontFamilyType));
                     };
                     FontSettings.prototype.FontVariant = function (variant) {
                         return this.GetOrSetCache("fontVariant", Text.FontVariantHelper.Get(variant));
@@ -1713,7 +2005,7 @@ var EndGate;
                     FontSettings.prototype._BuildFont = function () {
                         var font;
                         if(this._refreshCache) {
-                            font = this._cachedState["fontSize"] + " " + this._cachedState["fontVariant"] + " " + this._cachedState["fontWeight"] + " " + this._cachedState["fontStyle"];
+                            font = this._cachedState["fontWeight"] + " " + this._cachedState["fontStyle"] + " " + this._cachedState["fontSize"] + " " + this._cachedState["fontVariant"];
                             if(this._cachedState["fontFamily"]) {
                                 font += this._cachedState["fontFamily"];
                                 if(this._cachedState["fontFamilyType"]) {
@@ -1741,38 +2033,6 @@ var EndGate;
             var Text = Graphics.Text;
         })(Core.Graphics || (Core.Graphics = {}));
         var Graphics = Core.Graphics;
-    })(EndGate.Core || (EndGate.Core = {}));
-    var Core = EndGate.Core;
-})(EndGate || (EndGate = {}));
-var EndGate;
-(function (EndGate) {
-    (function (Core) {
-        (function (Utilities) {
-            var NoopTripInvoker = (function () {
-                function NoopTripInvoker(action) {
-                    this._invoker = NoopTripInvoker._noop;
-                    this._action = action;
-                }
-                NoopTripInvoker._noop = function () {
-                };
-                NoopTripInvoker.prototype.Invoke = function () {
-                    var args = [];
-                    for (var _i = 0; _i < (arguments.length - 0); _i++) {
-                        args[_i] = arguments[_i + 0];
-                    }
-                    this._invoker.apply(this, args);
-                };
-                NoopTripInvoker.prototype.Trip = function () {
-                    this._invoker = this._action;
-                };
-                NoopTripInvoker.prototype.Reset = function () {
-                    this._invoker = NoopTripInvoker._noop;
-                };
-                return NoopTripInvoker;
-            })();
-            Utilities.NoopTripInvoker = NoopTripInvoker;            
-        })(Core.Utilities || (Core.Utilities = {}));
-        var Utilities = Core.Utilities;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));
