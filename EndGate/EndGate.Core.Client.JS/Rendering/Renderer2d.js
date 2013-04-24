@@ -8,6 +8,7 @@ var EndGate;
                     this._visibleContext = renderOnto.getContext("2d");
                     this._bufferCanvas = document.createElement("canvas");
                     this._bufferContext = this._bufferCanvas.getContext("2d");
+                    this.OnRendererSizeChange = new Core.Utilities.EventHandler();
                     this.UpdateBufferSize();
                     this._disposed = false;
                 }
@@ -20,7 +21,7 @@ var EndGate;
                     }
                     this._visibleContext.clearRect(0, 0, this._visibleCanvas.width, this._visibleCanvas.height);
                     this._visibleContext.drawImage(this._bufferCanvas, 0, 0);
-                    this._bufferContext.clearRect(0, 0, this._bufferCanvas.width, this._bufferCanvas.height);
+                    this._ClearBuffer();
                     renderables.sort(Renderer2d._zindexSort);
                     for(var i = 0; i < renderables.length; i++) {
                         renderables[i].Draw(this._bufferContext);
@@ -33,9 +34,13 @@ var EndGate;
                         this._visibleCanvas.parentNode.removeChild(this._visibleCanvas);
                     }
                 };
+                Renderer2d.prototype._ClearBuffer = function () {
+                    this._bufferContext.clearRect(0, 0, this._bufferCanvas.width, this._bufferCanvas.height);
+                };
                 Renderer2d.prototype.UpdateBufferSize = function () {
                     this._bufferCanvas.width = this._visibleCanvas.width;
                     this._bufferCanvas.height = this._visibleCanvas.height;
+                    this.OnRendererSizeChange.Trigger(new Core.Assets.Size2d(this._visibleCanvas.width, this._visibleCanvas.height));
                 };
                 return Renderer2d;
             })();

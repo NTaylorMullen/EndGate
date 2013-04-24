@@ -1,24 +1,30 @@
 /// <reference path="../../Assets/Vectors/Vector2d.ts" />
 /// <reference path="../Graphic2d.ts" />
 /// <reference path="../../Utilities/NoopTripInvoker.ts" />
-/// <reference path="FontSettings.ts" />
+/// <reference path="../../BoundingObject/BoundingRectangle.ts" />
+/// <reference path="Font/FontSettings.ts" />
 
 module EndGate.Core.Graphics.Text {
 
     export class Text2d extends Graphic2d {
+        public _type: string = "Text2d";
         public FontSettings: FontSettings;
 
         private _text: string;
         private _stroker: Utilities.NoopTripInvoker;
 
+        // For GetDrawBounds
+        private _drawBounds: BoundingObject.BoundingRectangle;
 
-        constructor(position: Assets.Vector2d, text: string, color: string = "black") {
-            super(position);
+        constructor(x: number, y: number, text: string, color: string = "black") {
+            super(new Assets.Vector2d(x, y));
 
             this._text = text;
             this._stroker = new Utilities.NoopTripInvoker((context: CanvasRenderingContext2D) => {
                 context.strokeText(this._text, this.Position.X, this.Position.Y);
             });
+
+            this._drawBounds = new BoundingObject.BoundingRectangle(this.Position, Assets.Size2d.One());
 
             this.FontSettings = new FontSettings();
             this.Align("center");
@@ -91,13 +97,27 @@ module EndGate.Core.Graphics.Text {
         }
 
         public Draw(context: CanvasRenderingContext2D): void {
+            var textSize;
+
             super.StartDraw(context);
 
             this.State.Font(this.FontSettings._BuildFont());
+
+            textSize = context.measureText(this._text);
+            this._drawBounds.Size.Width = textSize.width;
+            this._drawBounds.Size.Height = parseInt(this.FontSettings.FontSize()) * 1.5;
+
             context.fillText(this._text, this.Position.X, this.Position.Y);
             this._stroker.Invoke(context);
 
             super.EndDraw(context);
+        }
+
+        public GetDrawBounds(): BoundingObject.Bounds2d {
+            this._drawBounds.Rotation = this.Rotation;
+            this._drawBounds.Position = this.Position;
+
+            return this._drawBounds;
         }
     }
 

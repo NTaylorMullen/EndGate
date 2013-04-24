@@ -2,15 +2,19 @@
 /// <reference path="../Interfaces/ITyped.d.ts" />
 /// <reference path="../GameTime.ts" />
 /// <reference path="../Graphics/Graphic2d.ts" />
+/// <reference path="../Assets/Sizes/Size2d.ts" />
+/// <reference path="../Assets/Vectors/Vector2d.ts" />
+/// <reference path="Camera/Camera2d.ts" />
 /// <reference path="IRenderer.d.ts" />
-/// <reference path="Renderer2d.ts" />
+/// <reference path="Camera/Camera2dRenderer.ts" />
 
 module EndGate.Core.Rendering {
-    
-    export class Scene implements ITyped, IDisposable {
+
+    export class Scene2d implements ITyped, IDisposable {
         public _type: string = "Scene";
 
         public DrawArea: HTMLCanvasElement;
+        public Camera: Camera.Camera2d;
 
         private _actors: Graphics.Graphic2d[];
         private _renderer: IRenderer;
@@ -18,7 +22,7 @@ module EndGate.Core.Rendering {
 
         private _disposed: bool;
 
-        constructor(drawArea?: HTMLCanvasElement, onDraw?: (context: CanvasRenderingContext2D) => void) {
+        constructor(drawArea?: HTMLCanvasElement, onDraw?: (context: CanvasRenderingContext2D) => void ) {
             this._actors = [];
 
             if (typeof drawArea === "undefined") {
@@ -33,7 +37,8 @@ module EndGate.Core.Rendering {
             }
 
             this.DrawArea = drawArea;
-            this._renderer = new Renderer2d(this.DrawArea);
+            this.Camera = new Camera.Camera2d(new Assets.Vector2d(this.DrawArea.width / 2, this.DrawArea.height / 2), new Assets.Size2d(this.DrawArea.width, this.DrawArea.height));
+            this._renderer = new Camera.Camera2dRenderer(this.DrawArea, this.Camera);
             this._disposed = false;
         }
 

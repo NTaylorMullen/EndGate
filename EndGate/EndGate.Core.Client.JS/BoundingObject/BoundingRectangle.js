@@ -15,6 +15,10 @@ var EndGate;
                     this._boundsType = "BoundingRectangle";
                     this.Size = size;
                 }
+                BoundingRectangle.prototype.Scale = function (x, y) {
+                    this.Size.Width *= x;
+                    this.Size.Height *= x;
+                };
                 BoundingRectangle.prototype.Vertices = function () {
                     return [
                         this.TopLeft(), 

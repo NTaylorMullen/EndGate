@@ -55,6 +55,11 @@
             <p>Demonstrates how to use a games keyboard input handler.</p>
             <p><a class="btn" href="Samples/KeyboardInput">View sample &raquo;</a></p>
         </div>
+        <div class="span4">
+            <h3>Camera</h3>
+            <p>Demonstrates how to use the camera's movement and zooming capabilities.</p>
+            <p><a class="btn" href="Samples/Camera">View sample &raquo;</a></p>
+        </div>
     </div>
 
     <div class="clear"></div>

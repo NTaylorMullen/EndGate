@@ -18,6 +18,11 @@ var EndGate;
                     Circle.prototype.BuildPath = function (context) {
                         context.arc(this.Position.X, this.Position.Y, this.Radius, 0, (Math).twoPI);
                     };
+                    Circle.prototype.GetDrawBounds = function () {
+                        var bounds = new Core.BoundingObject.BoundingCircle(this.Position, this.Radius);
+                        bounds.Rotation = this.Rotation;
+                        return bounds;
+                    };
                     return Circle;
                 })(Shapes.Shape);
                 Shapes.Circle = Circle;                

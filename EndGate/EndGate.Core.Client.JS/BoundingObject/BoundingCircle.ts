@@ -16,6 +16,10 @@ module EndGate.Core.BoundingObject {
             this.Radius = radius;
         }
 
+        public Scale(x: number, y: number): void {
+            this.Radius *= x;
+        }
+
         public Area(): number {
             return Math.PI * this.Radius * this.Radius;
         }

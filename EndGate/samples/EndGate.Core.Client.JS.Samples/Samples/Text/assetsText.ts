@@ -11,7 +11,7 @@ class TextBuilder extends EndGate.Core.Game {
         super(_canvas);
         var that = this;
 
-        this.Text = new EndGate.Core.Graphics.Text.Text2d(defaultPosition, "Hello World!");
+        this.Text = new EndGate.Core.Graphics.Text.Text2d(defaultPosition.X, defaultPosition.Y, "Hello World!");
         this.Text.FontSettings.FontSize(20);
         this.Text.FontSettings.FontFamily(EndGate.Core.Graphics.Text.FontFamily.TimesNewRoman);
         this.Scene.Add(this.Text);

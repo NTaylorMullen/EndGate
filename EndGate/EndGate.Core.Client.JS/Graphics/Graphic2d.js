@@ -24,6 +24,9 @@ var EndGate;
                 };
                 Graphic2d.prototype.Draw = function (context) {
                 };
+                Graphic2d.prototype.GetDrawBounds = function () {
+                    throw new Error("GetDrawBounds is abstract, it must be implemented.");
+                };
                 return Graphic2d;
             })();
             Graphics.Graphic2d = Graphic2d;            

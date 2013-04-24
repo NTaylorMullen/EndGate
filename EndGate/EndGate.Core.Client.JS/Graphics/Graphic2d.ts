@@ -39,6 +39,10 @@ module EndGate.Core.Graphics {
 
         public Draw(context: CanvasRenderingContext2D): void {
         }
+
+        public GetDrawBounds(): BoundingObject.Bounds2d {
+            throw new Error("GetDrawBounds is abstract, it must be implemented.");
+        }
     }
 
 }

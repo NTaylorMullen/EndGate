@@ -18,6 +18,11 @@ var EndGate;
                     Rectangle.prototype.BuildPath = function (context) {
                         context.rect(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
                     };
+                    Rectangle.prototype.GetDrawBounds = function () {
+                        var bounds = new Core.BoundingObject.BoundingRectangle(this.Position, this.Size);
+                        bounds.Rotation = this.Rotation;
+                        return bounds;
+                    };
                     return Rectangle;
                 })(Shapes.Shape);
                 Shapes.Rectangle = Rectangle;                

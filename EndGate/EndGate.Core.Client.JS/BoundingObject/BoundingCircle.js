@@ -15,6 +15,9 @@ var EndGate;
                     this._boundsType = "BoundingCircle";
                     this.Radius = radius;
                 }
+                BoundingCircle.prototype.Scale = function (x, y) {
+                    this.Radius *= x;
+                };
                 BoundingCircle.prototype.Area = function () {
                     return Math.PI * this.Radius * this.Radius;
                 };

@@ -7,7 +7,7 @@ var EndGate;
                 this._type = "Game";
                 this._gameTime = new Core.GameTime();
                 this.ID = Game._gameIds++;
-                this.Scene = new Core.Rendering.Scene(gameCanvas, function (context) {
+                this.Scene = new Core.Rendering.Scene2d(gameCanvas, function (context) {
                     _this.Draw(context);
                 });
                 this.Input = new Core.Input.InputManager(this.Scene.DrawArea);

@@ -111,6 +111,13 @@
       <DependentUpon>Bounds2d.ts</DependentUpon>
     </Content>
     <TypeScriptCompile Include="Collision\Collidable.ts" />
+    <TypeScriptCompile Include="Rendering\Camera\Camera2d.ts" />
+    <Content Include="Rendering\Camera\Camera2d.js">
+      <DependentUpon>Camera2d.ts</DependentUpon>
+    </Content>
+    <Content Include="Rendering\Camera\Camera2d.min.js">
+      <DependentUpon>Camera2d.ts</DependentUpon>
+    </Content>
     <Content Include="Collision\Collidable.js">
       <DependentUpon>Collidable.ts</DependentUpon>
     </Content>
@@ -174,7 +181,6 @@
       <DependentUpon>GameTime.ts</DependentUpon>
     </Content>
     <TypeScriptCompile Include="Interfaces\IUpdateable.d.ts" />
-    <TypeScriptCompile Include="Rendering\Scene.ts" />
     <TypeScriptCompile Include="Rendering\Renderer2d.ts" />
     <TypeScriptCompile Include="Rendering\IRenderer.d.ts" />
     <TypeScriptCompile Include="Loopers\TimedCallback.ts" />
@@ -212,39 +218,39 @@
     <TypeScriptCompile Include="Input\Mouse\IMouseClickEvent.d.ts" />
     <TypeScriptCompile Include="Input\InputManager.ts" />
     <TypeScriptCompile Include="Graphics\Text\Text2d.ts" />
-    <TypeScriptCompile Include="Graphics\Text\FontSettings.ts" />
-    <TypeScriptCompile Include="Graphics\Text\FontMeasurement.ts" />
-    <TypeScriptCompile Include="Graphics\Text\FontFamily.ts" />
-    <Content Include="Graphics\Text\FontFamily.js">
+    <TypeScriptCompile Include="Graphics\Text\Font\FontSettings.ts" />
+    <TypeScriptCompile Include="Graphics\Text\Font\FontMeasurement.ts" />
+    <TypeScriptCompile Include="Graphics\Text\Font\FontFamily.ts" />
+    <Content Include="Graphics\Text\Font\FontFamily.js">
       <DependentUpon>FontFamily.ts</DependentUpon>
     </Content>
-    <Content Include="Graphics\Text\FontFamily.min.js">
+    <Content Include="Graphics\Text\Font\FontFamily.min.js">
       <DependentUpon>FontFamily.ts</DependentUpon>
     </Content>
-    <Content Include="Graphics\Text\FontMeasurement.js">
+    <Content Include="Graphics\Text\Font\FontMeasurement.js">
       <DependentUpon>FontMeasurement.ts</DependentUpon>
     </Content>
-    <Content Include="Graphics\Text\FontMeasurement.min.js">
+    <Content Include="Graphics\Text\Font\FontMeasurement.min.js">
       <DependentUpon>FontMeasurement.ts</DependentUpon>
     </Content>
-    <Content Include="Graphics\Text\FontSettings.js">
+    <Content Include="Graphics\Text\Font\FontSettings.js">
       <DependentUpon>FontSettings.ts</DependentUpon>
     </Content>
-    <Content Include="Graphics\Text\FontSettings.min.js">
+    <Content Include="Graphics\Text\Font\FontSettings.min.js">
       <DependentUpon>FontSettings.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="Graphics\Text\FontVariant.ts" />
-    <TypeScriptCompile Include="Graphics\Text\FontStyle.ts" />
-    <Content Include="Graphics\Text\FontStyle.js">
+    <TypeScriptCompile Include="Graphics\Text\Font\FontVariant.ts" />
+    <TypeScriptCompile Include="Graphics\Text\Font\FontStyle.ts" />
+    <Content Include="Graphics\Text\Font\FontStyle.js">
       <DependentUpon>FontStyle.ts</DependentUpon>
     </Content>
-    <Content Include="Graphics\Text\FontStyle.min.js">
+    <Content Include="Graphics\Text\Font\FontStyle.min.js">
       <DependentUpon>FontStyle.ts</DependentUpon>
     </Content>
-    <Content Include="Graphics\Text\FontVariant.js">
+    <Content Include="Graphics\Text\Font\FontVariant.js">
       <DependentUpon>FontVariant.ts</DependentUpon>
     </Content>
-    <Content Include="Graphics\Text\FontVariant.min.js">
+    <Content Include="Graphics\Text\Font\FontVariant.min.js">
       <DependentUpon>FontVariant.ts</DependentUpon>
     </Content>
     <Content Include="Graphics\Text\Text2d.js">
@@ -314,6 +320,20 @@
       <DependentUpon>TimedCallback.ts</DependentUpon>
     </Content>
     <TypeScriptCompile Include="Rendering\IRenderable.d.ts" />
+    <TypeScriptCompile Include="Rendering\Camera\Camera2dRenderer.ts" />
+    <TypeScriptCompile Include="Rendering\Camera\Camera2dCanvasContextBuilder.ts" />
+    <Content Include="Rendering\Camera\Camera2dCanvasContextBuilder.js">
+      <DependentUpon>Camera2dCanvasContextBuilder.ts</DependentUpon>
+    </Content>
+    <Content Include="Rendering\Camera\Camera2dCanvasContextBuilder.min.js">
+      <DependentUpon>Camera2dCanvasContextBuilder.ts</DependentUpon>
+    </Content>
+    <Content Include="Rendering\Camera\Camera2dRenderer.js">
+      <DependentUpon>Camera2dRenderer.ts</DependentUpon>
+    </Content>
+    <Content Include="Rendering\Camera\Camera2dRenderer.min.js">
+      <DependentUpon>Camera2dRenderer.ts</DependentUpon>
+    </Content>
     <Content Include="Rendering\IRenderable.d.js">
       <DependentUpon>IRenderable.d.ts</DependentUpon>
     </Content>
@@ -333,11 +353,12 @@
     <Content Include="Rendering\Renderer2d.min.js">
       <DependentUpon>Renderer2d.ts</DependentUpon>
     </Content>
-    <Content Include="Rendering\Scene.js">
-      <DependentUpon>Scene.ts</DependentUpon>
+    <TypeScriptCompile Include="Rendering\Scene2d.ts" />
+    <Content Include="Rendering\Scene2d.js">
+      <DependentUpon>Scene2d.ts</DependentUpon>
     </Content>
-    <Content Include="Rendering\Scene.min.js">
-      <DependentUpon>Scene.ts</DependentUpon>
+    <Content Include="Rendering\Scene2d.min.js">
+      <DependentUpon>Scene2d.ts</DependentUpon>
     </Content>
     <Content Include="Scripts\endGate.core.client.js">
       <DependentUpon>endGate.core.client.ts</DependentUpon>
@@ -444,9 +465,6 @@
     <Content Include="Loopers\LooperCallback.js.map">
       <DependentUpon>LooperCallback.ts</DependentUpon>
     </Content>
-    <Content Include="Rendering\Scene.js.map">
-      <DependentUpon>Scene.ts</DependentUpon>
-    </Content>
     <Content Include="BoundingObject\Bounds2d.js.map">
       <DependentUpon>Bounds2d.ts</DependentUpon>
     </Content>
@@ -498,19 +516,19 @@
     <Content Include="Graphics\Text\Text2d.js.map">
       <DependentUpon>Text2d.ts</DependentUpon>
     </Content>
-    <Content Include="Graphics\Text\FontSettings.js.map">
+    <Content Include="Graphics\Text\Font\FontSettings.js.map">
       <DependentUpon>FontSettings.ts</DependentUpon>
     </Content>
-    <Content Include="Graphics\Text\FontMeasurement.js.map">
+    <Content Include="Graphics\Text\Font\FontMeasurement.js.map">
       <DependentUpon>FontMeasurement.ts</DependentUpon>
     </Content>
-    <Content Include="Graphics\Text\FontFamily.js.map">
+    <Content Include="Graphics\Text\Font\FontFamily.js.map">
       <DependentUpon>FontFamily.ts</DependentUpon>
     </Content>
-    <Content Include="Graphics\Text\FontVariant.js.map">
+    <Content Include="Graphics\Text\Font\FontVariant.js.map">
       <DependentUpon>FontVariant.ts</DependentUpon>
     </Content>
-    <Content Include="Graphics\Text\FontStyle.js.map">
+    <Content Include="Graphics\Text\Font\FontStyle.js.map">
       <DependentUpon>FontStyle.ts</DependentUpon>
     </Content>
     <Content Include="Input\Keyboard\KeyboardHandler.js.map">
@@ -527,6 +545,18 @@
     </Content>
     <Content Include="Input\Keyboard\KeyboardCommandEvent.js.map">
       <DependentUpon>KeyboardCommandEvent.ts</DependentUpon>
+    </Content>
+    <Content Include="Rendering\Camera\Camera2d.js.map">
+      <DependentUpon>Camera2d.ts</DependentUpon>
+    </Content>
+    <Content Include="Rendering\Scene2d.js.map">
+      <DependentUpon>Scene2d.ts</DependentUpon>
+    </Content>
+    <Content Include="Rendering\Camera\Camera2dRenderer.js.map">
+      <DependentUpon>Camera2dRenderer.ts</DependentUpon>
+    </Content>
+    <Content Include="Rendering\Camera\Camera2dCanvasContextBuilder.js.map">
+      <DependentUpon>Camera2dCanvasContextBuilder.ts</DependentUpon>
     </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

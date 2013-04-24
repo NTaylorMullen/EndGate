@@ -5,7 +5,7 @@
 /// <reference path="GameRunner.ts" />
 /// <reference path="GameConfiguration.ts" />
 /// <reference path="Collision/CollisionManager.ts" />
-/// <reference path="Rendering/Scene.ts" />
+/// <reference path="Rendering/Scene2d.ts" />
 /// <reference path="Input/InputManager.ts" />
 
 module EndGate.Core {
@@ -16,7 +16,7 @@ module EndGate.Core {
         public ID: number;
         public Configuration: GameConfiguration;
         public CollisionManager: Collision.CollisionManager;
-        public Scene: Rendering.Scene;
+        public Scene: Rendering.Scene2d;
         public Input: Input.InputManager;
 
         private static _gameIds: number = 0;
@@ -24,10 +24,9 @@ module EndGate.Core {
 
         constructor(gameCanvas?:HTMLCanvasElement) {
             this._gameTime = new GameTime();
-            // Call draw on Game LAST
             this.ID = Game._gameIds++;
 
-            this.Scene = new Rendering.Scene(gameCanvas, context => {
+            this.Scene = new Rendering.Scene2d(gameCanvas, context => {
                 this.Draw(context);
             });
 

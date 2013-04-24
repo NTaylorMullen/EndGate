@@ -12,7 +12,7 @@ class CollidableShape implements EndGate.Core.IUpdateable extends EndGate.Core.C
         super(bounds);
 
         this.Graphic = graphic;
-        this.TextPosition = new EndGate.Core.Graphics.Text.Text2d(graphic.Position, graphic.Position.toString());
+        this.TextPosition = new EndGate.Core.Graphics.Text.Text2d(graphic.Position.X, graphic.Position.Y, graphic.Position.toString());
 
         this.Graphic.BorderColor(this._collisionBorderColor);
         this.Graphic.BorderThickness(0);

@@ -15,6 +15,10 @@ module EndGate.Core.BoundingObject {
             this.Rotation = 0;
         }
 
+        public Scale(x: number, y: number): void {
+            throw new Error("This method is abstract!");
+        }
+
         public ContainsPoint(point: Assets.Vector2d): bool {
             throw new Error("This method is abstract!");
         }

@@ -10,14 +10,16 @@ var EndGate;
             (function (Text) {
                 var Text2d = (function (_super) {
                     __extends(Text2d, _super);
-                    function Text2d(position, text, color) {
+                    function Text2d(x, y, text, color) {
                         if (typeof color === "undefined") { color = "black"; }
                         var _this = this;
-                                        _super.call(this, position);
+                                        _super.call(this, new Core.Assets.Vector2d(x, y));
+                        this._type = "Text2d";
                         this._text = text;
                         this._stroker = new Core.Utilities.NoopTripInvoker(function (context) {
                             context.strokeText(_this._text, _this.Position.X, _this.Position.Y);
                         });
+                        this._drawBounds = new Core.BoundingObject.BoundingRectangle(this.Position, Core.Assets.Size2d.One());
                         this.FontSettings = new Text.FontSettings();
                         this.Align("center");
                         this.Baseline("middle");
@@ -80,11 +82,20 @@ var EndGate;
                         return this.State.StrokeStyle(color);
                     };
                     Text2d.prototype.Draw = function (context) {
+                        var textSize;
                         _super.prototype.StartDraw.call(this, context);
                         this.State.Font(this.FontSettings._BuildFont());
+                        textSize = context.measureText(this._text);
+                        this._drawBounds.Size.Width = textSize.width;
+                        this._drawBounds.Size.Height = parseInt(this.FontSettings.FontSize()) * 1.5;
                         context.fillText(this._text, this.Position.X, this.Position.Y);
                         this._stroker.Invoke(context);
                         _super.prototype.EndDraw.call(this, context);
+                    };
+                    Text2d.prototype.GetDrawBounds = function () {
+                        this._drawBounds.Rotation = this.Rotation;
+                        this._drawBounds.Position = this.Position;
+                        return this._drawBounds;
                     };
                     return Text2d;
                 })(Graphics.Graphic2d);

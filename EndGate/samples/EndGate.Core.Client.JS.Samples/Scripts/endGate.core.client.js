@@ -31,6 +31,167 @@ var EndGate;
 var EndGate;
 (function (EndGate) {
     })(EndGate || (EndGate = {}));
+Math.roundTo = function (val, decimals) {
+    var multiplier = Math.pow(10, decimals);
+    return Math.round(val * multiplier) / multiplier;
+};
+(Math).twoPI = Math.PI * 2;
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Assets) {
+            var Vector2d = (function () {
+                function Vector2d(x, y) {
+                    this._type = "Vector2d";
+                    this.X = x || 0;
+                    this.Y = y || 0;
+                }
+                Vector2d.Zero = function Zero() {
+                    return new Vector2d(0, 0);
+                };
+                Vector2d.One = function One() {
+                    return new Vector2d(1, 1);
+                };
+                Vector2d.prototype.ProjectOnto = function (v) {
+                    return v.Multiply(this.Dot(v) / v.Dot(v));
+                };
+                Vector2d.prototype.RotateAround = function (point, angle, precision) {
+                    if (typeof precision === "undefined") { precision = 2; }
+                    var ca = Math.cos(angle);
+                    var sa = Math.sin(angle);
+                    return new Vector2d(Math.roundTo(ca * (this.X - point.X) - sa * (this.Y - point.Y) + point.X, precision), Math.roundTo(sa * (this.X - point.X) + ca * (this.Y - point.Y) + point.Y, precision));
+                };
+                Vector2d.prototype.Apply = function (action) {
+                    this.X = action(this.X);
+                    this.Y = action(this.Y);
+                };
+                Vector2d.prototype.Trigger = function (action) {
+                    action(this.X);
+                    action(this.Y);
+                };
+                Vector2d.prototype.Normalized = function () {
+                    var magnitude = this.Magnitude();
+                    return new Vector2d(this.X / magnitude, this.Y / magnitude);
+                };
+                Vector2d.prototype.Magnitude = function () {
+                    return Math.sqrt(this.X * this.X + this.Y * this.Y);
+                };
+                Vector2d.prototype.Length = function () {
+                    return this.Magnitude();
+                };
+                Vector2d.prototype.Dot = function (v1) {
+                    return v1.X * this.X + v1.Y * this.Y;
+                };
+                Vector2d.prototype.Abs = function () {
+                    return new Vector2d(Math.abs(this.X), Math.abs(this.Y));
+                };
+                Vector2d.prototype.Sign = function () {
+                    return new Vector2d(this.X / Math.abs(this.X), this.Y / Math.abs(this.Y));
+                };
+                Vector2d.prototype.Distance = function (v1) {
+                    return new Vector2d(Math.abs(v1.X - this.X), Math.abs(v1.Y - this.Y));
+                };
+                Vector2d.prototype.Add = function (val) {
+                    if(val._type === "Vector2d") {
+                        return new Vector2d(this.X + val.X, this.Y + val.Y);
+                    } else {
+                        return new Vector2d(this.X + val, this.Y + val);
+                    }
+                };
+                Vector2d.prototype.Multiply = function (val) {
+                    if(val._type === "Vector2d") {
+                        return new Vector2d(this.X * val.X, this.Y * val.Y);
+                    } else {
+                        return new Vector2d(this.X * val, this.Y * val);
+                    }
+                };
+                Vector2d.prototype.Subtract = function (val) {
+                    if(val._type === "Vector2d") {
+                        return new Vector2d(this.X - val.X, this.Y - val.Y);
+                    } else {
+                        return new Vector2d(this.X - val, this.Y - val);
+                    }
+                };
+                Vector2d.prototype.SubtractFrom = function (val) {
+                    if(val._type === "Vector2d") {
+                        return new Vector2d(val.X - this.X, val.Y - this.Y);
+                    } else {
+                        return new Vector2d(val - this.X, val - this.Y);
+                    }
+                };
+                Vector2d.prototype.Divide = function (val) {
+                    if(val._type === "Vector2d") {
+                        return new Vector2d(this.X / val.X, this.Y / val.Y);
+                    } else {
+                        return new Vector2d(this.X / val, this.Y / val);
+                    }
+                };
+                Vector2d.prototype.DivideFrom = function (val) {
+                    if(val._type === "Vector2d") {
+                        return new Vector2d(val.X / this.X, val.Y / this.Y);
+                    } else {
+                        return new Vector2d(val / this.X, val / this.Y);
+                    }
+                };
+                Vector2d.prototype.Negate = function () {
+                    return new Vector2d(this.X * -1, this.Y * -1);
+                };
+                Vector2d.prototype.Equivalent = function (v) {
+                    return this.X === v.X && this.Y === v.Y;
+                };
+                Vector2d.prototype.Clone = function () {
+                    return new Vector2d(this.X, this.Y);
+                };
+                Vector2d.prototype.toString = function () {
+                    return "(" + this.X + ", " + this.Y + ")";
+                };
+                return Vector2d;
+            })();
+            Assets.Vector2d = Vector2d;            
+        })(Core.Assets || (Core.Assets = {}));
+        var Assets = Core.Assets;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (BoundingObject) {
+            var Bounds2d = (function () {
+                function Bounds2d(position) {
+                    this._boundsType = "Bounds2d";
+                    this.Position = position;
+                    this.Rotation = 0;
+                }
+                Bounds2d.prototype.Scale = function (x, y) {
+                    throw new Error("This method is abstract!");
+                };
+                Bounds2d.prototype.ContainsPoint = function (point) {
+                    throw new Error("This method is abstract!");
+                };
+                Bounds2d.prototype.Intersects = function (obj) {
+                    if(obj._boundsType === "BoundingCircle") {
+                        return this.IntersectsCircle(obj);
+                    } else if(obj._boundsType === "BoundingRectangle") {
+                        return this.IntersectsRectangle(obj);
+                    } else {
+                        throw new Error("Cannot intersect with unidentifiable object, must be BoundingCircle or BoundingRectangle");
+                    }
+                };
+                Bounds2d.prototype.IntersectsCircle = function (circle) {
+                    throw new Error("This method is abstract!");
+                };
+                Bounds2d.prototype.IntersectsRectangle = function (rectangle) {
+                    throw new Error("This method is abstract!");
+                };
+                return Bounds2d;
+            })();
+            BoundingObject.Bounds2d = Bounds2d;            
+        })(Core.BoundingObject || (Core.BoundingObject = {}));
+        var BoundingObject = Core.BoundingObject;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
 var EndGate;
 (function (EndGate) {
     (function (Core) {
@@ -232,164 +393,6 @@ var EndGate;
             return GameConfiguration;
         })();
         Core.GameConfiguration = GameConfiguration;        
-    })(EndGate.Core || (EndGate.Core = {}));
-    var Core = EndGate.Core;
-})(EndGate || (EndGate = {}));
-Math.roundTo = function (val, decimals) {
-    var multiplier = Math.pow(10, decimals);
-    return Math.round(val * multiplier) / multiplier;
-};
-(Math).twoPI = Math.PI * 2;
-var EndGate;
-(function (EndGate) {
-    (function (Core) {
-        (function (Assets) {
-            var Vector2d = (function () {
-                function Vector2d(x, y) {
-                    this._type = "Vector2d";
-                    this.X = x || 0;
-                    this.Y = y || 0;
-                }
-                Vector2d.Zero = function Zero() {
-                    return new Vector2d(0, 0);
-                };
-                Vector2d.One = function One() {
-                    return new Vector2d(1, 1);
-                };
-                Vector2d.prototype.ProjectOnto = function (v) {
-                    return v.Multiply(this.Dot(v) / v.Dot(v));
-                };
-                Vector2d.prototype.RotateAround = function (point, angle, precision) {
-                    if (typeof precision === "undefined") { precision = 2; }
-                    var ca = Math.cos(angle);
-                    var sa = Math.sin(angle);
-                    return new Vector2d(Math.roundTo(ca * (this.X - point.X) - sa * (this.Y - point.Y) + point.X, precision), Math.roundTo(sa * (this.X - point.X) + ca * (this.Y - point.Y) + point.Y, precision));
-                };
-                Vector2d.prototype.Apply = function (action) {
-                    this.X = action(this.X);
-                    this.Y = action(this.Y);
-                };
-                Vector2d.prototype.Trigger = function (action) {
-                    action(this.X);
-                    action(this.Y);
-                };
-                Vector2d.prototype.Normalized = function () {
-                    var magnitude = this.Magnitude();
-                    return new Vector2d(this.X / magnitude, this.Y / magnitude);
-                };
-                Vector2d.prototype.Magnitude = function () {
-                    return Math.sqrt(this.X * this.X + this.Y * this.Y);
-                };
-                Vector2d.prototype.Length = function () {
-                    return this.Magnitude();
-                };
-                Vector2d.prototype.Dot = function (v1) {
-                    return v1.X * this.X + v1.Y * this.Y;
-                };
-                Vector2d.prototype.Abs = function () {
-                    return new Vector2d(Math.abs(this.X), Math.abs(this.Y));
-                };
-                Vector2d.prototype.Sign = function () {
-                    return new Vector2d(this.X / Math.abs(this.X), this.Y / Math.abs(this.Y));
-                };
-                Vector2d.prototype.Distance = function (v1) {
-                    return new Vector2d(Math.abs(v1.X - this.X), Math.abs(v1.Y - this.Y));
-                };
-                Vector2d.prototype.Add = function (val) {
-                    if(val._type === "Vector2d") {
-                        return new Vector2d(this.X + val.X, this.Y + val.Y);
-                    } else {
-                        return new Vector2d(this.X + val, this.Y + val);
-                    }
-                };
-                Vector2d.prototype.Multiply = function (val) {
-                    if(val._type === "Vector2d") {
-                        return new Vector2d(this.X * val.X, this.Y * val.Y);
-                    } else {
-                        return new Vector2d(this.X * val, this.Y * val);
-                    }
-                };
-                Vector2d.prototype.Subtract = function (val) {
-                    if(val._type === "Vector2d") {
-                        return new Vector2d(this.X - val.X, this.Y - val.Y);
-                    } else {
-                        return new Vector2d(this.X - val, this.Y - val);
-                    }
-                };
-                Vector2d.prototype.SubtractFrom = function (val) {
-                    if(val._type === "Vector2d") {
-                        return new Vector2d(val.X - this.X, val.Y - this.Y);
-                    } else {
-                        return new Vector2d(val - this.X, val - this.Y);
-                    }
-                };
-                Vector2d.prototype.Divide = function (val) {
-                    if(val._type === "Vector2d") {
-                        return new Vector2d(this.X / val.X, this.Y / val.Y);
-                    } else {
-                        return new Vector2d(this.X / val, this.Y / val);
-                    }
-                };
-                Vector2d.prototype.DivideFrom = function (val) {
-                    if(val._type === "Vector2d") {
-                        return new Vector2d(val.X / this.X, val.Y / this.Y);
-                    } else {
-                        return new Vector2d(val / this.X, val / this.Y);
-                    }
-                };
-                Vector2d.prototype.Negate = function () {
-                    return new Vector2d(this.X * -1, this.Y * -1);
-                };
-                Vector2d.prototype.Equivalent = function (v) {
-                    return this.X === v.X && this.Y === v.Y;
-                };
-                Vector2d.prototype.Clone = function () {
-                    return new Vector2d(this.X, this.Y);
-                };
-                Vector2d.prototype.toString = function () {
-                    return "(" + this.X + ", " + this.Y + ")";
-                };
-                return Vector2d;
-            })();
-            Assets.Vector2d = Vector2d;            
-        })(Core.Assets || (Core.Assets = {}));
-        var Assets = Core.Assets;
-    })(EndGate.Core || (EndGate.Core = {}));
-    var Core = EndGate.Core;
-})(EndGate || (EndGate = {}));
-var EndGate;
-(function (EndGate) {
-    (function (Core) {
-        (function (BoundingObject) {
-            var Bounds2d = (function () {
-                function Bounds2d(position) {
-                    this._boundsType = "Bounds2d";
-                    this.Position = position;
-                    this.Rotation = 0;
-                }
-                Bounds2d.prototype.ContainsPoint = function (point) {
-                    throw new Error("This method is abstract!");
-                };
-                Bounds2d.prototype.Intersects = function (obj) {
-                    if(obj._boundsType === "BoundingCircle") {
-                        return this.IntersectsCircle(obj);
-                    } else if(obj._boundsType === "BoundingRectangle") {
-                        return this.IntersectsRectangle(obj);
-                    } else {
-                        throw new Error("Cannot intersect with unidentifiable object, must be BoundingCircle or BoundingRectangle");
-                    }
-                };
-                Bounds2d.prototype.IntersectsCircle = function (circle) {
-                    throw new Error("This method is abstract!");
-                };
-                Bounds2d.prototype.IntersectsRectangle = function (rectangle) {
-                    throw new Error("This method is abstract!");
-                };
-                return Bounds2d;
-            })();
-            BoundingObject.Bounds2d = Bounds2d;            
-        })(Core.BoundingObject || (Core.BoundingObject = {}));
-        var BoundingObject = Core.BoundingObject;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));
@@ -747,11 +750,239 @@ var EndGate;
                 };
                 Graphic2d.prototype.Draw = function (context) {
                 };
+                Graphic2d.prototype.GetDrawBounds = function () {
+                    throw new Error("GetDrawBounds is abstract, it must be implemented.");
+                };
                 return Graphic2d;
             })();
             Graphics.Graphic2d = Graphic2d;            
         })(Core.Graphics || (Core.Graphics = {}));
         var Graphics = Core.Graphics;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Assets) {
+            var MinMax = (function () {
+                function MinMax(min, max) {
+                    this.Min = min;
+                    this.Max = max;
+                }
+                return MinMax;
+            })();
+            Assets.MinMax = MinMax;            
+        })(Core.Assets || (Core.Assets = {}));
+        var Assets = Core.Assets;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Assets) {
+            var Vector2dHelpers = (function () {
+                function Vector2dHelpers() { }
+                Vector2dHelpers.GetMinMaxProjections = function GetMinMaxProjections(axis, vertices) {
+                    var min = vertices[0].ProjectOnto(axis).Dot(axis);
+                    var max = min;
+                    for(var i = 1; i < vertices.length; i++) {
+                        var vertex = vertices[i];
+                        var value = vertex.ProjectOnto(axis).Dot(axis);
+                        if(value < min) {
+                            min = value;
+                        } else if(value > max) {
+                            max = value;
+                        }
+                    }
+                    return new Assets.MinMax(min, max);
+                };
+                return Vector2dHelpers;
+            })();
+            Assets.Vector2dHelpers = Vector2dHelpers;            
+        })(Core.Assets || (Core.Assets = {}));
+        var Assets = Core.Assets;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (BoundingObject) {
+            var BoundingCircle = (function (_super) {
+                __extends(BoundingCircle, _super);
+                function BoundingCircle(position, radius) {
+                                _super.call(this, position);
+                    this._type = "BoundingCircle";
+                    this._boundsType = "BoundingCircle";
+                    this.Radius = radius;
+                }
+                BoundingCircle.prototype.Scale = function (x, y) {
+                    this.Radius *= x;
+                };
+                BoundingCircle.prototype.Area = function () {
+                    return Math.PI * this.Radius * this.Radius;
+                };
+                BoundingCircle.prototype.Circumfrence = function () {
+                    return 2 * Math.PI * this.Radius;
+                };
+                BoundingCircle.prototype.IntersectsCircle = function (circle) {
+                    return this.Position.Distance(circle.Position).Length() < this.Radius + circle.Radius;
+                };
+                BoundingCircle.prototype.IntersectsRectangle = function (rectangle) {
+                    var translated = (rectangle.Rotation === 0) ? this.Position : this.Position.RotateAround(rectangle.Position, -rectangle.Rotation);
+                    var circleDistance = translated.Distance(rectangle.Position);
+                    if(circleDistance.X > (rectangle.Size.HalfWidth() + this.Radius)) {
+                        return false;
+                    }
+                    if(circleDistance.Y > (rectangle.Size.HalfHeight() + this.Radius)) {
+                        return false;
+                    }
+                    if(circleDistance.X <= (rectangle.Size.HalfWidth())) {
+                        return true;
+                    }
+                    if(circleDistance.Y <= (rectangle.Size.HalfHeight())) {
+                        return true;
+                    }
+                    var cornerDistance_sq = Math.pow(circleDistance.X - rectangle.Size.HalfWidth(), 2) + Math.pow(circleDistance.Y - rectangle.Size.HalfHeight(), 2);
+                    return (cornerDistance_sq <= (this.Radius * this.Radius));
+                };
+                BoundingCircle.prototype.ContainsPoint = function (point) {
+                    return this.Position.Distance(point).Magnitude() < this.Radius;
+                };
+                return BoundingCircle;
+            })(BoundingObject.Bounds2d);
+            BoundingObject.BoundingCircle = BoundingCircle;            
+        })(Core.BoundingObject || (Core.BoundingObject = {}));
+        var BoundingObject = Core.BoundingObject;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (BoundingObject) {
+            var BoundingRectangle = (function (_super) {
+                __extends(BoundingRectangle, _super);
+                function BoundingRectangle(position, size) {
+                                _super.call(this, position);
+                    this._type = "BoundingRectangle";
+                    this._boundsType = "BoundingRectangle";
+                    this.Size = size;
+                }
+                BoundingRectangle.prototype.Scale = function (x, y) {
+                    this.Size.Width *= x;
+                    this.Size.Height *= x;
+                };
+                BoundingRectangle.prototype.Vertices = function () {
+                    return [
+                        this.TopLeft(), 
+                        this.TopRight(), 
+                        this.BotLeft(), 
+                        this.BotRight()
+                    ];
+                };
+                BoundingRectangle.prototype.TopLeft = function () {
+                    var v = new Core.Assets.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
+                    if(this.Rotation === 0) {
+                        return v;
+                    }
+                    return v.RotateAround(this.Position, this.Rotation);
+                };
+                BoundingRectangle.prototype.TopRight = function () {
+                    var v = new Core.Assets.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
+                    if(this.Rotation === 0) {
+                        return v;
+                    }
+                    return v.RotateAround(this.Position, this.Rotation);
+                };
+                BoundingRectangle.prototype.BotLeft = function () {
+                    var v = new Core.Assets.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
+                    if(this.Rotation === 0) {
+                        return v;
+                    }
+                    return v.RotateAround(this.Position, this.Rotation);
+                };
+                BoundingRectangle.prototype.BotRight = function () {
+                    var v = new Core.Assets.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
+                    if(this.Rotation === 0) {
+                        return v;
+                    }
+                    return v.RotateAround(this.Position, this.Rotation);
+                };
+                BoundingRectangle.prototype.IntersectsCircle = function (circle) {
+                    return circle.IntersectsRectangle(this);
+                };
+                BoundingRectangle.prototype.IntersectsRectangle = function (rectangle) {
+                    if(this.Rotation === 0 && rectangle.Rotation === 0) {
+                        var myTopLeft = this.TopLeft(), myBotRight = this.BotRight(), theirTopLeft = rectangle.TopLeft(), theirBotRight = rectangle.BotRight();
+                        return theirTopLeft.X <= myBotRight.X && theirBotRight.X >= myTopLeft.X && theirTopLeft.Y <= myBotRight.Y && theirBotRight.Y >= myTopLeft.Y;
+                    } else if(rectangle.Position.Distance(this.Position).Magnitude() <= rectangle.Size.Radius() + this.Size.Radius()) {
+                        var axisList = [
+                            this.TopRight().Subtract(this.TopLeft()), 
+                            this.TopRight().Subtract(this.BotRight()), 
+                            rectangle.TopLeft().Subtract(rectangle.BotLeft()), 
+                            rectangle.TopLeft().Subtract(rectangle.TopRight())
+                        ];
+                        var myVertices = this.Vertices();
+                        var theirVertices = rectangle.Vertices();
+                        for(var i = 0; i < axisList.length; i++) {
+                            var axi = axisList[i];
+                            var myProjections = Core.Assets.Vector2dHelpers.GetMinMaxProjections(axi, myVertices);
+                            var theirProjections = Core.Assets.Vector2dHelpers.GetMinMaxProjections(axi, theirVertices);
+                            if(theirProjections.Max < myProjections.Min || myProjections.Max < theirProjections.Min) {
+                                return false;
+                            }
+                        }
+                        return true;
+                    }
+                    return false;
+                };
+                BoundingRectangle.prototype.ContainsPoint = function (point) {
+                    var savedRotation = this.Rotation;
+                    if(this.Rotation !== 0) {
+                        this.Rotation = 0;
+                        point = point.RotateAround(this.Position, -savedRotation);
+                    }
+                    var myTopLeft = this.TopLeft(), myBotRight = this.BotRight();
+                    this.Rotation = savedRotation;
+                    return point.X <= myBotRight.X && point.X >= myTopLeft.X && point.Y <= myBotRight.Y && point.Y >= myTopLeft.Y;
+                };
+                return BoundingRectangle;
+            })(BoundingObject.Bounds2d);
+            BoundingObject.BoundingRectangle = BoundingRectangle;            
+        })(Core.BoundingObject || (Core.BoundingObject = {}));
+        var BoundingObject = Core.BoundingObject;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Rendering) {
+            (function (Camera) {
+                var Camera2d = (function (_super) {
+                    __extends(Camera2d, _super);
+                    function Camera2d(position, size) {
+                                        _super.call(this, position, size);
+                        this._type = "Camera2d";
+                        this.Distance = Camera2d.DefaultDistance;
+                    }
+                    Camera2d.DefaultDistance = 1000;
+                    Camera2d.prototype.GetDistanceScale = function () {
+                        return this.Distance / Camera2d.DefaultDistance;
+                    };
+                    Camera2d.prototype.GetInverseDistanceScale = function () {
+                        return Camera2d.DefaultDistance / this.Distance;
+                    };
+                    return Camera2d;
+                })(Core.BoundingObject.BoundingRectangle);
+                Camera.Camera2d = Camera2d;                
+            })(Rendering.Camera || (Rendering.Camera = {}));
+            var Camera = Rendering.Camera;
+        })(Core.Rendering || (Core.Rendering = {}));
+        var Rendering = Core.Rendering;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));
@@ -771,6 +1002,7 @@ var EndGate;
                     this._visibleContext = renderOnto.getContext("2d");
                     this._bufferCanvas = document.createElement("canvas");
                     this._bufferContext = this._bufferCanvas.getContext("2d");
+                    this.OnRendererSizeChange = new Core.Utilities.EventHandler();
                     this.UpdateBufferSize();
                     this._disposed = false;
                 }
@@ -783,7 +1015,7 @@ var EndGate;
                     }
                     this._visibleContext.clearRect(0, 0, this._visibleCanvas.width, this._visibleCanvas.height);
                     this._visibleContext.drawImage(this._bufferCanvas, 0, 0);
-                    this._bufferContext.clearRect(0, 0, this._bufferCanvas.width, this._bufferCanvas.height);
+                    this._ClearBuffer();
                     renderables.sort(Renderer2d._zindexSort);
                     for(var i = 0; i < renderables.length; i++) {
                         renderables[i].Draw(this._bufferContext);
@@ -796,9 +1028,13 @@ var EndGate;
                         this._visibleCanvas.parentNode.removeChild(this._visibleCanvas);
                     }
                 };
+                Renderer2d.prototype._ClearBuffer = function () {
+                    this._bufferContext.clearRect(0, 0, this._bufferCanvas.width, this._bufferCanvas.height);
+                };
                 Renderer2d.prototype.UpdateBufferSize = function () {
                     this._bufferCanvas.width = this._visibleCanvas.width;
                     this._bufferCanvas.height = this._visibleCanvas.height;
+                    this.OnRendererSizeChange.Trigger(new Core.Assets.Size2d(this._visibleCanvas.width, this._visibleCanvas.height));
                 };
                 return Renderer2d;
             })();
@@ -812,8 +1048,150 @@ var EndGate;
 (function (EndGate) {
     (function (Core) {
         (function (Rendering) {
-            var Scene = (function () {
-                function Scene(drawArea, onDraw) {
+            (function (Camera) {
+                var Camera2dCanvasContextBuilder = (function () {
+                    function Camera2dCanvasContextBuilder(camera) {
+                        this._camera = camera;
+                        this._canvasCenter = this._camera.Position.Clone();
+                        this._translated = false;
+                        this._translationState = [];
+                        this._translationState.push(this._translated);
+                    }
+                    Camera2dCanvasContextBuilder.prototype.BuildFrom = function (context) {
+                        var that = this, savedCreateRadialGradient = context.createRadialGradient, savedTranslate = context.translate, savedSave = context.save, savedRestore = context.restore;
+                        (context).unModifiedClearRect = context.clearRect;
+                        context.arc = this.BuildPositionReplacer(context.arc);
+                        context.arcTo = this.BuildPositionReplacer(context.arcTo, 0, 4);
+                        context.bezierCurveTo = this.BuildPositionReplacer(context.bezierCurveTo, 0, 6);
+                        context.clearRect = this.BuildPositionReplacer(context.clearRect);
+                        context.createLinearGradient = this.BuildPositionReplacer(context.createLinearGradient, 0, 4);
+                        context.createRadialGradient = function () {
+                            var scale = that._camera.GetDistanceScale();
+                            arguments[0] += -that._camera.Position.X + that._canvasCenter.X * scale;
+                            arguments[1] += -that._camera.Position.Y + that._canvasCenter.Y * scale;
+                            arguments[3] += -that._camera.Position.X + that._canvasCenter.X * scale;
+                            arguments[4] += -that._camera.Position.Y + that._canvasCenter.Y * scale;
+                            return savedCreateRadialGradient.apply(this, arguments);
+                        };
+                        context.drawImage = this.BuildPositionReplacer(context.drawImage, 1);
+                        context.fillRect = this.BuildPositionReplacer(context.fillRect);
+                        context.fillText = this.BuildPositionReplacer(context.fillText, 1);
+                        context.getImageData = this.BuildPositionReplacer(context.getImageData);
+                        context.isPointInPath = this.BuildPositionReplacer(context.isPointInPath);
+                        context.lineTo = this.BuildPositionReplacer(context.lineTo);
+                        context.moveTo = this.BuildPositionReplacer(context.moveTo);
+                        context.putImageData = this.BuildPositionReplacer(context.putImageData, 1);
+                        context.quadraticCurveTo = this.BuildPositionReplacer(context.quadraticCurveTo, 0, 4);
+                        context.rect = this.BuildPositionReplacer(context.rect);
+                        context.strokeRect = this.BuildPositionReplacer(context.strokeRect);
+                        context.strokeText = this.BuildPositionReplacer(context.strokeText, 1);
+                        context.save = function () {
+                            that._translationState.push(that._translated);
+                            savedSave.call(this);
+                        };
+                        context.restore = function () {
+                            that._translated = that._translationState.pop();
+                            savedRestore.call(this);
+                        };
+                        context.translate = function () {
+                            var scale;
+                            if(!that._translated) {
+                                scale = that._camera.GetDistanceScale();
+                                arguments[0] += -that._camera.Position.X + that._canvasCenter.X * scale;
+                                arguments[1] += -that._camera.Position.Y + that._canvasCenter.Y * scale;
+                            }
+                            that._translated = true;
+                            savedTranslate.apply(this, arguments);
+                        };
+                        return context;
+                    };
+                    Camera2dCanvasContextBuilder.prototype.UpdateCanvasCenter = function (newSize) {
+                        this._canvasCenter.X = newSize.Width / 2;
+                        this._canvasCenter.Y = newSize.Height / 2;
+                    };
+                    Camera2dCanvasContextBuilder.prototype.BuildPositionReplacer = function (replacee, positionArgOffset, argCount) {
+                        if (typeof positionArgOffset === "undefined") { positionArgOffset = 0; }
+                        if (typeof argCount === "undefined") { argCount = 2; }
+                        var that = this, axiList = [
+                            "X", 
+                            "Y"
+                        ];
+                        return function () {
+                            var scale, axi;
+                            if(!that._translated) {
+                                scale = that._camera.GetDistanceScale();
+                                for(var i = 0; i < argCount; i++) {
+                                    axi = axiList[i % 2];
+                                    arguments[positionArgOffset + i] += -that._camera.Position[axi] + that._canvasCenter[axi] * scale;
+                                }
+                            }
+                            return replacee.apply(this, arguments);
+                        };
+                    };
+                    return Camera2dCanvasContextBuilder;
+                })();
+                Camera.Camera2dCanvasContextBuilder = Camera2dCanvasContextBuilder;                
+            })(Rendering.Camera || (Rendering.Camera = {}));
+            var Camera = Rendering.Camera;
+        })(Core.Rendering || (Core.Rendering = {}));
+        var Rendering = Core.Rendering;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Rendering) {
+            (function (Camera) {
+                var Camera2dRenderer = (function (_super) {
+                    __extends(Camera2dRenderer, _super);
+                    function Camera2dRenderer(renderOnto, camera) {
+                                        _super.call(this, renderOnto);
+                        this._camera = camera;
+                        this._contextBuilder = new Camera.Camera2dCanvasContextBuilder(this._camera);
+                        this.OnRendererSizeChange.Bind(this._contextBuilder.UpdateCanvasCenter);
+                        this._contextBuilder.UpdateCanvasCenter(new Core.Assets.Size2d(renderOnto.width, renderOnto.height));
+                        this._bufferContext = this._contextBuilder.BuildFrom(this._bufferContext);
+                    }
+                    Camera2dRenderer.prototype.Render = function (renderables) {
+                        var context, inverseScale = this._camera.GetInverseDistanceScale();
+                        this._bufferContext.save();
+                        this._bufferContext.scale(inverseScale, inverseScale);
+                        context = _super.prototype.Render.call(this, this.GetOnScreenRenderables(renderables));
+                        this._bufferContext.restore();
+                        return context;
+                    };
+                    Camera2dRenderer.prototype._ClearBuffer = function () {
+                        var cameraScale = this._camera.GetDistanceScale();
+                        (this._bufferContext).unModifiedClearRect(0, 0, this._bufferCanvas.width * cameraScale, this._bufferCanvas.height * cameraScale);
+                    };
+                    Camera2dRenderer.prototype.GetOnScreenRenderables = function (allRenderables) {
+                        var onscreen = [], scale = this._camera.GetDistanceScale(), unscale = 1 / scale;
+                        this._camera.Scale(scale, scale);
+                        for(var i = 0; i < allRenderables.length; i++) {
+                            if(this._camera.Intersects(allRenderables[i].GetDrawBounds())) {
+                                onscreen.push(allRenderables[i]);
+                            }
+                        }
+                        this._camera.Scale(unscale, unscale);
+                        return onscreen;
+                    };
+                    return Camera2dRenderer;
+                })(Rendering.Renderer2d);
+                Camera.Camera2dRenderer = Camera2dRenderer;                
+            })(Rendering.Camera || (Rendering.Camera = {}));
+            var Camera = Rendering.Camera;
+        })(Core.Rendering || (Core.Rendering = {}));
+        var Rendering = Core.Rendering;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Rendering) {
+            var Scene2d = (function () {
+                function Scene2d(drawArea, onDraw) {
                     this._type = "Scene";
                     this._actors = [];
                     if(typeof drawArea === "undefined") {
@@ -826,13 +1204,14 @@ var EndGate;
                         this._onDraw = onDraw;
                     }
                     this.DrawArea = drawArea;
-                    this._renderer = new Rendering.Renderer2d(this.DrawArea);
+                    this.Camera = new Rendering.Camera.Camera2d(new Core.Assets.Vector2d(this.DrawArea.width / 2, this.DrawArea.height / 2), new Core.Assets.Size2d(this.DrawArea.width, this.DrawArea.height));
+                    this._renderer = new Rendering.Camera.Camera2dRenderer(this.DrawArea, this.Camera);
                     this._disposed = false;
                 }
-                Scene.prototype.Add = function (actor) {
+                Scene2d.prototype.Add = function (actor) {
                     this._actors.push(actor);
                 };
-                Scene.prototype.Remove = function (actor) {
+                Scene2d.prototype.Remove = function (actor) {
                     for(var i = 0; i < this._actors.length; i++) {
                         if(this._actors[i] === actor) {
                             this._actors.splice(i, 1);
@@ -840,26 +1219,26 @@ var EndGate;
                         }
                     }
                 };
-                Scene.prototype.Draw = function () {
+                Scene2d.prototype.Draw = function () {
                     this._onDraw(this._renderer.Render(this._actors));
                 };
-                Scene.prototype.Dispose = function () {
+                Scene2d.prototype.Dispose = function () {
                     if(!this._disposed) {
                         this._disposed = true;
                         this._actors = [];
                         this._renderer.Dispose();
                     }
                 };
-                Scene.prototype.CreateDefaultDrawArea = function () {
+                Scene2d.prototype.CreateDefaultDrawArea = function () {
                     var drawArea = document.createElement("canvas");
                     drawArea.width = window.innerWidth;
                     drawArea.height = window.innerHeight;
                     document.getElementsByTagName('body')[0].appendChild(drawArea);
                     return drawArea;
                 };
-                return Scene;
+                return Scene2d;
             })();
-            Rendering.Scene = Scene;            
+            Rendering.Scene2d = Scene2d;            
         })(Core.Rendering || (Core.Rendering = {}));
         var Rendering = Core.Rendering;
     })(EndGate.Core || (EndGate.Core = {}));
@@ -1326,7 +1705,7 @@ var EndGate;
                 this._type = "Game";
                 this._gameTime = new Core.GameTime();
                 this.ID = Game._gameIds++;
-                this.Scene = new Core.Rendering.Scene(gameCanvas, function (context) {
+                this.Scene = new Core.Rendering.Scene2d(gameCanvas, function (context) {
                     _this.Draw(context);
                 });
                 this.Input = new Core.Input.InputManager(this.Scene.DrawArea);
@@ -1437,195 +1816,6 @@ var GameRunnerInstance = new EndGate.Core.GameRunner();
 var EndGate;
 (function (EndGate) {
     (function (Core) {
-        (function (Assets) {
-            var MinMax = (function () {
-                function MinMax(min, max) {
-                    this.Min = min;
-                    this.Max = max;
-                }
-                return MinMax;
-            })();
-            Assets.MinMax = MinMax;            
-        })(Core.Assets || (Core.Assets = {}));
-        var Assets = Core.Assets;
-    })(EndGate.Core || (EndGate.Core = {}));
-    var Core = EndGate.Core;
-})(EndGate || (EndGate = {}));
-var EndGate;
-(function (EndGate) {
-    (function (Core) {
-        (function (Assets) {
-            var Vector2dHelpers = (function () {
-                function Vector2dHelpers() { }
-                Vector2dHelpers.GetMinMaxProjections = function GetMinMaxProjections(axis, vertices) {
-                    var min = vertices[0].ProjectOnto(axis).Dot(axis);
-                    var max = min;
-                    for(var i = 1; i < vertices.length; i++) {
-                        var vertex = vertices[i];
-                        var value = vertex.ProjectOnto(axis).Dot(axis);
-                        if(value < min) {
-                            min = value;
-                        } else if(value > max) {
-                            max = value;
-                        }
-                    }
-                    return new Assets.MinMax(min, max);
-                };
-                return Vector2dHelpers;
-            })();
-            Assets.Vector2dHelpers = Vector2dHelpers;            
-        })(Core.Assets || (Core.Assets = {}));
-        var Assets = Core.Assets;
-    })(EndGate.Core || (EndGate.Core = {}));
-    var Core = EndGate.Core;
-})(EndGate || (EndGate = {}));
-var EndGate;
-(function (EndGate) {
-    (function (Core) {
-        (function (BoundingObject) {
-            var BoundingCircle = (function (_super) {
-                __extends(BoundingCircle, _super);
-                function BoundingCircle(position, radius) {
-                                _super.call(this, position);
-                    this._type = "BoundingCircle";
-                    this._boundsType = "BoundingCircle";
-                    this.Radius = radius;
-                }
-                BoundingCircle.prototype.Area = function () {
-                    return Math.PI * this.Radius * this.Radius;
-                };
-                BoundingCircle.prototype.Circumfrence = function () {
-                    return 2 * Math.PI * this.Radius;
-                };
-                BoundingCircle.prototype.IntersectsCircle = function (circle) {
-                    return this.Position.Distance(circle.Position).Length() < this.Radius + circle.Radius;
-                };
-                BoundingCircle.prototype.IntersectsRectangle = function (rectangle) {
-                    var translated = (rectangle.Rotation === 0) ? this.Position : this.Position.RotateAround(rectangle.Position, -rectangle.Rotation);
-                    var circleDistance = translated.Distance(rectangle.Position);
-                    if(circleDistance.X > (rectangle.Size.HalfWidth() + this.Radius)) {
-                        return false;
-                    }
-                    if(circleDistance.Y > (rectangle.Size.HalfHeight() + this.Radius)) {
-                        return false;
-                    }
-                    if(circleDistance.X <= (rectangle.Size.HalfWidth())) {
-                        return true;
-                    }
-                    if(circleDistance.Y <= (rectangle.Size.HalfHeight())) {
-                        return true;
-                    }
-                    var cornerDistance_sq = Math.pow(circleDistance.X - rectangle.Size.HalfWidth(), 2) + Math.pow(circleDistance.Y - rectangle.Size.HalfHeight(), 2);
-                    return (cornerDistance_sq <= (this.Radius * this.Radius));
-                };
-                BoundingCircle.prototype.ContainsPoint = function (point) {
-                    return this.Position.Distance(point).Magnitude() < this.Radius;
-                };
-                return BoundingCircle;
-            })(BoundingObject.Bounds2d);
-            BoundingObject.BoundingCircle = BoundingCircle;            
-        })(Core.BoundingObject || (Core.BoundingObject = {}));
-        var BoundingObject = Core.BoundingObject;
-    })(EndGate.Core || (EndGate.Core = {}));
-    var Core = EndGate.Core;
-})(EndGate || (EndGate = {}));
-var EndGate;
-(function (EndGate) {
-    (function (Core) {
-        (function (BoundingObject) {
-            var BoundingRectangle = (function (_super) {
-                __extends(BoundingRectangle, _super);
-                function BoundingRectangle(position, size) {
-                                _super.call(this, position);
-                    this._type = "BoundingRectangle";
-                    this._boundsType = "BoundingRectangle";
-                    this.Size = size;
-                }
-                BoundingRectangle.prototype.Vertices = function () {
-                    return [
-                        this.TopLeft(), 
-                        this.TopRight(), 
-                        this.BotLeft(), 
-                        this.BotRight()
-                    ];
-                };
-                BoundingRectangle.prototype.TopLeft = function () {
-                    var v = new Core.Assets.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
-                    if(this.Rotation === 0) {
-                        return v;
-                    }
-                    return v.RotateAround(this.Position, this.Rotation);
-                };
-                BoundingRectangle.prototype.TopRight = function () {
-                    var v = new Core.Assets.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
-                    if(this.Rotation === 0) {
-                        return v;
-                    }
-                    return v.RotateAround(this.Position, this.Rotation);
-                };
-                BoundingRectangle.prototype.BotLeft = function () {
-                    var v = new Core.Assets.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
-                    if(this.Rotation === 0) {
-                        return v;
-                    }
-                    return v.RotateAround(this.Position, this.Rotation);
-                };
-                BoundingRectangle.prototype.BotRight = function () {
-                    var v = new Core.Assets.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
-                    if(this.Rotation === 0) {
-                        return v;
-                    }
-                    return v.RotateAround(this.Position, this.Rotation);
-                };
-                BoundingRectangle.prototype.IntersectsCircle = function (circle) {
-                    return circle.IntersectsRectangle(this);
-                };
-                BoundingRectangle.prototype.IntersectsRectangle = function (rectangle) {
-                    if(this.Rotation === 0 && rectangle.Rotation === 0) {
-                        var myTopLeft = this.TopLeft(), myBotRight = this.BotRight(), theirTopLeft = rectangle.TopLeft(), theirBotRight = rectangle.BotRight();
-                        return theirTopLeft.X <= myBotRight.X && theirBotRight.X >= myTopLeft.X && theirTopLeft.Y <= myBotRight.Y && theirBotRight.Y >= myTopLeft.Y;
-                    } else if(rectangle.Position.Distance(this.Position).Magnitude() <= rectangle.Size.Radius() + this.Size.Radius()) {
-                        var axisList = [
-                            this.TopRight().Subtract(this.TopLeft()), 
-                            this.TopRight().Subtract(this.BotRight()), 
-                            rectangle.TopLeft().Subtract(rectangle.BotLeft()), 
-                            rectangle.TopLeft().Subtract(rectangle.TopRight())
-                        ];
-                        var myVertices = this.Vertices();
-                        var theirVertices = rectangle.Vertices();
-                        for(var i = 0; i < axisList.length; i++) {
-                            var axi = axisList[i];
-                            var myProjections = Core.Assets.Vector2dHelpers.GetMinMaxProjections(axi, myVertices);
-                            var theirProjections = Core.Assets.Vector2dHelpers.GetMinMaxProjections(axi, theirVertices);
-                            if(theirProjections.Max < myProjections.Min || myProjections.Max < theirProjections.Min) {
-                                return false;
-                            }
-                        }
-                        return true;
-                    }
-                    return false;
-                };
-                BoundingRectangle.prototype.ContainsPoint = function (point) {
-                    var savedRotation = this.Rotation;
-                    if(this.Rotation !== 0) {
-                        this.Rotation = 0;
-                        point = point.RotateAround(this.Position, -savedRotation);
-                    }
-                    var myTopLeft = this.TopLeft(), myBotRight = this.BotRight();
-                    this.Rotation = savedRotation;
-                    return point.X <= myBotRight.X && point.X >= myTopLeft.X && point.Y <= myBotRight.Y && point.Y >= myTopLeft.Y;
-                };
-                return BoundingRectangle;
-            })(BoundingObject.Bounds2d);
-            BoundingObject.BoundingRectangle = BoundingRectangle;            
-        })(Core.BoundingObject || (Core.BoundingObject = {}));
-        var BoundingObject = Core.BoundingObject;
-    })(EndGate.Core || (EndGate.Core = {}));
-    var Core = EndGate.Core;
-})(EndGate || (EndGate = {}));
-var EndGate;
-(function (EndGate) {
-    (function (Core) {
         (function (Graphics) {
             (function (Shapes) {
                 var Shape = (function (_super) {
@@ -1727,6 +1917,11 @@ var EndGate;
                     Circle.prototype.BuildPath = function (context) {
                         context.arc(this.Position.X, this.Position.Y, this.Radius, 0, (Math).twoPI);
                     };
+                    Circle.prototype.GetDrawBounds = function () {
+                        var bounds = new Core.BoundingObject.BoundingCircle(this.Position, this.Radius);
+                        bounds.Rotation = this.Rotation;
+                        return bounds;
+                    };
                     return Circle;
                 })(Shapes.Shape);
                 Shapes.Circle = Circle;                
@@ -1752,11 +1947,58 @@ var EndGate;
                     Rectangle.prototype.BuildPath = function (context) {
                         context.rect(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
                     };
+                    Rectangle.prototype.GetDrawBounds = function () {
+                        var bounds = new Core.BoundingObject.BoundingRectangle(this.Position, this.Size);
+                        bounds.Rotation = this.Rotation;
+                        return bounds;
+                    };
                     return Rectangle;
                 })(Shapes.Shape);
                 Shapes.Rectangle = Rectangle;                
             })(Graphics.Shapes || (Graphics.Shapes = {}));
             var Shapes = Graphics.Shapes;
+        })(Core.Graphics || (Core.Graphics = {}));
+        var Graphics = Core.Graphics;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Graphics) {
+            (function (Text) {
+                (function (FontMeasurement) {
+                    FontMeasurement._map = [];
+                    FontMeasurement._map[0] = "Ems";
+                    FontMeasurement.Ems = 0;
+                    FontMeasurement._map[1] = "Pixels";
+                    FontMeasurement.Pixels = 1;
+                    FontMeasurement._map[2] = "Points";
+                    FontMeasurement.Points = 2;
+                    FontMeasurement._map[3] = "Percent";
+                    FontMeasurement.Percent = 3;
+                })(Text.FontMeasurement || (Text.FontMeasurement = {}));
+                var FontMeasurement = Text.FontMeasurement;
+                ;
+                var FontMeasurementHelper = (function () {
+                    function FontMeasurementHelper() { }
+                    FontMeasurementHelper._Initialize = function _Initialize() {
+                        FontMeasurementHelper._measurements = [
+                            "em", 
+                            "px", 
+                            "pt", 
+                            "%"
+                        ];
+                    };
+                    FontMeasurementHelper.Get = function Get(measurement) {
+                        return FontMeasurementHelper._measurements[measurement];
+                    };
+                    return FontMeasurementHelper;
+                })();
+                Text.FontMeasurementHelper = FontMeasurementHelper;                
+                FontMeasurementHelper._Initialize();
+            })(Graphics.Text || (Graphics.Text = {}));
+            var Text = Graphics.Text;
         })(Core.Graphics || (Core.Graphics = {}));
         var Graphics = Core.Graphics;
     })(EndGate.Core || (EndGate.Core = {}));
@@ -1837,48 +2079,6 @@ var EndGate;
                 })();
                 Text.FontFamilyHelper = FontFamilyHelper;                
                 FontFamilyHelper._Initialize();
-            })(Graphics.Text || (Graphics.Text = {}));
-            var Text = Graphics.Text;
-        })(Core.Graphics || (Core.Graphics = {}));
-        var Graphics = Core.Graphics;
-    })(EndGate.Core || (EndGate.Core = {}));
-    var Core = EndGate.Core;
-})(EndGate || (EndGate = {}));
-var EndGate;
-(function (EndGate) {
-    (function (Core) {
-        (function (Graphics) {
-            (function (Text) {
-                (function (FontMeasurement) {
-                    FontMeasurement._map = [];
-                    FontMeasurement._map[0] = "Ems";
-                    FontMeasurement.Ems = 0;
-                    FontMeasurement._map[1] = "Pixels";
-                    FontMeasurement.Pixels = 1;
-                    FontMeasurement._map[2] = "Points";
-                    FontMeasurement.Points = 2;
-                    FontMeasurement._map[3] = "Percent";
-                    FontMeasurement.Percent = 3;
-                })(Text.FontMeasurement || (Text.FontMeasurement = {}));
-                var FontMeasurement = Text.FontMeasurement;
-                ;
-                var FontMeasurementHelper = (function () {
-                    function FontMeasurementHelper() { }
-                    FontMeasurementHelper._Initialize = function _Initialize() {
-                        FontMeasurementHelper._measurements = [
-                            "em", 
-                            "px", 
-                            "pt", 
-                            "%"
-                        ];
-                    };
-                    FontMeasurementHelper.Get = function Get(measurement) {
-                        return FontMeasurementHelper._measurements[measurement];
-                    };
-                    return FontMeasurementHelper;
-                })();
-                Text.FontMeasurementHelper = FontMeasurementHelper;                
-                FontMeasurementHelper._Initialize();
             })(Graphics.Text || (Graphics.Text = {}));
             var Text = Graphics.Text;
         })(Core.Graphics || (Core.Graphics = {}));
@@ -2043,14 +2243,16 @@ var EndGate;
             (function (Text) {
                 var Text2d = (function (_super) {
                     __extends(Text2d, _super);
-                    function Text2d(position, text, color) {
+                    function Text2d(x, y, text, color) {
                         if (typeof color === "undefined") { color = "black"; }
                         var _this = this;
-                                        _super.call(this, position);
+                                        _super.call(this, new Core.Assets.Vector2d(x, y));
+                        this._type = "Text2d";
                         this._text = text;
                         this._stroker = new Core.Utilities.NoopTripInvoker(function (context) {
                             context.strokeText(_this._text, _this.Position.X, _this.Position.Y);
                         });
+                        this._drawBounds = new Core.BoundingObject.BoundingRectangle(this.Position, Core.Assets.Size2d.One());
                         this.FontSettings = new Text.FontSettings();
                         this.Align("center");
                         this.Baseline("middle");
@@ -2113,11 +2315,20 @@ var EndGate;
                         return this.State.StrokeStyle(color);
                     };
                     Text2d.prototype.Draw = function (context) {
+                        var textSize;
                         _super.prototype.StartDraw.call(this, context);
                         this.State.Font(this.FontSettings._BuildFont());
+                        textSize = context.measureText(this._text);
+                        this._drawBounds.Size.Width = textSize.width;
+                        this._drawBounds.Size.Height = parseInt(this.FontSettings.FontSize()) * 1.5;
                         context.fillText(this._text, this.Position.X, this.Position.Y);
                         this._stroker.Invoke(context);
                         _super.prototype.EndDraw.call(this, context);
+                    };
+                    Text2d.prototype.GetDrawBounds = function () {
+                        this._drawBounds.Rotation = this.Rotation;
+                        this._drawBounds.Position = this.Position;
+                        return this._drawBounds;
                     };
                     return Text2d;
                 })(Graphics.Graphic2d);
@@ -2129,3 +2340,4 @@ var EndGate;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));
+//@ sourceMappingURL=endGate.core.client.js.map

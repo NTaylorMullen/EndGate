@@ -36,7 +36,7 @@
 
     holder.append(canvas);
 
-    bindingText = new EndGate.Core.Graphics.Text.Text2d(new EndGate.Core.Assets.Vector2d(canvas.width / 2, canvas.height / 2), "");
+    bindingText = new EndGate.Core.Graphics.Text.Text2d(canvas.width / 2, canvas.height / 2, "");
     bindingText.FontSettings.FontSize(40);
     bindingText.FontSettings.FontWeight("bold");
 
@@ -45,7 +45,7 @@
     keyboardMonitor.Scene.Add(bindingText);
 
     for (var i = 0; i < 3; i++) {
-        keys.push(new EndGate.Core.Graphics.Text.Text2d(new EndGate.Core.Assets.Vector2d(0, keyY), ""));
+        keys.push(new EndGate.Core.Graphics.Text.Text2d(0, keyY, ""));
         keys[i].FontSettings.FontSize(20);
         keys[i].Align("left");
         keyboardMonitor.Scene.Add(keys[i]);

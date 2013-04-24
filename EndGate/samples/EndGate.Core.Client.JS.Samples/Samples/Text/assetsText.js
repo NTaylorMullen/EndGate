@@ -10,7 +10,7 @@ var TextBuilder = (function (_super) {
         this._canvas = _canvas;
         this._syncSliders = _syncSliders;
         var that = this;
-        this.Text = new EndGate.Core.Graphics.Text.Text2d(defaultPosition, "Hello World!");
+        this.Text = new EndGate.Core.Graphics.Text.Text2d(defaultPosition.X, defaultPosition.Y, "Hello World!");
         this.Text.FontSettings.FontSize(20);
         this.Text.FontSettings.FontFamily(EndGate.Core.Graphics.Text.FontFamily.TimesNewRoman);
         this.Scene.Add(this.Text);

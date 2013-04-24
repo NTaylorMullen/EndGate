@@ -126,6 +126,15 @@
     <Content Include="Default.aspx" />
     <Content Include="packages.config" />
     <TypeScriptCompile Include="Samples\CollisionDetection\assetsCollisionDetection.ts" />
+    <TypeScriptCompile Include="Samples\Camera\assetsCamera.ts" />
+    <Content Include="Samples\Camera\assetsCamera.js">
+      <DependentUpon>assetsCamera.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\Camera\Default.aspx" />
+    <TypeScriptCompile Include="Samples\Camera\mainCamera.ts" />
+    <Content Include="Samples\Camera\mainCamera.js">
+      <DependentUpon>mainCamera.ts</DependentUpon>
+    </Content>
     <Content Include="Samples\CollisionDetection\assetsCollisionDetection.js">
       <DependentUpon>assetsCollisionDetection.ts</DependentUpon>
     </Content>
@@ -157,7 +166,6 @@
     <Content Include="Samples\KeyboardInput\mainKeyboardInput.js">
       <DependentUpon>mainKeyboardInput.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\KeyboardInput\temp.js" />
     <Content Include="Samples\MouseInput\assetsMouseInput.js">
       <DependentUpon>assetsMouseInput.ts</DependentUpon>
     </Content>
@@ -242,6 +250,13 @@
       <DependentUpon>EndGate.Core.Samples.Master</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Samples\Camera\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Samples\Camera\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Samples\CollisionDetection\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

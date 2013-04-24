@@ -54,12 +54,239 @@ module EndGate.Core {
     }
 
 }
+/* MathExtensions.ts */
+interface Math {
+    roundTo(val?: number, decimals?: number): number;
+}
+
+Math.roundTo = function (val?: number, decimals?: number): number {
+    var multiplier = Math.pow(10, decimals);
+
+    return Math.round(val * multiplier) / multiplier;
+};
+
+(<any>Math).twoPI = Math.PI * 2;
+/* Vector2d.ts */
+
+
+
+module EndGate.Core.Assets {
+    export class Vector2d implements ITyped {
+        public _type: string = "Vector2d";
+
+        public X: number;
+        public Y: number;
+
+        constructor(x?: number, y?: number) {
+            this.X = x || 0;
+            this.Y = y || 0;
+        }
+
+        public static Zero(): Vector2d {
+            return new Vector2d(0, 0);
+        }
+
+        public static One(): Vector2d {
+            return new Vector2d(1, 1);
+        }
+
+        public ProjectOnto(v: Vector2d): Vector2d {
+            return v.Multiply(this.Dot(v) / v.Dot(v));
+        }
+
+        public RotateAround(point: Vector2d, angle: number, precision: number = 2) {
+            var ca = Math.cos(angle);
+            var sa = Math.sin(angle);
+
+            return new Vector2d(
+                Math.roundTo(ca * (this.X - point.X) - sa * (this.Y - point.Y) + point.X, precision),
+                Math.roundTo(sa * (this.X - point.X) + ca * (this.Y - point.Y) + point.Y, precision)
+            );
+        }
+
+        public Apply(action: (val: number) => number): void {
+            this.X = action(this.X);
+            this.Y = action(this.Y);
+        }
+
+        public Trigger(action: (val: number) => void): void {
+            action(this.X);
+            action(this.Y);
+        }
+
+        public Normalized(): Vector2d {
+            var magnitude = this.Magnitude();
+            return new Vector2d(this.X / magnitude, this.Y / magnitude);
+        }
+
+        public Magnitude(): number {
+            return Math.sqrt(this.X * this.X + this.Y * this.Y);
+        }
+
+        public Length(): number {
+            return this.Magnitude();
+        }
+
+        public Dot(v1: Vector2d): number {
+            return v1.X * this.X + v1.Y * this.Y;
+        }
+
+        public Abs(): Vector2d {
+            return new Vector2d(Math.abs(this.X), Math.abs(this.Y));
+        }
+
+        public Sign(): Vector2d {
+            return new Vector2d(this.X / Math.abs(this.X), this.Y / Math.abs(this.Y));
+        }
+
+        public Distance(v1: Vector2d): Vector2d {
+            return new Vector2d(Math.abs(v1.X - this.X), Math.abs(v1.Y - this.Y));
+        }
+
+        public Add(val: Vector2d): Vector2d;
+        public Add(val: number): Vector2d;
+        public Add(val: any): Vector2d{
+            if (val._type === "Vector2d") {
+                return new Vector2d(this.X + val.X, this.Y + val.Y);
+            }
+            else {
+                return new Vector2d(this.X + val, this.Y + val);
+            }
+        }
+
+        public Multiply(val: Vector2d): Vector2d;
+        public Multiply(val: number): Vector2d;
+        public Multiply(val: any): Vector2d {
+            if (val._type === "Vector2d") {
+                return new Vector2d(this.X * val.X, this.Y * val.Y);
+            }
+            else {
+                return new Vector2d(this.X * val, this.Y * val);
+            }
+        }
+
+        public Subtract(val: Vector2d): Vector2d;
+        public Subtract(val: number): Vector2d;
+        public Subtract(val: any): Vector2d {
+            if (val._type === "Vector2d") {
+                return new Vector2d(this.X - val.X, this.Y - val.Y);
+            }
+            else {
+                return new Vector2d(this.X - val, this.Y - val);
+            }
+        }
+
+        public SubtractFrom(val: Vector2d): Vector2d;
+        public SubtractFrom(val: number): Vector2d;
+        public SubtractFrom(val: any): Vector2d {
+            if (val._type === "Vector2d") {
+                return new Vector2d(val.X - this.X, val.Y - this.Y);
+            }
+            else {
+                return new Vector2d(val - this.X, val - this.Y);
+            }
+        }
+
+        public Divide(val: Vector2d): Vector2d;
+        public Divide(val: number): Vector2d;
+        public Divide(val: any): Vector2d {
+            if (val._type === "Vector2d") {
+                return new Vector2d(this.X / val.X, this.Y / val.Y);
+            }
+            else {
+                return new Vector2d(this.X / val, this.Y / val);
+            }
+        }
+
+        public DivideFrom(val: Vector2d): Vector2d;
+        public DivideFrom(val: number): Vector2d;
+        public DivideFrom(val: any): Vector2d {
+            if (val._type === "Vector2d") {
+                return new Vector2d(val.X / this.X, val.Y / this.Y);
+            }
+            else {
+                return new Vector2d(val / this.X, val / this.Y);
+            }
+        }
+
+        public Negate(): Vector2d {
+            return new Vector2d(this.X * -1, this.Y * -1);
+        }
+
+        public Equivalent(v: Vector2d): bool {
+            return this.X === v.X && this.Y === v.Y;
+        }
+
+        public Clone(): Vector2d {
+            return new Vector2d(this.X, this.Y);
+        }
+
+        // toString override 
+        public toString(): string {
+            return "(" + this.X + ", " + this.Y + ")";
+        }
+    }
+}
+/* Bounds2d.ts */
+
+
+
+
+module EndGate.Core.BoundingObject {
+
+    export class Bounds2d {
+        public _boundsType: string = "Bounds2d";
+
+        public Position: Assets.Vector2d;
+        public Rotation: number;
+
+        constructor(position: Assets.Vector2d) {
+            this.Position = position;
+            this.Rotation = 0;
+        }
+
+        public Scale(x: number, y: number): void {
+            throw new Error("This method is abstract!");
+        }
+
+        public ContainsPoint(point: Assets.Vector2d): bool {
+            throw new Error("This method is abstract!");
+        }
+
+        public Intersects(obj: Bounds2d): bool;
+        public Intersects(circle: BoundingCircle): bool;
+        public Intersects(rectangle: BoundingRectangle): bool;
+        public Intersects(obj: any): bool {
+            if (obj._boundsType === "BoundingCircle") {
+                return this.IntersectsCircle(obj);
+            }
+            else if (obj._boundsType === "BoundingRectangle") {
+                return this.IntersectsRectangle(obj);
+            }
+            else {
+                throw new Error("Cannot intersect with unidentifiable object, must be BoundingCircle or BoundingRectangle");
+            }
+        }
+
+        public IntersectsCircle(circle: BoundingCircle): bool {
+            throw new Error("This method is abstract!");
+        }
+
+        public IntersectsRectangle(rectangle: BoundingRectangle): bool {
+            throw new Error("This method is abstract!");
+        }
+    }
+
+}
 /* IRenderable.d.ts */
+
+
 module EndGate.Core.Rendering {
 
     export interface IRenderable {
         ZIndex: number;
         Draw(context: CanvasRenderingContext2D): void;
+        GetDrawBounds(): BoundingObject.Bounds2d;
     }
 
 }
@@ -312,226 +539,6 @@ module EndGate.Core {
             else {
                 return this._updateRate;
             }
-        }
-    }
-
-}
-/* MathExtensions.ts */
-interface Math {
-    roundTo(val?: number, decimals?: number): number;
-}
-
-Math.roundTo = function (val?: number, decimals?: number): number {
-    var multiplier = Math.pow(10, decimals);
-
-    return Math.round(val * multiplier) / multiplier;
-};
-
-(<any>Math).twoPI = Math.PI * 2;
-/* Vector2d.ts */
-
-
-
-module EndGate.Core.Assets {
-    export class Vector2d implements ITyped {
-        public _type: string = "Vector2d";
-
-        public X: number;
-        public Y: number;
-
-        constructor(x?: number, y?: number) {
-            this.X = x || 0;
-            this.Y = y || 0;
-        }
-
-        public static Zero(): Vector2d {
-            return new Vector2d(0, 0);
-        }
-
-        public static One(): Vector2d {
-            return new Vector2d(1, 1);
-        }
-
-        public ProjectOnto(v: Vector2d): Vector2d {
-            return v.Multiply(this.Dot(v) / v.Dot(v));
-        }
-
-        public RotateAround(point: Vector2d, angle: number, precision: number = 2) {
-            var ca = Math.cos(angle);
-            var sa = Math.sin(angle);
-
-            return new Vector2d(
-                Math.roundTo(ca * (this.X - point.X) - sa * (this.Y - point.Y) + point.X, precision),
-                Math.roundTo(sa * (this.X - point.X) + ca * (this.Y - point.Y) + point.Y, precision)
-            );
-        }
-
-        public Apply(action: (val: number) => number): void {
-            this.X = action(this.X);
-            this.Y = action(this.Y);
-        }
-
-        public Trigger(action: (val: number) => void): void {
-            action(this.X);
-            action(this.Y);
-        }
-
-        public Normalized(): Vector2d {
-            var magnitude = this.Magnitude();
-            return new Vector2d(this.X / magnitude, this.Y / magnitude);
-        }
-
-        public Magnitude(): number {
-            return Math.sqrt(this.X * this.X + this.Y * this.Y);
-        }
-
-        public Length(): number {
-            return this.Magnitude();
-        }
-
-        public Dot(v1: Vector2d): number {
-            return v1.X * this.X + v1.Y * this.Y;
-        }
-
-        public Abs(): Vector2d {
-            return new Vector2d(Math.abs(this.X), Math.abs(this.Y));
-        }
-
-        public Sign(): Vector2d {
-            return new Vector2d(this.X / Math.abs(this.X), this.Y / Math.abs(this.Y));
-        }
-
-        public Distance(v1: Vector2d): Vector2d {
-            return new Vector2d(Math.abs(v1.X - this.X), Math.abs(v1.Y - this.Y));
-        }
-
-        public Add(val: Vector2d): Vector2d;
-        public Add(val: number): Vector2d;
-        public Add(val: any): Vector2d{
-            if (val._type === "Vector2d") {
-                return new Vector2d(this.X + val.X, this.Y + val.Y);
-            }
-            else {
-                return new Vector2d(this.X + val, this.Y + val);
-            }
-        }
-
-        public Multiply(val: Vector2d): Vector2d;
-        public Multiply(val: number): Vector2d;
-        public Multiply(val: any): Vector2d {
-            if (val._type === "Vector2d") {
-                return new Vector2d(this.X * val.X, this.Y * val.Y);
-            }
-            else {
-                return new Vector2d(this.X * val, this.Y * val);
-            }
-        }
-
-        public Subtract(val: Vector2d): Vector2d;
-        public Subtract(val: number): Vector2d;
-        public Subtract(val: any): Vector2d {
-            if (val._type === "Vector2d") {
-                return new Vector2d(this.X - val.X, this.Y - val.Y);
-            }
-            else {
-                return new Vector2d(this.X - val, this.Y - val);
-            }
-        }
-
-        public SubtractFrom(val: Vector2d): Vector2d;
-        public SubtractFrom(val: number): Vector2d;
-        public SubtractFrom(val: any): Vector2d {
-            if (val._type === "Vector2d") {
-                return new Vector2d(val.X - this.X, val.Y - this.Y);
-            }
-            else {
-                return new Vector2d(val - this.X, val - this.Y);
-            }
-        }
-
-        public Divide(val: Vector2d): Vector2d;
-        public Divide(val: number): Vector2d;
-        public Divide(val: any): Vector2d {
-            if (val._type === "Vector2d") {
-                return new Vector2d(this.X / val.X, this.Y / val.Y);
-            }
-            else {
-                return new Vector2d(this.X / val, this.Y / val);
-            }
-        }
-
-        public DivideFrom(val: Vector2d): Vector2d;
-        public DivideFrom(val: number): Vector2d;
-        public DivideFrom(val: any): Vector2d {
-            if (val._type === "Vector2d") {
-                return new Vector2d(val.X / this.X, val.Y / this.Y);
-            }
-            else {
-                return new Vector2d(val / this.X, val / this.Y);
-            }
-        }
-
-        public Negate(): Vector2d {
-            return new Vector2d(this.X * -1, this.Y * -1);
-        }
-
-        public Equivalent(v: Vector2d): bool {
-            return this.X === v.X && this.Y === v.Y;
-        }
-
-        public Clone(): Vector2d {
-            return new Vector2d(this.X, this.Y);
-        }
-
-        // toString override 
-        public toString(): string {
-            return "(" + this.X + ", " + this.Y + ")";
-        }
-    }
-}
-/* Bounds2d.ts */
-
-
-
-
-module EndGate.Core.BoundingObject {
-
-    export class Bounds2d {
-        public _boundsType: string = "Bounds2d";
-
-        public Position: Assets.Vector2d;
-        public Rotation: number;
-
-        constructor(position: Assets.Vector2d) {
-            this.Position = position;
-            this.Rotation = 0;
-        }
-
-        public ContainsPoint(point: Assets.Vector2d): bool {
-            throw new Error("This method is abstract!");
-        }
-
-        public Intersects(obj: Bounds2d): bool;
-        public Intersects(circle: BoundingCircle): bool;
-        public Intersects(rectangle: BoundingRectangle): bool;
-        public Intersects(obj: any): bool {
-            if (obj._boundsType === "BoundingCircle") {
-                return this.IntersectsCircle(obj);
-            }
-            else if (obj._boundsType === "BoundingRectangle") {
-                return this.IntersectsRectangle(obj);
-            }
-            else {
-                throw new Error("Cannot intersect with unidentifiable object, must be BoundingCircle or BoundingRectangle");
-            }
-        }
-
-        public IntersectsCircle(circle: BoundingCircle): bool {
-            throw new Error("This method is abstract!");
-        }
-
-        public IntersectsRectangle(rectangle: BoundingRectangle): bool {
-            throw new Error("This method is abstract!");
         }
     }
 
@@ -1003,6 +1010,263 @@ module EndGate.Core.Graphics {
 
         public Draw(context: CanvasRenderingContext2D): void {
         }
+
+        public GetDrawBounds(): BoundingObject.Bounds2d {
+            throw new Error("GetDrawBounds is abstract, it must be implemented.");
+        }
+    }
+
+}
+/* MinMax.ts */
+module EndGate.Core.Assets {
+
+    export class MinMax {
+        public Min: number;
+        public Max: number;
+
+        constructor(min: number, max: number) {
+            this.Min = min;
+            this.Max = max;
+        }
+    }
+
+}
+/* Vector2dHelpers.ts */
+
+
+
+module EndGate.Core.Assets {
+
+    export class Vector2dHelpers {
+        public static GetMinMaxProjections(axis: Vector2d, vertices: Vector2d[]): MinMax
+        {
+            var min: number = vertices[0].ProjectOnto(axis).Dot(axis);
+            var max: number = min;
+
+            for (var i: number = 1; i < vertices.length; i++)
+            {
+                var vertex: Vector2d = vertices[i];
+                var value: number = vertex.ProjectOnto(axis).Dot(axis);
+
+                if (value < min) {
+                    min = value;
+                }
+                else if (value > max) {
+                    max = value;
+                }
+            }
+
+            return new MinMax(min, max);
+        }
+    }
+
+}
+/* BoundingCircle.ts */
+
+
+
+
+module EndGate.Core.BoundingObject {
+
+    export class BoundingCircle implements ITyped extends Bounds2d {
+        public _type: string = "BoundingCircle";
+        public _boundsType: string = "BoundingCircle";
+
+        public Radius: number;
+
+        constructor(position: Assets.Vector2d, radius: number) {
+            super(position);
+
+            this.Radius = radius;
+        }
+
+        public Scale(x: number, y: number): void {
+            this.Radius *= x;
+        }
+
+        public Area(): number {
+            return Math.PI * this.Radius * this.Radius;
+        }
+
+        public Circumfrence(): number {
+            return 2 * Math.PI * this.Radius;
+        }
+
+        // For some reason when compiled into a single .ts file if this isn't fully declared it doesn't compile
+        public IntersectsCircle(circle: EndGate.Core.BoundingObject.BoundingCircle): bool {
+            return this.Position.Distance(circle.Position).Length() < this.Radius + circle.Radius;
+        }
+
+        // For some reason when compiled into a single .ts file if this isn't fully declared it doesn't compile
+        public IntersectsRectangle(rectangle: EndGate.Core.BoundingObject.BoundingRectangle): bool {
+            var translated = (rectangle.Rotation === 0)
+                                  ? this.Position
+                                  : this.Position.RotateAround(rectangle.Position, -rectangle.Rotation);
+
+            var circleDistance = translated.Distance(rectangle.Position);
+
+            if (circleDistance.X > (rectangle.Size.HalfWidth() + this.Radius)) { return false; }
+            if (circleDistance.Y > (rectangle.Size.HalfHeight() + this.Radius)) { return false; }
+
+            if (circleDistance.X <= (rectangle.Size.HalfWidth())) { return true; }
+            if (circleDistance.Y <= (rectangle.Size.HalfHeight())) { return true; }
+
+            var cornerDistance_sq = Math.pow(circleDistance.X - rectangle.Size.HalfWidth(), 2) + Math.pow(circleDistance.Y - rectangle.Size.HalfHeight(), 2);
+
+            return (cornerDistance_sq <= (this.Radius * this.Radius));
+        }
+
+        public ContainsPoint(point: Assets.Vector2d): bool {
+            return this.Position.Distance(point).Magnitude() < this.Radius;
+        }
+    }
+
+}
+/* BoundingRectangle.ts */
+
+
+
+
+
+module EndGate.Core.BoundingObject {
+
+    export class BoundingRectangle implements ITyped extends Bounds2d {
+        public _type: string = "BoundingRectangle";
+        public _boundsType: string = "BoundingRectangle";
+
+        public Size: Assets.Size2d;
+
+        constructor(position: Assets.Vector2d, size: Assets.Size2d) {
+            super(position);
+            this.Size = size;
+        }
+
+        public Scale(x: number, y: number): void {
+            this.Size.Width *= x;
+            this.Size.Height *= x;
+        }
+
+        public Vertices(): Assets.Vector2d[] {
+            return [this.TopLeft(), this.TopRight(), this.BotLeft(), this.BotRight()];
+        }
+
+        public TopLeft(): Assets.Vector2d {
+            var v = new Assets.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
+            if (this.Rotation === 0) {
+                return v;
+            }
+
+            return v.RotateAround(this.Position, this.Rotation);
+        }
+
+        public TopRight(): Assets.Vector2d {
+            var v = new Assets.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
+            if (this.Rotation === 0) {
+                return v;
+            }
+
+            return v.RotateAround(this.Position, this.Rotation);
+        }
+
+        public BotLeft(): Assets.Vector2d {
+            var v = new Assets.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
+            if (this.Rotation === 0) {
+                return v;
+            }
+
+            return v.RotateAround(this.Position, this.Rotation);
+        }
+
+        public BotRight(): Assets.Vector2d {
+            var v = new Assets.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
+            if (this.Rotation === 0) {
+                return v;
+            }
+
+            return v.RotateAround(this.Position, this.Rotation);
+        }
+
+        // For some reason when compiled into a single .ts file if this isn't fully declared it doesn't compile
+        public IntersectsCircle(circle: EndGate.Core.BoundingObject.BoundingCircle): bool {
+            return circle.IntersectsRectangle(this);
+        }
+
+        // For some reason when compiled into a single .ts file if this isn't fully declared it doesn't compile
+        public IntersectsRectangle(rectangle: EndGate.Core.BoundingObject.BoundingRectangle): bool {
+            if (this.Rotation === 0 && rectangle.Rotation === 0) {
+                var myTopLeft = this.TopLeft(),
+                    myBotRight = this.BotRight(),
+                    theirTopLeft = rectangle.TopLeft(),
+                    theirBotRight = rectangle.BotRight();
+
+                return theirTopLeft.X <= myBotRight.X && theirBotRight.X >= myTopLeft.X && theirTopLeft.Y <= myBotRight.Y && theirBotRight.Y >= myTopLeft.Y;
+            }
+            else if (rectangle.Position.Distance(this.Position).Magnitude() <= rectangle.Size.Radius() + this.Size.Radius()) {// Check if we're somewhat close to the rectangle ect that we might be colliding with
+                var axisList: Assets.Vector2d[] = [this.TopRight().Subtract(this.TopLeft()), this.TopRight().Subtract(this.BotRight()), rectangle.TopLeft().Subtract(rectangle.BotLeft()), rectangle.TopLeft().Subtract(rectangle.TopRight())];
+                var myVertices = this.Vertices();
+                var theirVertices = rectangle.Vertices();
+
+                for (var i: number = 0; i < axisList.length; i++) {
+                    var axi = axisList[i];
+                    var myProjections = Assets.Vector2dHelpers.GetMinMaxProjections(axi, myVertices);
+                    var theirProjections = Assets.Vector2dHelpers.GetMinMaxProjections(axi, theirVertices);
+
+                    // No collision
+                    if (theirProjections.Max < myProjections.Min || myProjections.Max < theirProjections.Min) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public ContainsPoint(point: Assets.Vector2d): bool {
+            var savedRotation: number = this.Rotation;
+
+            if (this.Rotation !== 0) {
+                this.Rotation = 0;
+                point = point.RotateAround(this.Position, -savedRotation);
+            }
+
+            var myTopLeft = this.TopLeft(),
+                myBotRight = this.BotRight();
+
+            this.Rotation = savedRotation;
+
+            return point.X <= myBotRight.X && point.X >= myTopLeft.X && point.Y <= myBotRight.Y && point.Y >= myTopLeft.Y;
+        }        
+    }
+
+}
+/* Camera2d.ts */
+
+
+
+
+module EndGate.Core.Rendering.Camera {
+
+    export class Camera2d extends BoundingObject.BoundingRectangle {
+        public static DefaultDistance: number = 1000;
+        public _type: string = "Camera2d";
+
+        public Distance: number;
+
+        constructor(position: Assets.Vector2d, size: Assets.Size2d) {
+            super(position, size);
+
+            this.Distance = Camera2d.DefaultDistance;
+        }
+
+        public GetDistanceScale(): number{
+            return this.Distance / Camera2d.DefaultDistance;
+        }
+
+        public GetInverseDistanceScale(): number {
+            return Camera2d.DefaultDistance / this.Distance;
+        }
     }
 
 }
@@ -1021,6 +1285,8 @@ module EndGate.Core.Rendering {
 
 
 
+
+
 module EndGate.Core.Rendering {
 
     export class Renderer2d implements IRenderer {
@@ -1029,8 +1295,8 @@ module EndGate.Core.Rendering {
         // These essentially are used to create a double buffer for rendering
         private _visibleCanvas: HTMLCanvasElement;
         private _visibleContext: CanvasRenderingContext2D;
-        private _bufferCanvas: HTMLCanvasElement;
-        private _bufferContext: CanvasRenderingContext2D;        
+        public _bufferCanvas: HTMLCanvasElement;
+        public _bufferContext: CanvasRenderingContext2D; // Protected
 
         private _disposed: bool;
 
@@ -1041,10 +1307,13 @@ module EndGate.Core.Rendering {
             // Create an equally sized canvas for a buffer
             this._bufferCanvas = <HTMLCanvasElement>document.createElement("canvas");
             this._bufferContext = this._bufferCanvas.getContext("2d");
+            this.OnRendererSizeChange = new Utilities.EventHandler();
             this.UpdateBufferSize();
 
             this._disposed = false;
         }
+
+        public OnRendererSizeChange: Utilities.EventHandler;
 
         public Render(renderables: IRenderable[]): CanvasRenderingContext2D {
             // Check if our visible canvas has changed size
@@ -1056,7 +1325,7 @@ module EndGate.Core.Rendering {
             this._visibleContext.clearRect(0, 0, this._visibleCanvas.width, this._visibleCanvas.height);
             this._visibleContext.drawImage(this._bufferCanvas, 0, 0);
             // Clear our buffer to prepare it for new drawings
-            this._bufferContext.clearRect(0, 0, this._bufferCanvas.width, this._bufferCanvas.height);
+            this._ClearBuffer();
 
             // Sort the renderables by the ZIndex so we draw in the correct order (for layering);
             renderables.sort(Renderer2d._zindexSort);
@@ -1068,7 +1337,7 @@ module EndGate.Core.Rendering {
                 renderables[i].Draw(this._bufferContext);
             }
 
-            return this._bufferContext;            
+            return this._bufferContext;
         }
 
         public Dispose(): void {
@@ -1079,15 +1348,200 @@ module EndGate.Core.Rendering {
             }
         }
 
-        private UpdateBufferSize()
-        {
+        public _ClearBuffer() {
+            this._bufferContext.clearRect(0, 0, this._bufferCanvas.width, this._bufferCanvas.height);
+        }
+
+        private UpdateBufferSize() {
             this._bufferCanvas.width = this._visibleCanvas.width;
             this._bufferCanvas.height = this._visibleCanvas.height;
+            this.OnRendererSizeChange.Trigger(new Assets.Size2d(this._visibleCanvas.width, this._visibleCanvas.height))
         }
     }
 
 }
-/* Scene.ts */
+/* Camera2dCanvasContextBuilder.ts */
+
+
+
+
+module EndGate.Core.Rendering.Camera {
+
+    export class Camera2dCanvasContextBuilder {
+        private _camera: Camera2d;
+        private _canvasCenter: Assets.Vector2d;
+        private _translated: bool;
+        private _translationState: any[];
+
+        constructor(camera: Camera2d) {
+            this._camera = camera;
+            this._canvasCenter = this._camera.Position.Clone();
+            this._translated = false;
+            this._translationState = [];
+            this._translationState.push(this._translated);
+        }
+
+        public BuildFrom(context: CanvasRenderingContext2D): CanvasRenderingContext2D {
+            var that = this,
+                savedCreateRadialGradient = context.createRadialGradient,
+                savedTranslate = context.translate,
+                savedSave = context.save,
+                savedRestore = context.restore;
+
+            (<any>context).unModifiedClearRect = context.clearRect;
+
+            context.arc = this.BuildPositionReplacer(context.arc);
+            context.arcTo = this.BuildPositionReplacer(context.arcTo, 0, 4);
+            context.bezierCurveTo = this.BuildPositionReplacer(context.bezierCurveTo, 0, 6);
+            context.clearRect = this.BuildPositionReplacer(context.clearRect);
+            context.createLinearGradient = this.BuildPositionReplacer(context.createLinearGradient, 0, 4);
+            context.createRadialGradient = function () {
+                var scale = that._camera.GetDistanceScale();
+                arguments[0] += -that._camera.Position.X + that._canvasCenter.X * scale;
+                arguments[1] += -that._camera.Position.Y + that._canvasCenter.Y * scale;
+                arguments[3] += -that._camera.Position.X + that._canvasCenter.X * scale;
+                arguments[4] += -that._camera.Position.Y + that._canvasCenter.Y * scale;
+
+                return savedCreateRadialGradient.apply(this, arguments);
+            };
+            context.drawImage = this.BuildPositionReplacer(context.drawImage, 1);
+            context.fillRect = this.BuildPositionReplacer(context.fillRect);
+            context.fillText = this.BuildPositionReplacer(context.fillText, 1);
+            context.getImageData = this.BuildPositionReplacer(context.getImageData);
+            context.isPointInPath = this.BuildPositionReplacer(context.isPointInPath);
+            context.lineTo = this.BuildPositionReplacer(context.lineTo);
+            context.moveTo = this.BuildPositionReplacer(context.moveTo);
+            context.putImageData = this.BuildPositionReplacer(context.putImageData, 1);
+            context.quadraticCurveTo = this.BuildPositionReplacer(context.quadraticCurveTo, 0, 4);
+            context.rect = this.BuildPositionReplacer(context.rect);
+            context.strokeRect = this.BuildPositionReplacer(context.strokeRect);
+            context.strokeText = this.BuildPositionReplacer(context.strokeText, 1);
+
+            context.save = function () {
+                that._translationState.push(that._translated);
+
+                savedSave.call(this);
+            };
+
+            context.restore = function () {
+                that._translated = that._translationState.pop();
+
+                savedRestore.call(this);
+            };
+
+            context.translate = function () {
+                var scale;
+
+                if (!that._translated) {
+                    scale = that._camera.GetDistanceScale();
+
+                    arguments[0] += -that._camera.Position.X + that._canvasCenter.X * scale;
+                    arguments[1] += -that._camera.Position.Y + that._canvasCenter.Y * scale;
+                }
+
+                that._translated = true;
+
+                savedTranslate.apply(this, arguments);
+            };
+
+            return context;
+        }
+
+        public UpdateCanvasCenter(newSize: Assets.Size2d): void {
+            this._canvasCenter.X = newSize.Width / 2;
+            this._canvasCenter.Y = newSize.Height / 2;
+        }
+
+        public BuildPositionReplacer(replacee: Function, positionArgOffset: number = 0, argCount: number = 2): any {
+            var that = this,
+                axiList = ["X", "Y"];
+
+            return function () {
+                var scale: number,
+                    axi: string;
+
+                if (!that._translated) {
+                    scale = that._camera.GetDistanceScale();
+                    for (var i = 0; i < argCount; i++) {
+                        axi = axiList[i % 2];
+                        arguments[positionArgOffset + i] += -that._camera.Position[axi] + that._canvasCenter[axi] * scale;
+                    }
+                }
+
+                return replacee.apply(this, arguments);
+            };
+        }
+    }
+
+}
+/* Camera2dRenderer.ts */
+
+
+
+
+
+module EndGate.Core.Rendering.Camera {
+
+    export class Camera2dRenderer extends Renderer2d {
+        private _camera: Camera2d;
+        private _contextBuilder: Camera2dCanvasContextBuilder;
+
+        constructor(renderOnto: HTMLCanvasElement, camera: Camera2d) {
+            super(renderOnto);
+
+            this._camera = camera;
+            this._contextBuilder = new Camera2dCanvasContextBuilder(this._camera);
+
+            this.OnRendererSizeChange.Bind(this._contextBuilder.UpdateCanvasCenter);
+            this._contextBuilder.UpdateCanvasCenter(new Assets.Size2d(renderOnto.width, renderOnto.height));
+            this._bufferContext = this._contextBuilder.BuildFrom(this._bufferContext);
+
+        }
+
+        public Render(renderables: IRenderable[]): CanvasRenderingContext2D {
+            var context,
+                inverseScale = this._camera.GetInverseDistanceScale();
+
+            this._bufferContext.save();
+            this._bufferContext.scale(inverseScale, inverseScale)
+
+            context = super.Render(this.GetOnScreenRenderables(renderables));
+
+            this._bufferContext.restore();
+
+            return context;
+        }
+
+        public _ClearBuffer() {
+            var cameraScale = this._camera.GetDistanceScale();
+            (<any>this._bufferContext).unModifiedClearRect(0, 0, this._bufferCanvas.width * cameraScale, this._bufferCanvas.height * cameraScale);
+        }
+
+        private GetOnScreenRenderables(allRenderables: IRenderable[]): IRenderable[] {
+            var onscreen: IRenderable[] = [],
+                scale = this._camera.GetDistanceScale(),
+                unscale = 1 / scale;
+
+            // Scale camera size to our zoom level
+            this._camera.Scale(scale, scale);
+
+            for (var i = 0; i < allRenderables.length; i++) {
+                if (this._camera.Intersects(allRenderables[i].GetDrawBounds())) {
+                    onscreen.push(allRenderables[i]);
+                }
+            }
+
+            this._camera.Scale(unscale, unscale);
+
+            return onscreen;
+        }
+    }
+
+}
+/* Scene2d.ts */
+
+
+
 
 
 
@@ -1096,11 +1550,12 @@ module EndGate.Core.Rendering {
 
 
 module EndGate.Core.Rendering {
-    
-    export class Scene implements ITyped, IDisposable {
+
+    export class Scene2d implements ITyped, IDisposable {
         public _type: string = "Scene";
 
         public DrawArea: HTMLCanvasElement;
+        public Camera: Camera.Camera2d;
 
         private _actors: Graphics.Graphic2d[];
         private _renderer: IRenderer;
@@ -1108,7 +1563,7 @@ module EndGate.Core.Rendering {
 
         private _disposed: bool;
 
-        constructor(drawArea?: HTMLCanvasElement, onDraw?: (context: CanvasRenderingContext2D) => void) {
+        constructor(drawArea?: HTMLCanvasElement, onDraw?: (context: CanvasRenderingContext2D) => void ) {
             this._actors = [];
 
             if (typeof drawArea === "undefined") {
@@ -1123,7 +1578,8 @@ module EndGate.Core.Rendering {
             }
 
             this.DrawArea = drawArea;
-            this._renderer = new Renderer2d(this.DrawArea);
+            this.Camera = new Camera.Camera2d(new Assets.Vector2d(this.DrawArea.width / 2, this.DrawArea.height / 2), new Assets.Size2d(this.DrawArea.width, this.DrawArea.height));
+            this._renderer = new Camera.Camera2dRenderer(this.DrawArea, this.Camera);
             this._disposed = false;
         }
 
@@ -1679,7 +2135,7 @@ module EndGate.Core {
         public ID: number;
         public Configuration: GameConfiguration;
         public CollisionManager: Collision.CollisionManager;
-        public Scene: Rendering.Scene;
+        public Scene: Rendering.Scene2d;
         public Input: Input.InputManager;
 
         private static _gameIds: number = 0;
@@ -1687,10 +2143,9 @@ module EndGate.Core {
 
         constructor(gameCanvas?:HTMLCanvasElement) {
             this._gameTime = new GameTime();
-            // Call draw on Game LAST
             this.ID = Game._gameIds++;
 
-            this.Scene = new Rendering.Scene(gameCanvas, context => {
+            this.Scene = new Rendering.Scene2d(gameCanvas, context => {
                 this.Draw(context);
             });
 
@@ -1835,221 +2290,6 @@ module EndGate.Core {
 }
 
 var GameRunnerInstance: EndGate.Core.GameRunner = new EndGate.Core.GameRunner();
-/* MinMax.ts */
-module EndGate.Core.Assets {
-
-    export class MinMax {
-        public Min: number;
-        public Max: number;
-
-        constructor(min: number, max: number) {
-            this.Min = min;
-            this.Max = max;
-        }
-    }
-
-}
-/* Vector2dHelpers.ts */
-
-
-
-module EndGate.Core.Assets {
-
-    export class Vector2dHelpers {
-        public static GetMinMaxProjections(axis: Vector2d, vertices: Vector2d[]): MinMax
-        {
-            var min: number = vertices[0].ProjectOnto(axis).Dot(axis);
-            var max: number = min;
-
-            for (var i: number = 1; i < vertices.length; i++)
-            {
-                var vertex: Vector2d = vertices[i];
-                var value: number = vertex.ProjectOnto(axis).Dot(axis);
-
-                if (value < min) {
-                    min = value;
-                }
-                else if (value > max) {
-                    max = value;
-                }
-            }
-
-            return new MinMax(min, max);
-        }
-    }
-
-}
-/* BoundingCircle.ts */
-
-
-
-
-module EndGate.Core.BoundingObject {
-
-    export class BoundingCircle implements ITyped extends Bounds2d {
-        public _type: string = "BoundingCircle";
-        public _boundsType: string = "BoundingCircle";
-
-        public Radius: number;
-
-        constructor(position: Assets.Vector2d, radius: number) {
-            super(position);
-
-            this.Radius = radius;
-        }
-
-        public Area(): number {
-            return Math.PI * this.Radius * this.Radius;
-        }
-
-        public Circumfrence(): number {
-            return 2 * Math.PI * this.Radius;
-        }
-
-        // For some reason when compiled into a single .ts file if this isn't fully declared it doesn't compile
-        public IntersectsCircle(circle: EndGate.Core.BoundingObject.BoundingCircle): bool {
-            return this.Position.Distance(circle.Position).Length() < this.Radius + circle.Radius;
-        }
-
-        // For some reason when compiled into a single .ts file if this isn't fully declared it doesn't compile
-        public IntersectsRectangle(rectangle: EndGate.Core.BoundingObject.BoundingRectangle): bool {
-            var translated = (rectangle.Rotation === 0)
-                                  ? this.Position
-                                  : this.Position.RotateAround(rectangle.Position, -rectangle.Rotation);
-
-            var circleDistance = translated.Distance(rectangle.Position);
-
-            if (circleDistance.X > (rectangle.Size.HalfWidth() + this.Radius)) { return false; }
-            if (circleDistance.Y > (rectangle.Size.HalfHeight() + this.Radius)) { return false; }
-
-            if (circleDistance.X <= (rectangle.Size.HalfWidth())) { return true; }
-            if (circleDistance.Y <= (rectangle.Size.HalfHeight())) { return true; }
-
-            var cornerDistance_sq = Math.pow(circleDistance.X - rectangle.Size.HalfWidth(), 2) + Math.pow(circleDistance.Y - rectangle.Size.HalfHeight(), 2);
-
-            return (cornerDistance_sq <= (this.Radius * this.Radius));
-        }
-
-        public ContainsPoint(point: Assets.Vector2d): bool {
-            return this.Position.Distance(point).Magnitude() < this.Radius;
-        }
-    }
-
-}
-/* BoundingRectangle.ts */
-
-
-
-
-
-module EndGate.Core.BoundingObject {
-
-    export class BoundingRectangle implements ITyped extends Bounds2d {
-        public _type: string = "BoundingRectangle";
-        public _boundsType: string = "BoundingRectangle";
-
-        public Size: Assets.Size2d;
-
-        constructor(position: Assets.Vector2d, size: Assets.Size2d) {
-            super(position);
-            this.Size = size;
-        }
-
-        public Vertices(): Assets.Vector2d[] {
-            return [this.TopLeft(), this.TopRight(), this.BotLeft(), this.BotRight()];
-        }
-
-        public TopLeft(): Assets.Vector2d {
-            var v = new Assets.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
-            if (this.Rotation === 0) {
-                return v;
-            }
-
-            return v.RotateAround(this.Position, this.Rotation);
-        }
-
-        public TopRight(): Assets.Vector2d {
-            var v = new Assets.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
-            if (this.Rotation === 0) {
-                return v;
-            }
-
-            return v.RotateAround(this.Position, this.Rotation);
-        }
-
-        public BotLeft(): Assets.Vector2d {
-            var v = new Assets.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
-            if (this.Rotation === 0) {
-                return v;
-            }
-
-            return v.RotateAround(this.Position, this.Rotation);
-        }
-
-        public BotRight(): Assets.Vector2d {
-            var v = new Assets.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
-            if (this.Rotation === 0) {
-                return v;
-            }
-
-            return v.RotateAround(this.Position, this.Rotation);
-        }
-
-        // For some reason when compiled into a single .ts file if this isn't fully declared it doesn't compile
-        public IntersectsCircle(circle: EndGate.Core.BoundingObject.BoundingCircle): bool {
-            return circle.IntersectsRectangle(this);
-        }
-
-        // For some reason when compiled into a single .ts file if this isn't fully declared it doesn't compile
-        public IntersectsRectangle(rectangle: EndGate.Core.BoundingObject.BoundingRectangle): bool {
-            if (this.Rotation === 0 && rectangle.Rotation === 0) {
-                var myTopLeft = this.TopLeft(),
-                    myBotRight = this.BotRight(),
-                    theirTopLeft = rectangle.TopLeft(),
-                    theirBotRight = rectangle.BotRight();
-
-                return theirTopLeft.X <= myBotRight.X && theirBotRight.X >= myTopLeft.X && theirTopLeft.Y <= myBotRight.Y && theirBotRight.Y >= myTopLeft.Y;
-            }
-            else if (rectangle.Position.Distance(this.Position).Magnitude() <= rectangle.Size.Radius() + this.Size.Radius()) {// Check if we're somewhat close to the rectangle ect that we might be colliding with
-                var axisList: Assets.Vector2d[] = [this.TopRight().Subtract(this.TopLeft()), this.TopRight().Subtract(this.BotRight()), rectangle.TopLeft().Subtract(rectangle.BotLeft()), rectangle.TopLeft().Subtract(rectangle.TopRight())];
-                var myVertices = this.Vertices();
-                var theirVertices = rectangle.Vertices();
-
-                for (var i: number = 0; i < axisList.length; i++) {
-                    var axi = axisList[i];
-                    var myProjections = Assets.Vector2dHelpers.GetMinMaxProjections(axi, myVertices);
-                    var theirProjections = Assets.Vector2dHelpers.GetMinMaxProjections(axi, theirVertices);
-
-                    // No collision
-                    if (theirProjections.Max < myProjections.Min || myProjections.Max < theirProjections.Min) {
-                        return false;
-                    }
-                }
-
-                return true;
-            }
-
-            return false;
-        }
-
-        public ContainsPoint(point: Assets.Vector2d): bool {
-            var savedRotation: number = this.Rotation;
-
-            if (this.Rotation !== 0) {
-                this.Rotation = 0;
-                point = point.RotateAround(this.Position, -savedRotation);
-            }
-
-            var myTopLeft = this.TopLeft(),
-                myBotRight = this.BotRight();
-
-            this.Rotation = savedRotation;
-
-            return point.X <= myBotRight.X && point.X >= myTopLeft.X && point.Y <= myBotRight.Y && point.Y >= myTopLeft.Y;
-        }        
-    }
-
-}
 /* Shape.ts */
 
 
@@ -2170,6 +2410,14 @@ module EndGate.Core.Graphics.Shapes {
         public BuildPath(context: CanvasRenderingContext2D): void {           
             context.arc(this.Position.X, this.Position.Y, this.Radius, 0, (<any>Math).twoPI);
         }
+
+        public GetDrawBounds(): BoundingObject.Bounds2d {
+            var bounds = new BoundingObject.BoundingCircle(this.Position, this.Radius);
+
+            bounds.Rotation = this.Rotation;
+
+            return bounds;
+        }
     }
 }
 /* Rectangle.ts */
@@ -2194,8 +2442,40 @@ module EndGate.Core.Graphics.Shapes {
         public BuildPath(context: CanvasRenderingContext2D): void {
             context.rect(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
         }
+
+        public GetDrawBounds(): BoundingObject.Bounds2d {
+            var bounds = new BoundingObject.BoundingRectangle(this.Position, this.Size);
+
+            bounds.Rotation = this.Rotation;
+
+            return bounds;
+        }
     }
 
+}
+/* FontMeasurement.ts */
+module EndGate.Core.Graphics.Text {
+
+    export enum FontMeasurement {
+        Ems,
+        Pixels,
+        Points,
+        Percent
+    };
+
+    export class FontMeasurementHelper {
+        public static _measurements: string[];
+
+        public static _Initialize() {
+            FontMeasurementHelper._measurements = ["em", "px", "pt", "%"];
+        }
+
+        public static Get(measurement: FontMeasurement): string {
+            return FontMeasurementHelper._measurements[measurement];
+        }
+    }
+
+    FontMeasurementHelper._Initialize();
 }
 /* FontFamily.ts */
 module EndGate.Core.Graphics.Text {
@@ -2248,30 +2528,6 @@ module EndGate.Core.Graphics.Text {
 
     FontFamilyHelper._Initialize();
 
-}
-/* FontMeasurement.ts */
-module EndGate.Core.Graphics.Text {
-
-    export enum FontMeasurement {
-        Ems,
-        Pixels,
-        Points,
-        Percent
-    };
-
-    export class FontMeasurementHelper {
-        public static _measurements: string[];
-
-        public static _Initialize() {
-            FontMeasurementHelper._measurements = ["em", "px", "pt", "%"];
-        }
-
-        public static Get(measurement: FontMeasurement): string {
-            return FontMeasurementHelper._measurements[measurement];
-        }
-    }
-
-    FontMeasurementHelper._Initialize();
 }
 /* FontVariant.ts */
 module EndGate.Core.Graphics.Text {
@@ -2426,22 +2682,28 @@ module EndGate.Core.Graphics.Text {
 
 
 
+
 module EndGate.Core.Graphics.Text {
 
     export class Text2d extends Graphic2d {
+        public _type: string = "Text2d";
         public FontSettings: FontSettings;
 
         private _text: string;
         private _stroker: Utilities.NoopTripInvoker;
 
+        // For GetDrawBounds
+        private _drawBounds: BoundingObject.BoundingRectangle;
 
-        constructor(position: Assets.Vector2d, text: string, color: string = "black") {
-            super(position);
+        constructor(x: number, y: number, text: string, color: string = "black") {
+            super(new Assets.Vector2d(x, y));
 
             this._text = text;
             this._stroker = new Utilities.NoopTripInvoker((context: CanvasRenderingContext2D) => {
                 context.strokeText(this._text, this.Position.X, this.Position.Y);
             });
+
+            this._drawBounds = new BoundingObject.BoundingRectangle(this.Position, Assets.Size2d.One());
 
             this.FontSettings = new FontSettings();
             this.Align("center");
@@ -2514,13 +2776,27 @@ module EndGate.Core.Graphics.Text {
         }
 
         public Draw(context: CanvasRenderingContext2D): void {
+            var textSize;
+
             super.StartDraw(context);
 
             this.State.Font(this.FontSettings._BuildFont());
+
+            textSize = context.measureText(this._text);
+            this._drawBounds.Size.Width = textSize.width;
+            this._drawBounds.Size.Height = parseInt(this.FontSettings.FontSize()) * 1.5;
+
             context.fillText(this._text, this.Position.X, this.Position.Y);
             this._stroker.Invoke(context);
 
             super.EndDraw(context);
+        }
+
+        public GetDrawBounds(): BoundingObject.Bounds2d {
+            this._drawBounds.Rotation = this.Rotation;
+            this._drawBounds.Position = this.Position;
+
+            return this._drawBounds;
         }
     }
 

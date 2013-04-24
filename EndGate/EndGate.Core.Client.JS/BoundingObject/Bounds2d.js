@@ -8,6 +8,9 @@ var EndGate;
                     this.Position = position;
                     this.Rotation = 0;
                 }
+                Bounds2d.prototype.Scale = function (x, y) {
+                    throw new Error("This method is abstract!");
+                };
                 Bounds2d.prototype.ContainsPoint = function (point) {
                     throw new Error("This method is abstract!");
                 };

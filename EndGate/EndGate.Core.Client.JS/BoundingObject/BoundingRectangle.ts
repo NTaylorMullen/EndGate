@@ -16,6 +16,11 @@ module EndGate.Core.BoundingObject {
             this.Size = size;
         }
 
+        public Scale(x: number, y: number): void {
+            this.Size.Width *= x;
+            this.Size.Height *= x;
+        }
+
         public Vertices(): Assets.Vector2d[] {
             return [this.TopLeft(), this.TopRight(), this.BotLeft(), this.BotRight()];
         }

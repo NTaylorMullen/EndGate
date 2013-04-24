@@ -19,5 +19,13 @@ module EndGate.Core.Graphics.Shapes {
         public BuildPath(context: CanvasRenderingContext2D): void {           
             context.arc(this.Position.X, this.Position.Y, this.Radius, 0, (<any>Math).twoPI);
         }
+
+        public GetDrawBounds(): BoundingObject.Bounds2d {
+            var bounds = new BoundingObject.BoundingCircle(this.Position, this.Radius);
+
+            bounds.Rotation = this.Rotation;
+
+            return bounds;
+        }
     }
 }
