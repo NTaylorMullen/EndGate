@@ -2409,4 +2409,3 @@ var EndGate;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));
-//@ sourceMappingURL=endGate.core.client.js.map

@@ -2501,7 +2501,6 @@ module EndGate.Core.Graphics.Sprites {
     export class Sprite2d extends Graphic2d {
         public Image: ImageSource;
         public Size: Assets.Size2d;
-        private _fill: bool;
 
         constructor(x: number, y: number, image: ImageSource) {
             super(new Assets.Vector2d(x, y));
