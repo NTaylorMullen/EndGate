@@ -25,12 +25,18 @@
         </div>
 
         <div class="span4">
+            <h3>Sprites</h3>
+            <p>Demonstrates how to use the sprites (images) graphics library.</p>
+            <p><a class="btn" href="Samples/Sprites">View sample &raquo;</a></p>
+        </div>        
+    </div>
+    <div class="row">
+        <div class="span4">
             <h3>Layering</h3>
             <p>Demonstrates how to control the layering of graphics.</p>
             <p><a class="btn" href="Samples/Layering">View sample &raquo;</a></p>
         </div>
-    </div>
-    <div class="row">
+
         <div class="span4">
             <h3>Collision Detection</h3>
             <p>Demonstrates how to use the client to detect collisions.</p>
@@ -41,20 +47,22 @@
             <h3>Collision Inspector</h3>
             <p>Allows the dragging and rotating of shapes to inspect collisions closely.</p>
             <p><a class="btn" href="Samples/CollisionInspector">View sample &raquo;</a></p>
-        </div>
+        </div>        
+    </div>
+
+    <div class="row">
         <div class="span4">
             <h3>Mouse Input</h3>
             <p>Demonstrates how to use a games mouse input handler.</p>
             <p><a class="btn" href="Samples/MouseInput">View sample &raquo;</a></p>
         </div>
-    </div>
 
-    <div class="row">
         <div class="span4">
             <h3>Keyboard Input</h3>
             <p>Demonstrates how to use a games keyboard input handler.</p>
             <p><a class="btn" href="Samples/KeyboardInput">View sample &raquo;</a></p>
         </div>
+
         <div class="span4">
             <h3>Camera</h3>
             <p>Demonstrates how to use the camera's movement and zooming capabilities.</p>

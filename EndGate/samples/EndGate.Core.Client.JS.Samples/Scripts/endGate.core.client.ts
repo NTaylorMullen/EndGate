@@ -2453,6 +2453,85 @@ module EndGate.Core.Graphics.Shapes {
     }
 
 }
+/* ImageSource.ts */
+
+
+
+
+module EndGate.Core.Graphics.Sprites {
+
+    export class ImageSource {
+        public Loaded: bool;
+        public ClipLocation: Assets.Vector2d;
+        public ClipSize: Assets.Size2d;
+        public Size: Assets.Size2d;
+        public Source: HTMLImageElement;
+
+        constructor(imageLocation: string, width: number, height: number);
+        constructor(imageLocation: string, width: number, height: number, xClip: number = 0, yClip: number = 0);
+        constructor(imageLocation: string, width: number, height: number, xClip: number = 0, yClip: number = 0, widthClip?: number = width, heightClip?: number = height) {
+            this.Loaded = false;
+            this.OnLoaded = new Utilities.EventHandler();
+            this.Size = new Assets.Size2d(width, height);
+
+            this.Source = new Image();
+            this.Source.onload = () => {
+                this.Loaded = true;
+
+                this.OnLoaded.Trigger(this);
+            };
+
+            this.Source.src = imageLocation;
+            this.ClipLocation = new Assets.Vector2d(xClip, yClip);
+            this.ClipSize = new Assets.Size2d(widthClip, heightClip);
+        }
+
+        public OnLoaded: Utilities.EventHandler;
+    }
+
+}
+/* Sprite2d.ts */
+
+
+
+
+
+module EndGate.Core.Graphics.Sprites {
+
+    export class Sprite2d extends Graphic2d {
+        public Image: ImageSource;
+        public Size: Assets.Size2d;
+        private _fill: bool;
+
+        constructor(x: number, y: number, image: ImageSource) {
+            super(new Assets.Vector2d(x, y));
+
+            this.Image = image;
+            this.Size = this.Image.Size;
+        }
+
+        public Opacity(alpha?: number): number {
+            return this.State.GlobalAlpha(alpha);
+        }
+
+        public Draw(context: CanvasRenderingContext2D): void {
+            super.StartDraw(context);
+
+            context.drawImage(this.Image.Source, this.Image.ClipLocation.X, this.Image.ClipLocation.X, this.Image.ClipSize.Width, this.Image.ClipSize.Height, this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height)
+
+            super.EndDraw(context);
+        }
+
+        public GetDrawBounds(): BoundingObject.Bounds2d {
+            var bounds = new BoundingObject.BoundingRectangle(this.Position, this.Image.Size);
+
+            bounds.Rotation = this.Rotation;
+
+            return bounds;
+        }
+    }
+
+}
 /* FontMeasurement.ts */
 module EndGate.Core.Graphics.Text {
 

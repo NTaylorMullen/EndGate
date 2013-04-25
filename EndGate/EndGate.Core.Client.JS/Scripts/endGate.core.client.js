@@ -1966,6 +1966,75 @@ var EndGate;
 (function (EndGate) {
     (function (Core) {
         (function (Graphics) {
+            (function (Sprites) {
+                var ImageSource = (function () {
+                    function ImageSource(imageLocation, width, height, xClip, yClip, widthClip, heightClip) {
+                        if (typeof xClip === "undefined") { xClip = 0; }
+                        if (typeof yClip === "undefined") { yClip = 0; }
+                        if (typeof widthClip === "undefined") { widthClip = width; }
+                        if (typeof heightClip === "undefined") { heightClip = height; }
+                        var _this = this;
+                        this.Loaded = false;
+                        this.OnLoaded = new Core.Utilities.EventHandler();
+                        this.Size = new Core.Assets.Size2d(width, height);
+                        this.Source = new Image();
+                        this.Source.onload = function () {
+                            _this.Loaded = true;
+                            _this.OnLoaded.Trigger(_this);
+                        };
+                        this.Source.src = imageLocation;
+                        this.ClipLocation = new Core.Assets.Vector2d(xClip, yClip);
+                        this.ClipSize = new Core.Assets.Size2d(widthClip, heightClip);
+                    }
+                    return ImageSource;
+                })();
+                Sprites.ImageSource = ImageSource;                
+            })(Graphics.Sprites || (Graphics.Sprites = {}));
+            var Sprites = Graphics.Sprites;
+        })(Core.Graphics || (Core.Graphics = {}));
+        var Graphics = Core.Graphics;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Graphics) {
+            (function (Sprites) {
+                var Sprite2d = (function (_super) {
+                    __extends(Sprite2d, _super);
+                    function Sprite2d(x, y, image) {
+                                        _super.call(this, new Core.Assets.Vector2d(x, y));
+                        this.Image = image;
+                        this.Size = this.Image.Size;
+                    }
+                    Sprite2d.prototype.Opacity = function (alpha) {
+                        return this.State.GlobalAlpha(alpha);
+                    };
+                    Sprite2d.prototype.Draw = function (context) {
+                        _super.prototype.StartDraw.call(this, context);
+                        context.drawImage(this.Image.Source, this.Image.ClipLocation.X, this.Image.ClipLocation.X, this.Image.ClipSize.Width, this.Image.ClipSize.Height, this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
+                        _super.prototype.EndDraw.call(this, context);
+                    };
+                    Sprite2d.prototype.GetDrawBounds = function () {
+                        var bounds = new Core.BoundingObject.BoundingRectangle(this.Position, this.Image.Size);
+                        bounds.Rotation = this.Rotation;
+                        return bounds;
+                    };
+                    return Sprite2d;
+                })(Graphics.Graphic2d);
+                Sprites.Sprite2d = Sprite2d;                
+            })(Graphics.Sprites || (Graphics.Sprites = {}));
+            var Sprites = Graphics.Sprites;
+        })(Core.Graphics || (Core.Graphics = {}));
+        var Graphics = Core.Graphics;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Graphics) {
             (function (Text) {
                 (function (FontMeasurement) {
                     FontMeasurement._map = [];

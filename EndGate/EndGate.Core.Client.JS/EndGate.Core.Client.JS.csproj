@@ -112,6 +112,20 @@
     </Content>
     <TypeScriptCompile Include="Collision\Collidable.ts" />
     <TypeScriptCompile Include="Rendering\Camera\Camera2d.ts" />
+    <TypeScriptCompile Include="Graphics\Sprites\Sprite2d.ts" />
+    <TypeScriptCompile Include="Graphics\Sprites\ImageSource.ts" />
+    <Content Include="Graphics\Sprites\ImageSource.js">
+      <DependentUpon>ImageSource.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Sprites\ImageSource.min.js">
+      <DependentUpon>ImageSource.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Sprites\Sprite2d.js">
+      <DependentUpon>Sprite2d.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Sprites\Sprite2d.min.js">
+      <DependentUpon>Sprite2d.ts</DependentUpon>
+    </Content>
     <Content Include="Rendering\Camera\Camera2d.js">
       <DependentUpon>Camera2d.ts</DependentUpon>
     </Content>
@@ -557,6 +571,12 @@
     </Content>
     <Content Include="Rendering\Camera\Camera2dCanvasContextBuilder.js.map">
       <DependentUpon>Camera2dCanvasContextBuilder.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Sprites\Sprite2d.js.map">
+      <DependentUpon>Sprite2d.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Sprites\ImageSource.js.map">
+      <DependentUpon>ImageSource.ts</DependentUpon>
     </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

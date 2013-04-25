@@ -2453,6 +2453,141 @@ module EndGate.Core.Graphics.Shapes {
     }
 
 }
+/* ImageSource.ts */
+
+
+
+
+module EndGate.Core.Graphics.Sprites {
+
+    export class ImageSource {
+        public Loaded: bool;
+        public ClipLocation: Assets.Vector2d;
+        public ClipSize: Assets.Size2d;
+        public Size: Assets.Size2d;
+        public Source: HTMLImageElement;
+
+        constructor(imageLocation: string, width: number, height: number);
+        constructor(imageLocation: string, width: number, height: number, xClip: number = 0, yClip: number = 0);
+        constructor(imageLocation: string, width: number, height: number, xClip: number = 0, yClip: number = 0, widthClip?: number = width, heightClip?: number = height) {
+            this.Loaded = false;
+            this.OnLoaded = new Utilities.EventHandler();
+            this.Size = new Assets.Size2d(width, height);
+
+            this.Source = new Image();
+            this.Source.onload = () => {
+                this.Loaded = true;
+
+                this.OnLoaded.Trigger(this);
+            };
+
+            this.Source.src = imageLocation;
+            this.ClipLocation = new Assets.Vector2d(xClip, yClip);
+            this.ClipSize = new Assets.Size2d(widthClip, heightClip);
+        }
+
+        public OnLoaded: Utilities.EventHandler;
+    }
+
+}
+/* Sprite2d.ts */
+
+
+
+
+
+module EndGate.Core.Graphics.Sprites {
+
+    export class Sprite2d extends Graphic2d {
+        public Image: ImageSource;
+        public Size: Assets.Size2d;
+        private _fill: bool;
+        private _stroke: bool;
+
+        constructor(x: number, y: number, image: ImageSource) {
+            super(new Assets.Vector2d(x, y));
+
+            this.Image = image;
+            this.Size = this.Image.Size;
+        }
+
+        public Border(thickness?: number, color?: string): any[] {
+            return [this.BorderThickness(thickness), this.BorderColor(color)];
+        }
+
+        public BorderThickness(thickness?: number): number {
+            return this.State.LineWidth(thickness);
+        }
+
+        public BorderColor(color?: string): string {
+            this._stroke = true;
+            return this.State.StrokeStyle(color);
+        }
+
+        public Shadow(x?: number, y?: number, color?: string, blur?: number): any[] {
+            return [this.ShadowX(x), this.ShadowY(y), this.ShadowColor(color), this.ShadowBlur(blur)];
+        }
+
+        public ShadowColor(color?: string): string {
+            this._fill = true;
+            return this.State.ShadowColor(color);
+        }
+
+        public ShadowX(val?: number): number {
+            return this.State.ShadowOffsetX(val);
+        }
+
+        public ShadowY(val?: number): number {
+            return this.State.ShadowOffsetY(val);
+        }
+
+        public ShadowBlur(val?: number): number {
+            return this.State.ShadowBlur(val);
+        }
+
+        public Opacity(alpha?: number): number {
+            return this.State.GlobalAlpha(alpha);
+        }
+
+        public StartDraw(context: CanvasRenderingContext2D): void {
+            context.beginPath();
+
+            super.StartDraw(context);
+        }
+
+        public EndDraw(context: CanvasRenderingContext2D): void {
+            if (this._fill) {
+                context.fill();
+            }
+
+            if (this._stroke) {
+                context.stroke();
+            }
+            else {
+                context.closePath();
+            }
+
+            super.EndDraw(context);
+        }
+
+        public Draw(context: CanvasRenderingContext2D): void {
+            this.StartDraw(context);
+
+            context.drawImage(this.Image.Source, this.Image.ClipLocation.X, this.Image.ClipLocation.X, this.Image.ClipSize.Width, this.Image.ClipSize.Height, this.Position.X, this.Position.Y, this.Size.Width, this.Size.Height)
+
+            this.EndDraw(context);
+        }
+
+        public GetDrawBounds(): BoundingObject.Bounds2d {
+            var bounds = new BoundingObject.BoundingRectangle(this.Position, this.Image.Size);
+
+            bounds.Rotation = this.Rotation;
+
+            return bounds;
+        }
+    }
+
+}
 /* FontMeasurement.ts */
 module EndGate.Core.Graphics.Text {
 
@@ -2686,6 +2821,7 @@ module EndGate.Core.Graphics.Text {
 module EndGate.Core.Graphics.Text {
 
     export class Text2d extends Graphic2d {
+        public _type: string = "Text2d";
         public FontSettings: FontSettings;
 
         private _text: string;
@@ -2783,7 +2919,7 @@ module EndGate.Core.Graphics.Text {
 
             textSize = context.measureText(this._text);
             this._drawBounds.Size.Width = textSize.width;
-            this._drawBounds.Size.Height = textSize.height;
+            this._drawBounds.Size.Height = parseInt(this.FontSettings.FontSize()) * 1.5;
 
             context.fillText(this._text, this.Position.X, this.Position.Y);
             this._stroker.Invoke(context);
