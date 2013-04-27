@@ -72,4 +72,4 @@
         spriteBuilder.Sprite.ShadowBlur(newBlur);
     });
 })($, window);
-//@ sourceMappingURL=mainSprites.js.map
+//@ sourceMappingURL=mainImages.js.map

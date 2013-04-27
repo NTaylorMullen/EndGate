@@ -1,121 +1,75 @@
-var __extends = this.__extends || function (d, b) {
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
-var SpriteBuilder = (function (_super) {
-    __extends(SpriteBuilder, _super);
-    function SpriteBuilder(_canvas, targetAnimators, defaultPosition, defaultSize, defaultRotation, defaultOpacity, _syncSliders) {
-        _super.call(this, _canvas);
-        this._canvas = _canvas;
-        this._syncSliders = _syncSliders;
-        this.Sprite = new EndGate.Core.Graphics.Sprites.Sprite2d(this._canvas.width / 2, this._canvas.height / 2, new EndGate.Core.Graphics.Sprites.ImageSource("html5-logo.png", 200, 200));
-        this._spriteAnimator = new SpriteAnimator(targetAnimators, defaultPosition, defaultSize, defaultRotation, defaultOpacity, this._syncSliders);
-        this.Scene.Add(this.Sprite);
-    }
-    SpriteBuilder.prototype.Update = function (gameTime) {
-        this._spriteAnimator.ApplyAnimation(this.Sprite, gameTime);
-    };
-    return SpriteBuilder;
-})(EndGate.Core.Game);
-var CustomSlider = (function () {
-    function CustomSlider(_target, _min, _max, _defaultValue, onsliderchange) {
-        this._target = _target;
-        this._min = _min;
-        this._max = _max;
-        this._defaultValue = _defaultValue;
-        this.onsliderchange = onsliderchange;
-        var _this = this;
-        var sliderChange = function () {
-            _this.SliderChange();
-        };
-        this._target.slider({
-            orientation: "horizontal",
-            range: "min",
-            min: this._min,
-            max: this._max,
-            value: this._defaultValue,
-            animate: true,
-            slide: sliderChange,
-            change: sliderChange
-        });
-        this.SliderChange();
-    }
-    CustomSlider.prototype.UpdateSlider = function (val) {
-        this._target.slider("value", val);
-    };
-    CustomSlider.prototype.SliderChange = function () {
-        this.onsliderchange(parseInt(this._target.slider("value")));
-    };
-    return CustomSlider;
-})();
-var SpriteAnimator = (function () {
-    function SpriteAnimator(spriteAnimators, _defaultPosition, _defaultSize, _defaultRotation, _defaultOpacity, _syncSliders) {
-        this._defaultPosition = _defaultPosition;
-        this._defaultSize = _defaultSize;
-        this._defaultRotation = _defaultRotation;
-        this._defaultOpacity = _defaultOpacity;
-        this._syncSliders = _syncSliders;
-        this.Direction = 1;
-        this.CurrentAnimations = {
-            Position: false,
-            Rotation: false,
-            Size: false,
-            Opacity: false
-        };
-        var that = this, animatorClicked = function () {
-            var $this = $(this), animation = $this.attr("animation");
-            if($this.hasClass("btn-success")) {
-                that.CurrentAnimations[animation] = false;
-                $this.removeClass("btn-success");
-            } else {
-                that.CurrentAnimations[animation] = true;
-                $this.addClass("btn-success");
-            }
-        };
-        $.each(spriteAnimators, function (i, btn) {
-            $(this).click(animatorClicked);
-        });
-        this._lastChanged = new Date().getTime();
-    }
-    SpriteAnimator.AnimationSpeed = 50;
-    SpriteAnimator.RotationSpeed = Math.PI / 4;
-    SpriteAnimator.ChangeDirectionEvery = 3000;
-    SpriteAnimator.prototype.ApplyAnimation = function (sprite, gameTime) {
-        if(gameTime.Now.getTime() - this._lastChanged > SpriteAnimator.ChangeDirectionEvery) {
-            this.Direction *= -1;
-            this._lastChanged = gameTime.Now.getTime();
-            console.log("Changing direction: " + this.Direction);
-        }
-        for(var key in this.CurrentAnimations) {
-            if(this.CurrentAnimations[key]) {
-                this[key](sprite, gameTime);
-                this._syncSliders(key);
-            }
+(function ($, window) {
+    var canvas = document.createElement("canvas"), holder = $("#gameHolder"), spriteBuilder, borderColorPicker, borderThicknessSlider, rotationSlider, xPositionSlider, yPositionSlider, opacitySlider, widthSlider, heightSlider, shadowXSlider, shadowYSlider, shadowColorPicker, shadowBlurSlider, syncSliders, ensureValue = function (val, min, max) {
+        return Math.min(Math.max(val, min), max);
+    }, slidersAnimationMappings = {
+        Position: function () {
+            xPositionSlider.UpdateSlider(ensureValue(spriteBuilder.Sprite.Position.X, 0, canvas.width / 2));
+            yPositionSlider.UpdateSlider(ensureValue(spriteBuilder.Sprite.Position.Y, 0, canvas.height / 2));
+        },
+        Rotation: function () {
+            rotationSlider.UpdateSlider(ensureValue(spriteBuilder.Sprite.Rotation * 100, -628, 628));
+        },
+        Size: function () {
+            var newWidth, newHeight;
+            newWidth = spriteBuilder.Sprite.Size.Width;
+            newHeight = spriteBuilder.Sprite.Size.Height;
+            widthSlider.UpdateSlider(ensureValue(newWidth, 0, canvas.width));
+            heightSlider.UpdateSlider(ensureValue(newHeight, 0, canvas.height));
+        },
+        Opacity: function () {
+            opacitySlider.UpdateSlider(ensureValue(spriteBuilder.Sprite.Opacity() * 100, 0, 100));
         }
     };
-    SpriteAnimator.prototype.Position = function (sprite, gameTime) {
-        var incrementor = SpriteAnimator.AnimationSpeed * gameTime.ElapsedSecond, direction = sprite.Position.Subtract(this._defaultPosition).Abs().Sign();
-        if(direction.Magnitude() === 0) {
-            direction = EndGate.Core.Assets.Vector2d.One();
-        }
-        sprite.Position = sprite.Position.Add(direction.Multiply(this.Direction).Multiply(incrementor));
+    canvas.width = holder.width();
+    canvas.height = holder.height();
+    holder.append(canvas);
+    syncSliders = function (animation) {
+        slidersAnimationMappings[animation]();
     };
-    SpriteAnimator.prototype.Size = function (sprite, gameTime) {
-        var incrementor = SpriteAnimator.AnimationSpeed * gameTime.ElapsedSecond;
-        sprite.Size = sprite.Size.Add(this.Direction * incrementor);
-    };
-    SpriteAnimator.prototype.Rotation = function (sprite, gameTime) {
-        var incrementor = SpriteAnimator.RotationSpeed * gameTime.ElapsedSecond, direction = 1;
-        sprite.Rotation += direction * this.Direction * incrementor;
-    };
-    SpriteAnimator.prototype.Opacity = function (sprite, gameTime) {
-        var incrementor = .33 * gameTime.ElapsedSecond;
-        sprite.Opacity(sprite.Opacity() + incrementor * this.Direction);
-        if(sprite.Opacity() > 1) {
-            sprite.Opacity(1);
-        }
-    };
-    return SpriteAnimator;
-})();
+    spriteBuilder = new SpriteBuilder(canvas, $(".spriteAnimator"), new EndGate.Core.Assets.Vector2d(canvas.width / 2, canvas.height / 2), new EndGate.Core.Assets.Size2d(100, 100), 0, 1, syncSliders);
+    rotationSlider = new CustomSlider($("#rotationSlider"), -628, 628, 0, function (newrotation) {
+        spriteBuilder.Sprite.Rotation = newrotation / 100;
+    });
+    xPositionSlider = new CustomSlider($("#positionXSlider"), 0, canvas.width, spriteBuilder.Sprite.Position.X, function (newX) {
+        spriteBuilder.Sprite.Position.X = newX;
+    });
+    yPositionSlider = new CustomSlider($("#positionYSlider"), 0, canvas.height, spriteBuilder.Sprite.Position.Y, function (newY) {
+        spriteBuilder.Sprite.Position.Y = newY;
+    });
+    opacitySlider = new CustomSlider($("#opacitySlider"), 0, 100, 100, function (newAlpha) {
+        spriteBuilder.Sprite.Opacity(newAlpha / 100);
+    });
+    widthSlider = new CustomSlider($("#widthSlider"), 0, canvas.width, spriteBuilder.Sprite.Size.Width, function (newWidth) {
+        spriteBuilder.Sprite.Size.Width = newWidth;
+    });
+    heightSlider = new CustomSlider($("#heightSlider"), 0, canvas.height, spriteBuilder.Sprite.Size.Height, function (newHeight) {
+        spriteBuilder.Sprite.Size.Height = newHeight;
+    });
+    borderColorPicker = new ColorPicker($("#borderRed"), $("#borderGreen"), $("#borderBlue"), [
+        0, 
+        0, 
+        0
+    ], function (newcolor) {
+        spriteBuilder.Sprite.BorderColor(newcolor);
+    });
+    borderThicknessSlider = new CustomSlider($("#borderThickness"), 0, 100, 7, function (newThickness) {
+        spriteBuilder.Sprite.BorderThickness(newThickness);
+    });
+    shadowXSlider = new CustomSlider($("#shadowX"), -30, 30, 20, function (newX) {
+        spriteBuilder.Sprite.ShadowX(newX);
+    });
+    shadowYSlider = new CustomSlider($("#shadowY"), -30, 30, 10, function (newY) {
+        spriteBuilder.Sprite.ShadowY(newY);
+    });
+    shadowColorPicker = new ColorPicker($("#shadowColorRed"), $("#shadowColorGreen"), $("#shadowColorBlue"), [
+        0, 
+        0, 
+        100
+    ], function (newcolor) {
+        spriteBuilder.Sprite.ShadowColor(newcolor);
+    });
+    shadowBlurSlider = new CustomSlider($("#shadowBlur"), 0, 300, 55, function (newBlur) {
+        spriteBuilder.Sprite.ShadowBlur(newBlur);
+    });
+})($, window);
 //@ sourceMappingURL=assetsSprites.js.map

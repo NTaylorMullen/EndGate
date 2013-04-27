@@ -114,6 +114,13 @@
     <TypeScriptCompile Include="Rendering\Camera\Camera2d.ts" />
     <TypeScriptCompile Include="Graphics\Sprites\Sprite2d.ts" />
     <TypeScriptCompile Include="Graphics\Sprites\ImageSource.ts" />
+    <TypeScriptCompile Include="Graphics\Sprites\Animation\SpriteAnimation.ts" />
+    <Content Include="Graphics\Sprites\Animation\SpriteAnimation.js">
+      <DependentUpon>SpriteAnimation.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Sprites\Animation\SpriteAnimation.min.js">
+      <DependentUpon>SpriteAnimation.ts</DependentUpon>
+    </Content>
     <Content Include="Graphics\Sprites\ImageSource.js">
       <DependentUpon>ImageSource.ts</DependentUpon>
     </Content>
@@ -577,6 +584,9 @@
     </Content>
     <Content Include="Graphics\Sprites\ImageSource.js.map">
       <DependentUpon>ImageSource.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Sprites\Animation\SpriteAnimation.js.map">
+      <DependentUpon>SpriteAnimation.ts</DependentUpon>
     </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

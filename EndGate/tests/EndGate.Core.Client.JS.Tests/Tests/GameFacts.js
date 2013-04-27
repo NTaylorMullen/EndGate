@@ -1,4 +1,4 @@
-﻿/// <reference path="../Assets.js" />
+﻿/// <reference path="Assets.js" />
 
 (function (window, lib) {
 

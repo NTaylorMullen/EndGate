@@ -2005,6 +2005,7 @@ var EndGate;
                     __extends(Sprite2d, _super);
                     function Sprite2d(x, y, image) {
                                         _super.call(this, new Core.Assets.Vector2d(x, y));
+                        this._type = "Sprite2d";
                         this.Image = image;
                         this.Size = this.Image.Size;
                     }
@@ -2024,6 +2025,100 @@ var EndGate;
                     return Sprite2d;
                 })(Graphics.Graphic2d);
                 Sprites.Sprite2d = Sprite2d;                
+            })(Graphics.Sprites || (Graphics.Sprites = {}));
+            var Sprites = Graphics.Sprites;
+        })(Core.Graphics || (Core.Graphics = {}));
+        var Graphics = Core.Graphics;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Graphics) {
+            (function (Sprites) {
+                (function (Animation) {
+                    var SpriteAnimation = (function () {
+                        function SpriteAnimation(imageSource, fps, frameSize, frameCount, startOffset) {
+                            if (typeof startOffset === "undefined") { startOffset = Core.Assets.Vector2d.Zero(); }
+                            this._imageSource = imageSource;
+                            this._frameSize = frameSize;
+                            this._frameCount = frameCount;
+                            this._startOffset = startOffset;
+                            this._playing = false;
+                            this._repeating = false;
+                            this._currentFrame = 0;
+                            this._framesPerRow = Math.min(Math.floor((imageSource.ClipSize.Width - startOffset.X) / frameSize.Width), frameCount);
+                            this._lastStepAt = 0;
+                            this._upateImageSource = false;
+                            this.OnComplete = new Core.Utilities.EventHandler();
+                            this.Fps(fps);
+                        }
+                        SpriteAnimation.prototype.Play = function (repeat) {
+                            if (typeof repeat === "undefined") { repeat = false; }
+                            this._lastStepAt = new Date().getTime();
+                            this._repeating = repeat;
+                            this._playing = true;
+                            this._upateImageSource = true;
+                        };
+                        SpriteAnimation.prototype.Pause = function () {
+                            this._playing = false;
+                        };
+                        SpriteAnimation.prototype.Step = function (count) {
+                            if (typeof count === "undefined") { count = 1; }
+                            if(count !== 0) {
+                                this._upateImageSource = true;
+                            }
+                            this._currentFrame += count;
+                            if(this._currentFrame >= this._frameCount) {
+                                if(this._repeating) {
+                                    this._currentFrame %= this._frameCount;
+                                } else {
+                                    this._currentFrame = this._frameCount - 1;
+                                    this.OnComplete.Trigger();
+                                    this.Stop();
+                                }
+                            }
+                        };
+                        SpriteAnimation.prototype.Stop = function () {
+                            this._playing = false;
+                            this._currentFrame = 0;
+                        };
+                        SpriteAnimation.prototype.Fps = function (newFps) {
+                            if(typeof newFps !== "undefined") {
+                                this._fps = newFps;
+                                this._stepEvery = 1000 / this._fps;
+                            }
+                            return this._fps;
+                        };
+                        SpriteAnimation.prototype.Update = function (gameTime) {
+                            var timeSinceStep = gameTime.Now.getTime() - this._lastStepAt, stepCount = 0, row, column;
+                            if(this._playing) {
+                                stepCount = Math.floor(timeSinceStep / this._stepEvery);
+                                if(stepCount !== 0) {
+                                    this.Step(stepCount);
+                                }
+                            }
+                            if(this._upateImageSource) {
+                                this._upateImageSource = false;
+                                row = this.GetFrameRow();
+                                column = this.GetFrameColumn();
+                                this._imageSource.ClipLocation.X = this._startOffset.X + column * this._frameSize.Width;
+                                this._imageSource.ClipLocation.Y = this._startOffset.Y + row * this._frameSize.Height;
+                                this._imageSource.ClipSize = this._frameSize;
+                            }
+                        };
+                        SpriteAnimation.prototype.GetFrameRow = function () {
+                            return Math.floor(this._currentFrame / this._framesPerRow);
+                        };
+                        SpriteAnimation.prototype.GetFrameColumn = function () {
+                            return Math.ceil(this._currentFrame % this._framesPerRow);
+                        };
+                        return SpriteAnimation;
+                    })();
+                    Animation.SpriteAnimation = SpriteAnimation;                    
+                })(Sprites.Animation || (Sprites.Animation = {}));
+                var Animation = Sprites.Animation;
             })(Graphics.Sprites || (Graphics.Sprites = {}));
             var Sprites = Graphics.Sprites;
         })(Core.Graphics || (Core.Graphics = {}));

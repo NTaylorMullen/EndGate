@@ -1,19 +1,25 @@
-﻿(function (window, lib) {
+﻿(function (window, lib, bo, assets) {
 
-    QUnit.module("Scene Facts");
+    QUnit.module("Scene2d Facts");
 
     QUnit.test("Renderables added have draw triggered.", function () {
-        var scene = new lib.Scene(),
+        var scene = new lib.Scene2d(),
             draws1 = 0,
             draws2 = 0,
             renderable1 = {
                 Draw: function (context) {
                     draws1++;
+                },
+                GetDrawBounds: function () {
+                    return new bo.BoundingCircle(assets.Vector2d.Zero(), 5);
                 }
             },
             renderable2 = {
                 Draw: function (context) {
                     draws2++;
+                },
+                GetDrawBounds: function () {
+                    return new bo.BoundingCircle(assets.Vector2d.Zero(), 5);
                 }
             };
 
@@ -46,17 +52,23 @@
     });
 
     QUnit.test("Dispose removes all actors.", function () {
-        var scene = new lib.Scene(),
+        var scene = new lib.Scene2d(),
             draws1 = 0,
             draws2 = 0,
             renderable1 = {
                 Draw: function (context) {
                     draws1++;
+                },
+                GetDrawBounds: function () {
+                    return new bo.BoundingCircle(assets.Vector2d.Zero(), 5);
                 }
             },
             renderable2 = {
                 Draw: function (context) {
                     draws2++;
+                },
+                GetDrawBounds: function () {
+                    return new bo.BoundingCircle(assets.Vector2d.Zero(), 5);
                 }
             };
 
@@ -79,4 +91,4 @@
         QUnit.equal(draws1, draws2);
     });
 
-})(window, EndGate.Core.Rendering);
+})(window, EndGate.Core.Rendering, EndGate.Core.BoundingObject, EndGate.Core.Assets);

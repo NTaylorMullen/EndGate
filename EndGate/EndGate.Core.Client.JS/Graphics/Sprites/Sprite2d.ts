@@ -6,6 +6,8 @@
 module EndGate.Core.Graphics.Sprites {
 
     export class Sprite2d extends Graphic2d {
+        public _type: string = "Sprite2d";
+
         public Image: ImageSource;
         public Size: Assets.Size2d;
 

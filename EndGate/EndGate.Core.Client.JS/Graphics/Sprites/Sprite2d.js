@@ -12,6 +12,7 @@ var EndGate;
                     __extends(Sprite2d, _super);
                     function Sprite2d(x, y, image) {
                                         _super.call(this, new Core.Assets.Vector2d(x, y));
+                        this._type = "Sprite2d";
                         this.Image = image;
                         this.Size = this.Image.Size;
                     }

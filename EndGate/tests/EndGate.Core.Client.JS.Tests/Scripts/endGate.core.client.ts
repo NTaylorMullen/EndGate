@@ -2553,7 +2553,6 @@ module EndGate.Core.Graphics.Sprites.Animation {
         private _repeating: bool;
         private _currentFrame: number;
         private _framesPerRow: number;
-        private _framesPerColumn: number;
         // The last frame time (in ms)
         private _lastStepAt: number;
         // Step to the next frame ever X ms
@@ -2569,7 +2568,6 @@ module EndGate.Core.Graphics.Sprites.Animation {
             this._repeating = false;
             this._currentFrame = 0;
             this._framesPerRow = Math.min(Math.floor((imageSource.ClipSize.Width - startOffset.X) / frameSize.Width), frameCount);
-            this._framesPerColumn = Math.ceil(frameCount / this._framesPerRow);
             this._lastStepAt = 0;            
             this._upateImageSource = false;
 
@@ -2579,6 +2577,10 @@ module EndGate.Core.Graphics.Sprites.Animation {
         }
 
         public OnComplete: Utilities.EventHandler;
+
+        public IsPlaying(): bool {
+            return this._playing;
+        }
 
         public Play(repeat: bool = false): void {
             this._lastStepAt = new Date().getTime();
@@ -2605,18 +2607,20 @@ module EndGate.Core.Graphics.Sprites.Animation {
                 else {
                     this._currentFrame = this._frameCount - 1;
                     this.OnComplete.Trigger();
-                    this.Stop();
+                    this.Stop(false);
                 }
             }
         }
 
-        public Stop(): void {
+        public Stop(resetFrame: bool = true): void {
             this._playing = false;
-            this._currentFrame = 0;
+            if (resetFrame) {
+                this.Reset();
+            }
         }
 
-        public Seek(frame: number): void {
-            this._currentFrame = frame;
+        public Reset(): void {
+            this._currentFrame = 0;
         }
 
         public Fps(newFps?: number): number {
@@ -2637,7 +2641,8 @@ module EndGate.Core.Graphics.Sprites.Animation {
             if (this._playing) {
                 stepCount = Math.floor(timeSinceStep / this._stepEvery);
                 if (stepCount !== 0) {
-                    this.Step(Math.floor(timeSinceStep / this._stepEvery));
+                    this._lastStepAt = gameTime.Now.getTime();
+                    this.Step(stepCount);
                 }
             }
 
@@ -2653,11 +2658,11 @@ module EndGate.Core.Graphics.Sprites.Animation {
         }
 
         private GetFrameRow(): number {
-            return Math.floor(this._currentFrame / this._framesPerColumn);
+            return Math.floor(this._currentFrame / this._framesPerRow);
         }
 
         private GetFrameColumn(): number {
-            return Math.ceil(this._currentFrame % this._framesPerColumn);
+            return Math.ceil(this._currentFrame % this._framesPerRow);
         }
     }
 
