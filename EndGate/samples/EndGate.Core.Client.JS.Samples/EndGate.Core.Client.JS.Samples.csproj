@@ -127,6 +127,16 @@
     <Content Include="packages.config" />
     <TypeScriptCompile Include="Samples\CollisionDetection\assetsCollisionDetection.ts" />
     <TypeScriptCompile Include="Samples\Camera\assetsCamera.ts" />
+    <TypeScriptCompile Include="Samples\AnimatedSprites\assetsAnimatedSprites.ts" />
+    <Content Include="Samples\AnimatedSprites\assetsAnimatedSprites.js">
+      <DependentUpon>assetsAnimatedSprites.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\AnimatedSprites\Default.aspx" />
+    <TypeScriptCompile Include="Samples\AnimatedSprites\mainAnimatedSprites.ts" />
+    <Content Include="Samples\AnimatedSprites\images\fire_explosion.png" />
+    <Content Include="Samples\AnimatedSprites\mainAnimatedSprites.js">
+      <DependentUpon>mainAnimatedSprites.ts</DependentUpon>
+    </Content>
     <Content Include="Samples\Camera\assetsCamera.js">
       <DependentUpon>assetsCamera.ts</DependentUpon>
     </Content>
@@ -266,6 +276,13 @@
       <DependentUpon>EndGate.Core.Samples.Master</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Samples\AnimatedSprites\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Samples\AnimatedSprites\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Samples\Camera\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

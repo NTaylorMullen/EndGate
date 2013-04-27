@@ -11,11 +11,11 @@ module EndGate.Core.Graphics.Sprites {
         public Image: ImageSource;
         public Size: Assets.Size2d;
 
-        constructor(x: number, y: number, image: ImageSource) {
+        constructor(x: number, y: number, image: ImageSource, width?: number = image.ClipSize.Width, height?: number = image.ClipSize.Height) {
             super(new Assets.Vector2d(x, y));
 
             this.Image = image;
-            this.Size = this.Image.Size;
+            this.Size = new Assets.Size2d(width, height);
         }
 
         public Opacity(alpha?: number): number {
@@ -25,7 +25,7 @@ module EndGate.Core.Graphics.Sprites {
         public Draw(context: CanvasRenderingContext2D): void {
             super.StartDraw(context);
 
-            context.drawImage(this.Image.Source, this.Image.ClipLocation.X, this.Image.ClipLocation.X, this.Image.ClipSize.Width, this.Image.ClipSize.Height, this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height)
+            context.drawImage(this.Image.Source, this.Image.ClipLocation.X, this.Image.ClipLocation.Y, this.Image.ClipSize.Width, this.Image.ClipSize.Height, this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height)
 
             super.EndDraw(context);
         }

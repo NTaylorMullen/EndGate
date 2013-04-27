@@ -2003,11 +2003,13 @@ var EndGate;
             (function (Sprites) {
                 var Sprite2d = (function (_super) {
                     __extends(Sprite2d, _super);
-                    function Sprite2d(x, y, image) {
+                    function Sprite2d(x, y, image, width, height) {
+                        if (typeof width === "undefined") { width = image.ClipSize.Width; }
+                        if (typeof height === "undefined") { height = image.ClipSize.Height; }
                                         _super.call(this, new Core.Assets.Vector2d(x, y));
                         this._type = "Sprite2d";
                         this.Image = image;
-                        this.Size = this.Image.Size;
+                        this.Size = new Core.Assets.Size2d(width, height);
                     }
                     Sprite2d.prototype.Opacity = function (alpha) {
                         return this.State.GlobalAlpha(alpha);

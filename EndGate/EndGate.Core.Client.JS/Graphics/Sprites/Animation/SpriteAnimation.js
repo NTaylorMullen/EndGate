@@ -16,7 +16,6 @@ var EndGate;
                             this._currentFrame = 0;
                             this._framesPerRow = Math.min(Math.floor((imageSource.ClipSize.Width - startOffset.X) / frameSize.Width), frameCount);
                             this._lastStepAt = 0;
-                            this._upateImageSource = false;
                             this.OnComplete = new Core.Utilities.EventHandler();
                             this.Fps(fps);
                         }
@@ -28,16 +27,13 @@ var EndGate;
                             this._lastStepAt = new Date().getTime();
                             this._repeating = repeat;
                             this._playing = true;
-                            this._upateImageSource = true;
+                            this.UpdateImageSource();
                         };
                         SpriteAnimation.prototype.Pause = function () {
                             this._playing = false;
                         };
                         SpriteAnimation.prototype.Step = function (count) {
                             if (typeof count === "undefined") { count = 1; }
-                            if(count !== 0) {
-                                this._upateImageSource = true;
-                            }
                             this._currentFrame += count;
                             if(this._currentFrame >= this._frameCount) {
                                 if(this._repeating) {
@@ -47,6 +43,9 @@ var EndGate;
                                     this.OnComplete.Trigger();
                                     this.Stop(false);
                                 }
+                            }
+                            if(count !== 0) {
+                                this.UpdateImageSource();
                             }
                         };
                         SpriteAnimation.prototype.Stop = function (resetFrame) {
@@ -67,7 +66,7 @@ var EndGate;
                             return this._fps;
                         };
                         SpriteAnimation.prototype.Update = function (gameTime) {
-                            var timeSinceStep = gameTime.Now.getTime() - this._lastStepAt, stepCount = 0, row, column;
+                            var timeSinceStep = gameTime.Now.getTime() - this._lastStepAt, stepCount = 0;
                             if(this._playing) {
                                 stepCount = Math.floor(timeSinceStep / this._stepEvery);
                                 if(stepCount !== 0) {
@@ -75,14 +74,12 @@ var EndGate;
                                     this.Step(stepCount);
                                 }
                             }
-                            if(this._upateImageSource) {
-                                this._upateImageSource = false;
-                                row = this.GetFrameRow();
-                                column = this.GetFrameColumn();
-                                this._imageSource.ClipLocation.X = this._startOffset.X + column * this._frameSize.Width;
-                                this._imageSource.ClipLocation.Y = this._startOffset.Y + row * this._frameSize.Height;
-                                this._imageSource.ClipSize = this._frameSize;
-                            }
+                        };
+                        SpriteAnimation.prototype.UpdateImageSource = function () {
+                            var row = this.GetFrameRow(), column = this.GetFrameColumn();
+                            this._imageSource.ClipLocation.X = this._startOffset.X + column * this._frameSize.Width;
+                            this._imageSource.ClipLocation.Y = this._startOffset.Y + row * this._frameSize.Height;
+                            this._imageSource.ClipSize = this._frameSize;
                         };
                         SpriteAnimation.prototype.GetFrameRow = function () {
                             return Math.floor(this._currentFrame / this._framesPerRow);

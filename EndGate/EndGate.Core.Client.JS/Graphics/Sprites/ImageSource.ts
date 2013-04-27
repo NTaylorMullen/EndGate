@@ -12,7 +12,7 @@ module EndGate.Core.Graphics.Sprites {
         public Source: HTMLImageElement;
 
         constructor(imageLocation: string, width: number, height: number);
-        constructor(imageLocation: string, width: number, height: number, xClip?: number = 0, yClip?: number = 0);
+        constructor(imageLocation: string, width: number, height: number, xClip?: number = 0, yClip?: number = 0, widthClip?: number, heightClip?: number);
         constructor(imageLocation: string, width: number, height: number, xClip?: number = 0, yClip?: number = 0, widthClip?: number = width, heightClip?: number = height) {
             this.Loaded = false;
             this.OnLoaded = new Utilities.EventHandler();

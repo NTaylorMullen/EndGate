@@ -2468,8 +2468,8 @@ module EndGate.Core.Graphics.Sprites {
         public Source: HTMLImageElement;
 
         constructor(imageLocation: string, width: number, height: number);
-        constructor(imageLocation: string, width: number, height: number, xClip: number = 0, yClip: number = 0);
-        constructor(imageLocation: string, width: number, height: number, xClip: number = 0, yClip: number = 0, widthClip?: number = width, heightClip?: number = height) {
+        constructor(imageLocation: string, width: number, height: number, xClip?: number = 0, yClip?: number = 0, widthClip?: number, heightClip?: number);
+        constructor(imageLocation: string, width: number, height: number, xClip?: number = 0, yClip?: number = 0, widthClip?: number = width, heightClip?: number = height) {
             this.Loaded = false;
             this.OnLoaded = new Utilities.EventHandler();
             this.Size = new Assets.Size2d(width, height);
@@ -2504,11 +2504,11 @@ module EndGate.Core.Graphics.Sprites {
         public Image: ImageSource;
         public Size: Assets.Size2d;
 
-        constructor(x: number, y: number, image: ImageSource) {
+        constructor(x: number, y: number, image: ImageSource, width?: number = image.ClipSize.Width, height?: number = image.ClipSize.Height) {
             super(new Assets.Vector2d(x, y));
 
             this.Image = image;
-            this.Size = this.Image.Size;
+            this.Size = new Assets.Size2d(width, height);
         }
 
         public Opacity(alpha?: number): number {
@@ -2559,7 +2559,7 @@ module EndGate.Core.Graphics.Sprites.Animation {
         private _stepEvery: number;
         private _upateImageSource: bool;
 
-        constructor(imageSource: ImageSource, fps: number, frameSize: Assets.Size2d, frameCount: number, startOffset: Assets.Vector2d = Assets.Vector2d.Zero()) {
+        constructor(imageSource: ImageSource, fps: number, frameSize: Assets.Size2d, frameCount: number, startOffset?: Assets.Vector2d = Assets.Vector2d.Zero()) {
             this._imageSource = imageSource;
             this._frameSize = frameSize;
             this._frameCount = frameCount;
@@ -2582,7 +2582,7 @@ module EndGate.Core.Graphics.Sprites.Animation {
             return this._playing;
         }
 
-        public Play(repeat: bool = false): void {
+        public Play(repeat?: bool = false): void {
             this._lastStepAt = new Date().getTime();
             this._repeating = repeat;
             this._playing = true;
@@ -2593,7 +2593,7 @@ module EndGate.Core.Graphics.Sprites.Animation {
             this._playing = false;
         }
 
-        public Step(count: number = 1): void {
+        public Step(count?: number = 1): void {
             if (count !== 0) {
                 this._upateImageSource = true;
             }
@@ -2612,7 +2612,7 @@ module EndGate.Core.Graphics.Sprites.Animation {
             }
         }
 
-        public Stop(resetFrame: bool = true): void {
+        public Stop(resetFrame?: bool = true): void {
             this._playing = false;
             if (resetFrame) {
                 this.Reset();

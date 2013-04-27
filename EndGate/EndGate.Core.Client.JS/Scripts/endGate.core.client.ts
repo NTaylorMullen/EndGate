@@ -2468,8 +2468,8 @@ module EndGate.Core.Graphics.Sprites {
         public Source: HTMLImageElement;
 
         constructor(imageLocation: string, width: number, height: number);
-        constructor(imageLocation: string, width: number, height: number, xClip: number = 0, yClip: number = 0);
-        constructor(imageLocation: string, width: number, height: number, xClip: number = 0, yClip: number = 0, widthClip?: number = width, heightClip?: number = height) {
+        constructor(imageLocation: string, width: number, height: number, xClip?: number = 0, yClip?: number = 0, widthClip?: number, heightClip?: number);
+        constructor(imageLocation: string, width: number, height: number, xClip?: number = 0, yClip?: number = 0, widthClip?: number = width, heightClip?: number = height) {
             this.Loaded = false;
             this.OnLoaded = new Utilities.EventHandler();
             this.Size = new Assets.Size2d(width, height);
@@ -2504,11 +2504,11 @@ module EndGate.Core.Graphics.Sprites {
         public Image: ImageSource;
         public Size: Assets.Size2d;
 
-        constructor(x: number, y: number, image: ImageSource) {
+        constructor(x: number, y: number, image: ImageSource, width?: number = image.ClipSize.Width, height?: number = image.ClipSize.Height) {
             super(new Assets.Vector2d(x, y));
 
             this.Image = image;
-            this.Size = this.Image.Size;
+            this.Size = new Assets.Size2d(width, height);
         }
 
         public Opacity(alpha?: number): number {
@@ -2518,7 +2518,7 @@ module EndGate.Core.Graphics.Sprites {
         public Draw(context: CanvasRenderingContext2D): void {
             super.StartDraw(context);
 
-            context.drawImage(this.Image.Source, this.Image.ClipLocation.X, this.Image.ClipLocation.X, this.Image.ClipSize.Width, this.Image.ClipSize.Height, this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height)
+            context.drawImage(this.Image.Source, this.Image.ClipLocation.X, this.Image.ClipLocation.Y, this.Image.ClipSize.Width, this.Image.ClipSize.Height, this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height)
 
             super.EndDraw(context);
         }
@@ -2557,9 +2557,8 @@ module EndGate.Core.Graphics.Sprites.Animation {
         private _lastStepAt: number;
         // Step to the next frame ever X ms
         private _stepEvery: number;
-        private _upateImageSource: bool;
 
-        constructor(imageSource: ImageSource, fps: number, frameSize: Assets.Size2d, frameCount: number, startOffset: Assets.Vector2d = Assets.Vector2d.Zero()) {
+        constructor(imageSource: ImageSource, fps: number, frameSize: Assets.Size2d, frameCount: number, startOffset?: Assets.Vector2d = Assets.Vector2d.Zero()) {
             this._imageSource = imageSource;
             this._frameSize = frameSize;
             this._frameCount = frameCount;
@@ -2569,7 +2568,6 @@ module EndGate.Core.Graphics.Sprites.Animation {
             this._currentFrame = 0;
             this._framesPerRow = Math.min(Math.floor((imageSource.ClipSize.Width - startOffset.X) / frameSize.Width), frameCount);
             this._lastStepAt = 0;            
-            this._upateImageSource = false;
 
             this.OnComplete = new Utilities.EventHandler();
 
@@ -2582,22 +2580,18 @@ module EndGate.Core.Graphics.Sprites.Animation {
             return this._playing;
         }
 
-        public Play(repeat: bool = false): void {
+        public Play(repeat?: bool = false): void {
             this._lastStepAt = new Date().getTime();
             this._repeating = repeat;
             this._playing = true;
-            this._upateImageSource = true;
+            this.UpdateImageSource();
         }
 
         public Pause(): void {
             this._playing = false;
         }
 
-        public Step(count: number = 1): void {
-            if (count !== 0) {
-                this._upateImageSource = true;
-            }
-
+        public Step(count?: number = 1): void {           
             this._currentFrame += count;
 
             if (this._currentFrame >= this._frameCount) {
@@ -2610,9 +2604,13 @@ module EndGate.Core.Graphics.Sprites.Animation {
                     this.Stop(false);
                 }
             }
+
+            if (count !== 0) {
+                this.UpdateImageSource();
+            }
         }
 
-        public Stop(resetFrame: bool = true): void {
+        public Stop(resetFrame?: bool = true): void {
             this._playing = false;
             if (resetFrame) {
                 this.Reset();
@@ -2634,9 +2632,7 @@ module EndGate.Core.Graphics.Sprites.Animation {
 
         public Update(gameTime: GameTime): void {
             var timeSinceStep = gameTime.Now.getTime() - this._lastStepAt,
-                stepCount = 0,
-                row,
-                column;
+                stepCount = 0;
 
             if (this._playing) {
                 stepCount = Math.floor(timeSinceStep / this._stepEvery);
@@ -2645,16 +2641,15 @@ module EndGate.Core.Graphics.Sprites.Animation {
                     this.Step(stepCount);
                 }
             }
+        }
 
-            if (this._upateImageSource) {
-                this._upateImageSource = false;
-                row = this.GetFrameRow();
+        private UpdateImageSource(): void {
+            var row = this.GetFrameRow(),
                 column = this.GetFrameColumn();
 
-                this._imageSource.ClipLocation.X = this._startOffset.X + column * this._frameSize.Width;
-                this._imageSource.ClipLocation.Y = this._startOffset.Y + row * this._frameSize.Height;
-                this._imageSource.ClipSize = this._frameSize;
-            }
+            this._imageSource.ClipLocation.X = this._startOffset.X + column * this._frameSize.Width;
+            this._imageSource.ClipLocation.Y = this._startOffset.Y + row * this._frameSize.Height;
+            this._imageSource.ClipSize = this._frameSize;
         }
 
         private GetFrameRow(): number {
