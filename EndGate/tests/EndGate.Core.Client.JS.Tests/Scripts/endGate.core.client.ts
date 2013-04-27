@@ -2499,10 +2499,10 @@ module EndGate.Core.Graphics.Sprites {
 module EndGate.Core.Graphics.Sprites {
 
     export class Sprite2d extends Graphic2d {
+        public _type: string = "Sprite2d";
+
         public Image: ImageSource;
         public Size: Assets.Size2d;
-        private _fill: bool;
-        private _stroke: bool;
 
         constructor(x: number, y: number, image: ImageSource) {
             super(new Assets.Vector2d(x, y));
@@ -2511,71 +2511,16 @@ module EndGate.Core.Graphics.Sprites {
             this.Size = this.Image.Size;
         }
 
-        public Border(thickness?: number, color?: string): any[] {
-            return [this.BorderThickness(thickness), this.BorderColor(color)];
-        }
-
-        public BorderThickness(thickness?: number): number {
-            return this.State.LineWidth(thickness);
-        }
-
-        public BorderColor(color?: string): string {
-            this._stroke = true;
-            return this.State.StrokeStyle(color);
-        }
-
-        public Shadow(x?: number, y?: number, color?: string, blur?: number): any[] {
-            return [this.ShadowX(x), this.ShadowY(y), this.ShadowColor(color), this.ShadowBlur(blur)];
-        }
-
-        public ShadowColor(color?: string): string {
-            this._fill = true;
-            return this.State.ShadowColor(color);
-        }
-
-        public ShadowX(val?: number): number {
-            return this.State.ShadowOffsetX(val);
-        }
-
-        public ShadowY(val?: number): number {
-            return this.State.ShadowOffsetY(val);
-        }
-
-        public ShadowBlur(val?: number): number {
-            return this.State.ShadowBlur(val);
-        }
-
         public Opacity(alpha?: number): number {
             return this.State.GlobalAlpha(alpha);
         }
 
-        public StartDraw(context: CanvasRenderingContext2D): void {
-            context.beginPath();
-
+        public Draw(context: CanvasRenderingContext2D): void {
             super.StartDraw(context);
-        }
 
-        public EndDraw(context: CanvasRenderingContext2D): void {
-            if (this._fill) {
-                context.fill();
-            }
-
-            if (this._stroke) {
-                context.stroke();
-            }
-            else {
-                context.closePath();
-            }
+            context.drawImage(this.Image.Source, this.Image.ClipLocation.X, this.Image.ClipLocation.X, this.Image.ClipSize.Width, this.Image.ClipSize.Height, this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height)
 
             super.EndDraw(context);
-        }
-
-        public Draw(context: CanvasRenderingContext2D): void {
-            this.StartDraw(context);
-
-            context.drawImage(this.Image.Source, this.Image.ClipLocation.X, this.Image.ClipLocation.X, this.Image.ClipSize.Width, this.Image.ClipSize.Height, this.Position.X, this.Position.Y, this.Size.Width, this.Size.Height)
-
-            this.EndDraw(context);
         }
 
         public GetDrawBounds(): BoundingObject.Bounds2d {
@@ -2584,6 +2529,135 @@ module EndGate.Core.Graphics.Sprites {
             bounds.Rotation = this.Rotation;
 
             return bounds;
+        }
+    }
+
+}
+/* SpriteAnimation.ts */
+
+
+
+
+
+
+
+module EndGate.Core.Graphics.Sprites.Animation {
+
+    export class SpriteAnimation {
+        private _imageSource: ImageSource;
+        private _fps: number;
+        private _frameSize: Assets.Size2d;
+        private _frameCount: number;
+        private _startOffset: Assets.Vector2d;
+        private _playing: bool;
+        private _repeating: bool;
+        private _currentFrame: number;
+        private _framesPerRow: number;
+        private _framesPerColumn: number;
+        // The last frame time (in ms)
+        private _lastStepAt: number;
+        // Step to the next frame ever X ms
+        private _stepEvery: number;
+        private _upateImageSource: bool;
+
+        constructor(imageSource: ImageSource, fps: number, frameSize: Assets.Size2d, frameCount: number, startOffset: Assets.Vector2d = Assets.Vector2d.Zero()) {
+            this._imageSource = imageSource;
+            this._frameSize = frameSize;
+            this._frameCount = frameCount;
+            this._startOffset = startOffset;
+            this._playing = false;
+            this._repeating = false;
+            this._currentFrame = 0;
+            this._framesPerRow = Math.min(Math.floor((imageSource.ClipSize.Width - startOffset.X) / frameSize.Width), frameCount);
+            this._framesPerColumn = Math.ceil(frameCount / this._framesPerRow);
+            this._lastStepAt = 0;            
+            this._upateImageSource = false;
+
+            this.OnComplete = new Utilities.EventHandler();
+
+            this.Fps(fps);
+        }
+
+        public OnComplete: Utilities.EventHandler;
+
+        public Play(repeat: bool = false): void {
+            this._lastStepAt = new Date().getTime();
+            this._repeating = repeat;
+            this._playing = true;
+            this._upateImageSource = true;
+        }
+
+        public Pause(): void {
+            this._playing = false;
+        }
+
+        public Step(count: number = 1): void {
+            if (count !== 0) {
+                this._upateImageSource = true;
+            }
+
+            this._currentFrame += count;
+
+            if (this._currentFrame >= this._frameCount) {
+                if (this._repeating) {
+                    this._currentFrame %= this._frameCount;
+                }
+                else {
+                    this._currentFrame = this._frameCount - 1;
+                    this.OnComplete.Trigger();
+                    this.Stop();
+                }
+            }
+        }
+
+        public Stop(): void {
+            this._playing = false;
+            this._currentFrame = 0;
+        }
+
+        public Seek(frame: number): void {
+            this._currentFrame = frame;
+        }
+
+        public Fps(newFps?: number): number {
+            if (typeof newFps !== "undefined") {
+                this._fps = newFps;
+                this._stepEvery = 1000 / this._fps;
+            }
+
+            return this._fps;
+        }
+
+        public Update(gameTime: GameTime): void {
+            var timeSinceStep = gameTime.Now.getTime() - this._lastStepAt,
+                stepCount = 0,
+                row,
+                column;
+
+            if (this._playing) {
+                stepCount = Math.floor(timeSinceStep / this._stepEvery);
+                if (stepCount !== 0) {
+                    this.Step(Math.floor(timeSinceStep / this._stepEvery));
+                }
+            }
+
+            if (this._upateImageSource) {
+                this._upateImageSource = false;
+                row = this.GetFrameRow();
+                column = this.GetFrameColumn();
+
+                this._imageSource.ClipLocation.X = this._startOffset.X + column * this._frameSize.Width;
+                this._imageSource.ClipLocation.Y = this._startOffset.Y + row * this._frameSize.Height;
+                this._imageSource.ClipSize = this._frameSize;
+            }
+        }
+
+        private GetFrameRow(): number {
+            return Math.floor(this._currentFrame / this._framesPerColumn);
+        }
+
+        private GetFrameColumn(): number {
+            return Math.ceil(this._currentFrame % this._framesPerColumn);
         }
     }
 

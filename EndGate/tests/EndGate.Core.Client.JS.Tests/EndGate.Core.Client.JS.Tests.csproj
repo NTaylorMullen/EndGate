@@ -118,19 +118,19 @@
     <Content Include="Tests\Assets.min.js">
       <DependentUpon>Assets.ts</DependentUpon>
     </Content>
-    <Content Include="Tests\UnitTests\Assets\Sizes\Size2dFacts.js" />
-    <Content Include="Tests\UnitTests\Assets\Vectors\Vector2dFacts.js" />
-    <Content Include="Tests\UnitTests\Assets\Vectors\Vector2dHelperFacts.js" />
-    <Content Include="Tests\UnitTests\BoundingObject\BoundingCircleFacts.js" />
-    <Content Include="Tests\UnitTests\BoundingObject\BoundingRectangleFacts.js" />
-    <Content Include="Tests\UnitTests\Collision\CollisionManagerFacts.js" />
-    <Content Include="Tests\UnitTests\GameFacts.js" />
-    <Content Include="Tests\UnitTests\Loopers\RepaintLooperFacts.js" />
-    <Content Include="Tests\UnitTests\Rendering\Renderer2dFacts.js" />
-    <Content Include="Tests\UnitTests\Rendering\SceneFacts.js" />
-    <Content Include="Tests\UnitTests\Utilities\EventHandlerFacts.js" />
-    <Content Include="Tests\UnitTests\Loopers\LooperFacts.js" />
-    <Content Include="Tests\UnitTests\Utilities\NoopTripInvokerFacts.js" />
+    <Content Include="Tests\Assets\Sizes\Size2dFacts.js" />
+    <Content Include="Tests\Assets\Vectors\Vector2dFacts.js" />
+    <Content Include="Tests\Assets\Vectors\Vector2dHelperFacts.js" />
+    <Content Include="Tests\BoundingObject\BoundingCircleFacts.js" />
+    <Content Include="Tests\BoundingObject\BoundingRectangleFacts.js" />
+    <Content Include="Tests\Collision\CollisionManagerFacts.js" />
+    <Content Include="Tests\GameFacts.js" />
+    <Content Include="Tests\Loopers\RepaintLooperFacts.js" />
+    <Content Include="Tests\Rendering\Renderer2dFacts.js" />
+    <Content Include="Tests\Rendering\SceneFacts.js" />
+    <Content Include="Tests\Utilities\EventHandlerFacts.js" />
+    <Content Include="Tests\Loopers\LooperFacts.js" />
+    <Content Include="Tests\Utilities\NoopTripInvokerFacts.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
