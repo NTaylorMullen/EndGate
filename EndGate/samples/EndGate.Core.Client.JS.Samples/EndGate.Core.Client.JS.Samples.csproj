@@ -133,6 +133,7 @@
     </Content>
     <Content Include="Samples\AnimatedSprites\Default.aspx" />
     <TypeScriptCompile Include="Samples\AnimatedSprites\mainAnimatedSprites.ts" />
+    <Content Include="Samples\AnimatedSprites\images\electric_pulse.png" />
     <Content Include="Samples\AnimatedSprites\images\fire_explosion.png" />
     <Content Include="Samples\AnimatedSprites\mainAnimatedSprites.js">
       <DependentUpon>mainAnimatedSprites.ts</DependentUpon>

@@ -3,6 +3,6 @@
     canvas.width = holder.width();
     canvas.height = holder.height();
     holder.append(canvas);
-    rpg = new RPG(canvas);
+    rpg = new Animator(canvas);
 })($, window);
 //@ sourceMappingURL=mainAnimatedSprites.js.map

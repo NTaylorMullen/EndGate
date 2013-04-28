@@ -4,13 +4,13 @@
 (function ($, window) {
     var canvas: HTMLCanvasElement = < HTMLCanvasElement > document.createElement("canvas"),
         holder: JQuery = $("#gameHolder"),
-        rpg: RPG = null;
+        rpg: Animator = null;
 
     canvas.width = holder.width();
     canvas.height = holder.height();
 
     holder.append(canvas);
 
-    rpg = new RPG(canvas);
+    rpg = new Animator(canvas);
 
 })($, window);
