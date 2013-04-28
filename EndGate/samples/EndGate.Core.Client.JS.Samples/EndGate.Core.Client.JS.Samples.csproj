@@ -138,6 +138,19 @@
     <Content Include="Samples\AnimatedSprites\mainAnimatedSprites.js">
       <DependentUpon>mainAnimatedSprites.ts</DependentUpon>
     </Content>
+    <TypeScriptCompile Include="Samples\AudioHandling\assetsAudioHandling.ts" />
+    <Content Include="Samples\AudioHandling\assetsAudioHandling.js">
+      <DependentUpon>assetsAudioHandling.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\AudioHandling\Default.aspx" />
+    <Content Include="Samples\AudioHandling\images\burning_flame.png" />
+    <TypeScriptCompile Include="Samples\AudioHandling\mainAudioHandling.ts" />
+    <Content Include="Samples\AudioHandling\images\smoke_poof.png" />
+    <Content Include="Samples\AudioHandling\mainAudioHandling.js">
+      <DependentUpon>mainAudioHandling.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\AudioHandling\sounds\fireburning.mp3" />
+    <Content Include="Samples\AudioHandling\sounds\smokepoof.mp3" />
     <Content Include="Samples\Camera\assetsCamera.js">
       <DependentUpon>assetsCamera.ts</DependentUpon>
     </Content>
@@ -235,6 +248,8 @@
     <Content Include="Samples\Sprites\mainSprites.js.map">
       <DependentUpon>mainSprites.ts</DependentUpon>
     </Content>
+    <Content Include="Samples\AudioHandling\sounds\fireburning.ogg" />
+    <Content Include="Samples\AudioHandling\sounds\smokepoof.ogg" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <TypeScriptCompile Include="Scripts\endGate.core.client.ts" />
     <TypeScriptCompile Include="Samples\Layering\assetsLayering.ts" />
@@ -282,6 +297,13 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Samples\AnimatedSprites\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Samples\AudioHandling\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Samples\AudioHandling\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="Samples\Camera\Default.aspx.cs">

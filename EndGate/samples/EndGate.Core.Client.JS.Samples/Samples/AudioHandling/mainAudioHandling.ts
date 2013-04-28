@@ -1,16 +1,16 @@
 /// <reference path="../../Scripts/jquery.d.ts" />
-/// <reference path="assetsAnimatedSprites.ts" />
+/// <reference path="assetsAudioHandling.ts" />
 
 (function ($, window) {
     var canvas: HTMLCanvasElement = < HTMLCanvasElement > document.createElement("canvas"),
         holder: JQuery = $("#gameHolder"),
-        animator: Animator = null;
+        audioHandler: AudioHandler = null;
 
     canvas.width = holder.width();
     canvas.height = holder.height();
 
     holder.append(canvas);
 
-    animator = new Animator(canvas);
+    audioHandler = new AudioHandler(canvas);
 
 })($, window);

@@ -28,7 +28,7 @@ var FireExplosion = (function (_super) {
 var ElectricPulse = (function (_super) {
     __extends(ElectricPulse, _super);
     function ElectricPulse(x, y, onComplete) {
-        _super.call(this, "images/electric_pulse.png", x, y, 1152, 128, 128, 128, 18, 9, onComplete);
+        _super.call(this, "images/electric_pulse.png", x, y, 1152, 128, 128, 128, 20, 10, onComplete);
     }
     return ElectricPulse;
 })(Animation);

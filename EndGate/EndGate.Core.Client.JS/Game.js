@@ -11,6 +11,7 @@ var EndGate;
                     _this.Draw(context);
                 });
                 this.Input = new Core.Input.InputManager(this.Scene.DrawArea);
+                this.Audio = new Core.AudioManagement.AudioManager();
                 this.CollisionManager = new Core.Collision.CollisionManager();
                 this.Configuration = new Core.GameConfiguration(GameRunnerInstance.Register(this));
             }

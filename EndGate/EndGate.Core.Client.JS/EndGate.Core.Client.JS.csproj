@@ -91,6 +91,34 @@
     <TypeScriptCompile Include="Extensions\MathExtensions.ts" />
     <TypeScriptCompile Include="BoundingObject\Bounds2d.ts" />
     <TypeScriptCompile Include="BoundingObject\BoundingCircle.ts" />
+    <TypeScriptCompile Include="AudioManagement\AudioManager.ts" />
+    <TypeScriptCompile Include="AudioManagement\AudioClip.ts" />
+    <Content Include="AudioManagement\AudioClip.js">
+      <DependentUpon>AudioClip.ts</DependentUpon>
+    </Content>
+    <Content Include="AudioManagement\AudioClip.min.js">
+      <DependentUpon>AudioClip.ts</DependentUpon>
+    </Content>
+    <Content Include="AudioManagement\AudioManager.js">
+      <DependentUpon>AudioManager.ts</DependentUpon>
+    </Content>
+    <Content Include="AudioManagement\AudioManager.min.js">
+      <DependentUpon>AudioManager.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="AudioManagement\AudioPlayer.ts" />
+    <Content Include="AudioManagement\AudioPlayer.js">
+      <DependentUpon>AudioPlayer.ts</DependentUpon>
+    </Content>
+    <Content Include="AudioManagement\AudioPlayer.min.js">
+      <DependentUpon>AudioPlayer.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="AudioManagement\AudioSettings.ts" />
+    <Content Include="AudioManagement\AudioSettings.js">
+      <DependentUpon>AudioSettings.ts</DependentUpon>
+    </Content>
+    <Content Include="AudioManagement\AudioSettings.min.js">
+      <DependentUpon>AudioSettings.ts</DependentUpon>
+    </Content>
     <Content Include="BoundingObject\BoundingCircle.js">
       <DependentUpon>BoundingCircle.ts</DependentUpon>
     </Content>
@@ -587,6 +615,18 @@
     </Content>
     <Content Include="Graphics\Sprites\Animation\SpriteAnimation.js.map">
       <DependentUpon>SpriteAnimation.ts</DependentUpon>
+    </Content>
+    <Content Include="AudioManagement\AudioManager.js.map">
+      <DependentUpon>AudioManager.ts</DependentUpon>
+    </Content>
+    <Content Include="AudioManagement\AudioPlayer.js.map">
+      <DependentUpon>AudioPlayer.ts</DependentUpon>
+    </Content>
+    <Content Include="AudioManagement\AudioClip.js.map">
+      <DependentUpon>AudioClip.ts</DependentUpon>
+    </Content>
+    <Content Include="AudioManagement\AudioSettings.js.map">
+      <DependentUpon>AudioSettings.ts</DependentUpon>
     </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

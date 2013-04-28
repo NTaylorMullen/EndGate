@@ -33,7 +33,7 @@ class FireExplosion implements EndGate.Core.IUpdateable extends Animation {
 
 class ElectricPulse implements EndGate.Core.IUpdateable extends Animation {
     constructor(x: number, y: number, onComplete: Function) {
-        super("images/electric_pulse.png", x, y, 1152, 128, 128, 128, 18, 9, onComplete);
+        super("images/electric_pulse.png", x, y, 1152, 128, 128, 128, 20, 10, onComplete);
     }
 }
 

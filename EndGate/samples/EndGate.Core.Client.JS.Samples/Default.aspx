@@ -36,7 +36,13 @@
             <h3>Animated Sprites</h3>
             <p>Demonstrates how to animate sprites with sprite sheets.</p>
             <p><a class="btn" href="Samples/AnimatedSprites">View sample &raquo;</a></p>
-        </div>"
+        </div>
+
+        <div class="span4">
+            <h3>Audio Handling</h3>
+            <p>Demonstrates how to play audio.</p>
+            <p><a class="btn" href="Samples/AudioHandling">View sample &raquo;</a></p>
+        </div>
     </div>
 
     <div class="row">
