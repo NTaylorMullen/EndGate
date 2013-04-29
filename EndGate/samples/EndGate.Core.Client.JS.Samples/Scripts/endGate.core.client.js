@@ -382,6 +382,84 @@ var EndGate;
 var EndGate;
 (function (EndGate) {
     (function (Core) {
+        var GameRunner = (function () {
+            function GameRunner() {
+                this._type = "GameRunner";
+                this._updateCallbacks = {
+                };
+                this._drawCallbacks = {
+                };
+                this._updateLoop = null;
+                this._drawLoop = null;
+                this._callbackCount = 0;
+            }
+            GameRunner.prototype.Register = function (game) {
+                var updateCallback = this.CreateAndCacheUpdateCallback(game);
+                var drawCallback = this.CreateAndCacheDrawCallback(game);
+                this._callbackCount++;
+                this.TryLoopStart();
+                this._updateLoop.AddCallback(updateCallback);
+                this._drawLoop.AddCallback(drawCallback);
+                return this.CreateUpdateRateSetter(updateCallback);
+            };
+            GameRunner.prototype.Unregister = function (game) {
+                var updateCallback, drawCallback;
+                if(this._updateCallbacks[game.ID]) {
+                    updateCallback = this._updateCallbacks[game.ID];
+                    drawCallback = this._drawCallbacks[game.ID];
+                    this._updateLoop.RemoveCallback(updateCallback);
+                    this._drawLoop.RemoveCallback(drawCallback);
+                    delete this._updateCallbacks[game.ID];
+                    delete this._drawCallbacks[game.ID];
+                    this._callbackCount--;
+                    this.TryLoopStop();
+                }
+            };
+            GameRunner.prototype.TryLoopStart = function () {
+                if(this._callbackCount === 1) {
+                    this._updateLoop = new Core.Loopers.Looper();
+                    this._updateLoop.Start();
+                    this._drawLoop = new Core.Loopers.RepaintLooper();
+                    this._drawLoop.Start();
+                }
+            };
+            GameRunner.prototype.TryLoopStop = function () {
+                if(this._callbackCount === 0 && this._updateLoop != null) {
+                    this._updateLoop.Dispose();
+                    this._updateLoop = null;
+                    this._drawLoop.Dispose();
+                    this._drawLoop = null;
+                }
+            };
+            GameRunner.prototype.CreateAndCacheUpdateCallback = function (game) {
+                var updateCallback = new Core.Loopers.TimedCallback(0, function () {
+                    game.PrepareUpdate();
+                });
+                this._updateCallbacks[game.ID] = updateCallback;
+                return updateCallback;
+            };
+            GameRunner.prototype.CreateAndCacheDrawCallback = function (game) {
+                var drawCallback = new Core.Loopers.LooperCallback(function () {
+                    game.PrepareDraw();
+                });
+                this._drawCallbacks[game.ID] = drawCallback;
+                return drawCallback;
+            };
+            GameRunner.prototype.CreateUpdateRateSetter = function (callback) {
+                return function (updateRate) {
+                    callback.Fps = updateRate;
+                };
+            };
+            return GameRunner;
+        })();
+        Core.GameRunner = GameRunner;        
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var GameRunnerInstance = new EndGate.Core.GameRunner();
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
         var GameConfiguration = (function () {
             function GameConfiguration(updateRateSetter) {
                 this._defaultUpdateRate = 40;
@@ -1919,400 +1997,182 @@ var EndGate;
 var EndGate;
 (function (EndGate) {
     (function (Core) {
-        var GameRunner = (function () {
-            function GameRunner() {
-                this._type = "GameRunner";
-                this._updateCallbacks = {
-                };
-                this._drawCallbacks = {
-                };
-                this._updateLoop = null;
-                this._drawLoop = null;
-                this._callbackCount = 0;
-            }
-            GameRunner.prototype.Register = function (game) {
-                var updateCallback = this.CreateAndCacheUpdateCallback(game);
-                var drawCallback = this.CreateAndCacheDrawCallback(game);
-                this._callbackCount++;
-                this.TryLoopStart();
-                this._updateLoop.AddCallback(updateCallback);
-                this._drawLoop.AddCallback(drawCallback);
-                return this.CreateUpdateRateSetter(updateCallback);
-            };
-            GameRunner.prototype.Unregister = function (game) {
-                var updateCallback, drawCallback;
-                if(this._updateCallbacks[game.ID]) {
-                    updateCallback = this._updateCallbacks[game.ID];
-                    drawCallback = this._drawCallbacks[game.ID];
-                    this._updateLoop.RemoveCallback(updateCallback);
-                    this._drawLoop.RemoveCallback(drawCallback);
-                    delete this._updateCallbacks[game.ID];
-                    delete this._drawCallbacks[game.ID];
-                    this._callbackCount--;
-                    this.TryLoopStop();
+        (function (MovementControllers) {
+            var LinearDirections = (function () {
+                function LinearDirections() {
+                    this.Left = false;
+                    this.Right = false;
+                    this.Up = false;
+                    this.Down = false;
                 }
-            };
-            GameRunner.prototype.TryLoopStart = function () {
-                if(this._callbackCount === 1) {
-                    this._updateLoop = new Core.Loopers.Looper();
-                    this._updateLoop.Start();
-                    this._drawLoop = new Core.Loopers.RepaintLooper();
-                    this._drawLoop.Start();
+                return LinearDirections;
+            })();
+            MovementControllers.LinearDirections = LinearDirections;            
+        })(Core.MovementControllers || (Core.MovementControllers = {}));
+        var MovementControllers = Core.MovementControllers;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (MovementControllers) {
+            var MovementController = (function () {
+                function MovementController(moveables) {
+                    this.Position = Core.Assets.Vector2d.Zero();
+                    this.Velocity = Core.Assets.Vector2d.Zero();
+                    this.Rotation = 0;
+                    this._frozen = false;
+                    this._moveables = moveables;
                 }
-            };
-            GameRunner.prototype.TryLoopStop = function () {
-                if(this._callbackCount === 0 && this._updateLoop != null) {
-                    this._updateLoop.Dispose();
-                    this._updateLoop = null;
-                    this._drawLoop.Dispose();
-                    this._drawLoop = null;
-                }
-            };
-            GameRunner.prototype.CreateAndCacheUpdateCallback = function (game) {
-                var updateCallback = new Core.Loopers.TimedCallback(0, function () {
-                    game.PrepareUpdate();
-                });
-                this._updateCallbacks[game.ID] = updateCallback;
-                return updateCallback;
-            };
-            GameRunner.prototype.CreateAndCacheDrawCallback = function (game) {
-                var drawCallback = new Core.Loopers.LooperCallback(function () {
-                    game.PrepareDraw();
-                });
-                this._drawCallbacks[game.ID] = drawCallback;
-                return drawCallback;
-            };
-            GameRunner.prototype.CreateUpdateRateSetter = function (callback) {
-                return function (updateRate) {
-                    callback.Fps = updateRate;
+                MovementController.prototype.Freeze = function () {
+                    this._frozen = true;
                 };
-            };
-            return GameRunner;
-        })();
-        Core.GameRunner = GameRunner;        
-    })(EndGate.Core || (EndGate.Core = {}));
-    var Core = EndGate.Core;
-})(EndGate || (EndGate = {}));
-var GameRunnerInstance = new EndGate.Core.GameRunner();
-var EndGate;
-(function (EndGate) {
-    (function (Core) {
-        (function (Graphics) {
-            (function (Shapes) {
-                var Shape = (function (_super) {
-                    __extends(Shape, _super);
-                    function Shape(position, color) {
-                                        _super.call(this, position);
-                        this._type = "Shape";
-                        this._fill = false;
-                        this._stroke = false;
-                        if(typeof color !== "undefined") {
-                            this.Color(color);
-                        }
+                MovementController.prototype.Thaw = function () {
+                    this._frozen = false;
+                };
+                MovementController.prototype.IsMoving = function () {
+                    return !this._frozen && !this.Velocity.IsZero();
+                };
+                MovementController.prototype.Update = function (gameTime) {
+                    for(var i = 0; i < this._moveables.length; i++) {
+                        this._moveables[i].Position = this.Position;
+                        this._moveables[i].Rotation = this.Rotation;
                     }
-                    Shape.prototype.Color = function (color) {
-                        this._fill = true;
-                        return this.State.FillStyle(color);
-                    };
-                    Shape.prototype.Border = function (thickness, color) {
-                        return [
-                            this.BorderThickness(thickness), 
-                            this.BorderColor(color)
-                        ];
-                    };
-                    Shape.prototype.BorderThickness = function (thickness) {
-                        return this.State.LineWidth(thickness);
-                    };
-                    Shape.prototype.BorderColor = function (color) {
-                        this._stroke = true;
-                        return this.State.StrokeStyle(color);
-                    };
-                    Shape.prototype.Shadow = function (x, y, color, blur) {
-                        return [
-                            this.ShadowX(x), 
-                            this.ShadowY(y), 
-                            this.ShadowColor(color), 
-                            this.ShadowBlur(blur)
-                        ];
-                    };
-                    Shape.prototype.ShadowColor = function (color) {
-                        this._fill = true;
-                        return this.State.ShadowColor(color);
-                    };
-                    Shape.prototype.ShadowX = function (val) {
-                        return this.State.ShadowOffsetX(val);
-                    };
-                    Shape.prototype.ShadowY = function (val) {
-                        return this.State.ShadowOffsetY(val);
-                    };
-                    Shape.prototype.ShadowBlur = function (val) {
-                        return this.State.ShadowBlur(val);
-                    };
-                    Shape.prototype.Opacity = function (alpha) {
-                        return this.State.GlobalAlpha(alpha);
-                    };
-                    Shape.prototype.StartDraw = function (context) {
-                        context.beginPath();
-                        _super.prototype.StartDraw.call(this, context);
-                    };
-                    Shape.prototype.EndDraw = function (context) {
-                        if(this._fill) {
-                            context.fill();
-                        }
-                        if(this._stroke) {
-                            context.stroke();
-                        } else {
-                            context.closePath();
-                        }
-                        _super.prototype.EndDraw.call(this, context);
-                    };
-                    Shape.prototype.BuildPath = function (context) {
-                    };
-                    Shape.prototype.Draw = function (context) {
-                        this.StartDraw(context);
-                        this.BuildPath(context);
-                        this.EndDraw(context);
-                    };
-                    return Shape;
-                })(Graphics.Graphic2d);
-                Shapes.Shape = Shape;                
-            })(Graphics.Shapes || (Graphics.Shapes = {}));
-            var Shapes = Graphics.Shapes;
-        })(Core.Graphics || (Core.Graphics = {}));
-        var Graphics = Core.Graphics;
+                };
+                return MovementController;
+            })();
+            MovementControllers.MovementController = MovementController;            
+        })(Core.MovementControllers || (Core.MovementControllers = {}));
+        var MovementControllers = Core.MovementControllers;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));
 var EndGate;
 (function (EndGate) {
     (function (Core) {
-        (function (Graphics) {
-            (function (Shapes) {
-                var Circle = (function (_super) {
-                    __extends(Circle, _super);
-                    function Circle(x, y, radius, color) {
-                                        _super.call(this, new Core.Assets.Vector2d(x, y), color);
-                        this._type = "Circle";
-                        this.Radius = radius;
+        (function (MovementControllers) {
+            var LinearMovementController = (function (_super) {
+                __extends(LinearMovementController, _super);
+                function LinearMovementController(moveables, moveSpeed, rotateWithMovements) {
+                    if (typeof rotateWithMovements === "undefined") { rotateWithMovements = true; }
+                    var _this = this;
+                                _super.call(this, moveables);
+                    this._moveSpeed = moveSpeed;
+                    this._moving = new MovementControllers.LinearDirections();
+                    this._rotationUpdater = new Core.Utilities.NoopTripInvoker(function () {
+                        _this.UpdateRotation();
+                    }, rotateWithMovements);
+                }
+                LinearMovementController.prototype.IsMovingInDirection = function (direction) {
+                    return this._moving[direction] || false;
+                };
+                LinearMovementController.prototype.StartMoving = function (direction) {
+                    this.Move(direction, true);
+                };
+                LinearMovementController.prototype.StopMoving = function (direction) {
+                    this.Move(direction, false);
+                };
+                LinearMovementController.prototype.MoveSpeed = function (speed) {
+                    if(typeof speed !== "undefined") {
+                        this._moveSpeed = speed;
+                        this.UpdateVelocity();
                     }
-                    Circle.prototype.BuildPath = function (context) {
-                        context.arc(this.Position.X, this.Position.Y, this.Radius, 0, (Math).twoPI);
-                    };
-                    Circle.prototype.GetDrawBounds = function () {
-                        var bounds = new Core.BoundingObject.BoundingCircle(this.Position, this.Radius);
-                        bounds.Rotation = this.Rotation;
-                        return bounds;
-                    };
-                    return Circle;
-                })(Shapes.Shape);
-                Shapes.Circle = Circle;                
-            })(Graphics.Shapes || (Graphics.Shapes = {}));
-            var Shapes = Graphics.Shapes;
-        })(Core.Graphics || (Core.Graphics = {}));
-        var Graphics = Core.Graphics;
-    })(EndGate.Core || (EndGate.Core = {}));
-    var Core = EndGate.Core;
-})(EndGate || (EndGate = {}));
-var EndGate;
-(function (EndGate) {
-    (function (Core) {
-        (function (Graphics) {
-            (function (Shapes) {
-                var Rectangle = (function (_super) {
-                    __extends(Rectangle, _super);
-                    function Rectangle(x, y, width, height, color) {
-                                        _super.call(this, new Core.Assets.Vector2d(x, y), color);
-                        this._type = "Rectangle";
-                        this.Size = new Core.Assets.Size2d(width, height);
+                    return this._moveSpeed;
+                };
+                LinearMovementController.prototype.Update = function (gameTime) {
+                    if(!this._frozen) {
+                        this.Position = this.Position.Add(this.Velocity.Multiply(gameTime.ElapsedSecond));
+                        _super.prototype.Update.call(this, gameTime);
                     }
-                    Rectangle.prototype.BuildPath = function (context) {
-                        context.rect(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
-                    };
-                    Rectangle.prototype.GetDrawBounds = function () {
-                        var bounds = new Core.BoundingObject.BoundingRectangle(this.Position, this.Size);
-                        bounds.Rotation = this.Rotation;
-                        return bounds;
-                    };
-                    return Rectangle;
-                })(Shapes.Shape);
-                Shapes.Rectangle = Rectangle;                
-            })(Graphics.Shapes || (Graphics.Shapes = {}));
-            var Shapes = Graphics.Shapes;
-        })(Core.Graphics || (Core.Graphics = {}));
-        var Graphics = Core.Graphics;
+                };
+                LinearMovementController.prototype.Move = function (direction, startMoving) {
+                    if(typeof this._moving[direction] !== "undefined") {
+                        this._moving[direction] = startMoving;
+                        this.UpdateVelocity();
+                        this._rotationUpdater.Invoke();
+                    } else {
+                        throw new Error(direction + " is an unknown direction.");
+                    }
+                };
+                LinearMovementController.prototype.UpdateVelocity = function () {
+                    var velocity = Core.Assets.Vector2d.Zero();
+                    if(this._moving.Up) {
+                        velocity.Y -= this._moveSpeed;
+                    }
+                    if(this._moving.Down) {
+                        velocity.Y += this._moveSpeed;
+                    }
+                    if(this._moving.Left) {
+                        velocity.X -= this._moveSpeed;
+                    }
+                    if(this._moving.Right) {
+                        velocity.X += this._moveSpeed;
+                    }
+                    this.Velocity = velocity;
+                };
+                LinearMovementController.prototype.UpdateRotation = function () {
+                    if(!this.Velocity.IsZero()) {
+                        this.Rotation = Math.atan2(this.Velocity.Y, this.Velocity.X);
+                    }
+                };
+                return LinearMovementController;
+            })(MovementControllers.MovementController);
+            MovementControllers.LinearMovementController = LinearMovementController;            
+        })(Core.MovementControllers || (Core.MovementControllers = {}));
+        var MovementControllers = Core.MovementControllers;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));
 var EndGate;
 (function (EndGate) {
     (function (Core) {
-        (function (Graphics) {
-            (function (Sprites) {
-                var ImageSource = (function () {
-                    function ImageSource(imageLocation, width, height, xClip, yClip, widthClip, heightClip) {
-                        if (typeof xClip === "undefined") { xClip = 0; }
-                        if (typeof yClip === "undefined") { yClip = 0; }
-                        if (typeof widthClip === "undefined") { widthClip = width; }
-                        if (typeof heightClip === "undefined") { heightClip = height; }
+        (function (Input) {
+            (function (Controllers) {
+                var DirectionalInputController = (function () {
+                    function DirectionalInputController(keyboard, onMove, upKeys, rightKeys, downKeys, leftKeys) {
+                        if (typeof upKeys === "undefined") { upKeys = [
+                            "w", 
+                            "Up"
+                        ]; }
+                        if (typeof rightKeys === "undefined") { rightKeys = [
+                            "d", 
+                            "Right"
+                        ]; }
+                        if (typeof downKeys === "undefined") { downKeys = [
+                            "s", 
+                            "Down"
+                        ]; }
+                        if (typeof leftKeys === "undefined") { leftKeys = [
+                            "a", 
+                            "Left"
+                        ]; }
+                        this._keyboard = keyboard;
+                        this._onMove = onMove;
+                        this.BindKeys(upKeys, "OnCommandDown", "Up", true);
+                        this.BindKeys(rightKeys, "OnCommandDown", "Right", true);
+                        this.BindKeys(downKeys, "OnCommandDown", "Down", true);
+                        this.BindKeys(leftKeys, "OnCommandDown", "Left", true);
+                        this.BindKeys(upKeys, "OnCommandUp", "Up", false);
+                        this.BindKeys(rightKeys, "OnCommandUp", "Right", false);
+                        this.BindKeys(downKeys, "OnCommandUp", "Down", false);
+                        this.BindKeys(leftKeys, "OnCommandUp", "Left", false);
+                    }
+                    DirectionalInputController.prototype.BindKeys = function (keyList, bindingAction, direction, startMoving) {
                         var _this = this;
-                        this.Loaded = false;
-                        this.OnLoaded = new Core.Utilities.EventHandler();
-                        this.Size = new Core.Assets.Size2d(width, height);
-                        this.Source = new Image();
-                        this.Source.onload = function () {
-                            _this.Loaded = true;
-                            _this.OnLoaded.Trigger(_this);
-                        };
-                        this.Source.src = imageLocation;
-                        this.ClipLocation = new Core.Assets.Vector2d(xClip, yClip);
-                        this.ClipSize = new Core.Assets.Size2d(widthClip, heightClip);
-                    }
-                    return ImageSource;
-                })();
-                Sprites.ImageSource = ImageSource;                
-            })(Graphics.Sprites || (Graphics.Sprites = {}));
-            var Sprites = Graphics.Sprites;
-        })(Core.Graphics || (Core.Graphics = {}));
-        var Graphics = Core.Graphics;
-    })(EndGate.Core || (EndGate.Core = {}));
-    var Core = EndGate.Core;
-})(EndGate || (EndGate = {}));
-var EndGate;
-(function (EndGate) {
-    (function (Core) {
-        (function (Graphics) {
-            (function (Sprites) {
-                var Sprite2d = (function (_super) {
-                    __extends(Sprite2d, _super);
-                    function Sprite2d(x, y, image, width, height) {
-                        if (typeof width === "undefined") { width = image.ClipSize.Width; }
-                        if (typeof height === "undefined") { height = image.ClipSize.Height; }
-                                        _super.call(this, new Core.Assets.Vector2d(x, y));
-                        this._type = "Sprite2d";
-                        this.Image = image;
-                        this.Size = new Core.Assets.Size2d(width, height);
-                    }
-                    Sprite2d.prototype.Opacity = function (alpha) {
-                        return this.State.GlobalAlpha(alpha);
-                    };
-                    Sprite2d.prototype.Draw = function (context) {
-                        _super.prototype.StartDraw.call(this, context);
-                        context.drawImage(this.Image.Source, this.Image.ClipLocation.X, this.Image.ClipLocation.Y, this.Image.ClipSize.Width, this.Image.ClipSize.Height, this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
-                        _super.prototype.EndDraw.call(this, context);
-                    };
-                    Sprite2d.prototype.GetDrawBounds = function () {
-                        var bounds = new Core.BoundingObject.BoundingRectangle(this.Position, this.Image.Size);
-                        bounds.Rotation = this.Rotation;
-                        return bounds;
-                    };
-                    return Sprite2d;
-                })(Graphics.Graphic2d);
-                Sprites.Sprite2d = Sprite2d;                
-            })(Graphics.Sprites || (Graphics.Sprites = {}));
-            var Sprites = Graphics.Sprites;
-        })(Core.Graphics || (Core.Graphics = {}));
-        var Graphics = Core.Graphics;
-    })(EndGate.Core || (EndGate.Core = {}));
-    var Core = EndGate.Core;
-})(EndGate || (EndGate = {}));
-var EndGate;
-(function (EndGate) {
-    (function (Core) {
-        (function (Graphics) {
-            (function (Sprites) {
-                (function (Animation) {
-                    var SpriteAnimation = (function () {
-                        function SpriteAnimation(imageSource, fps, frameSize, frameCount, startOffset) {
-                            if (typeof startOffset === "undefined") { startOffset = Core.Assets.Vector2d.Zero(); }
-                            this._imageSource = imageSource;
-                            this._frameSize = frameSize;
-                            this._frameCount = frameCount;
-                            this._startOffset = startOffset;
-                            this._playing = false;
-                            this._repeating = false;
-                            this._currentFrame = 0;
-                            this._framesPerRow = Math.min(Math.floor((imageSource.ClipSize.Width - startOffset.X) / frameSize.Width), frameCount);
-                            this._lastStepAt = 0;
-                            this.OnComplete = new Core.Utilities.EventHandler();
-                            this.Fps(fps);
+                        for(var i = 0; i < keyList.length; i++) {
+                            this._keyboard[bindingAction](keyList[i], function () {
+                                _this._onMove(direction, startMoving);
+                            });
                         }
-                        SpriteAnimation.prototype.IsPlaying = function () {
-                            return this._playing;
-                        };
-                        SpriteAnimation.prototype.Play = function (repeat) {
-                            if (typeof repeat === "undefined") { repeat = false; }
-                            this._lastStepAt = new Date().getTime();
-                            this._repeating = repeat;
-                            this._playing = true;
-                            this.UpdateImageSource();
-                        };
-                        SpriteAnimation.prototype.Pause = function () {
-                            this._playing = false;
-                        };
-                        SpriteAnimation.prototype.Step = function (count) {
-                            if (typeof count === "undefined") { count = 1; }
-                            this._currentFrame += count;
-                            if(this._currentFrame >= this._frameCount) {
-                                if(this._repeating) {
-                                    this._currentFrame %= this._frameCount;
-                                } else {
-                                    this._currentFrame = this._frameCount - 1;
-                                    this.OnComplete.Trigger();
-                                    this.Stop(false);
-                                }
-                            }
-                            if(count !== 0) {
-                                this.UpdateImageSource();
-                            }
-                        };
-                        SpriteAnimation.prototype.Stop = function (resetFrame) {
-                            if (typeof resetFrame === "undefined") { resetFrame = true; }
-                            this._playing = false;
-                            if(resetFrame) {
-                                this.Reset();
-                            }
-                        };
-                        SpriteAnimation.prototype.Reset = function () {
-                            this._currentFrame = 0;
-                        };
-                        SpriteAnimation.prototype.Fps = function (newFps) {
-                            if(typeof newFps !== "undefined") {
-                                this._fps = newFps;
-                                this._stepEvery = 1000 / this._fps;
-                            }
-                            return this._fps;
-                        };
-                        SpriteAnimation.prototype.Update = function (gameTime) {
-                            var timeSinceStep = gameTime.Now.getTime() - this._lastStepAt, stepCount = 0;
-                            if(this._playing) {
-                                stepCount = Math.floor(timeSinceStep / this._stepEvery);
-                                if(stepCount !== 0) {
-                                    this._lastStepAt = gameTime.Now.getTime();
-                                    this.Step(stepCount);
-                                }
-                            }
-                        };
-                        SpriteAnimation.prototype.UpdateImageSource = function () {
-                            var row = this.GetFrameRow(), column = this.GetFrameColumn();
-                            this._imageSource.ClipLocation.X = this._startOffset.X + column * this._frameSize.Width;
-                            this._imageSource.ClipLocation.Y = this._startOffset.Y + row * this._frameSize.Height;
-                            this._imageSource.ClipSize = this._frameSize;
-                        };
-                        SpriteAnimation.prototype.GetFrameRow = function () {
-                            return Math.floor(this._currentFrame / this._framesPerRow);
-                        };
-                        SpriteAnimation.prototype.GetFrameColumn = function () {
-                            return Math.ceil(this._currentFrame % this._framesPerRow);
-                        };
-                        return SpriteAnimation;
-                    })();
-                    Animation.SpriteAnimation = SpriteAnimation;                    
-                })(Sprites.Animation || (Sprites.Animation = {}));
-                var Animation = Sprites.Animation;
-            })(Graphics.Sprites || (Graphics.Sprites = {}));
-            var Sprites = Graphics.Sprites;
-        })(Core.Graphics || (Core.Graphics = {}));
-        var Graphics = Core.Graphics;
+                    };
+                    return DirectionalInputController;
+                })();
+                Controllers.DirectionalInputController = DirectionalInputController;                
+            })(Input.Controllers || (Input.Controllers = {}));
+            var Controllers = Input.Controllers;
+        })(Core.Input || (Core.Input = {}));
+        var Input = Core.Input;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));
@@ -2697,182 +2557,575 @@ var EndGate;
 var EndGate;
 (function (EndGate) {
     (function (Core) {
-        (function (Input) {
-            (function (Controllers) {
-                var DirectionalInputController = (function () {
-                    function DirectionalInputController(keyboard, onMove, upKeys, rightKeys, downKeys, leftKeys) {
-                        if (typeof upKeys === "undefined") { upKeys = [
-                            "w", 
-                            "Up"
-                        ]; }
-                        if (typeof rightKeys === "undefined") { rightKeys = [
-                            "d", 
-                            "Right"
-                        ]; }
-                        if (typeof downKeys === "undefined") { downKeys = [
-                            "s", 
-                            "Down"
-                        ]; }
-                        if (typeof leftKeys === "undefined") { leftKeys = [
-                            "a", 
-                            "Left"
-                        ]; }
-                        this._keyboard = keyboard;
-                        this._onMove = onMove;
-                        this.BindKeys(upKeys, "OnCommandDown", "Up", true);
-                        this.BindKeys(rightKeys, "OnCommandDown", "Right", true);
-                        this.BindKeys(downKeys, "OnCommandDown", "Down", true);
-                        this.BindKeys(leftKeys, "OnCommandDown", "Left", true);
-                        this.BindKeys(upKeys, "OnCommandUp", "Up", false);
-                        this.BindKeys(rightKeys, "OnCommandUp", "Right", false);
-                        this.BindKeys(downKeys, "OnCommandUp", "Down", false);
-                        this.BindKeys(leftKeys, "OnCommandUp", "Left", false);
-                    }
-                    DirectionalInputController.prototype.BindKeys = function (keyList, bindingAction, direction, startMoving) {
+        (function (Graphics) {
+            (function (Sprites) {
+                var ImageSource = (function () {
+                    function ImageSource(imageLocation, width, height, xClip, yClip, widthClip, heightClip) {
+                        if (typeof xClip === "undefined") { xClip = 0; }
+                        if (typeof yClip === "undefined") { yClip = 0; }
+                        if (typeof widthClip === "undefined") { widthClip = width; }
+                        if (typeof heightClip === "undefined") { heightClip = height; }
                         var _this = this;
-                        for(var i = 0; i < keyList.length; i++) {
-                            this._keyboard[bindingAction](keyList[i], function () {
-                                _this._onMove(direction, startMoving);
-                            });
-                        }
-                    };
-                    return DirectionalInputController;
+                        this.Loaded = false;
+                        this.OnLoaded = new Core.Utilities.EventHandler();
+                        this.Size = new Core.Assets.Size2d(width, height);
+                        this.Source = new Image();
+                        this.Source.onload = function () {
+                            _this.Loaded = true;
+                            _this.OnLoaded.Trigger(_this);
+                        };
+                        this.Source.src = imageLocation;
+                        this.ClipLocation = new Core.Assets.Vector2d(xClip, yClip);
+                        this.ClipSize = new Core.Assets.Size2d(widthClip, heightClip);
+                    }
+                    return ImageSource;
                 })();
-                Controllers.DirectionalInputController = DirectionalInputController;                
-            })(Input.Controllers || (Input.Controllers = {}));
-            var Controllers = Input.Controllers;
-        })(Core.Input || (Core.Input = {}));
-        var Input = Core.Input;
+                Sprites.ImageSource = ImageSource;                
+            })(Graphics.Sprites || (Graphics.Sprites = {}));
+            var Sprites = Graphics.Sprites;
+        })(Core.Graphics || (Core.Graphics = {}));
+        var Graphics = Core.Graphics;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));
 var EndGate;
 (function (EndGate) {
     (function (Core) {
-        (function (MovementControllers) {
-            var LinearDirections = (function () {
-                function LinearDirections() {
-                    this.Left = false;
-                    this.Right = false;
-                    this.Up = false;
-                    this.Down = false;
-                }
-                return LinearDirections;
-            })();
-            MovementControllers.LinearDirections = LinearDirections;            
-        })(Core.MovementControllers || (Core.MovementControllers = {}));
-        var MovementControllers = Core.MovementControllers;
+        (function (Graphics) {
+            (function (Sprites) {
+                var Sprite2d = (function (_super) {
+                    __extends(Sprite2d, _super);
+                    function Sprite2d(x, y, image, width, height) {
+                        if (typeof width === "undefined") { width = image.ClipSize.Width; }
+                        if (typeof height === "undefined") { height = image.ClipSize.Height; }
+                                        _super.call(this, new Core.Assets.Vector2d(x, y));
+                        this._type = "Sprite2d";
+                        this.Image = image;
+                        this.Size = new Core.Assets.Size2d(width, height);
+                    }
+                    Sprite2d.prototype.Opacity = function (alpha) {
+                        return this.State.GlobalAlpha(alpha);
+                    };
+                    Sprite2d.prototype.Draw = function (context) {
+                        _super.prototype.StartDraw.call(this, context);
+                        context.drawImage(this.Image.Source, this.Image.ClipLocation.X, this.Image.ClipLocation.Y, this.Image.ClipSize.Width, this.Image.ClipSize.Height, this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
+                        _super.prototype.EndDraw.call(this, context);
+                    };
+                    Sprite2d.prototype.GetDrawBounds = function () {
+                        var bounds = new Core.BoundingObject.BoundingRectangle(this.Position, this.Image.Size);
+                        bounds.Rotation = this.Rotation;
+                        return bounds;
+                    };
+                    return Sprite2d;
+                })(Graphics.Graphic2d);
+                Sprites.Sprite2d = Sprite2d;                
+            })(Graphics.Sprites || (Graphics.Sprites = {}));
+            var Sprites = Graphics.Sprites;
+        })(Core.Graphics || (Core.Graphics = {}));
+        var Graphics = Core.Graphics;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));
 var EndGate;
 (function (EndGate) {
     (function (Core) {
-        (function (MovementControllers) {
-            var MovementController = (function () {
-                function MovementController(moveables) {
-                    this.Position = Core.Assets.Vector2d.Zero();
-                    this.Velocity = Core.Assets.Vector2d.Zero();
-                    this.Rotation = 0;
-                    this._frozen = false;
-                    this._moveables = moveables;
-                }
-                MovementController.prototype.Freeze = function () {
-                    this._frozen = true;
-                };
-                MovementController.prototype.Thaw = function () {
-                    this._frozen = false;
-                };
-                MovementController.prototype.IsMoving = function () {
-                    return !this._frozen && !this.Velocity.IsZero();
-                };
-                MovementController.prototype.Update = function (gameTime) {
-                    for(var i = 0; i < this._moveables.length; i++) {
-                        this._moveables[i].Position = this.Position;
-                        this._moveables[i].Rotation = this.Rotation;
-                    }
-                };
-                return MovementController;
-            })();
-            MovementControllers.MovementController = MovementController;            
-        })(Core.MovementControllers || (Core.MovementControllers = {}));
-        var MovementControllers = Core.MovementControllers;
+        (function (Graphics) {
+            (function (Sprites) {
+                (function (Animation) {
+                    var SpriteAnimation = (function () {
+                        function SpriteAnimation(imageSource, fps, frameSize, frameCount, startOffset) {
+                            if (typeof startOffset === "undefined") { startOffset = Core.Assets.Vector2d.Zero(); }
+                            this._imageSource = imageSource;
+                            this._frameSize = frameSize;
+                            this._frameCount = frameCount;
+                            this._startOffset = startOffset;
+                            this._playing = false;
+                            this._repeating = false;
+                            this._currentFrame = 0;
+                            this._framesPerRow = Math.min(Math.floor((imageSource.ClipSize.Width - startOffset.X) / frameSize.Width), frameCount);
+                            this._lastStepAt = 0;
+                            this.OnComplete = new Core.Utilities.EventHandler();
+                            this.Fps(fps);
+                        }
+                        SpriteAnimation.prototype.IsPlaying = function () {
+                            return this._playing;
+                        };
+                        SpriteAnimation.prototype.Play = function (repeat) {
+                            if (typeof repeat === "undefined") { repeat = false; }
+                            this._lastStepAt = new Date().getTime();
+                            this._repeating = repeat;
+                            this._playing = true;
+                            this.UpdateImageSource();
+                        };
+                        SpriteAnimation.prototype.Pause = function () {
+                            this._playing = false;
+                        };
+                        SpriteAnimation.prototype.Step = function (count) {
+                            if (typeof count === "undefined") { count = 1; }
+                            this._currentFrame += count;
+                            if(this._currentFrame >= this._frameCount) {
+                                if(this._repeating) {
+                                    this._currentFrame %= this._frameCount;
+                                } else {
+                                    this._currentFrame = this._frameCount - 1;
+                                    this.OnComplete.Trigger();
+                                    this.Stop(false);
+                                }
+                            }
+                            if(count !== 0) {
+                                this.UpdateImageSource();
+                            }
+                        };
+                        SpriteAnimation.prototype.Stop = function (resetFrame) {
+                            if (typeof resetFrame === "undefined") { resetFrame = true; }
+                            this._playing = false;
+                            if(resetFrame) {
+                                this.Reset();
+                            }
+                        };
+                        SpriteAnimation.prototype.Reset = function () {
+                            this._currentFrame = 0;
+                        };
+                        SpriteAnimation.prototype.Fps = function (newFps) {
+                            if(typeof newFps !== "undefined") {
+                                this._fps = newFps;
+                                this._stepEvery = 1000 / this._fps;
+                            }
+                            return this._fps;
+                        };
+                        SpriteAnimation.prototype.Update = function (gameTime) {
+                            var timeSinceStep = gameTime.Now.getTime() - this._lastStepAt, stepCount = 0;
+                            if(this._playing) {
+                                stepCount = Math.floor(timeSinceStep / this._stepEvery);
+                                if(stepCount !== 0) {
+                                    this._lastStepAt = gameTime.Now.getTime();
+                                    this.Step(stepCount);
+                                }
+                            }
+                        };
+                        SpriteAnimation.prototype.UpdateImageSource = function () {
+                            var row = this.GetFrameRow(), column = this.GetFrameColumn();
+                            this._imageSource.ClipLocation.X = this._startOffset.X + column * this._frameSize.Width;
+                            this._imageSource.ClipLocation.Y = this._startOffset.Y + row * this._frameSize.Height;
+                            this._imageSource.ClipSize = this._frameSize;
+                        };
+                        SpriteAnimation.prototype.GetFrameRow = function () {
+                            return Math.floor(this._currentFrame / this._framesPerRow);
+                        };
+                        SpriteAnimation.prototype.GetFrameColumn = function () {
+                            return Math.ceil(this._currentFrame % this._framesPerRow);
+                        };
+                        return SpriteAnimation;
+                    })();
+                    Animation.SpriteAnimation = SpriteAnimation;                    
+                })(Sprites.Animation || (Sprites.Animation = {}));
+                var Animation = Sprites.Animation;
+            })(Graphics.Sprites || (Graphics.Sprites = {}));
+            var Sprites = Graphics.Sprites;
+        })(Core.Graphics || (Core.Graphics = {}));
+        var Graphics = Core.Graphics;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));
 var EndGate;
 (function (EndGate) {
     (function (Core) {
-        (function (MovementControllers) {
-            var LinearMovementController = (function (_super) {
-                __extends(LinearMovementController, _super);
-                function LinearMovementController(moveables, moveSpeed, rotateWithMovements) {
-                    if (typeof rotateWithMovements === "undefined") { rotateWithMovements = true; }
-                    var _this = this;
-                                _super.call(this, moveables);
-                    this._moveSpeed = moveSpeed;
-                    this._moving = new MovementControllers.LinearDirections();
-                    this._rotationUpdater = new Core.Utilities.NoopTripInvoker(function () {
-                        _this.UpdateRotation();
-                    }, rotateWithMovements);
-                }
-                LinearMovementController.prototype.IsMovingInDirection = function (direction) {
-                    return this._moving[direction] || false;
-                };
-                LinearMovementController.prototype.StartMoving = function (direction) {
-                    this.Move(direction, true);
-                };
-                LinearMovementController.prototype.StopMoving = function (direction) {
-                    this.Move(direction, false);
-                };
-                LinearMovementController.prototype.MoveSpeed = function (speed) {
-                    if(typeof speed !== "undefined") {
-                        this._moveSpeed = speed;
-                        this.UpdateVelocity();
+        (function (Graphics) {
+            (function (Shapes) {
+                var Shape = (function (_super) {
+                    __extends(Shape, _super);
+                    function Shape(position, color) {
+                                        _super.call(this, position);
+                        this._type = "Shape";
+                        this._fill = false;
+                        this._stroke = false;
+                        if(typeof color !== "undefined") {
+                            this.Color(color);
+                        }
                     }
-                    return this._moveSpeed;
-                };
-                LinearMovementController.prototype.Update = function (gameTime) {
-                    if(!this._frozen) {
-                        this.Position = this.Position.Add(this.Velocity.Multiply(gameTime.ElapsedSecond));
-                        _super.prototype.Update.call(this, gameTime);
-                    }
-                };
-                LinearMovementController.prototype.Move = function (direction, startMoving) {
-                    if(typeof this._moving[direction] !== "undefined") {
-                        this._moving[direction] = startMoving;
-                        this.UpdateVelocity();
-                        this._rotationUpdater.Invoke();
-                    } else {
-                        throw new Error(direction + " is an unknown direction.");
-                    }
-                };
-                LinearMovementController.prototype.UpdateVelocity = function () {
-                    var velocity = Core.Assets.Vector2d.Zero();
-                    if(this._moving.Up) {
-                        velocity.Y -= this._moveSpeed;
-                    }
-                    if(this._moving.Down) {
-                        velocity.Y += this._moveSpeed;
-                    }
-                    if(this._moving.Left) {
-                        velocity.X -= this._moveSpeed;
-                    }
-                    if(this._moving.Right) {
-                        velocity.X += this._moveSpeed;
-                    }
-                    this.Velocity = velocity;
-                };
-                LinearMovementController.prototype.UpdateRotation = function () {
-                    if(!this.Velocity.IsZero()) {
-                        this.Rotation = Math.atan2(this.Velocity.Y, this.Velocity.X);
-                    }
-                };
-                return LinearMovementController;
-            })(MovementControllers.MovementController);
-            MovementControllers.LinearMovementController = LinearMovementController;            
-        })(Core.MovementControllers || (Core.MovementControllers = {}));
-        var MovementControllers = Core.MovementControllers;
+                    Shape.prototype.Color = function (color) {
+                        this._fill = true;
+                        return this.State.FillStyle(color);
+                    };
+                    Shape.prototype.Border = function (thickness, color) {
+                        return [
+                            this.BorderThickness(thickness), 
+                            this.BorderColor(color)
+                        ];
+                    };
+                    Shape.prototype.BorderThickness = function (thickness) {
+                        return this.State.LineWidth(thickness);
+                    };
+                    Shape.prototype.BorderColor = function (color) {
+                        this._stroke = true;
+                        return this.State.StrokeStyle(color);
+                    };
+                    Shape.prototype.Shadow = function (x, y, color, blur) {
+                        return [
+                            this.ShadowX(x), 
+                            this.ShadowY(y), 
+                            this.ShadowColor(color), 
+                            this.ShadowBlur(blur)
+                        ];
+                    };
+                    Shape.prototype.ShadowColor = function (color) {
+                        this._fill = true;
+                        return this.State.ShadowColor(color);
+                    };
+                    Shape.prototype.ShadowX = function (val) {
+                        return this.State.ShadowOffsetX(val);
+                    };
+                    Shape.prototype.ShadowY = function (val) {
+                        return this.State.ShadowOffsetY(val);
+                    };
+                    Shape.prototype.ShadowBlur = function (val) {
+                        return this.State.ShadowBlur(val);
+                    };
+                    Shape.prototype.Opacity = function (alpha) {
+                        return this.State.GlobalAlpha(alpha);
+                    };
+                    Shape.prototype.StartDraw = function (context) {
+                        context.beginPath();
+                        _super.prototype.StartDraw.call(this, context);
+                    };
+                    Shape.prototype.EndDraw = function (context) {
+                        if(this._fill) {
+                            context.fill();
+                        }
+                        if(this._stroke) {
+                            context.stroke();
+                        } else {
+                            context.closePath();
+                        }
+                        _super.prototype.EndDraw.call(this, context);
+                    };
+                    Shape.prototype.BuildPath = function (context) {
+                    };
+                    Shape.prototype.Draw = function (context) {
+                        this.StartDraw(context);
+                        this.BuildPath(context);
+                        this.EndDraw(context);
+                    };
+                    return Shape;
+                })(Graphics.Graphic2d);
+                Shapes.Shape = Shape;                
+            })(Graphics.Shapes || (Graphics.Shapes = {}));
+            var Shapes = Graphics.Shapes;
+        })(Core.Graphics || (Core.Graphics = {}));
+        var Graphics = Core.Graphics;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Graphics) {
+            (function (Shapes) {
+                var Circle = (function (_super) {
+                    __extends(Circle, _super);
+                    function Circle(x, y, radius, color) {
+                                        _super.call(this, new Core.Assets.Vector2d(x, y), color);
+                        this._type = "Circle";
+                        this.Radius = radius;
+                    }
+                    Circle.prototype.BuildPath = function (context) {
+                        context.arc(this.Position.X, this.Position.Y, this.Radius, 0, (Math).twoPI);
+                    };
+                    Circle.prototype.GetDrawBounds = function () {
+                        var bounds = new Core.BoundingObject.BoundingCircle(this.Position, this.Radius);
+                        bounds.Rotation = this.Rotation;
+                        return bounds;
+                    };
+                    return Circle;
+                })(Shapes.Shape);
+                Shapes.Circle = Circle;                
+            })(Graphics.Shapes || (Graphics.Shapes = {}));
+            var Shapes = Graphics.Shapes;
+        })(Core.Graphics || (Core.Graphics = {}));
+        var Graphics = Core.Graphics;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (Graphics) {
+            (function (Shapes) {
+                var Rectangle = (function (_super) {
+                    __extends(Rectangle, _super);
+                    function Rectangle(x, y, width, height, color) {
+                                        _super.call(this, new Core.Assets.Vector2d(x, y), color);
+                        this._type = "Rectangle";
+                        this.Size = new Core.Assets.Size2d(width, height);
+                    }
+                    Rectangle.prototype.BuildPath = function (context) {
+                        context.rect(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
+                    };
+                    Rectangle.prototype.GetDrawBounds = function () {
+                        var bounds = new Core.BoundingObject.BoundingRectangle(this.Position, this.Size);
+                        bounds.Rotation = this.Rotation;
+                        return bounds;
+                    };
+                    return Rectangle;
+                })(Shapes.Shape);
+                Shapes.Rectangle = Rectangle;                
+            })(Graphics.Shapes || (Graphics.Shapes = {}));
+            var Shapes = Graphics.Shapes;
+        })(Core.Graphics || (Core.Graphics = {}));
+        var Graphics = Core.Graphics;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var eg;
+(function (eg) {
+    var Game = (function (_super) {
+        __extends(Game, _super);
+        function Game() {
+            _super.apply(this, arguments);
+
+        }
+        return Game;
+    })(EndGate.Core.Game);
+    eg.Game = Game;    
+    ;
+    var GameConfiguration = (function (_super) {
+        __extends(GameConfiguration, _super);
+        function GameConfiguration() {
+            _super.apply(this, arguments);
+
+        }
+        return GameConfiguration;
+    })(EndGate.Core.GameConfiguration);
+    eg.GameConfiguration = GameConfiguration;    
+    ;
+    var GameTime = (function (_super) {
+        __extends(GameTime, _super);
+        function GameTime() {
+            _super.apply(this, arguments);
+
+        }
+        return GameTime;
+    })(EndGate.Core.GameTime);
+    eg.GameTime = GameTime;    
+    ;
+    var EventHandler = (function (_super) {
+        __extends(EventHandler, _super);
+        function EventHandler() {
+            _super.apply(this, arguments);
+
+        }
+        return EventHandler;
+    })(EndGate.Core.Utilities.EventHandler);
+    eg.EventHandler = EventHandler;    
+    ;
+    var Scene2d = (function (_super) {
+        __extends(Scene2d, _super);
+        function Scene2d() {
+            _super.apply(this, arguments);
+
+        }
+        return Scene2d;
+    })(EndGate.Core.Rendering.Scene2d);
+    eg.Scene2d = Scene2d;    
+    ;
+    var Camera2d = (function (_super) {
+        __extends(Camera2d, _super);
+        function Camera2d() {
+            _super.apply(this, arguments);
+
+        }
+        return Camera2d;
+    })(EndGate.Core.Rendering.Camera.Camera2d);
+    eg.Camera2d = Camera2d;    
+    ;
+    (function (MovementControllers) {
+        var LinearMovementController = (function (_super) {
+            __extends(LinearMovementController, _super);
+            function LinearMovementController() {
+                _super.apply(this, arguments);
+
+            }
+            return LinearMovementController;
+        })(EndGate.Core.MovementControllers.LinearMovementController);
+        MovementControllers.LinearMovementController = LinearMovementController;        
+        ;
+    })(eg.MovementControllers || (eg.MovementControllers = {}));
+    var MovementControllers = eg.MovementControllers;
+    ;
+    (function (InputControllers) {
+        var DirectionalInputController = (function (_super) {
+            __extends(DirectionalInputController, _super);
+            function DirectionalInputController() {
+                _super.apply(this, arguments);
+
+            }
+            return DirectionalInputController;
+        })(EndGate.Core.Input.Controllers.DirectionalInputController);
+        InputControllers.DirectionalInputController = DirectionalInputController;        
+        ;
+    })(eg.InputControllers || (eg.InputControllers = {}));
+    var InputControllers = eg.InputControllers;
+    ;
+    var Graphic2d = (function (_super) {
+        __extends(Graphic2d, _super);
+        function Graphic2d() {
+            _super.apply(this, arguments);
+
+        }
+        return Graphic2d;
+    })(EndGate.Core.Graphics.Graphic2d);
+    eg.Graphic2d = Graphic2d;    
+    ;
+    var Text2d = (function (_super) {
+        __extends(Text2d, _super);
+        function Text2d() {
+            _super.apply(this, arguments);
+
+        }
+        return Text2d;
+    })(EndGate.Core.Graphics.Text.Text2d);
+    eg.Text2d = Text2d;    
+    ;
+    var Sprite2d = (function (_super) {
+        __extends(Sprite2d, _super);
+        function Sprite2d() {
+            _super.apply(this, arguments);
+
+        }
+        return Sprite2d;
+    })(EndGate.Core.Graphics.Sprites.Sprite2d);
+    eg.Sprite2d = Sprite2d;    
+    ;
+    var ImageSource = (function (_super) {
+        __extends(ImageSource, _super);
+        function ImageSource() {
+            _super.apply(this, arguments);
+
+        }
+        return ImageSource;
+    })(EndGate.Core.Graphics.Sprites.ImageSource);
+    eg.ImageSource = ImageSource;    
+    ;
+    var SpriteAnimation = (function (_super) {
+        __extends(SpriteAnimation, _super);
+        function SpriteAnimation() {
+            _super.apply(this, arguments);
+
+        }
+        return SpriteAnimation;
+    })(EndGate.Core.Graphics.Sprites.Animation.SpriteAnimation);
+    eg.SpriteAnimation = SpriteAnimation;    
+    ;
+    var Shape = (function (_super) {
+        __extends(Shape, _super);
+        function Shape() {
+            _super.apply(this, arguments);
+
+        }
+        return Shape;
+    })(EndGate.Core.Graphics.Shapes.Shape);
+    eg.Shape = Shape;    
+    ;
+    var Circle = (function (_super) {
+        __extends(Circle, _super);
+        function Circle() {
+            _super.apply(this, arguments);
+
+        }
+        return Circle;
+    })(EndGate.Core.Graphics.Shapes.Circle);
+    eg.Circle = Circle;    
+    ;
+    var Rectangle = (function (_super) {
+        __extends(Rectangle, _super);
+        function Rectangle() {
+            _super.apply(this, arguments);
+
+        }
+        return Rectangle;
+    })(EndGate.Core.Graphics.Shapes.Rectangle);
+    eg.Rectangle = Rectangle;    
+    ;
+    var Collidable = (function (_super) {
+        __extends(Collidable, _super);
+        function Collidable() {
+            _super.apply(this, arguments);
+
+        }
+        return Collidable;
+    })(EndGate.Core.Collision.Collidable);
+    eg.Collidable = Collidable;    
+    ;
+    var BoundingCircle = (function (_super) {
+        __extends(BoundingCircle, _super);
+        function BoundingCircle() {
+            _super.apply(this, arguments);
+
+        }
+        return BoundingCircle;
+    })(EndGate.Core.BoundingObject.BoundingCircle);
+    eg.BoundingCircle = BoundingCircle;    
+    ;
+    var BoundingRectangle = (function (_super) {
+        __extends(BoundingRectangle, _super);
+        function BoundingRectangle() {
+            _super.apply(this, arguments);
+
+        }
+        return BoundingRectangle;
+    })(EndGate.Core.BoundingObject.BoundingRectangle);
+    eg.BoundingRectangle = BoundingRectangle;    
+    ;
+    var AudioClip = (function (_super) {
+        __extends(AudioClip, _super);
+        function AudioClip() {
+            _super.apply(this, arguments);
+
+        }
+        return AudioClip;
+    })(EndGate.Core.AudioManagement.AudioClip);
+    eg.AudioClip = AudioClip;    
+    ;
+    var AudioPlayer = (function (_super) {
+        __extends(AudioPlayer, _super);
+        function AudioPlayer() {
+            _super.apply(this, arguments);
+
+        }
+        return AudioPlayer;
+    })(EndGate.Core.AudioManagement.AudioPlayer);
+    eg.AudioPlayer = AudioPlayer;    
+    ;
+    var AudioSettings = (function (_super) {
+        __extends(AudioSettings, _super);
+        function AudioSettings() {
+            _super.apply(this, arguments);
+
+        }
+        return AudioSettings;
+    })(EndGate.Core.AudioManagement.AudioSettings);
+    eg.AudioSettings = AudioSettings;    
+    ;
+    var Size2d = (function (_super) {
+        __extends(Size2d, _super);
+        function Size2d() {
+            _super.apply(this, arguments);
+
+        }
+        return Size2d;
+    })(EndGate.Core.Assets.Size2d);
+    eg.Size2d = Size2d;    
+    ;
+    var Vector2d = (function (_super) {
+        __extends(Vector2d, _super);
+        function Vector2d() {
+            _super.apply(this, arguments);
+
+        }
+        return Vector2d;
+    })(EndGate.Core.Assets.Vector2d);
+    eg.Vector2d = Vector2d;    
+    ;
+})(eg || (eg = {}));
+;
+//@ sourceMappingURL=endGate.core.client.js.map

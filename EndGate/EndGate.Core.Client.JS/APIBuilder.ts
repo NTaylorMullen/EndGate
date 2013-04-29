@@ -23,33 +23,34 @@
 /// <reference path="Assets/Sizes/Size2d.ts" />
 /// <reference path="Assets/Vectors/Vector2d.ts" />
 
-var eg = {
-    Game: EndGate.Core.Game,
-    GameConfiguration: EndGate.Core.GameConfiguration,
-    GameTime: EndGate.Core.GameTime,
-    EventHandler: EndGate.Core.Utilities.EventHandler,
-    Scene2d: EndGate.Core.Rendering.Scene2d,
-    Camera2d: EndGate.Core.Rendering.Camera.Camera2d,
-    MovementControllers: {
-        LinearMovementController: EndGate.Core.MovementControllers.LinearMovementController
-    },
-    InputControllers: {
-        DirectionalInputController: EndGate.Core.Input.Controllers.DirectionalInputController
-    },
-    Graphic2d: EndGate.Core.Graphics.Graphic2d,
-    Text2d: EndGate.Core.Graphics.Text.Text2d,
-    Sprite2d: EndGate.Core.Graphics.Sprites.Sprite2d,
-    ImageSource: EndGate.Core.Graphics.Sprites.ImageSource,
-    SpriteAnimation: EndGate.Core.Graphics.Sprites.Animation.SpriteAnimation,
-    Shape: EndGate.Core.Graphics.Shapes.Shape,
-    Circle: EndGate.Core.Graphics.Shapes.Circle,
-    Rectangle: EndGate.Core.Graphics.Shapes.Rectangle,
-    Collidable: EndGate.Core.Collision.Collidable,
-    BoundingCircle: EndGate.Core.BoundingObject.BoundingCircle,
-    BoundingCircle: EndGate.Core.BoundingObject.BoundingRectangle,
-    AudioClip: EndGate.Core.AudioManagement.AudioClip,
-    AudioPlayer: EndGate.Core.AudioManagement.AudioPlayer,
-    AudioSettings: EndGate.Core.AudioManagement.AudioSettings,
-    Size2d: EndGate.Core.Assets.Size2d,
-    Vector2d: EndGate.Core.Assets.Vector2d
+module eg {
+    export class Game extends EndGate.Core.Game { };
+    export class GameConfiguration extends EndGate.Core.GameConfiguration { };
+    export class GameTime extends EndGate.Core.GameTime { };
+    export class EventHandler extends EndGate.Core.Utilities.EventHandler { };
+    export class Scene2d extends EndGate.Core.Rendering.Scene2d { };
+    export class Camera2d extends EndGate.Core.Rendering.Camera.Camera2d { };
+    export module MovementControllers {
+        export class LinearMovementController extends EndGate.Core.MovementControllers.LinearMovementController { };
+    };
+    export module InputControllers {
+        export class DirectionalInputController extends EndGate.Core.Input.Controllers.DirectionalInputController { };
+    };
+
+    export class Graphic2d extends EndGate.Core.Graphics.Graphic2d { };
+    export class Text2d extends EndGate.Core.Graphics.Text.Text2d { };
+    export class Sprite2d extends EndGate.Core.Graphics.Sprites.Sprite2d { };
+    export class ImageSource extends EndGate.Core.Graphics.Sprites.ImageSource { };
+    export class SpriteAnimation extends EndGate.Core.Graphics.Sprites.Animation.SpriteAnimation { };
+    export class Shape extends EndGate.Core.Graphics.Shapes.Shape { };
+    export class Circle extends EndGate.Core.Graphics.Shapes.Circle { };
+    export class Rectangle extends EndGate.Core.Graphics.Shapes.Rectangle { };
+    export class Collidable extends EndGate.Core.Collision.Collidable { };
+    export class BoundingCircle extends EndGate.Core.BoundingObject.BoundingCircle { };
+    export class BoundingRectangle extends EndGate.Core.BoundingObject.BoundingRectangle { };
+    export class AudioClip extends EndGate.Core.AudioManagement.AudioClip { };
+    export class AudioPlayer extends EndGate.Core.AudioManagement.AudioPlayer { };
+    export class AudioSettings extends EndGate.Core.AudioManagement.AudioSettings { };
+    export class Size2d extends EndGate.Core.Assets.Size2d { };
+    export class Vector2d extends EndGate.Core.Assets.Vector2d { };
 };

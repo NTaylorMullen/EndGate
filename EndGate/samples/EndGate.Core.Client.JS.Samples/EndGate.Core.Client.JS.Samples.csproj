@@ -201,6 +201,18 @@
     <Content Include="Samples\MovementControllers\mainMovementControllers.js">
       <DependentUpon>mainMovementControllers.ts</DependentUpon>
     </Content>
+    <Content Include="Samples\RawRPG\Default.aspx" />
+    <TypeScriptCompile Include="Samples\RawRPG\main.ts" />
+    <Content Include="Samples\RawRPG\main.js">
+      <DependentUpon>main.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Samples\RawRPG\RPG.ts" />
+    <Content Include="Samples\RawRPG\RPG.js">
+      <DependentUpon>RPG.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\RawRPG\RPG.min.js">
+      <DependentUpon>RPG.ts</DependentUpon>
+    </Content>
     <Content Include="Samples\Sprites\assetsSprites.js">
       <DependentUpon>assetsSprites.ts</DependentUpon>
     </Content>
@@ -268,6 +280,9 @@
     </Content>
     <Content Include="Samples\AudioHandling\sounds\fireburning.ogg" />
     <Content Include="Samples\AudioHandling\sounds\smokepoof.ogg" />
+    <Content Include="Samples\RawRPG\RPG.js.map">
+      <DependentUpon>RPG.ts</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <TypeScriptCompile Include="Scripts\endGate.core.client.ts" />
     <TypeScriptCompile Include="Samples\Layering\assetsLayering.ts" />
@@ -378,6 +393,13 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Samples\MovementControllers\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Samples\RawRPG\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Samples\RawRPG\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="Samples\Shapes\Default.aspx.cs">
