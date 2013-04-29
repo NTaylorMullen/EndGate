@@ -42,12 +42,20 @@
             <h3>Audio Handling</h3>
             <p>Demonstrates how to play audio.</p>
             <p><a class="btn" href="Samples/AudioHandling">View sample &raquo;</a></p>
-        </div>
+        </div>        
+    </div>
 
+    <div class="row">
         <div class="span4">
             <h3>Movement Controllers</h3>
             <p>Demonstrates how to use Movement Controllers to make moving objects easy.</p>
             <p><a class="btn" href="Samples/MovementControllers">View sample &raquo;</a></p>
+        </div>
+
+        <div class="span4">
+            <h3>Input Controllers</h3>
+            <p>Demonstrates how to use input controllers to make moving controlling objects dead simple.</p>
+            <p><a class="btn" href="Samples/InputControllers">View sample &raquo;</a></p>
         </div>
     </div>
 

@@ -1,6 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/EndGate.Core.Samples.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="EndGate.Core.Client.JS.Samples.Samples.MovementControllers.Default" %>
 
-
 <asp:Content ID="Content4" ContentPlaceHolderID="HeadContent" runat="server">
     <style>
         canvas {

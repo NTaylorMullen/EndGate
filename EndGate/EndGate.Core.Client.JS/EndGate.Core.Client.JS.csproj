@@ -165,6 +165,13 @@
     <TypeScriptCompile Include="MovementControllers\MovementController.ts" />
     <TypeScriptCompile Include="MovementControllers\LinearMovementController.ts" />
     <TypeScriptCompile Include="MovementControllers\LinearDirections.ts" />
+    <TypeScriptCompile Include="Input\Controllers\DirectionalInputController.ts" />
+    <Content Include="Input\Controllers\DirectionalInputController.js">
+      <DependentUpon>DirectionalInputController.ts</DependentUpon>
+    </Content>
+    <Content Include="Input\Controllers\DirectionalInputController.min.js">
+      <DependentUpon>DirectionalInputController.ts</DependentUpon>
+    </Content>
     <Content Include="MovementControllers\LinearDirections.js">
       <DependentUpon>LinearDirections.ts</DependentUpon>
     </Content>
@@ -658,6 +665,9 @@
     </Content>
     <Content Include="MovementControllers\LinearDirections.js.map">
       <DependentUpon>LinearDirections.ts</DependentUpon>
+    </Content>
+    <Content Include="Input\Controllers\DirectionalInputController.js.map">
+      <DependentUpon>DirectionalInputController.ts</DependentUpon>
     </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

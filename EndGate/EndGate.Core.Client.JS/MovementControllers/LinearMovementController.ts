@@ -52,7 +52,7 @@ module EndGate.Core.MovementControllers {
             }
         }
 
-        private Move(direction: string, startMoving: bool): void {
+        public Move(direction: string, startMoving: bool): void {
             if (typeof this._moving[direction] !== "undefined") {
                 this._moving[direction] = startMoving;
                 this.UpdateVelocity();

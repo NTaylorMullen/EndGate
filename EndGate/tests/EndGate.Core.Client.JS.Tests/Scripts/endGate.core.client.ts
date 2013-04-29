@@ -209,6 +209,10 @@ module EndGate.Core.Assets {
             }
         }
 
+        public IsZero(): bool {
+            return this.X === 0 && this.Y === 0;
+        }
+
         public Negate(): Vector2d {
             return new Vector2d(this.X * -1, this.Y * -1);
         }
@@ -3218,6 +3222,39 @@ module EndGate.Core.Graphics.Text {
     }
 
 }
+/* DirectionalInputController.ts */
+
+
+module EndGate.Core.Input.Controllers {
+
+    export class DirectionalInputController {
+        private _keyboard: Keyboard.KeyboardHandler;
+        private _onMove: (direction: string, startMoving: bool) => void;
+
+        constructor(keyboard: Keyboard.KeyboardHandler, onMove: (direction: string, startMoving: bool) => void , upKeys?: string[] = ["w", "Up"], rightKeys?: string[] = ["d", "Right"], downKeys?: string[] = ["s", "Down"], leftKeys?: string[] = ["a", "Left"]) {
+            this._keyboard = keyboard;
+            this._onMove = onMove;
+
+            this.BindKeys(upKeys, "OnCommandDown", "Up", true);
+            this.BindKeys(rightKeys, "OnCommandDown", "Right", true);
+            this.BindKeys(downKeys, "OnCommandDown", "Down", true);
+            this.BindKeys(leftKeys, "OnCommandDown", "Left", true);
+            this.BindKeys(upKeys, "OnCommandUp", "Up", false);
+            this.BindKeys(rightKeys, "OnCommandUp", "Right", false);
+            this.BindKeys(downKeys, "OnCommandUp", "Down", false);
+            this.BindKeys(leftKeys, "OnCommandUp", "Left", false);
+        }
+
+        private BindKeys(keyList: string[], bindingAction: string, direction: string, startMoving: bool): void {
+            for (var i = 0; i < keyList.length; i++) {
+                this._keyboard[bindingAction](keyList[i], () => {
+                    this._onMove(direction, startMoving);
+                });
+            }
+        }
+    }
+
+}
 /* LinearDirections.ts */
 module EndGate.Core.MovementControllers {
 
@@ -3248,14 +3285,28 @@ module EndGate.Core.MovementControllers {
         public Position: Assets.Vector2d;
         public Velocity: Assets.Vector2d;
         public Rotation: number;
+        public _frozen: bool;
         private _moveables: IMoveable[];
 
         constructor(moveables: IMoveable[]) {
             this.Position = Assets.Vector2d.Zero();
             this.Velocity = Assets.Vector2d.Zero();
             this.Rotation = 0;
+            this._frozen = false;
 
             this._moveables = moveables;
+        }
+
+        public Freeze(): void {
+            this._frozen = true;
+        }
+
+        public Thaw(): void {
+            this._frozen = false;
+        }
+
+        public IsMoving(): bool {
+            return !this._frozen && !this.Velocity.IsZero();
         }
 
         public Update(gameTime: GameTime): void {
@@ -3284,7 +3335,7 @@ module EndGate.Core.MovementControllers {
         private _moving: LinearDirections;
         private _rotationUpdater: Utilities.NoopTripInvoker;
 
-        constructor(moveables: IMoveable[], moveSpeed, rotateWithMovements?: bool = true) {
+        constructor(moveables: IMoveable[], moveSpeed: number, rotateWithMovements?: bool = true) {
             super(moveables);
 
             this._moveSpeed = moveSpeed;
@@ -3294,7 +3345,7 @@ module EndGate.Core.MovementControllers {
             }, rotateWithMovements);
         }
 
-        public IsMoving(direction: string): bool {
+        public IsMovingInDirection(direction: string): bool {
             return this._moving[direction] || false;
         }
 
@@ -3306,13 +3357,24 @@ module EndGate.Core.MovementControllers {
             this.Move(direction, false);
         }
 
-        public Update(gameTime: GameTime): void {
-            this.Position = this.Position.Add(this.Velocity.Multiply(gameTime.ElapsedSecond));
+        public MoveSpeed(speed?: number): number {
+            if (typeof speed !== "undefined") {
+                this._moveSpeed = speed;
+                this.UpdateVelocity();
+            }
 
-            super.Update(gameTime);
+            return this._moveSpeed;
         }
 
-        private Move(direction: string, startMoving: bool): void {
+        public Update(gameTime: GameTime): void {
+            if (!this._frozen) {
+                this.Position = this.Position.Add(this.Velocity.Multiply(gameTime.ElapsedSecond));
+
+                super.Update(gameTime);
+            }
+        }
+
+        public Move(direction: string, startMoving: bool): void {
             if (typeof this._moving[direction] !== "undefined") {
                 this._moving[direction] = startMoving;
                 this.UpdateVelocity();
@@ -3343,7 +3405,9 @@ module EndGate.Core.MovementControllers {
         }
 
         private UpdateRotation(): void {
-            this.Rotation = Math.atan2(this.Velocity.Y, this.Velocity.X);
+            if (!this.Velocity.IsZero()) {
+                this.Rotation = Math.atan2(this.Velocity.Y, this.Velocity.X);
+            }
         }
     }
 

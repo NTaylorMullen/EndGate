@@ -24,14 +24,6 @@ var CharacterMover = (function (_super) {
             "a", 
             "left"
         ];
-        this._zoomInKeys = [
-            "r", 
-            "'"
-        ];
-        this._zoomOutKeys = [
-            "f", 
-            "/"
-        ];
         this._character = new EndGate.Core.Graphics.Shapes.Rectangle(canvas.width / 2, canvas.height / 2, 50, 30, "brown");
         this._characterMovementController = new EndGate.Core.MovementControllers.LinearMovementController([
             this._character
@@ -41,8 +33,6 @@ var CharacterMover = (function (_super) {
         this.BindKeys(this._rightKeys, "OnCommandDown", "Right", true);
         this.BindKeys(this._downKeys, "OnCommandDown", "Down", true);
         this.BindKeys(this._leftKeys, "OnCommandDown", "Left", true);
-        this.BindKeys(this._zoomInKeys, "OnCommandDown", "ZoomingIn", true);
-        this.BindKeys(this._zoomOutKeys, "OnCommandDown", "ZoomingOut", true);
         this.BindKeys(this._upKeys, "OnCommandUp", "Up", false);
         this.BindKeys(this._rightKeys, "OnCommandUp", "Right", false);
         this.BindKeys(this._downKeys, "OnCommandUp", "Down", false);

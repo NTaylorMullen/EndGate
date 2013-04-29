@@ -184,6 +184,15 @@
     <TypeScriptCompile Include="Samples\KeyboardInput\assetsKeyboardInput.ts" />
     <TypeScriptCompile Include="Samples\Sprites\assetsSprites.ts" />
     <TypeScriptCompile Include="Samples\MovementControllers\assetsMovementControllers.ts" />
+    <TypeScriptCompile Include="Samples\InputControllers\assetsInputControllers.ts" />
+    <Content Include="Samples\InputControllers\assetsInputControllers.js">
+      <DependentUpon>assetsInputControllers.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\InputControllers\Default.aspx" />
+    <TypeScriptCompile Include="Samples\InputControllers\mainInputControllers.ts" />
+    <Content Include="Samples\InputControllers\mainInputControllers.js">
+      <DependentUpon>mainInputControllers.ts</DependentUpon>
+    </Content>
     <Content Include="Samples\MovementControllers\assetsMovementControllers.js">
       <DependentUpon>assetsMovementControllers.ts</DependentUpon>
     </Content>
@@ -334,6 +343,13 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Samples\CollisionInspector\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Samples\InputControllers\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Samples\InputControllers\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="Samples\KeyboardInput\Default.aspx.cs">

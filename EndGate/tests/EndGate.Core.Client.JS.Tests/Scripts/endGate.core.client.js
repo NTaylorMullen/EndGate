@@ -133,6 +133,9 @@ var EndGate;
                         return new Vector2d(val / this.X, val / this.Y);
                     }
                 };
+                Vector2d.prototype.IsZero = function () {
+                    return this.X === 0 && this.Y === 0;
+                };
                 Vector2d.prototype.Negate = function () {
                     return new Vector2d(this.X * -1, this.Y * -1);
                 };
@@ -2694,6 +2697,58 @@ var EndGate;
 var EndGate;
 (function (EndGate) {
     (function (Core) {
+        (function (Input) {
+            (function (Controllers) {
+                var DirectionalInputController = (function () {
+                    function DirectionalInputController(keyboard, onMove, upKeys, rightKeys, downKeys, leftKeys) {
+                        if (typeof upKeys === "undefined") { upKeys = [
+                            "w", 
+                            "Up"
+                        ]; }
+                        if (typeof rightKeys === "undefined") { rightKeys = [
+                            "d", 
+                            "Right"
+                        ]; }
+                        if (typeof downKeys === "undefined") { downKeys = [
+                            "s", 
+                            "Down"
+                        ]; }
+                        if (typeof leftKeys === "undefined") { leftKeys = [
+                            "a", 
+                            "Left"
+                        ]; }
+                        this._keyboard = keyboard;
+                        this._onMove = onMove;
+                        this.BindKeys(upKeys, "OnCommandDown", "Up", true);
+                        this.BindKeys(rightKeys, "OnCommandDown", "Right", true);
+                        this.BindKeys(downKeys, "OnCommandDown", "Down", true);
+                        this.BindKeys(leftKeys, "OnCommandDown", "Left", true);
+                        this.BindKeys(upKeys, "OnCommandUp", "Up", false);
+                        this.BindKeys(rightKeys, "OnCommandUp", "Right", false);
+                        this.BindKeys(downKeys, "OnCommandUp", "Down", false);
+                        this.BindKeys(leftKeys, "OnCommandUp", "Left", false);
+                    }
+                    DirectionalInputController.prototype.BindKeys = function (keyList, bindingAction, direction, startMoving) {
+                        var _this = this;
+                        for(var i = 0; i < keyList.length; i++) {
+                            this._keyboard[bindingAction](keyList[i], function () {
+                                _this._onMove(direction, startMoving);
+                            });
+                        }
+                    };
+                    return DirectionalInputController;
+                })();
+                Controllers.DirectionalInputController = DirectionalInputController;                
+            })(Input.Controllers || (Input.Controllers = {}));
+            var Controllers = Input.Controllers;
+        })(Core.Input || (Core.Input = {}));
+        var Input = Core.Input;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
         (function (MovementControllers) {
             var LinearDirections = (function () {
                 function LinearDirections() {
@@ -2719,8 +2774,18 @@ var EndGate;
                     this.Position = Core.Assets.Vector2d.Zero();
                     this.Velocity = Core.Assets.Vector2d.Zero();
                     this.Rotation = 0;
+                    this._frozen = false;
                     this._moveables = moveables;
                 }
+                MovementController.prototype.Freeze = function () {
+                    this._frozen = true;
+                };
+                MovementController.prototype.Thaw = function () {
+                    this._frozen = false;
+                };
+                MovementController.prototype.IsMoving = function () {
+                    return !this._frozen && !this.Velocity.IsZero();
+                };
                 MovementController.prototype.Update = function (gameTime) {
                     for(var i = 0; i < this._moveables.length; i++) {
                         this._moveables[i].Position = this.Position;
@@ -2751,7 +2816,7 @@ var EndGate;
                         _this.UpdateRotation();
                     }, rotateWithMovements);
                 }
-                LinearMovementController.prototype.IsMoving = function (direction) {
+                LinearMovementController.prototype.IsMovingInDirection = function (direction) {
                     return this._moving[direction] || false;
                 };
                 LinearMovementController.prototype.StartMoving = function (direction) {
@@ -2760,9 +2825,18 @@ var EndGate;
                 LinearMovementController.prototype.StopMoving = function (direction) {
                     this.Move(direction, false);
                 };
+                LinearMovementController.prototype.MoveSpeed = function (speed) {
+                    if(typeof speed !== "undefined") {
+                        this._moveSpeed = speed;
+                        this.UpdateVelocity();
+                    }
+                    return this._moveSpeed;
+                };
                 LinearMovementController.prototype.Update = function (gameTime) {
-                    this.Position = this.Position.Add(this.Velocity.Multiply(gameTime.ElapsedSecond));
-                    _super.prototype.Update.call(this, gameTime);
+                    if(!this._frozen) {
+                        this.Position = this.Position.Add(this.Velocity.Multiply(gameTime.ElapsedSecond));
+                        _super.prototype.Update.call(this, gameTime);
+                    }
                 };
                 LinearMovementController.prototype.Move = function (direction, startMoving) {
                     if(typeof this._moving[direction] !== "undefined") {
@@ -2790,7 +2864,9 @@ var EndGate;
                     this.Velocity = velocity;
                 };
                 LinearMovementController.prototype.UpdateRotation = function () {
-                    this.Rotation = Math.atan2(this.Velocity.Y, this.Velocity.X);
+                    if(!this.Velocity.IsZero()) {
+                        this.Rotation = Math.atan2(this.Velocity.Y, this.Velocity.X);
+                    }
                 };
                 return LinearMovementController;
             })(MovementControllers.MovementController);
