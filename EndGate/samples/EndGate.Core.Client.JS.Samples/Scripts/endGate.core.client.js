@@ -133,6 +133,9 @@ var EndGate;
                         return new Vector2d(val / this.X, val / this.Y);
                     }
                 };
+                Vector2d.prototype.IsZero = function () {
+                    return this.X === 0 && this.Y === 0;
+                };
                 Vector2d.prototype.Negate = function () {
                     return new Vector2d(this.X * -1, this.Y * -1);
                 };
@@ -153,6 +156,9 @@ var EndGate;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    })(EndGate || (EndGate = {}));
 var EndGate;
 (function (EndGate) {
     (function (Core) {
@@ -1756,18 +1762,11 @@ var EndGate;
                 AudioClip.prototype.Play = function () {
                     var _this = this;
                     if(this._audio.readyState === 0) {
-                        console.log("Play requested to 'can play'.");
-                        this._audio.addEventListener("canplaythrough", function () {
-                            _this._audio.play();
-                            console.log("Playing in can play through");
-                        }, true);
                         this._audio.addEventListener("canplay", function () {
                             _this._audio.play();
-                            console.log("Playing in can play");
                         }, true);
                     } else {
                         this._audio.play();
-                        console.log("Playing");
                     }
                 };
                 AudioClip.prototype.Pause = function () {
@@ -2695,4 +2694,133 @@ var EndGate;
     })(EndGate.Core || (EndGate.Core = {}));
     var Core = EndGate.Core;
 })(EndGate || (EndGate = {}));
-//@ sourceMappingURL=endGate.core.client.js.map
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (MovementControllers) {
+            var LinearDirections = (function () {
+                function LinearDirections() {
+                    this.Left = false;
+                    this.Right = false;
+                    this.Up = false;
+                    this.Down = false;
+                }
+                return LinearDirections;
+            })();
+            MovementControllers.LinearDirections = LinearDirections;            
+        })(Core.MovementControllers || (Core.MovementControllers = {}));
+        var MovementControllers = Core.MovementControllers;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (MovementControllers) {
+            var MovementController = (function () {
+                function MovementController(moveables) {
+                    this.Position = Core.Assets.Vector2d.Zero();
+                    this.Velocity = Core.Assets.Vector2d.Zero();
+                    this.Rotation = 0;
+                    this._frozen = false;
+                    this._moveables = moveables;
+                }
+                MovementController.prototype.Freeze = function () {
+                    this._frozen = true;
+                };
+                MovementController.prototype.Thaw = function () {
+                    this._frozen = false;
+                };
+                MovementController.prototype.IsMoving = function () {
+                    return !this._frozen && !this.Velocity.IsZero();
+                };
+                MovementController.prototype.Update = function (gameTime) {
+                    for(var i = 0; i < this._moveables.length; i++) {
+                        this._moveables[i].Position = this.Position;
+                        this._moveables[i].Rotation = this.Rotation;
+                    }
+                };
+                return MovementController;
+            })();
+            MovementControllers.MovementController = MovementController;            
+        })(Core.MovementControllers || (Core.MovementControllers = {}));
+        var MovementControllers = Core.MovementControllers;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Core) {
+        (function (MovementControllers) {
+            var LinearMovementController = (function (_super) {
+                __extends(LinearMovementController, _super);
+                function LinearMovementController(moveables, moveSpeed, rotateWithMovements) {
+                    if (typeof rotateWithMovements === "undefined") { rotateWithMovements = true; }
+                    var _this = this;
+                                _super.call(this, moveables);
+                    this._moveSpeed = moveSpeed;
+                    this._moving = new MovementControllers.LinearDirections();
+                    this._rotationUpdater = new Core.Utilities.NoopTripInvoker(function () {
+                        _this.UpdateRotation();
+                    }, rotateWithMovements);
+                }
+                LinearMovementController.prototype.IsMovingInDirection = function (direction) {
+                    return this._moving[direction] || false;
+                };
+                LinearMovementController.prototype.StartMoving = function (direction) {
+                    this.Move(direction, true);
+                };
+                LinearMovementController.prototype.StopMoving = function (direction) {
+                    this.Move(direction, false);
+                };
+                LinearMovementController.prototype.MoveSpeed = function (speed) {
+                    if(typeof speed !== "undefined") {
+                        this._moveSpeed = speed;
+                        this.UpdateVelocity();
+                    }
+                    return this._moveSpeed;
+                };
+                LinearMovementController.prototype.Update = function (gameTime) {
+                    if(!this._frozen) {
+                        this.Position = this.Position.Add(this.Velocity.Multiply(gameTime.ElapsedSecond));
+                        _super.prototype.Update.call(this, gameTime);
+                    }
+                };
+                LinearMovementController.prototype.Move = function (direction, startMoving) {
+                    if(typeof this._moving[direction] !== "undefined") {
+                        this._moving[direction] = startMoving;
+                        this.UpdateVelocity();
+                        this._rotationUpdater.Invoke();
+                    } else {
+                        throw new Error(direction + " is an unknown direction.");
+                    }
+                };
+                LinearMovementController.prototype.UpdateVelocity = function () {
+                    var velocity = Core.Assets.Vector2d.Zero();
+                    if(this._moving.Up) {
+                        velocity.Y -= this._moveSpeed;
+                    }
+                    if(this._moving.Down) {
+                        velocity.Y += this._moveSpeed;
+                    }
+                    if(this._moving.Left) {
+                        velocity.X -= this._moveSpeed;
+                    }
+                    if(this._moving.Right) {
+                        velocity.X += this._moveSpeed;
+                    }
+                    this.Velocity = velocity;
+                };
+                LinearMovementController.prototype.UpdateRotation = function () {
+                    if(!this.Velocity.IsZero()) {
+                        this.Rotation = Math.atan2(this.Velocity.Y, this.Velocity.X);
+                    }
+                };
+                return LinearMovementController;
+            })(MovementControllers.MovementController);
+            MovementControllers.LinearMovementController = LinearMovementController;            
+        })(Core.MovementControllers || (Core.MovementControllers = {}));
+        var MovementControllers = Core.MovementControllers;
+    })(EndGate.Core || (EndGate.Core = {}));
+    var Core = EndGate.Core;
+})(EndGate || (EndGate = {}));

@@ -1,4 +1,5 @@
 /// <reference path="../Interfaces/ITyped.d.ts" />
+/// <reference path="../Interfaces/IMoveable.d.ts" />
 /// <reference path="../Rendering/IRenderable.d.ts" />
 /// <reference path="../Assets/Sizes/Size2d.ts" />
 /// <reference path="../Assets/Vectors/Vector2d.ts" />
@@ -7,7 +8,7 @@
 
 module EndGate.Core.Graphics {
 
-    export class Graphic2d implements ITyped, Rendering.IRenderable {
+    export class Graphic2d implements ITyped, Rendering.IRenderable, IMoveable {
         public _type: string = "Graphic2d";
 
         public ZIndex: number;

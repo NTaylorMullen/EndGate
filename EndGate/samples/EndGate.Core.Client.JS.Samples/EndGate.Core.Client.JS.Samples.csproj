@@ -183,6 +183,15 @@
     <TypeScriptCompile Include="Samples\MouseInput\assetsMouseInput.ts" />
     <TypeScriptCompile Include="Samples\KeyboardInput\assetsKeyboardInput.ts" />
     <TypeScriptCompile Include="Samples\Sprites\assetsSprites.ts" />
+    <TypeScriptCompile Include="Samples\MovementControllers\assetsMovementControllers.ts" />
+    <Content Include="Samples\MovementControllers\assetsMovementControllers.js">
+      <DependentUpon>assetsMovementControllers.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MovementControllers\Default.aspx" />
+    <TypeScriptCompile Include="Samples\MovementControllers\mainMovementControllers.ts" />
+    <Content Include="Samples\MovementControllers\mainMovementControllers.js">
+      <DependentUpon>mainMovementControllers.ts</DependentUpon>
+    </Content>
     <Content Include="Samples\Sprites\assetsSprites.js">
       <DependentUpon>assetsSprites.ts</DependentUpon>
     </Content>
@@ -348,6 +357,13 @@
     <Compile Include="Samples\MouseInput\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Samples\MovementControllers\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Samples\MovementControllers\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Samples\Shapes\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -393,7 +409,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerPort>13562</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:8718/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

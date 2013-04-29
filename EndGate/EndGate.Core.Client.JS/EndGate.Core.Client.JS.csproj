@@ -161,6 +161,28 @@
     <Content Include="Graphics\Sprites\Sprite2d.min.js">
       <DependentUpon>Sprite2d.ts</DependentUpon>
     </Content>
+    <TypeScriptCompile Include="Interfaces\IMoveable.d.ts" />
+    <TypeScriptCompile Include="MovementControllers\MovementController.ts" />
+    <TypeScriptCompile Include="MovementControllers\LinearMovementController.ts" />
+    <TypeScriptCompile Include="MovementControllers\LinearDirections.ts" />
+    <Content Include="MovementControllers\LinearDirections.js">
+      <DependentUpon>LinearDirections.ts</DependentUpon>
+    </Content>
+    <Content Include="MovementControllers\LinearDirections.min.js">
+      <DependentUpon>LinearDirections.ts</DependentUpon>
+    </Content>
+    <Content Include="MovementControllers\LinearMovementController.js">
+      <DependentUpon>LinearMovementController.ts</DependentUpon>
+    </Content>
+    <Content Include="MovementControllers\LinearMovementController.min.js">
+      <DependentUpon>LinearMovementController.ts</DependentUpon>
+    </Content>
+    <Content Include="MovementControllers\MovementController.js">
+      <DependentUpon>MovementController.ts</DependentUpon>
+    </Content>
+    <Content Include="MovementControllers\MovementController.min.js">
+      <DependentUpon>MovementController.ts</DependentUpon>
+    </Content>
     <Content Include="Rendering\Camera\Camera2d.js">
       <DependentUpon>Camera2d.ts</DependentUpon>
     </Content>
@@ -628,6 +650,15 @@
     <Content Include="AudioManagement\AudioSettings.js.map">
       <DependentUpon>AudioSettings.ts</DependentUpon>
     </Content>
+    <Content Include="MovementControllers\MovementController.js.map">
+      <DependentUpon>MovementController.ts</DependentUpon>
+    </Content>
+    <Content Include="MovementControllers\LinearMovementController.js.map">
+      <DependentUpon>LinearMovementController.ts</DependentUpon>
+    </Content>
+    <Content Include="MovementControllers\LinearDirections.js.map">
+      <DependentUpon>LinearDirections.ts</DependentUpon>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -647,16 +678,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
-          <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
-          <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:1468/</IISUrl>
-          <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
-          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>

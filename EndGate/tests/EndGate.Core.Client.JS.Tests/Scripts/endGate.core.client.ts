@@ -227,14 +227,26 @@ module EndGate.Core.Assets {
         }
     }
 }
+/* IMoveable.d.ts */
+
+
+module EndGate.Core {
+
+    export interface IMoveable {
+        Position: Assets.Vector2d;
+        Rotation: number;
+    }
+
+}
 /* Bounds2d.ts */
+
 
 
 
 
 module EndGate.Core.BoundingObject {
 
-    export class Bounds2d {
+    export class Bounds2d implements IMoveable {
         public _boundsType: string = "Bounds2d";
 
         public Position: Assets.Vector2d;
@@ -976,9 +988,10 @@ module EndGate.Core.Graphics {
 
 
 
+
 module EndGate.Core.Graphics {
 
-    export class Graphic2d implements ITyped, Rendering.IRenderable {
+    export class Graphic2d implements ITyped, Rendering.IRenderable, IMoveable {
         public _type: string = "Graphic2d";
 
         public ZIndex: number;
@@ -2183,18 +2196,12 @@ module EndGate.Core.AudioManagement {
 
         public Play(): void {
             if (this._audio.readyState === <any>0) {
-                console.log("Play requested to 'can play'.");
-
-                this._audio.addEventListener("canplaythrough", () => {
-                    this._audio.play(); console.log("Playing in can play through");
-                }, true);
                 this._audio.addEventListener("canplay", () => {
-                    this._audio.play(); console.log("Playing in can play");
+                    this._audio.play();
                 }, true);
             }
             else {
                 this._audio.play();
-                console.log("Playing");
             }
         }
 
@@ -3207,6 +3214,136 @@ module EndGate.Core.Graphics.Text {
             this._drawBounds.Position = this.Position;
 
             return this._drawBounds;
+        }
+    }
+
+}
+/* LinearDirections.ts */
+module EndGate.Core.MovementControllers {
+
+    export class LinearDirections {
+        public Left: bool;
+        public Right: bool;
+        public Up: bool;
+        public Down: bool;
+
+        constructor() {
+            this.Left = false;
+            this.Right = false;
+            this.Up = false;
+            this.Down = false;
+        }
+    }
+
+}
+/* MovementController.ts */
+
+
+
+
+
+module EndGate.Core.MovementControllers {
+    
+    export class MovementController implements IMoveable, IUpdateable {
+        public Position: Assets.Vector2d;
+        public Velocity: Assets.Vector2d;
+        public Rotation: number;
+        private _moveables: IMoveable[];
+
+        constructor(moveables: IMoveable[]) {
+            this.Position = Assets.Vector2d.Zero();
+            this.Velocity = Assets.Vector2d.Zero();
+            this.Rotation = 0;
+
+            this._moveables = moveables;
+        }
+
+        public Update(gameTime: GameTime): void {
+            // Sync moveables position and rotation
+            for (var i = 0; i < this._moveables.length; i++) {
+                this._moveables[i].Position = this.Position;
+                this._moveables[i].Rotation = this.Rotation;
+            }
+        }
+    }
+
+}
+/* LinearMovementController.ts */
+
+
+
+
+
+
+
+
+module EndGate.Core.MovementControllers {
+
+    export class LinearMovementController extends MovementController {
+        private _moveSpeed: number;
+        private _moving: LinearDirections;
+        private _rotationUpdater: Utilities.NoopTripInvoker;
+
+        constructor(moveables: IMoveable[], moveSpeed, rotateWithMovements?: bool = true) {
+            super(moveables);
+
+            this._moveSpeed = moveSpeed;
+            this._moving = new LinearDirections();
+            this._rotationUpdater = new Utilities.NoopTripInvoker(() => {
+                this.UpdateRotation();
+            }, rotateWithMovements);
+        }
+
+        public IsMoving(direction: string): bool {
+            return this._moving[direction] || false;
+        }
+
+        public StartMoving(direction: string): void {
+            this.Move(direction, true);
+        }
+
+        public StopMoving(direction: string): void {
+            this.Move(direction, false);
+        }
+
+        public Update(gameTime: GameTime): void {
+            this.Position = this.Position.Add(this.Velocity.Multiply(gameTime.ElapsedSecond));
+
+            super.Update(gameTime);
+        }
+
+        private Move(direction: string, startMoving: bool): void {
+            if (typeof this._moving[direction] !== "undefined") {
+                this._moving[direction] = startMoving;
+                this.UpdateVelocity();
+                this._rotationUpdater.Invoke();
+            }
+            else {
+                throw new Error(direction + " is an unknown direction.");
+            }
+        }
+
+        private UpdateVelocity(): void {
+            var velocity = Assets.Vector2d.Zero();
+
+            if (this._moving.Up) {
+                velocity.Y -= this._moveSpeed;
+            }
+            if (this._moving.Down) {
+                velocity.Y += this._moveSpeed;
+            }
+            if (this._moving.Left) {
+                velocity.X -= this._moveSpeed;
+            }
+            if (this._moving.Right) {
+                velocity.X += this._moveSpeed;
+            }
+
+            this.Velocity = velocity;
+        }
+
+        private UpdateRotation(): void {
+            this.Rotation = Math.atan2(this.Velocity.Y, this.Velocity.X);
         }
     }
 

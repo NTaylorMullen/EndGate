@@ -140,6 +140,10 @@ module EndGate.Core.Assets {
             }
         }
 
+        public IsZero(): bool {
+            return this.X === 0 && this.Y === 0;
+        }
+
         public Negate(): Vector2d {
             return new Vector2d(this.X * -1, this.Y * -1);
         }

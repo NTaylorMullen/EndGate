@@ -95,6 +95,9 @@ var EndGate;
                         return new Vector2d(val / this.X, val / this.Y);
                     }
                 };
+                Vector2d.prototype.IsZero = function () {
+                    return this.X === 0 && this.Y === 0;
+                };
                 Vector2d.prototype.Negate = function () {
                     return new Vector2d(this.X * -1, this.Y * -1);
                 };

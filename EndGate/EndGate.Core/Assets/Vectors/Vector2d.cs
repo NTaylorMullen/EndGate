@@ -51,6 +51,10 @@ namespace EndGate.Core.Assets
             return v1.X == X && v1.Y == Y;
         }
 
+        public bool IsZero() {
+            return this.X == 0 && this.Y == 0;
+        }
+
         /// <summary>
         /// Clones the vector2
         /// </summary>
