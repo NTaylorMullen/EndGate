@@ -1,6 +1,6 @@
 ﻿/// <reference path="Assets.js" />
 
-(function (window, lib) {
+(function (window) {
 
     QUnit.module("Game Facts");
 
@@ -99,4 +99,4 @@
         };
     });
 
-})(window, EndGate.Core);
+})(window);

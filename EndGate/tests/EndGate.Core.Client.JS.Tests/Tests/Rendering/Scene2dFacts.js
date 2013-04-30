@@ -1,9 +1,9 @@
-﻿(function (window, lib, bo, assets) {
+﻿(function () {
 
     QUnit.module("Scene2d Facts");
 
     QUnit.test("Renderables added have draw triggered.", function () {
-        var scene = new lib.Scene2d(),
+        var scene = new EndGate.Rendering.Scene2d(),
             draws1 = 0,
             draws2 = 0,
             renderable1 = {
@@ -11,7 +11,7 @@
                     draws1++;
                 },
                 GetDrawBounds: function () {
-                    return new bo.BoundingCircle(assets.Vector2d.Zero(), 5);
+                    return new EndGate.Bounds.BoundingCircle(EndGate.Vector2d.Zero(), 5);
                 }
             },
             renderable2 = {
@@ -19,7 +19,7 @@
                     draws2++;
                 },
                 GetDrawBounds: function () {
-                    return new bo.BoundingCircle(assets.Vector2d.Zero(), 5);
+                    return new EndGate.Bounds.BoundingCircle(EndGate.Vector2d.Zero(), 5);
                 }
             };
 
@@ -52,7 +52,7 @@
     });
 
     QUnit.test("Dispose removes all actors.", function () {
-        var scene = new lib.Scene2d(),
+        var scene = new EndGate.Rendering.Scene2d(),
             draws1 = 0,
             draws2 = 0,
             renderable1 = {
@@ -60,7 +60,7 @@
                     draws1++;
                 },
                 GetDrawBounds: function () {
-                    return new bo.BoundingCircle(assets.Vector2d.Zero(), 5);
+                    return new EndGate.Bounds.BoundingCircle(EndGate.Vector2d.Zero(), 5);
                 }
             },
             renderable2 = {
@@ -68,7 +68,7 @@
                     draws2++;
                 },
                 GetDrawBounds: function () {
-                    return new bo.BoundingCircle(assets.Vector2d.Zero(), 5);
+                    return new EndGate.Bounds.BoundingCircle(EndGate.Vector2d.Zero(), 5);
                 }
             };
 
@@ -91,4 +91,4 @@
         QUnit.equal(draws1, draws2);
     });
 
-})(window, EndGate.Core.Rendering, EndGate.Core.BoundingObject, EndGate.Core.Assets);
+})();

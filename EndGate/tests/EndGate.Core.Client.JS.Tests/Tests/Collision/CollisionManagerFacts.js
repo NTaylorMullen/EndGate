@@ -1,13 +1,13 @@
 ﻿/// <reference path="../../Assets.ts" />
 
-(function (window, collision, assets, bo) {
+(function () {
 
     QUnit.module("Collision Manager Facts");
 
     QUnit.test("Collision manager detects collisions.", function () {
-        var cm = new collision.CollisionManager(),
-            rect = new collision.Collidable(new bo.BoundingRectangle(assets.Vector2d.Zero(), new assets.Size2d(30, 50))),
-            circle = new collision.Collidable(new bo.BoundingCircle(assets.Vector2d.Zero(), 10)),
+        var cm = new EndGate.Collision.CollisionManager(),
+            rect = new EndGate.Collision.Collidable(new EndGate.Bounds.BoundingRectangle(EndGate.Vector2d.Zero(), new EndGate.Size2d(30, 50))),
+            circle = new EndGate.Collision.Collidable(new EndGate.Bounds.BoundingCircle(EndGate.Vector2d.Zero(), 10)),
             rectCollisionTriggered = false,
             circleCollisionTriggered = false,
             managerCollisionTriggered = false;
@@ -73,8 +73,8 @@
     });
 
     QUnit.asyncTimeoutTest("Collision manager works within game.", testUtilities.defaultTestTimeout, function (end, assert, testName) {
-        var rect = new collision.Collidable(new bo.BoundingRectangle(assets.Vector2d.Zero(), new assets.Size2d(30, 50))),
-            circle = new collision.Collidable(new bo.BoundingCircle(assets.Vector2d.Zero(), 10)),
+        var rect = new EndGate.Collision.Collidable(new EndGate.Bounds.BoundingRectangle(EndGate.Vector2d.Zero(), new EndGate.Size2d(30, 50))),
+            circle = new EndGate.Collision.Collidable(new EndGate.Bounds.BoundingCircle(EndGate.Vector2d.Zero(), 10)),
             game = new CollisionManagerGame(),
             rectCollisionTriggered = 0,
             circleCollisionTriggered = 0,
@@ -130,4 +130,4 @@
         };
     });
 
-})(window, EndGate.Core.Collision, EndGate.Core.Assets, EndGate.Core.BoundingObject);
+})();

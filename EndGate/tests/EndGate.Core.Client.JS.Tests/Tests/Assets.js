@@ -19,7 +19,7 @@ var UpdateTester = (function (_super) {
         }
     };
     return UpdateTester;
-})(EndGate.Core.Game);
+})(EndGate.Game);
 var DrawTester = (function (_super) {
     __extends(DrawTester, _super);
     function DrawTester(onDrawLimit, drawLimit) {
@@ -35,7 +35,7 @@ var DrawTester = (function (_super) {
         }
     };
     return DrawTester;
-})(EndGate.Core.Game);
+})(EndGate.Game);
 var CollisionManagerGame = (function (_super) {
     __extends(CollisionManagerGame, _super);
     function CollisionManagerGame() {
@@ -48,4 +48,5 @@ var CollisionManagerGame = (function (_super) {
         this.CollisionManager.OnCollision.Bind(e);
     };
     return CollisionManagerGame;
-})(EndGate.Core.Game);
+})(EndGate.Game);
+//@ sourceMappingURL=Assets.js.map

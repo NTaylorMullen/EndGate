@@ -1,11 +1,11 @@
-﻿(function (window, lib) {
+﻿(function () {
 
     QUnit.module("Renderer2d Facts");
 
     QUnit.test("Renderer draws all items passed to render.", function () {
         var holder = document.createElement("div"),
             drawArea = document.createElement("canvas"),
-            renderer2d = new lib.Renderer2d(drawArea),
+            renderer2d = new EndGate.Rendering.Renderer2d(drawArea),
             draws1 = 0,
             draws2 = 0,
             renderable1 = {
@@ -61,7 +61,7 @@
         drawArea.width = 100;
         drawArea.height = 125;
 
-        renderer2d = new lib.Renderer2d(drawArea)
+        renderer2d = new EndGate.Rendering.Renderer2d(drawArea)
 
         QUnit.equal(renderer2d._bufferCanvas.width, drawArea.width);
         QUnit.equal(renderer2d._bufferCanvas.height, drawArea.height);
@@ -93,7 +93,7 @@
     QUnit.test("Renderer draws items in the order of their ZIndexes.", function () {
         var holder = document.createElement("div"),
             drawArea = document.createElement("canvas"),
-            renderer2d = new lib.Renderer2d(drawArea),
+            renderer2d = new EndGate.Rendering.Renderer2d(drawArea),
             draws1At = null,
             draws2At = null,
             renderable1 = {
@@ -136,4 +136,4 @@
         renderer2d.Dispose();
     });
 
-})(window, EndGate.Core.Rendering);
+})();
