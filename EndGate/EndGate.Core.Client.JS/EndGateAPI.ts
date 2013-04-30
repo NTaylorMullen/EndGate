@@ -30,13 +30,6 @@ module eg {
     export class EventHandler extends EndGate.Core.Utilities.EventHandler { };
     export class Scene2d extends EndGate.Core.Rendering.Scene2d { };
     export class Camera2d extends EndGate.Core.Rendering.Camera.Camera2d { };
-    export module MovementControllers {
-        export class LinearMovementController extends EndGate.Core.MovementControllers.LinearMovementController { };
-    };
-    export module InputControllers {
-        export class DirectionalInputController extends EndGate.Core.Input.Controllers.DirectionalInputController { };
-    };
-
     export class Graphic2d extends EndGate.Core.Graphics.Graphic2d { };
     export class Text2d extends EndGate.Core.Graphics.Text.Text2d { };
     export class Sprite2d extends EndGate.Core.Graphics.Sprites.Sprite2d { };
@@ -53,4 +46,15 @@ module eg {
     export class AudioSettings extends EndGate.Core.AudioManagement.AudioSettings { };
     export class Size2d extends EndGate.Core.Assets.Size2d { };
     export class Vector2d extends EndGate.Core.Assets.Vector2d { };
+
+    export module MovementControllers {
+        export class LinearMovementController extends EndGate.Core.MovementControllers.LinearMovementController { };
+    };
+    export module InputControllers {
+        export class DirectionalInputController extends EndGate.Core.Input.Controllers.DirectionalInputController { };
+    };
+    export module Input {
+        export class MouseHandler extends EndGate.Core.Input.Mouse.MouseHandler { };
+        export class KeyboardHandler extends EndGate.Core.Input.Keyboard.KeyboardHandler { };
+    };
 };

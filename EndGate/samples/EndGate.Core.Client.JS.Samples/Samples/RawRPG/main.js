@@ -5,4 +5,4 @@
     holder.append(canvas);
     rpg = new RPG(canvas);
 })($, window);
-//@ sourceMappingURL=main.js.map
+//@ sourceMappingURL=Main.js.map

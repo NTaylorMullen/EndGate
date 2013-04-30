@@ -202,11 +202,25 @@
       <DependentUpon>mainMovementControllers.ts</DependentUpon>
     </Content>
     <Content Include="Samples\RawRPG\Default.aspx" />
-    <TypeScriptCompile Include="Samples\RawRPG\main.ts" />
-    <Content Include="Samples\RawRPG\main.js">
-      <DependentUpon>main.ts</DependentUpon>
-    </Content>
     <TypeScriptCompile Include="Samples\RawRPG\RPG.ts" />
+    <TypeScriptCompile Include="Samples\RawRPG\Main.ts" />
+    <TypeScriptCompile Include="Samples\RawRPG\Knight.ts" />
+    <Content Include="Samples\RawRPG\Knight.js">
+      <DependentUpon>Knight.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\RawRPG\Knight.min.js">
+      <DependentUpon>Knight.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\RawRPG\Main.js">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Samples\RawRPG\Player.ts" />
+    <Content Include="Samples\RawRPG\Player.js">
+      <DependentUpon>Player.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\RawRPG\Player.min.js">
+      <DependentUpon>Player.ts</DependentUpon>
+    </Content>
     <Content Include="Samples\RawRPG\RPG.js">
       <DependentUpon>RPG.ts</DependentUpon>
     </Content>
@@ -282,6 +296,12 @@
     <Content Include="Samples\AudioHandling\sounds\smokepoof.ogg" />
     <Content Include="Samples\RawRPG\RPG.js.map">
       <DependentUpon>RPG.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\RawRPG\Knight.js.map">
+      <DependentUpon>Knight.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\RawRPG\Player.js.map">
+      <DependentUpon>Player.ts</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <TypeScriptCompile Include="Scripts\endGate.core.client.ts" />

@@ -20,7 +20,6 @@
     </div>
 
     <p class="row">Move the box with <em>w/a/s/d or up/left/right/down.</em></p>
-    <p class="row">This show cases the LinearMovementController.  More MovementControllers will be added in the future.</p>
 
     <div class="row">        
         <div id="gameHolder" class="form-vertical well" style="height:400px;">
@@ -28,6 +27,8 @@
     </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Scripts" runat="server">
-    <script src="assetsMovementControllers.js"></script>
-    <script src="mainMovementControllers.js"></script>
+    <script src="Knight.js"></script>
+    <script src="Player.js"></script>
+    <script src="RPG.js"></script>
+    <script src="Main.js"></script>
 </asp:Content>

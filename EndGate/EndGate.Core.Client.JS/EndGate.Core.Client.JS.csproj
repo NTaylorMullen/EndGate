@@ -61,13 +61,6 @@
   <ItemGroup>
     <TypeScriptCompile Include="Assets\Vectors\Vector2d.ts" />
     <TypeScriptCompile Include="Assets\Sizes\Size2d.ts" />
-    <TypeScriptCompile Include="APIBuilder.ts" />
-    <Content Include="APIBuilder.js">
-      <DependentUpon>APIBuilder.ts</DependentUpon>
-    </Content>
-    <Content Include="APIBuilder.min.js">
-      <DependentUpon>APIBuilder.ts</DependentUpon>
-    </Content>
     <Content Include="Assets\Sizes\Size2d.js">
       <DependentUpon>Size2d.ts</DependentUpon>
     </Content>
@@ -150,6 +143,13 @@
     <TypeScriptCompile Include="Graphics\Sprites\Sprite2d.ts" />
     <TypeScriptCompile Include="Graphics\Sprites\ImageSource.ts" />
     <TypeScriptCompile Include="Graphics\Sprites\Animation\SpriteAnimation.ts" />
+    <TypeScriptCompile Include="EndGateAPI.ts" />
+    <Content Include="EndGateAPI.js">
+      <DependentUpon>EndGateAPI.ts</DependentUpon>
+    </Content>
+    <Content Include="EndGateAPI.min.js">
+      <DependentUpon>EndGateAPI.ts</DependentUpon>
+    </Content>
     <Content Include="Graphics\Sprites\Animation\SpriteAnimation.js">
       <DependentUpon>SpriteAnimation.ts</DependentUpon>
     </Content>
@@ -676,8 +676,8 @@
     <Content Include="Input\Controllers\DirectionalInputController.js.map">
       <DependentUpon>DirectionalInputController.ts</DependentUpon>
     </Content>
-    <Content Include="APIBuilder.js.map">
-      <DependentUpon>APIBuilder.ts</DependentUpon>
+    <Content Include="EndGateAPI.js.map">
+      <DependentUpon>EndGateAPI.ts</DependentUpon>
     </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

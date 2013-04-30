@@ -17,7 +17,7 @@
             <p>Demonstrates how to use the shapes graphics library.</p>
             <p><a class="btn" href="Samples/Shapes">View sample &raquo;</a></p>
         </div>
-        
+
         <div class="span4">
             <h3>Text</h3>
             <p>Demonstrates how to use the Text2d object within the graphics library.</p>
@@ -28,7 +28,7 @@
             <h3>Sprites</h3>
             <p>Demonstrates how to use the sprites (images) graphics library.</p>
             <p><a class="btn" href="Samples/Sprites">View sample &raquo;</a></p>
-        </div>        
+        </div>
     </div>
 
     <div class="row">
@@ -42,7 +42,13 @@
             <h3>Audio Handling</h3>
             <p>Demonstrates how to play audio.</p>
             <p><a class="btn" href="Samples/AudioHandling">View sample &raquo;</a></p>
-        </div>        
+        </div>
+
+        <div class="span4">
+            <h3>Raw RPG</h3>
+            <p>Demonstrates a basic RPG setup with an environment, character, controllers etc.</p>
+            <p><a class="btn" href="Samples/RawRPG">View sample &raquo;</a></p>
+        </div>
     </div>
 
     <div class="row">
@@ -76,7 +82,7 @@
             <h3>Collision Inspector</h3>
             <p>Allows the dragging and rotating of shapes to inspect collisions closely.</p>
             <p><a class="btn" href="Samples/CollisionInspector">View sample &raquo;</a></p>
-        </div>        
+        </div>
     </div>
 
     <div class="row">

@@ -65,34 +65,6 @@ var eg;
     })(EndGate.Core.Rendering.Camera.Camera2d);
     eg.Camera2d = Camera2d;    
     ;
-    (function (MovementControllers) {
-        var LinearMovementController = (function (_super) {
-            __extends(LinearMovementController, _super);
-            function LinearMovementController() {
-                _super.apply(this, arguments);
-
-            }
-            return LinearMovementController;
-        })(EndGate.Core.MovementControllers.LinearMovementController);
-        MovementControllers.LinearMovementController = LinearMovementController;        
-        ;
-    })(eg.MovementControllers || (eg.MovementControllers = {}));
-    var MovementControllers = eg.MovementControllers;
-    ;
-    (function (InputControllers) {
-        var DirectionalInputController = (function (_super) {
-            __extends(DirectionalInputController, _super);
-            function DirectionalInputController() {
-                _super.apply(this, arguments);
-
-            }
-            return DirectionalInputController;
-        })(EndGate.Core.Input.Controllers.DirectionalInputController);
-        InputControllers.DirectionalInputController = DirectionalInputController;        
-        ;
-    })(eg.InputControllers || (eg.InputControllers = {}));
-    var InputControllers = eg.InputControllers;
-    ;
     var Graphic2d = (function (_super) {
         __extends(Graphic2d, _super);
         function Graphic2d() {
@@ -253,6 +225,58 @@ var eg;
     })(EndGate.Core.Assets.Vector2d);
     eg.Vector2d = Vector2d;    
     ;
+    (function (MovementControllers) {
+        var LinearMovementController = (function (_super) {
+            __extends(LinearMovementController, _super);
+            function LinearMovementController() {
+                _super.apply(this, arguments);
+
+            }
+            return LinearMovementController;
+        })(EndGate.Core.MovementControllers.LinearMovementController);
+        MovementControllers.LinearMovementController = LinearMovementController;        
+        ;
+    })(eg.MovementControllers || (eg.MovementControllers = {}));
+    var MovementControllers = eg.MovementControllers;
+    ;
+    (function (InputControllers) {
+        var DirectionalInputController = (function (_super) {
+            __extends(DirectionalInputController, _super);
+            function DirectionalInputController() {
+                _super.apply(this, arguments);
+
+            }
+            return DirectionalInputController;
+        })(EndGate.Core.Input.Controllers.DirectionalInputController);
+        InputControllers.DirectionalInputController = DirectionalInputController;        
+        ;
+    })(eg.InputControllers || (eg.InputControllers = {}));
+    var InputControllers = eg.InputControllers;
+    ;
+    (function (Input) {
+        var MouseHandler = (function (_super) {
+            __extends(MouseHandler, _super);
+            function MouseHandler() {
+                _super.apply(this, arguments);
+
+            }
+            return MouseHandler;
+        })(EndGate.Core.Input.Mouse.MouseHandler);
+        Input.MouseHandler = MouseHandler;        
+        ;
+        var KeyboardHandler = (function (_super) {
+            __extends(KeyboardHandler, _super);
+            function KeyboardHandler() {
+                _super.apply(this, arguments);
+
+            }
+            return KeyboardHandler;
+        })(EndGate.Core.Input.Keyboard.KeyboardHandler);
+        Input.KeyboardHandler = KeyboardHandler;        
+        ;
+    })(eg.Input || (eg.Input = {}));
+    var Input = eg.Input;
+    ;
 })(eg || (eg = {}));
 ;
-//@ sourceMappingURL=APIBuilder.js.map
+//@ sourceMappingURL=EndGateAPI.js.map
