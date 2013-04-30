@@ -1,0 +1,3 @@
+﻿Pow Studios
+electric_pulse.png: http://powstudios.com/content/electricity-animation-pack-1
+fire_explosion.png: http://powstudios.com/content/fire-animation-pack-1

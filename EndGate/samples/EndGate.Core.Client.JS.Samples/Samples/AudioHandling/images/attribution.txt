@@ -1,0 +1,3 @@
+﻿Pow Studios
+smoke_poof.png: http://powstudios.com/content/smoke-animation-pack-1
+burning_flame.png: http://powstudios.com/content/fire-animation-pack-1

@@ -136,6 +136,7 @@
     </Content>
     <Content Include="Samples\AnimatedSprites\Default.aspx" />
     <TypeScriptCompile Include="Samples\AnimatedSprites\mainAnimatedSprites.ts" />
+    <Content Include="Samples\AnimatedSprites\images\attribution.txt" />
     <Content Include="Samples\AnimatedSprites\images\electric_pulse.png" />
     <Content Include="Samples\AnimatedSprites\images\fire_explosion.png" />
     <Content Include="Samples\AnimatedSprites\mainAnimatedSprites.js">
@@ -149,12 +150,14 @@
       <DependentUpon>assetsAudioHandling.ts</DependentUpon>
     </Content>
     <Content Include="Samples\AudioHandling\Default.aspx" />
+    <Content Include="Samples\AudioHandling\images\attribution.txt" />
     <Content Include="Samples\AudioHandling\images\burning_flame.png" />
     <TypeScriptCompile Include="Samples\AudioHandling\mainAudioHandling.ts" />
     <Content Include="Samples\AudioHandling\images\smoke_poof.png" />
     <Content Include="Samples\AudioHandling\mainAudioHandling.js">
       <DependentUpon>mainAudioHandling.ts</DependentUpon>
     </Content>
+    <Content Include="Samples\AudioHandling\sounds\attribution.txt" />
     <Content Include="Samples\AudioHandling\sounds\fireburning.mp3" />
     <Content Include="Samples\AudioHandling\sounds\smokepoof.mp3" />
     <Content Include="Samples\Camera\assetsCamera.js">
