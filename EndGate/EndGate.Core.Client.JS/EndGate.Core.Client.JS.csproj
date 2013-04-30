@@ -93,6 +93,7 @@
     <TypeScriptCompile Include="Bounds\BoundingCircle.ts" />
     <TypeScriptCompile Include="Sound\AudioManager.ts" />
     <TypeScriptCompile Include="Sound\AudioClip.ts" />
+    <TypeScriptCompile Include="MovementControllers\IMoveEvent.d.ts" />
     <Content Include="Sound\AudioClip.js">
       <DependentUpon>AudioClip.ts</DependentUpon>
     </Content>

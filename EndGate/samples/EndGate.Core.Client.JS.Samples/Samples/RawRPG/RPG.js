@@ -12,8 +12,7 @@ var RPG = (function (_super) {
         this.Scene.Add(this._playersKnight.Graphic);
     }
     RPG.prototype.Update = function (gameTime) {
-        this._playersKnight.MovementController.Update(gameTime);
-        this.Scene.Camera.Position = this._playersKnight.MovementController.Position;
+        this._playersKnight.Update(gameTime);
     };
     return RPG;
 })(eg.Game);

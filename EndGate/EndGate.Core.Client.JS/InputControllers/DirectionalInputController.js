@@ -21,6 +21,7 @@ var EndGate;
                 ]; }
                 this._keyboard = keyboard;
                 this._onMove = onMove;
+                this._directions = new EndGate.MovementControllers._.LinearDirections();
                 this.BindKeys(upKeys, "OnCommandDown", "Up", true);
                 this.BindKeys(rightKeys, "OnCommandDown", "Right", true);
                 this.BindKeys(downKeys, "OnCommandDown", "Down", true);
@@ -34,7 +35,10 @@ var EndGate;
                 var _this = this;
                 for(var i = 0; i < keyList.length; i++) {
                     this._keyboard[bindingAction](keyList[i], function () {
-                        _this._onMove(direction, startMoving);
+                        if(_this._directions[direction] != startMoving) {
+                            _this._directions[direction] = startMoving;
+                            _this._onMove(direction, startMoving);
+                        }
                     });
                 }
             };

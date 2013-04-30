@@ -28,6 +28,7 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Scripts" runat="server">
     <script src="Knight.js"></script>
+    <script src="KnightAnimationHandler.js"></script>
     <script src="Player.js"></script>
     <script src="RPG.js"></script>
     <script src="Main.js"></script>
