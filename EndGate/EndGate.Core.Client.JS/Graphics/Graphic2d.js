@@ -1,14 +1,14 @@
 var EndGate;
 (function (EndGate) {
-    (function (Core) {
-        (function (Graphics) {
+    (function (Graphics) {
+        (function (Abstractions) {
             var Graphic2d = (function () {
                 function Graphic2d(position) {
                     this._type = "Graphic2d";
                     this.Position = position;
                     this.Rotation = 0;
                     this.ZIndex = 0;
-                    this.State = new Graphics.Graphic2dState();
+                    this.State = new Graphics.Assets.Graphic2dState();
                 }
                 Graphic2d.prototype.StartDraw = function (context) {
                     context.save();
@@ -29,10 +29,10 @@ var EndGate;
                 };
                 return Graphic2d;
             })();
-            Graphics.Graphic2d = Graphic2d;            
-        })(Core.Graphics || (Core.Graphics = {}));
-        var Graphics = Core.Graphics;
-    })(EndGate.Core || (EndGate.Core = {}));
-    var Core = EndGate.Core;
+            Abstractions.Graphic2d = Graphic2d;            
+        })(Graphics.Abstractions || (Graphics.Abstractions = {}));
+        var Abstractions = Graphics.Abstractions;
+    })(EndGate.Graphics || (EndGate.Graphics = {}));
+    var Graphics = EndGate.Graphics;
 })(EndGate || (EndGate = {}));
 //@ sourceMappingURL=Graphic2d.js.map

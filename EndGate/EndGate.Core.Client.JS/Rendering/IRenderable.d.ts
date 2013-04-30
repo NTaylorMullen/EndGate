@@ -1,11 +1,11 @@
-/// <reference path="../BoundingObject/Bounds2d.ts" />
+/// <reference path="../Bounds/Bounds2d.ts" />
 
-module EndGate.Core.Rendering {
+module EndGate.Rendering {
 
     export interface IRenderable {
         ZIndex: number;
         Draw(context: CanvasRenderingContext2D): void;
-        GetDrawBounds(): BoundingObject.Bounds2d;
+        GetDrawBounds(): Bounds.Abstractions.Bounds2d;
     }
 
 }

@@ -5,7 +5,7 @@ var __extends = this.__extends || function (d, b) {
 };
 var EndGate;
 (function (EndGate) {
-    (function (Core) {
+    (function (_) {
         (function (Loopers) {
             var TimedCallback = (function (_super) {
                 __extends(TimedCallback, _super);
@@ -19,9 +19,9 @@ var EndGate;
                 return TimedCallback;
             })(Loopers.LooperCallback);
             Loopers.TimedCallback = TimedCallback;            
-        })(Core.Loopers || (Core.Loopers = {}));
-        var Loopers = Core.Loopers;
-    })(EndGate.Core || (EndGate.Core = {}));
-    var Core = EndGate.Core;
+        })(_.Loopers || (_.Loopers = {}));
+        var Loopers = _.Loopers;
+    })(EndGate._ || (EndGate._ = {}));
+    var _ = EndGate._;
 })(EndGate || (EndGate = {}));
 //@ sourceMappingURL=TimedCallback.js.map

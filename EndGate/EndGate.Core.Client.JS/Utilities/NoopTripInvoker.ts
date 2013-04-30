@@ -1,4 +1,4 @@
-module EndGate.Core.Utilities {
+module EndGate._.Utilities {
 
     export class NoopTripInvoker {
         private static _noop: Function = () => { };

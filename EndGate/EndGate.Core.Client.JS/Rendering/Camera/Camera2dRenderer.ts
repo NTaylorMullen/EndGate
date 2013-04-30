@@ -3,20 +3,20 @@
 /// <reference path="../../Assets/Sizes/Size2d.ts" />
 /// <reference path="Camera2dCanvasContextBuilder.ts" />
 
-module EndGate.Core.Rendering.Camera {
+module EndGate.Rendering {
 
     export class Camera2dRenderer extends Renderer2d {
         private _camera: Camera2d;
-        private _contextBuilder: Camera2dCanvasContextBuilder;
+        private _contextBuilder: _.Camera2dCanvasContextBuilder;
 
         constructor(renderOnto: HTMLCanvasElement, camera: Camera2d) {
             super(renderOnto);
 
             this._camera = camera;
-            this._contextBuilder = new Camera2dCanvasContextBuilder(this._camera);
+            this._contextBuilder = new _.Camera2dCanvasContextBuilder(this._camera);
 
             this.OnRendererSizeChange.Bind(this._contextBuilder.UpdateCanvasCenter);
-            this._contextBuilder.UpdateCanvasCenter(new Assets.Size2d(renderOnto.width, renderOnto.height));
+            this._contextBuilder.UpdateCanvasCenter(new Size2d(renderOnto.width, renderOnto.height));
             this._bufferContext = this._contextBuilder.BuildFrom(this._bufferContext);
 
         }

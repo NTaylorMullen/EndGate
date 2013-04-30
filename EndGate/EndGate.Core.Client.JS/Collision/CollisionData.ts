@@ -1,13 +1,13 @@
 /// <reference path="../Assets/Vectors/Vector2d.ts" />
 /// <reference path="Collidable.ts" />
 
-module EndGate.Core.Collision {
+module EndGate.Collision.Assets {
 
     export class CollisionData {
-        public At: Assets.Vector2d;
+        public At: Vector2d;
         public With: Collidable;
 
-        constructor(at: Assets.Vector2d, w: Collidable) {
+        constructor(at: Vector2d, w: Collidable) {
             this.At = at;
             this.With = w;
         }

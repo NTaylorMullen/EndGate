@@ -5,9 +5,9 @@
 /// <reference path="../Utilities/EventHandler.ts" />
 /// <reference path="../GameTime.ts" />
 
-module EndGate.Core.Collision {
+module EndGate.Collision {
 
-    export class CollisionManager implements IUpdateable, ITyped {
+    export class CollisionManager implements IUpdateable, _.ITyped {
         public _type: string = "CollisionManager";
 
         public _collidables: Collidable[];
@@ -18,10 +18,10 @@ module EndGate.Core.Collision {
             this._collidables = [];
             this._enabled = false;
 
-            this.OnCollision = new Utilities.EventHandler();
+            this.OnCollision = new EventHandler();
         }
 
-        public OnCollision: Utilities.EventHandler;
+        public OnCollision: EventHandler;
 
         public Monitor(obj: Collidable): void {
             this._enabled = true;
@@ -54,8 +54,8 @@ module EndGate.Core.Collision {
                         second = this._collidables[j];
 
                         if (first.IsCollidingWith(second)) {
-                            first.Collided(new CollisionData(first.Bounds.Position.Clone(), second));
-                            second.Collided(new CollisionData(second.Bounds.Position.Clone(), first));
+                            first.Collided(new Assets.CollisionData(first.Bounds.Position.Clone(), second));
+                            second.Collided(new Assets.CollisionData(second.Bounds.Position.Clone(), first));
                             this.OnCollision.Trigger(first, second);
                         }
                     }

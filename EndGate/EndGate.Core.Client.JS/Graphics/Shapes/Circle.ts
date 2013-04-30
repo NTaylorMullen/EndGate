@@ -1,17 +1,17 @@
 /// <reference path="../../Assets/Sizes/Size2d.ts" />
 /// <reference path="../../Assets/Vectors/Vector2d.ts" />
-/// <reference path="../../BoundingObject/BoundingCircle.ts" />
+/// <reference path="../../Bounds/BoundingCircle.ts" />
 /// <reference path="Shape.ts" />
 
-module EndGate.Core.Graphics.Shapes {
+module EndGate.Graphics {
 
-    export class Circle extends Shape {
+    export class Circle extends Abstractions.Shape {
         public _type: string = "Circle";
 
         public Radius: number;
 
         constructor(x: number, y: number, radius: number, color?: string) {
-            super(new Assets.Vector2d(x, y), color);
+            super(new Vector2d(x, y), color);
 
             this.Radius = radius;
         }
@@ -20,8 +20,8 @@ module EndGate.Core.Graphics.Shapes {
             context.arc(this.Position.X, this.Position.Y, this.Radius, 0, (<any>Math).twoPI);
         }
 
-        public GetDrawBounds(): BoundingObject.Bounds2d {
-            var bounds = new BoundingObject.BoundingCircle(this.Position, this.Radius);
+        public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
+            var bounds = new Bounds.BoundingCircle(this.Position, this.Radius);
 
             bounds.Rotation = this.Rotation;
 

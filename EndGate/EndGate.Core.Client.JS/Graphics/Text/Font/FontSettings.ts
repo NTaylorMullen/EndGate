@@ -3,7 +3,7 @@
 /// <reference path="FontVariant.ts" />
 /// <reference path="FontStyle.ts" />
 
-module EndGate.Core.Graphics.Text {
+module EndGate.Graphics.Assets {
 
     export class FontSettings {
         private _cachedState: { [property: string]: any; };

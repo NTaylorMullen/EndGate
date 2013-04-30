@@ -1,9 +1,9 @@
 /// <reference path="../Interfaces/IDisposable.d.ts" />
 /// <reference path="../Interfaces/ITyped.d.ts" />
 
-module EndGate.Core.Utilities {
+module EndGate {
 
-    export class EventHandler implements ITyped {
+    export class EventHandler implements _.ITyped {
         public _type: string = "Event";
 
         private _actions: Function[];

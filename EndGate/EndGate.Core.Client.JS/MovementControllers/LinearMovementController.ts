@@ -6,19 +6,19 @@
 /// <reference path="LinearDirections.ts" />
 /// <reference path="MovementController.ts" />
 
-module EndGate.Core.MovementControllers {
+module EndGate.MovementControllers {
 
-    export class LinearMovementController extends MovementController {
+    export class LinearMovementController extends Abstractions.MovementController {
         private _moveSpeed: number;
-        private _moving: LinearDirections;
-        private _rotationUpdater: Utilities.NoopTripInvoker;
+        private _moving: _.LinearDirections;
+        private _rotationUpdater: EndGate._.Utilities.NoopTripInvoker;
 
         constructor(moveables: IMoveable[], moveSpeed: number, rotateWithMovements?: bool = true) {
             super(moveables);
 
             this._moveSpeed = moveSpeed;
-            this._moving = new LinearDirections();
-            this._rotationUpdater = new Utilities.NoopTripInvoker(() => {
+            this._moving = new _.LinearDirections();
+            this._rotationUpdater = new EndGate._.Utilities.NoopTripInvoker(() => {
                 this.UpdateRotation();
             }, rotateWithMovements);
         }
@@ -64,7 +64,7 @@ module EndGate.Core.MovementControllers {
         }
 
         private UpdateVelocity(): void {
-            var velocity = Assets.Vector2d.Zero();
+            var velocity = Vector2d.Zero();
 
             if (this._moving.Up) {
                 velocity.Y -= this._moveSpeed;

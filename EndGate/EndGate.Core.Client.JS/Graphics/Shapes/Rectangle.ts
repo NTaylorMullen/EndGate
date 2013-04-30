@@ -1,27 +1,27 @@
 /// <reference path="../../Assets/Sizes/Size2d.ts" />
 /// <reference path="../../Assets/Vectors/Vector2d.ts" />
-/// <reference path="../../BoundingObject/BoundingRectangle.ts" />
+/// <reference path="../../Bounds/BoundingRectangle.ts" />
 /// <reference path="Shape.ts" />
 
-module EndGate.Core.Graphics.Shapes {
+module EndGate.Graphics {
 
-    export class Rectangle extends Shape {
+    export class Rectangle extends Abstractions.Shape {
         public _type: string = "Rectangle";
 
-        public Size: Assets.Size2d;
+        public Size: Size2d;
 
         constructor(x: number, y: number, width: number, height: number, color?: string) {
-            super(new Assets.Vector2d(x, y), color);
+            super(new Vector2d(x, y), color);
 
-            this.Size = new Assets.Size2d(width, height);
+            this.Size = new Size2d(width, height);
         }
 
         public BuildPath(context: CanvasRenderingContext2D): void {
             context.rect(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
         }
 
-        public GetDrawBounds(): BoundingObject.Bounds2d {
-            var bounds = new BoundingObject.BoundingRectangle(this.Position, this.Size);
+        public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
+            var bounds = new Bounds.BoundingRectangle(this.Position, this.Size);
 
             bounds.Rotation = this.Rotation;
 

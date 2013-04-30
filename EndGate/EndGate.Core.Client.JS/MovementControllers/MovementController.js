@@ -1,11 +1,11 @@
 var EndGate;
 (function (EndGate) {
-    (function (Core) {
-        (function (MovementControllers) {
+    (function (MovementControllers) {
+        (function (Abstractions) {
             var MovementController = (function () {
                 function MovementController(moveables) {
-                    this.Position = Core.Assets.Vector2d.Zero();
-                    this.Velocity = Core.Assets.Vector2d.Zero();
+                    this.Position = EndGate.Vector2d.Zero();
+                    this.Velocity = EndGate.Vector2d.Zero();
                     this.Rotation = 0;
                     this._frozen = false;
                     this._moveables = moveables;
@@ -27,10 +27,10 @@ var EndGate;
                 };
                 return MovementController;
             })();
-            MovementControllers.MovementController = MovementController;            
-        })(Core.MovementControllers || (Core.MovementControllers = {}));
-        var MovementControllers = Core.MovementControllers;
-    })(EndGate.Core || (EndGate.Core = {}));
-    var Core = EndGate.Core;
+            Abstractions.MovementController = MovementController;            
+        })(MovementControllers.Abstractions || (MovementControllers.Abstractions = {}));
+        var Abstractions = MovementControllers.Abstractions;
+    })(EndGate.MovementControllers || (EndGate.MovementControllers = {}));
+    var MovementControllers = EndGate.MovementControllers;
 })(EndGate || (EndGate = {}));
 //@ sourceMappingURL=MovementController.js.map

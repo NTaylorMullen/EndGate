@@ -1,4 +1,4 @@
-module EndGate.Core.MovementControllers {
+module EndGate.MovementControllers._ {
 
     export class LinearDirections {
         public Left: bool;

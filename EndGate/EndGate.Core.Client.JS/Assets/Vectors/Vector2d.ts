@@ -1,8 +1,8 @@
 /// <reference path="../../Interfaces/ITyped.d.ts" />
 /// <reference path="../../Extensions/MathExtensions.ts" />
 
-module EndGate.Core.Assets {
-    export class Vector2d implements ITyped {
+module EndGate {
+    export class Vector2d implements _.ITyped {
         public _type: string = "Vector2d";
 
         public X: number;

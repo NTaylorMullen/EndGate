@@ -1,8 +1,8 @@
 /// <reference path="../Interfaces/ITyped.d.ts" />
 
-module EndGate.Core.Graphics {
+module EndGate.Graphics.Assets {
 
-    export class Graphic2dState implements ITyped {
+    export class Graphic2dState implements _.ITyped {
         public _type: string ="Graphic2dState";
 
         private _cachedState: { [property: string]: any; };

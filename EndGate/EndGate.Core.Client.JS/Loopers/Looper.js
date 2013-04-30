@@ -1,6 +1,6 @@
 var EndGate;
 (function (EndGate) {
-    (function (Core) {
+    (function (_) {
         (function (Loopers) {
             var Looper = (function () {
                 function Looper() {
@@ -61,9 +61,9 @@ var EndGate;
                 return Looper;
             })();
             Loopers.Looper = Looper;            
-        })(Core.Loopers || (Core.Loopers = {}));
-        var Loopers = Core.Loopers;
-    })(EndGate.Core || (EndGate.Core = {}));
-    var Core = EndGate.Core;
+        })(_.Loopers || (_.Loopers = {}));
+        var Loopers = _.Loopers;
+    })(EndGate._ || (EndGate._ = {}));
+    var _ = EndGate._;
 })(EndGate || (EndGate = {}));
 //@ sourceMappingURL=Looper.js.map

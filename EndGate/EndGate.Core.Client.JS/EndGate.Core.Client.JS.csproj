@@ -89,53 +89,53 @@
     </Content>
     <TypeScriptCompile Include="Interfaces\ITyped.d.ts" />
     <TypeScriptCompile Include="Extensions\MathExtensions.ts" />
-    <TypeScriptCompile Include="BoundingObject\Bounds2d.ts" />
-    <TypeScriptCompile Include="BoundingObject\BoundingCircle.ts" />
-    <TypeScriptCompile Include="AudioManagement\AudioManager.ts" />
-    <TypeScriptCompile Include="AudioManagement\AudioClip.ts" />
-    <Content Include="AudioManagement\AudioClip.js">
+    <TypeScriptCompile Include="Bounds\Bounds2d.ts" />
+    <TypeScriptCompile Include="Bounds\BoundingCircle.ts" />
+    <TypeScriptCompile Include="Sound\AudioManager.ts" />
+    <TypeScriptCompile Include="Sound\AudioClip.ts" />
+    <Content Include="Sound\AudioClip.js">
       <DependentUpon>AudioClip.ts</DependentUpon>
     </Content>
-    <Content Include="AudioManagement\AudioClip.min.js">
+    <Content Include="Sound\AudioClip.min.js">
       <DependentUpon>AudioClip.ts</DependentUpon>
     </Content>
-    <Content Include="AudioManagement\AudioManager.js">
+    <Content Include="Sound\AudioManager.js">
       <DependentUpon>AudioManager.ts</DependentUpon>
     </Content>
-    <Content Include="AudioManagement\AudioManager.min.js">
+    <Content Include="Sound\AudioManager.min.js">
       <DependentUpon>AudioManager.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="AudioManagement\AudioPlayer.ts" />
-    <Content Include="AudioManagement\AudioPlayer.js">
+    <TypeScriptCompile Include="Sound\AudioPlayer.ts" />
+    <Content Include="Sound\AudioPlayer.js">
       <DependentUpon>AudioPlayer.ts</DependentUpon>
     </Content>
-    <Content Include="AudioManagement\AudioPlayer.min.js">
+    <Content Include="Sound\AudioPlayer.min.js">
       <DependentUpon>AudioPlayer.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="AudioManagement\AudioSettings.ts" />
-    <Content Include="AudioManagement\AudioSettings.js">
+    <TypeScriptCompile Include="Sound\AudioSettings.ts" />
+    <Content Include="Sound\AudioSettings.js">
       <DependentUpon>AudioSettings.ts</DependentUpon>
     </Content>
-    <Content Include="AudioManagement\AudioSettings.min.js">
+    <Content Include="Sound\AudioSettings.min.js">
       <DependentUpon>AudioSettings.ts</DependentUpon>
     </Content>
-    <Content Include="BoundingObject\BoundingCircle.js">
+    <Content Include="Bounds\BoundingCircle.js">
       <DependentUpon>BoundingCircle.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="BoundingObject\BoundingRectangle.ts" />
-    <Content Include="BoundingObject\BoundingCircle.min.js">
+    <TypeScriptCompile Include="Bounds\BoundingRectangle.ts" />
+    <Content Include="Bounds\BoundingCircle.min.js">
       <DependentUpon>BoundingCircle.ts</DependentUpon>
     </Content>
-    <Content Include="BoundingObject\BoundingRectangle.js">
+    <Content Include="Bounds\BoundingRectangle.js">
       <DependentUpon>BoundingRectangle.ts</DependentUpon>
     </Content>
-    <Content Include="BoundingObject\BoundingRectangle.min.js">
+    <Content Include="Bounds\BoundingRectangle.min.js">
       <DependentUpon>BoundingRectangle.ts</DependentUpon>
     </Content>
-    <Content Include="BoundingObject\Bounds2d.js">
+    <Content Include="Bounds\Bounds2d.js">
       <DependentUpon>Bounds2d.ts</DependentUpon>
     </Content>
-    <Content Include="BoundingObject\Bounds2d.min.js">
+    <Content Include="Bounds\Bounds2d.min.js">
       <DependentUpon>Bounds2d.ts</DependentUpon>
     </Content>
     <TypeScriptCompile Include="Collision\Collidable.ts" />
@@ -172,11 +172,11 @@
     <TypeScriptCompile Include="MovementControllers\MovementController.ts" />
     <TypeScriptCompile Include="MovementControllers\LinearMovementController.ts" />
     <TypeScriptCompile Include="MovementControllers\LinearDirections.ts" />
-    <TypeScriptCompile Include="Input\Controllers\DirectionalInputController.ts" />
-    <Content Include="Input\Controllers\DirectionalInputController.js">
+    <TypeScriptCompile Include="InputControllers\DirectionalInputController.ts" />
+    <Content Include="InputControllers\DirectionalInputController.js">
       <DependentUpon>DirectionalInputController.ts</DependentUpon>
     </Content>
-    <Content Include="Input\Controllers\DirectionalInputController.min.js">
+    <Content Include="InputControllers\DirectionalInputController.min.js">
       <DependentUpon>DirectionalInputController.ts</DependentUpon>
     </Content>
     <Content Include="MovementControllers\LinearDirections.js">
@@ -541,7 +541,7 @@
     <Content Include="Assets\Sizes\Size2d.js.map">
       <DependentUpon>Size2d.ts</DependentUpon>
     </Content>
-    <Content Include="BoundingObject\BoundingCircle.js.map">
+    <Content Include="Bounds\BoundingCircle.js.map">
       <DependentUpon>BoundingCircle.ts</DependentUpon>
     </Content>
     <Content Include="Collision\CollisionManager.js.map">
@@ -550,7 +550,7 @@
     <Content Include="Loopers\LooperCallback.js.map">
       <DependentUpon>LooperCallback.ts</DependentUpon>
     </Content>
-    <Content Include="BoundingObject\Bounds2d.js.map">
+    <Content Include="Bounds\Bounds2d.js.map">
       <DependentUpon>Bounds2d.ts</DependentUpon>
     </Content>
     <Content Include="Collision\Collidable.js.map">
@@ -568,7 +568,7 @@
     <Content Include="Utilities\EventHandler.js.map">
       <DependentUpon>EventHandler.ts</DependentUpon>
     </Content>
-    <Content Include="BoundingObject\BoundingRectangle.js.map">
+    <Content Include="Bounds\BoundingRectangle.js.map">
       <DependentUpon>BoundingRectangle.ts</DependentUpon>
     </Content>
     <Content Include="GameRunner.js.map">
@@ -652,16 +652,16 @@
     <Content Include="Graphics\Sprites\Animation\SpriteAnimation.js.map">
       <DependentUpon>SpriteAnimation.ts</DependentUpon>
     </Content>
-    <Content Include="AudioManagement\AudioManager.js.map">
+    <Content Include="Sound\AudioManager.js.map">
       <DependentUpon>AudioManager.ts</DependentUpon>
     </Content>
-    <Content Include="AudioManagement\AudioPlayer.js.map">
+    <Content Include="Sound\AudioPlayer.js.map">
       <DependentUpon>AudioPlayer.ts</DependentUpon>
     </Content>
-    <Content Include="AudioManagement\AudioClip.js.map">
+    <Content Include="Sound\AudioClip.js.map">
       <DependentUpon>AudioClip.ts</DependentUpon>
     </Content>
-    <Content Include="AudioManagement\AudioSettings.js.map">
+    <Content Include="Sound\AudioSettings.js.map">
       <DependentUpon>AudioSettings.ts</DependentUpon>
     </Content>
     <Content Include="MovementControllers\MovementController.js.map">
@@ -673,7 +673,7 @@
     <Content Include="MovementControllers\LinearDirections.js.map">
       <DependentUpon>LinearDirections.ts</DependentUpon>
     </Content>
-    <Content Include="Input\Controllers\DirectionalInputController.js.map">
+    <Content Include="InputControllers\DirectionalInputController.js.map">
       <DependentUpon>DirectionalInputController.ts</DependentUpon>
     </Content>
     <Content Include="EndGateAPI.js.map">

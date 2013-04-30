@@ -7,11 +7,11 @@
 /// <reference path="Collision/CollisionManager.ts" />
 /// <reference path="Rendering/Scene2d.ts" />
 /// <reference path="Input/InputManager.ts" />
-/// <reference path="AudioManagement/AudioManager.ts" />
+/// <reference path="Sound/AudioManager.ts" />
 
-module EndGate.Core {
+module EndGate {
 
-    export class Game implements ITyped, IUpdateable, IDisposable {
+    export class Game implements _.ITyped, IUpdateable, IDisposable {
         public _type: string = "Game";
 
         public ID: number;
@@ -19,7 +19,7 @@ module EndGate.Core {
         public CollisionManager: Collision.CollisionManager;
         public Scene: Rendering.Scene2d;
         public Input: Input.InputManager;
-        public Audio: AudioManagement.AudioManager;
+        public Audio: Sound.AudioManager;
 
         private static _gameIds: number = 0;
         private _gameTime: GameTime;
@@ -33,7 +33,7 @@ module EndGate.Core {
             });
 
             this.Input = new Input.InputManager(this.Scene.DrawArea);
-            this.Audio = new AudioManagement.AudioManager();
+            this.Audio = new Sound.AudioManager();
             this.CollisionManager = new Collision.CollisionManager();
             this.Configuration = new GameConfiguration(GameRunnerInstance.Register(this))
         }

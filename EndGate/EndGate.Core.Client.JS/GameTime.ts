@@ -1,8 +1,8 @@
 /// <reference path="Interfaces/ITyped.d.ts" />
 
-module EndGate.Core {
+module EndGate {
 
-    export class GameTime implements ITyped {
+    export class GameTime implements _.ITyped {
         public _type: string = "GameTime";
 
         public Now: Date;

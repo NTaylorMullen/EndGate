@@ -1,6 +1,6 @@
 var EndGate;
 (function (EndGate) {
-    (function (Core) {
+    (function (_) {
         (function (Utilities) {
             var NoopTripInvoker = (function () {
                 function NoopTripInvoker(action, tripped) {
@@ -37,9 +37,9 @@ var EndGate;
                 return NoopTripInvoker;
             })();
             Utilities.NoopTripInvoker = NoopTripInvoker;            
-        })(Core.Utilities || (Core.Utilities = {}));
-        var Utilities = Core.Utilities;
-    })(EndGate.Core || (EndGate.Core = {}));
-    var Core = EndGate.Core;
+        })(_.Utilities || (_.Utilities = {}));
+        var Utilities = _.Utilities;
+    })(EndGate._ || (EndGate._ = {}));
+    var _ = EndGate._;
 })(EndGate || (EndGate = {}));
 //@ sourceMappingURL=NoopTripInvoker.js.map

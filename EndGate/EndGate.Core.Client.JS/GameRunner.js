@@ -1,6 +1,6 @@
 var EndGate;
 (function (EndGate) {
-    (function (Core) {
+    (function (_) {
         var GameRunner = (function () {
             function GameRunner() {
                 this._type = "GameRunner";
@@ -36,9 +36,9 @@ var EndGate;
             };
             GameRunner.prototype.TryLoopStart = function () {
                 if(this._callbackCount === 1) {
-                    this._updateLoop = new Core.Loopers.Looper();
+                    this._updateLoop = new _.Loopers.Looper();
                     this._updateLoop.Start();
-                    this._drawLoop = new Core.Loopers.RepaintLooper();
+                    this._drawLoop = new _.Loopers.RepaintLooper();
                     this._drawLoop.Start();
                 }
             };
@@ -51,14 +51,14 @@ var EndGate;
                 }
             };
             GameRunner.prototype.CreateAndCacheUpdateCallback = function (game) {
-                var updateCallback = new Core.Loopers.TimedCallback(0, function () {
+                var updateCallback = new _.Loopers.TimedCallback(0, function () {
                     game.PrepareUpdate();
                 });
                 this._updateCallbacks[game.ID] = updateCallback;
                 return updateCallback;
             };
             GameRunner.prototype.CreateAndCacheDrawCallback = function (game) {
-                var drawCallback = new Core.Loopers.LooperCallback(function () {
+                var drawCallback = new _.Loopers.LooperCallback(function () {
                     game.PrepareDraw();
                 });
                 this._drawCallbacks[game.ID] = drawCallback;
@@ -71,9 +71,9 @@ var EndGate;
             };
             return GameRunner;
         })();
-        Core.GameRunner = GameRunner;        
-    })(EndGate.Core || (EndGate.Core = {}));
-    var Core = EndGate.Core;
+        _.GameRunner = GameRunner;        
+    })(EndGate._ || (EndGate._ = {}));
+    var _ = EndGate._;
 })(EndGate || (EndGate = {}));
-var GameRunnerInstance = new EndGate.Core.GameRunner();
+var GameRunnerInstance = new EndGate._.GameRunner();
 //@ sourceMappingURL=GameRunner.js.map

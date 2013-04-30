@@ -1,7 +1,7 @@
 var EndGate;
 (function (EndGate) {
-    (function (Core) {
-        (function (MovementControllers) {
+    (function (MovementControllers) {
+        (function (_) {
             var LinearDirections = (function () {
                 function LinearDirections() {
                     this.Left = false;
@@ -11,10 +11,10 @@ var EndGate;
                 }
                 return LinearDirections;
             })();
-            MovementControllers.LinearDirections = LinearDirections;            
-        })(Core.MovementControllers || (Core.MovementControllers = {}));
-        var MovementControllers = Core.MovementControllers;
-    })(EndGate.Core || (EndGate.Core = {}));
-    var Core = EndGate.Core;
+            _.LinearDirections = LinearDirections;            
+        })(MovementControllers._ || (MovementControllers._ = {}));
+        var _ = MovementControllers._;
+    })(EndGate.MovementControllers || (EndGate.MovementControllers = {}));
+    var MovementControllers = EndGate.MovementControllers;
 })(EndGate || (EndGate = {}));
 //@ sourceMappingURL=LinearDirections.js.map

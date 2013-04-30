@@ -1,3 +1,7 @@
-interface ITyped {
-    _type: string;
+module EndGate._ {
+
+    interface ITyped {
+        _type: string;
+    }
+
 }

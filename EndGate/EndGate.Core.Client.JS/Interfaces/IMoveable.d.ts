@@ -1,9 +1,9 @@
 /// <reference path="../Assets/Vectors/Vector2d.ts" />
 
-module EndGate.Core {
+module EndGate {
 
     export interface IMoveable {
-        Position: Assets.Vector2d;
+        Position: Vector2d;
         Rotation: number;
     }
 

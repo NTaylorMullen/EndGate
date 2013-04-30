@@ -1,4 +1,4 @@
-module EndGate.Core {
+module EndGate {
 
     export interface IDisposable {
         Dispose(): void;

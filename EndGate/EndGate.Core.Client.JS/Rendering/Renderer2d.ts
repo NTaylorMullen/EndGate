@@ -3,7 +3,7 @@
 /// <reference path="../Utilities/EventHandler.ts" />
 /// <reference path="../Assets/Sizes/Size2d.ts" />
 
-module EndGate.Core.Rendering {
+module EndGate.Rendering {
 
     export class Renderer2d implements IRenderer {
         public static _zindexSort: (a: IRenderable, b: IRenderable) => number = (a: IRenderable, b: IRenderable) => { return a.ZIndex - b.ZIndex; };
@@ -23,13 +23,13 @@ module EndGate.Core.Rendering {
             // Create an equally sized canvas for a buffer
             this._bufferCanvas = <HTMLCanvasElement>document.createElement("canvas");
             this._bufferContext = this._bufferCanvas.getContext("2d");
-            this.OnRendererSizeChange = new Utilities.EventHandler();
+            this.OnRendererSizeChange = new EventHandler();
             this.UpdateBufferSize();
 
             this._disposed = false;
         }
 
-        public OnRendererSizeChange: Utilities.EventHandler;
+        public OnRendererSizeChange: EventHandler;
 
         public Render(renderables: IRenderable[]): CanvasRenderingContext2D {
             // Check if our visible canvas has changed size
@@ -71,7 +71,7 @@ module EndGate.Core.Rendering {
         private UpdateBufferSize() {
             this._bufferCanvas.width = this._visibleCanvas.width;
             this._bufferCanvas.height = this._visibleCanvas.height;
-            this.OnRendererSizeChange.Trigger(new Assets.Size2d(this._visibleCanvas.width, this._visibleCanvas.height))
+            this.OnRendererSizeChange.Trigger(new Size2d(this._visibleCanvas.width, this._visibleCanvas.height))
         }
     }
 

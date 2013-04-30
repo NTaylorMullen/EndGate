@@ -3,19 +3,19 @@
 /// <reference path="../Graphic2d.ts" />
 /// <reference path="ImageSource.ts" />
 
-module EndGate.Core.Graphics.Sprites {
+module EndGate.Graphics {
 
-    export class Sprite2d extends Graphic2d {
+    export class Sprite2d extends Abstractions.Graphic2d {
         public _type: string = "Sprite2d";
 
-        public Image: ImageSource;
-        public Size: Assets.Size2d;
+        public Image: Assets.ImageSource;
+        public Size: Size2d;
 
-        constructor(x: number, y: number, image: ImageSource, width?: number = image.ClipSize.Width, height?: number = image.ClipSize.Height) {
-            super(new Assets.Vector2d(x, y));
+        constructor(x: number, y: number, image: Assets.ImageSource, width?: number = image.ClipSize.Width, height?: number = image.ClipSize.Height) {
+            super(new Vector2d(x, y));
 
             this.Image = image;
-            this.Size = new Assets.Size2d(width, height);
+            this.Size = new Size2d(width, height);
         }
 
         public Opacity(alpha?: number): number {
@@ -30,8 +30,8 @@ module EndGate.Core.Graphics.Sprites {
             super.EndDraw(context);
         }
 
-        public GetDrawBounds(): BoundingObject.Bounds2d {
-            var bounds = new BoundingObject.BoundingRectangle(this.Position, this.Image.Size);
+        public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
+            var bounds = new Bounds.BoundingRectangle(this.Position, this.Image.Size);
 
             bounds.Rotation = this.Rotation;
 

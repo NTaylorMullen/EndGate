@@ -1,38 +1,38 @@
 /// <reference path="../Interfaces/IDisposable.d.ts" />
 /// <reference path="../Interfaces/ITyped.d.ts" />
-/// <reference path="../BoundingObject/Bounds2d.ts" />
+/// <reference path="../Bounds/Bounds2d.ts" />
 /// <reference path="../Utilities/EventHandler.ts" />
 /// <reference path="../Assets/Vectors/Vector2d.ts" />
 /// <reference path="CollisionData.ts" />
 
-module EndGate.Core.Collision {
+module EndGate.Collision {
 
-    export class Collidable implements IDisposable, ITyped {
+    export class Collidable implements IDisposable, _.ITyped {
         public _type: string = "Collidable";
 
-        public Bounds: BoundingObject.Bounds2d;
+        public Bounds: Bounds.Abstractions.Bounds2d;
         public ID: number;
 
         private static _collidableIDs: number = 0;
         private _disposed: bool;
 
-        constructor(bounds: BoundingObject.Bounds2d) {
+        constructor(bounds: Bounds.Abstractions.Bounds2d) {
             this._disposed = false;
             this.Bounds = bounds;
             this.ID = Collidable._collidableIDs++;
 
-            this.OnCollision = new Utilities.EventHandler();
-            this.OnDisposed = new Utilities.EventHandler();
+            this.OnCollision = new EventHandler();
+            this.OnDisposed = new EventHandler();
         }
 
-        public OnCollision: Utilities.EventHandler;
-        public OnDisposed: Utilities.EventHandler;
+        public OnCollision: EventHandler;
+        public OnDisposed: EventHandler;
 
         public IsCollidingWith(other: Collidable): bool {
             return this.Bounds.Intersects(other.Bounds);
         }
 
-        public Collided(data: CollisionData): void {
+        public Collided(data: Assets.CollisionData): void {
             this.OnCollision.Trigger(data);
         }
 

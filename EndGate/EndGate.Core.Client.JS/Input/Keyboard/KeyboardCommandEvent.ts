@@ -1,7 +1,7 @@
 /// <reference path="KeyboardModifiers.ts" />
 /// <reference path="KeyboardCommand.ts" />
 
-module EndGate.Core.Input.Keyboard {
+module EndGate.Input {
     var shiftValues: { [unmodified: string]: string; } = {
         "~": "`",
         "!": "1",
@@ -55,13 +55,13 @@ module EndGate.Core.Input.Keyboard {
 
     export class KeyboardCommandEvent {
         public Key: string;
-        public Modifiers: KeyboardModifiers;
+        public Modifiers: Assets.KeyboardModifiers;
 
         constructor(keyEvent: KeyboardEvent) {
             var code,
                 character;
 
-            this.Modifiers = new KeyboardModifiers(keyEvent.ctrlKey, keyEvent.altKey, keyEvent.shiftKey);
+            this.Modifiers = new Assets.KeyboardModifiers(keyEvent.ctrlKey, keyEvent.altKey, keyEvent.shiftKey);
 
             if (keyEvent.keyCode) {
                 code = keyEvent.keyCode;
@@ -81,7 +81,7 @@ module EndGate.Core.Input.Keyboard {
             this.Key = character;
         }
 
-        public Matches(command: KeyboardCommand): bool {
+        public Matches(command: Assets.KeyboardCommand): bool {
             return this.Key.toLowerCase() === command.Key.toLowerCase() && command.Modifiers.Equivalent(this.Modifiers);
         }
     }

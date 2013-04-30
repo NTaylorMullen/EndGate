@@ -2,7 +2,7 @@
 /// <reference path="ILooper.d.ts" />
 /// <reference path="TimedCallback.ts" />
 
-module EndGate.Core.Loopers {
+module EndGate._.Loopers {
 
     export class Looper implements ILooper {
         public _type: string = "Looper";

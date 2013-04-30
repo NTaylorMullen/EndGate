@@ -1,5 +1,5 @@
 /* IDisposable.d.ts */
-module EndGate.Core {
+module EndGate {
 
     export interface IDisposable {
         Dispose(): void;
@@ -7,15 +7,19 @@ module EndGate.Core {
 
 }
 /* ITyped.d.ts */
-interface ITyped {
-    _type: string;
+module EndGate._ {
+
+    interface ITyped {
+        _type: string;
+    }
+
 }
 /* GameTime.ts */
 
 
-module EndGate.Core {
+module EndGate {
 
-    export class GameTime implements ITyped {
+    export class GameTime implements _.ITyped {
         public _type: string = "GameTime";
 
         public Now: Date;
@@ -47,10 +51,10 @@ module EndGate.Core {
 /* IUpdateable.d.ts */
 
 
-module EndGate.Core {
+module EndGate {
 
     export interface IUpdateable {
-        Update(gameTime: EndGate.Core.GameTime): void;
+        Update(gameTime: EndGate.GameTime): void;
     }
 
 }
@@ -70,8 +74,8 @@ Math.roundTo = function (val?: number, decimals?: number): number {
 
 
 
-module EndGate.Core.Assets {
-    export class Vector2d implements ITyped {
+module EndGate {
+    export class Vector2d implements _.ITyped {
         public _type: string = "Vector2d";
 
         public X: number;
@@ -234,10 +238,10 @@ module EndGate.Core.Assets {
 /* IMoveable.d.ts */
 
 
-module EndGate.Core {
+module EndGate {
 
     export interface IMoveable {
-        Position: Assets.Vector2d;
+        Position: Vector2d;
         Rotation: number;
     }
 
@@ -248,15 +252,15 @@ module EndGate.Core {
 
 
 
-module EndGate.Core.BoundingObject {
+module EndGate.Bounds.Abstractions {
 
     export class Bounds2d implements IMoveable {
         public _boundsType: string = "Bounds2d";
 
-        public Position: Assets.Vector2d;
+        public Position: Vector2d;
         public Rotation: number;
 
-        constructor(position: Assets.Vector2d) {
+        constructor(position: Vector2d) {
             this.Position = position;
             this.Rotation = 0;
         }
@@ -265,7 +269,7 @@ module EndGate.Core.BoundingObject {
             throw new Error("This method is abstract!");
         }
 
-        public ContainsPoint(point: Assets.Vector2d): bool {
+        public ContainsPoint(point: Vector2d): bool {
             throw new Error("This method is abstract!");
         }
 
@@ -297,19 +301,19 @@ module EndGate.Core.BoundingObject {
 /* IRenderable.d.ts */
 
 
-module EndGate.Core.Rendering {
+module EndGate.Rendering {
 
     export interface IRenderable {
         ZIndex: number;
         Draw(context: CanvasRenderingContext2D): void;
-        GetDrawBounds(): BoundingObject.Bounds2d;
+        GetDrawBounds(): Bounds.Abstractions.Bounds2d;
     }
 
 }
 /* LooperCallback.ts */
 
 
-module EndGate.Core.Loopers {
+module EndGate._.Loopers {
 
     export class LooperCallback implements ITyped {
         public _type: string = "LooperCallback";
@@ -330,7 +334,7 @@ module EndGate.Core.Loopers {
 
 
 
-module EndGate.Core.Loopers {
+module EndGate._.Loopers {
 
     export interface ILooper extends IDisposable, ITyped {
         Start(): void;
@@ -343,7 +347,7 @@ module EndGate.Core.Loopers {
 
 
 
-module EndGate.Core.Loopers {
+module EndGate._.Loopers {
 
     export class TimedCallback implements ITyped extends LooperCallback {
         public _type: string = "TimedCallback";
@@ -367,7 +371,7 @@ module EndGate.Core.Loopers {
 
 
 
-module EndGate.Core.Loopers {
+module EndGate._.Loopers {
 
     export class Looper implements ILooper {
         public _type: string = "Looper";
@@ -465,7 +469,7 @@ window.OnRepaintCompleted = () => {
 
 
 
-module EndGate.Core.Loopers {
+module EndGate._.Loopers {
 
     // This looper uses the request animation frame to run its internal loop
     // The method has been aliased as "OnRepaintCompleted" via the WindowExtensions
@@ -534,118 +538,8 @@ module EndGate.Core.Loopers {
     }
 
 }
-/* GameRunner.ts */
-
-
-
-
-
-
-module EndGate.Core {    
-
-    export class GameRunner implements ITyped {
-        public _type: string = "GameRunner";
-
-        private _updateCallbacks: { [id: number]: Loopers.TimedCallback; };
-        private _drawCallbacks: { [id: number]: Loopers.LooperCallback; };
-        private _updateLoop: Loopers.Looper;
-        private _drawLoop: Loopers.RepaintLooper;
-        private _callbackCount: number;
-
-        constructor() {
-            this._updateCallbacks = <{ [s: number]: Loopers.TimedCallback; } >{};
-            this._drawCallbacks = <{ [s: number]: Loopers.LooperCallback; } >{};
-            this._updateLoop = null;
-            this._drawLoop = null;
-            this._callbackCount = 0;
-        }
-
-        public Register(game: Game): (updateRate: number) => void {
-            var updateCallback = this.CreateAndCacheUpdateCallback(game);
-            var drawCallback = this.CreateAndCacheDrawCallback(game);
-
-            this._callbackCount++;
-
-            // Try to start the loop prior to adding our games callback.  This callback may be the first, hence the "Try"
-            this.TryLoopStart();
-
-            // Add our callback to the game loop (which is now running), it will now be called on an interval dictated by updateCallback
-            this._updateLoop.AddCallback(updateCallback);
-            this._drawLoop.AddCallback(drawCallback);
-
-            // Updating the "updateRate" is an essential element to the game configuration.
-            // If a game is running slowly we need to be able to slow down the update rate.
-            return this.CreateUpdateRateSetter(updateCallback);
-        }
-
-        public Unregister(game: Game): void {
-            var updateCallback,
-                drawCallback;
-
-            if (this._updateCallbacks[game.ID]) {
-                updateCallback = this._updateCallbacks[game.ID];
-                drawCallback = this._drawCallbacks[game.ID];
-
-                this._updateLoop.RemoveCallback(updateCallback);
-                this._drawLoop.RemoveCallback(drawCallback);
-                delete this._updateCallbacks[game.ID];
-                delete this._drawCallbacks[game.ID];
-
-                this._callbackCount--
-
-                this.TryLoopStop();
-            }
-        }
-
-        private TryLoopStart(): void {
-            if (this._callbackCount === 1) {
-                this._updateLoop = new Loopers.Looper();
-                this._updateLoop.Start();
-                this._drawLoop = new Loopers.RepaintLooper();
-                this._drawLoop.Start();
-            }
-        }
-
-        private TryLoopStop(): void {
-            if (this._callbackCount === 0 && this._updateLoop != null) {
-                this._updateLoop.Dispose();
-                this._updateLoop = null;
-                this._drawLoop.Dispose();
-                this._drawLoop = null;
-            }
-        }
-
-        private CreateAndCacheUpdateCallback(game: Game): Loopers.TimedCallback {
-            var updateCallback = new Loopers.TimedCallback(0, () => {
-                game.PrepareUpdate();
-            });
-
-            this._updateCallbacks[game.ID] = updateCallback;            
-
-            return updateCallback;
-        };
-
-        private CreateAndCacheDrawCallback(game: Game): Loopers.LooperCallback {
-            var drawCallback = new Loopers.LooperCallback(() => {
-                game.PrepareDraw();
-            });
-
-            this._drawCallbacks[game.ID] = drawCallback;
-
-            return drawCallback;
-        }
-
-        private CreateUpdateRateSetter(callback: Loopers.TimedCallback): (updateRate: number) => void {
-            return (updateRate) => {
-                callback.Fps = updateRate;
-            };
-        }
-    }
-}
-
-var GameRunnerInstance: EndGate.Core.GameRunner = new EndGate.Core.GameRunner();
 /* GameConfiguration.ts */
-module EndGate.Core {
+module EndGate {
 
     export class GameConfiguration {
         private _defaultUpdateRate: number = 40;
@@ -673,9 +567,9 @@ module EndGate.Core {
 
 
 
-module EndGate.Core.Utilities {
+module EndGate {
 
-    export class EventHandler implements ITyped {
+    export class EventHandler implements _.ITyped {
         public _type: string = "Event";
 
         private _actions: Function[];
@@ -718,13 +612,13 @@ module EndGate.Core.Utilities {
 
 
 
-module EndGate.Core.Collision {
+module EndGate.Collision.Assets {
 
     export class CollisionData {
-        public At: Assets.Vector2d;
+        public At: Vector2d;
         public With: Collidable;
 
-        constructor(at: Assets.Vector2d, w: Collidable) {
+        constructor(at: Vector2d, w: Collidable) {
             this.At = at;
             this.With = w;
         }
@@ -739,34 +633,34 @@ module EndGate.Core.Collision {
 
 
 
-module EndGate.Core.Collision {
+module EndGate.Collision {
 
-    export class Collidable implements IDisposable, ITyped {
+    export class Collidable implements IDisposable, _.ITyped {
         public _type: string = "Collidable";
 
-        public Bounds: BoundingObject.Bounds2d;
+        public Bounds: Bounds.Abstractions.Bounds2d;
         public ID: number;
 
         private static _collidableIDs: number = 0;
         private _disposed: bool;
 
-        constructor(bounds: BoundingObject.Bounds2d) {
+        constructor(bounds: Bounds.Abstractions.Bounds2d) {
             this._disposed = false;
             this.Bounds = bounds;
             this.ID = Collidable._collidableIDs++;
 
-            this.OnCollision = new Utilities.EventHandler();
-            this.OnDisposed = new Utilities.EventHandler();
+            this.OnCollision = new EventHandler();
+            this.OnDisposed = new EventHandler();
         }
 
-        public OnCollision: Utilities.EventHandler;
-        public OnDisposed: Utilities.EventHandler;
+        public OnCollision: EventHandler;
+        public OnDisposed: EventHandler;
 
         public IsCollidingWith(other: Collidable): bool {
             return this.Bounds.Intersects(other.Bounds);
         }
 
-        public Collided(data: CollisionData): void {
+        public Collided(data: Assets.CollisionData): void {
             this.OnCollision.Trigger(data);
         }
 
@@ -790,9 +684,9 @@ module EndGate.Core.Collision {
 
 
 
-module EndGate.Core.Collision {
+module EndGate.Collision {
 
-    export class CollisionManager implements IUpdateable, ITyped {
+    export class CollisionManager implements IUpdateable, _.ITyped {
         public _type: string = "CollisionManager";
 
         public _collidables: Collidable[];
@@ -803,10 +697,10 @@ module EndGate.Core.Collision {
             this._collidables = [];
             this._enabled = false;
 
-            this.OnCollision = new Utilities.EventHandler();
+            this.OnCollision = new EventHandler();
         }
 
-        public OnCollision: Utilities.EventHandler;
+        public OnCollision: EventHandler;
 
         public Monitor(obj: Collidable): void {
             this._enabled = true;
@@ -839,8 +733,8 @@ module EndGate.Core.Collision {
                         second = this._collidables[j];
 
                         if (first.IsCollidingWith(second)) {
-                            first.Collided(new CollisionData(first.Bounds.Position.Clone(), second));
-                            second.Collided(new CollisionData(second.Bounds.Position.Clone(), first));
+                            first.Collided(new Assets.CollisionData(first.Bounds.Position.Clone(), second));
+                            second.Collided(new Assets.CollisionData(second.Bounds.Position.Clone(), first));
                             this.OnCollision.Trigger(first, second);
                         }
                     }
@@ -854,8 +748,8 @@ module EndGate.Core.Collision {
 
 
 
-module EndGate.Core.Assets {
-    export class Size2d implements ITyped {
+module EndGate {
+    export class Size2d implements _.ITyped {
         public _type: string = "Size2d";
 
         public Width: number;
@@ -1007,9 +901,9 @@ module EndGate.Core.Assets {
 /* Graphic2dState.ts */
 
 
-module EndGate.Core.Graphics {
+module EndGate.Graphics.Assets {
 
-    export class Graphic2dState implements ITyped {
+    export class Graphic2dState implements _.ITyped {
         public _type: string ="Graphic2dState";
 
         private _cachedState: { [property: string]: any; };
@@ -1103,21 +997,21 @@ module EndGate.Core.Graphics {
 
 
 
-module EndGate.Core.Graphics {
+module EndGate.Graphics.Abstractions {
 
-    export class Graphic2d implements ITyped, Rendering.IRenderable, IMoveable {
+    export class Graphic2d implements _.ITyped, Rendering.IRenderable, IMoveable {
         public _type: string = "Graphic2d";
 
         public ZIndex: number;
-        public Position: Assets.Vector2d;
+        public Position: Vector2d;
         public Rotation: number;
-        public State: Graphic2dState;
+        public State: Assets.Graphic2dState;
 
-        constructor(position: Assets.Vector2d) {
+        constructor(position: Vector2d) {
             this.Position = position;
             this.Rotation = 0;
             this.ZIndex = 0;
-            this.State = new Graphic2dState();
+            this.State = new Assets.Graphic2dState();
         }
 
         public StartDraw(context: CanvasRenderingContext2D): void {
@@ -1138,14 +1032,14 @@ module EndGate.Core.Graphics {
         public Draw(context: CanvasRenderingContext2D): void {
         }
 
-        public GetDrawBounds(): BoundingObject.Bounds2d {
+        public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
             throw new Error("GetDrawBounds is abstract, it must be implemented.");
         }
     }
 
 }
 /* MinMax.ts */
-module EndGate.Core.Assets {
+module EndGate._ {
 
     export class MinMax {
         public Min: number;
@@ -1162,7 +1056,7 @@ module EndGate.Core.Assets {
 
 
 
-module EndGate.Core.Assets {
+module EndGate._ {
 
     export class Vector2dHelpers {
         public static GetMinMaxProjections(axis: Vector2d, vertices: Vector2d[]): MinMax
@@ -1193,15 +1087,15 @@ module EndGate.Core.Assets {
 
 
 
-module EndGate.Core.BoundingObject {
+module EndGate.Bounds {
 
-    export class BoundingCircle implements ITyped extends Bounds2d {
+    export class BoundingCircle implements _.ITyped extends Abstractions.Bounds2d {
         public _type: string = "BoundingCircle";
         public _boundsType: string = "BoundingCircle";
 
         public Radius: number;
 
-        constructor(position: Assets.Vector2d, radius: number) {
+        constructor(position: Vector2d, radius: number) {
             super(position);
 
             this.Radius = radius;
@@ -1220,12 +1114,12 @@ module EndGate.Core.BoundingObject {
         }
 
         // For some reason when compiled into a single .ts file if this isn't fully declared it doesn't compile
-        public IntersectsCircle(circle: EndGate.Core.BoundingObject.BoundingCircle): bool {
+        public IntersectsCircle(circle: EndGate.Bounds.BoundingCircle): bool {
             return this.Position.Distance(circle.Position).Length() < this.Radius + circle.Radius;
         }
 
         // For some reason when compiled into a single .ts file if this isn't fully declared it doesn't compile
-        public IntersectsRectangle(rectangle: EndGate.Core.BoundingObject.BoundingRectangle): bool {
+        public IntersectsRectangle(rectangle: EndGate.Bounds.BoundingRectangle): bool {
             var translated = (rectangle.Rotation === 0)
                                   ? this.Position
                                   : this.Position.RotateAround(rectangle.Position, -rectangle.Rotation);
@@ -1243,7 +1137,7 @@ module EndGate.Core.BoundingObject {
             return (cornerDistance_sq <= (this.Radius * this.Radius));
         }
 
-        public ContainsPoint(point: Assets.Vector2d): bool {
+        public ContainsPoint(point: Vector2d): bool {
             return this.Position.Distance(point).Magnitude() < this.Radius;
         }
     }
@@ -1255,15 +1149,15 @@ module EndGate.Core.BoundingObject {
 
 
 
-module EndGate.Core.BoundingObject {
+module EndGate.Bounds {
 
-    export class BoundingRectangle implements ITyped extends Bounds2d {
+    export class BoundingRectangle implements _.ITyped extends Abstractions.Bounds2d {
         public _type: string = "BoundingRectangle";
         public _boundsType: string = "BoundingRectangle";
 
-        public Size: Assets.Size2d;
+        public Size: Size2d;
 
-        constructor(position: Assets.Vector2d, size: Assets.Size2d) {
+        constructor(position: Vector2d, size: Size2d) {
             super(position);
             this.Size = size;
         }
@@ -1273,12 +1167,12 @@ module EndGate.Core.BoundingObject {
             this.Size.Height *= x;
         }
 
-        public Vertices(): Assets.Vector2d[] {
+        public Vertices(): Vector2d[] {
             return [this.TopLeft(), this.TopRight(), this.BotLeft(), this.BotRight()];
         }
 
-        public TopLeft(): Assets.Vector2d {
-            var v = new Assets.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
+        public TopLeft(): Vector2d {
+            var v = new Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
             if (this.Rotation === 0) {
                 return v;
             }
@@ -1286,8 +1180,8 @@ module EndGate.Core.BoundingObject {
             return v.RotateAround(this.Position, this.Rotation);
         }
 
-        public TopRight(): Assets.Vector2d {
-            var v = new Assets.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
+        public TopRight(): Vector2d {
+            var v = new Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
             if (this.Rotation === 0) {
                 return v;
             }
@@ -1295,8 +1189,8 @@ module EndGate.Core.BoundingObject {
             return v.RotateAround(this.Position, this.Rotation);
         }
 
-        public BotLeft(): Assets.Vector2d {
-            var v = new Assets.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
+        public BotLeft(): Vector2d {
+            var v = new Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
             if (this.Rotation === 0) {
                 return v;
             }
@@ -1304,8 +1198,8 @@ module EndGate.Core.BoundingObject {
             return v.RotateAround(this.Position, this.Rotation);
         }
 
-        public BotRight(): Assets.Vector2d {
-            var v = new Assets.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
+        public BotRight(): Vector2d {
+            var v = new Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
             if (this.Rotation === 0) {
                 return v;
             }
@@ -1314,12 +1208,12 @@ module EndGate.Core.BoundingObject {
         }
 
         // For some reason when compiled into a single .ts file if this isn't fully declared it doesn't compile
-        public IntersectsCircle(circle: EndGate.Core.BoundingObject.BoundingCircle): bool {
+        public IntersectsCircle(circle: EndGate.Bounds.BoundingCircle): bool {
             return circle.IntersectsRectangle(this);
         }
 
         // For some reason when compiled into a single .ts file if this isn't fully declared it doesn't compile
-        public IntersectsRectangle(rectangle: EndGate.Core.BoundingObject.BoundingRectangle): bool {
+        public IntersectsRectangle(rectangle: EndGate.Bounds.BoundingRectangle): bool {
             if (this.Rotation === 0 && rectangle.Rotation === 0) {
                 var myTopLeft = this.TopLeft(),
                     myBotRight = this.BotRight(),
@@ -1329,14 +1223,14 @@ module EndGate.Core.BoundingObject {
                 return theirTopLeft.X <= myBotRight.X && theirBotRight.X >= myTopLeft.X && theirTopLeft.Y <= myBotRight.Y && theirBotRight.Y >= myTopLeft.Y;
             }
             else if (rectangle.Position.Distance(this.Position).Magnitude() <= rectangle.Size.Radius() + this.Size.Radius()) {// Check if we're somewhat close to the rectangle ect that we might be colliding with
-                var axisList: Assets.Vector2d[] = [this.TopRight().Subtract(this.TopLeft()), this.TopRight().Subtract(this.BotRight()), rectangle.TopLeft().Subtract(rectangle.BotLeft()), rectangle.TopLeft().Subtract(rectangle.TopRight())];
+                var axisList: Vector2d[] = [this.TopRight().Subtract(this.TopLeft()), this.TopRight().Subtract(this.BotRight()), rectangle.TopLeft().Subtract(rectangle.BotLeft()), rectangle.TopLeft().Subtract(rectangle.TopRight())];
                 var myVertices = this.Vertices();
                 var theirVertices = rectangle.Vertices();
 
                 for (var i: number = 0; i < axisList.length; i++) {
                     var axi = axisList[i];
-                    var myProjections = Assets.Vector2dHelpers.GetMinMaxProjections(axi, myVertices);
-                    var theirProjections = Assets.Vector2dHelpers.GetMinMaxProjections(axi, theirVertices);
+                    var myProjections = EndGate._.Vector2dHelpers.GetMinMaxProjections(axi, myVertices);
+                    var theirProjections = EndGate._.Vector2dHelpers.GetMinMaxProjections(axi, theirVertices);
 
                     // No collision
                     if (theirProjections.Max < myProjections.Min || myProjections.Max < theirProjections.Min) {
@@ -1350,7 +1244,7 @@ module EndGate.Core.BoundingObject {
             return false;
         }
 
-        public ContainsPoint(point: Assets.Vector2d): bool {
+        public ContainsPoint(point: Vector2d): bool {
             var savedRotation: number = this.Rotation;
 
             if (this.Rotation !== 0) {
@@ -1373,15 +1267,15 @@ module EndGate.Core.BoundingObject {
 
 
 
-module EndGate.Core.Rendering.Camera {
+module EndGate.Rendering {
 
-    export class Camera2d extends BoundingObject.BoundingRectangle {
+    export class Camera2d extends Bounds.BoundingRectangle {
         public static DefaultDistance: number = 1000;
         public _type: string = "Camera2d";
 
         public Distance: number;
 
-        constructor(position: Assets.Vector2d, size: Assets.Size2d) {
+        constructor(position: Vector2d, size: Size2d) {
             super(position, size);
 
             this.Distance = Camera2d.DefaultDistance;
@@ -1401,7 +1295,7 @@ module EndGate.Core.Rendering.Camera {
 
 
 
-module EndGate.Core.Rendering {
+module EndGate.Rendering {
 
     export interface IRenderer extends IDisposable {
         Render(renderables: IRenderable[]): CanvasRenderingContext2D;
@@ -1414,7 +1308,7 @@ module EndGate.Core.Rendering {
 
 
 
-module EndGate.Core.Rendering {
+module EndGate.Rendering {
 
     export class Renderer2d implements IRenderer {
         public static _zindexSort: (a: IRenderable, b: IRenderable) => number = (a: IRenderable, b: IRenderable) => { return a.ZIndex - b.ZIndex; };
@@ -1434,13 +1328,13 @@ module EndGate.Core.Rendering {
             // Create an equally sized canvas for a buffer
             this._bufferCanvas = <HTMLCanvasElement>document.createElement("canvas");
             this._bufferContext = this._bufferCanvas.getContext("2d");
-            this.OnRendererSizeChange = new Utilities.EventHandler();
+            this.OnRendererSizeChange = new EventHandler();
             this.UpdateBufferSize();
 
             this._disposed = false;
         }
 
-        public OnRendererSizeChange: Utilities.EventHandler;
+        public OnRendererSizeChange: EventHandler;
 
         public Render(renderables: IRenderable[]): CanvasRenderingContext2D {
             // Check if our visible canvas has changed size
@@ -1482,7 +1376,7 @@ module EndGate.Core.Rendering {
         private UpdateBufferSize() {
             this._bufferCanvas.width = this._visibleCanvas.width;
             this._bufferCanvas.height = this._visibleCanvas.height;
-            this.OnRendererSizeChange.Trigger(new Assets.Size2d(this._visibleCanvas.width, this._visibleCanvas.height))
+            this.OnRendererSizeChange.Trigger(new Size2d(this._visibleCanvas.width, this._visibleCanvas.height))
         }
     }
 
@@ -1492,11 +1386,11 @@ module EndGate.Core.Rendering {
 
 
 
-module EndGate.Core.Rendering.Camera {
+module EndGate.Rendering._ {
 
     export class Camera2dCanvasContextBuilder {
         private _camera: Camera2d;
-        private _canvasCenter: Assets.Vector2d;
+        private _canvasCenter: Vector2d;
         private _translated: bool;
         private _translationState: any[];
 
@@ -1574,7 +1468,7 @@ module EndGate.Core.Rendering.Camera {
             return context;
         }
 
-        public UpdateCanvasCenter(newSize: Assets.Size2d): void {
+        public UpdateCanvasCenter(newSize: Size2d): void {
             this._canvasCenter.X = newSize.Width / 2;
             this._canvasCenter.Y = newSize.Height / 2;
         }
@@ -1607,20 +1501,20 @@ module EndGate.Core.Rendering.Camera {
 
 
 
-module EndGate.Core.Rendering.Camera {
+module EndGate.Rendering {
 
     export class Camera2dRenderer extends Renderer2d {
         private _camera: Camera2d;
-        private _contextBuilder: Camera2dCanvasContextBuilder;
+        private _contextBuilder: _.Camera2dCanvasContextBuilder;
 
         constructor(renderOnto: HTMLCanvasElement, camera: Camera2d) {
             super(renderOnto);
 
             this._camera = camera;
-            this._contextBuilder = new Camera2dCanvasContextBuilder(this._camera);
+            this._contextBuilder = new _.Camera2dCanvasContextBuilder(this._camera);
 
             this.OnRendererSizeChange.Bind(this._contextBuilder.UpdateCanvasCenter);
-            this._contextBuilder.UpdateCanvasCenter(new Assets.Size2d(renderOnto.width, renderOnto.height));
+            this._contextBuilder.UpdateCanvasCenter(new Size2d(renderOnto.width, renderOnto.height));
             this._bufferContext = this._contextBuilder.BuildFrom(this._bufferContext);
 
         }
@@ -1676,15 +1570,15 @@ module EndGate.Core.Rendering.Camera {
 
 
 
-module EndGate.Core.Rendering {
+module EndGate.Rendering {
 
-    export class Scene2d implements ITyped, IDisposable {
+    export class Scene2d implements _.ITyped, IDisposable {
         public _type: string = "Scene";
 
         public DrawArea: HTMLCanvasElement;
-        public Camera: Camera.Camera2d;
+        public Camera: Camera2d;
 
-        private _actors: Graphics.Graphic2d[];
+        private _actors: Graphics.Abstractions.Graphic2d[];
         private _renderer: IRenderer;
         private _onDraw: (context: CanvasRenderingContext2D) => void;
 
@@ -1705,16 +1599,16 @@ module EndGate.Core.Rendering {
             }
 
             this.DrawArea = drawArea;
-            this.Camera = new Camera.Camera2d(new Assets.Vector2d(this.DrawArea.width / 2, this.DrawArea.height / 2), new Assets.Size2d(this.DrawArea.width, this.DrawArea.height));
-            this._renderer = new Camera.Camera2dRenderer(this.DrawArea, this.Camera);
+            this.Camera = new Camera2d(new Vector2d(this.DrawArea.width / 2, this.DrawArea.height / 2), new Size2d(this.DrawArea.width, this.DrawArea.height));
+            this._renderer = new Camera2dRenderer(this.DrawArea, this.Camera);
             this._disposed = false;
         }
 
-        public Add(actor: Graphics.Graphic2d): void {
+        public Add(actor: Graphics.Abstractions.Graphic2d): void {
             this._actors.push(actor);
         }
 
-        public Remove(actor: Graphics.Graphic2d): void {
+        public Remove(actor: Graphics.Abstractions.Graphic2d): void {
             for (var i = 0; i < this._actors.length; i++) {
                 if (this._actors[i] === actor) {
                     this._actors.splice(i, 1);
@@ -1747,7 +1641,7 @@ module EndGate.Core.Rendering {
 
 }
 /* MouseButton.ts */
-module EndGate.Core.Input.Mouse {
+module EndGate.Input {
 
     export class MouseButton {
         public static Left: string = "Left";
@@ -1759,10 +1653,10 @@ module EndGate.Core.Input.Mouse {
 /* IMouseEvent.d.ts */
 
 
-module EndGate.Core.Input.Mouse {
+module EndGate.Input {
 
     export interface IMouseEvent {
-        Position: Assets.Vector2d;
+        Position: Vector2d;
     }
 
 }
@@ -1770,7 +1664,7 @@ module EndGate.Core.Input.Mouse {
 
 
 
-module EndGate.Core.Input.Mouse {
+module EndGate.Input {
 
     export interface IMouseClickEvent extends IMouseEvent {
         Button: string;
@@ -1781,10 +1675,10 @@ module EndGate.Core.Input.Mouse {
 
 
 
-module EndGate.Core.Input.Mouse {
+module EndGate.Input {
 
     export interface IMouseScrollEvent extends IMouseEvent{
-        Direction: Assets.Vector2d;
+        Direction: Vector2d;
     }
 
 }
@@ -1796,7 +1690,7 @@ module EndGate.Core.Input.Mouse {
 
 
 
-module EndGate.Core.Input.Mouse {
+module EndGate.Input {
 
     export class MouseHandler {
         // Used to determine mouse buttons without using extra conditional statements, performance enhancer
@@ -1807,23 +1701,23 @@ module EndGate.Core.Input.Mouse {
         constructor(target: HTMLCanvasElement) {
             this._target = target;
 
-            this.OnClick = new Utilities.EventHandler();
-            this.OnDoubleClick = new Utilities.EventHandler();
-            this.OnDown = new Utilities.EventHandler();
-            this.OnUp = new Utilities.EventHandler();
-            this.OnMove = new Utilities.EventHandler();
-            this.OnScroll = new Utilities.EventHandler();
+            this.OnClick = new EventHandler();
+            this.OnDoubleClick = new EventHandler();
+            this.OnDown = new EventHandler();
+            this.OnUp = new EventHandler();
+            this.OnMove = new EventHandler();
+            this.OnScroll = new EventHandler();
 
             this.Wire();
         }
 
-        public OnClick: Utilities.EventHandler;
-        public OnDoubleClick: Utilities.EventHandler;
-        public OnDown: Utilities.EventHandler;
-        public OnUp: Utilities.EventHandler;
-        public OnMove: Utilities.EventHandler;
+        public OnClick: EventHandler;
+        public OnDoubleClick: EventHandler;
+        public OnDown: EventHandler;
+        public OnUp: EventHandler;
+        public OnMove: EventHandler;
 
-        public OnScroll: Utilities.EventHandler;
+        public OnScroll: EventHandler;
 
         private Wire(): void {
             this._target.onclick = this._target.oncontextmenu = this.BuildEvent(this.OnClick, this.BuildMouseClickEvent);
@@ -1853,7 +1747,7 @@ module EndGate.Core.Input.Mouse {
             }
         }
 
-        private BuildEvent(eventHandler: Utilities.EventHandler, mouseEventBuilder: (mouseEvent: MouseEvent) => IMouseEvent, returnValue: bool = false): (e: MouseEvent) => void {
+        private BuildEvent(eventHandler: EventHandler, mouseEventBuilder: (mouseEvent: MouseEvent) => IMouseEvent, returnValue: bool = false): (e: MouseEvent) => void {
             return (e: MouseEvent) => {
                 if (eventHandler.HasBindings()) {
                     eventHandler.Trigger(mouseEventBuilder.call(this, e));
@@ -1883,8 +1777,8 @@ module EndGate.Core.Input.Mouse {
             };
         }
 
-        private GetMousePosition(event: MouseEvent): Assets.Vector2d {
-            return new Assets.Vector2d(
+        private GetMousePosition(event: MouseEvent): Vector2d {
+            return new Vector2d(
                 event.offsetX ? (event.offsetX) : event.pageX - this._target.offsetLeft,
                 event.offsetY ? (event.offsetY) : event.pageY - this._target.offsetTop
             );
@@ -1898,14 +1792,14 @@ module EndGate.Core.Input.Mouse {
             return MouseButton.Right;
         }
 
-        private GetMouseScrollDierction(event: any): Assets.Vector2d{
-            return new Assets.Vector2d(-Math.max(-1, Math.min(1, event.wheelDeltaX)), -Math.max(-1, Math.min(1, event.wheelDeltaY)));
+        private GetMouseScrollDierction(event: any): Vector2d{
+            return new Vector2d(-Math.max(-1, Math.min(1, event.wheelDeltaX)), -Math.max(-1, Math.min(1, event.wheelDeltaY)));
         }
     }
 
 }
 /* NoopTripInvoker.ts */
-module EndGate.Core.Utilities {
+module EndGate._.Utilities {
 
     export class NoopTripInvoker {
         private static _noop: Function = () => { };
@@ -1943,7 +1837,7 @@ module EndGate.Core.Utilities {
 /* KeyboardModifiers.ts */
 
 
-module EndGate.Core.Input.Keyboard {
+module EndGate.Input.Assets {
 
     export class KeyboardModifiers {
         public Ctrl: bool;
@@ -1974,7 +1868,7 @@ module EndGate.Core.Input.Keyboard {
 
 
 
-module EndGate.Core.Input.Keyboard {
+module EndGate.Input {
     var shiftValues: { [unmodified: string]: string; } = {
         "~": "`",
         "!": "1",
@@ -2028,13 +1922,13 @@ module EndGate.Core.Input.Keyboard {
 
     export class KeyboardCommandEvent {
         public Key: string;
-        public Modifiers: KeyboardModifiers;
+        public Modifiers: Assets.KeyboardModifiers;
 
         constructor(keyEvent: KeyboardEvent) {
             var code,
                 character;
 
-            this.Modifiers = new KeyboardModifiers(keyEvent.ctrlKey, keyEvent.altKey, keyEvent.shiftKey);
+            this.Modifiers = new Assets.KeyboardModifiers(keyEvent.ctrlKey, keyEvent.altKey, keyEvent.shiftKey);
 
             if (keyEvent.keyCode) {
                 code = keyEvent.keyCode;
@@ -2054,7 +1948,7 @@ module EndGate.Core.Input.Keyboard {
             this.Key = character;
         }
 
-        public Matches(command: KeyboardCommand): bool {
+        public Matches(command: Assets.KeyboardCommand): bool {
             return this.Key.toLowerCase() === command.Key.toLowerCase() && command.Modifiers.Equivalent(this.Modifiers);
         }
     }
@@ -2064,7 +1958,7 @@ module EndGate.Core.Input.Keyboard {
 
 
 
-module EndGate.Core.Input.Keyboard {
+module EndGate.Input._ {
     
     export class KeyboardCommandHelper {
         public static ParseKey(command: string): string {
@@ -2086,27 +1980,27 @@ module EndGate.Core.Input.Keyboard {
 
 
 
-module EndGate.Core.Input.Keyboard {
+module EndGate.Input.Assets {
 
     export class KeyboardCommand implements IDisposable {
         public Key: string;
         public Action: Function;
-        public Modifiers: KeyboardModifiers;
+        public Modifiers: Assets.KeyboardModifiers;
 
-        private _onDisposeInvoker: Utilities.NoopTripInvoker;
+        private _onDisposeInvoker: EndGate._.Utilities.NoopTripInvoker;
 
         constructor(command: string, action: Function) {
             this.Action = action;
-            this.Modifiers = KeyboardModifiers.BuildFromCommandString(command);
-            this.Key = KeyboardCommandHelper.ParseKey(command);
+            this.Modifiers = Assets.KeyboardModifiers.BuildFromCommandString(command);
+            this.Key = _.KeyboardCommandHelper.ParseKey(command);
 
-            this.OnDispose = new Utilities.EventHandler();
-            this._onDisposeInvoker = new Utilities.NoopTripInvoker(() => {
+            this.OnDispose = new EventHandler();
+            this._onDisposeInvoker = new EndGate._.Utilities.NoopTripInvoker(() => {
                 this.OnDispose.Trigger();
             }, true);
         }
 
-        public OnDispose: Utilities.EventHandler;
+        public OnDispose: EventHandler;
 
         public Dispose(): void {
             this._onDisposeInvoker.InvokeOnce();
@@ -2119,45 +2013,45 @@ module EndGate.Core.Input.Keyboard {
 
 
 
-module EndGate.Core.Input.Keyboard {
+module EndGate.Input {
 
     export class KeyboardHandler {
         private static _keyboardCommandIds: number = 0;
         private _target: HTMLCanvasElement;
-        private _onPressCommands: { [id: number]: KeyboardCommand; };
-        private _onDownCommands: { [id: number]: KeyboardCommand; };
-        private _onUpCommands: { [id: number]: KeyboardCommand; };
+        private _onPressCommands: { [id: number]: Assets.KeyboardCommand; };
+        private _onDownCommands: { [id: number]: Assets.KeyboardCommand; };
+        private _onUpCommands: { [id: number]: Assets.KeyboardCommand; };
 
         constructor() {
             this._onPressCommands = (<any>{});
             this._onDownCommands = (<any>{});
             this._onUpCommands = (<any>{});
 
-            this.OnKeyPress = new Utilities.EventHandler();
-            this.OnKeyDown = new Utilities.EventHandler();
-            this.OnKeyUp = new Utilities.EventHandler();
+            this.OnKeyPress = new EventHandler();
+            this.OnKeyDown = new EventHandler();
+            this.OnKeyUp = new EventHandler();
 
             this.Wire();
         }
 
-        public OnKeyPress: Utilities.EventHandler;
-        public OnKeyDown: Utilities.EventHandler;
-        public OnKeyUp: Utilities.EventHandler;
+        public OnKeyPress: EventHandler;
+        public OnKeyDown: EventHandler;
+        public OnKeyUp: EventHandler;
 
-        public OnCommandPress(keyCommand: string, action: Function): KeyboardCommand {
+        public OnCommandPress(keyCommand: string, action: Function): Assets.KeyboardCommand {
             return this.UpdateCache(keyCommand, action, this._onPressCommands);
         }
 
-        public OnCommandDown(keyCommand: string, action: Function): KeyboardCommand {
+        public OnCommandDown(keyCommand: string, action: Function): Assets.KeyboardCommand {
             return this.UpdateCache(keyCommand, action, this._onDownCommands);
         }
 
-        public OnCommandUp(keyCommand: string, action: Function): KeyboardCommand {
+        public OnCommandUp(keyCommand: string, action: Function): Assets.KeyboardCommand {
             return this.UpdateCache(keyCommand, action, this._onUpCommands);
         }
 
-        private UpdateCache(keyCommand: string, action: Function, store: { [id: number]: KeyboardCommand; }): KeyboardCommand {
-            var command = new KeyboardCommand(keyCommand, action),
+        private UpdateCache(keyCommand: string, action: Function, store: { [id: number]: Assets.KeyboardCommand; }): Assets.KeyboardCommand {
+            var command = new Assets.KeyboardCommand(keyCommand, action),
                 commandId = KeyboardHandler._keyboardCommandIds++;
 
             command.OnDispose.Bind(() => {
@@ -2198,7 +2092,7 @@ module EndGate.Core.Input.Keyboard {
             return false;
         }
 
-        private BuildKeyEvent(store: { [id: number]: KeyboardCommand; }, eventHandler: Utilities.EventHandler): (ke: KeyboardEvent) => void {
+        private BuildKeyEvent(store: { [id: number]: Assets.KeyboardCommand; }, eventHandler: EventHandler): (ke: KeyboardEvent) => void {
             return (ke: KeyboardEvent) => {
                 var keyboardCommandEvent: KeyboardCommandEvent,
                     propogate: bool = true;
@@ -2230,21 +2124,21 @@ module EndGate.Core.Input.Keyboard {
 
 
 
-module EndGate.Core.Input {
+module EndGate.Input {
 
     export class InputManager {
-        public Mouse: Mouse.MouseHandler;
-        public Keyboard: Keyboard.KeyboardHandler;
+        public Mouse: MouseHandler;
+        public Keyboard: KeyboardHandler;
 
         constructor(canvas: HTMLCanvasElement) {
-            this.Mouse = new Mouse.MouseHandler(canvas);
-            this.Keyboard = new Keyboard.KeyboardHandler();
+            this.Mouse = new MouseHandler(canvas);
+            this.Keyboard = new KeyboardHandler();
         }
     }
 
 }
 /* AudioSettings.ts */
-module EndGate.Core.AudioManagement {
+module EndGate.Sound {
 
     export class AudioSettings {
         public static Default: AudioSettings = new AudioSettings();
@@ -2266,7 +2160,7 @@ module EndGate.Core.AudioManagement {
 
 
 
-module EndGate.Core.AudioManagement {
+module EndGate.Sound {
 
     var supportedAudioTypes = {
         mp3: 'audio/mpeg',
@@ -2286,10 +2180,10 @@ module EndGate.Core.AudioManagement {
             this.SetAudioSource(source);
             this.ApplySettings();
 
-            this.OnComplete = new Utilities.EventHandler();
+            this.OnComplete = new EventHandler();
         }
 
-        public OnComplete: Utilities.EventHandler;
+        public OnComplete: EventHandler;
 
         public Volume(percent?: number): number {
             if (typeof percent !== "undefined") {
@@ -2379,7 +2273,7 @@ module EndGate.Core.AudioManagement {
 
 
 
-module EndGate.Core.AudioManagement {
+module EndGate.Sound {
 
     export class AudioPlayer {
         private _source: any;
@@ -2402,7 +2296,7 @@ module EndGate.Core.AudioManagement {
 
 
 
-module EndGate.Core.AudioManagement {
+module EndGate.Sound {
 
     export class AudioManager {
         private _audioPlayers: { [name: string]: AudioPlayer; };
@@ -2447,9 +2341,9 @@ module EndGate.Core.AudioManagement {
 
 
 
-module EndGate.Core {
+module EndGate {
 
-    export class Game implements ITyped, IUpdateable, IDisposable {
+    export class Game implements _.ITyped, IUpdateable, IDisposable {
         public _type: string = "Game";
 
         public ID: number;
@@ -2457,7 +2351,7 @@ module EndGate.Core {
         public CollisionManager: Collision.CollisionManager;
         public Scene: Rendering.Scene2d;
         public Input: Input.InputManager;
-        public Audio: AudioManagement.AudioManager;
+        public Audio: Sound.AudioManager;
 
         private static _gameIds: number = 0;
         private _gameTime: GameTime;
@@ -2471,7 +2365,7 @@ module EndGate.Core {
             });
 
             this.Input = new Input.InputManager(this.Scene.DrawArea);
-            this.Audio = new AudioManagement.AudioManager();
+            this.Audio = new Sound.AudioManager();
             this.CollisionManager = new Collision.CollisionManager();
             this.Configuration = new GameConfiguration(GameRunnerInstance.Register(this))
         }
@@ -2502,765 +2396,128 @@ module EndGate.Core {
     }
 
 }
-/* LinearDirections.ts */
-module EndGate.Core.MovementControllers {
+/* GameRunner.ts */
 
-    export class LinearDirections {
-        public Left: bool;
-        public Right: bool;
-        public Up: bool;
-        public Down: bool;
+
+
+
+
+
+module EndGate._ {    
+
+    export class GameRunner implements ITyped {
+        public _type: string = "GameRunner";
+
+        private _updateCallbacks: { [id: number]: Loopers.TimedCallback; };
+        private _drawCallbacks: { [id: number]: Loopers.LooperCallback; };
+        private _updateLoop: Loopers.Looper;
+        private _drawLoop: Loopers.RepaintLooper;
+        private _callbackCount: number;
 
         constructor() {
-            this.Left = false;
-            this.Right = false;
-            this.Up = false;
-            this.Down = false;
-        }
-    }
-
-}
-/* MovementController.ts */
-
-
-
-
-
-module EndGate.Core.MovementControllers {
-    
-    export class MovementController implements IMoveable, IUpdateable {
-        public Position: Assets.Vector2d;
-        public Velocity: Assets.Vector2d;
-        public Rotation: number;
-        public _frozen: bool;
-        private _moveables: IMoveable[];
-
-        constructor(moveables: IMoveable[]) {
-            this.Position = Assets.Vector2d.Zero();
-            this.Velocity = Assets.Vector2d.Zero();
-            this.Rotation = 0;
-            this._frozen = false;
-
-            this._moveables = moveables;
+            this._updateCallbacks = <{ [s: number]: Loopers.TimedCallback; } >{};
+            this._drawCallbacks = <{ [s: number]: Loopers.LooperCallback; } >{};
+            this._updateLoop = null;
+            this._drawLoop = null;
+            this._callbackCount = 0;
         }
 
-        public Freeze(): void {
-            this._frozen = true;
+        public Register(game: Game): (updateRate: number) => void {
+            var updateCallback = this.CreateAndCacheUpdateCallback(game);
+            var drawCallback = this.CreateAndCacheDrawCallback(game);
+
+            this._callbackCount++;
+
+            // Try to start the loop prior to adding our games callback.  This callback may be the first, hence the "Try"
+            this.TryLoopStart();
+
+            // Add our callback to the game loop (which is now running), it will now be called on an interval dictated by updateCallback
+            this._updateLoop.AddCallback(updateCallback);
+            this._drawLoop.AddCallback(drawCallback);
+
+            // Updating the "updateRate" is an essential element to the game configuration.
+            // If a game is running slowly we need to be able to slow down the update rate.
+            return this.CreateUpdateRateSetter(updateCallback);
         }
 
-        public Thaw(): void {
-            this._frozen = false;
-        }
+        public Unregister(game: Game): void {
+            var updateCallback,
+                drawCallback;
 
-        public IsMoving(): bool {
-            return !this._frozen && !this.Velocity.IsZero();
-        }
+            if (this._updateCallbacks[game.ID]) {
+                updateCallback = this._updateCallbacks[game.ID];
+                drawCallback = this._drawCallbacks[game.ID];
 
-        public Update(gameTime: GameTime): void {
-            // Sync moveables position and rotation
-            for (var i = 0; i < this._moveables.length; i++) {
-                this._moveables[i].Position = this.Position;
-                this._moveables[i].Rotation = this.Rotation;
-            }
-        }
-    }
+                this._updateLoop.RemoveCallback(updateCallback);
+                this._drawLoop.RemoveCallback(drawCallback);
+                delete this._updateCallbacks[game.ID];
+                delete this._drawCallbacks[game.ID];
 
-}
-/* LinearMovementController.ts */
+                this._callbackCount--
 
-
-
-
-
-
-
-
-module EndGate.Core.MovementControllers {
-
-    export class LinearMovementController extends MovementController {
-        private _moveSpeed: number;
-        private _moving: LinearDirections;
-        private _rotationUpdater: Utilities.NoopTripInvoker;
-
-        constructor(moveables: IMoveable[], moveSpeed: number, rotateWithMovements?: bool = true) {
-            super(moveables);
-
-            this._moveSpeed = moveSpeed;
-            this._moving = new LinearDirections();
-            this._rotationUpdater = new Utilities.NoopTripInvoker(() => {
-                this.UpdateRotation();
-            }, rotateWithMovements);
-        }
-
-        public IsMovingInDirection(direction: string): bool {
-            return this._moving[direction] || false;
-        }
-
-        public StartMoving(direction: string): void {
-            this.Move(direction, true);
-        }
-
-        public StopMoving(direction: string): void {
-            this.Move(direction, false);
-        }
-
-        public MoveSpeed(speed?: number): number {
-            if (typeof speed !== "undefined") {
-                this._moveSpeed = speed;
-                this.UpdateVelocity();
-            }
-
-            return this._moveSpeed;
-        }
-
-        public Update(gameTime: GameTime): void {
-            if (!this._frozen) {
-                this.Position = this.Position.Add(this.Velocity.Multiply(gameTime.ElapsedSecond));
-
-                super.Update(gameTime);
+                this.TryLoopStop();
             }
         }
 
-        public Move(direction: string, startMoving: bool): void {
-            if (typeof this._moving[direction] !== "undefined") {
-                this._moving[direction] = startMoving;
-                this.UpdateVelocity();
-                this._rotationUpdater.Invoke();
-            }
-            else {
-                throw new Error(direction + " is an unknown direction.");
+        private TryLoopStart(): void {
+            if (this._callbackCount === 1) {
+                this._updateLoop = new Loopers.Looper();
+                this._updateLoop.Start();
+                this._drawLoop = new Loopers.RepaintLooper();
+                this._drawLoop.Start();
             }
         }
 
-        private UpdateVelocity(): void {
-            var velocity = Assets.Vector2d.Zero();
-
-            if (this._moving.Up) {
-                velocity.Y -= this._moveSpeed;
-            }
-            if (this._moving.Down) {
-                velocity.Y += this._moveSpeed;
-            }
-            if (this._moving.Left) {
-                velocity.X -= this._moveSpeed;
-            }
-            if (this._moving.Right) {
-                velocity.X += this._moveSpeed;
-            }
-
-            this.Velocity = velocity;
-        }
-
-        private UpdateRotation(): void {
-            if (!this.Velocity.IsZero()) {
-                this.Rotation = Math.atan2(this.Velocity.Y, this.Velocity.X);
-            }
-        }
-    }
-
-}
-/* DirectionalInputController.ts */
-
-
-module EndGate.Core.Input.Controllers {
-
-    export class DirectionalInputController {
-        private _keyboard: Keyboard.KeyboardHandler;
-        private _onMove: (direction: string, startMoving: bool) => void;
-
-        constructor(keyboard: Keyboard.KeyboardHandler, onMove: (direction: string, startMoving: bool) => void , upKeys?: string[] = ["w", "Up"], rightKeys?: string[] = ["d", "Right"], downKeys?: string[] = ["s", "Down"], leftKeys?: string[] = ["a", "Left"]) {
-            this._keyboard = keyboard;
-            this._onMove = onMove;
-
-            this.BindKeys(upKeys, "OnCommandDown", "Up", true);
-            this.BindKeys(rightKeys, "OnCommandDown", "Right", true);
-            this.BindKeys(downKeys, "OnCommandDown", "Down", true);
-            this.BindKeys(leftKeys, "OnCommandDown", "Left", true);
-            this.BindKeys(upKeys, "OnCommandUp", "Up", false);
-            this.BindKeys(rightKeys, "OnCommandUp", "Right", false);
-            this.BindKeys(downKeys, "OnCommandUp", "Down", false);
-            this.BindKeys(leftKeys, "OnCommandUp", "Left", false);
-        }
-
-        private BindKeys(keyList: string[], bindingAction: string, direction: string, startMoving: bool): void {
-            for (var i = 0; i < keyList.length; i++) {
-                this._keyboard[bindingAction](keyList[i], () => {
-                    this._onMove(direction, startMoving);
-                });
-            }
-        }
-    }
-
-}
-/* FontMeasurement.ts */
-module EndGate.Core.Graphics.Text {
-
-    export enum FontMeasurement {
-        Ems,
-        Pixels,
-        Points,
-        Percent
-    };
-
-    export class FontMeasurementHelper {
-        public static _measurements: string[];
-
-        public static _Initialize() {
-            FontMeasurementHelper._measurements = ["em", "px", "pt", "%"];
-        }
-
-        public static Get(measurement: FontMeasurement): string {
-            return FontMeasurementHelper._measurements[measurement];
-        }
-    }
-
-    FontMeasurementHelper._Initialize();
-}
-/* FontFamily.ts */
-module EndGate.Core.Graphics.Text {
-
-    export enum FontFamily {
-        Antiqua,
-        Arial,
-        Avqest,
-        Blackletter,
-        Calibri,
-        ComicSans,
-        Courier,
-        Decorative,
-        Fraktur,
-        Frosty,
-        Garamond,
-        Georgia,
-        Helvetica,
-        Impact,
-        Minion,
-        Modern,
-        Monospace,
-        Palatino,
-        Roman,
-        Script,
-        Swiss,
-        TimesNewRoman,
-        Verdana
-    };
-
-    export class FontFamilyHelper {
-        public static _families: { [family: number]: string; };
-
-        public static _Initialize() {
-            FontFamilyHelper._families = (<{ [family: number]: string; } >{});
-
-            for (var family in FontFamily) {
-                if (family !== "_map") {
-                    FontFamilyHelper._families[FontFamily[family]] = family;
-                }
-            }
-
-            FontFamilyHelper._families[FontFamily["TimesNewRoman"]] = "Times New Roman";
-        }
-
-        public static Get(family: FontFamily): string {
-            return FontFamilyHelper._families[family];
-        }
-    }
-
-    FontFamilyHelper._Initialize();
-
-}
-/* FontVariant.ts */
-module EndGate.Core.Graphics.Text {
-
-    export enum FontVariant {
-        Normal,
-        SmallCaps
-    };
-
-    export class FontVariantHelper {
-        public static _variants: { [variant: number]: string; };
-
-        public static _Initialize() {
-            FontVariantHelper._variants = (<{ [family: number]: string; } >{});
-
-            for (var family in FontVariant) {
-                if (family !== "_map") {
-                    FontVariantHelper._variants[FontVariant[family]] = family;
-                }
-            }
-
-            FontVariantHelper._variants["SmallCaps"] = "Times New Roman";
-        }
-
-        public static Get(variant: FontVariant): string {
-            return FontVariantHelper._variants[variant];
-        }
-    }
-
-    FontVariantHelper._Initialize();
-
-}
-
-/* FontStyle.ts */
-module EndGate.Core.Graphics.Text {
-
-    export enum FontStyle {
-        Normal,
-        Italic,
-        Oblique
-    }
-
-    export class FontStyleHelper {
-        public static _styles: { [family: number]: string; };
-
-        public static _Initialize() {
-            FontStyleHelper._styles = (<{ [family: number]: string; } >{});
-
-            for (var style in FontStyle) {
-                if (style !== "_map") {
-                    FontStyleHelper._styles[FontStyle[style]] = style;
-                }
+        private TryLoopStop(): void {
+            if (this._callbackCount === 0 && this._updateLoop != null) {
+                this._updateLoop.Dispose();
+                this._updateLoop = null;
+                this._drawLoop.Dispose();
+                this._drawLoop = null;
             }
         }
 
-        public static Get(style: FontStyle): string {
-            return FontStyleHelper._styles[style];
-        }
-    }
-
-    FontStyleHelper._Initialize();
-
-}
-
-/* FontSettings.ts */
-
-
-
-
-
-module EndGate.Core.Graphics.Text {
-
-    export class FontSettings {
-        private _cachedState: { [property: string]: any; };
-        private _cachedFont: string;
-        private _refreshCache: bool;
-
-        constructor() {
-            this._cachedState = {
-                fontSize: "10px",
-                fontFamily: "Times New Roman",
-                fontVariant: "",
-                fontWeight: "",
-                fontStyle: ""
-            };
-
-            this._refreshCache = true;
-            this._BuildFont();
-        }
-
-        public FontSize(size?: number, measurement: FontMeasurement = FontMeasurement.Points): string {
-            if (size !== undefined) {
-                return this.GetOrSetCache("fontSize", size.toString() + FontMeasurementHelper.Get(measurement));
-            }
-            
-            return this._cachedState["fontSize"];
-        }
-
-        public FontFamily(family?: FontFamily): string {
-            return this.GetOrSetCache("fontFamily", FontFamilyHelper.Get(family));
-        }
-
-        public FontVariant(variant?: FontVariant): string {
-            return this.GetOrSetCache("fontVariant", FontVariantHelper.Get(variant));
-        }
-
-        public FontWeight(weight?: string): string {
-            return this.GetOrSetCache("fontWeight", weight);
-        }
-
-        public FontStyle(style?: FontStyle): string {
-            return this.GetOrSetCache("fontStyle", FontStyleHelper.Get(style));
-        }
-
-        public _BuildFont(): string {
-            var font;
-
-            if (this._refreshCache) {
-                font = this._cachedState["fontWeight"] + " " + this._cachedState["fontStyle"] + " " + this._cachedState["fontSize"] + " " + this._cachedState["fontVariant"];
-
-                if (this._cachedState["fontFamily"]) {
-                    font += this._cachedState["fontFamily"];
-
-                    if (this._cachedState["fontFamilyType"]) {
-                        font += ", " + this._cachedState["fontFamilyType"];
-                    }
-                }
-                else if (this._cachedState["fontFamilyType"]) {
-                    font += this._cachedState["fontFamilyType"];
-                }
-
-                this._cachedFont = font.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
-                this._refreshCache = false;
-            }
-
-            return this._cachedFont;
-        }
-
-        private GetOrSetCache(property: string, value: any): any {
-            if (typeof value !== "undefined") {
-                this._cachedState[property] = value;
-                this._refreshCache = true;
-            }
-
-            return this._cachedState[property];
-        }
-    }
-}
-/* Text2d.ts */
-
-
-
-
-
-
-module EndGate.Core.Graphics.Text {
-
-    export class Text2d extends Graphic2d {
-        public _type: string = "Text2d";
-        public FontSettings: FontSettings;
-
-        private _text: string;
-        private _stroker: Utilities.NoopTripInvoker;
-
-        // For GetDrawBounds
-        private _drawBounds: BoundingObject.BoundingRectangle;
-
-        constructor(x: number, y: number, text: string, color: string = "black") {
-            super(new Assets.Vector2d(x, y));
-
-            this._text = text;
-            this._stroker = new Utilities.NoopTripInvoker((context: CanvasRenderingContext2D) => {
-                context.strokeText(this._text, this.Position.X, this.Position.Y);
+        private CreateAndCacheUpdateCallback(game: Game): Loopers.TimedCallback {
+            var updateCallback = new Loopers.TimedCallback(0, () => {
+                game.PrepareUpdate();
             });
 
-            this._drawBounds = new BoundingObject.BoundingRectangle(this.Position, Assets.Size2d.One());
+            this._updateCallbacks[game.ID] = updateCallback;            
 
-            this.FontSettings = new FontSettings();
-            this.Align("center");
-            this.Baseline("middle");
-            this.Color(color);
+            return updateCallback;
+        };
+
+        private CreateAndCacheDrawCallback(game: Game): Loopers.LooperCallback {
+            var drawCallback = new Loopers.LooperCallback(() => {
+                game.PrepareDraw();
+            });
+
+            this._drawCallbacks[game.ID] = drawCallback;
+
+            return drawCallback;
         }
 
-        public Align(alignment?: string): string {
-            return this.State.TextAlign(alignment);
-        }
-
-        public Baseline(baseline?: string): string {
-            return this.State.TextBaseline(baseline);
-        }
-
-        public Color(color?: string): string {
-            return this.State.FillStyle(color);
-        }
-
-        public Shadow(x?: number, y?: number, color?: string, blur?: number): any[] {
-            return [this.ShadowX(x), this.ShadowY(y), this.ShadowColor(color), this.ShadowBlur(blur)];
-        }
-
-        public ShadowColor(color?: string): string {
-            return this.State.ShadowColor(color);
-        }
-
-        public ShadowX(val?: number): number {
-            return this.State.ShadowOffsetX(val);
-        }
-
-        public ShadowY(val?: number): number {
-            return this.State.ShadowOffsetY(val);
-        }
-
-        public ShadowBlur(val?: number): number {
-            return this.State.ShadowBlur(val);
-        }
-
-        public Opacity(alpha?: number): number {
-            return this.State.GlobalAlpha(alpha);
-        }
-
-        public Text(text?: string): string {
-            if (typeof text !== "undefined") {
-                this._text = text;
-            }
-
-            return this._text;
-        }
-
-        public Border(thickness?: number, color?: string): any[] {
-            return [this.BorderThickness(thickness), this.BorderColor(color)];
-        }
-
-        public BorderThickness(thickness?: number): number {
-            if (thickness === 0) {
-                this._stroker.Reset();
-            }
-            else {
-                this._stroker.Trip();
-            }
-
-            return this.State.LineWidth(thickness);
-        }
-
-        public BorderColor(color?: string): string {
-            this._stroker.Trip();
-            return this.State.StrokeStyle(color);
-        }
-
-        public Draw(context: CanvasRenderingContext2D): void {
-            var textSize;
-
-            super.StartDraw(context);
-
-            this.State.Font(this.FontSettings._BuildFont());
-
-            textSize = context.measureText(this._text);
-            this._drawBounds.Size.Width = textSize.width;
-            this._drawBounds.Size.Height = parseInt(this.FontSettings.FontSize()) * 1.5;
-
-            context.fillText(this._text, this.Position.X, this.Position.Y);
-            this._stroker.Invoke(context);
-
-            super.EndDraw(context);
-        }
-
-        public GetDrawBounds(): BoundingObject.Bounds2d {
-            this._drawBounds.Rotation = this.Rotation;
-            this._drawBounds.Position = this.Position;
-
-            return this._drawBounds;
-        }
-    }
-
-}
-/* ImageSource.ts */
-
-
-
-
-module EndGate.Core.Graphics.Sprites {
-
-    export class ImageSource {
-        public Loaded: bool;
-        public ClipLocation: Assets.Vector2d;
-        public ClipSize: Assets.Size2d;
-        public Size: Assets.Size2d;
-        public Source: HTMLImageElement;
-
-        constructor(imageLocation: string, width: number, height: number);
-        constructor(imageLocation: string, width: number, height: number, xClip?: number = 0, yClip?: number = 0, widthClip?: number, heightClip?: number);
-        constructor(imageLocation: string, width: number, height: number, xClip?: number = 0, yClip?: number = 0, widthClip?: number = width, heightClip?: number = height) {
-            this.Loaded = false;
-            this.OnLoaded = new Utilities.EventHandler();
-            this.Size = new Assets.Size2d(width, height);
-
-            this.Source = new Image();
-            this.Source.onload = () => {
-                this.Loaded = true;
-
-                this.OnLoaded.Trigger(this);
+        private CreateUpdateRateSetter(callback: Loopers.TimedCallback): (updateRate: number) => void {
+            return (updateRate) => {
+                callback.Fps = updateRate;
             };
-
-            this.Source.src = imageLocation;
-            this.ClipLocation = new Assets.Vector2d(xClip, yClip);
-            this.ClipSize = new Assets.Size2d(widthClip, heightClip);
-        }
-
-        public OnLoaded: Utilities.EventHandler;
-    }
-
-}
-/* Sprite2d.ts */
-
-
-
-
-
-module EndGate.Core.Graphics.Sprites {
-
-    export class Sprite2d extends Graphic2d {
-        public _type: string = "Sprite2d";
-
-        public Image: ImageSource;
-        public Size: Assets.Size2d;
-
-        constructor(x: number, y: number, image: ImageSource, width?: number = image.ClipSize.Width, height?: number = image.ClipSize.Height) {
-            super(new Assets.Vector2d(x, y));
-
-            this.Image = image;
-            this.Size = new Assets.Size2d(width, height);
-        }
-
-        public Opacity(alpha?: number): number {
-            return this.State.GlobalAlpha(alpha);
-        }
-
-        public Draw(context: CanvasRenderingContext2D): void {
-            super.StartDraw(context);
-
-            context.drawImage(this.Image.Source, this.Image.ClipLocation.X, this.Image.ClipLocation.Y, this.Image.ClipSize.Width, this.Image.ClipSize.Height, this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height)
-
-            super.EndDraw(context);
-        }
-
-        public GetDrawBounds(): BoundingObject.Bounds2d {
-            var bounds = new BoundingObject.BoundingRectangle(this.Position, this.Image.Size);
-
-            bounds.Rotation = this.Rotation;
-
-            return bounds;
         }
     }
-
 }
-/* SpriteAnimation.ts */
 
-
-
-
-
-
-
-module EndGate.Core.Graphics.Sprites.Animation {
-
-    export class SpriteAnimation {
-        private _imageSource: ImageSource;
-        private _fps: number;
-        private _frameSize: Assets.Size2d;
-        private _frameCount: number;
-        private _startOffset: Assets.Vector2d;
-        private _playing: bool;
-        private _repeating: bool;
-        private _currentFrame: number;
-        private _framesPerRow: number;
-        // The last frame time (in ms)
-        private _lastStepAt: number;
-        // Step to the next frame ever X ms
-        private _stepEvery: number;
-
-        constructor(imageSource: ImageSource, fps: number, frameSize: Assets.Size2d, frameCount: number, startOffset?: Assets.Vector2d = Assets.Vector2d.Zero()) {
-            this._imageSource = imageSource;
-            this._frameSize = frameSize;
-            this._frameCount = frameCount;
-            this._startOffset = startOffset;
-            this._playing = false;
-            this._repeating = false;
-            this._currentFrame = 0;
-            this._framesPerRow = Math.min(Math.floor((imageSource.ClipSize.Width - startOffset.X) / frameSize.Width), frameCount);
-            this._lastStepAt = 0;            
-
-            this.OnComplete = new Utilities.EventHandler();
-
-            this.Fps(fps);
-        }
-
-        public OnComplete: Utilities.EventHandler;
-
-        public IsPlaying(): bool {
-            return this._playing;
-        }
-
-        public Play(repeat?: bool = false): void {
-            this._lastStepAt = new Date().getTime();
-            this._repeating = repeat;
-            this._playing = true;
-            this.UpdateImageSource();
-        }
-
-        public Pause(): void {
-            this._playing = false;
-        }
-
-        public Step(count?: number = 1): void {           
-            this._currentFrame += count;
-
-            if (this._currentFrame >= this._frameCount) {
-                if (this._repeating) {
-                    this._currentFrame %= this._frameCount;
-                }
-                else {
-                    this._currentFrame = this._frameCount - 1;
-                    this.OnComplete.Trigger();
-                    this.Stop(false);
-                }
-            }
-
-            if (count !== 0) {
-                this.UpdateImageSource();
-            }
-        }
-
-        public Stop(resetFrame?: bool = true): void {
-            this._playing = false;
-            if (resetFrame) {
-                this.Reset();
-            }
-        }
-
-        public Reset(): void {
-            this._currentFrame = 0;
-        }
-
-        public Fps(newFps?: number): number {
-            if (typeof newFps !== "undefined") {
-                this._fps = newFps;
-                this._stepEvery = 1000 / this._fps;
-            }
-
-            return this._fps;
-        }
-
-        public Update(gameTime: GameTime): void {
-            var timeSinceStep = gameTime.Now.getTime() - this._lastStepAt,
-                stepCount = 0;
-
-            if (this._playing) {
-                stepCount = Math.floor(timeSinceStep / this._stepEvery);
-                if (stepCount !== 0) {
-                    this._lastStepAt = gameTime.Now.getTime();
-                    this.Step(stepCount);
-                }
-            }
-        }
-
-        private UpdateImageSource(): void {
-            var row = this.GetFrameRow(),
-                column = this.GetFrameColumn();
-
-            this._imageSource.ClipLocation.X = this._startOffset.X + column * this._frameSize.Width;
-            this._imageSource.ClipLocation.Y = this._startOffset.Y + row * this._frameSize.Height;
-            this._imageSource.ClipSize = this._frameSize;
-        }
-
-        private GetFrameRow(): number {
-            return Math.floor(this._currentFrame / this._framesPerRow);
-        }
-
-        private GetFrameColumn(): number {
-            return Math.ceil(this._currentFrame % this._framesPerRow);
-        }
-    }
-
-}
+var GameRunnerInstance: EndGate._.GameRunner = new EndGate._.GameRunner();
 /* Shape.ts */
 
 
 
-module EndGate.Core.Graphics.Shapes  {
+module EndGate.Graphics.Abstractions {
 
     export class Shape extends Graphic2d {
         public _type: string = "Shape";
         private _fill: bool;
         private _stroke: bool;
 
-        constructor(position: Assets.Vector2d, color?: string) {
+        constructor(position: Vector2d, color?: string) {
             super(position);
 
             this._fill = false;
@@ -3353,15 +2610,15 @@ module EndGate.Core.Graphics.Shapes  {
 
 
 
-module EndGate.Core.Graphics.Shapes {
+module EndGate.Graphics {
 
-    export class Circle extends Shape {
+    export class Circle extends Abstractions.Shape {
         public _type: string = "Circle";
 
         public Radius: number;
 
         constructor(x: number, y: number, radius: number, color?: string) {
-            super(new Assets.Vector2d(x, y), color);
+            super(new Vector2d(x, y), color);
 
             this.Radius = radius;
         }
@@ -3370,8 +2627,8 @@ module EndGate.Core.Graphics.Shapes {
             context.arc(this.Position.X, this.Position.Y, this.Radius, 0, (<any>Math).twoPI);
         }
 
-        public GetDrawBounds(): BoundingObject.Bounds2d {
-            var bounds = new BoundingObject.BoundingCircle(this.Position, this.Radius);
+        public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
+            var bounds = new Bounds.BoundingCircle(this.Position, this.Radius);
 
             bounds.Rotation = this.Rotation;
 
@@ -3385,25 +2642,25 @@ module EndGate.Core.Graphics.Shapes {
 
 
 
-module EndGate.Core.Graphics.Shapes {
+module EndGate.Graphics {
 
-    export class Rectangle extends Shape {
+    export class Rectangle extends Abstractions.Shape {
         public _type: string = "Rectangle";
 
-        public Size: Assets.Size2d;
+        public Size: Size2d;
 
         constructor(x: number, y: number, width: number, height: number, color?: string) {
-            super(new Assets.Vector2d(x, y), color);
+            super(new Vector2d(x, y), color);
 
-            this.Size = new Assets.Size2d(width, height);
+            this.Size = new Size2d(width, height);
         }
 
         public BuildPath(context: CanvasRenderingContext2D): void {
             context.rect(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
         }
 
-        public GetDrawBounds(): BoundingObject.Bounds2d {
-            var bounds = new BoundingObject.BoundingRectangle(this.Position, this.Size);
+        public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
+            var bounds = new Bounds.BoundingRectangle(this.Position, this.Size);
 
             bounds.Rotation = this.Rotation;
 
@@ -3412,7 +2669,87 @@ module EndGate.Core.Graphics.Shapes {
     }
 
 }
-/* EndGateAPI.ts */
+/* ImageSource.ts */
+
+
+
+
+module EndGate.Graphics.Assets {
+
+    export class ImageSource {
+        public Loaded: bool;
+        public ClipLocation: Vector2d;
+        public ClipSize: Size2d;
+        public Size: Size2d;
+        public Source: HTMLImageElement;
+
+        constructor(imageLocation: string, width: number, height: number);
+        constructor(imageLocation: string, width: number, height: number, xClip?: number = 0, yClip?: number = 0, widthClip?: number, heightClip?: number);
+        constructor(imageLocation: string, width: number, height: number, xClip?: number = 0, yClip?: number = 0, widthClip?: number = width, heightClip?: number = height) {
+            this.Loaded = false;
+            this.OnLoaded = new EventHandler();
+            this.Size = new Size2d(width, height);
+
+            this.Source = new Image();
+            this.Source.onload = () => {
+                this.Loaded = true;
+
+                this.OnLoaded.Trigger(this);
+            };
+
+            this.Source.src = imageLocation;
+            this.ClipLocation = new Vector2d(xClip, yClip);
+            this.ClipSize = new Size2d(widthClip, heightClip);
+        }
+
+        public OnLoaded: EventHandler;
+    }
+
+}
+/* Sprite2d.ts */
+
+
+
+
+
+module EndGate.Graphics {
+
+    export class Sprite2d extends Abstractions.Graphic2d {
+        public _type: string = "Sprite2d";
+
+        public Image: Assets.ImageSource;
+        public Size: Size2d;
+
+        constructor(x: number, y: number, image: Assets.ImageSource, width?: number = image.ClipSize.Width, height?: number = image.ClipSize.Height) {
+            super(new Vector2d(x, y));
+
+            this.Image = image;
+            this.Size = new Size2d(width, height);
+        }
+
+        public Opacity(alpha?: number): number {
+            return this.State.GlobalAlpha(alpha);
+        }
+
+        public Draw(context: CanvasRenderingContext2D): void {
+            super.StartDraw(context);
+
+            context.drawImage(this.Image.Source, this.Image.ClipLocation.X, this.Image.ClipLocation.Y, this.Image.ClipSize.Width, this.Image.ClipSize.Height, this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height)
+
+            super.EndDraw(context);
+        }
+
+        public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
+            var bounds = new Bounds.BoundingRectangle(this.Position, this.Image.Size);
+
+            bounds.Rotation = this.Rotation;
+
+            return bounds;
+        }
+    }
+
+}
+/* SpriteAnimation.ts */
 
 
 
@@ -3420,56 +2757,662 @@ module EndGate.Core.Graphics.Shapes {
 
 
 
+module EndGate.Graphics {
 
+    export class SpriteAnimation {
+        private _imageSource: Assets.ImageSource;
+        private _fps: number;
+        private _frameSize: Size2d;
+        private _frameCount: number;
+        private _startOffset: Vector2d;
+        private _playing: bool;
+        private _repeating: bool;
+        private _currentFrame: number;
+        private _framesPerRow: number;
+        // The last frame time (in ms)
+        private _lastStepAt: number;
+        // Step to the next frame ever X ms
+        private _stepEvery: number;
 
+        constructor(imageSource: Assets.ImageSource, fps: number, frameSize: Size2d, frameCount: number, startOffset?: Vector2d = Vector2d.Zero()) {
+            this._imageSource = imageSource;
+            this._frameSize = frameSize;
+            this._frameCount = frameCount;
+            this._startOffset = startOffset;
+            this._playing = false;
+            this._repeating = false;
+            this._currentFrame = 0;
+            this._framesPerRow = Math.min(Math.floor((imageSource.ClipSize.Width - startOffset.X) / frameSize.Width), frameCount);
+            this._lastStepAt = 0;            
 
+            this.OnComplete = new EventHandler();
 
+            this.Fps(fps);
+        }
 
+        public OnComplete: EventHandler;
 
+        public IsPlaying(): bool {
+            return this._playing;
+        }
 
+        public Play(repeat?: bool = false): void {
+            this._lastStepAt = new Date().getTime();
+            this._repeating = repeat;
+            this._playing = true;
+            this.UpdateImageSource();
+        }
 
+        public Pause(): void {
+            this._playing = false;
+        }
 
+        public Step(count?: number = 1): void {           
+            this._currentFrame += count;
 
+            if (this._currentFrame >= this._frameCount) {
+                if (this._repeating) {
+                    this._currentFrame %= this._frameCount;
+                }
+                else {
+                    this._currentFrame = this._frameCount - 1;
+                    this.OnComplete.Trigger();
+                    this.Stop(false);
+                }
+            }
 
+            if (count !== 0) {
+                this.UpdateImageSource();
+            }
+        }
 
+        public Stop(resetFrame?: bool = true): void {
+            this._playing = false;
+            if (resetFrame) {
+                this.Reset();
+            }
+        }
 
+        public Reset(): void {
+            this._currentFrame = 0;
+        }
 
+        public Fps(newFps?: number): number {
+            if (typeof newFps !== "undefined") {
+                this._fps = newFps;
+                this._stepEvery = 1000 / this._fps;
+            }
 
+            return this._fps;
+        }
 
+        public Update(gameTime: GameTime): void {
+            var timeSinceStep = gameTime.Now.getTime() - this._lastStepAt,
+                stepCount = 0;
 
+            if (this._playing) {
+                stepCount = Math.floor(timeSinceStep / this._stepEvery);
+                if (stepCount !== 0) {
+                    this._lastStepAt = gameTime.Now.getTime();
+                    this.Step(stepCount);
+                }
+            }
+        }
 
-module eg {
-    export class Game extends EndGate.Core.Game { };
-    export class GameConfiguration extends EndGate.Core.GameConfiguration { };
-    export class GameTime extends EndGate.Core.GameTime { };
-    export class EventHandler extends EndGate.Core.Utilities.EventHandler { };
-    export class Scene2d extends EndGate.Core.Rendering.Scene2d { };
-    export class Camera2d extends EndGate.Core.Rendering.Camera.Camera2d { };
-    export class Graphic2d extends EndGate.Core.Graphics.Graphic2d { };
-    export class Text2d extends EndGate.Core.Graphics.Text.Text2d { };
-    export class Sprite2d extends EndGate.Core.Graphics.Sprites.Sprite2d { };
-    export class ImageSource extends EndGate.Core.Graphics.Sprites.ImageSource { };
-    export class SpriteAnimation extends EndGate.Core.Graphics.Sprites.Animation.SpriteAnimation { };
-    export class Shape extends EndGate.Core.Graphics.Shapes.Shape { };
-    export class Circle extends EndGate.Core.Graphics.Shapes.Circle { };
-    export class Rectangle extends EndGate.Core.Graphics.Shapes.Rectangle { };
-    export class Collidable extends EndGate.Core.Collision.Collidable { };
-    export class BoundingCircle extends EndGate.Core.BoundingObject.BoundingCircle { };
-    export class BoundingRectangle extends EndGate.Core.BoundingObject.BoundingRectangle { };
-    export class AudioClip extends EndGate.Core.AudioManagement.AudioClip { };
-    export class AudioPlayer extends EndGate.Core.AudioManagement.AudioPlayer { };
-    export class AudioSettings extends EndGate.Core.AudioManagement.AudioSettings { };
-    export class Size2d extends EndGate.Core.Assets.Size2d { };
-    export class Vector2d extends EndGate.Core.Assets.Vector2d { };
+        private UpdateImageSource(): void {
+            var row = this.GetFrameRow(),
+                column = this.GetFrameColumn();
 
-    export module MovementControllers {
-        export class LinearMovementController extends EndGate.Core.MovementControllers.LinearMovementController { };
+            this._imageSource.ClipLocation.X = this._startOffset.X + column * this._frameSize.Width;
+            this._imageSource.ClipLocation.Y = this._startOffset.Y + row * this._frameSize.Height;
+            this._imageSource.ClipSize = this._frameSize;
+        }
+
+        private GetFrameRow(): number {
+            return Math.floor(this._currentFrame / this._framesPerRow);
+        }
+
+        private GetFrameColumn(): number {
+            return Math.ceil(this._currentFrame % this._framesPerRow);
+        }
+    }
+
+}
+/* FontMeasurement.ts */
+module EndGate.Graphics.Assets {
+
+    export enum FontMeasurement {
+        Ems,
+        Pixels,
+        Points,
+        Percent
     };
-    export module InputControllers {
-        export class DirectionalInputController extends EndGate.Core.Input.Controllers.DirectionalInputController { };
+
+    export class FontMeasurementHelper {
+        public static _measurements: string[];
+
+        public static _Initialize() {
+            FontMeasurementHelper._measurements = ["em", "px", "pt", "%"];
+        }
+
+        public static Get(measurement: FontMeasurement): string {
+            return FontMeasurementHelper._measurements[measurement];
+        }
+    }
+
+    FontMeasurementHelper._Initialize();
+}
+/* FontFamily.ts */
+module EndGate.Graphics.Assets {
+
+    export enum FontFamily {
+        Antiqua,
+        Arial,
+        Avqest,
+        Blackletter,
+        Calibri,
+        ComicSans,
+        Courier,
+        Decorative,
+        Fraktur,
+        Frosty,
+        Garamond,
+        Georgia,
+        Helvetica,
+        Impact,
+        Minion,
+        Modern,
+        Monospace,
+        Palatino,
+        Roman,
+        Script,
+        Swiss,
+        TimesNewRoman,
+        Verdana
     };
-    export module Input {
-        export class MouseHandler extends EndGate.Core.Input.Mouse.MouseHandler { };
-        export class KeyboardHandler extends EndGate.Core.Input.Keyboard.KeyboardHandler { };
+
+    export class FontFamilyHelper {
+        public static _families: { [family: number]: string; };
+
+        public static _Initialize() {
+            FontFamilyHelper._families = (<{ [family: number]: string; } >{});
+
+            for (var family in FontFamily) {
+                if (family !== "_map") {
+                    FontFamilyHelper._families[FontFamily[family]] = family;
+                }
+            }
+
+            FontFamilyHelper._families[FontFamily["TimesNewRoman"]] = "Times New Roman";
+        }
+
+        public static Get(family: FontFamily): string {
+            return FontFamilyHelper._families[family];
+        }
+    }
+
+    FontFamilyHelper._Initialize();
+
+}
+/* FontVariant.ts */
+module EndGate.Graphics.Assets {
+
+    export enum FontVariant {
+        Normal,
+        SmallCaps
     };
-};
+
+    export class FontVariantHelper {
+        public static _variants: { [variant: number]: string; };
+
+        public static _Initialize() {
+            FontVariantHelper._variants = (<{ [family: number]: string; } >{});
+
+            for (var family in FontVariant) {
+                if (family !== "_map") {
+                    FontVariantHelper._variants[FontVariant[family]] = family;
+                }
+            }
+
+            FontVariantHelper._variants["SmallCaps"] = "Times New Roman";
+        }
+
+        public static Get(variant: FontVariant): string {
+            return FontVariantHelper._variants[variant];
+        }
+    }
+
+    FontVariantHelper._Initialize();
+
+}
+
+/* FontStyle.ts */
+module EndGate.Graphics.Assets {
+
+    export enum FontStyle {
+        Normal,
+        Italic,
+        Oblique
+    }
+
+    export class FontStyleHelper {
+        public static _styles: { [family: number]: string; };
+
+        public static _Initialize() {
+            FontStyleHelper._styles = (<{ [family: number]: string; } >{});
+
+            for (var style in FontStyle) {
+                if (style !== "_map") {
+                    FontStyleHelper._styles[FontStyle[style]] = style;
+                }
+            }
+        }
+
+        public static Get(style: FontStyle): string {
+            return FontStyleHelper._styles[style];
+        }
+    }
+
+    FontStyleHelper._Initialize();
+
+}
+
+/* FontSettings.ts */
+
+
+
+
+
+module EndGate.Graphics.Assets {
+
+    export class FontSettings {
+        private _cachedState: { [property: string]: any; };
+        private _cachedFont: string;
+        private _refreshCache: bool;
+
+        constructor() {
+            this._cachedState = {
+                fontSize: "10px",
+                fontFamily: "Times New Roman",
+                fontVariant: "",
+                fontWeight: "",
+                fontStyle: ""
+            };
+
+            this._refreshCache = true;
+            this._BuildFont();
+        }
+
+        public FontSize(size?: number, measurement: FontMeasurement = FontMeasurement.Points): string {
+            if (size !== undefined) {
+                return this.GetOrSetCache("fontSize", size.toString() + FontMeasurementHelper.Get(measurement));
+            }
+            
+            return this._cachedState["fontSize"];
+        }
+
+        public FontFamily(family?: FontFamily): string {
+            return this.GetOrSetCache("fontFamily", FontFamilyHelper.Get(family));
+        }
+
+        public FontVariant(variant?: FontVariant): string {
+            return this.GetOrSetCache("fontVariant", FontVariantHelper.Get(variant));
+        }
+
+        public FontWeight(weight?: string): string {
+            return this.GetOrSetCache("fontWeight", weight);
+        }
+
+        public FontStyle(style?: FontStyle): string {
+            return this.GetOrSetCache("fontStyle", FontStyleHelper.Get(style));
+        }
+
+        public _BuildFont(): string {
+            var font;
+
+            if (this._refreshCache) {
+                font = this._cachedState["fontWeight"] + " " + this._cachedState["fontStyle"] + " " + this._cachedState["fontSize"] + " " + this._cachedState["fontVariant"];
+
+                if (this._cachedState["fontFamily"]) {
+                    font += this._cachedState["fontFamily"];
+
+                    if (this._cachedState["fontFamilyType"]) {
+                        font += ", " + this._cachedState["fontFamilyType"];
+                    }
+                }
+                else if (this._cachedState["fontFamilyType"]) {
+                    font += this._cachedState["fontFamilyType"];
+                }
+
+                this._cachedFont = font.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+                this._refreshCache = false;
+            }
+
+            return this._cachedFont;
+        }
+
+        private GetOrSetCache(property: string, value: any): any {
+            if (typeof value !== "undefined") {
+                this._cachedState[property] = value;
+                this._refreshCache = true;
+            }
+
+            return this._cachedState[property];
+        }
+    }
+}
+/* Text2d.ts */
+
+
+
+
+
+
+module EndGate.Graphics {
+
+    export class Text2d extends Abstractions.Graphic2d {
+        public _type: string = "Text2d";
+        public FontSettings: Assets.FontSettings;
+
+        private _text: string;
+        private _stroker: _.Utilities.NoopTripInvoker;
+
+        // For GetDrawBounds
+        private _drawBounds: Bounds.BoundingRectangle;
+
+        constructor(x: number, y: number, text: string, color: string = "black") {
+            super(new Vector2d(x, y));
+
+            this._text = text;
+            this._stroker = new _.Utilities.NoopTripInvoker((context: CanvasRenderingContext2D) => {
+                context.strokeText(this._text, this.Position.X, this.Position.Y);
+            });
+
+            this._drawBounds = new Bounds.BoundingRectangle(this.Position, Size2d.One());
+
+            this.FontSettings = new Assets.FontSettings();
+            this.Align("center");
+            this.Baseline("middle");
+            this.Color(color);
+        }
+
+        public Align(alignment?: string): string {
+            return this.State.TextAlign(alignment);
+        }
+
+        public Baseline(baseline?: string): string {
+            return this.State.TextBaseline(baseline);
+        }
+
+        public Color(color?: string): string {
+            return this.State.FillStyle(color);
+        }
+
+        public Shadow(x?: number, y?: number, color?: string, blur?: number): any[] {
+            return [this.ShadowX(x), this.ShadowY(y), this.ShadowColor(color), this.ShadowBlur(blur)];
+        }
+
+        public ShadowColor(color?: string): string {
+            return this.State.ShadowColor(color);
+        }
+
+        public ShadowX(val?: number): number {
+            return this.State.ShadowOffsetX(val);
+        }
+
+        public ShadowY(val?: number): number {
+            return this.State.ShadowOffsetY(val);
+        }
+
+        public ShadowBlur(val?: number): number {
+            return this.State.ShadowBlur(val);
+        }
+
+        public Opacity(alpha?: number): number {
+            return this.State.GlobalAlpha(alpha);
+        }
+
+        public Text(text?: string): string {
+            if (typeof text !== "undefined") {
+                this._text = text;
+            }
+
+            return this._text;
+        }
+
+        public Border(thickness?: number, color?: string): any[] {
+            return [this.BorderThickness(thickness), this.BorderColor(color)];
+        }
+
+        public BorderThickness(thickness?: number): number {
+            if (thickness === 0) {
+                this._stroker.Reset();
+            }
+            else {
+                this._stroker.Trip();
+            }
+
+            return this.State.LineWidth(thickness);
+        }
+
+        public BorderColor(color?: string): string {
+            this._stroker.Trip();
+            return this.State.StrokeStyle(color);
+        }
+
+        public Draw(context: CanvasRenderingContext2D): void {
+            var textSize;
+
+            super.StartDraw(context);
+
+            this.State.Font(this.FontSettings._BuildFont());
+
+            textSize = context.measureText(this._text);
+            this._drawBounds.Size.Width = textSize.width;
+            this._drawBounds.Size.Height = parseInt(this.FontSettings.FontSize()) * 1.5;
+
+            context.fillText(this._text, this.Position.X, this.Position.Y);
+            this._stroker.Invoke(context);
+
+            super.EndDraw(context);
+        }
+
+        public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
+            this._drawBounds.Rotation = this.Rotation;
+            this._drawBounds.Position = this.Position;
+
+            return this._drawBounds;
+        }
+    }
+
+}
+/* DirectionalInputController.ts */
+
+
+module EndGate.InputControllers {
+
+    export class DirectionalInputController {
+        private _keyboard: Input.KeyboardHandler;
+        private _onMove: (direction: string, startMoving: bool) => void;
+
+        constructor(keyboard: Input.KeyboardHandler, onMove: (direction: string, startMoving: bool) => void , upKeys?: string[] = ["w", "Up"], rightKeys?: string[] = ["d", "Right"], downKeys?: string[] = ["s", "Down"], leftKeys?: string[] = ["a", "Left"]) {
+            this._keyboard = keyboard;
+            this._onMove = onMove;
+
+            this.BindKeys(upKeys, "OnCommandDown", "Up", true);
+            this.BindKeys(rightKeys, "OnCommandDown", "Right", true);
+            this.BindKeys(downKeys, "OnCommandDown", "Down", true);
+            this.BindKeys(leftKeys, "OnCommandDown", "Left", true);
+            this.BindKeys(upKeys, "OnCommandUp", "Up", false);
+            this.BindKeys(rightKeys, "OnCommandUp", "Right", false);
+            this.BindKeys(downKeys, "OnCommandUp", "Down", false);
+            this.BindKeys(leftKeys, "OnCommandUp", "Left", false);
+        }
+
+        private BindKeys(keyList: string[], bindingAction: string, direction: string, startMoving: bool): void {
+            for (var i = 0; i < keyList.length; i++) {
+                this._keyboard[bindingAction](keyList[i], () => {
+                    this._onMove(direction, startMoving);
+                });
+            }
+        }
+    }
+
+}
+/* LinearDirections.ts */
+module EndGate.MovementControllers._ {
+
+    export class LinearDirections {
+        public Left: bool;
+        public Right: bool;
+        public Up: bool;
+        public Down: bool;
+
+        constructor() {
+            this.Left = false;
+            this.Right = false;
+            this.Up = false;
+            this.Down = false;
+        }
+    }
+
+}
+/* MovementController.ts */
+
+
+
+
+
+module EndGate.MovementControllers.Abstractions {
+    
+    export class MovementController implements IMoveable, IUpdateable {
+        public Position: Vector2d;
+        public Velocity: Vector2d;
+        public Rotation: number;
+        public _frozen: bool;
+        private _moveables: IMoveable[];
+
+        constructor(moveables: IMoveable[]) {
+            this.Position = Vector2d.Zero();
+            this.Velocity = Vector2d.Zero();
+            this.Rotation = 0;
+            this._frozen = false;
+
+            this._moveables = moveables;
+        }
+
+        public Freeze(): void {
+            this._frozen = true;
+        }
+
+        public Thaw(): void {
+            this._frozen = false;
+        }
+
+        public IsMoving(): bool {
+            return !this._frozen && !this.Velocity.IsZero();
+        }
+
+        public Update(gameTime: GameTime): void {
+            // Sync moveables position and rotation
+            for (var i = 0; i < this._moveables.length; i++) {
+                this._moveables[i].Position = this.Position;
+                this._moveables[i].Rotation = this.Rotation;
+            }
+        }
+    }
+
+}
+/* LinearMovementController.ts */
+
+
+
+
+
+
+
+
+module EndGate.MovementControllers {
+
+    export class LinearMovementController extends Abstractions.MovementController {
+        private _moveSpeed: number;
+        private _moving: _.LinearDirections;
+        private _rotationUpdater: EndGate._.Utilities.NoopTripInvoker;
+
+        constructor(moveables: IMoveable[], moveSpeed: number, rotateWithMovements?: bool = true) {
+            super(moveables);
+
+            this._moveSpeed = moveSpeed;
+            this._moving = new _.LinearDirections();
+            this._rotationUpdater = new EndGate._.Utilities.NoopTripInvoker(() => {
+                this.UpdateRotation();
+            }, rotateWithMovements);
+        }
+
+        public IsMovingInDirection(direction: string): bool {
+            return this._moving[direction] || false;
+        }
+
+        public StartMoving(direction: string): void {
+            this.Move(direction, true);
+        }
+
+        public StopMoving(direction: string): void {
+            this.Move(direction, false);
+        }
+
+        public MoveSpeed(speed?: number): number {
+            if (typeof speed !== "undefined") {
+                this._moveSpeed = speed;
+                this.UpdateVelocity();
+            }
+
+            return this._moveSpeed;
+        }
+
+        public Update(gameTime: GameTime): void {
+            if (!this._frozen) {
+                this.Position = this.Position.Add(this.Velocity.Multiply(gameTime.ElapsedSecond));
+
+                super.Update(gameTime);
+            }
+        }
+
+        public Move(direction: string, startMoving: bool): void {
+            if (typeof this._moving[direction] !== "undefined") {
+                this._moving[direction] = startMoving;
+                this.UpdateVelocity();
+                this._rotationUpdater.Invoke();
+            }
+            else {
+                throw new Error(direction + " is an unknown direction.");
+            }
+        }
+
+        private UpdateVelocity(): void {
+            var velocity = Vector2d.Zero();
+
+            if (this._moving.Up) {
+                velocity.Y -= this._moveSpeed;
+            }
+            if (this._moving.Down) {
+                velocity.Y += this._moveSpeed;
+            }
+            if (this._moving.Left) {
+                velocity.X -= this._moveSpeed;
+            }
+            if (this._moving.Right) {
+                velocity.X += this._moveSpeed;
+            }
+
+            this.Velocity = velocity;
+        }
+
+        private UpdateRotation(): void {
+            if (!this.Velocity.IsZero()) {
+                this.Rotation = Math.atan2(this.Velocity.Y, this.Velocity.X);
+            }
+        }
+    }
+
+}

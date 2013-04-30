@@ -150,7 +150,7 @@ var EndGate;
                 };
                 return Vector2d;
             })();
-            Assets.Vector2d = Vector2d;            
+            Vector2d = Vector2d;            
         })(Core.Assets || (Core.Assets = {}));
         var Assets = Core.Assets;
     })(EndGate.Core || (EndGate.Core = {}));
@@ -517,7 +517,7 @@ var EndGate;
                 };
                 return EventHandler;
             })();
-            Utilities.EventHandler = EventHandler;            
+            EventHandler = EventHandler;            
         })(Core.Utilities || (Core.Utilities = {}));
         var Utilities = Core.Utilities;
     })(EndGate.Core || (EndGate.Core = {}));
@@ -550,8 +550,8 @@ var EndGate;
                     this._disposed = false;
                     this.Bounds = bounds;
                     this.ID = Collidable._collidableIDs++;
-                    this.OnCollision = new Core.Utilities.EventHandler();
-                    this.OnDisposed = new Core.Utilities.EventHandler();
+                    this.OnCollision = new Core.EventHandler();
+                    this.OnDisposed = new Core.EventHandler();
                 }
                 Collidable._collidableIDs = 0;
                 Collidable.prototype.IsCollidingWith = function (other) {
@@ -585,7 +585,7 @@ var EndGate;
                     this._type = "CollisionManager";
                     this._collidables = [];
                     this._enabled = false;
-                    this.OnCollision = new Core.Utilities.EventHandler();
+                    this.OnCollision = new Core.EventHandler();
                 }
                 CollisionManager.prototype.Monitor = function (obj) {
                     var _this = this;
@@ -728,7 +728,7 @@ var EndGate;
                 };
                 return Size2d;
             })();
-            Assets.Size2d = Size2d;            
+            Size2d = Size2d;            
         })(Core.Assets || (Core.Assets = {}));
         var Assets = Core.Assets;
     })(EndGate.Core || (EndGate.Core = {}));
@@ -884,7 +884,7 @@ var EndGate;
                 };
                 return Vector2dHelpers;
             })();
-            Assets.Vector2dHelpers = Vector2dHelpers;            
+            Vector2dHelpers = Vector2dHelpers;            
         })(Core.Assets || (Core.Assets = {}));
         var Assets = Core.Assets;
     })(EndGate.Core || (EndGate.Core = {}));
@@ -968,28 +968,28 @@ var EndGate;
                     ];
                 };
                 BoundingRectangle.prototype.TopLeft = function () {
-                    var v = new Core.Assets.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
+                    var v = new Core.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
                     if(this.Rotation === 0) {
                         return v;
                     }
                     return v.RotateAround(this.Position, this.Rotation);
                 };
                 BoundingRectangle.prototype.TopRight = function () {
-                    var v = new Core.Assets.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
+                    var v = new Core.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
                     if(this.Rotation === 0) {
                         return v;
                     }
                     return v.RotateAround(this.Position, this.Rotation);
                 };
                 BoundingRectangle.prototype.BotLeft = function () {
-                    var v = new Core.Assets.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
+                    var v = new Core.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
                     if(this.Rotation === 0) {
                         return v;
                     }
                     return v.RotateAround(this.Position, this.Rotation);
                 };
                 BoundingRectangle.prototype.BotRight = function () {
-                    var v = new Core.Assets.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
+                    var v = new Core.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
                     if(this.Rotation === 0) {
                         return v;
                     }
@@ -1013,8 +1013,8 @@ var EndGate;
                         var theirVertices = rectangle.Vertices();
                         for(var i = 0; i < axisList.length; i++) {
                             var axi = axisList[i];
-                            var myProjections = Core.Assets.Vector2dHelpers.GetMinMaxProjections(axi, myVertices);
-                            var theirProjections = Core.Assets.Vector2dHelpers.GetMinMaxProjections(axi, theirVertices);
+                            var myProjections = Core.Vector2dHelpers.GetMinMaxProjections(axi, myVertices);
+                            var theirProjections = Core.Vector2dHelpers.GetMinMaxProjections(axi, theirVertices);
                             if(theirProjections.Max < myProjections.Min || myProjections.Max < theirProjections.Min) {
                                 return false;
                             }
@@ -1086,7 +1086,7 @@ var EndGate;
                     this._visibleContext = renderOnto.getContext("2d");
                     this._bufferCanvas = document.createElement("canvas");
                     this._bufferContext = this._bufferCanvas.getContext("2d");
-                    this.OnRendererSizeChange = new Core.Utilities.EventHandler();
+                    this.OnRendererSizeChange = new Core.EventHandler();
                     this.UpdateBufferSize();
                     this._disposed = false;
                 }
@@ -1118,7 +1118,7 @@ var EndGate;
                 Renderer2d.prototype.UpdateBufferSize = function () {
                     this._bufferCanvas.width = this._visibleCanvas.width;
                     this._bufferCanvas.height = this._visibleCanvas.height;
-                    this.OnRendererSizeChange.Trigger(new Core.Assets.Size2d(this._visibleCanvas.width, this._visibleCanvas.height));
+                    this.OnRendererSizeChange.Trigger(new Core.Size2d(this._visibleCanvas.width, this._visibleCanvas.height));
                 };
                 return Renderer2d;
             })();
@@ -1234,7 +1234,7 @@ var EndGate;
                         this._camera = camera;
                         this._contextBuilder = new Camera.Camera2dCanvasContextBuilder(this._camera);
                         this.OnRendererSizeChange.Bind(this._contextBuilder.UpdateCanvasCenter);
-                        this._contextBuilder.UpdateCanvasCenter(new Core.Assets.Size2d(renderOnto.width, renderOnto.height));
+                        this._contextBuilder.UpdateCanvasCenter(new Core.Size2d(renderOnto.width, renderOnto.height));
                         this._bufferContext = this._contextBuilder.BuildFrom(this._bufferContext);
                     }
                     Camera2dRenderer.prototype.Render = function (renderables) {
@@ -1288,7 +1288,7 @@ var EndGate;
                         this._onDraw = onDraw;
                     }
                     this.DrawArea = drawArea;
-                    this.Camera = new Rendering.Camera.Camera2d(new Core.Assets.Vector2d(this.DrawArea.width / 2, this.DrawArea.height / 2), new Core.Assets.Size2d(this.DrawArea.width, this.DrawArea.height));
+                    this.Camera = new Rendering.Camera.Camera2d(new Core.Vector2d(this.DrawArea.width / 2, this.DrawArea.height / 2), new Core.Size2d(this.DrawArea.width, this.DrawArea.height));
                     this._renderer = new Rendering.Camera.Camera2dRenderer(this.DrawArea, this.Camera);
                     this._disposed = false;
                 }
@@ -1383,12 +1383,12 @@ var EndGate;
                 var MouseHandler = (function () {
                     function MouseHandler(target) {
                         this._target = target;
-                        this.OnClick = new Core.Utilities.EventHandler();
-                        this.OnDoubleClick = new Core.Utilities.EventHandler();
-                        this.OnDown = new Core.Utilities.EventHandler();
-                        this.OnUp = new Core.Utilities.EventHandler();
-                        this.OnMove = new Core.Utilities.EventHandler();
-                        this.OnScroll = new Core.Utilities.EventHandler();
+                        this.OnClick = new Core.EventHandler();
+                        this.OnDoubleClick = new Core.EventHandler();
+                        this.OnDown = new Core.EventHandler();
+                        this.OnUp = new Core.EventHandler();
+                        this.OnMove = new Core.EventHandler();
+                        this.OnScroll = new Core.EventHandler();
                         this.Wire();
                     }
                     MouseHandler.MouseButtonArray = [
@@ -1448,7 +1448,7 @@ var EndGate;
                         };
                     };
                     MouseHandler.prototype.GetMousePosition = function (event) {
-                        return new Core.Assets.Vector2d(event.offsetX ? (event.offsetX) : event.pageX - this._target.offsetLeft, event.offsetY ? (event.offsetY) : event.pageY - this._target.offsetTop);
+                        return new Core.Vector2d(event.offsetX ? (event.offsetX) : event.pageX - this._target.offsetLeft, event.offsetY ? (event.offsetY) : event.pageY - this._target.offsetTop);
                     };
                     MouseHandler.prototype.GetMouseButton = function (event) {
                         if(event.which) {
@@ -1457,7 +1457,7 @@ var EndGate;
                         return Mouse.MouseButton.Right;
                     };
                     MouseHandler.prototype.GetMouseScrollDierction = function (event) {
-                        return new Core.Assets.Vector2d(-Math.max(-1, Math.min(1, event.wheelDeltaX)), -Math.max(-1, Math.min(1, event.wheelDeltaY)));
+                        return new Core.Vector2d(-Math.max(-1, Math.min(1, event.wheelDeltaX)), -Math.max(-1, Math.min(1, event.wheelDeltaY)));
                     };
                     return MouseHandler;
                 })();
@@ -1660,7 +1660,7 @@ var EndGate;
                         this.Action = action;
                         this.Modifiers = Keyboard.KeyboardModifiers.BuildFromCommandString(command);
                         this.Key = Keyboard.KeyboardCommandHelper.ParseKey(command);
-                        this.OnDispose = new Core.Utilities.EventHandler();
+                        this.OnDispose = new Core.EventHandler();
                         this._onDisposeInvoker = new Core.Utilities.NoopTripInvoker(function () {
                             _this.OnDispose.Trigger();
                         }, true);
@@ -1691,9 +1691,9 @@ var EndGate;
                         });
                         this._onUpCommands = ({
                         });
-                        this.OnKeyPress = new Core.Utilities.EventHandler();
-                        this.OnKeyDown = new Core.Utilities.EventHandler();
-                        this.OnKeyUp = new Core.Utilities.EventHandler();
+                        this.OnKeyPress = new Core.EventHandler();
+                        this.OnKeyDown = new Core.EventHandler();
+                        this.OnKeyUp = new Core.EventHandler();
                         this.Wire();
                     }
                     KeyboardHandler._keyboardCommandIds = 0;
@@ -1822,7 +1822,7 @@ var EndGate;
                     this._audio = document.createElement("audio");
                     this.SetAudioSource(source);
                     this.ApplySettings();
-                    this.OnComplete = new Core.Utilities.EventHandler();
+                    this.OnComplete = new Core.EventHandler();
                 }
                 AudioClip.prototype.Volume = function (percent) {
                     if(typeof percent !== "undefined") {
@@ -2019,8 +2019,8 @@ var EndGate;
         (function (MovementControllers) {
             var MovementController = (function () {
                 function MovementController(moveables) {
-                    this.Position = Core.Assets.Vector2d.Zero();
-                    this.Velocity = Core.Assets.Vector2d.Zero();
+                    this.Position = Core.Vector2d.Zero();
+                    this.Velocity = Core.Vector2d.Zero();
                     this.Rotation = 0;
                     this._frozen = false;
                     this._moveables = moveables;
@@ -2096,7 +2096,7 @@ var EndGate;
                     }
                 };
                 LinearMovementController.prototype.UpdateVelocity = function () {
-                    var velocity = Core.Assets.Vector2d.Zero();
+                    var velocity = Core.Vector2d.Zero();
                     if(this._moving.Up) {
                         velocity.Y -= this._moveSpeed;
                     }
@@ -2460,13 +2460,13 @@ var EndGate;
                     function Text2d(x, y, text, color) {
                         if (typeof color === "undefined") { color = "black"; }
                         var _this = this;
-                                        _super.call(this, new Core.Assets.Vector2d(x, y));
+                                        _super.call(this, new Core.Vector2d(x, y));
                         this._type = "Text2d";
                         this._text = text;
                         this._stroker = new Core.Utilities.NoopTripInvoker(function (context) {
                             context.strokeText(_this._text, _this.Position.X, _this.Position.Y);
                         });
-                        this._drawBounds = new Core.BoundingObject.BoundingRectangle(this.Position, Core.Assets.Size2d.One());
+                        this._drawBounds = new Core.BoundingObject.BoundingRectangle(this.Position, Core.Size2d.One());
                         this.FontSettings = new Text.FontSettings();
                         this.Align("center");
                         this.Baseline("middle");
@@ -2567,16 +2567,16 @@ var EndGate;
                         if (typeof heightClip === "undefined") { heightClip = height; }
                         var _this = this;
                         this.Loaded = false;
-                        this.OnLoaded = new Core.Utilities.EventHandler();
-                        this.Size = new Core.Assets.Size2d(width, height);
+                        this.OnLoaded = new Core.EventHandler();
+                        this.Size = new Core.Size2d(width, height);
                         this.Source = new Image();
                         this.Source.onload = function () {
                             _this.Loaded = true;
                             _this.OnLoaded.Trigger(_this);
                         };
                         this.Source.src = imageLocation;
-                        this.ClipLocation = new Core.Assets.Vector2d(xClip, yClip);
-                        this.ClipSize = new Core.Assets.Size2d(widthClip, heightClip);
+                        this.ClipLocation = new Core.Vector2d(xClip, yClip);
+                        this.ClipSize = new Core.Size2d(widthClip, heightClip);
                     }
                     return ImageSource;
                 })();
@@ -2598,10 +2598,10 @@ var EndGate;
                     function Sprite2d(x, y, image, width, height) {
                         if (typeof width === "undefined") { width = image.ClipSize.Width; }
                         if (typeof height === "undefined") { height = image.ClipSize.Height; }
-                                        _super.call(this, new Core.Assets.Vector2d(x, y));
+                                        _super.call(this, new Core.Vector2d(x, y));
                         this._type = "Sprite2d";
                         this.Image = image;
-                        this.Size = new Core.Assets.Size2d(width, height);
+                        this.Size = new Core.Size2d(width, height);
                     }
                     Sprite2d.prototype.Opacity = function (alpha) {
                         return this.State.GlobalAlpha(alpha);
@@ -2634,7 +2634,7 @@ var EndGate;
                 (function (Animation) {
                     var SpriteAnimation = (function () {
                         function SpriteAnimation(imageSource, fps, frameSize, frameCount, startOffset) {
-                            if (typeof startOffset === "undefined") { startOffset = Core.Assets.Vector2d.Zero(); }
+                            if (typeof startOffset === "undefined") { startOffset = Core.Vector2d.Zero(); }
                             this._imageSource = imageSource;
                             this._frameSize = frameSize;
                             this._frameCount = frameCount;
@@ -2644,7 +2644,7 @@ var EndGate;
                             this._currentFrame = 0;
                             this._framesPerRow = Math.min(Math.floor((imageSource.ClipSize.Width - startOffset.X) / frameSize.Width), frameCount);
                             this._lastStepAt = 0;
-                            this.OnComplete = new Core.Utilities.EventHandler();
+                            this.OnComplete = new Core.EventHandler();
                             this.Fps(fps);
                         }
                         SpriteAnimation.prototype.IsPlaying = function () {
@@ -2824,7 +2824,7 @@ var EndGate;
                 var Circle = (function (_super) {
                     __extends(Circle, _super);
                     function Circle(x, y, radius, color) {
-                                        _super.call(this, new Core.Assets.Vector2d(x, y), color);
+                                        _super.call(this, new Core.Vector2d(x, y), color);
                         this._type = "Circle";
                         this.Radius = radius;
                     }
@@ -2854,9 +2854,9 @@ var EndGate;
                 var Rectangle = (function (_super) {
                     __extends(Rectangle, _super);
                     function Rectangle(x, y, width, height, color) {
-                                        _super.call(this, new Core.Assets.Vector2d(x, y), color);
+                                        _super.call(this, new Core.Vector2d(x, y), color);
                         this._type = "Rectangle";
-                        this.Size = new Core.Assets.Size2d(width, height);
+                        this.Size = new Core.Size2d(width, height);
                     }
                     Rectangle.prototype.BuildPath = function (context) {
                         context.rect(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
@@ -2915,7 +2915,7 @@ var eg;
 
         }
         return EventHandler;
-    })(EndGate.Core.Utilities.EventHandler);
+    })(EndGate.Core.EventHandler);
     eg.EventHandler = EventHandler;    
     ;
     var Scene2d = (function (_super) {
@@ -3085,7 +3085,7 @@ var eg;
 
         }
         return Size2d;
-    })(EndGate.Core.Assets.Size2d);
+    })(EndGate.Core.Size2d);
     eg.Size2d = Size2d;    
     ;
     var Vector2d = (function (_super) {
@@ -3095,7 +3095,7 @@ var eg;
 
         }
         return Vector2d;
-    })(EndGate.Core.Assets.Vector2d);
+    })(EndGate.Core.Vector2d);
     eg.Vector2d = Vector2d;    
     ;
     (function (MovementControllers) {

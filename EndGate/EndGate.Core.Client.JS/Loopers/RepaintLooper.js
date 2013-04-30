@@ -1,6 +1,6 @@
 var EndGate;
 (function (EndGate) {
-    (function (Core) {
+    (function (_) {
         (function (Loopers) {
             var RepaintLooper = (function () {
                 function RepaintLooper() {
@@ -49,9 +49,9 @@ var EndGate;
                 return RepaintLooper;
             })();
             Loopers.RepaintLooper = RepaintLooper;            
-        })(Core.Loopers || (Core.Loopers = {}));
-        var Loopers = Core.Loopers;
-    })(EndGate.Core || (EndGate.Core = {}));
-    var Core = EndGate.Core;
+        })(_.Loopers || (_.Loopers = {}));
+        var Loopers = _.Loopers;
+    })(EndGate._ || (EndGate._ = {}));
+    var _ = EndGate._;
 })(EndGate || (EndGate = {}));
 //@ sourceMappingURL=RepaintLooper.js.map

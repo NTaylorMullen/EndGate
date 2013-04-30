@@ -1,7 +1,7 @@
 /// <reference path="KeyboardCommand.ts" />
 /// <reference path="KeyboardCommandEvent.ts" />
 
-module EndGate.Core.Input.Keyboard {
+module EndGate.Input._ {
     
     export class KeyboardCommandHelper {
         public static ParseKey(command: string): string {

@@ -1,4 +1,4 @@
-module EndGate.Core {
+module EndGate {
 
     export class GameConfiguration {
         private _defaultUpdateRate: number = 40;

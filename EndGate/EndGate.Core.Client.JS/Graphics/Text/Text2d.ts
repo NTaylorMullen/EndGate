@@ -1,32 +1,32 @@
 /// <reference path="../../Assets/Vectors/Vector2d.ts" />
 /// <reference path="../Graphic2d.ts" />
 /// <reference path="../../Utilities/NoopTripInvoker.ts" />
-/// <reference path="../../BoundingObject/BoundingRectangle.ts" />
+/// <reference path="../../Bounds/BoundingRectangle.ts" />
 /// <reference path="Font/FontSettings.ts" />
 
-module EndGate.Core.Graphics.Text {
+module EndGate.Graphics {
 
-    export class Text2d extends Graphic2d {
+    export class Text2d extends Abstractions.Graphic2d {
         public _type: string = "Text2d";
-        public FontSettings: FontSettings;
+        public FontSettings: Assets.FontSettings;
 
         private _text: string;
-        private _stroker: Utilities.NoopTripInvoker;
+        private _stroker: _.Utilities.NoopTripInvoker;
 
         // For GetDrawBounds
-        private _drawBounds: BoundingObject.BoundingRectangle;
+        private _drawBounds: Bounds.BoundingRectangle;
 
         constructor(x: number, y: number, text: string, color: string = "black") {
-            super(new Assets.Vector2d(x, y));
+            super(new Vector2d(x, y));
 
             this._text = text;
-            this._stroker = new Utilities.NoopTripInvoker((context: CanvasRenderingContext2D) => {
+            this._stroker = new _.Utilities.NoopTripInvoker((context: CanvasRenderingContext2D) => {
                 context.strokeText(this._text, this.Position.X, this.Position.Y);
             });
 
-            this._drawBounds = new BoundingObject.BoundingRectangle(this.Position, Assets.Size2d.One());
+            this._drawBounds = new Bounds.BoundingRectangle(this.Position, Size2d.One());
 
-            this.FontSettings = new FontSettings();
+            this.FontSettings = new Assets.FontSettings();
             this.Align("center");
             this.Baseline("middle");
             this.Color(color);
@@ -113,7 +113,7 @@ module EndGate.Core.Graphics.Text {
             super.EndDraw(context);
         }
 
-        public GetDrawBounds(): BoundingObject.Bounds2d {
+        public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
             this._drawBounds.Rotation = this.Rotation;
             this._drawBounds.Position = this.Position;
 

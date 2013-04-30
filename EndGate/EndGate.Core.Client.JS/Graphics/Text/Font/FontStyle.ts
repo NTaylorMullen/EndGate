@@ -1,4 +1,4 @@
-module EndGate.Core.Graphics.Text {
+module EndGate.Graphics.Assets {
 
     export enum FontStyle {
         Normal,

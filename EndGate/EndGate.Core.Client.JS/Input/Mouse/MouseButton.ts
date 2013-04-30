@@ -1,4 +1,4 @@
-module EndGate.Core.Input.Mouse {
+module EndGate.Input {
 
     export class MouseButton {
         public static Left: string = "Left";

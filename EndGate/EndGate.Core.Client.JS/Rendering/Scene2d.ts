@@ -8,15 +8,15 @@
 /// <reference path="IRenderer.d.ts" />
 /// <reference path="Camera/Camera2dRenderer.ts" />
 
-module EndGate.Core.Rendering {
+module EndGate.Rendering {
 
-    export class Scene2d implements ITyped, IDisposable {
+    export class Scene2d implements _.ITyped, IDisposable {
         public _type: string = "Scene";
 
         public DrawArea: HTMLCanvasElement;
-        public Camera: Camera.Camera2d;
+        public Camera: Camera2d;
 
-        private _actors: Graphics.Graphic2d[];
+        private _actors: Graphics.Abstractions.Graphic2d[];
         private _renderer: IRenderer;
         private _onDraw: (context: CanvasRenderingContext2D) => void;
 
@@ -37,16 +37,16 @@ module EndGate.Core.Rendering {
             }
 
             this.DrawArea = drawArea;
-            this.Camera = new Camera.Camera2d(new Assets.Vector2d(this.DrawArea.width / 2, this.DrawArea.height / 2), new Assets.Size2d(this.DrawArea.width, this.DrawArea.height));
-            this._renderer = new Camera.Camera2dRenderer(this.DrawArea, this.Camera);
+            this.Camera = new Camera2d(new Vector2d(this.DrawArea.width / 2, this.DrawArea.height / 2), new Size2d(this.DrawArea.width, this.DrawArea.height));
+            this._renderer = new Camera2dRenderer(this.DrawArea, this.Camera);
             this._disposed = false;
         }
 
-        public Add(actor: Graphics.Graphic2d): void {
+        public Add(actor: Graphics.Abstractions.Graphic2d): void {
             this._actors.push(actor);
         }
 
-        public Remove(actor: Graphics.Graphic2d): void {
+        public Remove(actor: Graphics.Abstractions.Graphic2d): void {
             for (var i = 0; i < this._actors.length; i++) {
                 if (this._actors[i] === actor) {
                     this._actors.splice(i, 1);

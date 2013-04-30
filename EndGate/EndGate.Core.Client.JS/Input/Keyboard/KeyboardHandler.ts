@@ -2,45 +2,45 @@
 /// <reference path="KeyboardCommandEvent.ts" />
 /// <reference path="../../Utilities/EventHandler.ts" />
 
-module EndGate.Core.Input.Keyboard {
+module EndGate.Input {
 
     export class KeyboardHandler {
         private static _keyboardCommandIds: number = 0;
         private _target: HTMLCanvasElement;
-        private _onPressCommands: { [id: number]: KeyboardCommand; };
-        private _onDownCommands: { [id: number]: KeyboardCommand; };
-        private _onUpCommands: { [id: number]: KeyboardCommand; };
+        private _onPressCommands: { [id: number]: Assets.KeyboardCommand; };
+        private _onDownCommands: { [id: number]: Assets.KeyboardCommand; };
+        private _onUpCommands: { [id: number]: Assets.KeyboardCommand; };
 
         constructor() {
             this._onPressCommands = (<any>{});
             this._onDownCommands = (<any>{});
             this._onUpCommands = (<any>{});
 
-            this.OnKeyPress = new Utilities.EventHandler();
-            this.OnKeyDown = new Utilities.EventHandler();
-            this.OnKeyUp = new Utilities.EventHandler();
+            this.OnKeyPress = new EventHandler();
+            this.OnKeyDown = new EventHandler();
+            this.OnKeyUp = new EventHandler();
 
             this.Wire();
         }
 
-        public OnKeyPress: Utilities.EventHandler;
-        public OnKeyDown: Utilities.EventHandler;
-        public OnKeyUp: Utilities.EventHandler;
+        public OnKeyPress: EventHandler;
+        public OnKeyDown: EventHandler;
+        public OnKeyUp: EventHandler;
 
-        public OnCommandPress(keyCommand: string, action: Function): KeyboardCommand {
+        public OnCommandPress(keyCommand: string, action: Function): Assets.KeyboardCommand {
             return this.UpdateCache(keyCommand, action, this._onPressCommands);
         }
 
-        public OnCommandDown(keyCommand: string, action: Function): KeyboardCommand {
+        public OnCommandDown(keyCommand: string, action: Function): Assets.KeyboardCommand {
             return this.UpdateCache(keyCommand, action, this._onDownCommands);
         }
 
-        public OnCommandUp(keyCommand: string, action: Function): KeyboardCommand {
+        public OnCommandUp(keyCommand: string, action: Function): Assets.KeyboardCommand {
             return this.UpdateCache(keyCommand, action, this._onUpCommands);
         }
 
-        private UpdateCache(keyCommand: string, action: Function, store: { [id: number]: KeyboardCommand; }): KeyboardCommand {
-            var command = new KeyboardCommand(keyCommand, action),
+        private UpdateCache(keyCommand: string, action: Function, store: { [id: number]: Assets.KeyboardCommand; }): Assets.KeyboardCommand {
+            var command = new Assets.KeyboardCommand(keyCommand, action),
                 commandId = KeyboardHandler._keyboardCommandIds++;
 
             command.OnDispose.Bind(() => {
@@ -81,7 +81,7 @@ module EndGate.Core.Input.Keyboard {
             return false;
         }
 
-        private BuildKeyEvent(store: { [id: number]: KeyboardCommand; }, eventHandler: Utilities.EventHandler): (ke: KeyboardEvent) => void {
+        private BuildKeyEvent(store: { [id: number]: Assets.KeyboardCommand; }, eventHandler: EventHandler): (ke: KeyboardEvent) => void {
             return (ke: KeyboardEvent) => {
                 var keyboardCommandEvent: KeyboardCommandEvent,
                     propogate: bool = true;

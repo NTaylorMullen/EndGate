@@ -1,9 +1,9 @@
 /// <reference path="../../Assets/Vectors/Vector2d.ts" />
 
-module EndGate.Core.Input.Mouse {
+module EndGate.Input {
 
     export interface IMouseEvent {
-        Position: Assets.Vector2d;
+        Position: Vector2d;
     }
 
 }

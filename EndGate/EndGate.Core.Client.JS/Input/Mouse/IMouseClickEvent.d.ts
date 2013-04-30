@@ -1,7 +1,7 @@
 /// <reference path="IMouseEvent.d.ts" />
 /// <reference path="MouseButton.ts" />
 
-module EndGate.Core.Input.Mouse {
+module EndGate.Input {
 
     export interface IMouseClickEvent extends IMouseEvent {
         Button: string;

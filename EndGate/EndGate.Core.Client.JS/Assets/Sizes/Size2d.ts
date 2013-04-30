@@ -1,8 +1,8 @@
 /// <reference path="../Vectors/Vector2d.ts" />
 /// <reference path="../../Interfaces/ITyped.d.ts" />
 
-module EndGate.Core.Assets {
-    export class Size2d implements ITyped {
+module EndGate {
+    export class Size2d implements _.ITyped {
         public _type: string = "Size2d";
 
         public Width: number;

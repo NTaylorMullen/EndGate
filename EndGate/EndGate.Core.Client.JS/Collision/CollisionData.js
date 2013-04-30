@@ -1,7 +1,7 @@
 var EndGate;
 (function (EndGate) {
-    (function (Core) {
-        (function (Collision) {
+    (function (Collision) {
+        (function (Assets) {
             var CollisionData = (function () {
                 function CollisionData(at, w) {
                     this.At = at;
@@ -9,10 +9,10 @@ var EndGate;
                 }
                 return CollisionData;
             })();
-            Collision.CollisionData = CollisionData;            
-        })(Core.Collision || (Core.Collision = {}));
-        var Collision = Core.Collision;
-    })(EndGate.Core || (EndGate.Core = {}));
-    var Core = EndGate.Core;
+            Assets.CollisionData = CollisionData;            
+        })(Collision.Assets || (Collision.Assets = {}));
+        var Assets = Collision.Assets;
+    })(EndGate.Collision || (EndGate.Collision = {}));
+    var Collision = EndGate.Collision;
 })(EndGate || (EndGate = {}));
 //@ sourceMappingURL=CollisionData.js.map

@@ -1,7 +1,7 @@
 var EndGate;
 (function (EndGate) {
-    (function (Core) {
-        (function (Graphics) {
+    (function (Graphics) {
+        (function (Assets) {
             var Graphic2dState = (function () {
                 function Graphic2dState() {
                     this._type = "Graphic2dState";
@@ -66,10 +66,10 @@ var EndGate;
                 };
                 return Graphic2dState;
             })();
-            Graphics.Graphic2dState = Graphic2dState;            
-        })(Core.Graphics || (Core.Graphics = {}));
-        var Graphics = Core.Graphics;
-    })(EndGate.Core || (EndGate.Core = {}));
-    var Core = EndGate.Core;
+            Assets.Graphic2dState = Graphic2dState;            
+        })(Graphics.Assets || (Graphics.Assets = {}));
+        var Assets = Graphics.Assets;
+    })(EndGate.Graphics || (EndGate.Graphics = {}));
+    var Graphics = EndGate.Graphics;
 })(EndGate || (EndGate = {}));
 //@ sourceMappingURL=Graphic2dState.js.map

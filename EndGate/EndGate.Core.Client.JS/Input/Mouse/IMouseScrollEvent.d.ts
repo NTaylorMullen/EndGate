@@ -1,10 +1,10 @@
 /// <reference path="../../Assets/Vectors/Vector2d.ts" />
 /// <reference path="IMouseEvent.d.ts" />
 
-module EndGate.Core.Input.Mouse {
+module EndGate.Input {
 
     export interface IMouseScrollEvent extends IMouseEvent{
-        Direction: Assets.Vector2d;
+        Direction: Vector2d;
     }
 
 }

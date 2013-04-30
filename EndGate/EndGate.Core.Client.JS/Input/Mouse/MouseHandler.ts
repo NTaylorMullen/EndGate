@@ -5,7 +5,7 @@
 /// <reference path="IMouseClickEvent.d.ts" />
 /// <reference path="IMouseScrollEvent.d.ts" />
 
-module EndGate.Core.Input.Mouse {
+module EndGate.Input {
 
     export class MouseHandler {
         // Used to determine mouse buttons without using extra conditional statements, performance enhancer
@@ -16,23 +16,23 @@ module EndGate.Core.Input.Mouse {
         constructor(target: HTMLCanvasElement) {
             this._target = target;
 
-            this.OnClick = new Utilities.EventHandler();
-            this.OnDoubleClick = new Utilities.EventHandler();
-            this.OnDown = new Utilities.EventHandler();
-            this.OnUp = new Utilities.EventHandler();
-            this.OnMove = new Utilities.EventHandler();
-            this.OnScroll = new Utilities.EventHandler();
+            this.OnClick = new EventHandler();
+            this.OnDoubleClick = new EventHandler();
+            this.OnDown = new EventHandler();
+            this.OnUp = new EventHandler();
+            this.OnMove = new EventHandler();
+            this.OnScroll = new EventHandler();
 
             this.Wire();
         }
 
-        public OnClick: Utilities.EventHandler;
-        public OnDoubleClick: Utilities.EventHandler;
-        public OnDown: Utilities.EventHandler;
-        public OnUp: Utilities.EventHandler;
-        public OnMove: Utilities.EventHandler;
+        public OnClick: EventHandler;
+        public OnDoubleClick: EventHandler;
+        public OnDown: EventHandler;
+        public OnUp: EventHandler;
+        public OnMove: EventHandler;
 
-        public OnScroll: Utilities.EventHandler;
+        public OnScroll: EventHandler;
 
         private Wire(): void {
             this._target.onclick = this._target.oncontextmenu = this.BuildEvent(this.OnClick, this.BuildMouseClickEvent);
@@ -62,7 +62,7 @@ module EndGate.Core.Input.Mouse {
             }
         }
 
-        private BuildEvent(eventHandler: Utilities.EventHandler, mouseEventBuilder: (mouseEvent: MouseEvent) => IMouseEvent, returnValue: bool = false): (e: MouseEvent) => void {
+        private BuildEvent(eventHandler: EventHandler, mouseEventBuilder: (mouseEvent: MouseEvent) => IMouseEvent, returnValue: bool = false): (e: MouseEvent) => void {
             return (e: MouseEvent) => {
                 if (eventHandler.HasBindings()) {
                     eventHandler.Trigger(mouseEventBuilder.call(this, e));
@@ -92,8 +92,8 @@ module EndGate.Core.Input.Mouse {
             };
         }
 
-        private GetMousePosition(event: MouseEvent): Assets.Vector2d {
-            return new Assets.Vector2d(
+        private GetMousePosition(event: MouseEvent): Vector2d {
+            return new Vector2d(
                 event.offsetX ? (event.offsetX) : event.pageX - this._target.offsetLeft,
                 event.offsetY ? (event.offsetY) : event.pageY - this._target.offsetTop
             );
@@ -107,8 +107,8 @@ module EndGate.Core.Input.Mouse {
             return MouseButton.Right;
         }
 
-        private GetMouseScrollDierction(event: any): Assets.Vector2d{
-            return new Assets.Vector2d(-Math.max(-1, Math.min(1, event.wheelDeltaX)), -Math.max(-1, Math.min(1, event.wheelDeltaY)));
+        private GetMouseScrollDierction(event: any): Vector2d{
+            return new Vector2d(-Math.max(-1, Math.min(1, event.wheelDeltaX)), -Math.max(-1, Math.min(1, event.wheelDeltaY)));
         }
     }
 

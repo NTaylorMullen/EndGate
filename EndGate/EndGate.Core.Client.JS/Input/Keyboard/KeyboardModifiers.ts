@@ -1,6 +1,6 @@
 /// <reference path="KeyboardCommand.ts" />
 
-module EndGate.Core.Input.Keyboard {
+module EndGate.Input.Assets {
 
     export class KeyboardModifiers {
         public Ctrl: bool;

@@ -5,14 +5,14 @@
 /// <reference path="../../../GameTime.ts" />
 /// <reference path="../ImageSource.ts" />
 
-module EndGate.Core.Graphics.Sprites.Animation {
+module EndGate.Graphics {
 
     export class SpriteAnimation {
-        private _imageSource: ImageSource;
+        private _imageSource: Assets.ImageSource;
         private _fps: number;
-        private _frameSize: Assets.Size2d;
+        private _frameSize: Size2d;
         private _frameCount: number;
-        private _startOffset: Assets.Vector2d;
+        private _startOffset: Vector2d;
         private _playing: bool;
         private _repeating: bool;
         private _currentFrame: number;
@@ -22,7 +22,7 @@ module EndGate.Core.Graphics.Sprites.Animation {
         // Step to the next frame ever X ms
         private _stepEvery: number;
 
-        constructor(imageSource: ImageSource, fps: number, frameSize: Assets.Size2d, frameCount: number, startOffset?: Assets.Vector2d = Assets.Vector2d.Zero()) {
+        constructor(imageSource: Assets.ImageSource, fps: number, frameSize: Size2d, frameCount: number, startOffset?: Vector2d = Vector2d.Zero()) {
             this._imageSource = imageSource;
             this._frameSize = frameSize;
             this._frameCount = frameCount;
@@ -33,12 +33,12 @@ module EndGate.Core.Graphics.Sprites.Animation {
             this._framesPerRow = Math.min(Math.floor((imageSource.ClipSize.Width - startOffset.X) / frameSize.Width), frameCount);
             this._lastStepAt = 0;            
 
-            this.OnComplete = new Utilities.EventHandler();
+            this.OnComplete = new EventHandler();
 
             this.Fps(fps);
         }
 
-        public OnComplete: Utilities.EventHandler;
+        public OnComplete: EventHandler;
 
         public IsPlaying(): bool {
             return this._playing;

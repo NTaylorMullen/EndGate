@@ -1,6 +1,6 @@
 var EndGate;
 (function (EndGate) {
-    (function (Core) {
+    (function (_) {
         (function (Loopers) {
             var LooperCallback = (function () {
                 function LooperCallback(callback) {
@@ -12,9 +12,9 @@ var EndGate;
                 return LooperCallback;
             })();
             Loopers.LooperCallback = LooperCallback;            
-        })(Core.Loopers || (Core.Loopers = {}));
-        var Loopers = Core.Loopers;
-    })(EndGate.Core || (EndGate.Core = {}));
-    var Core = EndGate.Core;
+        })(_.Loopers || (_.Loopers = {}));
+        var Loopers = _.Loopers;
+    })(EndGate._ || (EndGate._ = {}));
+    var _ = EndGate._;
 })(EndGate || (EndGate = {}));
 //@ sourceMappingURL=LooperCallback.js.map

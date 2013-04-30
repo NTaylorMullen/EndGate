@@ -1,4 +1,4 @@
-module EndGate.Core.Assets {
+module EndGate._ {
 
     export class MinMax {
         public Min: number;

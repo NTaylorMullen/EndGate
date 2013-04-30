@@ -1,14 +1,14 @@
 /// <reference path="../../Assets/Vectors/Vector2d.ts" />
 /// <reference path="../Graphic2d.ts" />
 
-module EndGate.Core.Graphics.Shapes  {
+module EndGate.Graphics.Abstractions {
 
     export class Shape extends Graphic2d {
         public _type: string = "Shape";
         private _fill: bool;
         private _stroke: bool;
 
-        constructor(position: Assets.Vector2d, color?: string) {
+        constructor(position: Vector2d, color?: string) {
             super(position);
 
             this._fill = false;

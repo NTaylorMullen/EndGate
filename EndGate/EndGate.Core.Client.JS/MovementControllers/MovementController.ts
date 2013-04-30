@@ -3,18 +3,18 @@
 /// <reference path="../Interfaces/IUpdateable.d.ts" />
 /// <reference path="../GameTime.ts" />
 
-module EndGate.Core.MovementControllers {
+module EndGate.MovementControllers.Abstractions {
     
     export class MovementController implements IMoveable, IUpdateable {
-        public Position: Assets.Vector2d;
-        public Velocity: Assets.Vector2d;
+        public Position: Vector2d;
+        public Velocity: Vector2d;
         public Rotation: number;
         public _frozen: bool;
         private _moveables: IMoveable[];
 
         constructor(moveables: IMoveable[]) {
-            this.Position = Assets.Vector2d.Zero();
-            this.Velocity = Assets.Vector2d.Zero();
+            this.Position = Vector2d.Zero();
+            this.Velocity = Vector2d.Zero();
             this.Rotation = 0;
             this._frozen = false;
 

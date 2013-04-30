@@ -2,11 +2,11 @@
 /// <reference path="../../Assets/Sizes/Size2d.ts" />
 /// <reference path="Camera2d.ts" />
 
-module EndGate.Core.Rendering.Camera {
+module EndGate.Rendering._ {
 
     export class Camera2dCanvasContextBuilder {
         private _camera: Camera2d;
-        private _canvasCenter: Assets.Vector2d;
+        private _canvasCenter: Vector2d;
         private _translated: bool;
         private _translationState: any[];
 
@@ -84,7 +84,7 @@ module EndGate.Core.Rendering.Camera {
             return context;
         }
 
-        public UpdateCanvasCenter(newSize: Assets.Size2d): void {
+        public UpdateCanvasCenter(newSize: Size2d): void {
             this._canvasCenter.X = newSize.Width / 2;
             this._canvasCenter.Y = newSize.Height / 2;
         }
