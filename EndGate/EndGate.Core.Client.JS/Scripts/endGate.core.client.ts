@@ -9,7 +9,7 @@ module EndGate {
 /* ITyped.d.ts */
 module EndGate._ {
 
-    interface ITyped {
+    export interface ITyped {
         _type: string;
     }
 
@@ -538,6 +538,116 @@ module EndGate._.Loopers {
     }
 
 }
+/* GameRunner.ts */
+
+
+
+
+
+
+module EndGate._ {    
+
+    export class GameRunner implements ITyped {
+        public _type: string = "GameRunner";
+
+        private _updateCallbacks: { [id: number]: Loopers.TimedCallback; };
+        private _drawCallbacks: { [id: number]: Loopers.LooperCallback; };
+        private _updateLoop: Loopers.Looper;
+        private _drawLoop: Loopers.RepaintLooper;
+        private _callbackCount: number;
+
+        constructor() {
+            this._updateCallbacks = <{ [s: number]: Loopers.TimedCallback; } >{};
+            this._drawCallbacks = <{ [s: number]: Loopers.LooperCallback; } >{};
+            this._updateLoop = null;
+            this._drawLoop = null;
+            this._callbackCount = 0;
+        }
+
+        public Register(game: Game): (updateRate: number) => void {
+            var updateCallback = this.CreateAndCacheUpdateCallback(game);
+            var drawCallback = this.CreateAndCacheDrawCallback(game);
+
+            this._callbackCount++;
+
+            // Try to start the loop prior to adding our games callback.  This callback may be the first, hence the "Try"
+            this.TryLoopStart();
+
+            // Add our callback to the game loop (which is now running), it will now be called on an interval dictated by updateCallback
+            this._updateLoop.AddCallback(updateCallback);
+            this._drawLoop.AddCallback(drawCallback);
+
+            // Updating the "updateRate" is an essential element to the game configuration.
+            // If a game is running slowly we need to be able to slow down the update rate.
+            return this.CreateUpdateRateSetter(updateCallback);
+        }
+
+        public Unregister(game: Game): void {
+            var updateCallback,
+                drawCallback;
+
+            if (this._updateCallbacks[game.ID]) {
+                updateCallback = this._updateCallbacks[game.ID];
+                drawCallback = this._drawCallbacks[game.ID];
+
+                this._updateLoop.RemoveCallback(updateCallback);
+                this._drawLoop.RemoveCallback(drawCallback);
+                delete this._updateCallbacks[game.ID];
+                delete this._drawCallbacks[game.ID];
+
+                this._callbackCount--
+
+                this.TryLoopStop();
+            }
+        }
+
+        private TryLoopStart(): void {
+            if (this._callbackCount === 1) {
+                this._updateLoop = new Loopers.Looper();
+                this._updateLoop.Start();
+                this._drawLoop = new Loopers.RepaintLooper();
+                this._drawLoop.Start();
+            }
+        }
+
+        private TryLoopStop(): void {
+            if (this._callbackCount === 0 && this._updateLoop != null) {
+                this._updateLoop.Dispose();
+                this._updateLoop = null;
+                this._drawLoop.Dispose();
+                this._drawLoop = null;
+            }
+        }
+
+        private CreateAndCacheUpdateCallback(game: Game): Loopers.TimedCallback {
+            var updateCallback = new Loopers.TimedCallback(0, () => {
+                game.PrepareUpdate();
+            });
+
+            this._updateCallbacks[game.ID] = updateCallback;            
+
+            return updateCallback;
+        };
+
+        private CreateAndCacheDrawCallback(game: Game): Loopers.LooperCallback {
+            var drawCallback = new Loopers.LooperCallback(() => {
+                game.PrepareDraw();
+            });
+
+            this._drawCallbacks[game.ID] = drawCallback;
+
+            return drawCallback;
+        }
+
+        private CreateUpdateRateSetter(callback: Loopers.TimedCallback): (updateRate: number) => void {
+            return (updateRate) => {
+                callback.Fps = updateRate;
+            };
+        }
+    }
+}
+
+var GameRunnerInstance: EndGate._.GameRunner = new EndGate._.GameRunner();
 /* GameConfiguration.ts */
 module EndGate {
 
@@ -1572,7 +1682,7 @@ module EndGate.Rendering {
 
 module EndGate.Rendering {
 
-    export class Scene2d implements _.ITyped, IDisposable {
+    export class Scene2d implements EndGate._.ITyped, IDisposable {
         public _type: string = "Scene";
 
         public DrawArea: HTMLCanvasElement;
@@ -2396,484 +2506,192 @@ module EndGate {
     }
 
 }
-/* GameRunner.ts */
+/* LinearDirections.ts */
+module EndGate.MovementControllers._ {
 
-
-
-
-
-
-module EndGate._ {    
-
-    export class GameRunner implements ITyped {
-        public _type: string = "GameRunner";
-
-        private _updateCallbacks: { [id: number]: Loopers.TimedCallback; };
-        private _drawCallbacks: { [id: number]: Loopers.LooperCallback; };
-        private _updateLoop: Loopers.Looper;
-        private _drawLoop: Loopers.RepaintLooper;
-        private _callbackCount: number;
+    export class LinearDirections {
+        public Left: bool;
+        public Right: bool;
+        public Up: bool;
+        public Down: bool;
 
         constructor() {
-            this._updateCallbacks = <{ [s: number]: Loopers.TimedCallback; } >{};
-            this._drawCallbacks = <{ [s: number]: Loopers.LooperCallback; } >{};
-            this._updateLoop = null;
-            this._drawLoop = null;
-            this._callbackCount = 0;
-        }
-
-        public Register(game: Game): (updateRate: number) => void {
-            var updateCallback = this.CreateAndCacheUpdateCallback(game);
-            var drawCallback = this.CreateAndCacheDrawCallback(game);
-
-            this._callbackCount++;
-
-            // Try to start the loop prior to adding our games callback.  This callback may be the first, hence the "Try"
-            this.TryLoopStart();
-
-            // Add our callback to the game loop (which is now running), it will now be called on an interval dictated by updateCallback
-            this._updateLoop.AddCallback(updateCallback);
-            this._drawLoop.AddCallback(drawCallback);
-
-            // Updating the "updateRate" is an essential element to the game configuration.
-            // If a game is running slowly we need to be able to slow down the update rate.
-            return this.CreateUpdateRateSetter(updateCallback);
-        }
-
-        public Unregister(game: Game): void {
-            var updateCallback,
-                drawCallback;
-
-            if (this._updateCallbacks[game.ID]) {
-                updateCallback = this._updateCallbacks[game.ID];
-                drawCallback = this._drawCallbacks[game.ID];
-
-                this._updateLoop.RemoveCallback(updateCallback);
-                this._drawLoop.RemoveCallback(drawCallback);
-                delete this._updateCallbacks[game.ID];
-                delete this._drawCallbacks[game.ID];
-
-                this._callbackCount--
-
-                this.TryLoopStop();
-            }
-        }
-
-        private TryLoopStart(): void {
-            if (this._callbackCount === 1) {
-                this._updateLoop = new Loopers.Looper();
-                this._updateLoop.Start();
-                this._drawLoop = new Loopers.RepaintLooper();
-                this._drawLoop.Start();
-            }
-        }
-
-        private TryLoopStop(): void {
-            if (this._callbackCount === 0 && this._updateLoop != null) {
-                this._updateLoop.Dispose();
-                this._updateLoop = null;
-                this._drawLoop.Dispose();
-                this._drawLoop = null;
-            }
-        }
-
-        private CreateAndCacheUpdateCallback(game: Game): Loopers.TimedCallback {
-            var updateCallback = new Loopers.TimedCallback(0, () => {
-                game.PrepareUpdate();
-            });
-
-            this._updateCallbacks[game.ID] = updateCallback;            
-
-            return updateCallback;
-        };
-
-        private CreateAndCacheDrawCallback(game: Game): Loopers.LooperCallback {
-            var drawCallback = new Loopers.LooperCallback(() => {
-                game.PrepareDraw();
-            });
-
-            this._drawCallbacks[game.ID] = drawCallback;
-
-            return drawCallback;
-        }
-
-        private CreateUpdateRateSetter(callback: Loopers.TimedCallback): (updateRate: number) => void {
-            return (updateRate) => {
-                callback.Fps = updateRate;
-            };
-        }
-    }
-}
-
-var GameRunnerInstance: EndGate._.GameRunner = new EndGate._.GameRunner();
-/* Shape.ts */
-
-
-
-module EndGate.Graphics.Abstractions {
-
-    export class Shape extends Graphic2d {
-        public _type: string = "Shape";
-        private _fill: bool;
-        private _stroke: bool;
-
-        constructor(position: Vector2d, color?: string) {
-            super(position);
-
-            this._fill = false;
-            this._stroke = false;
-
-            if (typeof color !== "undefined") {
-                this.Color(color);
-            }
-        }
-
-        public Color(color?: string): string {
-            this._fill = true;
-            return this.State.FillStyle(color);
-        }
-        
-        public Border(thickness?: number, color?: string): any[]{
-            return [this.BorderThickness(thickness), this.BorderColor(color)];
-        }
-
-        public BorderThickness(thickness?: number): number {
-            return this.State.LineWidth(thickness);
-        }
-
-        public BorderColor(color?: string): string {
-            this._stroke = true;
-            return this.State.StrokeStyle(color);
-        }
-
-        public Shadow(x?: number, y?: number, color?: string, blur?: number): any[] {
-            return [this.ShadowX(x), this.ShadowY(y), this.ShadowColor(color), this.ShadowBlur(blur)];
-        }
-
-        public ShadowColor(color?: string): string {
-            this._fill = true;
-            return this.State.ShadowColor(color);
-        }
-
-        public ShadowX(val?: number): number {
-            return this.State.ShadowOffsetX(val);
-        }
-
-        public ShadowY(val?: number): number {
-            return this.State.ShadowOffsetY(val);
-        }
-
-        public ShadowBlur(val?: number): number {
-            return this.State.ShadowBlur(val);
-        }
-
-        public Opacity(alpha?: number): number {
-            return this.State.GlobalAlpha(alpha);
-        }
-
-        public StartDraw(context: CanvasRenderingContext2D): void {
-            context.beginPath();
-
-            super.StartDraw(context);
-        }
-
-        public EndDraw(context: CanvasRenderingContext2D): void {
-            if (this._fill) {
-                context.fill();
-            }
-            
-            if (this._stroke) {
-                context.stroke();
-            }
-            else {
-                context.closePath();
-            }
-
-            super.EndDraw(context);
-        }
-
-        // This should be overridden if you want to build a proper shape
-        public BuildPath(context: CanvasRenderingContext2D): void {
-        }
-
-        // You can override this Draw if you want to implement your own logic for applying styles and drawing (do not recommend overriding)
-        public Draw(context: CanvasRenderingContext2D): void {
-            this.StartDraw(context);
-            this.BuildPath(context);
-            this.EndDraw(context);
-        }
-    }
-}
-/* Circle.ts */
-
-
-
-
-
-module EndGate.Graphics {
-
-    export class Circle extends Abstractions.Shape {
-        public _type: string = "Circle";
-
-        public Radius: number;
-
-        constructor(x: number, y: number, radius: number, color?: string) {
-            super(new Vector2d(x, y), color);
-
-            this.Radius = radius;
-        }
-
-        public BuildPath(context: CanvasRenderingContext2D): void {           
-            context.arc(this.Position.X, this.Position.Y, this.Radius, 0, (<any>Math).twoPI);
-        }
-
-        public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
-            var bounds = new Bounds.BoundingCircle(this.Position, this.Radius);
-
-            bounds.Rotation = this.Rotation;
-
-            return bounds;
-        }
-    }
-}
-/* Rectangle.ts */
-
-
-
-
-
-module EndGate.Graphics {
-
-    export class Rectangle extends Abstractions.Shape {
-        public _type: string = "Rectangle";
-
-        public Size: Size2d;
-
-        constructor(x: number, y: number, width: number, height: number, color?: string) {
-            super(new Vector2d(x, y), color);
-
-            this.Size = new Size2d(width, height);
-        }
-
-        public BuildPath(context: CanvasRenderingContext2D): void {
-            context.rect(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
-        }
-
-        public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
-            var bounds = new Bounds.BoundingRectangle(this.Position, this.Size);
-
-            bounds.Rotation = this.Rotation;
-
-            return bounds;
+            this.Left = false;
+            this.Right = false;
+            this.Up = false;
+            this.Down = false;
         }
     }
 
 }
-/* ImageSource.ts */
+/* MovementController.ts */
 
 
 
 
-module EndGate.Graphics.Assets {
 
-    export class ImageSource {
-        public Loaded: bool;
-        public ClipLocation: Vector2d;
-        public ClipSize: Size2d;
-        public Size: Size2d;
-        public Source: HTMLImageElement;
+module EndGate.MovementControllers.Abstractions {
+    
+    export class MovementController implements IMoveable, IUpdateable {
+        public Position: Vector2d;
+        public Velocity: Vector2d;
+        public Rotation: number;
+        public _frozen: bool;
+        private _moveables: IMoveable[];
 
-        constructor(imageLocation: string, width: number, height: number);
-        constructor(imageLocation: string, width: number, height: number, xClip?: number = 0, yClip?: number = 0, widthClip?: number, heightClip?: number);
-        constructor(imageLocation: string, width: number, height: number, xClip?: number = 0, yClip?: number = 0, widthClip?: number = width, heightClip?: number = height) {
-            this.Loaded = false;
-            this.OnLoaded = new EventHandler();
-            this.Size = new Size2d(width, height);
+        constructor(moveables: IMoveable[]) {
+            this.Position = Vector2d.Zero();
+            this.Velocity = Vector2d.Zero();
+            this.Rotation = 0;
+            this._frozen = false;
 
-            this.Source = new Image();
-            this.Source.onload = () => {
-                this.Loaded = true;
-
-                this.OnLoaded.Trigger(this);
-            };
-
-            this.Source.src = imageLocation;
-            this.ClipLocation = new Vector2d(xClip, yClip);
-            this.ClipSize = new Size2d(widthClip, heightClip);
+            this._moveables = moveables;
         }
 
-        public OnLoaded: EventHandler;
-    }
-
-}
-/* Sprite2d.ts */
-
-
-
-
-
-module EndGate.Graphics {
-
-    export class Sprite2d extends Abstractions.Graphic2d {
-        public _type: string = "Sprite2d";
-
-        public Image: Assets.ImageSource;
-        public Size: Size2d;
-
-        constructor(x: number, y: number, image: Assets.ImageSource, width?: number = image.ClipSize.Width, height?: number = image.ClipSize.Height) {
-            super(new Vector2d(x, y));
-
-            this.Image = image;
-            this.Size = new Size2d(width, height);
+        public Freeze(): void {
+            this._frozen = true;
         }
 
-        public Opacity(alpha?: number): number {
-            return this.State.GlobalAlpha(alpha);
+        public Thaw(): void {
+            this._frozen = false;
         }
 
-        public Draw(context: CanvasRenderingContext2D): void {
-            super.StartDraw(context);
-
-            context.drawImage(this.Image.Source, this.Image.ClipLocation.X, this.Image.ClipLocation.Y, this.Image.ClipSize.Width, this.Image.ClipSize.Height, this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height)
-
-            super.EndDraw(context);
-        }
-
-        public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
-            var bounds = new Bounds.BoundingRectangle(this.Position, this.Image.Size);
-
-            bounds.Rotation = this.Rotation;
-
-            return bounds;
-        }
-    }
-
-}
-/* SpriteAnimation.ts */
-
-
-
-
-
-
-
-module EndGate.Graphics {
-
-    export class SpriteAnimation {
-        private _imageSource: Assets.ImageSource;
-        private _fps: number;
-        private _frameSize: Size2d;
-        private _frameCount: number;
-        private _startOffset: Vector2d;
-        private _playing: bool;
-        private _repeating: bool;
-        private _currentFrame: number;
-        private _framesPerRow: number;
-        // The last frame time (in ms)
-        private _lastStepAt: number;
-        // Step to the next frame ever X ms
-        private _stepEvery: number;
-
-        constructor(imageSource: Assets.ImageSource, fps: number, frameSize: Size2d, frameCount: number, startOffset?: Vector2d = Vector2d.Zero()) {
-            this._imageSource = imageSource;
-            this._frameSize = frameSize;
-            this._frameCount = frameCount;
-            this._startOffset = startOffset;
-            this._playing = false;
-            this._repeating = false;
-            this._currentFrame = 0;
-            this._framesPerRow = Math.min(Math.floor((imageSource.ClipSize.Width - startOffset.X) / frameSize.Width), frameCount);
-            this._lastStepAt = 0;            
-
-            this.OnComplete = new EventHandler();
-
-            this.Fps(fps);
-        }
-
-        public OnComplete: EventHandler;
-
-        public IsPlaying(): bool {
-            return this._playing;
-        }
-
-        public Play(repeat?: bool = false): void {
-            this._lastStepAt = new Date().getTime();
-            this._repeating = repeat;
-            this._playing = true;
-            this.UpdateImageSource();
-        }
-
-        public Pause(): void {
-            this._playing = false;
-        }
-
-        public Step(count?: number = 1): void {           
-            this._currentFrame += count;
-
-            if (this._currentFrame >= this._frameCount) {
-                if (this._repeating) {
-                    this._currentFrame %= this._frameCount;
-                }
-                else {
-                    this._currentFrame = this._frameCount - 1;
-                    this.OnComplete.Trigger();
-                    this.Stop(false);
-                }
-            }
-
-            if (count !== 0) {
-                this.UpdateImageSource();
-            }
-        }
-
-        public Stop(resetFrame?: bool = true): void {
-            this._playing = false;
-            if (resetFrame) {
-                this.Reset();
-            }
-        }
-
-        public Reset(): void {
-            this._currentFrame = 0;
-        }
-
-        public Fps(newFps?: number): number {
-            if (typeof newFps !== "undefined") {
-                this._fps = newFps;
-                this._stepEvery = 1000 / this._fps;
-            }
-
-            return this._fps;
+        public IsMoving(): bool {
+            return !this._frozen && !this.Velocity.IsZero();
         }
 
         public Update(gameTime: GameTime): void {
-            var timeSinceStep = gameTime.Now.getTime() - this._lastStepAt,
-                stepCount = 0;
+            // Sync moveables position and rotation
+            for (var i = 0; i < this._moveables.length; i++) {
+                this._moveables[i].Position = this.Position;
+                this._moveables[i].Rotation = this.Rotation;
+            }
+        }
+    }
 
-            if (this._playing) {
-                stepCount = Math.floor(timeSinceStep / this._stepEvery);
-                if (stepCount !== 0) {
-                    this._lastStepAt = gameTime.Now.getTime();
-                    this.Step(stepCount);
-                }
+}
+/* LinearMovementController.ts */
+
+
+
+
+
+
+
+
+module EndGate.MovementControllers {
+
+    export class LinearMovementController extends Abstractions.MovementController {
+        private _moveSpeed: number;
+        private _moving: _.LinearDirections;
+        private _rotationUpdater: EndGate._.Utilities.NoopTripInvoker;
+
+        constructor(moveables: IMoveable[], moveSpeed: number, rotateWithMovements?: bool = true) {
+            super(moveables);
+
+            this._moveSpeed = moveSpeed;
+            this._moving = new _.LinearDirections();
+            this._rotationUpdater = new EndGate._.Utilities.NoopTripInvoker(() => {
+                this.UpdateRotation();
+            }, rotateWithMovements);
+        }
+
+        public IsMovingInDirection(direction: string): bool {
+            return this._moving[direction] || false;
+        }
+
+        public StartMoving(direction: string): void {
+            this.Move(direction, true);
+        }
+
+        public StopMoving(direction: string): void {
+            this.Move(direction, false);
+        }
+
+        public MoveSpeed(speed?: number): number {
+            if (typeof speed !== "undefined") {
+                this._moveSpeed = speed;
+                this.UpdateVelocity();
+            }
+
+            return this._moveSpeed;
+        }
+
+        public Update(gameTime: GameTime): void {
+            if (!this._frozen) {
+                this.Position = this.Position.Add(this.Velocity.Multiply(gameTime.ElapsedSecond));
+
+                super.Update(gameTime);
             }
         }
 
-        private UpdateImageSource(): void {
-            var row = this.GetFrameRow(),
-                column = this.GetFrameColumn();
-
-            this._imageSource.ClipLocation.X = this._startOffset.X + column * this._frameSize.Width;
-            this._imageSource.ClipLocation.Y = this._startOffset.Y + row * this._frameSize.Height;
-            this._imageSource.ClipSize = this._frameSize;
+        public Move(direction: string, startMoving: bool): void {
+            if (typeof this._moving[direction] !== "undefined") {
+                this._moving[direction] = startMoving;
+                this.UpdateVelocity();
+                this._rotationUpdater.Invoke();
+            }
+            else {
+                throw new Error(direction + " is an unknown direction.");
+            }
         }
 
-        private GetFrameRow(): number {
-            return Math.floor(this._currentFrame / this._framesPerRow);
+        private UpdateVelocity(): void {
+            var velocity = Vector2d.Zero();
+
+            if (this._moving.Up) {
+                velocity.Y -= this._moveSpeed;
+            }
+            if (this._moving.Down) {
+                velocity.Y += this._moveSpeed;
+            }
+            if (this._moving.Left) {
+                velocity.X -= this._moveSpeed;
+            }
+            if (this._moving.Right) {
+                velocity.X += this._moveSpeed;
+            }
+
+            this.Velocity = velocity;
         }
 
-        private GetFrameColumn(): number {
-            return Math.ceil(this._currentFrame % this._framesPerRow);
+        private UpdateRotation(): void {
+            if (!this.Velocity.IsZero()) {
+                this.Rotation = Math.atan2(this.Velocity.Y, this.Velocity.X);
+            }
+        }
+    }
+
+}
+/* DirectionalInputController.ts */
+
+
+module EndGate.InputControllers {
+
+    export class DirectionalInputController {
+        private _keyboard: Input.KeyboardHandler;
+        private _onMove: (direction: string, startMoving: bool) => void;
+
+        constructor(keyboard: Input.KeyboardHandler, onMove: (direction: string, startMoving: bool) => void , upKeys?: string[] = ["w", "Up"], rightKeys?: string[] = ["d", "Right"], downKeys?: string[] = ["s", "Down"], leftKeys?: string[] = ["a", "Left"]) {
+            this._keyboard = keyboard;
+            this._onMove = onMove;
+
+            this.BindKeys(upKeys, "OnCommandDown", "Up", true);
+            this.BindKeys(rightKeys, "OnCommandDown", "Right", true);
+            this.BindKeys(downKeys, "OnCommandDown", "Down", true);
+            this.BindKeys(leftKeys, "OnCommandDown", "Left", true);
+            this.BindKeys(upKeys, "OnCommandUp", "Up", false);
+            this.BindKeys(rightKeys, "OnCommandUp", "Right", false);
+            this.BindKeys(downKeys, "OnCommandUp", "Down", false);
+            this.BindKeys(leftKeys, "OnCommandUp", "Left", false);
+        }
+
+        private BindKeys(keyList: string[], bindingAction: string, direction: string, startMoving: bool): void {
+            for (var i = 0; i < keyList.length; i++) {
+                this._keyboard[bindingAction](keyList[i], () => {
+                    this._onMove(direction, startMoving);
+                });
+            }
         }
     }
 
@@ -3226,193 +3044,403 @@ module EndGate.Graphics {
     }
 
 }
-/* DirectionalInputController.ts */
+/* ImageSource.ts */
 
 
-module EndGate.InputControllers {
 
-    export class DirectionalInputController {
-        private _keyboard: Input.KeyboardHandler;
-        private _onMove: (direction: string, startMoving: bool) => void;
 
-        constructor(keyboard: Input.KeyboardHandler, onMove: (direction: string, startMoving: bool) => void , upKeys?: string[] = ["w", "Up"], rightKeys?: string[] = ["d", "Right"], downKeys?: string[] = ["s", "Down"], leftKeys?: string[] = ["a", "Left"]) {
-            this._keyboard = keyboard;
-            this._onMove = onMove;
+module EndGate.Graphics.Assets {
 
-            this.BindKeys(upKeys, "OnCommandDown", "Up", true);
-            this.BindKeys(rightKeys, "OnCommandDown", "Right", true);
-            this.BindKeys(downKeys, "OnCommandDown", "Down", true);
-            this.BindKeys(leftKeys, "OnCommandDown", "Left", true);
-            this.BindKeys(upKeys, "OnCommandUp", "Up", false);
-            this.BindKeys(rightKeys, "OnCommandUp", "Right", false);
-            this.BindKeys(downKeys, "OnCommandUp", "Down", false);
-            this.BindKeys(leftKeys, "OnCommandUp", "Left", false);
+    export class ImageSource {
+        public Loaded: bool;
+        public ClipLocation: Vector2d;
+        public ClipSize: Size2d;
+        public Size: Size2d;
+        public Source: HTMLImageElement;
+
+        constructor(imageLocation: string, width: number, height: number);
+        constructor(imageLocation: string, width: number, height: number, xClip?: number = 0, yClip?: number = 0, widthClip?: number, heightClip?: number);
+        constructor(imageLocation: string, width: number, height: number, xClip?: number = 0, yClip?: number = 0, widthClip?: number = width, heightClip?: number = height) {
+            this.Loaded = false;
+            this.OnLoaded = new EventHandler();
+            this.Size = new Size2d(width, height);
+
+            this.Source = new Image();
+            this.Source.onload = () => {
+                this.Loaded = true;
+
+                this.OnLoaded.Trigger(this);
+            };
+
+            this.Source.src = imageLocation;
+            this.ClipLocation = new Vector2d(xClip, yClip);
+            this.ClipSize = new Size2d(widthClip, heightClip);
         }
 
-        private BindKeys(keyList: string[], bindingAction: string, direction: string, startMoving: bool): void {
-            for (var i = 0; i < keyList.length; i++) {
-                this._keyboard[bindingAction](keyList[i], () => {
-                    this._onMove(direction, startMoving);
-                });
+        public OnLoaded: EventHandler;
+    }
+
+}
+/* Sprite2d.ts */
+
+
+
+
+
+module EndGate.Graphics {
+
+    export class Sprite2d extends Abstractions.Graphic2d {
+        public _type: string = "Sprite2d";
+
+        public Image: Assets.ImageSource;
+        public Size: Size2d;
+
+        constructor(x: number, y: number, image: Assets.ImageSource, width?: number = image.ClipSize.Width, height?: number = image.ClipSize.Height) {
+            super(new Vector2d(x, y));
+
+            this.Image = image;
+            this.Size = new Size2d(width, height);
+        }
+
+        public Opacity(alpha?: number): number {
+            return this.State.GlobalAlpha(alpha);
+        }
+
+        public Draw(context: CanvasRenderingContext2D): void {
+            super.StartDraw(context);
+
+            context.drawImage(this.Image.Source, this.Image.ClipLocation.X, this.Image.ClipLocation.Y, this.Image.ClipSize.Width, this.Image.ClipSize.Height, this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height)
+
+            super.EndDraw(context);
+        }
+
+        public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
+            var bounds = new Bounds.BoundingRectangle(this.Position, this.Image.Size);
+
+            bounds.Rotation = this.Rotation;
+
+            return bounds;
+        }
+    }
+
+}
+/* SpriteAnimation.ts */
+
+
+
+
+
+
+
+module EndGate.Graphics {
+
+    export class SpriteAnimation {
+        private _imageSource: Assets.ImageSource;
+        private _fps: number;
+        private _frameSize: Size2d;
+        private _frameCount: number;
+        private _startOffset: Vector2d;
+        private _playing: bool;
+        private _repeating: bool;
+        private _currentFrame: number;
+        private _framesPerRow: number;
+        // The last frame time (in ms)
+        private _lastStepAt: number;
+        // Step to the next frame ever X ms
+        private _stepEvery: number;
+
+        constructor(imageSource: Assets.ImageSource, fps: number, frameSize: Size2d, frameCount: number, startOffset?: Vector2d = Vector2d.Zero()) {
+            this._imageSource = imageSource;
+            this._frameSize = frameSize;
+            this._frameCount = frameCount;
+            this._startOffset = startOffset;
+            this._playing = false;
+            this._repeating = false;
+            this._currentFrame = 0;
+            this._framesPerRow = Math.min(Math.floor((imageSource.ClipSize.Width - startOffset.X) / frameSize.Width), frameCount);
+            this._lastStepAt = 0;            
+
+            this.OnComplete = new EventHandler();
+
+            this.Fps(fps);
+        }
+
+        public OnComplete: EventHandler;
+
+        public IsPlaying(): bool {
+            return this._playing;
+        }
+
+        public Play(repeat?: bool = false): void {
+            this._lastStepAt = new Date().getTime();
+            this._repeating = repeat;
+            this._playing = true;
+            this.UpdateImageSource();
+        }
+
+        public Pause(): void {
+            this._playing = false;
+        }
+
+        public Step(count?: number = 1): void {           
+            this._currentFrame += count;
+
+            if (this._currentFrame >= this._frameCount) {
+                if (this._repeating) {
+                    this._currentFrame %= this._frameCount;
+                }
+                else {
+                    this._currentFrame = this._frameCount - 1;
+                    this.OnComplete.Trigger();
+                    this.Stop(false);
+                }
+            }
+
+            if (count !== 0) {
+                this.UpdateImageSource();
             }
         }
-    }
 
-}
-/* LinearDirections.ts */
-module EndGate.MovementControllers._ {
-
-    export class LinearDirections {
-        public Left: bool;
-        public Right: bool;
-        public Up: bool;
-        public Down: bool;
-
-        constructor() {
-            this.Left = false;
-            this.Right = false;
-            this.Up = false;
-            this.Down = false;
-        }
-    }
-
-}
-/* MovementController.ts */
-
-
-
-
-
-module EndGate.MovementControllers.Abstractions {
-    
-    export class MovementController implements IMoveable, IUpdateable {
-        public Position: Vector2d;
-        public Velocity: Vector2d;
-        public Rotation: number;
-        public _frozen: bool;
-        private _moveables: IMoveable[];
-
-        constructor(moveables: IMoveable[]) {
-            this.Position = Vector2d.Zero();
-            this.Velocity = Vector2d.Zero();
-            this.Rotation = 0;
-            this._frozen = false;
-
-            this._moveables = moveables;
+        public Stop(resetFrame?: bool = true): void {
+            this._playing = false;
+            if (resetFrame) {
+                this.Reset();
+            }
         }
 
-        public Freeze(): void {
-            this._frozen = true;
+        public Reset(): void {
+            this._currentFrame = 0;
         }
 
-        public Thaw(): void {
-            this._frozen = false;
-        }
+        public Fps(newFps?: number): number {
+            if (typeof newFps !== "undefined") {
+                this._fps = newFps;
+                this._stepEvery = 1000 / this._fps;
+            }
 
-        public IsMoving(): bool {
-            return !this._frozen && !this.Velocity.IsZero();
+            return this._fps;
         }
 
         public Update(gameTime: GameTime): void {
-            // Sync moveables position and rotation
-            for (var i = 0; i < this._moveables.length; i++) {
-                this._moveables[i].Position = this.Position;
-                this._moveables[i].Rotation = this.Rotation;
+            var timeSinceStep = gameTime.Now.getTime() - this._lastStepAt,
+                stepCount = 0;
+
+            if (this._playing) {
+                stepCount = Math.floor(timeSinceStep / this._stepEvery);
+                if (stepCount !== 0) {
+                    this._lastStepAt = gameTime.Now.getTime();
+                    this.Step(stepCount);
+                }
             }
+        }
+
+        private UpdateImageSource(): void {
+            var row = this.GetFrameRow(),
+                column = this.GetFrameColumn();
+
+            this._imageSource.ClipLocation.X = this._startOffset.X + column * this._frameSize.Width;
+            this._imageSource.ClipLocation.Y = this._startOffset.Y + row * this._frameSize.Height;
+            this._imageSource.ClipSize = this._frameSize;
+        }
+
+        private GetFrameRow(): number {
+            return Math.floor(this._currentFrame / this._framesPerRow);
+        }
+
+        private GetFrameColumn(): number {
+            return Math.ceil(this._currentFrame % this._framesPerRow);
         }
     }
 
 }
-/* LinearMovementController.ts */
+/* Shape.ts */
 
 
 
+module EndGate.Graphics.Abstractions {
 
+    export class Shape extends Graphic2d {
+        public _type: string = "Shape";
+        private _fill: bool;
+        private _stroke: bool;
 
+        constructor(position: Vector2d, color?: string) {
+            super(position);
 
+            this._fill = false;
+            this._stroke = false;
 
-
-module EndGate.MovementControllers {
-
-    export class LinearMovementController extends Abstractions.MovementController {
-        private _moveSpeed: number;
-        private _moving: _.LinearDirections;
-        private _rotationUpdater: EndGate._.Utilities.NoopTripInvoker;
-
-        constructor(moveables: IMoveable[], moveSpeed: number, rotateWithMovements?: bool = true) {
-            super(moveables);
-
-            this._moveSpeed = moveSpeed;
-            this._moving = new _.LinearDirections();
-            this._rotationUpdater = new EndGate._.Utilities.NoopTripInvoker(() => {
-                this.UpdateRotation();
-            }, rotateWithMovements);
-        }
-
-        public IsMovingInDirection(direction: string): bool {
-            return this._moving[direction] || false;
-        }
-
-        public StartMoving(direction: string): void {
-            this.Move(direction, true);
-        }
-
-        public StopMoving(direction: string): void {
-            this.Move(direction, false);
-        }
-
-        public MoveSpeed(speed?: number): number {
-            if (typeof speed !== "undefined") {
-                this._moveSpeed = speed;
-                this.UpdateVelocity();
-            }
-
-            return this._moveSpeed;
-        }
-
-        public Update(gameTime: GameTime): void {
-            if (!this._frozen) {
-                this.Position = this.Position.Add(this.Velocity.Multiply(gameTime.ElapsedSecond));
-
-                super.Update(gameTime);
+            if (typeof color !== "undefined") {
+                this.Color(color);
             }
         }
 
-        public Move(direction: string, startMoving: bool): void {
-            if (typeof this._moving[direction] !== "undefined") {
-                this._moving[direction] = startMoving;
-                this.UpdateVelocity();
-                this._rotationUpdater.Invoke();
+        public Color(color?: string): string {
+            this._fill = true;
+            return this.State.FillStyle(color);
+        }
+        
+        public Border(thickness?: number, color?: string): any[]{
+            return [this.BorderThickness(thickness), this.BorderColor(color)];
+        }
+
+        public BorderThickness(thickness?: number): number {
+            return this.State.LineWidth(thickness);
+        }
+
+        public BorderColor(color?: string): string {
+            this._stroke = true;
+            return this.State.StrokeStyle(color);
+        }
+
+        public Shadow(x?: number, y?: number, color?: string, blur?: number): any[] {
+            return [this.ShadowX(x), this.ShadowY(y), this.ShadowColor(color), this.ShadowBlur(blur)];
+        }
+
+        public ShadowColor(color?: string): string {
+            this._fill = true;
+            return this.State.ShadowColor(color);
+        }
+
+        public ShadowX(val?: number): number {
+            return this.State.ShadowOffsetX(val);
+        }
+
+        public ShadowY(val?: number): number {
+            return this.State.ShadowOffsetY(val);
+        }
+
+        public ShadowBlur(val?: number): number {
+            return this.State.ShadowBlur(val);
+        }
+
+        public Opacity(alpha?: number): number {
+            return this.State.GlobalAlpha(alpha);
+        }
+
+        public StartDraw(context: CanvasRenderingContext2D): void {
+            context.beginPath();
+
+            super.StartDraw(context);
+        }
+
+        public EndDraw(context: CanvasRenderingContext2D): void {
+            if (this._fill) {
+                context.fill();
+            }
+            
+            if (this._stroke) {
+                context.stroke();
             }
             else {
-                throw new Error(direction + " is an unknown direction.");
+                context.closePath();
             }
+
+            super.EndDraw(context);
         }
 
-        private UpdateVelocity(): void {
-            var velocity = Vector2d.Zero();
-
-            if (this._moving.Up) {
-                velocity.Y -= this._moveSpeed;
-            }
-            if (this._moving.Down) {
-                velocity.Y += this._moveSpeed;
-            }
-            if (this._moving.Left) {
-                velocity.X -= this._moveSpeed;
-            }
-            if (this._moving.Right) {
-                velocity.X += this._moveSpeed;
-            }
-
-            this.Velocity = velocity;
+        // This should be overridden if you want to build a proper shape
+        public BuildPath(context: CanvasRenderingContext2D): void {
         }
 
-        private UpdateRotation(): void {
-            if (!this.Velocity.IsZero()) {
-                this.Rotation = Math.atan2(this.Velocity.Y, this.Velocity.X);
-            }
+        // You can override this Draw if you want to implement your own logic for applying styles and drawing (do not recommend overriding)
+        public Draw(context: CanvasRenderingContext2D): void {
+            this.StartDraw(context);
+            this.BuildPath(context);
+            this.EndDraw(context);
+        }
+    }
+}
+/* Circle.ts */
+
+
+
+
+
+module EndGate.Graphics {
+
+    export class Circle extends Abstractions.Shape {
+        public _type: string = "Circle";
+
+        public Radius: number;
+
+        constructor(x: number, y: number, radius: number, color?: string) {
+            super(new Vector2d(x, y), color);
+
+            this.Radius = radius;
+        }
+
+        public BuildPath(context: CanvasRenderingContext2D): void {           
+            context.arc(this.Position.X, this.Position.Y, this.Radius, 0, (<any>Math).twoPI);
+        }
+
+        public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
+            var bounds = new Bounds.BoundingCircle(this.Position, this.Radius);
+
+            bounds.Rotation = this.Rotation;
+
+            return bounds;
+        }
+    }
+}
+/* Rectangle.ts */
+
+
+
+
+
+module EndGate.Graphics {
+
+    export class Rectangle extends Abstractions.Shape {
+        public _type: string = "Rectangle";
+
+        public Size: Size2d;
+
+        constructor(x: number, y: number, width: number, height: number, color?: string) {
+            super(new Vector2d(x, y), color);
+
+            this.Size = new Size2d(width, height);
+        }
+
+        public BuildPath(context: CanvasRenderingContext2D): void {
+            context.rect(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
+        }
+
+        public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
+            var bounds = new Bounds.BoundingRectangle(this.Position, this.Size);
+
+            bounds.Rotation = this.Rotation;
+
+            return bounds;
         }
     }
 
 }
+/* EndGateAPI.ts */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import eg = EndGate;

@@ -1,6 +1,6 @@
 module EndGate._ {
 
-    interface ITyped {
+    export interface ITyped {
         _type: string;
     }
 

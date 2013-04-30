@@ -1,5 +1,5 @@
 /* IDisposable.d.ts */
-module EndGate.Core {
+module EndGate {
 
     export interface IDisposable {
         Dispose(): void;
@@ -7,15 +7,19 @@ module EndGate.Core {
 
 }
 /* ITyped.d.ts */
-interface ITyped {
-    _type: string;
+module EndGate._ {
+
+    export interface ITyped {
+        _type: string;
+    }
+
 }
 /* GameTime.ts */
 
 
-module EndGate.Core {
+module EndGate {
 
-    export class GameTime implements ITyped {
+    export class GameTime implements _.ITyped {
         public _type: string = "GameTime";
 
         public Now: Date;
@@ -47,10 +51,10 @@ module EndGate.Core {
 /* IUpdateable.d.ts */
 
 
-module EndGate.Core {
+module EndGate {
 
     export interface IUpdateable {
-        Update(gameTime: EndGate.Core.GameTime): void;
+        Update(gameTime: EndGate.GameTime): void;
     }
 
 }
@@ -70,8 +74,8 @@ Math.roundTo = function (val?: number, decimals?: number): number {
 
 
 
-module EndGate.Core.Assets {
-    export class Vector2d implements ITyped {
+module EndGate {
+    export class Vector2d implements _.ITyped {
         public _type: string = "Vector2d";
 
         public X: number;
@@ -234,10 +238,10 @@ module EndGate.Core.Assets {
 /* IMoveable.d.ts */
 
 
-module EndGate.Core {
+module EndGate {
 
     export interface IMoveable {
-        Position: Assets.Vector2d;
+        Position: Vector2d;
         Rotation: number;
     }
 
@@ -248,15 +252,15 @@ module EndGate.Core {
 
 
 
-module EndGate.Core.BoundingObject {
+module EndGate.Bounds.Abstractions {
 
     export class Bounds2d implements IMoveable {
         public _boundsType: string = "Bounds2d";
 
-        public Position: Assets.Vector2d;
+        public Position: Vector2d;
         public Rotation: number;
 
-        constructor(position: Assets.Vector2d) {
+        constructor(position: Vector2d) {
             this.Position = position;
             this.Rotation = 0;
         }
@@ -265,7 +269,7 @@ module EndGate.Core.BoundingObject {
             throw new Error("This method is abstract!");
         }
 
-        public ContainsPoint(point: Assets.Vector2d): bool {
+        public ContainsPoint(point: Vector2d): bool {
             throw new Error("This method is abstract!");
         }
 
@@ -297,19 +301,19 @@ module EndGate.Core.BoundingObject {
 /* IRenderable.d.ts */
 
 
-module EndGate.Core.Rendering {
+module EndGate.Rendering {
 
     export interface IRenderable {
         ZIndex: number;
         Draw(context: CanvasRenderingContext2D): void;
-        GetDrawBounds(): BoundingObject.Bounds2d;
+        GetDrawBounds(): Bounds.Abstractions.Bounds2d;
     }
 
 }
 /* LooperCallback.ts */
 
 
-module EndGate.Core.Loopers {
+module EndGate._.Loopers {
 
     export class LooperCallback implements ITyped {
         public _type: string = "LooperCallback";
@@ -330,7 +334,7 @@ module EndGate.Core.Loopers {
 
 
 
-module EndGate.Core.Loopers {
+module EndGate._.Loopers {
 
     export interface ILooper extends IDisposable, ITyped {
         Start(): void;
@@ -343,7 +347,7 @@ module EndGate.Core.Loopers {
 
 
 
-module EndGate.Core.Loopers {
+module EndGate._.Loopers {
 
     export class TimedCallback implements ITyped extends LooperCallback {
         public _type: string = "TimedCallback";
@@ -367,7 +371,7 @@ module EndGate.Core.Loopers {
 
 
 
-module EndGate.Core.Loopers {
+module EndGate._.Loopers {
 
     export class Looper implements ILooper {
         public _type: string = "Looper";
@@ -465,7 +469,7 @@ window.OnRepaintCompleted = () => {
 
 
 
-module EndGate.Core.Loopers {
+module EndGate._.Loopers {
 
     // This looper uses the request animation frame to run its internal loop
     // The method has been aliased as "OnRepaintCompleted" via the WindowExtensions
@@ -541,7 +545,7 @@ module EndGate.Core.Loopers {
 
 
 
-module EndGate.Core {    
+module EndGate._ {    
 
     export class GameRunner implements ITyped {
         public _type: string = "GameRunner";
@@ -643,9 +647,9 @@ module EndGate.Core {
     }
 }
 
-var GameRunnerInstance: EndGate.Core.GameRunner = new EndGate.Core.GameRunner();
+var GameRunnerInstance: EndGate._.GameRunner = new EndGate._.GameRunner();
 /* GameConfiguration.ts */
-module EndGate.Core {
+module EndGate {
 
     export class GameConfiguration {
         private _defaultUpdateRate: number = 40;
@@ -673,9 +677,9 @@ module EndGate.Core {
 
 
 
-module EndGate.Core.Utilities {
+module EndGate {
 
-    export class EventHandler implements ITyped {
+    export class EventHandler implements _.ITyped {
         public _type: string = "Event";
 
         private _actions: Function[];
@@ -718,13 +722,13 @@ module EndGate.Core.Utilities {
 
 
 
-module EndGate.Core.Collision {
+module EndGate.Collision.Assets {
 
     export class CollisionData {
-        public At: Assets.Vector2d;
+        public At: Vector2d;
         public With: Collidable;
 
-        constructor(at: Assets.Vector2d, w: Collidable) {
+        constructor(at: Vector2d, w: Collidable) {
             this.At = at;
             this.With = w;
         }
@@ -739,34 +743,34 @@ module EndGate.Core.Collision {
 
 
 
-module EndGate.Core.Collision {
+module EndGate.Collision {
 
-    export class Collidable implements IDisposable, ITyped {
+    export class Collidable implements IDisposable, _.ITyped {
         public _type: string = "Collidable";
 
-        public Bounds: BoundingObject.Bounds2d;
+        public Bounds: Bounds.Abstractions.Bounds2d;
         public ID: number;
 
         private static _collidableIDs: number = 0;
         private _disposed: bool;
 
-        constructor(bounds: BoundingObject.Bounds2d) {
+        constructor(bounds: Bounds.Abstractions.Bounds2d) {
             this._disposed = false;
             this.Bounds = bounds;
             this.ID = Collidable._collidableIDs++;
 
-            this.OnCollision = new Utilities.EventHandler();
-            this.OnDisposed = new Utilities.EventHandler();
+            this.OnCollision = new EventHandler();
+            this.OnDisposed = new EventHandler();
         }
 
-        public OnCollision: Utilities.EventHandler;
-        public OnDisposed: Utilities.EventHandler;
+        public OnCollision: EventHandler;
+        public OnDisposed: EventHandler;
 
         public IsCollidingWith(other: Collidable): bool {
             return this.Bounds.Intersects(other.Bounds);
         }
 
-        public Collided(data: CollisionData): void {
+        public Collided(data: Assets.CollisionData): void {
             this.OnCollision.Trigger(data);
         }
 
@@ -790,9 +794,9 @@ module EndGate.Core.Collision {
 
 
 
-module EndGate.Core.Collision {
+module EndGate.Collision {
 
-    export class CollisionManager implements IUpdateable, ITyped {
+    export class CollisionManager implements IUpdateable, _.ITyped {
         public _type: string = "CollisionManager";
 
         public _collidables: Collidable[];
@@ -803,10 +807,10 @@ module EndGate.Core.Collision {
             this._collidables = [];
             this._enabled = false;
 
-            this.OnCollision = new Utilities.EventHandler();
+            this.OnCollision = new EventHandler();
         }
 
-        public OnCollision: Utilities.EventHandler;
+        public OnCollision: EventHandler;
 
         public Monitor(obj: Collidable): void {
             this._enabled = true;
@@ -839,8 +843,8 @@ module EndGate.Core.Collision {
                         second = this._collidables[j];
 
                         if (first.IsCollidingWith(second)) {
-                            first.Collided(new CollisionData(first.Bounds.Position.Clone(), second));
-                            second.Collided(new CollisionData(second.Bounds.Position.Clone(), first));
+                            first.Collided(new Assets.CollisionData(first.Bounds.Position.Clone(), second));
+                            second.Collided(new Assets.CollisionData(second.Bounds.Position.Clone(), first));
                             this.OnCollision.Trigger(first, second);
                         }
                     }
@@ -854,8 +858,8 @@ module EndGate.Core.Collision {
 
 
 
-module EndGate.Core.Assets {
-    export class Size2d implements ITyped {
+module EndGate {
+    export class Size2d implements _.ITyped {
         public _type: string = "Size2d";
 
         public Width: number;
@@ -1007,9 +1011,9 @@ module EndGate.Core.Assets {
 /* Graphic2dState.ts */
 
 
-module EndGate.Core.Graphics {
+module EndGate.Graphics.Assets {
 
-    export class Graphic2dState implements ITyped {
+    export class Graphic2dState implements _.ITyped {
         public _type: string ="Graphic2dState";
 
         private _cachedState: { [property: string]: any; };
@@ -1103,21 +1107,21 @@ module EndGate.Core.Graphics {
 
 
 
-module EndGate.Core.Graphics {
+module EndGate.Graphics.Abstractions {
 
-    export class Graphic2d implements ITyped, Rendering.IRenderable, IMoveable {
+    export class Graphic2d implements _.ITyped, Rendering.IRenderable, IMoveable {
         public _type: string = "Graphic2d";
 
         public ZIndex: number;
-        public Position: Assets.Vector2d;
+        public Position: Vector2d;
         public Rotation: number;
-        public State: Graphic2dState;
+        public State: Assets.Graphic2dState;
 
-        constructor(position: Assets.Vector2d) {
+        constructor(position: Vector2d) {
             this.Position = position;
             this.Rotation = 0;
             this.ZIndex = 0;
-            this.State = new Graphic2dState();
+            this.State = new Assets.Graphic2dState();
         }
 
         public StartDraw(context: CanvasRenderingContext2D): void {
@@ -1138,14 +1142,14 @@ module EndGate.Core.Graphics {
         public Draw(context: CanvasRenderingContext2D): void {
         }
 
-        public GetDrawBounds(): BoundingObject.Bounds2d {
+        public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
             throw new Error("GetDrawBounds is abstract, it must be implemented.");
         }
     }
 
 }
 /* MinMax.ts */
-module EndGate.Core.Assets {
+module EndGate._ {
 
     export class MinMax {
         public Min: number;
@@ -1162,7 +1166,7 @@ module EndGate.Core.Assets {
 
 
 
-module EndGate.Core.Assets {
+module EndGate._ {
 
     export class Vector2dHelpers {
         public static GetMinMaxProjections(axis: Vector2d, vertices: Vector2d[]): MinMax
@@ -1193,15 +1197,15 @@ module EndGate.Core.Assets {
 
 
 
-module EndGate.Core.BoundingObject {
+module EndGate.Bounds {
 
-    export class BoundingCircle implements ITyped extends Bounds2d {
+    export class BoundingCircle implements _.ITyped extends Abstractions.Bounds2d {
         public _type: string = "BoundingCircle";
         public _boundsType: string = "BoundingCircle";
 
         public Radius: number;
 
-        constructor(position: Assets.Vector2d, radius: number) {
+        constructor(position: Vector2d, radius: number) {
             super(position);
 
             this.Radius = radius;
@@ -1220,12 +1224,12 @@ module EndGate.Core.BoundingObject {
         }
 
         // For some reason when compiled into a single .ts file if this isn't fully declared it doesn't compile
-        public IntersectsCircle(circle: EndGate.Core.BoundingObject.BoundingCircle): bool {
+        public IntersectsCircle(circle: EndGate.Bounds.BoundingCircle): bool {
             return this.Position.Distance(circle.Position).Length() < this.Radius + circle.Radius;
         }
 
         // For some reason when compiled into a single .ts file if this isn't fully declared it doesn't compile
-        public IntersectsRectangle(rectangle: EndGate.Core.BoundingObject.BoundingRectangle): bool {
+        public IntersectsRectangle(rectangle: EndGate.Bounds.BoundingRectangle): bool {
             var translated = (rectangle.Rotation === 0)
                                   ? this.Position
                                   : this.Position.RotateAround(rectangle.Position, -rectangle.Rotation);
@@ -1243,7 +1247,7 @@ module EndGate.Core.BoundingObject {
             return (cornerDistance_sq <= (this.Radius * this.Radius));
         }
 
-        public ContainsPoint(point: Assets.Vector2d): bool {
+        public ContainsPoint(point: Vector2d): bool {
             return this.Position.Distance(point).Magnitude() < this.Radius;
         }
     }
@@ -1255,15 +1259,15 @@ module EndGate.Core.BoundingObject {
 
 
 
-module EndGate.Core.BoundingObject {
+module EndGate.Bounds {
 
-    export class BoundingRectangle implements ITyped extends Bounds2d {
+    export class BoundingRectangle implements _.ITyped extends Abstractions.Bounds2d {
         public _type: string = "BoundingRectangle";
         public _boundsType: string = "BoundingRectangle";
 
-        public Size: Assets.Size2d;
+        public Size: Size2d;
 
-        constructor(position: Assets.Vector2d, size: Assets.Size2d) {
+        constructor(position: Vector2d, size: Size2d) {
             super(position);
             this.Size = size;
         }
@@ -1273,12 +1277,12 @@ module EndGate.Core.BoundingObject {
             this.Size.Height *= x;
         }
 
-        public Vertices(): Assets.Vector2d[] {
+        public Vertices(): Vector2d[] {
             return [this.TopLeft(), this.TopRight(), this.BotLeft(), this.BotRight()];
         }
 
-        public TopLeft(): Assets.Vector2d {
-            var v = new Assets.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
+        public TopLeft(): Vector2d {
+            var v = new Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
             if (this.Rotation === 0) {
                 return v;
             }
@@ -1286,8 +1290,8 @@ module EndGate.Core.BoundingObject {
             return v.RotateAround(this.Position, this.Rotation);
         }
 
-        public TopRight(): Assets.Vector2d {
-            var v = new Assets.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
+        public TopRight(): Vector2d {
+            var v = new Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
             if (this.Rotation === 0) {
                 return v;
             }
@@ -1295,8 +1299,8 @@ module EndGate.Core.BoundingObject {
             return v.RotateAround(this.Position, this.Rotation);
         }
 
-        public BotLeft(): Assets.Vector2d {
-            var v = new Assets.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
+        public BotLeft(): Vector2d {
+            var v = new Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
             if (this.Rotation === 0) {
                 return v;
             }
@@ -1304,8 +1308,8 @@ module EndGate.Core.BoundingObject {
             return v.RotateAround(this.Position, this.Rotation);
         }
 
-        public BotRight(): Assets.Vector2d {
-            var v = new Assets.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
+        public BotRight(): Vector2d {
+            var v = new Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
             if (this.Rotation === 0) {
                 return v;
             }
@@ -1314,12 +1318,12 @@ module EndGate.Core.BoundingObject {
         }
 
         // For some reason when compiled into a single .ts file if this isn't fully declared it doesn't compile
-        public IntersectsCircle(circle: EndGate.Core.BoundingObject.BoundingCircle): bool {
+        public IntersectsCircle(circle: EndGate.Bounds.BoundingCircle): bool {
             return circle.IntersectsRectangle(this);
         }
 
         // For some reason when compiled into a single .ts file if this isn't fully declared it doesn't compile
-        public IntersectsRectangle(rectangle: EndGate.Core.BoundingObject.BoundingRectangle): bool {
+        public IntersectsRectangle(rectangle: EndGate.Bounds.BoundingRectangle): bool {
             if (this.Rotation === 0 && rectangle.Rotation === 0) {
                 var myTopLeft = this.TopLeft(),
                     myBotRight = this.BotRight(),
@@ -1329,14 +1333,14 @@ module EndGate.Core.BoundingObject {
                 return theirTopLeft.X <= myBotRight.X && theirBotRight.X >= myTopLeft.X && theirTopLeft.Y <= myBotRight.Y && theirBotRight.Y >= myTopLeft.Y;
             }
             else if (rectangle.Position.Distance(this.Position).Magnitude() <= rectangle.Size.Radius() + this.Size.Radius()) {// Check if we're somewhat close to the rectangle ect that we might be colliding with
-                var axisList: Assets.Vector2d[] = [this.TopRight().Subtract(this.TopLeft()), this.TopRight().Subtract(this.BotRight()), rectangle.TopLeft().Subtract(rectangle.BotLeft()), rectangle.TopLeft().Subtract(rectangle.TopRight())];
+                var axisList: Vector2d[] = [this.TopRight().Subtract(this.TopLeft()), this.TopRight().Subtract(this.BotRight()), rectangle.TopLeft().Subtract(rectangle.BotLeft()), rectangle.TopLeft().Subtract(rectangle.TopRight())];
                 var myVertices = this.Vertices();
                 var theirVertices = rectangle.Vertices();
 
                 for (var i: number = 0; i < axisList.length; i++) {
                     var axi = axisList[i];
-                    var myProjections = Assets.Vector2dHelpers.GetMinMaxProjections(axi, myVertices);
-                    var theirProjections = Assets.Vector2dHelpers.GetMinMaxProjections(axi, theirVertices);
+                    var myProjections = EndGate._.Vector2dHelpers.GetMinMaxProjections(axi, myVertices);
+                    var theirProjections = EndGate._.Vector2dHelpers.GetMinMaxProjections(axi, theirVertices);
 
                     // No collision
                     if (theirProjections.Max < myProjections.Min || myProjections.Max < theirProjections.Min) {
@@ -1350,7 +1354,7 @@ module EndGate.Core.BoundingObject {
             return false;
         }
 
-        public ContainsPoint(point: Assets.Vector2d): bool {
+        public ContainsPoint(point: Vector2d): bool {
             var savedRotation: number = this.Rotation;
 
             if (this.Rotation !== 0) {
@@ -1373,15 +1377,15 @@ module EndGate.Core.BoundingObject {
 
 
 
-module EndGate.Core.Rendering.Camera {
+module EndGate.Rendering {
 
-    export class Camera2d extends BoundingObject.BoundingRectangle {
+    export class Camera2d extends Bounds.BoundingRectangle {
         public static DefaultDistance: number = 1000;
         public _type: string = "Camera2d";
 
         public Distance: number;
 
-        constructor(position: Assets.Vector2d, size: Assets.Size2d) {
+        constructor(position: Vector2d, size: Size2d) {
             super(position, size);
 
             this.Distance = Camera2d.DefaultDistance;
@@ -1401,7 +1405,7 @@ module EndGate.Core.Rendering.Camera {
 
 
 
-module EndGate.Core.Rendering {
+module EndGate.Rendering {
 
     export interface IRenderer extends IDisposable {
         Render(renderables: IRenderable[]): CanvasRenderingContext2D;
@@ -1414,7 +1418,7 @@ module EndGate.Core.Rendering {
 
 
 
-module EndGate.Core.Rendering {
+module EndGate.Rendering {
 
     export class Renderer2d implements IRenderer {
         public static _zindexSort: (a: IRenderable, b: IRenderable) => number = (a: IRenderable, b: IRenderable) => { return a.ZIndex - b.ZIndex; };
@@ -1434,13 +1438,13 @@ module EndGate.Core.Rendering {
             // Create an equally sized canvas for a buffer
             this._bufferCanvas = <HTMLCanvasElement>document.createElement("canvas");
             this._bufferContext = this._bufferCanvas.getContext("2d");
-            this.OnRendererSizeChange = new Utilities.EventHandler();
+            this.OnRendererSizeChange = new EventHandler();
             this.UpdateBufferSize();
 
             this._disposed = false;
         }
 
-        public OnRendererSizeChange: Utilities.EventHandler;
+        public OnRendererSizeChange: EventHandler;
 
         public Render(renderables: IRenderable[]): CanvasRenderingContext2D {
             // Check if our visible canvas has changed size
@@ -1482,7 +1486,7 @@ module EndGate.Core.Rendering {
         private UpdateBufferSize() {
             this._bufferCanvas.width = this._visibleCanvas.width;
             this._bufferCanvas.height = this._visibleCanvas.height;
-            this.OnRendererSizeChange.Trigger(new Assets.Size2d(this._visibleCanvas.width, this._visibleCanvas.height))
+            this.OnRendererSizeChange.Trigger(new Size2d(this._visibleCanvas.width, this._visibleCanvas.height))
         }
     }
 
@@ -1492,11 +1496,11 @@ module EndGate.Core.Rendering {
 
 
 
-module EndGate.Core.Rendering.Camera {
+module EndGate.Rendering._ {
 
     export class Camera2dCanvasContextBuilder {
         private _camera: Camera2d;
-        private _canvasCenter: Assets.Vector2d;
+        private _canvasCenter: Vector2d;
         private _translated: bool;
         private _translationState: any[];
 
@@ -1574,7 +1578,7 @@ module EndGate.Core.Rendering.Camera {
             return context;
         }
 
-        public UpdateCanvasCenter(newSize: Assets.Size2d): void {
+        public UpdateCanvasCenter(newSize: Size2d): void {
             this._canvasCenter.X = newSize.Width / 2;
             this._canvasCenter.Y = newSize.Height / 2;
         }
@@ -1607,20 +1611,20 @@ module EndGate.Core.Rendering.Camera {
 
 
 
-module EndGate.Core.Rendering.Camera {
+module EndGate.Rendering {
 
     export class Camera2dRenderer extends Renderer2d {
         private _camera: Camera2d;
-        private _contextBuilder: Camera2dCanvasContextBuilder;
+        private _contextBuilder: _.Camera2dCanvasContextBuilder;
 
         constructor(renderOnto: HTMLCanvasElement, camera: Camera2d) {
             super(renderOnto);
 
             this._camera = camera;
-            this._contextBuilder = new Camera2dCanvasContextBuilder(this._camera);
+            this._contextBuilder = new _.Camera2dCanvasContextBuilder(this._camera);
 
             this.OnRendererSizeChange.Bind(this._contextBuilder.UpdateCanvasCenter);
-            this._contextBuilder.UpdateCanvasCenter(new Assets.Size2d(renderOnto.width, renderOnto.height));
+            this._contextBuilder.UpdateCanvasCenter(new Size2d(renderOnto.width, renderOnto.height));
             this._bufferContext = this._contextBuilder.BuildFrom(this._bufferContext);
 
         }
@@ -1676,15 +1680,15 @@ module EndGate.Core.Rendering.Camera {
 
 
 
-module EndGate.Core.Rendering {
+module EndGate.Rendering {
 
-    export class Scene2d implements ITyped, IDisposable {
+    export class Scene2d implements EndGate._.ITyped, IDisposable {
         public _type: string = "Scene";
 
         public DrawArea: HTMLCanvasElement;
-        public Camera: Camera.Camera2d;
+        public Camera: Camera2d;
 
-        private _actors: Graphics.Graphic2d[];
+        private _actors: Graphics.Abstractions.Graphic2d[];
         private _renderer: IRenderer;
         private _onDraw: (context: CanvasRenderingContext2D) => void;
 
@@ -1705,16 +1709,16 @@ module EndGate.Core.Rendering {
             }
 
             this.DrawArea = drawArea;
-            this.Camera = new Camera.Camera2d(new Assets.Vector2d(this.DrawArea.width / 2, this.DrawArea.height / 2), new Assets.Size2d(this.DrawArea.width, this.DrawArea.height));
-            this._renderer = new Camera.Camera2dRenderer(this.DrawArea, this.Camera);
+            this.Camera = new Camera2d(new Vector2d(this.DrawArea.width / 2, this.DrawArea.height / 2), new Size2d(this.DrawArea.width, this.DrawArea.height));
+            this._renderer = new Camera2dRenderer(this.DrawArea, this.Camera);
             this._disposed = false;
         }
 
-        public Add(actor: Graphics.Graphic2d): void {
+        public Add(actor: Graphics.Abstractions.Graphic2d): void {
             this._actors.push(actor);
         }
 
-        public Remove(actor: Graphics.Graphic2d): void {
+        public Remove(actor: Graphics.Abstractions.Graphic2d): void {
             for (var i = 0; i < this._actors.length; i++) {
                 if (this._actors[i] === actor) {
                     this._actors.splice(i, 1);
@@ -1747,7 +1751,7 @@ module EndGate.Core.Rendering {
 
 }
 /* MouseButton.ts */
-module EndGate.Core.Input.Mouse {
+module EndGate.Input {
 
     export class MouseButton {
         public static Left: string = "Left";
@@ -1759,10 +1763,10 @@ module EndGate.Core.Input.Mouse {
 /* IMouseEvent.d.ts */
 
 
-module EndGate.Core.Input.Mouse {
+module EndGate.Input {
 
     export interface IMouseEvent {
-        Position: Assets.Vector2d;
+        Position: Vector2d;
     }
 
 }
@@ -1770,7 +1774,7 @@ module EndGate.Core.Input.Mouse {
 
 
 
-module EndGate.Core.Input.Mouse {
+module EndGate.Input {
 
     export interface IMouseClickEvent extends IMouseEvent {
         Button: string;
@@ -1781,10 +1785,10 @@ module EndGate.Core.Input.Mouse {
 
 
 
-module EndGate.Core.Input.Mouse {
+module EndGate.Input {
 
     export interface IMouseScrollEvent extends IMouseEvent{
-        Direction: Assets.Vector2d;
+        Direction: Vector2d;
     }
 
 }
@@ -1796,7 +1800,7 @@ module EndGate.Core.Input.Mouse {
 
 
 
-module EndGate.Core.Input.Mouse {
+module EndGate.Input {
 
     export class MouseHandler {
         // Used to determine mouse buttons without using extra conditional statements, performance enhancer
@@ -1807,23 +1811,23 @@ module EndGate.Core.Input.Mouse {
         constructor(target: HTMLCanvasElement) {
             this._target = target;
 
-            this.OnClick = new Utilities.EventHandler();
-            this.OnDoubleClick = new Utilities.EventHandler();
-            this.OnDown = new Utilities.EventHandler();
-            this.OnUp = new Utilities.EventHandler();
-            this.OnMove = new Utilities.EventHandler();
-            this.OnScroll = new Utilities.EventHandler();
+            this.OnClick = new EventHandler();
+            this.OnDoubleClick = new EventHandler();
+            this.OnDown = new EventHandler();
+            this.OnUp = new EventHandler();
+            this.OnMove = new EventHandler();
+            this.OnScroll = new EventHandler();
 
             this.Wire();
         }
 
-        public OnClick: Utilities.EventHandler;
-        public OnDoubleClick: Utilities.EventHandler;
-        public OnDown: Utilities.EventHandler;
-        public OnUp: Utilities.EventHandler;
-        public OnMove: Utilities.EventHandler;
+        public OnClick: EventHandler;
+        public OnDoubleClick: EventHandler;
+        public OnDown: EventHandler;
+        public OnUp: EventHandler;
+        public OnMove: EventHandler;
 
-        public OnScroll: Utilities.EventHandler;
+        public OnScroll: EventHandler;
 
         private Wire(): void {
             this._target.onclick = this._target.oncontextmenu = this.BuildEvent(this.OnClick, this.BuildMouseClickEvent);
@@ -1853,7 +1857,7 @@ module EndGate.Core.Input.Mouse {
             }
         }
 
-        private BuildEvent(eventHandler: Utilities.EventHandler, mouseEventBuilder: (mouseEvent: MouseEvent) => IMouseEvent, returnValue: bool = false): (e: MouseEvent) => void {
+        private BuildEvent(eventHandler: EventHandler, mouseEventBuilder: (mouseEvent: MouseEvent) => IMouseEvent, returnValue: bool = false): (e: MouseEvent) => void {
             return (e: MouseEvent) => {
                 if (eventHandler.HasBindings()) {
                     eventHandler.Trigger(mouseEventBuilder.call(this, e));
@@ -1883,8 +1887,8 @@ module EndGate.Core.Input.Mouse {
             };
         }
 
-        private GetMousePosition(event: MouseEvent): Assets.Vector2d {
-            return new Assets.Vector2d(
+        private GetMousePosition(event: MouseEvent): Vector2d {
+            return new Vector2d(
                 event.offsetX ? (event.offsetX) : event.pageX - this._target.offsetLeft,
                 event.offsetY ? (event.offsetY) : event.pageY - this._target.offsetTop
             );
@@ -1898,14 +1902,14 @@ module EndGate.Core.Input.Mouse {
             return MouseButton.Right;
         }
 
-        private GetMouseScrollDierction(event: any): Assets.Vector2d{
-            return new Assets.Vector2d(-Math.max(-1, Math.min(1, event.wheelDeltaX)), -Math.max(-1, Math.min(1, event.wheelDeltaY)));
+        private GetMouseScrollDierction(event: any): Vector2d{
+            return new Vector2d(-Math.max(-1, Math.min(1, event.wheelDeltaX)), -Math.max(-1, Math.min(1, event.wheelDeltaY)));
         }
     }
 
 }
 /* NoopTripInvoker.ts */
-module EndGate.Core.Utilities {
+module EndGate._.Utilities {
 
     export class NoopTripInvoker {
         private static _noop: Function = () => { };
@@ -1943,7 +1947,7 @@ module EndGate.Core.Utilities {
 /* KeyboardModifiers.ts */
 
 
-module EndGate.Core.Input.Keyboard {
+module EndGate.Input.Assets {
 
     export class KeyboardModifiers {
         public Ctrl: bool;
@@ -1974,7 +1978,7 @@ module EndGate.Core.Input.Keyboard {
 
 
 
-module EndGate.Core.Input.Keyboard {
+module EndGate.Input {
     var shiftValues: { [unmodified: string]: string; } = {
         "~": "`",
         "!": "1",
@@ -2028,13 +2032,13 @@ module EndGate.Core.Input.Keyboard {
 
     export class KeyboardCommandEvent {
         public Key: string;
-        public Modifiers: KeyboardModifiers;
+        public Modifiers: Assets.KeyboardModifiers;
 
         constructor(keyEvent: KeyboardEvent) {
             var code,
                 character;
 
-            this.Modifiers = new KeyboardModifiers(keyEvent.ctrlKey, keyEvent.altKey, keyEvent.shiftKey);
+            this.Modifiers = new Assets.KeyboardModifiers(keyEvent.ctrlKey, keyEvent.altKey, keyEvent.shiftKey);
 
             if (keyEvent.keyCode) {
                 code = keyEvent.keyCode;
@@ -2054,7 +2058,7 @@ module EndGate.Core.Input.Keyboard {
             this.Key = character;
         }
 
-        public Matches(command: KeyboardCommand): bool {
+        public Matches(command: Assets.KeyboardCommand): bool {
             return this.Key.toLowerCase() === command.Key.toLowerCase() && command.Modifiers.Equivalent(this.Modifiers);
         }
     }
@@ -2064,7 +2068,7 @@ module EndGate.Core.Input.Keyboard {
 
 
 
-module EndGate.Core.Input.Keyboard {
+module EndGate.Input._ {
     
     export class KeyboardCommandHelper {
         public static ParseKey(command: string): string {
@@ -2086,27 +2090,27 @@ module EndGate.Core.Input.Keyboard {
 
 
 
-module EndGate.Core.Input.Keyboard {
+module EndGate.Input.Assets {
 
     export class KeyboardCommand implements IDisposable {
         public Key: string;
         public Action: Function;
-        public Modifiers: KeyboardModifiers;
+        public Modifiers: Assets.KeyboardModifiers;
 
-        private _onDisposeInvoker: Utilities.NoopTripInvoker;
+        private _onDisposeInvoker: EndGate._.Utilities.NoopTripInvoker;
 
         constructor(command: string, action: Function) {
             this.Action = action;
-            this.Modifiers = KeyboardModifiers.BuildFromCommandString(command);
-            this.Key = KeyboardCommandHelper.ParseKey(command);
+            this.Modifiers = Assets.KeyboardModifiers.BuildFromCommandString(command);
+            this.Key = _.KeyboardCommandHelper.ParseKey(command);
 
-            this.OnDispose = new Utilities.EventHandler();
-            this._onDisposeInvoker = new Utilities.NoopTripInvoker(() => {
+            this.OnDispose = new EventHandler();
+            this._onDisposeInvoker = new EndGate._.Utilities.NoopTripInvoker(() => {
                 this.OnDispose.Trigger();
             }, true);
         }
 
-        public OnDispose: Utilities.EventHandler;
+        public OnDispose: EventHandler;
 
         public Dispose(): void {
             this._onDisposeInvoker.InvokeOnce();
@@ -2119,45 +2123,45 @@ module EndGate.Core.Input.Keyboard {
 
 
 
-module EndGate.Core.Input.Keyboard {
+module EndGate.Input {
 
     export class KeyboardHandler {
         private static _keyboardCommandIds: number = 0;
         private _target: HTMLCanvasElement;
-        private _onPressCommands: { [id: number]: KeyboardCommand; };
-        private _onDownCommands: { [id: number]: KeyboardCommand; };
-        private _onUpCommands: { [id: number]: KeyboardCommand; };
+        private _onPressCommands: { [id: number]: Assets.KeyboardCommand; };
+        private _onDownCommands: { [id: number]: Assets.KeyboardCommand; };
+        private _onUpCommands: { [id: number]: Assets.KeyboardCommand; };
 
         constructor() {
             this._onPressCommands = (<any>{});
             this._onDownCommands = (<any>{});
             this._onUpCommands = (<any>{});
 
-            this.OnKeyPress = new Utilities.EventHandler();
-            this.OnKeyDown = new Utilities.EventHandler();
-            this.OnKeyUp = new Utilities.EventHandler();
+            this.OnKeyPress = new EventHandler();
+            this.OnKeyDown = new EventHandler();
+            this.OnKeyUp = new EventHandler();
 
             this.Wire();
         }
 
-        public OnKeyPress: Utilities.EventHandler;
-        public OnKeyDown: Utilities.EventHandler;
-        public OnKeyUp: Utilities.EventHandler;
+        public OnKeyPress: EventHandler;
+        public OnKeyDown: EventHandler;
+        public OnKeyUp: EventHandler;
 
-        public OnCommandPress(keyCommand: string, action: Function): KeyboardCommand {
+        public OnCommandPress(keyCommand: string, action: Function): Assets.KeyboardCommand {
             return this.UpdateCache(keyCommand, action, this._onPressCommands);
         }
 
-        public OnCommandDown(keyCommand: string, action: Function): KeyboardCommand {
+        public OnCommandDown(keyCommand: string, action: Function): Assets.KeyboardCommand {
             return this.UpdateCache(keyCommand, action, this._onDownCommands);
         }
 
-        public OnCommandUp(keyCommand: string, action: Function): KeyboardCommand {
+        public OnCommandUp(keyCommand: string, action: Function): Assets.KeyboardCommand {
             return this.UpdateCache(keyCommand, action, this._onUpCommands);
         }
 
-        private UpdateCache(keyCommand: string, action: Function, store: { [id: number]: KeyboardCommand; }): KeyboardCommand {
-            var command = new KeyboardCommand(keyCommand, action),
+        private UpdateCache(keyCommand: string, action: Function, store: { [id: number]: Assets.KeyboardCommand; }): Assets.KeyboardCommand {
+            var command = new Assets.KeyboardCommand(keyCommand, action),
                 commandId = KeyboardHandler._keyboardCommandIds++;
 
             command.OnDispose.Bind(() => {
@@ -2198,7 +2202,7 @@ module EndGate.Core.Input.Keyboard {
             return false;
         }
 
-        private BuildKeyEvent(store: { [id: number]: KeyboardCommand; }, eventHandler: Utilities.EventHandler): (ke: KeyboardEvent) => void {
+        private BuildKeyEvent(store: { [id: number]: Assets.KeyboardCommand; }, eventHandler: EventHandler): (ke: KeyboardEvent) => void {
             return (ke: KeyboardEvent) => {
                 var keyboardCommandEvent: KeyboardCommandEvent,
                     propogate: bool = true;
@@ -2230,21 +2234,21 @@ module EndGate.Core.Input.Keyboard {
 
 
 
-module EndGate.Core.Input {
+module EndGate.Input {
 
     export class InputManager {
-        public Mouse: Mouse.MouseHandler;
-        public Keyboard: Keyboard.KeyboardHandler;
+        public Mouse: MouseHandler;
+        public Keyboard: KeyboardHandler;
 
         constructor(canvas: HTMLCanvasElement) {
-            this.Mouse = new Mouse.MouseHandler(canvas);
-            this.Keyboard = new Keyboard.KeyboardHandler();
+            this.Mouse = new MouseHandler(canvas);
+            this.Keyboard = new KeyboardHandler();
         }
     }
 
 }
 /* AudioSettings.ts */
-module EndGate.Core.AudioManagement {
+module EndGate.Sound {
 
     export class AudioSettings {
         public static Default: AudioSettings = new AudioSettings();
@@ -2266,7 +2270,7 @@ module EndGate.Core.AudioManagement {
 
 
 
-module EndGate.Core.AudioManagement {
+module EndGate.Sound {
 
     var supportedAudioTypes = {
         mp3: 'audio/mpeg',
@@ -2286,10 +2290,10 @@ module EndGate.Core.AudioManagement {
             this.SetAudioSource(source);
             this.ApplySettings();
 
-            this.OnComplete = new Utilities.EventHandler();
+            this.OnComplete = new EventHandler();
         }
 
-        public OnComplete: Utilities.EventHandler;
+        public OnComplete: EventHandler;
 
         public Volume(percent?: number): number {
             if (typeof percent !== "undefined") {
@@ -2379,7 +2383,7 @@ module EndGate.Core.AudioManagement {
 
 
 
-module EndGate.Core.AudioManagement {
+module EndGate.Sound {
 
     export class AudioPlayer {
         private _source: any;
@@ -2402,7 +2406,7 @@ module EndGate.Core.AudioManagement {
 
 
 
-module EndGate.Core.AudioManagement {
+module EndGate.Sound {
 
     export class AudioManager {
         private _audioPlayers: { [name: string]: AudioPlayer; };
@@ -2447,9 +2451,9 @@ module EndGate.Core.AudioManagement {
 
 
 
-module EndGate.Core {
+module EndGate {
 
-    export class Game implements ITyped, IUpdateable, IDisposable {
+    export class Game implements _.ITyped, IUpdateable, IDisposable {
         public _type: string = "Game";
 
         public ID: number;
@@ -2457,7 +2461,7 @@ module EndGate.Core {
         public CollisionManager: Collision.CollisionManager;
         public Scene: Rendering.Scene2d;
         public Input: Input.InputManager;
-        public Audio: AudioManagement.AudioManager;
+        public Audio: Sound.AudioManager;
 
         private static _gameIds: number = 0;
         private _gameTime: GameTime;
@@ -2471,7 +2475,7 @@ module EndGate.Core {
             });
 
             this.Input = new Input.InputManager(this.Scene.DrawArea);
-            this.Audio = new AudioManagement.AudioManager();
+            this.Audio = new Sound.AudioManager();
             this.CollisionManager = new Collision.CollisionManager();
             this.Configuration = new GameConfiguration(GameRunnerInstance.Register(this))
         }
@@ -2503,7 +2507,7 @@ module EndGate.Core {
 
 }
 /* LinearDirections.ts */
-module EndGate.Core.MovementControllers {
+module EndGate.MovementControllers._ {
 
     export class LinearDirections {
         public Left: bool;
@@ -2526,18 +2530,18 @@ module EndGate.Core.MovementControllers {
 
 
 
-module EndGate.Core.MovementControllers {
+module EndGate.MovementControllers.Abstractions {
     
     export class MovementController implements IMoveable, IUpdateable {
-        public Position: Assets.Vector2d;
-        public Velocity: Assets.Vector2d;
+        public Position: Vector2d;
+        public Velocity: Vector2d;
         public Rotation: number;
         public _frozen: bool;
         private _moveables: IMoveable[];
 
         constructor(moveables: IMoveable[]) {
-            this.Position = Assets.Vector2d.Zero();
-            this.Velocity = Assets.Vector2d.Zero();
+            this.Position = Vector2d.Zero();
+            this.Velocity = Vector2d.Zero();
             this.Rotation = 0;
             this._frozen = false;
 
@@ -2575,19 +2579,19 @@ module EndGate.Core.MovementControllers {
 
 
 
-module EndGate.Core.MovementControllers {
+module EndGate.MovementControllers {
 
-    export class LinearMovementController extends MovementController {
+    export class LinearMovementController extends Abstractions.MovementController {
         private _moveSpeed: number;
-        private _moving: LinearDirections;
-        private _rotationUpdater: Utilities.NoopTripInvoker;
+        private _moving: _.LinearDirections;
+        private _rotationUpdater: EndGate._.Utilities.NoopTripInvoker;
 
         constructor(moveables: IMoveable[], moveSpeed: number, rotateWithMovements?: bool = true) {
             super(moveables);
 
             this._moveSpeed = moveSpeed;
-            this._moving = new LinearDirections();
-            this._rotationUpdater = new Utilities.NoopTripInvoker(() => {
+            this._moving = new _.LinearDirections();
+            this._rotationUpdater = new EndGate._.Utilities.NoopTripInvoker(() => {
                 this.UpdateRotation();
             }, rotateWithMovements);
         }
@@ -2633,7 +2637,7 @@ module EndGate.Core.MovementControllers {
         }
 
         private UpdateVelocity(): void {
-            var velocity = Assets.Vector2d.Zero();
+            var velocity = Vector2d.Zero();
 
             if (this._moving.Up) {
                 velocity.Y -= this._moveSpeed;
@@ -2662,13 +2666,13 @@ module EndGate.Core.MovementControllers {
 /* DirectionalInputController.ts */
 
 
-module EndGate.Core.Input.Controllers {
+module EndGate.InputControllers {
 
     export class DirectionalInputController {
-        private _keyboard: Keyboard.KeyboardHandler;
+        private _keyboard: Input.KeyboardHandler;
         private _onMove: (direction: string, startMoving: bool) => void;
 
-        constructor(keyboard: Keyboard.KeyboardHandler, onMove: (direction: string, startMoving: bool) => void , upKeys?: string[] = ["w", "Up"], rightKeys?: string[] = ["d", "Right"], downKeys?: string[] = ["s", "Down"], leftKeys?: string[] = ["a", "Left"]) {
+        constructor(keyboard: Input.KeyboardHandler, onMove: (direction: string, startMoving: bool) => void , upKeys?: string[] = ["w", "Up"], rightKeys?: string[] = ["d", "Right"], downKeys?: string[] = ["s", "Down"], leftKeys?: string[] = ["a", "Left"]) {
             this._keyboard = keyboard;
             this._onMove = onMove;
 
@@ -2693,7 +2697,7 @@ module EndGate.Core.Input.Controllers {
 
 }
 /* FontMeasurement.ts */
-module EndGate.Core.Graphics.Text {
+module EndGate.Graphics.Assets {
 
     export enum FontMeasurement {
         Ems,
@@ -2717,7 +2721,7 @@ module EndGate.Core.Graphics.Text {
     FontMeasurementHelper._Initialize();
 }
 /* FontFamily.ts */
-module EndGate.Core.Graphics.Text {
+module EndGate.Graphics.Assets {
 
     export enum FontFamily {
         Antiqua,
@@ -2769,7 +2773,7 @@ module EndGate.Core.Graphics.Text {
 
 }
 /* FontVariant.ts */
-module EndGate.Core.Graphics.Text {
+module EndGate.Graphics.Assets {
 
     export enum FontVariant {
         Normal,
@@ -2801,7 +2805,7 @@ module EndGate.Core.Graphics.Text {
 }
 
 /* FontStyle.ts */
-module EndGate.Core.Graphics.Text {
+module EndGate.Graphics.Assets {
 
     export enum FontStyle {
         Normal,
@@ -2837,7 +2841,7 @@ module EndGate.Core.Graphics.Text {
 
 
 
-module EndGate.Core.Graphics.Text {
+module EndGate.Graphics.Assets {
 
     export class FontSettings {
         private _cachedState: { [property: string]: any; };
@@ -2922,29 +2926,29 @@ module EndGate.Core.Graphics.Text {
 
 
 
-module EndGate.Core.Graphics.Text {
+module EndGate.Graphics {
 
-    export class Text2d extends Graphic2d {
+    export class Text2d extends Abstractions.Graphic2d {
         public _type: string = "Text2d";
-        public FontSettings: FontSettings;
+        public FontSettings: Assets.FontSettings;
 
         private _text: string;
-        private _stroker: Utilities.NoopTripInvoker;
+        private _stroker: _.Utilities.NoopTripInvoker;
 
         // For GetDrawBounds
-        private _drawBounds: BoundingObject.BoundingRectangle;
+        private _drawBounds: Bounds.BoundingRectangle;
 
         constructor(x: number, y: number, text: string, color: string = "black") {
-            super(new Assets.Vector2d(x, y));
+            super(new Vector2d(x, y));
 
             this._text = text;
-            this._stroker = new Utilities.NoopTripInvoker((context: CanvasRenderingContext2D) => {
+            this._stroker = new _.Utilities.NoopTripInvoker((context: CanvasRenderingContext2D) => {
                 context.strokeText(this._text, this.Position.X, this.Position.Y);
             });
 
-            this._drawBounds = new BoundingObject.BoundingRectangle(this.Position, Assets.Size2d.One());
+            this._drawBounds = new Bounds.BoundingRectangle(this.Position, Size2d.One());
 
-            this.FontSettings = new FontSettings();
+            this.FontSettings = new Assets.FontSettings();
             this.Align("center");
             this.Baseline("middle");
             this.Color(color);
@@ -3031,7 +3035,7 @@ module EndGate.Core.Graphics.Text {
             super.EndDraw(context);
         }
 
-        public GetDrawBounds(): BoundingObject.Bounds2d {
+        public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
             this._drawBounds.Rotation = this.Rotation;
             this._drawBounds.Position = this.Position;
 
@@ -3045,21 +3049,21 @@ module EndGate.Core.Graphics.Text {
 
 
 
-module EndGate.Core.Graphics.Sprites {
+module EndGate.Graphics.Assets {
 
     export class ImageSource {
         public Loaded: bool;
-        public ClipLocation: Assets.Vector2d;
-        public ClipSize: Assets.Size2d;
-        public Size: Assets.Size2d;
+        public ClipLocation: Vector2d;
+        public ClipSize: Size2d;
+        public Size: Size2d;
         public Source: HTMLImageElement;
 
         constructor(imageLocation: string, width: number, height: number);
         constructor(imageLocation: string, width: number, height: number, xClip?: number = 0, yClip?: number = 0, widthClip?: number, heightClip?: number);
         constructor(imageLocation: string, width: number, height: number, xClip?: number = 0, yClip?: number = 0, widthClip?: number = width, heightClip?: number = height) {
             this.Loaded = false;
-            this.OnLoaded = new Utilities.EventHandler();
-            this.Size = new Assets.Size2d(width, height);
+            this.OnLoaded = new EventHandler();
+            this.Size = new Size2d(width, height);
 
             this.Source = new Image();
             this.Source.onload = () => {
@@ -3069,11 +3073,11 @@ module EndGate.Core.Graphics.Sprites {
             };
 
             this.Source.src = imageLocation;
-            this.ClipLocation = new Assets.Vector2d(xClip, yClip);
-            this.ClipSize = new Assets.Size2d(widthClip, heightClip);
+            this.ClipLocation = new Vector2d(xClip, yClip);
+            this.ClipSize = new Size2d(widthClip, heightClip);
         }
 
-        public OnLoaded: Utilities.EventHandler;
+        public OnLoaded: EventHandler;
     }
 
 }
@@ -3083,19 +3087,19 @@ module EndGate.Core.Graphics.Sprites {
 
 
 
-module EndGate.Core.Graphics.Sprites {
+module EndGate.Graphics {
 
-    export class Sprite2d extends Graphic2d {
+    export class Sprite2d extends Abstractions.Graphic2d {
         public _type: string = "Sprite2d";
 
-        public Image: ImageSource;
-        public Size: Assets.Size2d;
+        public Image: Assets.ImageSource;
+        public Size: Size2d;
 
-        constructor(x: number, y: number, image: ImageSource, width?: number = image.ClipSize.Width, height?: number = image.ClipSize.Height) {
-            super(new Assets.Vector2d(x, y));
+        constructor(x: number, y: number, image: Assets.ImageSource, width?: number = image.ClipSize.Width, height?: number = image.ClipSize.Height) {
+            super(new Vector2d(x, y));
 
             this.Image = image;
-            this.Size = new Assets.Size2d(width, height);
+            this.Size = new Size2d(width, height);
         }
 
         public Opacity(alpha?: number): number {
@@ -3110,8 +3114,8 @@ module EndGate.Core.Graphics.Sprites {
             super.EndDraw(context);
         }
 
-        public GetDrawBounds(): BoundingObject.Bounds2d {
-            var bounds = new BoundingObject.BoundingRectangle(this.Position, this.Image.Size);
+        public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
+            var bounds = new Bounds.BoundingRectangle(this.Position, this.Image.Size);
 
             bounds.Rotation = this.Rotation;
 
@@ -3128,14 +3132,14 @@ module EndGate.Core.Graphics.Sprites {
 
 
 
-module EndGate.Core.Graphics.Sprites.Animation {
+module EndGate.Graphics {
 
     export class SpriteAnimation {
-        private _imageSource: ImageSource;
+        private _imageSource: Assets.ImageSource;
         private _fps: number;
-        private _frameSize: Assets.Size2d;
+        private _frameSize: Size2d;
         private _frameCount: number;
-        private _startOffset: Assets.Vector2d;
+        private _startOffset: Vector2d;
         private _playing: bool;
         private _repeating: bool;
         private _currentFrame: number;
@@ -3145,7 +3149,7 @@ module EndGate.Core.Graphics.Sprites.Animation {
         // Step to the next frame ever X ms
         private _stepEvery: number;
 
-        constructor(imageSource: ImageSource, fps: number, frameSize: Assets.Size2d, frameCount: number, startOffset?: Assets.Vector2d = Assets.Vector2d.Zero()) {
+        constructor(imageSource: Assets.ImageSource, fps: number, frameSize: Size2d, frameCount: number, startOffset?: Vector2d = Vector2d.Zero()) {
             this._imageSource = imageSource;
             this._frameSize = frameSize;
             this._frameCount = frameCount;
@@ -3156,12 +3160,12 @@ module EndGate.Core.Graphics.Sprites.Animation {
             this._framesPerRow = Math.min(Math.floor((imageSource.ClipSize.Width - startOffset.X) / frameSize.Width), frameCount);
             this._lastStepAt = 0;            
 
-            this.OnComplete = new Utilities.EventHandler();
+            this.OnComplete = new EventHandler();
 
             this.Fps(fps);
         }
 
-        public OnComplete: Utilities.EventHandler;
+        public OnComplete: EventHandler;
 
         public IsPlaying(): bool {
             return this._playing;
@@ -3253,14 +3257,14 @@ module EndGate.Core.Graphics.Sprites.Animation {
 
 
 
-module EndGate.Core.Graphics.Shapes  {
+module EndGate.Graphics.Abstractions {
 
     export class Shape extends Graphic2d {
         public _type: string = "Shape";
         private _fill: bool;
         private _stroke: bool;
 
-        constructor(position: Assets.Vector2d, color?: string) {
+        constructor(position: Vector2d, color?: string) {
             super(position);
 
             this._fill = false;
@@ -3353,15 +3357,15 @@ module EndGate.Core.Graphics.Shapes  {
 
 
 
-module EndGate.Core.Graphics.Shapes {
+module EndGate.Graphics {
 
-    export class Circle extends Shape {
+    export class Circle extends Abstractions.Shape {
         public _type: string = "Circle";
 
         public Radius: number;
 
         constructor(x: number, y: number, radius: number, color?: string) {
-            super(new Assets.Vector2d(x, y), color);
+            super(new Vector2d(x, y), color);
 
             this.Radius = radius;
         }
@@ -3370,8 +3374,8 @@ module EndGate.Core.Graphics.Shapes {
             context.arc(this.Position.X, this.Position.Y, this.Radius, 0, (<any>Math).twoPI);
         }
 
-        public GetDrawBounds(): BoundingObject.Bounds2d {
-            var bounds = new BoundingObject.BoundingCircle(this.Position, this.Radius);
+        public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
+            var bounds = new Bounds.BoundingCircle(this.Position, this.Radius);
 
             bounds.Rotation = this.Rotation;
 
@@ -3385,25 +3389,25 @@ module EndGate.Core.Graphics.Shapes {
 
 
 
-module EndGate.Core.Graphics.Shapes {
+module EndGate.Graphics {
 
-    export class Rectangle extends Shape {
+    export class Rectangle extends Abstractions.Shape {
         public _type: string = "Rectangle";
 
-        public Size: Assets.Size2d;
+        public Size: Size2d;
 
         constructor(x: number, y: number, width: number, height: number, color?: string) {
-            super(new Assets.Vector2d(x, y), color);
+            super(new Vector2d(x, y), color);
 
-            this.Size = new Assets.Size2d(width, height);
+            this.Size = new Size2d(width, height);
         }
 
         public BuildPath(context: CanvasRenderingContext2D): void {
             context.rect(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
         }
 
-        public GetDrawBounds(): BoundingObject.Bounds2d {
-            var bounds = new BoundingObject.BoundingRectangle(this.Position, this.Size);
+        public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
+            var bounds = new Bounds.BoundingRectangle(this.Position, this.Size);
 
             bounds.Rotation = this.Rotation;
 
@@ -3438,38 +3442,5 @@ module EndGate.Core.Graphics.Shapes {
 
 
 
-module eg {
-    export class Game extends EndGate.Core.Game { };
-    export class GameConfiguration extends EndGate.Core.GameConfiguration { };
-    export class GameTime extends EndGate.Core.GameTime { };
-    export class EventHandler extends EndGate.Core.Utilities.EventHandler { };
-    export class Scene2d extends EndGate.Core.Rendering.Scene2d { };
-    export class Camera2d extends EndGate.Core.Rendering.Camera.Camera2d { };
-    export class Graphic2d extends EndGate.Core.Graphics.Graphic2d { };
-    export class Text2d extends EndGate.Core.Graphics.Text.Text2d { };
-    export class Sprite2d extends EndGate.Core.Graphics.Sprites.Sprite2d { };
-    export class ImageSource extends EndGate.Core.Graphics.Sprites.ImageSource { };
-    export class SpriteAnimation extends EndGate.Core.Graphics.Sprites.Animation.SpriteAnimation { };
-    export class Shape extends EndGate.Core.Graphics.Shapes.Shape { };
-    export class Circle extends EndGate.Core.Graphics.Shapes.Circle { };
-    export class Rectangle extends EndGate.Core.Graphics.Shapes.Rectangle { };
-    export class Collidable extends EndGate.Core.Collision.Collidable { };
-    export class BoundingCircle extends EndGate.Core.BoundingObject.BoundingCircle { };
-    export class BoundingRectangle extends EndGate.Core.BoundingObject.BoundingRectangle { };
-    export class AudioClip extends EndGate.Core.AudioManagement.AudioClip { };
-    export class AudioPlayer extends EndGate.Core.AudioManagement.AudioPlayer { };
-    export class AudioSettings extends EndGate.Core.AudioManagement.AudioSettings { };
-    export class Size2d extends EndGate.Core.Assets.Size2d { };
-    export class Vector2d extends EndGate.Core.Assets.Vector2d { };
 
-    export module MovementControllers {
-        export class LinearMovementController extends EndGate.Core.MovementControllers.LinearMovementController { };
-    };
-    export module InputControllers {
-        export class DirectionalInputController extends EndGate.Core.Input.Controllers.DirectionalInputController { };
-    };
-    export module Input {
-        export class MouseHandler extends EndGate.Core.Input.Mouse.MouseHandler { };
-        export class KeyboardHandler extends EndGate.Core.Input.Keyboard.KeyboardHandler { };
-    };
-};
+import eg = EndGate;

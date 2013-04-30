@@ -10,7 +10,7 @@
 
 module EndGate.Rendering {
 
-    export class Scene2d implements _.ITyped, IDisposable {
+    export class Scene2d implements EndGate._.ITyped, IDisposable {
         public _type: string = "Scene";
 
         public DrawArea: HTMLCanvasElement;
