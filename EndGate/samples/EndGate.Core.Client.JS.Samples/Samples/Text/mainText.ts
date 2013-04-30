@@ -1,5 +1,4 @@
 /// <reference path="../../Scripts/jquery.d.ts" />
-/// <reference path="../../Scripts/jqueryui.d.ts" />
 /// <reference path="assetsText.ts" />
 
 (function ($, window) {
@@ -61,7 +60,7 @@
         slidersAnimationMappings[animation]();
     };
 
-    textBuilder = new TextBuilder(canvas, $(".textAnimator"), new EndGate.Core.Assets.Vector2d(canvas.width / 2, canvas.height / 2), 0, 1, syncSliders);
+    textBuilder = new TextBuilder(canvas, $(".textAnimator"), new eg.Vector2d(canvas.width / 2, canvas.height / 2), 0, 1, syncSliders);
 
     textColorPicker = new ColorPicker($("#redColorPicker"), $("#greenColorPicker"), $("#blueColorPicker"), [127, 0, 127], (newcolor: string) => {
         textBuilder.Text.Color(newcolor);
@@ -100,12 +99,12 @@
         textBuilder.Text.ShadowBlur(newBlur);
     });
 
-    fillSelect(fontFamilySelect, EndGate.Core.Graphics.Text.FontFamily, function () {
-        textBuilder.Text.FontSettings.FontFamily(EndGate.Core.Graphics.Text.FontFamily[$(this).val()]);
+    fillSelect(fontFamilySelect, eg.Graphics.Assets.FontFamily, function () {
+        textBuilder.Text.FontSettings.FontFamily(eg.Graphics.Assets.FontFamily[$(this).val()]);
     });
 
-    fillSelect(fontStyleSelect, EndGate.Core.Graphics.Text.FontStyle, function () {
-        textBuilder.Text.FontSettings.FontStyle(EndGate.Core.Graphics.Text.FontStyle[$(this).val()]);
+    fillSelect(fontStyleSelect, eg.Graphics.Assets.FontStyle, function () {
+        textBuilder.Text.FontSettings.FontStyle(eg.Graphics.Assets.FontStyle[$(this).val()]);
     });
 
     fontWeightSelect.change(function () {

@@ -16,13 +16,13 @@
     canvas.width = holder.width();
     canvas.height = holder.height() - 30;
     holder.append(canvas);
-    bindingText = new EndGate.Core.Graphics.Text.Text2d(canvas.width / 2, canvas.height / 2, "");
+    bindingText = new eg.Graphics.Text2d(canvas.width / 2, canvas.height / 2, "");
     bindingText.FontSettings.FontSize(40);
     bindingText.FontSettings.FontWeight("bold");
     keyboardMonitor = new KeyboardMonitor(canvas);
     keyboardMonitor.Scene.Add(bindingText);
     for(var i = 0; i < 3; i++) {
-        keys.push(new EndGate.Core.Graphics.Text.Text2d(0, keyY, ""));
+        keys.push(new eg.Graphics.Text2d(0, keyY, ""));
         keys[i].FontSettings.FontSize(20);
         keys[i].Align("left");
         keyboardMonitor.Scene.Add(keys[i]);

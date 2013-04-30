@@ -24,8 +24,8 @@ var CharacterMover = (function (_super) {
             "a", 
             "left"
         ];
-        this._character = new EndGate.Core.Graphics.Shapes.Rectangle(canvas.width / 2, canvas.height / 2, 50, 30, "brown");
-        this._characterMovementController = new EndGate.Core.MovementControllers.LinearMovementController([
+        this._character = new eg.Graphics.Rectangle(canvas.width / 2, canvas.height / 2, 50, 30, "brown");
+        this._characterMovementController = new eg.MovementControllers.LinearMovementController([
             this._character
         ], this._characterMoveSpeed);
         this._characterMovementController.Position = this._character.Position;
@@ -55,5 +55,5 @@ var CharacterMover = (function (_super) {
         }
     };
     return CharacterMover;
-})(EndGate.Core.Game);
+})(eg.Game);
 //@ sourceMappingURL=assetsMovementControllers.js.map

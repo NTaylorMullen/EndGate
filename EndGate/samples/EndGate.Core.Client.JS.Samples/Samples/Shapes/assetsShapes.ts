@@ -1,13 +1,12 @@
 /// <reference path="../../Scripts/jquery.d.ts" />
-/// <reference path="../../Scripts/jqueryui.d.ts" />
 /// <reference path="../../Scripts/endGate.core.client.ts" />
 
-class ShapeBuilder extends EndGate.Core.Game {
+class ShapeBuilder extends eg.Game {
     public Shape: any;
 
     private _shapeAnimator: ShapeAnimator;
 
-    constructor(private _canvas: HTMLCanvasElement, targetBuilders: JQuery, targetAnimators: JQuery, defaultPosition: EndGate.Core.Assets.Vector2d, defaultSize: EndGate.Core.Assets.Size2d, defaultRotation: number, defaultOpacity: number, private _syncSliders: Function) {
+    constructor(private _canvas: HTMLCanvasElement, targetBuilders: JQuery, targetAnimators: JQuery, defaultPosition: eg.Vector2d, defaultSize: eg.Size2d, defaultRotation: number, defaultOpacity: number, private _syncSliders: Function) {
         super(_canvas);
         var that = this,
             builderClicked = function () {
@@ -27,14 +26,14 @@ class ShapeBuilder extends EndGate.Core.Game {
         this._shapeAnimator = new ShapeAnimator(targetAnimators, defaultPosition, defaultSize, defaultRotation, defaultOpacity, this._syncSliders);
     }
 
-    public Update(gameTime: EndGate.Core.GameTime): void {
+    public Update(gameTime: eg.GameTime): void {
         this._shapeAnimator.ApplyAnimation(this.Shape, gameTime);
     }
 
     private BuildShape(builder: HTMLElement): void {
         var shapeTypeName = $(builder).attr("shape"),
-            shapeType = EndGate.Core.Graphics.Shapes[shapeTypeName],
-            newShape: EndGate.Core.Graphics.Shapes.Shape;
+            shapeType = eg.Graphics[shapeTypeName],
+            newShape: eg.Graphics.Abstractions.Shape;
 
         // If there is no current shape
         if (!this.Shape) {
@@ -142,7 +141,7 @@ class ShapeAnimator {
     };
     private _lastChanged: number;
 
-    constructor(shapeAnimators: JQuery, private _defaultPosition: EndGate.Core.Assets.Vector2d, private _defaultSize: EndGate.Core.Assets.Size2d, private _defaultRotation: number, private _defaultOpacity: number, private _syncSliders: Function) {
+    constructor(shapeAnimators: JQuery, private _defaultPosition: eg.Vector2d, private _defaultSize: eg.Size2d, private _defaultRotation: number, private _defaultOpacity: number, private _syncSliders: Function) {
         var that = this,
             animatorClicked = function () {
                 var $this = $(this),
@@ -165,7 +164,7 @@ class ShapeAnimator {
         this._lastChanged = new Date().getTime();
     }
 
-    public ApplyAnimation(shape: EndGate.Core.Graphics.Shapes.Shape, gameTime: EndGate.Core.GameTime): void {
+    public ApplyAnimation(shape: eg.Graphics.Abstractions.Shape, gameTime: eg.GameTime): void {
         if (gameTime.Now.getTime() - this._lastChanged > ShapeAnimator.ChangeDirectionEvery) {
             this.Direction *= -1;
             this._lastChanged = gameTime.Now.getTime();
@@ -180,18 +179,18 @@ class ShapeAnimator {
         }            
     }
 
-    private Position(shape: EndGate.Core.Graphics.Shapes.Shape, gameTime: EndGate.Core.GameTime): void {
+    private Position(shape: eg.Graphics.Abstractions.Shape, gameTime: eg.GameTime): void {
         var incrementor = ShapeAnimator.AnimationSpeed * gameTime.ElapsedSecond,
             direction = shape.Position.Subtract(this._defaultPosition).Abs().Sign();
 
         if (direction.Magnitude() === 0) {
-            direction = EndGate.Core.Assets.Vector2d.One();
+            direction = eg.Vector2d.One();
         }
 
         shape.Position = shape.Position.Add(direction.Multiply(this.Direction).Multiply(incrementor));
     }
 
-    private Size(shape: any, gameTime: EndGate.Core.GameTime): void {
+    private Size(shape: any, gameTime: eg.GameTime): void {
         var incrementor = ShapeAnimator.AnimationSpeed * gameTime.ElapsedSecond;
 
         if (shape._type === "Circle") {
@@ -202,14 +201,14 @@ class ShapeAnimator {
         }
     }
 
-    private Rotation(shape: EndGate.Core.Graphics.Shapes.Shape, gameTime: EndGate.Core.GameTime): void {
+    private Rotation(shape: eg.Graphics.Abstractions.Shape, gameTime: eg.GameTime): void {
         var incrementor = ShapeAnimator.RotationSpeed * gameTime.ElapsedSecond,
             direction = 1;
 
         shape.Rotation += direction * this.Direction * incrementor;
     }
 
-    private Opacity(shape: EndGate.Core.Graphics.Shapes.Shape, gameTime: EndGate.Core.GameTime): void {
+    private Opacity(shape: eg.Graphics.Abstractions.Shape, gameTime: eg.GameTime): void {
         var incrementor = .33 * gameTime.ElapsedSecond;
 
         shape.Opacity(shape.Opacity() + incrementor * this.Direction);

@@ -1,7 +1,7 @@
 /// <reference path="../../Scripts/jquery.d.ts" />
 /// <reference path="../../Scripts/endGate.core.client.ts" />
 
-class CameraMover extends EndGate.Core.Game {
+class CameraMover extends eg.Game {
     private _cameraMoveSpeed: number = 100;
     private _cameraZoomSpeed: number = 100;
     private _upKeys: string[] = ["w", "up"];
@@ -11,7 +11,7 @@ class CameraMover extends EndGate.Core.Game {
     private _zoomInKeys: string[] = ["r", "'"];
     private _zoomOutKeys: string[] = ["f", "/"];
 
-    private _cameraLocation: EndGate.Core.Graphics.Shapes.Circle;
+    private _cameraLocation: eg.Graphics.Circle;
     private _movingDirection: MovingDirection;
     private _cameraPositionHolder: JQuery;
     private _cameraDistanceHolder: JQuery;
@@ -22,7 +22,7 @@ class CameraMover extends EndGate.Core.Game {
         this._cameraPositionHolder = cameraPositionHolder;
         this._cameraDistanceHolder = cameraDistanceHolder;
 
-        this._cameraLocation = new EndGate.Core.Graphics.Shapes.Circle(this.Scene.Camera.Position.X, this.Scene.Camera.Position.Y,5,"black");
+        this._cameraLocation = new eg.Graphics.Circle(this.Scene.Camera.Position.X, this.Scene.Camera.Position.Y,5,"black");
         this._movingDirection = new MovingDirection();
 
         this.BindKeys(this._upKeys, "OnCommandDown", "Up", true);
@@ -41,8 +41,8 @@ class CameraMover extends EndGate.Core.Game {
         this.Scene.Add(this._cameraLocation);
     }
 
-    public Update(gameTime: EndGate.Core.GameTime): void {
-        var cameraPosition: EndGate.Core.Assets.Vector2d;
+    public Update(gameTime: eg.GameTime): void {
+        var cameraPosition: eg.Vector2d;
 
         if (this._movingDirection.Up) {
             this.Scene.Camera.Position.Y -= gameTime.ElapsedSecond * this._cameraMoveSpeed;

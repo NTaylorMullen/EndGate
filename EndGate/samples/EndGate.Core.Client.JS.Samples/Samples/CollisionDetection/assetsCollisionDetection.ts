@@ -1,11 +1,11 @@
 /// <reference path="../../Scripts/endGate.core.client.ts" />
 
-class MovingShape implements EndGate.Core.IUpdateable extends EndGate.Core.Collision.Collidable {
+class MovingShape implements eg.IUpdateable extends eg.Collision.Collidable {
     // Rotate 180 deg every second
     private static RotationSpeed: number = Math.PI;
 
-    public Graphic: EndGate.Core.Graphics.Graphic2d;
-    private _velocity: EndGate.Core.Assets.Vector2d;
+    public Graphic: eg.Graphics.Abstractions.Graphic2d;
+    private _velocity: eg.Vector2d;
     private _directionInterval: number;
     private _lastChangedDirection: number;
     private _rotationMultiplier: number;
@@ -15,14 +15,14 @@ class MovingShape implements EndGate.Core.IUpdateable extends EndGate.Core.Colli
     private _collisionColorAlpha: number = 0;
     private _collisionColor: number[] = [255,0,0];
 
-    constructor(graphic: EndGate.Core.Graphics.Graphic2d, velocity: EndGate.Core.Assets.Vector2d, directionInterval: number) {
+    constructor(graphic: eg.Graphics.Abstractions.Graphic2d, velocity: eg.Vector2d, directionInterval: number) {
         super(null);
 
         if (graphic._type === "Rectangle") {
-            this.Bounds = new EndGate.Core.BoundingObject.BoundingRectangle(graphic.Position, (<EndGate.Core.Graphics.Shapes.Rectangle>graphic).Size);
+            this.Bounds = new eg.Bounds.BoundingRectangle(graphic.Position, (<eg.Graphics.Rectangle>graphic).Size);
         }
         else if (graphic._type === "Circle") {
-            this.Bounds = new EndGate.Core.BoundingObject.BoundingCircle(graphic.Position, (<EndGate.Core.Graphics.Shapes.Circle>graphic).Radius);
+            this.Bounds = new eg.Bounds.BoundingCircle(graphic.Position, (<eg.Graphics.Circle>graphic).Radius);
         }
 
         this.Graphic = graphic;
@@ -38,13 +38,13 @@ class MovingShape implements EndGate.Core.IUpdateable extends EndGate.Core.Colli
             this._rotationMultiplier = 1;
         }
 
-        (<EndGate.Core.Graphics.Shapes.Shape>this.Graphic).Border(this._collisionBorderThickness, "rgba(" + this._collisionColor + ",0,0," + this._collisionColorAlpha + ")");
+        (<eg.Graphics.Abstractions.Shape>this.Graphic).Border(this._collisionBorderThickness, "rgba(" + this._collisionColor + ",0,0," + this._collisionColorAlpha + ")");
     }
 
-    public Collided(data: EndGate.Core.Collision.CollisionData): void {
+    public Collided(data: eg.Collision.Assets.CollisionData): void {
         this._collisionColorAlpha = 1;
 
-        var strColor = (<EndGate.Core.Graphics.Shapes.Shape>(<MovingShape>data.With).Graphic).Color().replace("rgb(", "").replace(")", "").split(",");
+        var strColor = (<eg.Graphics.Abstractions.Shape>(<MovingShape>data.With).Graphic).Color().replace("rgb(", "").replace(")", "").split(",");
 
         for (var i = 0; i < strColor.length; i++) {
             this._collisionColor[i] = parseInt(strColor[i]);
@@ -53,7 +53,7 @@ class MovingShape implements EndGate.Core.IUpdateable extends EndGate.Core.Colli
         super.Collided(data);
     }
 
-    public Update(gameTime: EndGate.Core.GameTime): void {
+    public Update(gameTime: eg.GameTime): void {
         if (gameTime.Now.getTime() - this._lastChangedDirection >= this._directionInterval) {
             this._velocity = this._velocity.Multiply(-1);
             this._rotationMultiplier *= -1;
@@ -62,14 +62,14 @@ class MovingShape implements EndGate.Core.IUpdateable extends EndGate.Core.Colli
 
         this._collisionColorAlpha = Math.max(this._collisionColorAlpha - gameTime.ElapsedSecond * this._fadeSpeed, 0);
 
-        (<EndGate.Core.Graphics.Shapes.Shape>this.Graphic).BorderColor("rgba(" + this._collisionColor[0] + "," + this._collisionColor[1] + "," + this._collisionColor[2] + "," + this._collisionColorAlpha + ")");
+        (<eg.Graphics.Abstractions.Shape>this.Graphic).BorderColor("rgba(" + this._collisionColor[0] + "," + this._collisionColor[1] + "," + this._collisionColor[2] + "," + this._collisionColorAlpha + ")");
 
         this.Graphic.Rotation = this.Bounds.Rotation = this.Graphic.Rotation + gameTime.ElapsedSecond * MovingShape.RotationSpeed * this._rotationMultiplier;
         this.Graphic.Position = this.Bounds.Position = this.Graphic.Position.Add(this._velocity.Multiply(gameTime.ElapsedSecond));
     }
 }
 
-class GraphicsRenderer extends EndGate.Core.Game {
+class GraphicsRenderer extends eg.Game {
     private static MaxVelocity: number = 100;
     private static MinVelocity: number = 30;
     private static MinIntervalChange: number = 1000;
@@ -86,7 +86,7 @@ class GraphicsRenderer extends EndGate.Core.Game {
         this._shapes = [];
     }
 
-    public Update(gameTime: EndGate.Core.GameTime): void {
+    public Update(gameTime: eg.GameTime): void {
         for (var i = 0; i < this._shapes.length; i++) {
             this._shapes[i].Update(gameTime);
         }
@@ -105,7 +105,7 @@ class GraphicsRenderer extends EndGate.Core.Game {
             randomSize = this.GetRandomSize(),
             randomVel = this.GetRandomVelocity(),
             randomChange = this.GetRandomIntervalChange(),
-            rect = new EndGate.Core.Graphics.Shapes.Rectangle(randomPos.X, randomPos.Y, randomSize.Width, randomSize.Height, this.GetRandomColor()),
+            rect = new eg.Graphics.Rectangle(randomPos.X, randomPos.Y, randomSize.Width, randomSize.Height, this.GetRandomColor()),
             shape;
 
         shape = new MovingShape(rect, randomVel, randomChange);
@@ -121,7 +121,7 @@ class GraphicsRenderer extends EndGate.Core.Game {
             randomRadius = this.GetRandomRadius(),
             randomVel = this.GetRandomVelocity(),
             randomChange = this.GetRandomIntervalChange(),
-            circle = new EndGate.Core.Graphics.Shapes.Circle(randomPos.X, randomPos.Y, randomRadius, this.GetRandomColor()),
+            circle = new eg.Graphics.Circle(randomPos.X, randomPos.Y, randomRadius, this.GetRandomColor()),
             shape;
 
         shape = new MovingShape(circle, randomVel, randomChange);
@@ -131,12 +131,12 @@ class GraphicsRenderer extends EndGate.Core.Game {
         this.CollisionManager.Monitor(shape);
     }
 
-    private GetRandomPosition(): EndGate.Core.Assets.Vector2d {
-        return new EndGate.Core.Assets.Vector2d(Math.floor((Math.random() * this._width) + 1), Math.floor((Math.random() * this._height) + 1));
+    private GetRandomPosition(): eg.Vector2d {
+        return new eg.Vector2d(Math.floor((Math.random() * this._width) + 1), Math.floor((Math.random() * this._height) + 1));
     }
 
-    private GetRandomSize(): EndGate.Core.Assets.Size2d {
-        return new EndGate.Core.Assets.Size2d(Math.floor((Math.random() * this._width * .1) + 5), Math.floor((Math.random() * this._height * .1) + 5));
+    private GetRandomSize(): eg.Size2d {
+        return new eg.Size2d(Math.floor((Math.random() * this._width * .1) + 5), Math.floor((Math.random() * this._height * .1) + 5));
     }
 
     private GetRandomRadius(): number {
@@ -147,9 +147,9 @@ class GraphicsRenderer extends EndGate.Core.Game {
         return "rgb(" + (Math.floor(Math.random() * 250) + 1) + ", " + (Math.floor(Math.random() * 250) + 1) + ", " + (Math.floor(Math.random() * 250) + 1) + ")";
     }
 
-    private GetRandomVelocity(): EndGate.Core.Assets.Vector2d {
+    private GetRandomVelocity(): eg.Vector2d {
         var axi = ["X", "Y"][Math.floor(Math.random() * 2)],
-            velocity = EndGate.Core.Assets.Vector2d.Zero();
+            velocity = eg.Vector2d.Zero();
 
         velocity[axi] = Math.floor(Math.random() * GraphicsRenderer.MaxVelocity) + GraphicsRenderer.MinVelocity
 

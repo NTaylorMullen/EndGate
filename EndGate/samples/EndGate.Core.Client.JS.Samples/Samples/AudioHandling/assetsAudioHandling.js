@@ -7,9 +7,9 @@ var Animation = (function () {
     function Animation(imageLocation, x, y, spriteSheetWidth, spriteSheetHeight, frameWidth, frameHeight, fps, frameCount, onComplete, repeat, rotateRandomly) {
         if (typeof repeat === "undefined") { repeat = true; }
         if (typeof rotateRandomly === "undefined") { rotateRandomly = false; }
-        this._spriteSheet = new EndGate.Core.Graphics.Sprites.ImageSource(imageLocation, spriteSheetWidth, spriteSheetHeight, 0, 0);
-        this._animation = new EndGate.Core.Graphics.Sprites.Animation.SpriteAnimation(this._spriteSheet, fps, new EndGate.Core.Assets.Size2d(frameWidth, frameHeight), frameCount);
-        this._sprite = new EndGate.Core.Graphics.Sprites.Sprite2d(x, y, this._spriteSheet, frameWidth, frameHeight);
+        this._spriteSheet = new eg.Graphics.Assets.ImageSource(imageLocation, spriteSheetWidth, spriteSheetHeight, 0, 0);
+        this._animation = new eg.Graphics.SpriteAnimation(this._spriteSheet, fps, new eg.Size2d(frameWidth, frameHeight), frameCount);
+        this._sprite = new eg.Graphics.Sprite2d(x, y, this._spriteSheet, frameWidth, frameHeight);
         this._animation.OnComplete.Bind(onComplete);
         if(rotateRandomly) {
             this._sprite.Rotation = Math.random() * (Math).twoPI + -Math.PI;
@@ -79,12 +79,12 @@ var AudioHandler = (function (_super) {
             "sounds/smokepoof.ogg", 
             "sounds/smokepoof.mp3"
         ]));
-        this._burningSound = this.Audio.Play("burning", new EndGate.Core.AudioManagement.AudioSettings(true, 75));
+        this._burningSound = this.Audio.Play("burning", new eg.Sound.AudioSettings(true, 75));
     }
     AudioHandler.prototype.Update = function (gameTime) {
         this._burningFlame.Update(gameTime);
         this._smokePoofManager.Update(gameTime);
     };
     return AudioHandler;
-})(EndGate.Core.Game);
+})(eg.Game);
 //@ sourceMappingURL=assetsAudioHandling.js.map

@@ -131,6 +131,9 @@
     <Content Include="Samples\AnimatedSprites\assetsAnimatedSprites.js">
       <DependentUpon>assetsAnimatedSprites.ts</DependentUpon>
     </Content>
+    <Content Include="Samples\AnimatedSprites\assetsAnimatedSprites.min.js">
+      <DependentUpon>assetsAnimatedSprites.ts</DependentUpon>
+    </Content>
     <Content Include="Samples\AnimatedSprites\Default.aspx" />
     <TypeScriptCompile Include="Samples\AnimatedSprites\mainAnimatedSprites.ts" />
     <Content Include="Samples\AnimatedSprites\images\electric_pulse.png" />
@@ -140,6 +143,9 @@
     </Content>
     <TypeScriptCompile Include="Samples\AudioHandling\assetsAudioHandling.ts" />
     <Content Include="Samples\AudioHandling\assetsAudioHandling.js">
+      <DependentUpon>assetsAudioHandling.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\AudioHandling\assetsAudioHandling.min.js">
       <DependentUpon>assetsAudioHandling.ts</DependentUpon>
     </Content>
     <Content Include="Samples\AudioHandling\Default.aspx" />
@@ -154,9 +160,15 @@
     <Content Include="Samples\Camera\assetsCamera.js">
       <DependentUpon>assetsCamera.ts</DependentUpon>
     </Content>
+    <Content Include="Samples\Camera\assetsCamera.min.js">
+      <DependentUpon>assetsCamera.ts</DependentUpon>
+    </Content>
     <Content Include="Samples\Camera\Default.aspx" />
     <TypeScriptCompile Include="Samples\Camera\mainCamera.ts" />
     <Content Include="Samples\Camera\mainCamera.js">
+      <DependentUpon>mainCamera.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\Camera\mainCamera.min.js">
       <DependentUpon>mainCamera.ts</DependentUpon>
     </Content>
     <Content Include="Samples\CollisionDetection\assetsCollisionDetection.js">
@@ -188,12 +200,27 @@
     <Content Include="Samples\InputControllers\assetsInputControllers.js">
       <DependentUpon>assetsInputControllers.ts</DependentUpon>
     </Content>
+    <Content Include="Samples\InputControllers\assetsInputControllers.min.js">
+      <DependentUpon>assetsInputControllers.ts</DependentUpon>
+    </Content>
     <Content Include="Samples\InputControllers\Default.aspx" />
     <TypeScriptCompile Include="Samples\InputControllers\mainInputControllers.ts" />
     <Content Include="Samples\InputControllers\mainInputControllers.js">
       <DependentUpon>mainInputControllers.ts</DependentUpon>
     </Content>
+    <Content Include="Samples\KeyboardInput\mainKeyboardInput.min.js">
+      <DependentUpon>mainKeyboardInput.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\Layering\mainLayering.min.js">
+      <DependentUpon>mainLayering.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MouseInput\assetsMouseInput.min.js">
+      <DependentUpon>assetsMouseInput.ts</DependentUpon>
+    </Content>
     <Content Include="Samples\MovementControllers\assetsMovementControllers.js">
+      <DependentUpon>assetsMovementControllers.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MovementControllers\assetsMovementControllers.min.js">
       <DependentUpon>assetsMovementControllers.ts</DependentUpon>
     </Content>
     <Content Include="Samples\MovementControllers\Default.aspx" />
@@ -227,6 +254,9 @@
     <Content Include="Samples\RawRPG\RPG.min.js">
       <DependentUpon>RPG.ts</DependentUpon>
     </Content>
+    <Content Include="Samples\Shapes\mainShapes.min.js">
+      <DependentUpon>mainShapes.ts</DependentUpon>
+    </Content>
     <Content Include="Samples\Sprites\assetsSprites.js">
       <DependentUpon>assetsSprites.ts</DependentUpon>
     </Content>
@@ -259,6 +289,9 @@
     </Content>
     <TypeScriptCompile Include="Samples\Text\assetsText.ts" />
     <TypeScriptCompile Include="Samples\Sprites\mainSprites.ts" />
+    <Content Include="Samples\Sprites\assetsSprites.min.js">
+      <DependentUpon>assetsSprites.ts</DependentUpon>
+    </Content>
     <Content Include="Samples\Sprites\Default.aspx" />
     <Content Include="Samples\Sprites\html5-logo.png" />
     <Content Include="Samples\Sprites\mainSprites.js">
@@ -273,6 +306,9 @@
     <Content Include="Samples\Text\Default.aspx" />
     <TypeScriptCompile Include="Samples\Text\mainText.ts" />
     <Content Include="Samples\Text\mainText.js">
+      <DependentUpon>mainText.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\Text\mainText.min.js">
       <DependentUpon>mainText.ts</DependentUpon>
     </Content>
     <Content Include="Scripts\endGate.core.client.js.map">
@@ -303,6 +339,42 @@
     <Content Include="Samples\RawRPG\Player.js.map">
       <DependentUpon>Player.ts</DependentUpon>
     </Content>
+    <Content Include="Samples\Sprites\assetsSprites.js.map">
+      <DependentUpon>assetsSprites.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\Text\mainText.js.map">
+      <DependentUpon>mainText.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\Shapes\mainShapes.js.map">
+      <DependentUpon>mainShapes.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MovementControllers\assetsMovementControllers.js.map">
+      <DependentUpon>assetsMovementControllers.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MouseInput\assetsMouseInput.js.map">
+      <DependentUpon>assetsMouseInput.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\Layering\mainLayering.js.map">
+      <DependentUpon>mainLayering.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\KeyboardInput\mainKeyboardInput.js.map">
+      <DependentUpon>mainKeyboardInput.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\InputControllers\assetsInputControllers.js.map">
+      <DependentUpon>assetsInputControllers.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\Camera\assetsCamera.js.map">
+      <DependentUpon>assetsCamera.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\Camera\mainCamera.js.map">
+      <DependentUpon>mainCamera.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\AudioHandling\assetsAudioHandling.js.map">
+      <DependentUpon>assetsAudioHandling.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\AnimatedSprites\assetsAnimatedSprites.js.map">
+      <DependentUpon>assetsAnimatedSprites.ts</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <TypeScriptCompile Include="Scripts\endGate.core.client.ts" />
     <TypeScriptCompile Include="Samples\Layering\assetsLayering.ts" />
@@ -325,7 +397,6 @@
     <TypeScriptCompile Include="Scripts\jquery.d.ts" />
     <Content Include="Scripts\jquery-ui-1.10.2.js" />
     <Content Include="Scripts\jquery-ui-1.10.2.min.js" />
-    <Content Include="Scripts\jqueryui.d.ts" />
     <Content Include="Web.config" />
     <Content Include="Scripts\jquery-1.9.1.min.map" />
   </ItemGroup>

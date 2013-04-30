@@ -1,5 +1,5 @@
 (function ($, window) {
-    var canvas = document.createElement("canvas"), holder = $("#gameHolder"), spriteBuilder, borderColorPicker, borderThicknessSlider, rotationSlider, xPositionSlider, yPositionSlider, opacitySlider, widthSlider, heightSlider, shadowXSlider, shadowYSlider, shadowColorPicker, shadowBlurSlider, syncSliders, ensureValue = function (val, min, max) {
+    var canvas = document.createElement("canvas"), holder = $("#gameHolder"), spriteBuilder, rotationSlider, xPositionSlider, yPositionSlider, opacitySlider, widthSlider, heightSlider, syncSliders, ensureValue = function (val, min, max) {
         return Math.min(Math.max(val, min), max);
     }, slidersAnimationMappings = {
         Position: function () {
@@ -26,7 +26,7 @@
     syncSliders = function (animation) {
         slidersAnimationMappings[animation]();
     };
-    spriteBuilder = new SpriteBuilder(canvas, $(".spriteAnimator"), new EndGate.Core.Assets.Vector2d(canvas.width / 2, canvas.height / 2), new EndGate.Core.Assets.Size2d(100, 100), 0, 1, syncSliders);
+    spriteBuilder = new SpriteBuilder(canvas, $(".spriteAnimator"), new eg.Vector2d(canvas.width / 2, canvas.height / 2), new eg.Size2d(100, 100), 0, 1, syncSliders);
     rotationSlider = new CustomSlider($("#rotationSlider"), -628, 628, 0, function (newrotation) {
         spriteBuilder.Sprite.Rotation = newrotation / 100;
     });
@@ -44,32 +44,6 @@
     });
     heightSlider = new CustomSlider($("#heightSlider"), 0, canvas.height, spriteBuilder.Sprite.Size.Height, function (newHeight) {
         spriteBuilder.Sprite.Size.Height = newHeight;
-    });
-    borderColorPicker = new ColorPicker($("#borderRed"), $("#borderGreen"), $("#borderBlue"), [
-        0, 
-        0, 
-        0
-    ], function (newcolor) {
-        spriteBuilder.Sprite.BorderColor(newcolor);
-    });
-    borderThicknessSlider = new CustomSlider($("#borderThickness"), 0, 100, 7, function (newThickness) {
-        spriteBuilder.Sprite.BorderThickness(newThickness);
-    });
-    shadowXSlider = new CustomSlider($("#shadowX"), -30, 30, 20, function (newX) {
-        spriteBuilder.Sprite.ShadowX(newX);
-    });
-    shadowYSlider = new CustomSlider($("#shadowY"), -30, 30, 10, function (newY) {
-        spriteBuilder.Sprite.ShadowY(newY);
-    });
-    shadowColorPicker = new ColorPicker($("#shadowColorRed"), $("#shadowColorGreen"), $("#shadowColorBlue"), [
-        0, 
-        0, 
-        100
-    ], function (newcolor) {
-        spriteBuilder.Sprite.ShadowColor(newcolor);
-    });
-    shadowBlurSlider = new CustomSlider($("#shadowBlur"), 0, 300, 55, function (newBlur) {
-        spriteBuilder.Sprite.ShadowBlur(newBlur);
     });
 })($, window);
 //@ sourceMappingURL=mainSprites.js.map

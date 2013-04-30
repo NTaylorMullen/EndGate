@@ -16,9 +16,9 @@ var MovingShape = (function (_super) {
             0
         ];
         if(graphic._type === "Rectangle") {
-            this.Bounds = new EndGate.Core.BoundingObject.BoundingRectangle(graphic.Position, (graphic).Size);
+            this.Bounds = new eg.Bounds.BoundingRectangle(graphic.Position, (graphic).Size);
         } else if(graphic._type === "Circle") {
-            this.Bounds = new EndGate.Core.BoundingObject.BoundingCircle(graphic.Position, (graphic).Radius);
+            this.Bounds = new eg.Bounds.BoundingCircle(graphic.Position, (graphic).Radius);
         }
         this.Graphic = graphic;
         this._velocity = velocity;
@@ -52,7 +52,7 @@ var MovingShape = (function (_super) {
         this.Graphic.Position = this.Bounds.Position = this.Graphic.Position.Add(this._velocity.Multiply(gameTime.ElapsedSecond));
     };
     return MovingShape;
-})(EndGate.Core.Collision.Collidable);
+})(eg.Collision.Collidable);
 var GraphicsRenderer = (function (_super) {
     __extends(GraphicsRenderer, _super);
     function GraphicsRenderer(canvas) {
@@ -77,24 +77,24 @@ var GraphicsRenderer = (function (_super) {
         this._shapes = [];
     };
     GraphicsRenderer.prototype.AddRandomRectangle = function () {
-        var randomPos = this.GetRandomPosition(), randomSize = this.GetRandomSize(), randomVel = this.GetRandomVelocity(), randomChange = this.GetRandomIntervalChange(), rect = new EndGate.Core.Graphics.Shapes.Rectangle(randomPos.X, randomPos.Y, randomSize.Width, randomSize.Height, this.GetRandomColor()), shape;
+        var randomPos = this.GetRandomPosition(), randomSize = this.GetRandomSize(), randomVel = this.GetRandomVelocity(), randomChange = this.GetRandomIntervalChange(), rect = new eg.Graphics.Rectangle(randomPos.X, randomPos.Y, randomSize.Width, randomSize.Height, this.GetRandomColor()), shape;
         shape = new MovingShape(rect, randomVel, randomChange);
         this._shapes.push(shape);
         this.Scene.Add(rect);
         this.CollisionManager.Monitor(shape);
     };
     GraphicsRenderer.prototype.AddRandomCircle = function () {
-        var randomPos = this.GetRandomPosition(), randomRadius = this.GetRandomRadius(), randomVel = this.GetRandomVelocity(), randomChange = this.GetRandomIntervalChange(), circle = new EndGate.Core.Graphics.Shapes.Circle(randomPos.X, randomPos.Y, randomRadius, this.GetRandomColor()), shape;
+        var randomPos = this.GetRandomPosition(), randomRadius = this.GetRandomRadius(), randomVel = this.GetRandomVelocity(), randomChange = this.GetRandomIntervalChange(), circle = new eg.Graphics.Circle(randomPos.X, randomPos.Y, randomRadius, this.GetRandomColor()), shape;
         shape = new MovingShape(circle, randomVel, randomChange);
         this._shapes.push(shape);
         this.Scene.Add(circle);
         this.CollisionManager.Monitor(shape);
     };
     GraphicsRenderer.prototype.GetRandomPosition = function () {
-        return new EndGate.Core.Assets.Vector2d(Math.floor((Math.random() * this._width) + 1), Math.floor((Math.random() * this._height) + 1));
+        return new eg.Vector2d(Math.floor((Math.random() * this._width) + 1), Math.floor((Math.random() * this._height) + 1));
     };
     GraphicsRenderer.prototype.GetRandomSize = function () {
-        return new EndGate.Core.Assets.Size2d(Math.floor((Math.random() * this._width * .1) + 5), Math.floor((Math.random() * this._height * .1) + 5));
+        return new eg.Size2d(Math.floor((Math.random() * this._width * .1) + 5), Math.floor((Math.random() * this._height * .1) + 5));
     };
     GraphicsRenderer.prototype.GetRandomRadius = function () {
         return Math.floor(Math.random() * this._width * .05) + 5;
@@ -106,7 +106,7 @@ var GraphicsRenderer = (function (_super) {
         var axi = [
             "X", 
             "Y"
-        ][Math.floor(Math.random() * 2)], velocity = EndGate.Core.Assets.Vector2d.Zero();
+        ][Math.floor(Math.random() * 2)], velocity = eg.Vector2d.Zero();
         velocity[axi] = Math.floor(Math.random() * GraphicsRenderer.MaxVelocity) + GraphicsRenderer.MinVelocity;
         return velocity;
     };
@@ -114,5 +114,5 @@ var GraphicsRenderer = (function (_super) {
         return Math.floor(Math.random() * GraphicsRenderer.MaxIntervalChange) + GraphicsRenderer.MinIntervalChange;
     };
     return GraphicsRenderer;
-})(EndGate.Core.Game);
+})(eg.Game);
 //@ sourceMappingURL=assetsCollisionDetection.js.map

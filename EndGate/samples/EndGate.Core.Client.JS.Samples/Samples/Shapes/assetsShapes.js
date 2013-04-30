@@ -26,7 +26,7 @@ var ShapeBuilder = (function (_super) {
         this._shapeAnimator.ApplyAnimation(this.Shape, gameTime);
     };
     ShapeBuilder.prototype.BuildShape = function (builder) {
-        var shapeTypeName = $(builder).attr("shape"), shapeType = EndGate.Core.Graphics.Shapes[shapeTypeName], newShape;
+        var shapeTypeName = $(builder).attr("shape"), shapeType = eg.Graphics[shapeTypeName], newShape;
         if(!this.Shape) {
             newShape = new shapeType(this._canvas.width / 2, this._canvas.height / 2, 200, 200);
         } else {
@@ -51,7 +51,7 @@ var ShapeBuilder = (function (_super) {
         this.Scene.Add(this.Shape);
     };
     return ShapeBuilder;
-})(EndGate.Core.Game);
+})(eg.Game);
 var ColorPicker = (function () {
     function ColorPicker(red, green, blue, defaultColor, oncolorchange) {
         this.red = red;
@@ -165,7 +165,7 @@ var ShapeAnimator = (function () {
     ShapeAnimator.prototype.Position = function (shape, gameTime) {
         var incrementor = ShapeAnimator.AnimationSpeed * gameTime.ElapsedSecond, direction = shape.Position.Subtract(this._defaultPosition).Abs().Sign();
         if(direction.Magnitude() === 0) {
-            direction = EndGate.Core.Assets.Vector2d.One();
+            direction = eg.Vector2d.One();
         }
         shape.Position = shape.Position.Add(direction.Multiply(this.Direction).Multiply(incrementor));
     };

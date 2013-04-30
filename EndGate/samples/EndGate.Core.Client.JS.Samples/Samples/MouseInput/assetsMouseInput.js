@@ -37,7 +37,7 @@ var MouseMonitor = (function (_super) {
         });
         this.Input.Mouse.OnUp.Bind(function (clickEvent) {
             lastMouseEvent.text(clickEvent.Button + " button up at " + clickEvent.Position.toString());
-            _this.MarkLocationWithRectangle(clickEvent.Position, new EndGate.Core.Assets.Size2d(_this._radiusSize * 4, _this._radiusSize * 4), _this._inbetweenColors[clickEvent.Button]);
+            _this.MarkLocationWithRectangle(clickEvent.Position, new eg.Size2d(_this._radiusSize * 4, _this._radiusSize * 4), _this._inbetweenColors[clickEvent.Button]);
         });
         this.Input.Mouse.OnMove.Bind(function (clickEvent) {
             _this.MarkLocationWithCircle(clickEvent.Position, 1, _this._onMoveColor);
@@ -51,15 +51,15 @@ var MouseMonitor = (function (_super) {
         });
     }
     MouseMonitor.prototype.MarkLocationWithCircle = function (position, radius, color) {
-        var shape = new EndGate.Core.Graphics.Shapes.Circle(position.X, position.Y, radius, color);
+        var shape = new eg.Graphics.Circle(position.X, position.Y, radius, color);
         this._shapes.push(shape);
         this.Scene.Add(shape);
     };
     MouseMonitor.prototype.MarkLocationWithRectangle = function (position, size, color) {
-        var shape = new EndGate.Core.Graphics.Shapes.Rectangle(position.X, position.Y, size.Width, size.Height, color);
+        var shape = new eg.Graphics.Rectangle(position.X, position.Y, size.Width, size.Height, color);
         this._shapes.push(shape);
         this.Scene.Add(shape);
     };
     return MouseMonitor;
-})(EndGate.Core.Game);
+})(eg.Game);
 //@ sourceMappingURL=assetsMouseInput.js.map

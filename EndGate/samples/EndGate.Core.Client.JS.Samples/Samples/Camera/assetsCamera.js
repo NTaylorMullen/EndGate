@@ -35,7 +35,7 @@ var CameraMover = (function (_super) {
         ];
         this._cameraPositionHolder = cameraPositionHolder;
         this._cameraDistanceHolder = cameraDistanceHolder;
-        this._cameraLocation = new EndGate.Core.Graphics.Shapes.Circle(this.Scene.Camera.Position.X, this.Scene.Camera.Position.Y, 5, "black");
+        this._cameraLocation = new eg.Graphics.Circle(this.Scene.Camera.Position.X, this.Scene.Camera.Position.Y, 5, "black");
         this._movingDirection = new MovingDirection();
         this.BindKeys(this._upKeys, "OnCommandDown", "Up", true);
         this.BindKeys(this._rightKeys, "OnCommandDown", "Right", true);
@@ -85,7 +85,7 @@ var CameraMover = (function (_super) {
         }
     };
     return CameraMover;
-})(EndGate.Core.Game);
+})(eg.Game);
 var MovingDirection = (function () {
     function MovingDirection() {
         this.Up = false;

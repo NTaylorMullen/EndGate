@@ -5,9 +5,9 @@ var __extends = this.__extends || function (d, b) {
 };
 var Animation = (function () {
     function Animation(imageLocation, x, y, spriteSheetWidth, spriteSheetHeight, frameWidth, frameHeight, fps, frameCount, onComplete) {
-        this._spriteSheet = new EndGate.Core.Graphics.Sprites.ImageSource(imageLocation, spriteSheetWidth, spriteSheetHeight, 0, 0);
-        this._animation = new EndGate.Core.Graphics.Sprites.Animation.SpriteAnimation(this._spriteSheet, fps, new EndGate.Core.Assets.Size2d(frameWidth, frameHeight), frameCount);
-        this._sprite = new EndGate.Core.Graphics.Sprites.Sprite2d(x, y, this._spriteSheet, frameWidth, frameHeight);
+        this._spriteSheet = new eg.Graphics.Assets.ImageSource(imageLocation, spriteSheetWidth, spriteSheetHeight, 0, 0);
+        this._animation = new eg.Graphics.SpriteAnimation(this._spriteSheet, fps, new eg.Size2d(frameWidth, frameHeight), frameCount);
+        this._sprite = new eg.Graphics.Sprite2d(x, y, this._spriteSheet, frameWidth, frameHeight);
         this._animation.OnComplete.Bind(onComplete);
         this._sprite.Rotation = Math.random() * (Math).twoPI + -Math.PI;
         this.Graphic = this._sprite;
@@ -100,5 +100,5 @@ var Animator = (function (_super) {
         this._electricPulseManager.Update(gameTime);
     };
     return Animator;
-})(EndGate.Core.Game);
+})(eg.Game);
 //@ sourceMappingURL=assetsAnimatedSprites.js.map

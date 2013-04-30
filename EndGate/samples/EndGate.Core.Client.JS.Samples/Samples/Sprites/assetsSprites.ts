@@ -1,22 +1,21 @@
 /// <reference path="../../Scripts/jquery.d.ts" />
-/// <reference path="../../Scripts/jqueryui.d.ts" />
 /// <reference path="../../Scripts/endGate.core.client.ts" />
 
-class SpriteBuilder extends EndGate.Core.Game {
-    public Sprite: EndGate.Core.Graphics.Sprites.Sprite2d;
+class SpriteBuilder extends eg.Game {
+    public Sprite: eg.Graphics.Sprite2d;
 
     private _spriteAnimator: SpriteAnimator;
 
-    constructor(private _canvas: HTMLCanvasElement, targetAnimators: JQuery, defaultPosition: EndGate.Core.Assets.Vector2d, defaultSize: EndGate.Core.Assets.Size2d, defaultRotation: number, defaultOpacity: number, private _syncSliders: Function) {
+    constructor(private _canvas: HTMLCanvasElement, targetAnimators: JQuery, defaultPosition: eg.Vector2d, defaultSize: eg.Size2d, defaultRotation: number, defaultOpacity: number, private _syncSliders: Function) {
         super(_canvas);
 
-        this.Sprite = new EndGate.Core.Graphics.Sprites.Sprite2d(this._canvas.width / 2, this._canvas.height / 2, new EndGate.Core.Graphics.Sprites.ImageSource("html5-logo.png", 200, 200));
+        this.Sprite = new eg.Graphics.Sprite2d(this._canvas.width / 2, this._canvas.height / 2, new eg.Graphics.Assets.ImageSource("html5-logo.png", 200, 200));
         this._spriteAnimator = new SpriteAnimator(targetAnimators, defaultPosition, defaultSize, defaultRotation, defaultOpacity, this._syncSliders);
 
         this.Scene.Add(this.Sprite);
     }
 
-    public Update(gameTime: EndGate.Core.GameTime): void {
+    public Update(gameTime: eg.GameTime): void {
         this._spriteAnimator.ApplyAnimation(this.Sprite, gameTime);
     }
 }
@@ -64,7 +63,7 @@ class SpriteAnimator {
     };
     private _lastChanged: number;
 
-    constructor(spriteAnimators: JQuery, private _defaultPosition: EndGate.Core.Assets.Vector2d, private _defaultSize: EndGate.Core.Assets.Size2d, private _defaultRotation: number, private _defaultOpacity: number, private _syncSliders: Function) {
+    constructor(spriteAnimators: JQuery, private _defaultPosition: eg.Vector2d, private _defaultSize: eg.Size2d, private _defaultRotation: number, private _defaultOpacity: number, private _syncSliders: Function) {
         var that = this,
             animatorClicked = function () {
                 var $this = $(this),
@@ -87,7 +86,7 @@ class SpriteAnimator {
         this._lastChanged = new Date().getTime();
     }
 
-    public ApplyAnimation(sprite: EndGate.Core.Graphics.Sprites.Sprite2d, gameTime: EndGate.Core.GameTime): void {
+    public ApplyAnimation(sprite: eg.Graphics.Sprite2d, gameTime: eg.GameTime): void {
         if (gameTime.Now.getTime() - this._lastChanged > SpriteAnimator.ChangeDirectionEvery) {
             this.Direction *= -1;
             this._lastChanged = gameTime.Now.getTime();
@@ -102,31 +101,31 @@ class SpriteAnimator {
         }
     }
 
-    private Position(sprite: EndGate.Core.Graphics.Sprites.Sprite2d, gameTime: EndGate.Core.GameTime): void {
+    private Position(sprite: eg.Graphics.Sprite2d, gameTime: eg.GameTime): void {
         var incrementor = SpriteAnimator.AnimationSpeed * gameTime.ElapsedSecond,
             direction = sprite.Position.Subtract(this._defaultPosition).Abs().Sign();
 
         if (direction.Magnitude() === 0) {
-            direction = EndGate.Core.Assets.Vector2d.One();
+            direction = eg.Vector2d.One();
         }
 
         sprite.Position = sprite.Position.Add(direction.Multiply(this.Direction).Multiply(incrementor));
     }
 
-    private Size(sprite: EndGate.Core.Graphics.Sprites.Sprite2d, gameTime: EndGate.Core.GameTime): void {
+    private Size(sprite: eg.Graphics.Sprite2d, gameTime: eg.GameTime): void {
         var incrementor = SpriteAnimator.AnimationSpeed * gameTime.ElapsedSecond;
 
         sprite.Size = sprite.Size.Add(this.Direction * incrementor);
     }
 
-    private Rotation(sprite: EndGate.Core.Graphics.Sprites.Sprite2d, gameTime: EndGate.Core.GameTime): void {
+    private Rotation(sprite: eg.Graphics.Sprite2d, gameTime: eg.GameTime): void {
         var incrementor = SpriteAnimator.RotationSpeed * gameTime.ElapsedSecond,
             direction = 1;
 
         sprite.Rotation += direction * this.Direction * incrementor;
     }
 
-    private Opacity(sprite: EndGate.Core.Graphics.Sprites.Sprite2d, gameTime: EndGate.Core.GameTime): void {
+    private Opacity(sprite: eg.Graphics.Sprite2d, gameTime: eg.GameTime): void {
         var incrementor = .33 * gameTime.ElapsedSecond;
 
         sprite.Opacity(sprite.Opacity() + incrementor * this.Direction);

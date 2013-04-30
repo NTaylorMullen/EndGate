@@ -11,7 +11,7 @@ var CollidableShape = (function (_super) {
         this._collisionBorderThickness = 4;
         this._lastCollision = null;
         this.Graphic = graphic;
-        this.TextPosition = new EndGate.Core.Graphics.Text.Text2d(graphic.Position, graphic.Position.toString());
+        this.TextPosition = new eg.Graphics.Text2d(graphic.Position.X, graphic.Position.Y, graphic.Position.toString());
         this.Graphic.BorderColor(this._collisionBorderColor);
         this.Graphic.BorderThickness(0);
     }
@@ -37,18 +37,18 @@ var CollidableShape = (function (_super) {
         }
     };
     return CollidableShape;
-})(EndGate.Core.Collision.Collidable);
+})(eg.Collision.Collidable);
 var CollidableRectangle = (function (_super) {
     __extends(CollidableRectangle, _super);
     function CollidableRectangle(x, y, width, height, color) {
-        _super.call(this, new EndGate.Core.Graphics.Shapes.Rectangle(x, y, width, height, color), new EndGate.Core.BoundingObject.BoundingRectangle(new EndGate.Core.Assets.Vector2d(x, y), new EndGate.Core.Assets.Size2d(width, height)));
+        _super.call(this, new eg.Graphics.Rectangle(x, y, width, height, color), new eg.Bounds.BoundingRectangle(new eg.Vector2d(x, y), new eg.Size2d(width, height)));
     }
     return CollidableRectangle;
 })(CollidableShape);
 var CollidableCircle = (function (_super) {
     __extends(CollidableCircle, _super);
     function CollidableCircle(x, y, radius, color) {
-        _super.call(this, new EndGate.Core.Graphics.Shapes.Circle(x, y, radius, color), new EndGate.Core.BoundingObject.BoundingCircle(new EndGate.Core.Assets.Vector2d(x, y), radius));
+        _super.call(this, new eg.Graphics.Circle(x, y, radius, color), new eg.Bounds.BoundingCircle(new eg.Vector2d(x, y), radius));
     }
     return CollidableCircle;
 })(CollidableShape);
@@ -111,5 +111,5 @@ var CollisionInspector = (function (_super) {
         return null;
     };
     return CollisionInspector;
-})(EndGate.Core.Game);
+})(eg.Game);
 //@ sourceMappingURL=assetsCollisionInspector.js.map

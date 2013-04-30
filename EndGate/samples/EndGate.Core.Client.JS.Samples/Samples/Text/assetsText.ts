@@ -1,25 +1,24 @@
 /// <reference path="../../Scripts/jquery.d.ts" />
-/// <reference path="../../Scripts/jqueryui.d.ts" />
 /// <reference path="../../Scripts/endGate.core.client.ts" />
 
-class TextBuilder extends EndGate.Core.Game {
-    public Text: EndGate.Core.Graphics.Text.Text2d;
+class TextBuilder extends eg.Game {
+    public Text: eg.Graphics.Text2d;
 
     private _textAnimator: TextAnimator;
 
-    constructor(private _canvas: HTMLCanvasElement, targetAnimators: JQuery, defaultPosition: EndGate.Core.Assets.Vector2d, defaultRotation: number, defaultOpacity: number, private _syncSliders: Function) {
+    constructor(private _canvas: HTMLCanvasElement, targetAnimators: JQuery, defaultPosition: eg.Vector2d, defaultRotation: number, defaultOpacity: number, private _syncSliders: Function) {
         super(_canvas);
         var that = this;
 
-        this.Text = new EndGate.Core.Graphics.Text.Text2d(defaultPosition.X, defaultPosition.Y, "Hello World!");
+        this.Text = new eg.Graphics.Text2d(defaultPosition.X, defaultPosition.Y, "Hello World!");
         this.Text.FontSettings.FontSize(20);
-        this.Text.FontSettings.FontFamily(EndGate.Core.Graphics.Text.FontFamily.TimesNewRoman);
+        this.Text.FontSettings.FontFamily(eg.Graphics.Assets.FontFamily.TimesNewRoman);
         this.Scene.Add(this.Text);
 
         this._textAnimator = new TextAnimator(targetAnimators, defaultPosition, defaultRotation, defaultOpacity, this._syncSliders);
     }
 
-    public Update(gameTime: EndGate.Core.GameTime): void {
+    public Update(gameTime: eg.GameTime): void {
         this._textAnimator.ApplyAnimation(this.Text, gameTime);
     }
 }
@@ -101,7 +100,7 @@ class TextAnimator {
     };
     private _lastChanged: number;
 
-    constructor(textAnimators: JQuery, private _defaultPosition: EndGate.Core.Assets.Vector2d, private _defaultRotation: number, private _defaultOpacity: number, private _syncSliders: Function) {
+    constructor(textAnimators: JQuery, private _defaultPosition: eg.Vector2d, private _defaultRotation: number, private _defaultOpacity: number, private _syncSliders: Function) {
         var that = this,
             animatorClicked = function () {
                 var $this = $(this),
@@ -124,7 +123,7 @@ class TextAnimator {
         this._lastChanged = new Date().getTime();
     }
 
-    public ApplyAnimation(text: EndGate.Core.Graphics.Text.Text2d, gameTime: EndGate.Core.GameTime): void {
+    public ApplyAnimation(text: eg.Graphics.Text2d, gameTime: eg.GameTime): void {
         if (gameTime.Now.getTime() - this._lastChanged > TextAnimator.ChangeDirectionEvery) {
             this.Direction *= -1;
             this._lastChanged = gameTime.Now.getTime();
@@ -138,31 +137,31 @@ class TextAnimator {
         }
     }
 
-    private Position(text: EndGate.Core.Graphics.Text.Text2d, gameTime: EndGate.Core.GameTime): void {
+    private Position(text: eg.Graphics.Text2d, gameTime: eg.GameTime): void {
         var incrementor = TextAnimator.AnimationSpeed * gameTime.ElapsedSecond,
             direction = text.Position.Subtract(this._defaultPosition).Abs().Sign();
 
         if (direction.Magnitude() === 0) {
-            direction = EndGate.Core.Assets.Vector2d.One();
+            direction = eg.Vector2d.One();
         }
 
         text.Position = text.Position.Add(direction.Multiply(this.Direction).Multiply(incrementor));
     }
 
-    private Rotation(text: EndGate.Core.Graphics.Text.Text2d, gameTime: EndGate.Core.GameTime): void {
+    private Rotation(text: eg.Graphics.Text2d, gameTime: eg.GameTime): void {
         var incrementor = TextAnimator.RotationSpeed * gameTime.ElapsedSecond,
             direction = 1;
 
         text.Rotation += direction * this.Direction * incrementor;
     }
 
-    private Size(text: EndGate.Core.Graphics.Text.Text2d, gameTime: EndGate.Core.GameTime): void {
+    private Size(text: eg.Graphics.Text2d, gameTime: eg.GameTime): void {
         var incrementor = (TextAnimator.AnimationSpeed/2) * gameTime.ElapsedSecond;
 
         text.FontSettings.FontSize(parseFloat(text.FontSettings.FontSize()) + this.Direction * incrementor);
     }
 
-    private Opacity(text: EndGate.Core.Graphics.Text.Text2d, gameTime: EndGate.Core.GameTime): void {
+    private Opacity(text: eg.Graphics.Text2d, gameTime: eg.GameTime): void {
         var incrementor = .33 * gameTime.ElapsedSecond;
 
         text.Opacity(text.Opacity() + incrementor * this.Direction);

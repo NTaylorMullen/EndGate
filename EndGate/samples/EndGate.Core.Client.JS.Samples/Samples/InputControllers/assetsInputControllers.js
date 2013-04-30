@@ -9,12 +9,12 @@ var CharacterMover = (function (_super) {
         var _this = this;
         _super.call(this, canvas);
         this._characterMoveSpeed = 100;
-        this._character = new EndGate.Core.Graphics.Shapes.Rectangle(canvas.width / 2, canvas.height / 2, 50, 30, "brown");
-        this._characterMovementController = new EndGate.Core.MovementControllers.LinearMovementController([
+        this._character = new eg.Graphics.Rectangle(canvas.width / 2, canvas.height / 2, 50, 30, "brown");
+        this._characterMovementController = new eg.MovementControllers.LinearMovementController([
             this._character
         ], this._characterMoveSpeed);
         this._characterMovementController.Position = this._character.Position;
-        this._characterInputController = new EndGate.Core.Input.Controllers.DirectionalInputController(this.Input.Keyboard, function (direction, startMoving) {
+        this._characterInputController = new eg.InputControllers.DirectionalInputController(this.Input.Keyboard, function (direction, startMoving) {
             _this._characterMovementController.Move(direction, startMoving);
         });
         this.Scene.Add(this._character);
@@ -23,5 +23,5 @@ var CharacterMover = (function (_super) {
         this._characterMovementController.Update(gameTime);
     };
     return CharacterMover;
-})(EndGate.Core.Game);
+})(eg.Game);
 //@ sourceMappingURL=assetsInputControllers.js.map

@@ -10,9 +10,9 @@ var TextBuilder = (function (_super) {
         this._canvas = _canvas;
         this._syncSliders = _syncSliders;
         var that = this;
-        this.Text = new EndGate.Core.Graphics.Text.Text2d(defaultPosition.X, defaultPosition.Y, "Hello World!");
+        this.Text = new eg.Graphics.Text2d(defaultPosition.X, defaultPosition.Y, "Hello World!");
         this.Text.FontSettings.FontSize(20);
-        this.Text.FontSettings.FontFamily(EndGate.Core.Graphics.Text.FontFamily.TimesNewRoman);
+        this.Text.FontSettings.FontFamily(eg.Graphics.Assets.FontFamily.TimesNewRoman);
         this.Scene.Add(this.Text);
         this._textAnimator = new TextAnimator(targetAnimators, defaultPosition, defaultRotation, defaultOpacity, this._syncSliders);
     }
@@ -20,7 +20,7 @@ var TextBuilder = (function (_super) {
         this._textAnimator.ApplyAnimation(this.Text, gameTime);
     };
     return TextBuilder;
-})(EndGate.Core.Game);
+})(eg.Game);
 var ColorPicker = (function () {
     function ColorPicker(red, green, blue, defaultColor, oncolorchange) {
         this.red = red;
@@ -132,7 +132,7 @@ var TextAnimator = (function () {
     TextAnimator.prototype.Position = function (text, gameTime) {
         var incrementor = TextAnimator.AnimationSpeed * gameTime.ElapsedSecond, direction = text.Position.Subtract(this._defaultPosition).Abs().Sign();
         if(direction.Magnitude() === 0) {
-            direction = EndGate.Core.Assets.Vector2d.One();
+            direction = eg.Vector2d.One();
         }
         text.Position = text.Position.Add(direction.Multiply(this.Direction).Multiply(incrementor));
     };

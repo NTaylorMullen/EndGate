@@ -7,14 +7,14 @@
     };
     canvas.width = holder.width();
     canvas.height = holder.height();
-    canvasCenter = new EndGate.Core.Assets.Vector2d(canvas.width / 2, canvas.height / 2);
+    canvasCenter = new eg.Vector2d(canvas.width / 2, canvas.height / 2);
     holder.append(canvas);
     layerer = new Layerer(canvas);
-    redRect = new EndGate.Core.Graphics.Shapes.Rectangle(canvasCenter.X - rectWidth / 3, canvasCenter.Y, rectWidth, rectHeight, "red");
+    redRect = new eg.Graphics.Rectangle(canvasCenter.X - rectWidth / 3, canvasCenter.Y, rectWidth, rectHeight, "red");
     redRect.Rotation = Math.PI / 4;
-    greenRect = new EndGate.Core.Graphics.Shapes.Rectangle(canvasCenter.X + rectWidth / 3, canvasCenter.Y, rectWidth, rectHeight, "green");
+    greenRect = new eg.Graphics.Rectangle(canvasCenter.X + rectWidth / 3, canvasCenter.Y, rectWidth, rectHeight, "green");
     greenRect.Rotation = -Math.PI / 4;
-    blueCircle = new EndGate.Core.Graphics.Shapes.Circle(canvasCenter.X, canvasCenter.Y, circleRadius, "blue");
+    blueCircle = new eg.Graphics.Circle(canvasCenter.X, canvasCenter.Y, circleRadius, "blue");
     layerer.Scene.Add(redRect);
     layerer.Scene.Add(greenRect);
     layerer.Scene.Add(blueCircle);

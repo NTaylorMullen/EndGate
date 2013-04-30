@@ -5,17 +5,17 @@
     var canvas: HTMLCanvasElement = < HTMLCanvasElement > document.createElement("canvas"),
         holder: JQuery = $("#gameHolder"),
         keyboardMonitor: KeyboardMonitor = null,
-        keys: EndGate.Core.Graphics.Text.Text2d[] = [],
+        keys: eg.Graphics.Text2d[] = [],
         keyY: number = 15,
-        bindingText: EndGate.Core.Graphics.Text.Text2d,
+        bindingText: eg.Graphics.Text2d,
         bindKeyboardInput: JQuery = $("#bindKeyboardInput"),
         unbindKeyboardInput: JQuery = $("#unbindKeyboardInput"),
         commandToBind: JQuery = $("#commandToBind"),
         commandResult: JQuery = $("#commandResult"),
         commandList: JQuery = $("#commandList"),
         keyCommandIDs: number = 0,
-        keyCommandList: { [id: number]: EndGate.Core.Input.Keyboard.KeyboardCommand; } = <any>{},
-        buildModifierAddition = (kce: EndGate.Core.Input.Keyboard.KeyboardCommandEvent): string => {
+        keyCommandList: { [id: number]: eg.Input.Assets.KeyboardCommand; } = <any>{},
+        buildModifierAddition = (kce: eg.Input.KeyboardCommandEvent): string => {
             var addition = "";
 
             if (kce.Modifiers.Ctrl) {
@@ -36,7 +36,7 @@
 
     holder.append(canvas);
 
-    bindingText = new EndGate.Core.Graphics.Text.Text2d(canvas.width / 2, canvas.height / 2, "");
+    bindingText = new eg.Graphics.Text2d(canvas.width / 2, canvas.height / 2, "");
     bindingText.FontSettings.FontSize(40);
     bindingText.FontSettings.FontWeight("bold");
 
@@ -45,22 +45,22 @@
     keyboardMonitor.Scene.Add(bindingText);
 
     for (var i = 0; i < 3; i++) {
-        keys.push(new EndGate.Core.Graphics.Text.Text2d(0, keyY, ""));
+        keys.push(new eg.Graphics.Text2d(0, keyY, ""));
         keys[i].FontSettings.FontSize(20);
         keys[i].Align("left");
         keyboardMonitor.Scene.Add(keys[i]);
         keyY += 30;
     }
 
-    keyboardMonitor.Input.Keyboard.OnKeyPress.Bind((kce: EndGate.Core.Input.Keyboard.KeyboardCommandEvent) => {
+    keyboardMonitor.Input.Keyboard.OnKeyPress.Bind((kce: eg.Input.KeyboardCommandEvent) => {
         keys[0].Text("Press: " + buildModifierAddition(kce) + kce.Key);
     });
 
-    keyboardMonitor.Input.Keyboard.OnKeyDown.Bind((kce: EndGate.Core.Input.Keyboard.KeyboardCommandEvent) => {
+    keyboardMonitor.Input.Keyboard.OnKeyDown.Bind((kce: eg.Input.KeyboardCommandEvent) => {
         keys[1].Text("Down: " + buildModifierAddition(kce) + kce.Key);
     });
 
-    keyboardMonitor.Input.Keyboard.OnKeyUp.Bind((kce: EndGate.Core.Input.Keyboard.KeyboardCommandEvent) => {
+    keyboardMonitor.Input.Keyboard.OnKeyUp.Bind((kce: eg.Input.KeyboardCommandEvent) => {
         keys[2].Text("Up: " + buildModifierAddition(kce) + kce.Key);
     });
 

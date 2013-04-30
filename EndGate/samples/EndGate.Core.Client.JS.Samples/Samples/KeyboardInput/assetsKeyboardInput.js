@@ -9,5 +9,5 @@ var KeyboardMonitor = (function (_super) {
         _super.call(this, canvas);
     }
     return KeyboardMonitor;
-})(EndGate.Core.Game);
+})(eg.Game);
 //@ sourceMappingURL=assetsKeyboardInput.js.map

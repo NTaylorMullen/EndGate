@@ -9,5 +9,5 @@ var Layerer = (function (_super) {
         _super.call(this, canvas);
     }
     return Layerer;
-})(EndGate.Core.Game);
+})(eg.Game);
 //@ sourceMappingURL=assetsLayering.js.map

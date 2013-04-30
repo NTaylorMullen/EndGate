@@ -1,5 +1,4 @@
 /// <reference path="../../Scripts/jquery.d.ts" />
-/// <reference path="../../Scripts/jqueryui.d.ts" />
 /// <reference path="assetsShapes.ts" />
 
 (function ($, window) {
@@ -62,7 +61,7 @@
         slidersAnimationMappings[animation]();
     };
 
-    shapeBuilder = new ShapeBuilder(canvas, $(".shapeBuilder"), $(".shapeAnimator"), new EndGate.Core.Assets.Vector2d(canvas.width / 2, canvas.height / 2), new EndGate.Core.Assets.Size2d(100, 100), 0, 1, syncSliders);
+    shapeBuilder = new ShapeBuilder(canvas, $(".shapeBuilder"), $(".shapeAnimator"), new eg.Vector2d(canvas.width / 2, canvas.height / 2), new eg.Size2d(100, 100), 0, 1, syncSliders);
 
     shapeColorPicker = new ColorPicker($("#redColorPicker"), $("#greenColorPicker"), $("#blueColorPicker"), [127, 0, 127], (newcolor: string) => {
         shapeBuilder.Shape.Color(newcolor);

@@ -1,5 +1,4 @@
 /// <reference path="../../Scripts/jquery.d.ts" />
-/// <reference path="../../Scripts/jqueryui.d.ts" />
 /// <reference path="assetsSprites.ts" />
 
 (function ($, window) {
@@ -49,7 +48,7 @@
         slidersAnimationMappings[animation]();
     };
 
-    spriteBuilder = new SpriteBuilder(canvas, $(".spriteAnimator"), new EndGate.Core.Assets.Vector2d(canvas.width / 2, canvas.height / 2), new EndGate.Core.Assets.Size2d(100, 100), 0, 1, syncSliders);
+    spriteBuilder = new SpriteBuilder(canvas, $(".spriteAnimator"), new eg.Vector2d(canvas.width / 2, canvas.height / 2), new eg.Size2d(100, 100), 0, 1, syncSliders);
 
     rotationSlider = new CustomSlider($("#rotationSlider"), -628, 628, 0, (newrotation: number) => {
         spriteBuilder.Sprite.Rotation = newrotation / 100;
