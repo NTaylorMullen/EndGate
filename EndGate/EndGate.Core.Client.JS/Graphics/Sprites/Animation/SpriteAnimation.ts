@@ -83,6 +83,7 @@ module EndGate.Graphics {
 
         public Reset(): void {
             this._currentFrame = 0;
+            this.UpdateImageSource();
         }
 
         public Fps(newFps?: number): number {

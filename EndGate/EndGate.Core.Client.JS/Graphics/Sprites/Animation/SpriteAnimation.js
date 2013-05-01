@@ -54,6 +54,7 @@ var EndGate;
             };
             SpriteAnimation.prototype.Reset = function () {
                 this._currentFrame = 0;
+                this.UpdateImageSource();
             };
             SpriteAnimation.prototype.Fps = function (newFps) {
                 if(typeof newFps !== "undefined") {

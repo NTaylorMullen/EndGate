@@ -2507,7 +2507,7 @@ module EndGate {
 
 }
 /* LinearDirections.ts */
-module EndGate.MovementControllers._ {
+module EndGate.MovementControllers.Assets {
 
     export class LinearDirections {
         public Left: bool;
@@ -2594,7 +2594,7 @@ module EndGate.MovementControllers {
 
     export class LinearMovementController extends Abstractions.MovementController {
         private _moveSpeed: number;
-        private _moving: _.LinearDirections;
+        private _moving: Assets.LinearDirections;
         private _rotationUpdater: EndGate._.Utilities.NoopTripInvoker;
         private _velocityUpdater: Function;
 
@@ -2602,7 +2602,7 @@ module EndGate.MovementControllers {
             super(moveables);
 
             this._moveSpeed = moveSpeed;
-            this._moving = new _.LinearDirections();
+            this._moving = new Assets.LinearDirections();
             this.OnMove = new EventHandler();
             this._rotationUpdater = new EndGate._.Utilities.NoopTripInvoker(() => {
                 this.UpdateRotation();
@@ -2665,21 +2665,21 @@ module EndGate.MovementControllers {
         private UpdateVelocityNoMultiDirection(): void {
             var velocity = Vector2d.Zero();
 
-            if (velocity.X === 0) {
+            if (velocity.IsZero()) {
                 if (this._moving.Up) {
                     velocity.Y -= this._moveSpeed;
                 }
                 if (this._moving.Down) {
                     velocity.Y += this._moveSpeed;
                 }
-            }
 
-            if (velocity.Y === 0) {
-                if (this._moving.Left) {
-                    velocity.X -= this._moveSpeed;
-                }
-                if (this._moving.Right) {
-                    velocity.X += this._moveSpeed;
+                if (velocity.Y === 0) {
+                    if (this._moving.Left) {
+                        velocity.X -= this._moveSpeed;
+                    }
+                    if (this._moving.Right) {
+                        velocity.X += this._moveSpeed;
+                    }
                 }
             }
 
@@ -2722,12 +2722,12 @@ module EndGate.InputControllers {
     export class DirectionalInputController {
         private _keyboard: Input.KeyboardHandler;
         private _onMove: (direction: string, startMoving: bool) => void;
-        private _directions: MovementControllers._.LinearDirections;
+        private _directions: MovementControllers.Assets.LinearDirections;
 
         constructor(keyboard: Input.KeyboardHandler, onMove: (direction: string, startMoving: bool) => void , upKeys?: string[] = ["w", "Up"], rightKeys?: string[] = ["d", "Right"], downKeys?: string[] = ["s", "Down"], leftKeys?: string[] = ["a", "Left"]) {
             this._keyboard = keyboard;
             this._onMove = onMove;
-            this._directions = new MovementControllers._.LinearDirections();
+            this._directions = new MovementControllers.Assets.LinearDirections();
 
             this.BindKeys(upKeys, "OnCommandDown", "Up", true);
             this.BindKeys(rightKeys, "OnCommandDown", "Right", true);
@@ -3229,28 +3229,23 @@ module EndGate.Graphics {
 
         public Play(repeat?: bool = false): void {
             this._lastStepAt = new Date().getTime();
-            console.log("Playing");
             this._repeating = repeat;
             this._playing = true;
-            this.UpdateImageSource();            
+            this.UpdateImageSource();
         }
 
         public Pause(): void {
             this._playing = false;
-            console.log("Pausing");
         }
 
         public Step(count?: number = 1): void {           
-            console.log("Stepping from " + this._currentFrame + " to " + (this._currentFrame + count));
             this._currentFrame += count;
-            
+
             if (this._currentFrame >= this._frameCount) {
                 if (this._repeating) {
                     this._currentFrame %= this._frameCount;
-                    console.log("Resetting to " + this._currentFrame);
                 }
                 else {
-                    console.log("Animation completed.");
                     this._currentFrame = this._frameCount - 1;
                     this.OnComplete.Trigger();
                     this.Stop(false);
@@ -3263,7 +3258,6 @@ module EndGate.Graphics {
         }
 
         public Stop(resetFrame?: bool = true): void {
-            console.log("Stopping");
             this._playing = false;
             if (resetFrame) {
                 this.Reset();
@@ -3272,6 +3266,7 @@ module EndGate.Graphics {
 
         public Reset(): void {
             this._currentFrame = 0;
+            this.UpdateImageSource();
         }
 
         public Fps(newFps?: number): number {

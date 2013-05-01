@@ -21,7 +21,7 @@ var EndGate;
                 ]; }
                 this._keyboard = keyboard;
                 this._onMove = onMove;
-                this._directions = new EndGate.MovementControllers._.LinearDirections();
+                this._directions = new EndGate.MovementControllers.Assets.LinearDirections();
                 this.BindKeys(upKeys, "OnCommandDown", "Up", true);
                 this.BindKeys(rightKeys, "OnCommandDown", "Right", true);
                 this.BindKeys(downKeys, "OnCommandDown", "Down", true);

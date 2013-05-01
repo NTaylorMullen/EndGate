@@ -12,7 +12,7 @@ module EndGate.MovementControllers {
 
     export class LinearMovementController extends Abstractions.MovementController {
         private _moveSpeed: number;
-        private _moving: _.LinearDirections;
+        private _moving: Assets.LinearDirections;
         private _rotationUpdater: EndGate._.Utilities.NoopTripInvoker;
         private _velocityUpdater: Function;
 
@@ -20,7 +20,7 @@ module EndGate.MovementControllers {
             super(moveables);
 
             this._moveSpeed = moveSpeed;
-            this._moving = new _.LinearDirections();
+            this._moving = new Assets.LinearDirections();
             this.OnMove = new EventHandler();
             this._rotationUpdater = new EndGate._.Utilities.NoopTripInvoker(() => {
                 this.UpdateRotation();
@@ -83,21 +83,21 @@ module EndGate.MovementControllers {
         private UpdateVelocityNoMultiDirection(): void {
             var velocity = Vector2d.Zero();
 
-            if (velocity.X === 0) {
+            if (velocity.IsZero()) {
                 if (this._moving.Up) {
                     velocity.Y -= this._moveSpeed;
                 }
                 if (this._moving.Down) {
                     velocity.Y += this._moveSpeed;
                 }
-            }
 
-            if (velocity.Y === 0) {
-                if (this._moving.Left) {
-                    velocity.X -= this._moveSpeed;
-                }
-                if (this._moving.Right) {
-                    velocity.X += this._moveSpeed;
+                if (velocity.Y === 0) {
+                    if (this._moving.Left) {
+                        velocity.X -= this._moveSpeed;
+                    }
+                    if (this._moving.Right) {
+                        velocity.X += this._moveSpeed;
+                    }
                 }
             }
 

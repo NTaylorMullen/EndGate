@@ -3,8 +3,10 @@
 
 class KnightAnimationHandler implements eg.IUpdateable {
     private static _animationDirectionMap: string[] = ["Up", "Left", "Down", "Right"];
+    private _movementList: string[];
     private _knight: Knight;
     private _animations: { [direction: string]: eg.Graphics.SpriteAnimation; };
+    private _currentAnimation: eg.Graphics.SpriteAnimation;
 
     constructor(knight: Knight) {
         this._knight = knight;
@@ -18,14 +20,36 @@ class KnightAnimationHandler implements eg.IUpdateable {
             this.KnightMove(moveEvent);
         });
 
+        this._movementList = [];
+
+        this._currentAnimation = this._animations["Up"];
+        this._currentAnimation.Stop();
     }
 
     private KnightMove(moveEvent: eg.MovementControllers.IMoveEvent): void {
-        if (moveEvent.StartMoving) {
-            this._animations[moveEvent.Direction].Play(true);
+        var velocitySign = this._knight.MovementController.Velocity.Sign(),
+            activeAnimation: eg.Graphics.SpriteAnimation;
+
+        if (moveEvent.StartMoving === false && this._animations[moveEvent.Direction] === this._currentAnimation) {
+            this._currentAnimation.Stop();
         }
-        else {
-            this._animations[moveEvent.Direction].Stop();
+
+        if (velocitySign.X === -1) {
+            activeAnimation = this._animations["Left"];
+        } else if (velocitySign.X === 1) {
+            activeAnimation = this._animations["Right"];
+        }
+
+        if (velocitySign.Y === -1) {
+            activeAnimation = this._animations["Up"];
+        } else if (velocitySign.Y === 1) {
+            activeAnimation = this._animations["Down"];
+        }
+
+        if (activeAnimation) {
+            this._currentAnimation.Stop();
+            this._currentAnimation = activeAnimation;
+            this._currentAnimation.Play(true);
         }
     }
 

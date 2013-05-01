@@ -1856,7 +1856,7 @@ var EndGate;
 var EndGate;
 (function (EndGate) {
     (function (MovementControllers) {
-        (function (_) {
+        (function (Assets) {
             var LinearDirections = (function () {
                 function LinearDirections() {
                     this.Left = false;
@@ -1866,9 +1866,9 @@ var EndGate;
                 }
                 return LinearDirections;
             })();
-            _.LinearDirections = LinearDirections;            
-        })(MovementControllers._ || (MovementControllers._ = {}));
-        var _ = MovementControllers._;
+            Assets.LinearDirections = LinearDirections;            
+        })(MovementControllers.Assets || (MovementControllers.Assets = {}));
+        var Assets = MovementControllers.Assets;
     })(EndGate.MovementControllers || (EndGate.MovementControllers = {}));
     var MovementControllers = EndGate.MovementControllers;
 })(EndGate || (EndGate = {}));
@@ -1921,7 +1921,7 @@ var EndGate;
                 var _this = this;
                         _super.call(this, moveables);
                 this._moveSpeed = moveSpeed;
-                this._moving = new MovementControllers._.LinearDirections();
+                this._moving = new MovementControllers.Assets.LinearDirections();
                 this.OnMove = new EndGate.EventHandler();
                 this._rotationUpdater = new EndGate._.Utilities.NoopTripInvoker(function () {
                     _this.UpdateRotation();
@@ -1969,20 +1969,20 @@ var EndGate;
             };
             LinearMovementController.prototype.UpdateVelocityNoMultiDirection = function () {
                 var velocity = EndGate.Vector2d.Zero();
-                if(velocity.X === 0) {
+                if(velocity.IsZero()) {
                     if(this._moving.Up) {
                         velocity.Y -= this._moveSpeed;
                     }
                     if(this._moving.Down) {
                         velocity.Y += this._moveSpeed;
                     }
-                }
-                if(velocity.Y === 0) {
-                    if(this._moving.Left) {
-                        velocity.X -= this._moveSpeed;
-                    }
-                    if(this._moving.Right) {
-                        velocity.X += this._moveSpeed;
+                    if(velocity.Y === 0) {
+                        if(this._moving.Left) {
+                            velocity.X -= this._moveSpeed;
+                        }
+                        if(this._moving.Right) {
+                            velocity.X += this._moveSpeed;
+                        }
                     }
                 }
                 this.Velocity = velocity;
@@ -2037,7 +2037,7 @@ var EndGate;
                 ]; }
                 this._keyboard = keyboard;
                 this._onMove = onMove;
-                this._directions = new EndGate.MovementControllers._.LinearDirections();
+                this._directions = new EndGate.MovementControllers.Assets.LinearDirections();
                 this.BindKeys(upKeys, "OnCommandDown", "Up", true);
                 this.BindKeys(rightKeys, "OnCommandDown", "Right", true);
                 this.BindKeys(downKeys, "OnCommandDown", "Down", true);
@@ -2508,25 +2508,20 @@ var EndGate;
             SpriteAnimation.prototype.Play = function (repeat) {
                 if (typeof repeat === "undefined") { repeat = false; }
                 this._lastStepAt = new Date().getTime();
-                console.log("Playing");
                 this._repeating = repeat;
                 this._playing = true;
                 this.UpdateImageSource();
             };
             SpriteAnimation.prototype.Pause = function () {
                 this._playing = false;
-                console.log("Pausing");
             };
             SpriteAnimation.prototype.Step = function (count) {
                 if (typeof count === "undefined") { count = 1; }
-                console.log("Stepping from " + this._currentFrame + " to " + (this._currentFrame + count));
                 this._currentFrame += count;
                 if(this._currentFrame >= this._frameCount) {
                     if(this._repeating) {
                         this._currentFrame %= this._frameCount;
-                        console.log("Resetting to " + this._currentFrame);
                     } else {
-                        console.log("Animation completed.");
                         this._currentFrame = this._frameCount - 1;
                         this.OnComplete.Trigger();
                         this.Stop(false);
@@ -2538,7 +2533,6 @@ var EndGate;
             };
             SpriteAnimation.prototype.Stop = function (resetFrame) {
                 if (typeof resetFrame === "undefined") { resetFrame = true; }
-                console.log("Stopping");
                 this._playing = false;
                 if(resetFrame) {
                     this.Reset();
@@ -2546,6 +2540,7 @@ var EndGate;
             };
             SpriteAnimation.prototype.Reset = function () {
                 this._currentFrame = 0;
+                this.UpdateImageSource();
             };
             SpriteAnimation.prototype.Fps = function (newFps) {
                 if(typeof newFps !== "undefined") {

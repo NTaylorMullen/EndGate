@@ -14,7 +14,7 @@ var EndGate;
                 var _this = this;
                         _super.call(this, moveables);
                 this._moveSpeed = moveSpeed;
-                this._moving = new MovementControllers._.LinearDirections();
+                this._moving = new MovementControllers.Assets.LinearDirections();
                 this.OnMove = new EndGate.EventHandler();
                 this._rotationUpdater = new EndGate._.Utilities.NoopTripInvoker(function () {
                     _this.UpdateRotation();
@@ -62,20 +62,20 @@ var EndGate;
             };
             LinearMovementController.prototype.UpdateVelocityNoMultiDirection = function () {
                 var velocity = EndGate.Vector2d.Zero();
-                if(velocity.X === 0) {
+                if(velocity.IsZero()) {
                     if(this._moving.Up) {
                         velocity.Y -= this._moveSpeed;
                     }
                     if(this._moving.Down) {
                         velocity.Y += this._moveSpeed;
                     }
-                }
-                if(velocity.Y === 0) {
-                    if(this._moving.Left) {
-                        velocity.X -= this._moveSpeed;
-                    }
-                    if(this._moving.Right) {
-                        velocity.X += this._moveSpeed;
+                    if(velocity.Y === 0) {
+                        if(this._moving.Left) {
+                            velocity.X -= this._moveSpeed;
+                        }
+                        if(this._moving.Right) {
+                            velocity.X += this._moveSpeed;
+                        }
                     }
                 }
                 this.Velocity = velocity;

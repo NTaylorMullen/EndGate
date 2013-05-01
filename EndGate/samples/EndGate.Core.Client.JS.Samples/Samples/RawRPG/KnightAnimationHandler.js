@@ -10,6 +10,9 @@ var KnightAnimationHandler = (function () {
         this._knight.MovementController.OnMove.Bind(function (moveEvent) {
             _this.KnightMove(moveEvent);
         });
+        this._movementList = [];
+        this._currentAnimation = this._animations["Up"];
+        this._currentAnimation.Stop();
     }
     KnightAnimationHandler._animationDirectionMap = [
         "Up", 
@@ -18,10 +21,24 @@ var KnightAnimationHandler = (function () {
         "Right"
     ];
     KnightAnimationHandler.prototype.KnightMove = function (moveEvent) {
-        if(moveEvent.StartMoving) {
-            this._animations[moveEvent.Direction].Play(true);
-        } else {
-            this._animations[moveEvent.Direction].Stop();
+        var velocitySign = this._knight.MovementController.Velocity.Sign(), activeAnimation;
+        if(moveEvent.StartMoving === false && this._animations[moveEvent.Direction] === this._currentAnimation) {
+            this._currentAnimation.Stop();
+        }
+        if(velocitySign.X === -1) {
+            activeAnimation = this._animations["Left"];
+        } else if(velocitySign.X === 1) {
+            activeAnimation = this._animations["Right"];
+        }
+        if(velocitySign.Y === -1) {
+            activeAnimation = this._animations["Up"];
+        } else if(velocitySign.Y === 1) {
+            activeAnimation = this._animations["Down"];
+        }
+        if(activeAnimation) {
+            this._currentAnimation.Stop();
+            this._currentAnimation = activeAnimation;
+            this._currentAnimation.Play(true);
         }
     };
     KnightAnimationHandler.prototype.Update = function (gameTime) {
