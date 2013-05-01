@@ -11,7 +11,7 @@ var EndGate;
                     this._translationState.push(this._translated);
                 }
                 Camera2dCanvasContextBuilder.prototype.BuildFrom = function (context) {
-                    var that = this, savedCreateRadialGradient = context.createRadialGradient, savedTranslate = context.translate, savedSave = context.save, savedRestore = context.restore;
+                    var that = this, savedCreateRadialGradient = context.createRadialGradient, savedTranslate = context.translate, savedSave = context.save, savedRestore = context.restore, savedDrawImage1 = this.BuildPositionReplacer(context.drawImage, 1), savedDrawImage2 = this.BuildPositionReplacer(context.drawImage, 5);
                     (context).unModifiedClearRect = context.clearRect;
                     context.arc = this.BuildPositionReplacer(context.arc);
                     context.arcTo = this.BuildPositionReplacer(context.arcTo, 0, 4);
@@ -26,7 +26,13 @@ var EndGate;
                         arguments[4] += -that._camera.Position.Y + that._canvasCenter.Y * scale;
                         return savedCreateRadialGradient.apply(this, arguments);
                     };
-                    context.drawImage = this.BuildPositionReplacer(context.drawImage, 1);
+                    context.drawImage = function () {
+                        if(arguments.length <= 5) {
+                            savedDrawImage1.apply(this, arguments);
+                        } else {
+                            savedDrawImage2.apply(this, arguments);
+                        }
+                    };
                     context.fillRect = this.BuildPositionReplacer(context.fillRect);
                     context.fillText = this.BuildPositionReplacer(context.fillText, 1);
                     context.getImageData = this.BuildPositionReplacer(context.getImageData);

@@ -18,6 +18,6 @@ class RPG extends eg.Game {
     public Update(gameTime: eg.GameTime): void {
         // Update the camera to follow our knight.
         this._playersKnight.Update(gameTime);
-        //this.Scene.Camera.Position = this._playersKnight.MovementController.Position;
+        this.Scene.Camera.Position = this._playersKnight.MovementController.Position;
     }
 }

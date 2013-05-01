@@ -13,6 +13,7 @@ var RPG = (function (_super) {
     }
     RPG.prototype.Update = function (gameTime) {
         this._playersKnight.Update(gameTime);
+        this.Scene.Camera.Position = this._playersKnight.MovementController.Position;
     };
     return RPG;
 })(eg.Game);

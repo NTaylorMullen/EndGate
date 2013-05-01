@@ -254,6 +254,9 @@
       <DependentUpon>Main.ts</DependentUpon>
     </Content>
     <TypeScriptCompile Include="Samples\RawRPG\Player.ts" />
+    <Content Include="Samples\RawRPG\Main.min.js">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
     <Content Include="Samples\RawRPG\Player.js">
       <DependentUpon>Player.ts</DependentUpon>
     </Content>
@@ -389,6 +392,9 @@
     </Content>
     <Content Include="Samples\RawRPG\KnightAnimationHandler.js.map">
       <DependentUpon>KnightAnimationHandler.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\RawRPG\main.js.map">
+      <DependentUpon>Main.ts</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <TypeScriptCompile Include="Scripts\endGate.core.client.ts" />

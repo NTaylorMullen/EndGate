@@ -12,5 +12,5 @@
     holder.append(canvas);
 
     rpg = new RPG(canvas);
-
+    rpg.Scene.Add(new eg.Graphics.Rectangle(0, 0, 150, 75, "orange"));
 })($, window);

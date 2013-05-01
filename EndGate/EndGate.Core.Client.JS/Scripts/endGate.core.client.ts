@@ -1517,7 +1517,9 @@ module EndGate.Rendering._ {
                 savedCreateRadialGradient = context.createRadialGradient,
                 savedTranslate = context.translate,
                 savedSave = context.save,
-                savedRestore = context.restore;
+                savedRestore = context.restore,
+                savedDrawImage1 = this.BuildPositionReplacer(context.drawImage, 1),
+                savedDrawImage2 = this.BuildPositionReplacer(context.drawImage, 5);
 
             (<any>context).unModifiedClearRect = context.clearRect;
 
@@ -1535,7 +1537,14 @@ module EndGate.Rendering._ {
 
                 return savedCreateRadialGradient.apply(this, arguments);
             };
-            context.drawImage = this.BuildPositionReplacer(context.drawImage, 1);
+            context.drawImage = function() {
+                if (arguments.length <= 5) {
+                    savedDrawImage1.apply(this, arguments);
+                }
+                else {
+                    savedDrawImage2.apply(this, arguments);
+                }
+            };
             context.fillRect = this.BuildPositionReplacer(context.fillRect);
             context.fillText = this.BuildPositionReplacer(context.fillText, 1);
             context.getImageData = this.BuildPositionReplacer(context.getImageData);
