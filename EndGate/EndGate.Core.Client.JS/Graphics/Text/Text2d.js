@@ -15,7 +15,7 @@ var EndGate;
                 this._type = "Text2d";
                 this._text = text;
                 this._stroker = new EndGate._.Utilities.NoopTripInvoker(function (context) {
-                    context.strokeText(_this._text, _this.Position.X, _this.Position.Y);
+                    context.strokeText(_this._text, 0, 0);
                 });
                 this._drawBounds = new EndGate.Bounds.BoundingRectangle(this.Position, EndGate.Size2d.One());
                 this.FontSettings = new Graphics.Assets.FontSettings();
@@ -86,7 +86,7 @@ var EndGate;
                 textSize = context.measureText(this._text);
                 this._drawBounds.Size.Width = textSize.width;
                 this._drawBounds.Size.Height = parseInt(this.FontSettings.FontSize()) * 1.5;
-                context.fillText(this._text, this.Position.X, this.Position.Y);
+                context.fillText(this._text, 0, 0);
                 this._stroker.Invoke(context);
                 _super.prototype.EndDraw.call(this, context);
             };

@@ -14,7 +14,7 @@ var EndGate;
                 this.Size = new EndGate.Size2d(width, height);
             }
             Rectangle.prototype.BuildPath = function (context) {
-                context.rect(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
+                context.rect(-this.Size.HalfWidth(), -this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
             };
             Rectangle.prototype.GetDrawBounds = function () {
                 var bounds = new EndGate.Bounds.BoundingRectangle(this.Position, this.Size);

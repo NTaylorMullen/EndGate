@@ -17,7 +17,7 @@ module EndGate.Graphics {
         }
 
         public BuildPath(context: CanvasRenderingContext2D): void {           
-            context.arc(this.Position.X, this.Position.Y, this.Radius, 0, (<any>Math).twoPI);
+            context.arc(0, 0, this.Radius, 0, (<any>Math).twoPI);
         }
 
         public GetDrawBounds(): Bounds.Abstractions.Bounds2d {

@@ -9,17 +9,40 @@ var EndGate;
                     this.Rotation = 0;
                     this.ZIndex = 0;
                     this.State = new Graphics.Assets.Graphic2dState();
+                    this._children = [];
                 }
+                Graphic2d._zindexSort = function (a, b) {
+                    return a.ZIndex - b.ZIndex;
+                };
+                Graphic2d.prototype.AddChild = function (graphic) {
+                    this._children.push(graphic);
+                    this._children.sort(Graphic2d._zindexSort);
+                };
+                Graphic2d.prototype.RemoveChild = function (graphic) {
+                    var index = this._children.indexOf(graphic);
+                    if(index >= 0) {
+                        this._children.splice(index, 1);
+                        return true;
+                    }
+                    return false;
+                };
+                Graphic2d.prototype.Children = function () {
+                    return this._children;
+                };
                 Graphic2d.prototype.StartDraw = function (context) {
                     context.save();
                     this.State.SetContextState(context);
-                    if(this.Rotation !== 0) {
+                    if(this.Rotation !== 0 || this._children.length >= 0) {
                         context.translate(this.Position.X, this.Position.Y);
+                    }
+                    if(this.Rotation !== 0) {
                         context.rotate(this.Rotation);
-                        context.translate(-this.Position.X, -this.Position.Y);
                     }
                 };
                 Graphic2d.prototype.EndDraw = function (context) {
+                    for(var i = 0; i < this._children.length; i++) {
+                        this._children[i].Draw(context);
+                    }
                     context.restore();
                 };
                 Graphic2d.prototype.Draw = function (context) {

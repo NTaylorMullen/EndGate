@@ -21,7 +21,7 @@ module EndGate.Graphics {
 
             this._text = text;
             this._stroker = new _.Utilities.NoopTripInvoker((context: CanvasRenderingContext2D) => {
-                context.strokeText(this._text, this.Position.X, this.Position.Y);
+                context.strokeText(this._text, 0, 0);
             });
 
             this._drawBounds = new Bounds.BoundingRectangle(this.Position, Size2d.One());
@@ -107,7 +107,7 @@ module EndGate.Graphics {
             this._drawBounds.Size.Width = textSize.width;
             this._drawBounds.Size.Height = parseInt(this.FontSettings.FontSize()) * 1.5;
 
-            context.fillText(this._text, this.Position.X, this.Position.Y);
+            context.fillText(this._text, 0, 0);
             this._stroker.Invoke(context);
 
             super.EndDraw(context);

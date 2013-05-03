@@ -21,7 +21,7 @@ var EndGate;
             };
             Sprite2d.prototype.Draw = function (context) {
                 _super.prototype.StartDraw.call(this, context);
-                context.drawImage(this.Image.Source, this.Image.ClipLocation.X, this.Image.ClipLocation.Y, this.Image.ClipSize.Width, this.Image.ClipSize.Height, this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
+                context.drawImage(this.Image.Source, this.Image.ClipLocation.X, this.Image.ClipLocation.Y, this.Image.ClipSize.Width, this.Image.ClipSize.Height, -this.Size.HalfWidth(), -this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
                 _super.prototype.EndDraw.call(this, context);
             };
             Sprite2d.prototype.GetDrawBounds = function () {

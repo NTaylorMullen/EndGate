@@ -16,25 +16,56 @@ module EndGate.Graphics.Abstractions {
         public Rotation: number;
         public State: Assets.Graphic2dState;
 
+        private static _zindexSort: (a: Graphic2d, b: Graphic2d) => number = (a: Graphic2d, b: Graphic2d) => { return a.ZIndex - b.ZIndex; };
+
+        private _children: Graphic2d[];
+
         constructor(position: Vector2d) {
             this.Position = position;
             this.Rotation = 0;
             this.ZIndex = 0;
             this.State = new Assets.Graphic2dState();
+            this._children = [];
+        }
+
+        public AddChild(graphic: Graphic2d): void {
+            this._children.push(graphic);
+            this._children.sort(Graphic2d._zindexSort);
+        }
+
+        public RemoveChild(graphic: Graphic2d): bool {
+            var index = this._children.indexOf(graphic);
+
+            if (index >= 0) {
+                this._children.splice(index, 1);
+                return true;
+            }
+
+            return false;
+        }
+
+        public Children(): Graphic2d[]{
+            return this._children;
         }
 
         public StartDraw(context: CanvasRenderingContext2D): void {
             context.save();
             this.State.SetContextState(context);
 
-            if (this.Rotation !== 0) {
+            if (this.Rotation !== 0 || this._children.length >= 0) {
                 context.translate(this.Position.X, this.Position.Y);
+            }
+
+            if (this.Rotation !== 0) {
                 context.rotate(this.Rotation);
-                context.translate(-this.Position.X, -this.Position.Y);
             }
         }
 
         public EndDraw(context: CanvasRenderingContext2D): void {
+            for (var i = 0; i < this._children.length; i++) {
+                this._children[i].Draw(context);
+            }
+
             context.restore();
         }
 

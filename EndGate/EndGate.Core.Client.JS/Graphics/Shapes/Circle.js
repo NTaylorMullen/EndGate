@@ -14,7 +14,7 @@ var EndGate;
                 this.Radius = radius;
             }
             Circle.prototype.BuildPath = function (context) {
-                context.arc(this.Position.X, this.Position.Y, this.Radius, 0, (Math).twoPI);
+                context.arc(0, 0, this.Radius, 0, (Math).twoPI);
             };
             Circle.prototype.GetDrawBounds = function () {
                 var bounds = new EndGate.Bounds.BoundingCircle(this.Position, this.Radius);
