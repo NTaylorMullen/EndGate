@@ -52,9 +52,7 @@ module EndGate.Graphics.Abstractions {
             context.save();
             this.State.SetContextState(context);
 
-            if (this.Rotation !== 0 || this._children.length >= 0) {
-                context.translate(this.Position.X, this.Position.Y);
-            }
+            context.translate(this.Position.X, this.Position.Y);
 
             if (this.Rotation !== 0) {
                 context.rotate(this.Rotation);
