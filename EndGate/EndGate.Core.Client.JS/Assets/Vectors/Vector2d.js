@@ -54,6 +54,8 @@ var EndGate;
         Vector2d.prototype.Add = function (val) {
             if(val._type === "Vector2d") {
                 return new Vector2d(this.X + val.X, this.Y + val.Y);
+            } else if(val._type === "Size2d") {
+                return new Vector2d(this.X + val.Width, this.Y + val.Height);
             } else {
                 return new Vector2d(this.X + val, this.Y + val);
             }
@@ -61,6 +63,8 @@ var EndGate;
         Vector2d.prototype.Multiply = function (val) {
             if(val._type === "Vector2d") {
                 return new Vector2d(this.X * val.X, this.Y * val.Y);
+            } else if(val._type === "Size2d") {
+                return new Vector2d(this.X * val.Width, this.Y * val.Height);
             } else {
                 return new Vector2d(this.X * val, this.Y * val);
             }
@@ -68,6 +72,8 @@ var EndGate;
         Vector2d.prototype.Subtract = function (val) {
             if(val._type === "Vector2d") {
                 return new Vector2d(this.X - val.X, this.Y - val.Y);
+            } else if(val._type === "Size2d") {
+                return new Vector2d(this.X - val.Width, this.Y - val.Height);
             } else {
                 return new Vector2d(this.X - val, this.Y - val);
             }
@@ -75,6 +81,8 @@ var EndGate;
         Vector2d.prototype.SubtractFrom = function (val) {
             if(val._type === "Vector2d") {
                 return new Vector2d(val.X - this.X, val.Y - this.Y);
+            } else if(val._type === "Size2d") {
+                return new Vector2d(val.Width - this.X, val.Height = this.Y);
             } else {
                 return new Vector2d(val - this.X, val - this.Y);
             }
@@ -82,6 +90,8 @@ var EndGate;
         Vector2d.prototype.Divide = function (val) {
             if(val._type === "Vector2d") {
                 return new Vector2d(this.X / val.X, this.Y / val.Y);
+            } else if(val._type === "Size2d") {
+                return new Vector2d(this.X / val.Width, this.Y / val.Height);
             } else {
                 return new Vector2d(this.X / val, this.Y / val);
             }
@@ -89,6 +99,8 @@ var EndGate;
         Vector2d.prototype.DivideFrom = function (val) {
             if(val._type === "Vector2d") {
                 return new Vector2d(val.X / this.X, val.Y / this.Y);
+            } else if(val._type === "Size2d") {
+                return new Vector2d(val.Width / this.X, val.Height / this.Y);
             } else {
                 return new Vector2d(val / this.X, val / this.Y);
             }

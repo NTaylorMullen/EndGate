@@ -1,4 +1,5 @@
 /// <reference path="../../Interfaces/ITyped.d.ts" />
+/// <reference path="../Sizes/Size2d.ts" />
 /// <reference path="../../Extensions/MathExtensions.ts" />
 
 module EndGate {
@@ -75,10 +76,14 @@ module EndGate {
         }
 
         public Add(val: Vector2d): Vector2d;
+        public Add(val: Size2d): Vector2d;
         public Add(val: number): Vector2d;
         public Add(val: any): Vector2d{
             if (val._type === "Vector2d") {
                 return new Vector2d(this.X + val.X, this.Y + val.Y);
+            }
+            else if (val._type === "Size2d") {
+                return new Vector2d(this.X + val.Width, this.Y + val.Height);
             }
             else {
                 return new Vector2d(this.X + val, this.Y + val);
@@ -86,10 +91,14 @@ module EndGate {
         }
 
         public Multiply(val: Vector2d): Vector2d;
+        public Multiply(val: Size2d): Vector2d;
         public Multiply(val: number): Vector2d;
         public Multiply(val: any): Vector2d {
             if (val._type === "Vector2d") {
                 return new Vector2d(this.X * val.X, this.Y * val.Y);
+            }
+            else if (val._type === "Size2d") {
+                return new Vector2d(this.X * val.Width, this.Y * val.Height);
             }
             else {
                 return new Vector2d(this.X * val, this.Y * val);
@@ -97,10 +106,14 @@ module EndGate {
         }
 
         public Subtract(val: Vector2d): Vector2d;
+        public Subtract(val: Size2d): Vector2d;
         public Subtract(val: number): Vector2d;
         public Subtract(val: any): Vector2d {
             if (val._type === "Vector2d") {
                 return new Vector2d(this.X - val.X, this.Y - val.Y);
+            }
+            else if (val._type === "Size2d") {
+                return new Vector2d(this.X - val.Width, this.Y - val.Height);
             }
             else {
                 return new Vector2d(this.X - val, this.Y - val);
@@ -108,10 +121,14 @@ module EndGate {
         }
 
         public SubtractFrom(val: Vector2d): Vector2d;
+        public SubtractFrom(val: Size2d): Vector2d;
         public SubtractFrom(val: number): Vector2d;
         public SubtractFrom(val: any): Vector2d {
             if (val._type === "Vector2d") {
                 return new Vector2d(val.X - this.X, val.Y - this.Y);
+            }
+            else if (val._type === "Size2d") {
+                return new Vector2d(val.Width - this.X, val.Height = this.Y);
             }
             else {
                 return new Vector2d(val - this.X, val - this.Y);
@@ -119,10 +136,14 @@ module EndGate {
         }
 
         public Divide(val: Vector2d): Vector2d;
+        public Divide(val: Size2d): Vector2d;
         public Divide(val: number): Vector2d;
         public Divide(val: any): Vector2d {
             if (val._type === "Vector2d") {
                 return new Vector2d(this.X / val.X, this.Y / val.Y);
+            }
+            else if (val._type === "Size2d") {
+                return new Vector2d(this.X / val.Width, this.Y / val.Height);
             }
             else {
                 return new Vector2d(this.X / val, this.Y / val);
@@ -130,10 +151,14 @@ module EndGate {
         }
 
         public DivideFrom(val: Vector2d): Vector2d;
+        public DivideFrom(val: Size2d): Vector2d;
         public DivideFrom(val: number): Vector2d;
         public DivideFrom(val: any): Vector2d {
             if (val._type === "Vector2d") {
                 return new Vector2d(val.X / this.X, val.Y / this.Y);
+            }
+            else if (val._type === "Size2d") {
+                return new Vector2d(val.Width / this.X, val.Height / this.Y);
             }
             else {
                 return new Vector2d(val / this.X, val / this.Y);
