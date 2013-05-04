@@ -6,12 +6,12 @@
 module EndGate.Graphics {
 
     export class Line extends Abstractions.Graphic2d {
-        public _type: string = "Line";
+        public _type: string = "Line2d";
 
         private _from: Vector2d;
         private _to: Vector2d;
         private _difference: Vector2d;
-        private _boundsWidth: number;        
+        private _boundsWidth: number;
         private _cachedPosition: Vector2d;
 
         constructor(fromX: number, fromY: number, toX: number, toY: number, lineWidth?: number = 1, color?: string) {

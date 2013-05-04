@@ -11,7 +11,7 @@ var EndGate;
             function Line(fromX, fromY, toX, toY, lineWidth, color) {
                 if (typeof lineWidth === "undefined") { lineWidth = 1; }
                         _super.call(this, EndGate.Vector2d.Zero());
-                this._type = "Line";
+                this._type = "Line2d";
                 this._from = new EndGate.Vector2d(fromX, fromY);
                 this._to = new EndGate.Vector2d(toX, toY);
                 this.LineWidth(lineWidth);
@@ -78,4 +78,4 @@ var EndGate;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
     var Graphics = EndGate.Graphics;
 })(EndGate || (EndGate = {}));
-//@ sourceMappingURL=Line.js.map
+//@ sourceMappingURL=Line2d.js.map
