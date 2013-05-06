@@ -13,6 +13,7 @@ var EndGate;
             this.Audio = new EndGate.Sound.AudioManager();
             this.CollisionManager = new EndGate.Collision.CollisionManager();
             this.Configuration = new EndGate.GameConfiguration(GameRunnerInstance.Register(this));
+            this.Map = new EndGate.Map.MapManager(this.Scene.DrawArea, this.Scene.Camera);
         }
         Game._gameIds = 0;
         Game.prototype.PrepareUpdate = function () {
@@ -23,6 +24,7 @@ var EndGate;
         Game.prototype.Update = function (gameTime) {
         };
         Game.prototype.PrepareDraw = function () {
+            this.Map.Scenery.Draw();
             this.Scene.Draw();
         };
         Game.prototype.Draw = function (context) {

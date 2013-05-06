@@ -237,6 +237,7 @@
     <TypeScriptCompile Include="Samples\RawRPG\Knight.ts" />
     <Content Include="Samples\RawRPG\images\attribution.txt" />
     <Content Include="Samples\RawRPG\images\golden_knight.png" />
+    <Content Include="Samples\RawRPG\images\wood_tileset_3.png" />
     <Content Include="Samples\RawRPG\Knight.js">
       <DependentUpon>Knight.ts</DependentUpon>
     </Content>

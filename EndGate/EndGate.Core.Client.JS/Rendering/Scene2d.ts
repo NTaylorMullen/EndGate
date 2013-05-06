@@ -36,6 +36,8 @@ module EndGate.Rendering {
                 this._onDraw = onDraw;
             }
 
+            this.ApplyStyles(drawArea);
+
             this.DrawArea = drawArea;
             this.Camera = new Camera2d(new Vector2d(this.DrawArea.width / 2, this.DrawArea.height / 2), new Size2d(this.DrawArea.width, this.DrawArea.height));
             this._renderer = new Camera2dRenderer(this.DrawArea, this.Camera);
@@ -67,10 +69,17 @@ module EndGate.Rendering {
             }
         }
 
+        private ApplyStyles(drawArea: HTMLCanvasElement): void {
+            drawArea.style.position = "absolute";
+            drawArea.style.zIndex = "2"
+            drawArea.parentElement.style.position = "relative";
+        }
+
         private CreateDefaultDrawArea(): HTMLCanvasElement {
             var drawArea = <HTMLCanvasElement>document.createElement("canvas");
             drawArea.width = window.innerWidth;
-            drawArea.height = window.innerHeight;
+            drawArea.height = window.innerHeight;            
+
             document.getElementsByTagName('body')[0].appendChild(drawArea);
 
             return drawArea;

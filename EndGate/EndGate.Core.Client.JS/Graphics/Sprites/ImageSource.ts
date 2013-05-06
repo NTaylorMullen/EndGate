@@ -11,9 +11,11 @@ module EndGate.Graphics.Assets {
         public Size: Size2d;
         public Source: HTMLImageElement;
 
+        private _imageLocation;
+
         constructor(imageLocation: string, width: number, height: number);
-        constructor(imageLocation: string, width: number, height: number, xClip?: number = 0, yClip?: number = 0, widthClip?: number, heightClip?: number);
-        constructor(imageLocation: string, width: number, height: number, xClip?: number = 0, yClip?: number = 0, widthClip?: number = width, heightClip?: number = height) {
+        constructor(imageLocation: string, width: number, height: number, clipX?: number = 0, clipY?: number = 0, clipWidth?: number, clipHeight?: number);
+        constructor(imageLocation: string, width: number, height: number, clipX?: number = 0, clipY?: number = 0, clipWidth?: number = width, clipHeight?: number = height) {
             this.Loaded = false;
             this.OnLoaded = new EventHandler();
             this.Size = new Size2d(width, height);
@@ -26,11 +28,16 @@ module EndGate.Graphics.Assets {
             };
 
             this.Source.src = imageLocation;
-            this.ClipLocation = new Vector2d(xClip, yClip);
-            this.ClipSize = new Size2d(widthClip, heightClip);
+            this.ClipLocation = new Vector2d(clipX, clipY);
+            this.ClipSize = new Size2d(clipWidth, clipHeight);
+            this._imageLocation = imageLocation;
         }
 
         public OnLoaded: EventHandler;
+
+        public Extract(clipX: number, clipY: number, clipWidth: number, clipHeight: number): ImageSource {
+            return new ImageSource(this._imageLocation, this.Size.Width, this.Size.Height, clipX, clipY, clipWidth, clipHeight);
+        }
     }
 
 }

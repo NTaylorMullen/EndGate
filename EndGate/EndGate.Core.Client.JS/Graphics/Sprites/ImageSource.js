@@ -3,11 +3,11 @@ var EndGate;
     (function (Graphics) {
         (function (Assets) {
             var ImageSource = (function () {
-                function ImageSource(imageLocation, width, height, xClip, yClip, widthClip, heightClip) {
-                    if (typeof xClip === "undefined") { xClip = 0; }
-                    if (typeof yClip === "undefined") { yClip = 0; }
-                    if (typeof widthClip === "undefined") { widthClip = width; }
-                    if (typeof heightClip === "undefined") { heightClip = height; }
+                function ImageSource(imageLocation, width, height, clipX, clipY, clipWidth, clipHeight) {
+                    if (typeof clipX === "undefined") { clipX = 0; }
+                    if (typeof clipY === "undefined") { clipY = 0; }
+                    if (typeof clipWidth === "undefined") { clipWidth = width; }
+                    if (typeof clipHeight === "undefined") { clipHeight = height; }
                     var _this = this;
                     this.Loaded = false;
                     this.OnLoaded = new EndGate.EventHandler();
@@ -18,9 +18,13 @@ var EndGate;
                         _this.OnLoaded.Trigger(_this);
                     };
                     this.Source.src = imageLocation;
-                    this.ClipLocation = new EndGate.Vector2d(xClip, yClip);
-                    this.ClipSize = new EndGate.Size2d(widthClip, heightClip);
+                    this.ClipLocation = new EndGate.Vector2d(clipX, clipY);
+                    this.ClipSize = new EndGate.Size2d(clipWidth, clipHeight);
+                    this._imageLocation = imageLocation;
                 }
+                ImageSource.prototype.Extract = function (clipX, clipY, clipWidth, clipHeight) {
+                    return new ImageSource(this._imageLocation, this.Size.Width, this.Size.Height, clipX, clipY, clipWidth, clipHeight);
+                };
                 return ImageSource;
             })();
             Assets.ImageSource = ImageSource;            

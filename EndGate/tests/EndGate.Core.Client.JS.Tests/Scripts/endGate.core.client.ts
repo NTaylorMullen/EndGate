@@ -58,6 +58,160 @@ module EndGate {
     }
 
 }
+/* Size2d.ts */
+
+
+
+module EndGate {
+    export class Size2d implements _.ITyped {
+        public _type: string = "Size2d";
+
+        public Width: number;
+        public Height: number;
+
+        constructor(width: number, height?: number) {
+            this.Width = width || 0;
+            this.Height = typeof height !== "undefined" ? height : this.Width;
+        }
+
+        public static Zero(): Size2d {
+            return new Size2d(0, 0);
+        }
+
+        public static One(): Size2d {
+            return new Size2d(1, 1);
+        }
+
+        public Radius(): number {
+            return .5 * Math.sqrt(this.Width * this.Width + this.Height * this.Height);
+        }
+
+        public HalfWidth(): number {
+            return this.Width / 2;
+        }
+
+        public HalfHeight(): number {
+            return this.Height / 2;
+        }
+
+        public Apply(action: (val: number) => number): void {
+            this.Width = action(this.Width);
+            this.Height = action(this.Height);
+        }
+
+        public Trigger(action: (val: number) => void ): void {
+            action(this.Width);
+            action(this.Height);
+        }
+
+        public Add(val: Size2d): Size2d;
+        public Add(val: Vector2d): Size2d;
+        public Add(val: number): Size2d;
+        public Add(val: any): Size2d {
+            if (val._type === "Size2d") {
+                return new Size2d(this.Width + val.Width, this.Height + val.Height);
+            }
+            else if (val._type === "Vector2d") {
+                return new Size2d(this.Width + val.X, this.Height + val.Y);
+            }
+            else {
+                return new Size2d(this.Width + val, this.Height + val);
+            }
+        }
+
+        public Multiply(val: Size2d): Size2d;
+        public Multiply(val: Vector2d): Size2d;
+        public Multiply(val: number): Size2d;
+        public Multiply(val: any): Size2d {
+            if (val._type === "Size2d") {
+                return new Size2d(this.Width * val.Width, this.Height * val.Height);
+            }
+            else if (val._type === "Vector2d") {
+                return new Size2d(this.Width * val.X, this.Height * val.Y);
+            }
+            else {
+                return new Size2d(this.Width * val, this.Height * val);
+            }
+        }
+
+        public Subtract(val: Size2d): Size2d;
+        public Subtract(val: Vector2d): Size2d;
+        public Subtract(val: number): Size2d;
+        public Subtract(val: any): Size2d {
+            if (val._type === "Size2d") {
+                return new Size2d(this.Width - val.Width, this.Height - val.Height);
+            }
+            else if (val._type === "Vector2d") {
+                return new Size2d(this.Width - val.X, this.Height - val.Y);
+            }
+            else {
+                return new Size2d(this.Width - val, this.Height - val);
+            }
+        }
+
+        public SubtractFrom(val: Size2d): Size2d;
+        public SubtractFrom(val: Vector2d): Size2d;
+        public SubtractFrom(val: number): Size2d;
+        public SubtractFrom(val: any): Size2d {
+            if (val._type === "Size2d") {
+                return new Size2d(val.Width - this.Width, val.Height - this.Height);
+            }
+            else if (val._type === "Vector2d") {
+                return new Size2d(val.X - this.Width, val.Y - this.Height);
+            }
+            else {
+                return new Size2d(val - this.Width, val - this.Height);
+            }
+        }
+
+        public Divide(val: Size2d): Size2d;
+        public Divide(val: Vector2d): Size2d;
+        public Divide(val: number): Size2d;
+        public Divide(val: any): Size2d {
+            if (val._type === "Size2d") {
+                return new Size2d(this.Width / val.Width, this.Height / val.Height);
+            }
+            else if (val._type === "Vector2d") {
+                return new Size2d(this.Width / val.X, this.Height / val.Y);
+            }
+            else {
+                return new Size2d(this.Width / val, this.Height / val);
+            }
+        }
+
+        public DivideFrom(val: Size2d): Size2d;
+        public DivideFrom(val: Vector2d): Size2d;
+        public DivideFrom(val: number): Size2d;
+        public DivideFrom(val: any): Size2d {
+            if (val._type === "Size2d") {
+                return new Size2d(val.Width / this.Width, val.Height / this.Height);
+            }
+            else if (val._type === "Vector2d") {
+                return new Size2d(val.X / this.Width, val.Y / this.Height);
+            }
+            else {
+                return new Size2d(val / this.Width, val / this.Height);
+            }
+        }
+
+        public Negate(): Size2d {
+            return new Size2d(this.Width * -1, this.Height * -1);
+        }
+
+        public Equivalent(v: Size2d): bool {
+            return this.Width === v.Width && this.Height === v.Height;
+        }
+
+        public Clone(): Size2d {
+            return new Size2d(this.Width, this.Height);
+        }
+
+        // toString override 
+        public toString(): string {
+            return "(" + this.Width + ", " + this.Height + ")";
+        }
+    }
+}
 /* MathExtensions.ts */
 interface Math {
     roundTo(val?: number, decimals?: number): number;
@@ -71,6 +225,7 @@ Math.roundTo = function (val?: number, decimals?: number): number {
 
 (<any>Math).twoPI = Math.PI * 2;
 /* Vector2d.ts */
+
 
 
 
@@ -148,10 +303,14 @@ module EndGate {
         }
 
         public Add(val: Vector2d): Vector2d;
+        public Add(val: Size2d): Vector2d;
         public Add(val: number): Vector2d;
         public Add(val: any): Vector2d{
             if (val._type === "Vector2d") {
                 return new Vector2d(this.X + val.X, this.Y + val.Y);
+            }
+            else if (val._type === "Size2d") {
+                return new Vector2d(this.X + val.Width, this.Y + val.Height);
             }
             else {
                 return new Vector2d(this.X + val, this.Y + val);
@@ -159,10 +318,14 @@ module EndGate {
         }
 
         public Multiply(val: Vector2d): Vector2d;
+        public Multiply(val: Size2d): Vector2d;
         public Multiply(val: number): Vector2d;
         public Multiply(val: any): Vector2d {
             if (val._type === "Vector2d") {
                 return new Vector2d(this.X * val.X, this.Y * val.Y);
+            }
+            else if (val._type === "Size2d") {
+                return new Vector2d(this.X * val.Width, this.Y * val.Height);
             }
             else {
                 return new Vector2d(this.X * val, this.Y * val);
@@ -170,10 +333,14 @@ module EndGate {
         }
 
         public Subtract(val: Vector2d): Vector2d;
+        public Subtract(val: Size2d): Vector2d;
         public Subtract(val: number): Vector2d;
         public Subtract(val: any): Vector2d {
             if (val._type === "Vector2d") {
                 return new Vector2d(this.X - val.X, this.Y - val.Y);
+            }
+            else if (val._type === "Size2d") {
+                return new Vector2d(this.X - val.Width, this.Y - val.Height);
             }
             else {
                 return new Vector2d(this.X - val, this.Y - val);
@@ -181,10 +348,14 @@ module EndGate {
         }
 
         public SubtractFrom(val: Vector2d): Vector2d;
+        public SubtractFrom(val: Size2d): Vector2d;
         public SubtractFrom(val: number): Vector2d;
         public SubtractFrom(val: any): Vector2d {
             if (val._type === "Vector2d") {
                 return new Vector2d(val.X - this.X, val.Y - this.Y);
+            }
+            else if (val._type === "Size2d") {
+                return new Vector2d(val.Width - this.X, val.Height = this.Y);
             }
             else {
                 return new Vector2d(val - this.X, val - this.Y);
@@ -192,10 +363,14 @@ module EndGate {
         }
 
         public Divide(val: Vector2d): Vector2d;
+        public Divide(val: Size2d): Vector2d;
         public Divide(val: number): Vector2d;
         public Divide(val: any): Vector2d {
             if (val._type === "Vector2d") {
                 return new Vector2d(this.X / val.X, this.Y / val.Y);
+            }
+            else if (val._type === "Size2d") {
+                return new Vector2d(this.X / val.Width, this.Y / val.Height);
             }
             else {
                 return new Vector2d(this.X / val, this.Y / val);
@@ -203,10 +378,14 @@ module EndGate {
         }
 
         public DivideFrom(val: Vector2d): Vector2d;
+        public DivideFrom(val: Size2d): Vector2d;
         public DivideFrom(val: number): Vector2d;
         public DivideFrom(val: any): Vector2d {
             if (val._type === "Vector2d") {
                 return new Vector2d(val.X / this.X, val.Y / this.Y);
+            }
+            else if (val._type === "Size2d") {
+                return new Vector2d(val.Width / this.X, val.Height / this.Y);
             }
             else {
                 return new Vector2d(val / this.X, val / this.Y);
@@ -854,160 +1033,6 @@ module EndGate.Collision {
     }
 
 }
-/* Size2d.ts */
-
-
-
-module EndGate {
-    export class Size2d implements _.ITyped {
-        public _type: string = "Size2d";
-
-        public Width: number;
-        public Height: number;
-
-        constructor(width: number, height?: number) {
-            this.Width = width || 0;
-            this.Height = typeof height !== "undefined" ? height : this.Width;
-        }
-
-        public static Zero(): Size2d {
-            return new Size2d(0, 0);
-        }
-
-        public static One(): Size2d {
-            return new Size2d(1, 1);
-        }
-
-        public Radius(): number {
-            return .5 * Math.sqrt(this.Width * this.Width + this.Height * this.Height);
-        }
-
-        public HalfWidth(): number {
-            return this.Width / 2;
-        }
-
-        public HalfHeight(): number {
-            return this.Height / 2;
-        }
-
-        public Apply(action: (val: number) => number): void {
-            this.Width = action(this.Width);
-            this.Height = action(this.Height);
-        }
-
-        public Trigger(action: (val: number) => void ): void {
-            action(this.Width);
-            action(this.Height);
-        }
-
-        public Add(val: Size2d): Size2d;
-        public Add(val: Vector2d): Size2d;
-        public Add(val: number): Size2d;
-        public Add(val: any): Size2d {
-            if (val._type === "Size2d") {
-                return new Size2d(this.Width + val.Width, this.Height + val.Height);
-            }
-            else if (val._type === "Vector2d") {
-                return new Size2d(this.Width + val.X, this.Height + val.Y);
-            }
-            else {
-                return new Size2d(this.Width + val, this.Height + val);
-            }
-        }
-
-        public Multiply(val: Size2d): Size2d;
-        public Multiply(val: Vector2d): Size2d;
-        public Multiply(val: number): Size2d;
-        public Multiply(val: any): Size2d {
-            if (val._type === "Size2d") {
-                return new Size2d(this.Width * val.Width, this.Height * val.Height);
-            }
-            else if (val._type === "Vector2d") {
-                return new Size2d(this.Width * val.X, this.Height * val.Y);
-            }
-            else {
-                return new Size2d(this.Width * val, this.Height * val);
-            }
-        }
-
-        public Subtract(val: Size2d): Size2d;
-        public Subtract(val: Vector2d): Size2d;
-        public Subtract(val: number): Size2d;
-        public Subtract(val: any): Size2d {
-            if (val._type === "Size2d") {
-                return new Size2d(this.Width - val.Width, this.Height - val.Height);
-            }
-            else if (val._type === "Vector2d") {
-                return new Size2d(this.Width - val.X, this.Height - val.Y);
-            }
-            else {
-                return new Size2d(this.Width - val, this.Height - val);
-            }
-        }
-
-        public SubtractFrom(val: Size2d): Size2d;
-        public SubtractFrom(val: Vector2d): Size2d;
-        public SubtractFrom(val: number): Size2d;
-        public SubtractFrom(val: any): Size2d {
-            if (val._type === "Size2d") {
-                return new Size2d(val.Width - this.Width, val.Height - this.Height);
-            }
-            else if (val._type === "Vector2d") {
-                return new Size2d(val.X - this.Width, val.Y - this.Height);
-            }
-            else {
-                return new Size2d(val - this.Width, val - this.Height);
-            }
-        }
-
-        public Divide(val: Size2d): Size2d;
-        public Divide(val: Vector2d): Size2d;
-        public Divide(val: number): Size2d;
-        public Divide(val: any): Size2d {
-            if (val._type === "Size2d") {
-                return new Size2d(this.Width / val.Width, this.Height / val.Height);
-            }
-            else if (val._type === "Vector2d") {
-                return new Size2d(this.Width / val.X, this.Height / val.Y);
-            }
-            else {
-                return new Size2d(this.Width / val, this.Height / val);
-            }
-        }
-
-        public DivideFrom(val: Size2d): Size2d;
-        public DivideFrom(val: Vector2d): Size2d;
-        public DivideFrom(val: number): Size2d;
-        public DivideFrom(val: any): Size2d {
-            if (val._type === "Size2d") {
-                return new Size2d(val.Width / this.Width, val.Height / this.Height);
-            }
-            else if (val._type === "Vector2d") {
-                return new Size2d(val.X / this.Width, val.Y / this.Height);
-            }
-            else {
-                return new Size2d(val / this.Width, val / this.Height);
-            }
-        }
-
-        public Negate(): Size2d {
-            return new Size2d(this.Width * -1, this.Height * -1);
-        }
-
-        public Equivalent(v: Size2d): bool {
-            return this.Width === v.Width && this.Height === v.Height;
-        }
-
-        public Clone(): Size2d {
-            return new Size2d(this.Width, this.Height);
-        }
-
-        // toString override 
-        public toString(): string {
-            return "(" + this.Width + ", " + this.Height + ")";
-        }
-    }
-}
 /* Graphic2dState.ts */
 
 
@@ -1117,25 +1142,54 @@ module EndGate.Graphics.Abstractions {
         public Rotation: number;
         public State: Assets.Graphic2dState;
 
+        private static _zindexSort: (a: Graphic2d, b: Graphic2d) => number = (a: Graphic2d, b: Graphic2d) => { return a.ZIndex - b.ZIndex; };
+
+        private _children: Graphic2d[];
+
         constructor(position: Vector2d) {
             this.Position = position;
             this.Rotation = 0;
             this.ZIndex = 0;
             this.State = new Assets.Graphic2dState();
+            this._children = [];
+        }
+
+        public AddChild(graphic: Graphic2d): void {
+            this._children.push(graphic);
+            this._children.sort(Graphic2d._zindexSort);
+        }
+
+        public RemoveChild(graphic: Graphic2d): bool {
+            var index = this._children.indexOf(graphic);
+
+            if (index >= 0) {
+                this._children.splice(index, 1);
+                return true;
+            }
+
+            return false;
+        }
+
+        public Children(): Graphic2d[]{
+            return this._children;
         }
 
         public StartDraw(context: CanvasRenderingContext2D): void {
             context.save();
             this.State.SetContextState(context);
 
+            context.translate(this.Position.X, this.Position.Y);
+
             if (this.Rotation !== 0) {
-                context.translate(this.Position.X, this.Position.Y);
                 context.rotate(this.Rotation);
-                context.translate(-this.Position.X, -this.Position.Y);
             }
         }
 
         public EndDraw(context: CanvasRenderingContext2D): void {
+            for (var i = 0; i < this._children.length; i++) {
+                this._children[i].Draw(context);
+            }
+
             context.restore();
         }
 
@@ -1517,7 +1571,9 @@ module EndGate.Rendering._ {
                 savedCreateRadialGradient = context.createRadialGradient,
                 savedTranslate = context.translate,
                 savedSave = context.save,
-                savedRestore = context.restore;
+                savedRestore = context.restore,
+                savedDrawImage1 = this.BuildPositionReplacer(context.drawImage, 1),
+                savedDrawImage2 = this.BuildPositionReplacer(context.drawImage, 5);
 
             (<any>context).unModifiedClearRect = context.clearRect;
 
@@ -1535,7 +1591,14 @@ module EndGate.Rendering._ {
 
                 return savedCreateRadialGradient.apply(this, arguments);
             };
-            context.drawImage = this.BuildPositionReplacer(context.drawImage, 1);
+            context.drawImage = function() {
+                if (arguments.length <= 5) {
+                    savedDrawImage1.apply(this, arguments);
+                }
+                else {
+                    savedDrawImage2.apply(this, arguments);
+                }
+            };
             context.fillRect = this.BuildPositionReplacer(context.fillRect);
             context.fillText = this.BuildPositionReplacer(context.fillText, 1);
             context.getImageData = this.BuildPositionReplacer(context.getImageData);
@@ -1708,6 +1771,8 @@ module EndGate.Rendering {
                 this._onDraw = onDraw;
             }
 
+            this.ApplyStyles(drawArea);
+
             this.DrawArea = drawArea;
             this.Camera = new Camera2d(new Vector2d(this.DrawArea.width / 2, this.DrawArea.height / 2), new Size2d(this.DrawArea.width, this.DrawArea.height));
             this._renderer = new Camera2dRenderer(this.DrawArea, this.Camera);
@@ -1739,10 +1804,17 @@ module EndGate.Rendering {
             }
         }
 
+        private ApplyStyles(drawArea: HTMLCanvasElement): void {
+            drawArea.style.position = "absolute";
+            drawArea.style.zIndex = "2"
+            drawArea.parentElement.style.position = "relative";
+        }
+
         private CreateDefaultDrawArea(): HTMLCanvasElement {
             var drawArea = <HTMLCanvasElement>document.createElement("canvas");
             drawArea.width = window.innerWidth;
-            drawArea.height = window.innerHeight;
+            drawArea.height = window.innerHeight;            
+
             document.getElementsByTagName('body')[0].appendChild(drawArea);
 
             return drawArea;
@@ -2439,7 +2511,82 @@ module EndGate.Sound {
     }
 
 }
+/* SceneryHandler.ts */
+
+
+
+
+
+module EndGate.Map {
+
+    export class SceneryHandler {
+        private _sceneryCanvas: HTMLCanvasElement;
+        private _camera: Rendering.Camera2d;
+        private _layers: Graphics.Abstractions.Graphic2d[];
+        private _renderer: Rendering.Camera2dRenderer;
+
+        constructor(foregroundCanvas: HTMLCanvasElement, camera: Rendering.Camera2d) {
+            this._camera = camera;
+            this._layers = [];            
+            this._sceneryCanvas = this.BuildSceneryCanvas(foregroundCanvas);
+            this._renderer = new Rendering.Camera2dRenderer(this._sceneryCanvas,this._camera);
+        }
+
+        public AddLayer(layer: Graphics.Abstractions.Graphic2d): void {
+            this._layers.push(layer);
+        }
+
+        public RemoveLayer(layer: Graphics.Abstractions.Graphic2d): void {
+            this._layers.splice(this._layers.indexOf(layer), 1);
+        }
+
+        public Draw(): void {
+            this._layers.sort(Graphics.Abstractions.Graphic2d._zindexSort);
+
+            this._renderer.Render(this._layers);
+        }
+
+        private BuildSceneryCanvas(foreground: HTMLCanvasElement): HTMLCanvasElement {
+            var sceneryCanvas = < HTMLCanvasElement > document.createElement("canvas"),
+                baseElement: any = foreground,
+                leftOffset: number,
+                topOffset: number;
+
+            // Position offset
+            leftOffset = foreground.offsetLeft;
+            topOffset = foreground.offsetTop;
+
+            sceneryCanvas.width = foreground.width;
+            sceneryCanvas.height = foreground.height;
+            sceneryCanvas.style.position = "absolute";
+            sceneryCanvas.style.left = leftOffset + "px";
+            sceneryCanvas.style.top = topOffset + "px";
+            sceneryCanvas.style.zIndex = "1";
+
+            foreground.parentElement.insertBefore(sceneryCanvas, foreground);
+
+            return sceneryCanvas;
+        }
+    }
+
+}
+/* MapManager.ts */
+
+
+
+module EndGate.Map {
+
+    export class MapManager {
+        public Scenery: SceneryHandler;
+
+        constructor(foregroundCanvas: HTMLCanvasElement, camera: Rendering.Camera2d) {
+            this.Scenery = new SceneryHandler(foregroundCanvas, camera);
+        }
+    }
+
+}
 /* Game.ts */
+
 
 
 
@@ -2462,6 +2609,7 @@ module EndGate {
         public Scene: Rendering.Scene2d;
         public Input: Input.InputManager;
         public Audio: Sound.AudioManager;
+        public Map: Map.MapManager;
 
         private static _gameIds: number = 0;
         private _gameTime: GameTime;
@@ -2478,6 +2626,7 @@ module EndGate {
             this.Audio = new Sound.AudioManager();
             this.CollisionManager = new Collision.CollisionManager();
             this.Configuration = new GameConfiguration(GameRunnerInstance.Register(this))
+            this.Map = new Map.MapManager(this.Scene.DrawArea, this.Scene.Camera);
         }
 
         public PrepareUpdate(): void {
@@ -2491,6 +2640,7 @@ module EndGate {
         }
 
         public PrepareDraw(): void {
+            this.Map.Scenery.Draw();
             this.Scene.Draw();
         }
 
@@ -2999,7 +3149,7 @@ module EndGate.Graphics {
 
             this._text = text;
             this._stroker = new _.Utilities.NoopTripInvoker((context: CanvasRenderingContext2D) => {
-                context.strokeText(this._text, this.Position.X, this.Position.Y);
+                context.strokeText(this._text, 0, 0);
             });
 
             this._drawBounds = new Bounds.BoundingRectangle(this.Position, Size2d.One());
@@ -3085,7 +3235,7 @@ module EndGate.Graphics {
             this._drawBounds.Size.Width = textSize.width;
             this._drawBounds.Size.Height = parseInt(this.FontSettings.FontSize()) * 1.5;
 
-            context.fillText(this._text, this.Position.X, this.Position.Y);
+            context.fillText(this._text, 0, 0);
             this._stroker.Invoke(context);
 
             super.EndDraw(context);
@@ -3114,9 +3264,11 @@ module EndGate.Graphics.Assets {
         public Size: Size2d;
         public Source: HTMLImageElement;
 
+        private _imageLocation;
+
         constructor(imageLocation: string, width: number, height: number);
-        constructor(imageLocation: string, width: number, height: number, xClip?: number = 0, yClip?: number = 0, widthClip?: number, heightClip?: number);
-        constructor(imageLocation: string, width: number, height: number, xClip?: number = 0, yClip?: number = 0, widthClip?: number = width, heightClip?: number = height) {
+        constructor(imageLocation: string, width: number, height: number, clipX?: number = 0, clipY?: number = 0, clipWidth?: number, clipHeight?: number);
+        constructor(imageLocation: string, width: number, height: number, clipX?: number = 0, clipY?: number = 0, clipWidth?: number = width, clipHeight?: number = height) {
             this.Loaded = false;
             this.OnLoaded = new EventHandler();
             this.Size = new Size2d(width, height);
@@ -3129,11 +3281,16 @@ module EndGate.Graphics.Assets {
             };
 
             this.Source.src = imageLocation;
-            this.ClipLocation = new Vector2d(xClip, yClip);
-            this.ClipSize = new Size2d(widthClip, heightClip);
+            this.ClipLocation = new Vector2d(clipX, clipY);
+            this.ClipSize = new Size2d(clipWidth, clipHeight);
+            this._imageLocation = imageLocation;
         }
 
         public OnLoaded: EventHandler;
+
+        public Extract(clipX: number, clipY: number, clipWidth: number, clipHeight: number): ImageSource {
+            return new ImageSource(this._imageLocation, this.Size.Width, this.Size.Height, clipX, clipY, clipWidth, clipHeight);
+        }
     }
 
 }
@@ -3165,7 +3322,7 @@ module EndGate.Graphics {
         public Draw(context: CanvasRenderingContext2D): void {
             super.StartDraw(context);
 
-            context.drawImage(this.Image.Source, this.Image.ClipLocation.X, this.Image.ClipLocation.Y, this.Image.ClipSize.Width, this.Image.ClipSize.Height, this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height)
+            context.drawImage(this.Image.Source, this.Image.ClipLocation.X, this.Image.ClipLocation.Y, this.Image.ClipSize.Width, this.Image.ClipSize.Height, - this.Size.HalfWidth(), - this.Size.HalfHeight(), this.Size.Width, this.Size.Height)
 
             super.EndDraw(context);
         }
@@ -3266,6 +3423,7 @@ module EndGate.Graphics {
 
         public Reset(): void {
             this._currentFrame = 0;
+            this.UpdateImageSource();
         }
 
         public Fps(newFps?: number): number {
@@ -3427,7 +3585,7 @@ module EndGate.Graphics {
         }
 
         public BuildPath(context: CanvasRenderingContext2D): void {           
-            context.arc(this.Position.X, this.Position.Y, this.Radius, 0, (<any>Math).twoPI);
+            context.arc(0, 0, this.Radius, 0, (<any>Math).twoPI);
         }
 
         public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
@@ -3459,7 +3617,7 @@ module EndGate.Graphics {
         }
 
         public BuildPath(context: CanvasRenderingContext2D): void {
-            context.rect(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
+            context.rect(-this.Size.HalfWidth(), -this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
         }
 
         public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
@@ -3500,3 +3658,365 @@ module EndGate.Graphics {
 
 
 import eg = EndGate;
+/* Line2d.ts */
+
+
+
+
+
+module EndGate.Graphics {
+
+    export class Line2d extends Abstractions.Graphic2d {
+        public _type: string = "Line2d";
+
+        private _from: Vector2d;
+        private _to: Vector2d;
+        private _difference: Vector2d;
+        private _boundsWidth: number;
+        private _cachedPosition: Vector2d;
+
+        constructor(fromX: number, fromY: number, toX: number, toY: number, lineWidth?: number = 1, color?: string) {
+            super(Vector2d.Zero());// Set to zero here then updated in the rest of the constructor (use same logic)
+
+            this._from = new Vector2d(fromX, fromY);
+            this._to = new Vector2d(toX, toY);
+            this.LineWidth(lineWidth);
+            this.UpdatePosition();
+
+            if (typeof color !== "undefined") {
+                this.Color(color);
+            }
+        }
+
+        public From(newPosition?: Vector2d): Vector2d {
+            return this.GetOrSetLinePoint("from", newPosition);
+        }
+
+        public To(newPosition?: Vector2d): Vector2d {
+            return this.GetOrSetLinePoint("to", newPosition);
+        }
+
+        public Color(color?: string): string {
+            return this.State.StrokeStyle(color);
+        }
+
+        public LineWidth(width?: number): number {
+            return this.State.LineWidth(width);
+        }
+
+        public LineCap(cap?: string): string {
+            return this.State.LineCap(cap);
+        }
+
+        public Draw(context: CanvasRenderingContext2D): void {
+            super.StartDraw(context);
+
+            // Check if the user has modified the position directly, if so we need to translate the from and to positions accordingly
+            if (!this._cachedPosition.Equivalent(this.Position)) {
+                this.RefreshCache();
+            }
+
+            // Context origin is at the center point of the line
+            context.beginPath();
+            context.moveTo(this._from.X - this.Position.X, this._from.Y - this.Position.Y);
+            context.lineTo(this._to.X - this.Position.X, this._to.Y - this.Position.Y);
+            context.stroke();
+
+            super.EndDraw(context);
+        }
+
+        public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
+            var bounds = new Bounds.BoundingRectangle(this.Position, new Size2d(this._boundsWidth, this.LineWidth()));
+
+            bounds.Rotation = Math.atan2(this._difference.Y, this._difference.X) + this.Rotation;
+
+            return bounds;
+        }
+
+        private UpdatePosition(): void {
+            this.Position = ((this._from.Add(this._to)).Divide(2));
+            this._difference = this._to.Subtract(this._from);
+            this._boundsWidth = this._from.Distance(this._to).Length();
+            this._cachedPosition = this.Position.Clone();
+        }
+
+        private RefreshCache(): void {
+            var difference = this.Position.Subtract(this._cachedPosition);
+            this._from.X += difference.X;
+            this._from.Y += difference.Y;
+            this._to.X += difference.X;
+            this._to.Y += difference.Y;
+            this._cachedPosition = this.Position.Clone();
+        }
+
+        private GetOrSetLinePoint(name: string, newPosition?: Vector2d): Vector2d {
+            if (typeof newPosition === "undefined") {
+                this["_" + name] = newPosition;
+                this.UpdatePosition();
+            }
+
+            return this["_" + name];
+        }
+    }
+
+}
+/* Grid.ts */
+
+
+
+
+
+module EndGate.Graphics {
+
+    export class Grid extends Abstractions.Graphic2d {
+        public _type: string = "Grid";
+
+        private _size: Size2d;
+        private _tileSize: Size2d;
+        private _grid: Abstractions.Graphic2d[][];
+        private _gridLines: Line2d[];
+        private _positionOffset: Vector2d;
+        private _rows: number;
+        private _columns: number;
+        private _drawGridLines: bool;
+        private _gridLineColor: string;
+
+        constructor(x: number, y: number, rows: number, columns: number, tileWidth: number, tileHeight: number, drawGridLines?: bool = false, color?: string = "gray") {
+            super(new Vector2d(x, y));
+            var halfSize: Size2d,
+                topLeft: Vector2d,
+                bottomRight: Vector2d;
+
+            this._size = new Size2d(tileWidth * columns, tileHeight * rows);
+            this._tileSize = new Size2d(tileWidth, tileHeight);
+            this._grid = [];
+            this._rows = rows;
+            this._columns = columns;
+            this._drawGridLines = drawGridLines;
+            this._gridLines = [];
+
+            halfSize = this._size.Multiply(.5);
+            topLeft = new Vector2d(-halfSize.Width, -halfSize.Height);
+            bottomRight = new Vector2d(halfSize.Width, halfSize.Height);
+
+            for (var i = 0; i < rows; i++) {
+                this._grid[i] = [];
+                this._gridLines.push(new Line2d(topLeft.X, topLeft.Y + i * this._tileSize.Height, bottomRight.X, topLeft.Y + i * this._tileSize.Height, 1));
+
+                for (var j = 0; j < columns; j++) {
+                    if (i === 0) {
+                        this._gridLines.push(new Line2d(topLeft.X + j * this._tileSize.Width, topLeft.Y, topLeft.X + j * this._tileSize.Width, bottomRight.Y, 1));
+                    }
+
+                    this._grid[i].push(null);
+                }
+            }
+
+            this._gridLines.push(new Line2d(topLeft.X, bottomRight.Y, bottomRight.X, bottomRight.Y, 1));
+            this._gridLines.push(new Line2d(bottomRight.X, topLeft.Y, bottomRight.X, bottomRight.Y, 1));
+
+            this.Color(color);
+        }
+
+        public Color(color?: string): string {
+            if (typeof color !== "undefined") {
+                this._gridLineColor = color;
+
+                for (var i = 0; i < this._gridLines.length; i++) {
+                    this._gridLines[i].Color(color);
+                }
+            }
+
+            return this._gridLineColor;
+        }
+
+        public Size(): Size2d {
+            return this._size.Clone();
+        }
+
+        public TileSize(): Size2d {
+            return this._tileSize.Clone();
+        }
+
+        public Opacity(alpha?: number): number {
+            return this.State.GlobalAlpha(alpha);
+        }
+
+        public Fill(row: number, column: number, graphic: Abstractions.Graphic2d): void {
+            row--;
+            column--;
+            graphic.Position = this.GetInsideGridPosition(row, column);
+
+            this._grid[row][column] = graphic;
+            this.AddChild(graphic);
+        }
+
+        public FillSpace(row: number, column: number, graphicList: Abstractions.Graphic2d[][]): void {
+            var graphic: Abstractions.Graphic2d;
+
+            row--;
+            column--;
+
+            for (var i = 0; i < graphicList.length; i++) {
+                for (var j = 0; j < graphicList[i].length; j++) {
+                    graphic = graphicList[i][j];
+                    graphic.Position = this.GetInsideGridPosition(i + row, j + column);
+
+                    this._grid[i + row][j + column] = graphic;
+                    this.AddChild(graphic);
+                }
+            }
+        }
+
+        public FillRow(row: number, graphicList: Abstractions.Graphic2d[], offset?: number = 0): void {
+            var graphic: Abstractions.Graphic2d;
+
+            row--;
+
+            for (var i = 0; i < graphicList.length; i++) {
+                graphic = graphicList[i];
+                graphic.Position = this.GetInsideGridPosition(row, i + offset);
+
+                this._grid[row][i + offset] = graphic;
+                this.AddChild(graphic);
+            }
+        }
+
+        public FillColumn(column: number, graphicList: Abstractions.Graphic2d[], offset?: number = 0): void {
+            var graphic: Abstractions.Graphic2d;
+
+            column--;
+
+            for (var i = 0; i < graphicList.length; i++) {
+                graphic = graphicList[i];
+                graphic.Position = this.GetInsideGridPosition(i + offset, column);
+
+                this._grid[i + offset][column] = graphic;
+                this.AddChild(graphic);
+            }
+        }
+
+        public Draw(context: CanvasRenderingContext2D): void {
+            super.StartDraw(context);
+
+            // No need to draw the grid  items because the base Graphic2d class will handle all of the children drawing for me
+            if (this._drawGridLines) {
+                for (var i = 0; i < this._gridLines.length; i++) {
+                    this._gridLines[i].Draw(context);
+                }
+            }
+
+            super.EndDraw(context);
+        }
+
+        public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
+            var bounds = new Bounds.BoundingRectangle(this.Position, this._size);
+
+            bounds.Rotation = this.Rotation;
+
+            return bounds;
+        }
+
+        private GetInsideGridPosition(row: number, column: number): Vector2d {
+            return new Vector2d(column * this._tileSize.Width - this._size.HalfWidth() + this._tileSize.HalfWidth(), row * this._tileSize.Height - this._size.HalfHeight() + this._tileSize.HalfHeight());
+        }
+    }
+
+}
+/* TileMap.ts */
+
+
+
+
+module EndGate.Map {
+
+    export class TileMap extends Graphics.Abstractions.Graphic2d {
+        public _Resources: Graphics.Assets.ImageSource[];
+
+        constructor(x: number, y: number, resources: Graphics.Assets.ImageSource[]) {
+            super(new Vector2d(x, y));
+
+            this._Resources = resources;
+        }
+    }
+
+}
+/* Tile.ts */
+
+
+
+module EndGate.Map {
+
+    export class Tile extends Graphics.Sprite2d {
+        constructor(image: Graphics.Assets.ImageSource, width: number, height: number) {
+            super(0, 0, image, width, height); // Set position to 0 because the tile gets updated when it gets added to the tile map
+
+        }
+    }
+
+}
+/* SquareTileMap.ts */
+
+
+
+
+
+
+module EndGate.Map {
+
+    export class SquareTileMap extends TileMap {
+        private _grid: Graphics.Grid;
+
+        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.Assets.ImageSource[], mappings: number[][]) {
+            super(x, y, resources);
+
+            this._grid = new Graphics.Grid(0, 0, mappings.length, mappings[0].length, tileWidth, tileHeight);
+
+            this.FillGridWith(mappings);
+        }
+
+        public static ExtractTiles(imageSource: Graphics.Assets.ImageSource, tileWidth: number, tileHeight: number): Graphics.Assets.ImageSource[]{
+            var resources: Graphics.Assets.ImageSource[] = [],
+                framesPerRow: number = Math.floor(imageSource.ClipSize.Width / tileWidth),
+                    rows: number = Math.floor(imageSource.ClipSize.Height / tileHeight);
+
+            for (var i = 0; i < rows; i++) {
+                for (var j = 0; j < framesPerRow; j++) {
+                    resources.push(imageSource.Extract(i * tileHeight, j * tileWidth, tileWidth, tileHeight));
+                }
+            }
+
+            return resources;
+        }
+
+        public Draw(context: CanvasRenderingContext2D): void {
+            super.StartDraw(context);
+
+            this._grid.Draw(context);
+
+            super.EndDraw(context);
+        }
+
+        public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
+            var bounds = this._grid.GetDrawBounds();
+
+            bounds.Position = this.Position;
+
+            return bounds;
+        }
+
+        private FillGridWith(mappings: number[][]): void {
+            var tiles: Tile[][] = [];
+
+            for (var i = 0; i < mappings.length; i++) {
+                tiles[i] = [];
+                for (var j = 0; j < mappings[i].length; j++) {
+                    tiles[i].push(new Tile(this._Resources[mappings[i][j]], this._grid.TileSize().Width,this._grid.TileSize().Height));
+                }
+            }
+
+            this._grid.FillSpace(1, 1, tiles);
+        }
+    }
+
+}

@@ -94,6 +94,55 @@
     <TypeScriptCompile Include="Sound\AudioManager.ts" />
     <TypeScriptCompile Include="Sound\AudioClip.ts" />
     <TypeScriptCompile Include="MovementControllers\IMoveEvent.d.ts" />
+    <TypeScriptCompile Include="Graphics\Grid\Grid.ts" />
+    <Content Include="Graphics\Grid\Grid.js">
+      <DependentUpon>Grid.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Grid\Grid.min.js">
+      <DependentUpon>Grid.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Graphics\Line2d.ts" />
+    <Content Include="Graphics\Line2d.js">
+      <DependentUpon>Line2d.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Line2d.min.js">
+      <DependentUpon>Line2d.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Map\MapManager.ts" />
+    <Content Include="Map\MapManager.js">
+      <DependentUpon>MapManager.ts</DependentUpon>
+    </Content>
+    <Content Include="Map\MapManager.min.js">
+      <DependentUpon>MapManager.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Map\Scenery\SceneryHandler.ts" />
+    <Content Include="Map\Scenery\SceneryHandler.js">
+      <DependentUpon>SceneryHandler.ts</DependentUpon>
+    </Content>
+    <Content Include="Map\Scenery\SceneryHandler.min.js">
+      <DependentUpon>SceneryHandler.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Map\Scenery\TileMap.ts" />
+    <TypeScriptCompile Include="Map\Scenery\SquareTileMap.ts" />
+    <Content Include="Map\Scenery\SquareTileMap.js">
+      <DependentUpon>SquareTileMap.ts</DependentUpon>
+    </Content>
+    <Content Include="Map\Scenery\SquareTileMap.min.js">
+      <DependentUpon>SquareTileMap.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Map\Scenery\Tile.ts" />
+    <Content Include="Map\Scenery\Tile.js">
+      <DependentUpon>Tile.ts</DependentUpon>
+    </Content>
+    <Content Include="Map\Scenery\Tile.min.js">
+      <DependentUpon>Tile.ts</DependentUpon>
+    </Content>
+    <Content Include="Map\Scenery\TileMap.js">
+      <DependentUpon>TileMap.ts</DependentUpon>
+    </Content>
+    <Content Include="Map\Scenery\TileMap.min.js">
+      <DependentUpon>TileMap.ts</DependentUpon>
+    </Content>
     <Content Include="Sound\AudioClip.js">
       <DependentUpon>AudioClip.ts</DependentUpon>
     </Content>
@@ -679,6 +728,27 @@
     </Content>
     <Content Include="EndGateAPI.js.map">
       <DependentUpon>EndGateAPI.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Grid\Grid.js.map">
+      <DependentUpon>Grid.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Line2d.js.map">
+      <DependentUpon>Line2d.ts</DependentUpon>
+    </Content>
+    <Content Include="Map\MapManager.js.map">
+      <DependentUpon>MapManager.ts</DependentUpon>
+    </Content>
+    <Content Include="Map\Scenery\SceneryHandler.js.map">
+      <DependentUpon>SceneryHandler.ts</DependentUpon>
+    </Content>
+    <Content Include="Map\Scenery\TileMap.js.map">
+      <DependentUpon>TileMap.ts</DependentUpon>
+    </Content>
+    <Content Include="Map\Scenery\SquareTileMap.js.map">
+      <DependentUpon>SquareTileMap.ts</DependentUpon>
+    </Content>
+    <Content Include="Map\Scenery\Tile.js.map">
+      <DependentUpon>Tile.ts</DependentUpon>
     </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

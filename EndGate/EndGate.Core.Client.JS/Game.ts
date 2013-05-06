@@ -8,6 +8,7 @@
 /// <reference path="Rendering/Scene2d.ts" />
 /// <reference path="Input/InputManager.ts" />
 /// <reference path="Sound/AudioManager.ts" />
+/// <reference path="Map/MapManager.ts" />
 
 module EndGate {
 
@@ -20,6 +21,7 @@ module EndGate {
         public Scene: Rendering.Scene2d;
         public Input: Input.InputManager;
         public Audio: Sound.AudioManager;
+        public Map: Map.MapManager;
 
         private static _gameIds: number = 0;
         private _gameTime: GameTime;
@@ -36,6 +38,7 @@ module EndGate {
             this.Audio = new Sound.AudioManager();
             this.CollisionManager = new Collision.CollisionManager();
             this.Configuration = new GameConfiguration(GameRunnerInstance.Register(this))
+            this.Map = new Map.MapManager(this.Scene.DrawArea, this.Scene.Camera);
         }
 
         public PrepareUpdate(): void {
@@ -49,6 +52,7 @@ module EndGate {
         }
 
         public PrepareDraw(): void {
+            this.Map.Scenery.Draw();
             this.Scene.Draw();
         }
 

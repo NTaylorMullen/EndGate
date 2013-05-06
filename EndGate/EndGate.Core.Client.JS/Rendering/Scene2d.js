@@ -14,6 +14,7 @@ var EndGate;
                 } else {
                     this._onDraw = onDraw;
                 }
+                this.ApplyStyles(drawArea);
                 this.DrawArea = drawArea;
                 this.Camera = new Rendering.Camera2d(new EndGate.Vector2d(this.DrawArea.width / 2, this.DrawArea.height / 2), new EndGate.Size2d(this.DrawArea.width, this.DrawArea.height));
                 this._renderer = new Rendering.Camera2dRenderer(this.DrawArea, this.Camera);
@@ -39,6 +40,11 @@ var EndGate;
                     this._actors = [];
                     this._renderer.Dispose();
                 }
+            };
+            Scene2d.prototype.ApplyStyles = function (drawArea) {
+                drawArea.style.position = "absolute";
+                drawArea.style.zIndex = "2";
+                drawArea.parentElement.style.position = "relative";
             };
             Scene2d.prototype.CreateDefaultDrawArea = function () {
                 var drawArea = document.createElement("canvas");

@@ -28,6 +28,107 @@ var EndGate;
     })();
     EndGate.GameTime = GameTime;    
 })(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    var Size2d = (function () {
+        function Size2d(width, height) {
+            this._type = "Size2d";
+            this.Width = width || 0;
+            this.Height = typeof height !== "undefined" ? height : this.Width;
+        }
+        Size2d.Zero = function Zero() {
+            return new Size2d(0, 0);
+        };
+        Size2d.One = function One() {
+            return new Size2d(1, 1);
+        };
+        Size2d.prototype.Radius = function () {
+            return .5 * Math.sqrt(this.Width * this.Width + this.Height * this.Height);
+        };
+        Size2d.prototype.HalfWidth = function () {
+            return this.Width / 2;
+        };
+        Size2d.prototype.HalfHeight = function () {
+            return this.Height / 2;
+        };
+        Size2d.prototype.Apply = function (action) {
+            this.Width = action(this.Width);
+            this.Height = action(this.Height);
+        };
+        Size2d.prototype.Trigger = function (action) {
+            action(this.Width);
+            action(this.Height);
+        };
+        Size2d.prototype.Add = function (val) {
+            if(val._type === "Size2d") {
+                return new Size2d(this.Width + val.Width, this.Height + val.Height);
+            } else if(val._type === "Vector2d") {
+                return new Size2d(this.Width + val.X, this.Height + val.Y);
+            } else {
+                return new Size2d(this.Width + val, this.Height + val);
+            }
+        };
+        Size2d.prototype.Multiply = function (val) {
+            if(val._type === "Size2d") {
+                return new Size2d(this.Width * val.Width, this.Height * val.Height);
+            } else if(val._type === "Vector2d") {
+                return new Size2d(this.Width * val.X, this.Height * val.Y);
+            } else {
+                return new Size2d(this.Width * val, this.Height * val);
+            }
+        };
+        Size2d.prototype.Subtract = function (val) {
+            if(val._type === "Size2d") {
+                return new Size2d(this.Width - val.Width, this.Height - val.Height);
+            } else if(val._type === "Vector2d") {
+                return new Size2d(this.Width - val.X, this.Height - val.Y);
+            } else {
+                return new Size2d(this.Width - val, this.Height - val);
+            }
+        };
+        Size2d.prototype.SubtractFrom = function (val) {
+            if(val._type === "Size2d") {
+                return new Size2d(val.Width - this.Width, val.Height - this.Height);
+            } else if(val._type === "Vector2d") {
+                return new Size2d(val.X - this.Width, val.Y - this.Height);
+            } else {
+                return new Size2d(val - this.Width, val - this.Height);
+            }
+        };
+        Size2d.prototype.Divide = function (val) {
+            if(val._type === "Size2d") {
+                return new Size2d(this.Width / val.Width, this.Height / val.Height);
+            } else if(val._type === "Vector2d") {
+                return new Size2d(this.Width / val.X, this.Height / val.Y);
+            } else {
+                return new Size2d(this.Width / val, this.Height / val);
+            }
+        };
+        Size2d.prototype.DivideFrom = function (val) {
+            if(val._type === "Size2d") {
+                return new Size2d(val.Width / this.Width, val.Height / this.Height);
+            } else if(val._type === "Vector2d") {
+                return new Size2d(val.X / this.Width, val.Y / this.Height);
+            } else {
+                return new Size2d(val / this.Width, val / this.Height);
+            }
+        };
+        Size2d.prototype.Negate = function () {
+            return new Size2d(this.Width * -1, this.Height * -1);
+        };
+        Size2d.prototype.Equivalent = function (v) {
+            return this.Width === v.Width && this.Height === v.Height;
+        };
+        Size2d.prototype.Clone = function () {
+            return new Size2d(this.Width, this.Height);
+        };
+        Size2d.prototype.toString = function () {
+            return "(" + this.Width + ", " + this.Height + ")";
+        };
+        return Size2d;
+    })();
+    EndGate.Size2d = Size2d;    
+})(EndGate || (EndGate = {}));
 Math.roundTo = function (val, decimals) {
     var multiplier = Math.pow(10, decimals);
     return Math.round(val * multiplier) / multiplier;
@@ -89,6 +190,8 @@ var EndGate;
         Vector2d.prototype.Add = function (val) {
             if(val._type === "Vector2d") {
                 return new Vector2d(this.X + val.X, this.Y + val.Y);
+            } else if(val._type === "Size2d") {
+                return new Vector2d(this.X + val.Width, this.Y + val.Height);
             } else {
                 return new Vector2d(this.X + val, this.Y + val);
             }
@@ -96,6 +199,8 @@ var EndGate;
         Vector2d.prototype.Multiply = function (val) {
             if(val._type === "Vector2d") {
                 return new Vector2d(this.X * val.X, this.Y * val.Y);
+            } else if(val._type === "Size2d") {
+                return new Vector2d(this.X * val.Width, this.Y * val.Height);
             } else {
                 return new Vector2d(this.X * val, this.Y * val);
             }
@@ -103,6 +208,8 @@ var EndGate;
         Vector2d.prototype.Subtract = function (val) {
             if(val._type === "Vector2d") {
                 return new Vector2d(this.X - val.X, this.Y - val.Y);
+            } else if(val._type === "Size2d") {
+                return new Vector2d(this.X - val.Width, this.Y - val.Height);
             } else {
                 return new Vector2d(this.X - val, this.Y - val);
             }
@@ -110,6 +217,8 @@ var EndGate;
         Vector2d.prototype.SubtractFrom = function (val) {
             if(val._type === "Vector2d") {
                 return new Vector2d(val.X - this.X, val.Y - this.Y);
+            } else if(val._type === "Size2d") {
+                return new Vector2d(val.Width - this.X, val.Height = this.Y);
             } else {
                 return new Vector2d(val - this.X, val - this.Y);
             }
@@ -117,6 +226,8 @@ var EndGate;
         Vector2d.prototype.Divide = function (val) {
             if(val._type === "Vector2d") {
                 return new Vector2d(this.X / val.X, this.Y / val.Y);
+            } else if(val._type === "Size2d") {
+                return new Vector2d(this.X / val.Width, this.Y / val.Height);
             } else {
                 return new Vector2d(this.X / val, this.Y / val);
             }
@@ -124,6 +235,8 @@ var EndGate;
         Vector2d.prototype.DivideFrom = function (val) {
             if(val._type === "Vector2d") {
                 return new Vector2d(val.X / this.X, val.Y / this.Y);
+            } else if(val._type === "Size2d") {
+                return new Vector2d(val.Width / this.X, val.Height / this.Y);
             } else {
                 return new Vector2d(val / this.X, val / this.Y);
             }
@@ -599,107 +712,6 @@ var EndGate;
 })(EndGate || (EndGate = {}));
 var EndGate;
 (function (EndGate) {
-    var Size2d = (function () {
-        function Size2d(width, height) {
-            this._type = "Size2d";
-            this.Width = width || 0;
-            this.Height = typeof height !== "undefined" ? height : this.Width;
-        }
-        Size2d.Zero = function Zero() {
-            return new Size2d(0, 0);
-        };
-        Size2d.One = function One() {
-            return new Size2d(1, 1);
-        };
-        Size2d.prototype.Radius = function () {
-            return .5 * Math.sqrt(this.Width * this.Width + this.Height * this.Height);
-        };
-        Size2d.prototype.HalfWidth = function () {
-            return this.Width / 2;
-        };
-        Size2d.prototype.HalfHeight = function () {
-            return this.Height / 2;
-        };
-        Size2d.prototype.Apply = function (action) {
-            this.Width = action(this.Width);
-            this.Height = action(this.Height);
-        };
-        Size2d.prototype.Trigger = function (action) {
-            action(this.Width);
-            action(this.Height);
-        };
-        Size2d.prototype.Add = function (val) {
-            if(val._type === "Size2d") {
-                return new Size2d(this.Width + val.Width, this.Height + val.Height);
-            } else if(val._type === "Vector2d") {
-                return new Size2d(this.Width + val.X, this.Height + val.Y);
-            } else {
-                return new Size2d(this.Width + val, this.Height + val);
-            }
-        };
-        Size2d.prototype.Multiply = function (val) {
-            if(val._type === "Size2d") {
-                return new Size2d(this.Width * val.Width, this.Height * val.Height);
-            } else if(val._type === "Vector2d") {
-                return new Size2d(this.Width * val.X, this.Height * val.Y);
-            } else {
-                return new Size2d(this.Width * val, this.Height * val);
-            }
-        };
-        Size2d.prototype.Subtract = function (val) {
-            if(val._type === "Size2d") {
-                return new Size2d(this.Width - val.Width, this.Height - val.Height);
-            } else if(val._type === "Vector2d") {
-                return new Size2d(this.Width - val.X, this.Height - val.Y);
-            } else {
-                return new Size2d(this.Width - val, this.Height - val);
-            }
-        };
-        Size2d.prototype.SubtractFrom = function (val) {
-            if(val._type === "Size2d") {
-                return new Size2d(val.Width - this.Width, val.Height - this.Height);
-            } else if(val._type === "Vector2d") {
-                return new Size2d(val.X - this.Width, val.Y - this.Height);
-            } else {
-                return new Size2d(val - this.Width, val - this.Height);
-            }
-        };
-        Size2d.prototype.Divide = function (val) {
-            if(val._type === "Size2d") {
-                return new Size2d(this.Width / val.Width, this.Height / val.Height);
-            } else if(val._type === "Vector2d") {
-                return new Size2d(this.Width / val.X, this.Height / val.Y);
-            } else {
-                return new Size2d(this.Width / val, this.Height / val);
-            }
-        };
-        Size2d.prototype.DivideFrom = function (val) {
-            if(val._type === "Size2d") {
-                return new Size2d(val.Width / this.Width, val.Height / this.Height);
-            } else if(val._type === "Vector2d") {
-                return new Size2d(val.X / this.Width, val.Y / this.Height);
-            } else {
-                return new Size2d(val / this.Width, val / this.Height);
-            }
-        };
-        Size2d.prototype.Negate = function () {
-            return new Size2d(this.Width * -1, this.Height * -1);
-        };
-        Size2d.prototype.Equivalent = function (v) {
-            return this.Width === v.Width && this.Height === v.Height;
-        };
-        Size2d.prototype.Clone = function () {
-            return new Size2d(this.Width, this.Height);
-        };
-        Size2d.prototype.toString = function () {
-            return "(" + this.Width + ", " + this.Height + ")";
-        };
-        return Size2d;
-    })();
-    EndGate.Size2d = Size2d;    
-})(EndGate || (EndGate = {}));
-var EndGate;
-(function (EndGate) {
     (function (Graphics) {
         (function (Assets) {
             var Graphic2dState = (function () {
@@ -783,17 +795,38 @@ var EndGate;
                     this.Rotation = 0;
                     this.ZIndex = 0;
                     this.State = new Graphics.Assets.Graphic2dState();
+                    this._children = [];
                 }
+                Graphic2d._zindexSort = function (a, b) {
+                    return a.ZIndex - b.ZIndex;
+                };
+                Graphic2d.prototype.AddChild = function (graphic) {
+                    this._children.push(graphic);
+                    this._children.sort(Graphic2d._zindexSort);
+                };
+                Graphic2d.prototype.RemoveChild = function (graphic) {
+                    var index = this._children.indexOf(graphic);
+                    if(index >= 0) {
+                        this._children.splice(index, 1);
+                        return true;
+                    }
+                    return false;
+                };
+                Graphic2d.prototype.Children = function () {
+                    return this._children;
+                };
                 Graphic2d.prototype.StartDraw = function (context) {
                     context.save();
                     this.State.SetContextState(context);
+                    context.translate(this.Position.X, this.Position.Y);
                     if(this.Rotation !== 0) {
-                        context.translate(this.Position.X, this.Position.Y);
                         context.rotate(this.Rotation);
-                        context.translate(-this.Position.X, -this.Position.Y);
                     }
                 };
                 Graphic2d.prototype.EndDraw = function (context) {
+                    for(var i = 0; i < this._children.length; i++) {
+                        this._children[i].Draw(context);
+                    }
                     context.restore();
                 };
                 Graphic2d.prototype.Draw = function (context) {
@@ -1081,7 +1114,7 @@ var EndGate;
                     this._translationState.push(this._translated);
                 }
                 Camera2dCanvasContextBuilder.prototype.BuildFrom = function (context) {
-                    var that = this, savedCreateRadialGradient = context.createRadialGradient, savedTranslate = context.translate, savedSave = context.save, savedRestore = context.restore;
+                    var that = this, savedCreateRadialGradient = context.createRadialGradient, savedTranslate = context.translate, savedSave = context.save, savedRestore = context.restore, savedDrawImage1 = this.BuildPositionReplacer(context.drawImage, 1), savedDrawImage2 = this.BuildPositionReplacer(context.drawImage, 5);
                     (context).unModifiedClearRect = context.clearRect;
                     context.arc = this.BuildPositionReplacer(context.arc);
                     context.arcTo = this.BuildPositionReplacer(context.arcTo, 0, 4);
@@ -1096,7 +1129,13 @@ var EndGate;
                         arguments[4] += -that._camera.Position.Y + that._canvasCenter.Y * scale;
                         return savedCreateRadialGradient.apply(this, arguments);
                     };
-                    context.drawImage = this.BuildPositionReplacer(context.drawImage, 1);
+                    context.drawImage = function () {
+                        if(arguments.length <= 5) {
+                            savedDrawImage1.apply(this, arguments);
+                        } else {
+                            savedDrawImage2.apply(this, arguments);
+                        }
+                    };
                     context.fillRect = this.BuildPositionReplacer(context.fillRect);
                     context.fillText = this.BuildPositionReplacer(context.fillText, 1);
                     context.getImageData = this.BuildPositionReplacer(context.getImageData);
@@ -1217,6 +1256,7 @@ var EndGate;
                 } else {
                     this._onDraw = onDraw;
                 }
+                this.ApplyStyles(drawArea);
                 this.DrawArea = drawArea;
                 this.Camera = new Rendering.Camera2d(new EndGate.Vector2d(this.DrawArea.width / 2, this.DrawArea.height / 2), new EndGate.Size2d(this.DrawArea.width, this.DrawArea.height));
                 this._renderer = new Rendering.Camera2dRenderer(this.DrawArea, this.Camera);
@@ -1242,6 +1282,11 @@ var EndGate;
                     this._actors = [];
                     this._renderer.Dispose();
                 }
+            };
+            Scene2d.prototype.ApplyStyles = function (drawArea) {
+                drawArea.style.position = "absolute";
+                drawArea.style.zIndex = "2";
+                drawArea.parentElement.style.position = "relative";
             };
             Scene2d.prototype.CreateDefaultDrawArea = function () {
                 var drawArea = document.createElement("canvas");
@@ -1818,6 +1863,58 @@ var EndGate;
 })(EndGate || (EndGate = {}));
 var EndGate;
 (function (EndGate) {
+    (function (Map) {
+        var SceneryHandler = (function () {
+            function SceneryHandler(foregroundCanvas, camera) {
+                this._camera = camera;
+                this._layers = [];
+                this._sceneryCanvas = this.BuildSceneryCanvas(foregroundCanvas);
+                this._renderer = new EndGate.Rendering.Camera2dRenderer(this._sceneryCanvas, this._camera);
+            }
+            SceneryHandler.prototype.AddLayer = function (layer) {
+                this._layers.push(layer);
+            };
+            SceneryHandler.prototype.RemoveLayer = function (layer) {
+                this._layers.splice(this._layers.indexOf(layer), 1);
+            };
+            SceneryHandler.prototype.Draw = function () {
+                this._layers.sort(EndGate.Graphics.Abstractions.Graphic2d._zindexSort);
+                this._renderer.Render(this._layers);
+            };
+            SceneryHandler.prototype.BuildSceneryCanvas = function (foreground) {
+                var sceneryCanvas = document.createElement("canvas"), baseElement = foreground, leftOffset, topOffset;
+                leftOffset = foreground.offsetLeft;
+                topOffset = foreground.offsetTop;
+                sceneryCanvas.width = foreground.width;
+                sceneryCanvas.height = foreground.height;
+                sceneryCanvas.style.position = "absolute";
+                sceneryCanvas.style.left = leftOffset + "px";
+                sceneryCanvas.style.top = topOffset + "px";
+                sceneryCanvas.style.zIndex = "1";
+                foreground.parentElement.insertBefore(sceneryCanvas, foreground);
+                return sceneryCanvas;
+            };
+            return SceneryHandler;
+        })();
+        Map.SceneryHandler = SceneryHandler;        
+    })(EndGate.Map || (EndGate.Map = {}));
+    var Map = EndGate.Map;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Map) {
+        var MapManager = (function () {
+            function MapManager(foregroundCanvas, camera) {
+                this.Scenery = new Map.SceneryHandler(foregroundCanvas, camera);
+            }
+            return MapManager;
+        })();
+        Map.MapManager = MapManager;        
+    })(EndGate.Map || (EndGate.Map = {}));
+    var Map = EndGate.Map;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
     var Game = (function () {
         function Game(gameCanvas) {
             var _this = this;
@@ -1831,6 +1928,7 @@ var EndGate;
             this.Audio = new EndGate.Sound.AudioManager();
             this.CollisionManager = new EndGate.Collision.CollisionManager();
             this.Configuration = new EndGate.GameConfiguration(GameRunnerInstance.Register(this));
+            this.Map = new EndGate.Map.MapManager(this.Scene.DrawArea, this.Scene.Camera);
         }
         Game._gameIds = 0;
         Game.prototype.PrepareUpdate = function () {
@@ -1841,6 +1939,7 @@ var EndGate;
         Game.prototype.Update = function (gameTime) {
         };
         Game.prototype.PrepareDraw = function () {
+            this.Map.Scenery.Draw();
             this.Scene.Draw();
         };
         Game.prototype.Draw = function (context) {
@@ -2335,7 +2434,7 @@ var EndGate;
                 this._type = "Text2d";
                 this._text = text;
                 this._stroker = new EndGate._.Utilities.NoopTripInvoker(function (context) {
-                    context.strokeText(_this._text, _this.Position.X, _this.Position.Y);
+                    context.strokeText(_this._text, 0, 0);
                 });
                 this._drawBounds = new EndGate.Bounds.BoundingRectangle(this.Position, EndGate.Size2d.One());
                 this.FontSettings = new Graphics.Assets.FontSettings();
@@ -2406,7 +2505,7 @@ var EndGate;
                 textSize = context.measureText(this._text);
                 this._drawBounds.Size.Width = textSize.width;
                 this._drawBounds.Size.Height = parseInt(this.FontSettings.FontSize()) * 1.5;
-                context.fillText(this._text, this.Position.X, this.Position.Y);
+                context.fillText(this._text, 0, 0);
                 this._stroker.Invoke(context);
                 _super.prototype.EndDraw.call(this, context);
             };
@@ -2426,11 +2525,11 @@ var EndGate;
     (function (Graphics) {
         (function (Assets) {
             var ImageSource = (function () {
-                function ImageSource(imageLocation, width, height, xClip, yClip, widthClip, heightClip) {
-                    if (typeof xClip === "undefined") { xClip = 0; }
-                    if (typeof yClip === "undefined") { yClip = 0; }
-                    if (typeof widthClip === "undefined") { widthClip = width; }
-                    if (typeof heightClip === "undefined") { heightClip = height; }
+                function ImageSource(imageLocation, width, height, clipX, clipY, clipWidth, clipHeight) {
+                    if (typeof clipX === "undefined") { clipX = 0; }
+                    if (typeof clipY === "undefined") { clipY = 0; }
+                    if (typeof clipWidth === "undefined") { clipWidth = width; }
+                    if (typeof clipHeight === "undefined") { clipHeight = height; }
                     var _this = this;
                     this.Loaded = false;
                     this.OnLoaded = new EndGate.EventHandler();
@@ -2441,9 +2540,13 @@ var EndGate;
                         _this.OnLoaded.Trigger(_this);
                     };
                     this.Source.src = imageLocation;
-                    this.ClipLocation = new EndGate.Vector2d(xClip, yClip);
-                    this.ClipSize = new EndGate.Size2d(widthClip, heightClip);
+                    this.ClipLocation = new EndGate.Vector2d(clipX, clipY);
+                    this.ClipSize = new EndGate.Size2d(clipWidth, clipHeight);
+                    this._imageLocation = imageLocation;
                 }
+                ImageSource.prototype.Extract = function (clipX, clipY, clipWidth, clipHeight) {
+                    return new ImageSource(this._imageLocation, this.Size.Width, this.Size.Height, clipX, clipY, clipWidth, clipHeight);
+                };
                 return ImageSource;
             })();
             Assets.ImageSource = ImageSource;            
@@ -2470,7 +2573,7 @@ var EndGate;
             };
             Sprite2d.prototype.Draw = function (context) {
                 _super.prototype.StartDraw.call(this, context);
-                context.drawImage(this.Image.Source, this.Image.ClipLocation.X, this.Image.ClipLocation.Y, this.Image.ClipSize.Width, this.Image.ClipSize.Height, this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
+                context.drawImage(this.Image.Source, this.Image.ClipLocation.X, this.Image.ClipLocation.Y, this.Image.ClipSize.Width, this.Image.ClipSize.Height, -this.Size.HalfWidth(), -this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
                 _super.prototype.EndDraw.call(this, context);
             };
             Sprite2d.prototype.GetDrawBounds = function () {
@@ -2540,6 +2643,7 @@ var EndGate;
             };
             SpriteAnimation.prototype.Reset = function () {
                 this._currentFrame = 0;
+                this.UpdateImageSource();
             };
             SpriteAnimation.prototype.Fps = function (newFps) {
                 if(typeof newFps !== "undefined") {
@@ -2673,7 +2777,7 @@ var EndGate;
                 this.Radius = radius;
             }
             Circle.prototype.BuildPath = function (context) {
-                context.arc(this.Position.X, this.Position.Y, this.Radius, 0, (Math).twoPI);
+                context.arc(0, 0, this.Radius, 0, (Math).twoPI);
             };
             Circle.prototype.GetDrawBounds = function () {
                 var bounds = new EndGate.Bounds.BoundingCircle(this.Position, this.Radius);
@@ -2697,7 +2801,7 @@ var EndGate;
                 this.Size = new EndGate.Size2d(width, height);
             }
             Rectangle.prototype.BuildPath = function (context) {
-                context.rect(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
+                context.rect(-this.Size.HalfWidth(), -this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
             };
             Rectangle.prototype.GetDrawBounds = function () {
                 var bounds = new EndGate.Bounds.BoundingRectangle(this.Position, this.Size);
@@ -2711,3 +2815,270 @@ var EndGate;
     var Graphics = EndGate.Graphics;
 })(EndGate || (EndGate = {}));
 var eg = EndGate;
+var EndGate;
+(function (EndGate) {
+    (function (Graphics) {
+        var Line2d = (function (_super) {
+            __extends(Line2d, _super);
+            function Line2d(fromX, fromY, toX, toY, lineWidth, color) {
+                if (typeof lineWidth === "undefined") { lineWidth = 1; }
+                        _super.call(this, EndGate.Vector2d.Zero());
+                this._type = "Line2d";
+                this._from = new EndGate.Vector2d(fromX, fromY);
+                this._to = new EndGate.Vector2d(toX, toY);
+                this.LineWidth(lineWidth);
+                this.UpdatePosition();
+                if(typeof color !== "undefined") {
+                    this.Color(color);
+                }
+            }
+            Line2d.prototype.From = function (newPosition) {
+                return this.GetOrSetLinePoint("from", newPosition);
+            };
+            Line2d.prototype.To = function (newPosition) {
+                return this.GetOrSetLinePoint("to", newPosition);
+            };
+            Line2d.prototype.Color = function (color) {
+                return this.State.StrokeStyle(color);
+            };
+            Line2d.prototype.LineWidth = function (width) {
+                return this.State.LineWidth(width);
+            };
+            Line2d.prototype.LineCap = function (cap) {
+                return this.State.LineCap(cap);
+            };
+            Line2d.prototype.Draw = function (context) {
+                _super.prototype.StartDraw.call(this, context);
+                if(!this._cachedPosition.Equivalent(this.Position)) {
+                    this.RefreshCache();
+                }
+                context.beginPath();
+                context.moveTo(this._from.X - this.Position.X, this._from.Y - this.Position.Y);
+                context.lineTo(this._to.X - this.Position.X, this._to.Y - this.Position.Y);
+                context.stroke();
+                _super.prototype.EndDraw.call(this, context);
+            };
+            Line2d.prototype.GetDrawBounds = function () {
+                var bounds = new EndGate.Bounds.BoundingRectangle(this.Position, new EndGate.Size2d(this._boundsWidth, this.LineWidth()));
+                bounds.Rotation = Math.atan2(this._difference.Y, this._difference.X) + this.Rotation;
+                return bounds;
+            };
+            Line2d.prototype.UpdatePosition = function () {
+                this.Position = ((this._from.Add(this._to)).Divide(2));
+                this._difference = this._to.Subtract(this._from);
+                this._boundsWidth = this._from.Distance(this._to).Length();
+                this._cachedPosition = this.Position.Clone();
+            };
+            Line2d.prototype.RefreshCache = function () {
+                var difference = this.Position.Subtract(this._cachedPosition);
+                this._from.X += difference.X;
+                this._from.Y += difference.Y;
+                this._to.X += difference.X;
+                this._to.Y += difference.Y;
+                this._cachedPosition = this.Position.Clone();
+            };
+            Line2d.prototype.GetOrSetLinePoint = function (name, newPosition) {
+                if(typeof newPosition === "undefined") {
+                    this["_" + name] = newPosition;
+                    this.UpdatePosition();
+                }
+                return this["_" + name];
+            };
+            return Line2d;
+        })(Graphics.Abstractions.Graphic2d);
+        Graphics.Line2d = Line2d;        
+    })(EndGate.Graphics || (EndGate.Graphics = {}));
+    var Graphics = EndGate.Graphics;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Graphics) {
+        var Grid = (function (_super) {
+            __extends(Grid, _super);
+            function Grid(x, y, rows, columns, tileWidth, tileHeight, drawGridLines, color) {
+                if (typeof drawGridLines === "undefined") { drawGridLines = false; }
+                if (typeof color === "undefined") { color = "gray"; }
+                        _super.call(this, new EndGate.Vector2d(x, y));
+                this._type = "Grid";
+                var halfSize, topLeft, bottomRight;
+                this._size = new EndGate.Size2d(tileWidth * columns, tileHeight * rows);
+                this._tileSize = new EndGate.Size2d(tileWidth, tileHeight);
+                this._grid = [];
+                this._rows = rows;
+                this._columns = columns;
+                this._drawGridLines = drawGridLines;
+                this._gridLines = [];
+                halfSize = this._size.Multiply(.5);
+                topLeft = new EndGate.Vector2d(-halfSize.Width, -halfSize.Height);
+                bottomRight = new EndGate.Vector2d(halfSize.Width, halfSize.Height);
+                for(var i = 0; i < rows; i++) {
+                    this._grid[i] = [];
+                    this._gridLines.push(new Graphics.Line2d(topLeft.X, topLeft.Y + i * this._tileSize.Height, bottomRight.X, topLeft.Y + i * this._tileSize.Height, 1));
+                    for(var j = 0; j < columns; j++) {
+                        if(i === 0) {
+                            this._gridLines.push(new Graphics.Line2d(topLeft.X + j * this._tileSize.Width, topLeft.Y, topLeft.X + j * this._tileSize.Width, bottomRight.Y, 1));
+                        }
+                        this._grid[i].push(null);
+                    }
+                }
+                this._gridLines.push(new Graphics.Line2d(topLeft.X, bottomRight.Y, bottomRight.X, bottomRight.Y, 1));
+                this._gridLines.push(new Graphics.Line2d(bottomRight.X, topLeft.Y, bottomRight.X, bottomRight.Y, 1));
+                this.Color(color);
+            }
+            Grid.prototype.Color = function (color) {
+                if(typeof color !== "undefined") {
+                    this._gridLineColor = color;
+                    for(var i = 0; i < this._gridLines.length; i++) {
+                        this._gridLines[i].Color(color);
+                    }
+                }
+                return this._gridLineColor;
+            };
+            Grid.prototype.Size = function () {
+                return this._size.Clone();
+            };
+            Grid.prototype.TileSize = function () {
+                return this._tileSize.Clone();
+            };
+            Grid.prototype.Opacity = function (alpha) {
+                return this.State.GlobalAlpha(alpha);
+            };
+            Grid.prototype.Fill = function (row, column, graphic) {
+                row--;
+                column--;
+                graphic.Position = this.GetInsideGridPosition(row, column);
+                this._grid[row][column] = graphic;
+                this.AddChild(graphic);
+            };
+            Grid.prototype.FillSpace = function (row, column, graphicList) {
+                var graphic;
+                row--;
+                column--;
+                for(var i = 0; i < graphicList.length; i++) {
+                    for(var j = 0; j < graphicList[i].length; j++) {
+                        graphic = graphicList[i][j];
+                        graphic.Position = this.GetInsideGridPosition(i + row, j + column);
+                        this._grid[i + row][j + column] = graphic;
+                        this.AddChild(graphic);
+                    }
+                }
+            };
+            Grid.prototype.FillRow = function (row, graphicList, offset) {
+                if (typeof offset === "undefined") { offset = 0; }
+                var graphic;
+                row--;
+                for(var i = 0; i < graphicList.length; i++) {
+                    graphic = graphicList[i];
+                    graphic.Position = this.GetInsideGridPosition(row, i + offset);
+                    this._grid[row][i + offset] = graphic;
+                    this.AddChild(graphic);
+                }
+            };
+            Grid.prototype.FillColumn = function (column, graphicList, offset) {
+                if (typeof offset === "undefined") { offset = 0; }
+                var graphic;
+                column--;
+                for(var i = 0; i < graphicList.length; i++) {
+                    graphic = graphicList[i];
+                    graphic.Position = this.GetInsideGridPosition(i + offset, column);
+                    this._grid[i + offset][column] = graphic;
+                    this.AddChild(graphic);
+                }
+            };
+            Grid.prototype.Draw = function (context) {
+                _super.prototype.StartDraw.call(this, context);
+                if(this._drawGridLines) {
+                    for(var i = 0; i < this._gridLines.length; i++) {
+                        this._gridLines[i].Draw(context);
+                    }
+                }
+                _super.prototype.EndDraw.call(this, context);
+            };
+            Grid.prototype.GetDrawBounds = function () {
+                var bounds = new EndGate.Bounds.BoundingRectangle(this.Position, this._size);
+                bounds.Rotation = this.Rotation;
+                return bounds;
+            };
+            Grid.prototype.GetInsideGridPosition = function (row, column) {
+                return new EndGate.Vector2d(column * this._tileSize.Width - this._size.HalfWidth() + this._tileSize.HalfWidth(), row * this._tileSize.Height - this._size.HalfHeight() + this._tileSize.HalfHeight());
+            };
+            return Grid;
+        })(Graphics.Abstractions.Graphic2d);
+        Graphics.Grid = Grid;        
+    })(EndGate.Graphics || (EndGate.Graphics = {}));
+    var Graphics = EndGate.Graphics;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Map) {
+        var TileMap = (function (_super) {
+            __extends(TileMap, _super);
+            function TileMap(x, y, resources) {
+                        _super.call(this, new EndGate.Vector2d(x, y));
+                this._Resources = resources;
+            }
+            return TileMap;
+        })(EndGate.Graphics.Abstractions.Graphic2d);
+        Map.TileMap = TileMap;        
+    })(EndGate.Map || (EndGate.Map = {}));
+    var Map = EndGate.Map;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Map) {
+        var Tile = (function (_super) {
+            __extends(Tile, _super);
+            function Tile(image, width, height) {
+                        _super.call(this, 0, 0, image, width, height);
+            }
+            return Tile;
+        })(EndGate.Graphics.Sprite2d);
+        Map.Tile = Tile;        
+    })(EndGate.Map || (EndGate.Map = {}));
+    var Map = EndGate.Map;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Map) {
+        var SquareTileMap = (function (_super) {
+            __extends(SquareTileMap, _super);
+            function SquareTileMap(x, y, tileWidth, tileHeight, resources, mappings) {
+                        _super.call(this, x, y, resources);
+                this._grid = new EndGate.Graphics.Grid(0, 0, mappings.length, mappings[0].length, tileWidth, tileHeight);
+                this.FillGridWith(mappings);
+            }
+            SquareTileMap.ExtractTiles = function ExtractTiles(imageSource, tileWidth, tileHeight) {
+                var resources = [], framesPerRow = Math.floor(imageSource.ClipSize.Width / tileWidth), rows = Math.floor(imageSource.ClipSize.Height / tileHeight);
+                for(var i = 0; i < rows; i++) {
+                    for(var j = 0; j < framesPerRow; j++) {
+                        resources.push(imageSource.Extract(i * tileHeight, j * tileWidth, tileWidth, tileHeight));
+                    }
+                }
+                return resources;
+            };
+            SquareTileMap.prototype.Draw = function (context) {
+                _super.prototype.StartDraw.call(this, context);
+                this._grid.Draw(context);
+                _super.prototype.EndDraw.call(this, context);
+            };
+            SquareTileMap.prototype.GetDrawBounds = function () {
+                var bounds = this._grid.GetDrawBounds();
+                bounds.Position = this.Position;
+                return bounds;
+            };
+            SquareTileMap.prototype.FillGridWith = function (mappings) {
+                var tiles = [];
+                for(var i = 0; i < mappings.length; i++) {
+                    tiles[i] = [];
+                    for(var j = 0; j < mappings[i].length; j++) {
+                        tiles[i].push(new Map.Tile(this._Resources[mappings[i][j]], this._grid.TileSize().Width, this._grid.TileSize().Height));
+                    }
+                }
+                this._grid.FillSpace(1, 1, tiles);
+            };
+            return SquareTileMap;
+        })(Map.TileMap);
+        Map.SquareTileMap = SquareTileMap;        
+    })(EndGate.Map || (EndGate.Map = {}));
+    var Map = EndGate.Map;
+})(EndGate || (EndGate = {}));
