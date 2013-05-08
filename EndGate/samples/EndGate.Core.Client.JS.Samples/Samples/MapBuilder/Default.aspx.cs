@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace EndGate.AspNet.SignalR.Samples.Broadcasting
+namespace EndGate.Core.Client.JS.Samples.Samples.MapBuilder
 {
     public partial class Default : System.Web.UI.Page
     {

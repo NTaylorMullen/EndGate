@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace EndGate.AspNet.SignalR.Samples
+namespace EndGate.Core.Client.JS.Samples.Samples.MapBuilder
 {
 
 

@@ -75,6 +75,14 @@ module EndGate.Graphics {
             return this._tileSize.Clone();
         }
 
+        public Rows(): number {
+            return this._rows;
+        }
+
+        public Columns(): number {
+            return this._columns;
+        }
+
         public Opacity(alpha?: number): number {
             return this.State.GlobalAlpha(alpha);
         }
@@ -134,16 +142,17 @@ module EndGate.Graphics {
         }
 
         public Draw(context: CanvasRenderingContext2D): void {
-            super.StartDraw(context);
+            super.StartDraw(context);            
 
-            // No need to draw the grid  items because the base Graphic2d class will handle all of the children drawing for me
+            context.save();
+            super.EndDraw(context);
+
             if (this._drawGridLines) {
                 for (var i = 0; i < this._gridLines.length; i++) {
                     this._gridLines[i].Draw(context);
                 }
             }
-
-            super.EndDraw(context);
+            context.restore();
         }
 
         public GetDrawBounds(): Bounds.Abstractions.Bounds2d {

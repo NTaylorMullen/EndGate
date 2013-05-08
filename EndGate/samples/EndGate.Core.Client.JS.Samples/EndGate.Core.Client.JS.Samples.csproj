@@ -217,6 +217,35 @@
     <Content Include="Samples\Layering\mainLayering.min.js">
       <DependentUpon>mainLayering.ts</DependentUpon>
     </Content>
+    <TypeScriptCompile Include="Samples\MapBuilder\CameraDragController.ts" />
+    <Content Include="Samples\MapBuilder\CameraDragController.js">
+      <DependentUpon>CameraDragController.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MapBuilder\CameraDragController.min.js">
+      <DependentUpon>CameraDragController.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MapBuilder\Default.aspx" />
+    <TypeScriptCompile Include="Samples\MapBuilder\Main.ts" />
+    <Content Include="Samples\MapBuilder\Main.js">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MapBuilder\Main.min.js">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Samples\MapBuilder\MapBuilder.ts" />
+    <Content Include="Samples\MapBuilder\MapBuilder.js">
+      <DependentUpon>MapBuilder.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MapBuilder\MapBuilder.min.js">
+      <DependentUpon>MapBuilder.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Samples\MapBuilder\SpriteSheetViewer.ts" />
+    <Content Include="Samples\MapBuilder\SpriteSheetViewer.js">
+      <DependentUpon>SpriteSheetViewer.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MapBuilder\SpriteSheetViewer.min.js">
+      <DependentUpon>SpriteSheetViewer.ts</DependentUpon>
+    </Content>
     <Content Include="Samples\MouseInput\assetsMouseInput.min.js">
       <DependentUpon>assetsMouseInput.ts</DependentUpon>
     </Content>
@@ -397,6 +426,18 @@
     <Content Include="Samples\RawRPG\main.js.map">
       <DependentUpon>Main.ts</DependentUpon>
     </Content>
+    <Content Include="Samples\MapBuilder\Main.js.map">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MapBuilder\MapBuilder.js.map">
+      <DependentUpon>MapBuilder.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MapBuilder\SpriteSheetViewer.js.map">
+      <DependentUpon>SpriteSheetViewer.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MapBuilder\CameraDragController.js.map">
+      <DependentUpon>CameraDragController.ts</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <TypeScriptCompile Include="Scripts\endGate.core.client.ts" />
     <TypeScriptCompile Include="Samples\Layering\assetsLayering.ts" />
@@ -492,6 +533,13 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Samples\Layering\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Samples\MapBuilder\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Samples\MapBuilder\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="Samples\MouseInput\Default.aspx.cs">

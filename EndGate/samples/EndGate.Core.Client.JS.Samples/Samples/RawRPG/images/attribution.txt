@@ -1,1 +1,3 @@
 ﻿golden_knight.png : http://opengameart.org/content/lpc-full-plate-golden-armor | artist: http://shauncharles.deviantart.com/
+
+wood_tileset_3.png : http://opengameart.org/content/2d-lost-garden-tileset-transition-to-jetrels-wood-tileset

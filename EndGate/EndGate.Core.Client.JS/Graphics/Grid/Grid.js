@@ -53,6 +53,12 @@ var EndGate;
             Grid.prototype.TileSize = function () {
                 return this._tileSize.Clone();
             };
+            Grid.prototype.Rows = function () {
+                return this._rows;
+            };
+            Grid.prototype.Columns = function () {
+                return this._columns;
+            };
             Grid.prototype.Opacity = function (alpha) {
                 return this.State.GlobalAlpha(alpha);
             };
@@ -100,12 +106,14 @@ var EndGate;
             };
             Grid.prototype.Draw = function (context) {
                 _super.prototype.StartDraw.call(this, context);
+                context.save();
+                _super.prototype.EndDraw.call(this, context);
                 if(this._drawGridLines) {
                     for(var i = 0; i < this._gridLines.length; i++) {
                         this._gridLines[i].Draw(context);
                     }
                 }
-                _super.prototype.EndDraw.call(this, context);
+                context.restore();
             };
             Grid.prototype.GetDrawBounds = function () {
                 var bounds = new EndGate.Bounds.BoundingRectangle(this.Position, this._size);

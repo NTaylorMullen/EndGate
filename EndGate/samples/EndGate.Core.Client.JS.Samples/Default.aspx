@@ -63,6 +63,12 @@
             <p>Demonstrates how to use input controllers to make moving controlling objects dead simple.</p>
             <p><a class="btn" href="Samples/InputControllers">View sample &raquo;</a></p>
         </div>
+
+        <div class="span4">
+            <h3>Map Builder</h3>
+            <p>Demonstrates a accumulation of EndGate assets to help create SquareTileMaps visually.</p>
+            <p><a class="btn" href="Samples/MapBuilder">View sample &raquo;</a></p>
+        </div>
     </div>
 
     <div class="row">

@@ -20,6 +20,10 @@ module EndGate.Rendering {
             return this.Distance / Camera2d.DefaultDistance;
         }
 
+        public ToCameraRelative(position: Vector2d): Vector2d {            
+            return position.Subtract(this.TopLeft());
+        }
+
         public GetInverseDistanceScale(): number {
             return Camera2d.DefaultDistance / this.Distance;
         }

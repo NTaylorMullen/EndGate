@@ -1449,6 +1449,10 @@ module EndGate.Rendering {
             return this.Distance / Camera2d.DefaultDistance;
         }
 
+        public ToCameraRelative(position: Vector2d): Vector2d {            
+            return position.Subtract(this.TopLeft());
+        }
+
         public GetInverseDistanceScale(): number {
             return Camera2d.DefaultDistance / this.Distance;
         }
@@ -3266,24 +3270,36 @@ module EndGate.Graphics.Assets {
 
         private _imageLocation;
 
-        constructor(imageLocation: string, width: number, height: number);
-        constructor(imageLocation: string, width: number, height: number, clipX?: number = 0, clipY?: number = 0, clipWidth?: number, clipHeight?: number);
-        constructor(imageLocation: string, width: number, height: number, clipX?: number = 0, clipY?: number = 0, clipWidth?: number = width, clipHeight?: number = height) {
-            this.Loaded = false;
-            this.OnLoaded = new EventHandler();
-            this.Size = new Size2d(width, height);
+        constructor(imageLocation: string);
+        constructor(imageLocation: string, width?: number, height?: number);
+        constructor(imageLocation: string, width?: number, height?: number, clipX?: number = 0, clipY?: number = 0, clipWidth?: number, clipHeight?: number);
+        constructor(imageLocation: string, width?: number, height?: number, clipX?: number = 0, clipY?: number = 0, clipWidth?: number = width, clipHeight?: number = height) {
+            var setSize = typeof width !== "undefined";
 
+            this.Loaded = false;
+            this.OnLoaded = new EventHandler();                
             this.Source = new Image();
+
             this.Source.onload = () => {
                 this.Loaded = true;
+
+                if (!setSize) {
+                    this.Size = new Size2d(this.Source.width, this.Source.height);
+                    this.ClipLocation = Vector2d.Zero();
+                    this.ClipSize = this.Size.Clone();
+                }
 
                 this.OnLoaded.Trigger(this);
             };
 
             this.Source.src = imageLocation;
-            this.ClipLocation = new Vector2d(clipX, clipY);
-            this.ClipSize = new Size2d(clipWidth, clipHeight);
             this._imageLocation = imageLocation;
+
+            if (setSize) {
+                this.Size = new Size2d(width, height);
+                this.ClipLocation = new Vector2d(clipX, clipY);
+                this.ClipSize = new Size2d(clipWidth, clipHeight);
+            }
         }
 
         public OnLoaded: EventHandler;
@@ -3838,6 +3854,14 @@ module EndGate.Graphics {
             return this._tileSize.Clone();
         }
 
+        public Rows(): number {
+            return this._rows;
+        }
+
+        public Columns(): number {
+            return this._columns;
+        }
+
         public Opacity(alpha?: number): number {
             return this.State.GlobalAlpha(alpha);
         }
@@ -3897,16 +3921,17 @@ module EndGate.Graphics {
         }
 
         public Draw(context: CanvasRenderingContext2D): void {
-            super.StartDraw(context);
+            super.StartDraw(context);            
 
-            // No need to draw the grid  items because the base Graphic2d class will handle all of the children drawing for me
+            context.save();
+            super.EndDraw(context);
+
             if (this._drawGridLines) {
                 for (var i = 0; i < this._gridLines.length; i++) {
                     this._gridLines[i].Draw(context);
                 }
             }
-
-            super.EndDraw(context);
+            context.restore();
         }
 
         public GetDrawBounds(): Bounds.Abstractions.Bounds2d {

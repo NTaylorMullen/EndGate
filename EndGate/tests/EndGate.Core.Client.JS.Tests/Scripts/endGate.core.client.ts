@@ -1449,6 +1449,10 @@ module EndGate.Rendering {
             return this.Distance / Camera2d.DefaultDistance;
         }
 
+        public ToCameraRelative(position: Vector2d): Vector2d {            
+            return this.TopLeft().Subtract(position);
+        }
+
         public GetInverseDistanceScale(): number {
             return Camera2d.DefaultDistance / this.Distance;
         }
@@ -3266,24 +3270,36 @@ module EndGate.Graphics.Assets {
 
         private _imageLocation;
 
-        constructor(imageLocation: string, width: number, height: number);
-        constructor(imageLocation: string, width: number, height: number, clipX?: number = 0, clipY?: number = 0, clipWidth?: number, clipHeight?: number);
-        constructor(imageLocation: string, width: number, height: number, clipX?: number = 0, clipY?: number = 0, clipWidth?: number = width, clipHeight?: number = height) {
-            this.Loaded = false;
-            this.OnLoaded = new EventHandler();
-            this.Size = new Size2d(width, height);
+        constructor(imageLocation: string);
+        constructor(imageLocation: string, width?: number, height?: number);
+        constructor(imageLocation: string, width?: number, height?: number, clipX?: number = 0, clipY?: number = 0, clipWidth?: number, clipHeight?: number);
+        constructor(imageLocation: string, width?: number, height?: number, clipX?: number = 0, clipY?: number = 0, clipWidth?: number = width, clipHeight?: number = height) {
+            var setSize = typeof width !== "undefined";
 
+            this.Loaded = false;
+            this.OnLoaded = new EventHandler();                
             this.Source = new Image();
+
             this.Source.onload = () => {
                 this.Loaded = true;
+
+                if (!setSize) {
+                    this.Size = new Size2d(this.Source.width, this.Source.height);
+                    this.ClipLocation = Vector2d.Zero();
+                    this.ClipSize = this.Size.Clone();
+                }
 
                 this.OnLoaded.Trigger(this);
             };
 
             this.Source.src = imageLocation;
-            this.ClipLocation = new Vector2d(clipX, clipY);
-            this.ClipSize = new Size2d(clipWidth, clipHeight);
             this._imageLocation = imageLocation;
+
+            if (setSize) {
+                this.Size = new Size2d(width, height);
+                this.ClipLocation = new Vector2d(clipX, clipY);
+                this.ClipSize = new Size2d(clipWidth, clipHeight);
+            }
         }
 
         public OnLoaded: EventHandler;
@@ -3967,10 +3983,10 @@ module EndGate.Map {
     export class SquareTileMap extends TileMap {
         private _grid: Graphics.Grid;
 
-        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.Assets.ImageSource[], mappings: number[][]) {
+        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.Assets.ImageSource[], mappings: number[][], drawGridLines?: bool = false) {
             super(x, y, resources);
 
-            this._grid = new Graphics.Grid(0, 0, mappings.length, mappings[0].length, tileWidth, tileHeight);
+            this._grid = new Graphics.Grid(0, 0, mappings.length, mappings[0].length, tileWidth, tileHeight,drawGridLines);
 
             this.FillGridWith(mappings);
         }
@@ -3982,7 +3998,7 @@ module EndGate.Map {
 
             for (var i = 0; i < rows; i++) {
                 for (var j = 0; j < framesPerRow; j++) {
-                    resources.push(imageSource.Extract(i * tileHeight, j * tileWidth, tileWidth, tileHeight));
+                    resources.push(imageSource.Extract(j * tileWidth, i * tileHeight, tileWidth, tileHeight));
                 }
             }
 

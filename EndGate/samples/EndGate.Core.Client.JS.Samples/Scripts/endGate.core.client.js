@@ -1040,6 +1040,9 @@ var EndGate;
             Camera2d.prototype.GetDistanceScale = function () {
                 return this.Distance / Camera2d.DefaultDistance;
             };
+            Camera2d.prototype.ToCameraRelative = function (position) {
+                return position.Subtract(this.TopLeft());
+            };
             Camera2d.prototype.GetInverseDistanceScale = function () {
                 return Camera2d.DefaultDistance / this.Distance;
             };
@@ -2531,18 +2534,26 @@ var EndGate;
                     if (typeof clipWidth === "undefined") { clipWidth = width; }
                     if (typeof clipHeight === "undefined") { clipHeight = height; }
                     var _this = this;
+                    var setSize = typeof width !== "undefined";
                     this.Loaded = false;
                     this.OnLoaded = new EndGate.EventHandler();
-                    this.Size = new EndGate.Size2d(width, height);
                     this.Source = new Image();
                     this.Source.onload = function () {
                         _this.Loaded = true;
+                        if(!setSize) {
+                            _this.Size = new EndGate.Size2d(_this.Source.width, _this.Source.height);
+                            _this.ClipLocation = EndGate.Vector2d.Zero();
+                            _this.ClipSize = _this.Size.Clone();
+                        }
                         _this.OnLoaded.Trigger(_this);
                     };
                     this.Source.src = imageLocation;
-                    this.ClipLocation = new EndGate.Vector2d(clipX, clipY);
-                    this.ClipSize = new EndGate.Size2d(clipWidth, clipHeight);
                     this._imageLocation = imageLocation;
+                    if(setSize) {
+                        this.Size = new EndGate.Size2d(width, height);
+                        this.ClipLocation = new EndGate.Vector2d(clipX, clipY);
+                        this.ClipSize = new EndGate.Size2d(clipWidth, clipHeight);
+                    }
                 }
                 ImageSource.prototype.Extract = function (clipX, clipY, clipWidth, clipHeight) {
                     return new ImageSource(this._imageLocation, this.Size.Width, this.Size.Height, clipX, clipY, clipWidth, clipHeight);
@@ -2940,6 +2951,12 @@ var EndGate;
             Grid.prototype.TileSize = function () {
                 return this._tileSize.Clone();
             };
+            Grid.prototype.Rows = function () {
+                return this._rows;
+            };
+            Grid.prototype.Columns = function () {
+                return this._columns;
+            };
             Grid.prototype.Opacity = function (alpha) {
                 return this.State.GlobalAlpha(alpha);
             };
@@ -2987,12 +3004,14 @@ var EndGate;
             };
             Grid.prototype.Draw = function (context) {
                 _super.prototype.StartDraw.call(this, context);
+                context.save();
+                _super.prototype.EndDraw.call(this, context);
                 if(this._drawGridLines) {
                     for(var i = 0; i < this._gridLines.length; i++) {
                         this._gridLines[i].Draw(context);
                     }
                 }
-                _super.prototype.EndDraw.call(this, context);
+                context.restore();
             };
             Grid.prototype.GetDrawBounds = function () {
                 var bounds = new EndGate.Bounds.BoundingRectangle(this.Position, this._size);
@@ -3083,4 +3102,3 @@ var EndGate;
     })(EndGate.Map || (EndGate.Map = {}));
     var Map = EndGate.Map;
 })(EndGate || (EndGate = {}));
-//@ sourceMappingURL=endGate.core.client.js.map
