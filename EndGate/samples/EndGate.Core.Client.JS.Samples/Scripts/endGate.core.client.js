@@ -1885,14 +1885,10 @@ var EndGate;
                 this._renderer.Render(this._layers);
             };
             SceneryHandler.prototype.BuildSceneryCanvas = function (foreground) {
-                var sceneryCanvas = document.createElement("canvas"), baseElement = foreground, leftOffset, topOffset;
-                leftOffset = foreground.offsetLeft;
-                topOffset = foreground.offsetTop;
+                var sceneryCanvas = document.createElement("canvas"), baseElement = foreground;
                 sceneryCanvas.width = foreground.width;
                 sceneryCanvas.height = foreground.height;
                 sceneryCanvas.style.position = "absolute";
-                sceneryCanvas.style.left = leftOffset + "px";
-                sceneryCanvas.style.top = topOffset + "px";
                 sceneryCanvas.style.zIndex = "1";
                 foreground.parentElement.insertBefore(sceneryCanvas, foreground);
                 return sceneryCanvas;
@@ -3102,3 +3098,4 @@ var EndGate;
     })(EndGate.Map || (EndGate.Map = {}));
     var Map = EndGate.Map;
 })(EndGate || (EndGate = {}));
+//@ sourceMappingURL=endGate.core.client.js.map

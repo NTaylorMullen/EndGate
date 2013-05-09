@@ -34,19 +34,11 @@ module EndGate.Map {
 
         private BuildSceneryCanvas(foreground: HTMLCanvasElement): HTMLCanvasElement {
             var sceneryCanvas = < HTMLCanvasElement > document.createElement("canvas"),
-                baseElement: any = foreground,
-                leftOffset: number,
-                topOffset: number;
-
-            // Position offset
-            leftOffset = foreground.offsetLeft;
-            topOffset = foreground.offsetTop;
+                baseElement: any = foreground;
 
             sceneryCanvas.width = foreground.width;
             sceneryCanvas.height = foreground.height;
             sceneryCanvas.style.position = "absolute";
-            sceneryCanvas.style.left = leftOffset + "px";
-            sceneryCanvas.style.top = topOffset + "px";
             sceneryCanvas.style.zIndex = "1";
 
             foreground.parentElement.insertBefore(sceneryCanvas, foreground);

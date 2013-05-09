@@ -240,6 +240,13 @@
       <DependentUpon>MapBuilder.ts</DependentUpon>
     </Content>
     <TypeScriptCompile Include="Samples\MapBuilder\SpriteSheetViewer.ts" />
+    <TypeScriptCompile Include="Samples\MapBuilder\SetupManager.ts" />
+    <Content Include="Samples\MapBuilder\SetupManager.js">
+      <DependentUpon>SetupManager.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MapBuilder\SetupManager.min.js">
+      <DependentUpon>SetupManager.ts</DependentUpon>
+    </Content>
     <Content Include="Samples\MapBuilder\SpriteSheetViewer.js">
       <DependentUpon>SpriteSheetViewer.ts</DependentUpon>
     </Content>
@@ -437,6 +444,9 @@
     </Content>
     <Content Include="Samples\MapBuilder\CameraDragController.js.map">
       <DependentUpon>CameraDragController.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MapBuilder\SetupManager.js.map">
+      <DependentUpon>SetupManager.ts</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <TypeScriptCompile Include="Scripts\endGate.core.client.ts" />
