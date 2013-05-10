@@ -31,7 +31,7 @@ module EndGate.Graphics {
         }
 
         public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
-            var bounds = new Bounds.BoundingRectangle(this.Position, this.Image.Size);
+            var bounds = new Bounds.BoundingRectangle(this.Position, this.Size);
 
             bounds.Rotation = this.Rotation;
 

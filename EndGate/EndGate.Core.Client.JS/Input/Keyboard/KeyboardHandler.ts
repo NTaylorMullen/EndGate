@@ -53,11 +53,11 @@ module EndGate.Input {
         }
 
         private Wire(): void {
-            document.onkeypress = this.BuildKeyEvent(this._onPressCommands, this.OnKeyPress);
+            document.addEventListener("keypress", this.BuildKeyEvent(this._onPressCommands, this.OnKeyPress), false);
 
-            document.onkeydown = this.BuildKeyEvent(this._onDownCommands, this.OnKeyDown);
+            document.addEventListener("keydown", this.BuildKeyEvent(this._onDownCommands, this.OnKeyDown), false);
 
-            document.onkeyup = this.BuildKeyEvent(this._onUpCommands, this.OnKeyUp);
+            document.addEventListener("keyup", this.BuildKeyEvent(this._onUpCommands, this.OnKeyUp), false);
         }
 
         private FocusingTextArea(ke: KeyboardEvent): bool {

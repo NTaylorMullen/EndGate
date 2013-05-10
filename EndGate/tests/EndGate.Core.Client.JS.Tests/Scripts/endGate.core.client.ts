@@ -1450,7 +1450,7 @@ module EndGate.Rendering {
         }
 
         public ToCameraRelative(position: Vector2d): Vector2d {            
-            return this.TopLeft().Subtract(position);
+            return this.TopLeft().Add(position);
         }
 
         public GetInverseDistanceScale(): number {
@@ -1879,6 +1879,10 @@ module EndGate.Input {
 module EndGate.Input {
 
     export class MouseHandler {
+        public LeftIsDown: bool;
+        public MiddleIsDown: bool;
+        public RightIsDown: bool;
+
         // Used to determine mouse buttons without using extra conditional statements, performance enhancer
         private static MouseButtonArray = [null, MouseButton.Left, MouseButton.Middle, MouseButton.Right];
 
@@ -1894,7 +1898,20 @@ module EndGate.Input {
             this.OnMove = new EventHandler();
             this.OnScroll = new EventHandler();
 
+            // Generic flags to check mouse state
+            this.LeftIsDown = false;
+            this.MiddleIsDown= false;
+            this.RightIsDown = false;
+
             this.Wire();
+
+            this.OnDown.Bind((e: IMouseClickEvent) => {
+                this[e.Button + "IsDown"] = true;
+            });
+
+            this.OnUp.Bind((e: IMouseClickEvent) => {
+                this[e.Button + "IsDown"] = false;
+            });
         }
 
         public OnClick: EventHandler;
@@ -1902,15 +1919,14 @@ module EndGate.Input {
         public OnDown: EventHandler;
         public OnUp: EventHandler;
         public OnMove: EventHandler;
-
         public OnScroll: EventHandler;
 
         private Wire(): void {
-            this._target.onclick = this._target.oncontextmenu = this.BuildEvent(this.OnClick, this.BuildMouseClickEvent);
-            this._target.ondblclick = this.BuildEvent(this.OnDoubleClick, this.BuildMouseClickEvent);
-            this._target.onmousedown = this.BuildEvent(this.OnDown, this.BuildMouseClickEvent);
-            this._target.onmouseup = this.BuildEvent(this.OnUp, this.BuildMouseClickEvent);
-            this._target.onmousemove = this.BuildEvent(this.OnMove, this.BuildMouseEvent);
+            this._target.addEventListener("click",this._target.oncontextmenu = this.BuildEvent(this.OnClick, this.BuildMouseClickEvent),false);
+            this._target.addEventListener("dblclick", this.BuildEvent(this.OnDoubleClick, this.BuildMouseClickEvent), false);
+            this._target.addEventListener("mousedown", this.BuildEvent(this.OnDown, this.BuildMouseClickEvent), false);
+            this._target.addEventListener("mouseup", this.BuildEvent(this.OnUp, this.BuildMouseClickEvent), false);
+            this._target.addEventListener("mousemove", this.BuildEvent(this.OnMove, this.BuildMouseEvent), false);
 
             // OnScroll, in order to detect horizontal scrolling need to hack a bit (browser sniffing)
             // if we were just doing vertical scrolling we could settle with the else statement in this block
@@ -2250,11 +2266,11 @@ module EndGate.Input {
         }
 
         private Wire(): void {
-            document.onkeypress = this.BuildKeyEvent(this._onPressCommands, this.OnKeyPress);
+            document.addEventListener("keypress", this.BuildKeyEvent(this._onPressCommands, this.OnKeyPress), false);
 
-            document.onkeydown = this.BuildKeyEvent(this._onDownCommands, this.OnKeyDown);
+            document.addEventListener("keydown", this.BuildKeyEvent(this._onDownCommands, this.OnKeyDown), false);
 
-            document.onkeyup = this.BuildKeyEvent(this._onUpCommands, this.OnKeyUp);
+            document.addEventListener("keyup", this.BuildKeyEvent(this._onUpCommands, this.OnKeyUp), false);
         }
 
         private FocusingTextArea(ke: KeyboardEvent): bool {
@@ -2552,19 +2568,11 @@ module EndGate.Map {
 
         private BuildSceneryCanvas(foreground: HTMLCanvasElement): HTMLCanvasElement {
             var sceneryCanvas = < HTMLCanvasElement > document.createElement("canvas"),
-                baseElement: any = foreground,
-                leftOffset: number,
-                topOffset: number;
-
-            // Position offset
-            leftOffset = foreground.offsetLeft;
-            topOffset = foreground.offsetTop;
+                baseElement: any = foreground;
 
             sceneryCanvas.width = foreground.width;
             sceneryCanvas.height = foreground.height;
             sceneryCanvas.style.position = "absolute";
-            sceneryCanvas.style.left = leftOffset + "px";
-            sceneryCanvas.style.top = topOffset + "px";
             sceneryCanvas.style.zIndex = "1";
 
             foreground.parentElement.insertBefore(sceneryCanvas, foreground);
@@ -3344,7 +3352,7 @@ module EndGate.Graphics {
         }
 
         public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
-            var bounds = new Bounds.BoundingRectangle(this.Position, this.Image.Size);
+            var bounds = new Bounds.BoundingRectangle(this.Position, this.Size);
 
             bounds.Rotation = this.Rotation;
 
@@ -3854,6 +3862,14 @@ module EndGate.Graphics {
             return this._tileSize.Clone();
         }
 
+        public Rows(): number {
+            return this._rows;
+        }
+
+        public Columns(): number {
+            return this._columns;
+        }
+
         public Opacity(alpha?: number): number {
             return this.State.GlobalAlpha(alpha);
         }
@@ -3913,16 +3929,17 @@ module EndGate.Graphics {
         }
 
         public Draw(context: CanvasRenderingContext2D): void {
-            super.StartDraw(context);
+            super.StartDraw(context);            
 
-            // No need to draw the grid  items because the base Graphic2d class will handle all of the children drawing for me
+            context.save();
+            super.EndDraw(context);
+
             if (this._drawGridLines) {
                 for (var i = 0; i < this._gridLines.length; i++) {
                     this._gridLines[i].Draw(context);
                 }
             }
-
-            super.EndDraw(context);
+            context.restore();
         }
 
         public GetDrawBounds(): Bounds.Abstractions.Bounds2d {

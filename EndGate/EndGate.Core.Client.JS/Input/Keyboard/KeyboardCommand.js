@@ -6,7 +6,7 @@ var EndGate;
                 function KeyboardCommand(command, action) {
                     var _this = this;
                     this.Action = action;
-                    this.Modifiers = Input.Assets.KeyboardModifiers.BuildFromCommandString(command);
+                    this.Modifiers = Assets.KeyboardModifiers.BuildFromCommandString(command);
                     this.Key = Input._.KeyboardCommandHelper.ParseKey(command);
                     this.OnDispose = new EndGate.EventHandler();
                     this._onDisposeInvoker = new EndGate._.Utilities.NoopTripInvoker(function () {

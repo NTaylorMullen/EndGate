@@ -1,7 +1,7 @@
 var CameraDragController = (function () {
     function CameraDragController(canvas, camera, keyboardHandler, mouseHandler) {
         var _this = this;
-        this._dragging = false;
+        this.Dragging = false;
         this._dragActive = false;
         keyboardHandler.OnCommandPress("space", function (e) {
             _this._dragActive = !_this._dragActive;
@@ -14,15 +14,15 @@ var CameraDragController = (function () {
         mouseHandler.OnDown.Bind(function (e) {
             _this._downAt = e.Position;
             _this._cameraStartPosition = camera.Position.Clone();
-            _this._dragging = true;
+            _this.Dragging = true;
         });
         mouseHandler.OnUp.Bind(function (e) {
             _this._upAt = e.Position;
             _this._cameraStartPosition = null;
-            _this._dragging = false;
+            _this.Dragging = false;
         });
         mouseHandler.OnMove.Bind(function (e) {
-            if(_this._dragging && _this._dragActive) {
+            if(_this.Dragging && _this._dragActive) {
                 camera.Position = _this._cameraStartPosition.Add(_this._downAt.Subtract(e.Position));
             }
         });

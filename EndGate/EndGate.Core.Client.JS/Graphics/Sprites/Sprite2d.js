@@ -25,7 +25,7 @@ var EndGate;
                 _super.prototype.EndDraw.call(this, context);
             };
             Sprite2d.prototype.GetDrawBounds = function () {
-                var bounds = new EndGate.Bounds.BoundingRectangle(this.Position, this.Image.Size);
+                var bounds = new EndGate.Bounds.BoundingRectangle(this.Position, this.Size);
                 bounds.Rotation = this.Rotation;
                 return bounds;
             };

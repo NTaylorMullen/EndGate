@@ -1041,7 +1041,7 @@ var EndGate;
                 return this.Distance / Camera2d.DefaultDistance;
             };
             Camera2d.prototype.ToCameraRelative = function (position) {
-                return this.TopLeft().Subtract(position);
+                return this.TopLeft().Add(position);
             };
             Camera2d.prototype.GetInverseDistanceScale = function () {
                 return Camera2d.DefaultDistance / this.Distance;
@@ -1332,6 +1332,7 @@ var EndGate;
     (function (Input) {
         var MouseHandler = (function () {
             function MouseHandler(target) {
+                var _this = this;
                 this._target = target;
                 this.OnClick = new EndGate.EventHandler();
                 this.OnDoubleClick = new EndGate.EventHandler();
@@ -1339,7 +1340,16 @@ var EndGate;
                 this.OnUp = new EndGate.EventHandler();
                 this.OnMove = new EndGate.EventHandler();
                 this.OnScroll = new EndGate.EventHandler();
+                this.LeftIsDown = false;
+                this.MiddleIsDown = false;
+                this.RightIsDown = false;
                 this.Wire();
+                this.OnDown.Bind(function (e) {
+                    _this[e.Button + "IsDown"] = true;
+                });
+                this.OnUp.Bind(function (e) {
+                    _this[e.Button + "IsDown"] = false;
+                });
             }
             MouseHandler.MouseButtonArray = [
                 null, 
@@ -1349,11 +1359,11 @@ var EndGate;
             ];
             MouseHandler.prototype.Wire = function () {
                 var _this = this;
-                this._target.onclick = this._target.oncontextmenu = this.BuildEvent(this.OnClick, this.BuildMouseClickEvent);
-                this._target.ondblclick = this.BuildEvent(this.OnDoubleClick, this.BuildMouseClickEvent);
-                this._target.onmousedown = this.BuildEvent(this.OnDown, this.BuildMouseClickEvent);
-                this._target.onmouseup = this.BuildEvent(this.OnUp, this.BuildMouseClickEvent);
-                this._target.onmousemove = this.BuildEvent(this.OnMove, this.BuildMouseEvent);
+                this._target.addEventListener("click", this._target.oncontextmenu = this.BuildEvent(this.OnClick, this.BuildMouseClickEvent), false);
+                this._target.addEventListener("dblclick", this.BuildEvent(this.OnDoubleClick, this.BuildMouseClickEvent), false);
+                this._target.addEventListener("mousedown", this.BuildEvent(this.OnDown, this.BuildMouseClickEvent), false);
+                this._target.addEventListener("mouseup", this.BuildEvent(this.OnUp, this.BuildMouseClickEvent), false);
+                this._target.addEventListener("mousemove", this.BuildEvent(this.OnMove, this.BuildMouseEvent), false);
                 if((/MSIE/i.test(navigator.userAgent))) {
                     this._target.addEventListener("wheel", this.BuildEvent(this.OnScroll, function (e) {
                         e.wheelDeltaX = -e.deltaX;
@@ -1644,9 +1654,9 @@ var EndGate;
                 return command;
             };
             KeyboardHandler.prototype.Wire = function () {
-                document.onkeypress = this.BuildKeyEvent(this._onPressCommands, this.OnKeyPress);
-                document.onkeydown = this.BuildKeyEvent(this._onDownCommands, this.OnKeyDown);
-                document.onkeyup = this.BuildKeyEvent(this._onUpCommands, this.OnKeyUp);
+                document.addEventListener("keypress", this.BuildKeyEvent(this._onPressCommands, this.OnKeyPress), false);
+                document.addEventListener("keydown", this.BuildKeyEvent(this._onDownCommands, this.OnKeyDown), false);
+                document.addEventListener("keyup", this.BuildKeyEvent(this._onUpCommands, this.OnKeyUp), false);
             };
             KeyboardHandler.prototype.FocusingTextArea = function (ke) {
                 var element;
@@ -1885,14 +1895,10 @@ var EndGate;
                 this._renderer.Render(this._layers);
             };
             SceneryHandler.prototype.BuildSceneryCanvas = function (foreground) {
-                var sceneryCanvas = document.createElement("canvas"), baseElement = foreground, leftOffset, topOffset;
-                leftOffset = foreground.offsetLeft;
-                topOffset = foreground.offsetTop;
+                var sceneryCanvas = document.createElement("canvas"), baseElement = foreground;
                 sceneryCanvas.width = foreground.width;
                 sceneryCanvas.height = foreground.height;
                 sceneryCanvas.style.position = "absolute";
-                sceneryCanvas.style.left = leftOffset + "px";
-                sceneryCanvas.style.top = topOffset + "px";
                 sceneryCanvas.style.zIndex = "1";
                 foreground.parentElement.insertBefore(sceneryCanvas, foreground);
                 return sceneryCanvas;
@@ -2588,7 +2594,7 @@ var EndGate;
                 _super.prototype.EndDraw.call(this, context);
             };
             Sprite2d.prototype.GetDrawBounds = function () {
-                var bounds = new EndGate.Bounds.BoundingRectangle(this.Position, this.Image.Size);
+                var bounds = new EndGate.Bounds.BoundingRectangle(this.Position, this.Size);
                 bounds.Rotation = this.Rotation;
                 return bounds;
             };
@@ -2951,6 +2957,12 @@ var EndGate;
             Grid.prototype.TileSize = function () {
                 return this._tileSize.Clone();
             };
+            Grid.prototype.Rows = function () {
+                return this._rows;
+            };
+            Grid.prototype.Columns = function () {
+                return this._columns;
+            };
             Grid.prototype.Opacity = function (alpha) {
                 return this.State.GlobalAlpha(alpha);
             };
@@ -2998,12 +3010,14 @@ var EndGate;
             };
             Grid.prototype.Draw = function (context) {
                 _super.prototype.StartDraw.call(this, context);
+                context.save();
+                _super.prototype.EndDraw.call(this, context);
                 if(this._drawGridLines) {
                     for(var i = 0; i < this._gridLines.length; i++) {
                         this._gridLines[i].Draw(context);
                     }
                 }
-                _super.prototype.EndDraw.call(this, context);
+                context.restore();
             };
             Grid.prototype.GetDrawBounds = function () {
                 var bounds = new EndGate.Bounds.BoundingRectangle(this.Position, this._size);

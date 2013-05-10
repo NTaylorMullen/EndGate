@@ -1,14 +1,15 @@
 /// <reference path="../../Scripts/endGate.core.client.ts" />
 
 class CameraDragController {
-    private _dragging: bool;
+    public Dragging: bool;
+
     private _dragActive: bool;
     private _downAt: eg.Vector2d;
     private _upAt: eg.Vector2d;
     private _cameraStartPosition: eg.Vector2d;
 
     constructor(canvas: HTMLCanvasElement, camera: eg.Rendering.Camera2d, keyboardHandler: eg.Input.KeyboardHandler, mouseHandler: eg.Input.MouseHandler) {
-        this._dragging = false;
+        this.Dragging = false;
         this._dragActive = false;
 
         keyboardHandler.OnCommandPress("space", (e: eg.Input.KeyboardCommandEvent) => {
@@ -25,17 +26,17 @@ class CameraDragController {
         mouseHandler.OnDown.Bind((e: eg.Input.IMouseClickEvent) => {
             this._downAt = e.Position;
             this._cameraStartPosition = camera.Position.Clone();
-            this._dragging = true;
+            this.Dragging = true;
         });
 
         mouseHandler.OnUp.Bind((e: eg.Input.IMouseClickEvent) => {
             this._upAt = e.Position;
             this._cameraStartPosition = null;
-            this._dragging = false;
+            this.Dragging = false;
         });
 
         mouseHandler.OnMove.Bind((e: eg.Input.IMouseEvent) => {
-            if (this._dragging && this._dragActive) {
+            if (this.Dragging && this._dragActive) {
                 camera.Position = this._cameraStartPosition.Add(this._downAt.Subtract(e.Position));
             }
         });

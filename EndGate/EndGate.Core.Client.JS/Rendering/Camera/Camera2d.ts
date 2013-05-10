@@ -21,7 +21,7 @@ module EndGate.Rendering {
         }
 
         public ToCameraRelative(position: Vector2d): Vector2d {            
-            return position.Subtract(this.TopLeft());
+            return this.TopLeft().Add(position);
         }
 
         public GetInverseDistanceScale(): number {

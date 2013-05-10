@@ -18,7 +18,7 @@ var EndGate;
                 return this.Distance / Camera2d.DefaultDistance;
             };
             Camera2d.prototype.ToCameraRelative = function (position) {
-                return position.Subtract(this.TopLeft());
+                return this.TopLeft().Add(position);
             };
             Camera2d.prototype.GetInverseDistanceScale = function () {
                 return Camera2d.DefaultDistance / this.Distance;

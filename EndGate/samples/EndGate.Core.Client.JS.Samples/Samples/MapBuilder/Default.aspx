@@ -64,9 +64,9 @@
         </div>
 
         <div class="row">
-            <div id="mapBuilder" class="form-vertical well span3" style="height: 400px;">
+            <div id="mapBuilder" class="form-vertical well span3 hide" style="height: 400px;">
             </div>
-            <div id="spriteSheetViewer" class="form-vertical well span8" style="height: 400px;">
+            <div id="spriteSheetViewer" class="form-vertical well span10" style="height:600px;">
             </div>
         </div>
     </div>
@@ -74,6 +74,7 @@
 <asp:Content ID="Content3" ContentPlaceHolderID="Scripts" runat="server">
     <script src="MapBuilder.js"></script>
     <script src="SpriteSheetViewer.js"></script>
+    <script src="TileSelector.js"></script>
     <script src="CameraDragController.js"></script>
     <script src="SetupManager.js"></script>
     <script src="Main.js"></script>

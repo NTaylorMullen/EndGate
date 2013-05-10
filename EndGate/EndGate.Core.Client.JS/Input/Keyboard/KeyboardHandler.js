@@ -33,9 +33,9 @@ var EndGate;
                 return command;
             };
             KeyboardHandler.prototype.Wire = function () {
-                document.onkeypress = this.BuildKeyEvent(this._onPressCommands, this.OnKeyPress);
-                document.onkeydown = this.BuildKeyEvent(this._onDownCommands, this.OnKeyDown);
-                document.onkeyup = this.BuildKeyEvent(this._onUpCommands, this.OnKeyUp);
+                document.addEventListener("keypress", this.BuildKeyEvent(this._onPressCommands, this.OnKeyPress), false);
+                document.addEventListener("keydown", this.BuildKeyEvent(this._onDownCommands, this.OnKeyDown), false);
+                document.addEventListener("keyup", this.BuildKeyEvent(this._onUpCommands, this.OnKeyUp), false);
             };
             KeyboardHandler.prototype.FocusingTextArea = function (ke) {
                 var element;

@@ -253,6 +253,13 @@
     <Content Include="Samples\MapBuilder\SpriteSheetViewer.min.js">
       <DependentUpon>SpriteSheetViewer.ts</DependentUpon>
     </Content>
+    <TypeScriptCompile Include="Samples\MapBuilder\TileSelector.ts" />
+    <Content Include="Samples\MapBuilder\TileSelector.js">
+      <DependentUpon>TileSelector.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MapBuilder\TileSelector.min.js">
+      <DependentUpon>TileSelector.ts</DependentUpon>
+    </Content>
     <Content Include="Samples\MouseInput\assetsMouseInput.min.js">
       <DependentUpon>assetsMouseInput.ts</DependentUpon>
     </Content>
@@ -447,6 +454,9 @@
     </Content>
     <Content Include="Samples\MapBuilder\SetupManager.js.map">
       <DependentUpon>SetupManager.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MapBuilder\TileSelector.js.map">
+      <DependentUpon>TileSelector.ts</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <TypeScriptCompile Include="Scripts\endGate.core.client.ts" />

@@ -3,11 +3,15 @@
 <asp:Content ID="Content4" ContentPlaceHolderID="HeadContent" runat="server">
     <style>
         canvas {
-            border:1px solid black;
+            border: 1px solid black;
+        }
+
+        .keyboard-controller {
+            height:35px;
         }
 
         .keyboard-controller button {
-            margin-top:-8px;
+            margin-top: -8px;
         }
     </style>
 </asp:Content>
@@ -24,9 +28,18 @@
     </div>
 
     <p class="row "><em>Start hitting keys and see the game handle the inputs.  Handles multiple special keys such as Up, Right, Down, Left, esc, tab, space, enter, backspace, insert, home, delete, end, f1-f12.  Also modifiers are placed in front of key command such as "shift+up" or "shift+alt+p"</em></p>
-    <div class="keyboard-controller"><p class="pull-left">Bind To: <input type="text" placeholder="Binding command..." id="commandToBind" /> Result: <input type="text" placeholder="Text to show..." id="commandResult" /><button class="btn" id="bindKeyboardInput">Bind</button></p><p class="pull-right"><button class="btn" id="unbindKeyboardInput">Unbind</button><select id="commandList"></select></p></div>
-    <div class="row">        
-        <div id="gameHolder" class="form-vertical well" style="height:400px;">
+    <div class="row">
+        <div class="keyboard-controller">
+            <p class="pull-left">Bind To:
+                <input type="text" placeholder="Binding command..." id="commandToBind" />
+                Result:
+                <input type="text" placeholder="Text to show..." id="commandResult" />
+                <button class="btn" id="bindKeyboardInput">Bind</button></p>
+            <p class="pull-right">
+            <button class="btn" id="unbindKeyboardInput">Unbind</button><select id="commandList"></select></p>
+        </div>
+
+        <div id="gameHolder" class="form-vertical well" style="height: 400px;">
         </div>
     </div>
 </asp:Content>
