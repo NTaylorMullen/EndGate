@@ -1882,6 +1882,7 @@ module EndGate.Input {
         public LeftIsDown: bool;
         public MiddleIsDown: bool;
         public RightIsDown: bool;
+        public IsDown: bool;
 
         // Used to determine mouse buttons without using extra conditional statements, performance enhancer
         private static MouseButtonArray = [null, MouseButton.Left, MouseButton.Middle, MouseButton.Right];
@@ -1906,10 +1907,12 @@ module EndGate.Input {
             this.Wire();
 
             this.OnDown.Bind((e: IMouseClickEvent) => {
+                this.IsDown = true;
                 this[e.Button + "IsDown"] = true;
             });
 
             this.OnUp.Bind((e: IMouseClickEvent) => {
+                this.IsDown = false;
                 this[e.Button + "IsDown"] = false;
             });
         }

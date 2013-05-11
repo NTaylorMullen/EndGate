@@ -16,8 +16,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EndGate.Core", "EndGate.Cor
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{49EB18BE-1A16-4D27-A023-8917A910AAD3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EndGate.Core.Client.JS", "EndGate.Core.Client.JS\EndGate.Core.Client.JS.csproj", "{45E9E342-1243-4C8D-A38E-E6E5FD89A947}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{53DD1FBD-BD6F-44C3-A41E-2E2A0E4C8956}"
 	ProjectSection(SolutionItems) = preProject
 		Build.proj = Build.proj
@@ -26,14 +24,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{53DD1F
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EndGate.Core.Client.JS.Tests", "tests\EndGate.Core.Client.JS.Tests\EndGate.Core.Client.JS.Tests.csproj", "{95189D2C-5919-4DFD-A243-EEAD6DFF401D}"
-	ProjectSection(ProjectDependencies) = postProject
-		{45E9E342-1243-4C8D-A38E-E6E5FD89A947} = {45E9E342-1243-4C8D-A38E-E6E5FD89A947}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EndGate.Core.Client.JS.Samples", "samples\EndGate.Core.Client.JS.Samples\EndGate.Core.Client.JS.Samples.csproj", "{114348B8-2B25-4F66-BDA3-396C71ACA7CE}"
-	ProjectSection(ProjectDependencies) = postProject
-		{45E9E342-1243-4C8D-A38E-E6E5FD89A947} = {45E9E342-1243-4C8D-A38E-E6E5FD89A947}
-	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EndGate.Core.JS", "EndGate.Core.JS\EndGate.Core.JS.csproj", "{BDAADAAA-4DD3-4FAA-891C-BD70C442B3BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,10 +43,6 @@ Global
 		{97592EF1-7FE4-4EF6-9CCF-EBB5B5B1CE4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97592EF1-7FE4-4EF6-9CCF-EBB5B5B1CE4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{97592EF1-7FE4-4EF6-9CCF-EBB5B5B1CE4B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{45E9E342-1243-4C8D-A38E-E6E5FD89A947}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{45E9E342-1243-4C8D-A38E-E6E5FD89A947}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{45E9E342-1243-4C8D-A38E-E6E5FD89A947}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{45E9E342-1243-4C8D-A38E-E6E5FD89A947}.Release|Any CPU.Build.0 = Release|Any CPU
 		{95189D2C-5919-4DFD-A243-EEAD6DFF401D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{95189D2C-5919-4DFD-A243-EEAD6DFF401D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95189D2C-5919-4DFD-A243-EEAD6DFF401D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -61,6 +51,10 @@ Global
 		{114348B8-2B25-4F66-BDA3-396C71ACA7CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{114348B8-2B25-4F66-BDA3-396C71ACA7CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{114348B8-2B25-4F66-BDA3-396C71ACA7CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDAADAAA-4DD3-4FAA-891C-BD70C442B3BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDAADAAA-4DD3-4FAA-891C-BD70C442B3BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDAADAAA-4DD3-4FAA-891C-BD70C442B3BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDAADAAA-4DD3-4FAA-891C-BD70C442B3BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

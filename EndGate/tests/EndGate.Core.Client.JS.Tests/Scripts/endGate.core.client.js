@@ -1345,9 +1345,11 @@ var EndGate;
                 this.RightIsDown = false;
                 this.Wire();
                 this.OnDown.Bind(function (e) {
+                    _this.IsDown = true;
                     _this[e.Button + "IsDown"] = true;
                 });
                 this.OnUp.Bind(function (e) {
+                    _this.IsDown = false;
                     _this[e.Button + "IsDown"] = false;
                 });
             }
