@@ -16,12 +16,13 @@ module EndGate.Rendering {
             this.Distance = Camera2d.DefaultDistance;
         }
 
-        public GetDistanceScale(): number{
+        public GetDistanceScale(): number {
             return this.Distance / Camera2d.DefaultDistance;
         }
 
-        public ToCameraRelative(position: Vector2d): Vector2d {            
-            return this.TopLeft().Add(position);
+        public ToCameraRelative(position: Vector2d): Vector2d {
+            var scaledTopLeft = this.Position.Subtract(this.Size.Multiply(this.GetDistanceScale()* .5));
+            return scaledTopLeft.Add(position.Multiply(this.GetDistanceScale()));
         }
 
         public GetInverseDistanceScale(): number {

@@ -40,9 +40,13 @@ var SpriteSheetViewer = (function (_super) {
             if(createTileSelector) {
                 _this._tileHighlighter = new TileHighlighter(_this._visibleGrid);
                 _this._tileSelector = new TileSelector(_this._visibleGrid, _this.Scene, _this.Scene.Camera, _this._cameraDragController, _this.Input.Mouse, function (tiles) {
+                    var tile;
                     _this.SelectedSources = [];
                     for(var i = 0; i < tiles.length; i++) {
-                        _this.SelectedSources.push((_this._visibleGrid.Get(tiles[i].Row, tiles[i].Column)).Image);
+                        tile = _this._visibleGrid.Get(tiles[i].Row, tiles[i].Column);
+                        if(tile) {
+                            _this.SelectedSources.push(tile.Image);
+                        }
                     }
                     _this._tileHighlighter.HighlightTiles(tiles);
                 }, function (tiles) {
