@@ -64,9 +64,9 @@
         </div>
 
         <div class="row">
-            <div id="mapBuilder" class="form-vertical well span3 hide" style="height: 400px;">
+            <div id="mapBuilder" class="form-vertical well span8" style="height: 600px;">
             </div>
-            <div id="spriteSheetViewer" class="form-vertical well span10" style="height:600px;">
+            <div id="spriteSheetViewer" class="form-vertical well span3" style="height:600px;">
             </div>
         </div>
     </div>

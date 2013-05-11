@@ -14,7 +14,7 @@ class SetupManager {
         
         setupPane.find("#createMap").click(() => {
             this._spriteSheetViewer = new SpriteSheetViewer(spriteSheetViewerCanvas, builderPane.find("#spriteSheetViewerUtilities"), parseFloat(tileSizeWidth.val()), parseFloat(tileSizeHeight.val()));
-            this._mapBuilder = new MapBuilder(mapBuilderCanvas, builderPane.find("#mapBuilderUtilities"));
+            this._mapBuilder = new MapBuilder(mapBuilderCanvas, builderPane.find("#mapBuilderUtilities"), parseInt(dimensionRows.val()), parseInt(dimensionColumns.val()), parseFloat(tileSizeWidth.val()), parseFloat(tileSizeHeight.val()));
 
             setupPane.addClass("hide");
             builderPane.removeClass("hide");

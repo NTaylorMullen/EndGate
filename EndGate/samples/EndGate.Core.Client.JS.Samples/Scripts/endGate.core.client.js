@@ -3110,3 +3110,4 @@ var EndGate;
     })(EndGate.Map || (EndGate.Map = {}));
     var Map = EndGate.Map;
 })(EndGate || (EndGate = {}));
+//@ sourceMappingURL=endGate.core.client.js.map
