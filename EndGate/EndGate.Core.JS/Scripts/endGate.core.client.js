@@ -3010,6 +3010,83 @@ var EndGate;
                     this.AddChild(graphic);
                 }
             };
+            Grid.prototype.Get = function (row, column) {
+                return this._grid[row - 1][column - 1];
+            };
+            Grid.prototype.GetColumn = function (column) {
+                var columnList = [];
+                column--;
+                for(var i = 0; i < this._rows; i++) {
+                    columnList.push(this._grid[i][column]);
+                }
+                return columnList;
+            };
+            Grid.prototype.GetRow = function (row) {
+                var rowList = [];
+                row--;
+                for(var i = 0; i < this._columns; i++) {
+                    rowList.push(this._grid[row][i]);
+                }
+                return rowList;
+            };
+            Grid.prototype.GetSpace = function (rowStart, columnStart, rowEnd, columnEnd) {
+                var space = [], rowIncrementor = (rowEnd >= rowStart) ? 1 : -1, columnIncrementor = (columnEnd >= columnStart) ? 1 : -1;
+                for(var i = rowStart; i !== rowEnd + rowIncrementor; i += rowIncrementor) {
+                    if(i > this._rows) {
+                        break;
+                    }
+                    for(var j = columnStart; j !== columnEnd + columnIncrementor; j += columnIncrementor) {
+                        if(j > this._columns) {
+                            break;
+                        }
+                        space.push(this._grid[i - 1][j - 1]);
+                    }
+                }
+                return space;
+            };
+            Grid.prototype.Clear = function (row, column) {
+                var val = this._grid[row - 1][column - 1];
+                this._grid[row - 1][column - 1] = null;
+                this.RemoveChild(val);
+                return val;
+            };
+            Grid.prototype.ClearRow = function (row) {
+                var vals = [];
+                row--;
+                for(var i = 0; i < this._columns; i++) {
+                    vals.push(this._grid[row][i]);
+                    this.RemoveChild(this._grid[row][i]);
+                    this._grid[row][i] = null;
+                }
+                return vals;
+            };
+            Grid.prototype.ClearColumn = function (column) {
+                var vals = [];
+                column--;
+                for(var i = 0; i < this._rows; i++) {
+                    vals.push(this._grid[i][column]);
+                    this.RemoveChild(this._grid[i][column]);
+                    this._grid[i][column] = null;
+                }
+                return vals;
+            };
+            Grid.prototype.ClearSpace = function (rowStart, columnStart, rowEnd, columnEnd) {
+                var space = [], rowIncrementor = (rowEnd >= rowStart) ? 1 : -1, columnIncrementor = (columnEnd >= columnStart) ? 1 : -1;
+                for(var i = rowStart; i !== rowEnd + rowIncrementor; i += rowIncrementor) {
+                    if(i > this._rows) {
+                        break;
+                    }
+                    for(var j = columnStart; j !== columnEnd + columnIncrementor; j += columnIncrementor) {
+                        if(j > this._columns) {
+                            break;
+                        }
+                        space.push(this._grid[i - 1][j - 1]);
+                        this.RemoveChild(this._grid[i - 1][j - 1]);
+                        this._grid[i - 1][j - 1] = null;
+                    }
+                }
+                return space;
+            };
             Grid.prototype.Draw = function (context) {
                 _super.prototype.StartDraw.call(this, context);
                 context.save();
@@ -3025,6 +3102,12 @@ var EndGate;
                 var bounds = new EndGate.Bounds.BoundingRectangle(this.Position, this._size);
                 bounds.Rotation = this.Rotation;
                 return bounds;
+            };
+            Grid.prototype.ConvertToRow = function (y) {
+                return Math.floor(1 + (y - (this.Position.Y - this._size.HalfHeight())) / this._tileSize.Height);
+            };
+            Grid.prototype.ConvertToColumn = function (x) {
+                return Math.floor(1 + (x - (this.Position.X - this._size.HalfWidth())) / this._tileSize.Width);
             };
             Grid.prototype.GetInsideGridPosition = function (row, column) {
                 return new EndGate.Vector2d(column * this._tileSize.Width - this._size.HalfWidth() + this._tileSize.HalfWidth(), row * this._tileSize.Height - this._size.HalfHeight() + this._tileSize.HalfHeight());

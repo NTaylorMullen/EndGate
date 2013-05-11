@@ -1,12 +1,13 @@
 var TileSelector = (function () {
-    function TileSelector(_grid, scene, camera, cameraDragController, mouseHandler) {
+    function TileSelector(_grid, scene, camera, cameraDragController, mouseHandler, _onSelect, _onDeselect) {
         this._grid = _grid;
+        this._onSelect = _onSelect;
+        this._onDeselect = _onDeselect;
         var _this = this;
         var tiles = _grid.Children(), tile, tileBounds = [], downAt, groupSelecting = false;
-        this.GroupSelector = new eg.Graphics.Rectangle(0, 0, 0, 0, "rgb(100, 255, 0)");
-        this.GroupSelector.Border(2, "green");
-        this.GroupSelector.Opacity(.4);
-        this.SelectedTiles = [];
+        this._groupSelector = new eg.Graphics.Rectangle(0, 0, 0, 0, "rgb(100, 255, 0)");
+        this._groupSelector.Border(2, "green");
+        this._groupSelector.Opacity(.4);
         for(var i = 0; i < tiles.length; i++) {
             tile = tiles[i].GetDrawBounds();
             tile.Position = tile.Position.Add(_grid.Position);
@@ -19,76 +20,51 @@ var TileSelector = (function () {
             window.setTimeout(function () {
                 groupSelecting = false;
             }, 50);
-            scene.Remove(_this.GroupSelector);
+            scene.Remove(_this._groupSelector);
         });
         mouseHandler.OnMove.Bind(function (e) {
             var locationDifference;
             e.Position = camera.ToCameraRelative(e.Position);
             if(mouseHandler.IsDown && !groupSelecting && e.Position.Distance(downAt).Magnitude() >= TileSelector._groupSelectAfter) {
                 groupSelecting = true;
-                scene.Add(_this.GroupSelector);
+                scene.Add(_this._groupSelector);
             }
             if(groupSelecting) {
                 locationDifference = e.Position.Subtract(downAt);
-                _this.GroupSelector.Size = new eg.Size2d(Math.abs(locationDifference.X), Math.abs(locationDifference.Y));
-                _this.GroupSelector.Position = e.Position.Subtract(_this.GroupSelector.Size.Multiply(.5).Multiply(locationDifference.Sign()));
+                _this._groupSelector.Size = new eg.Size2d(Math.abs(locationDifference.X), Math.abs(locationDifference.Y));
+                _this._groupSelector.Position = e.Position.Subtract(_this._groupSelector.Size.Multiply(.5).Multiply(locationDifference.Sign()));
             }
         });
         mouseHandler.OnClick.Bind(function (e) {
-            var translatedClick = camera.ToCameraRelative(e.Position), selectedTileBounds = [], groupSelectionBounds;
+            var translatedClick = camera.ToCameraRelative(e.Position), selectedTiles = [], groupSelectionBounds;
             if(!groupSelecting) {
-                for(var i = 0; i < tileBounds.length; i++) {
-                    if(tileBounds[i].ContainsPoint(translatedClick)) {
-                        selectedTileBounds.push(tileBounds[i]);
-                        break;
-                    }
-                }
+                selectedTiles.push(new GridEntry(_this._grid.ConvertToRow(translatedClick.Y), _this._grid.ConvertToColumn(translatedClick.X)));
             } else {
-                groupSelectionBounds = _this.GroupSelector.GetDrawBounds();
-                for(var i = 0; i < tileBounds.length; i++) {
-                    if(tileBounds[i].Intersects(groupSelectionBounds)) {
-                        selectedTileBounds.push(tileBounds[i]);
-                    }
-                }
+                groupSelectionBounds = _this._groupSelector.GetDrawBounds();
+                selectedTiles = _this.GetSpaceSelection(_this._grid.ConvertToRow(translatedClick.Y), _this._grid.ConvertToColumn(translatedClick.X), _this._grid.ConvertToRow(downAt.Y), _this._grid.ConvertToColumn(downAt.X));
             }
             if(e.Button === "Left") {
-                _this.Select(selectedTileBounds);
+                _this._onSelect(selectedTiles);
             } else if(e.Button === "Right") {
-                _this.Unselect(selectedTileBounds);
+                _this._onDeselect(selectedTiles);
             }
         });
     }
     TileSelector._groupSelectAfter = 10;
-    TileSelector.prototype.Select = function (tileBounds) {
-        var tile, newPos;
-        for(var i = 0; i < this.SelectedTiles.length; i++) {
-            this._grid.RemoveChild(this.SelectedTiles[i]);
-        }
-        this.SelectedTiles = [];
-        for(var i = 0; i < tileBounds.length; i++) {
-            newPos = tileBounds[i].Position.Subtract(this._grid.Position);
-            tile = new eg.Graphics.Rectangle(newPos.X, newPos.Y, tileBounds[i].Size.Width, tileBounds[i].Size.Height);
-            tile.Border(2, "red");
-            this._grid.AddChild(tile);
-            this.SelectedTiles.push(tile);
-        }
-    };
-    TileSelector.prototype.Unselect = function (tileBounds) {
-        var newPos;
-        for(var i = 0; i < this.SelectedTiles.length; i++) {
-            newPos = this.SelectedTiles[i].Position.Add(this._grid.Position);
-            for(var j = 0; j < tileBounds.length; j++) {
-                if(newPos.Equivalent(tileBounds[j].Position)) {
-                    this._grid.RemoveChild(this.SelectedTiles[i]);
-                    this.SelectedTiles.splice(i--, 1);
-                    tileBounds.splice(j--, 1);
-                    break;
-                }
-            }
-            if(tileBounds.length === 0) {
+    TileSelector.prototype.GetSpaceSelection = function (rowStart, columnStart, rowEnd, columnEnd) {
+        var space = [], rowIncrementor = (rowEnd >= rowStart) ? 1 : -1, columnIncrementor = (columnEnd >= columnStart) ? 1 : -1;
+        for(var i = rowStart; i !== rowEnd + rowIncrementor; i += rowIncrementor) {
+            if(i > this._grid.Rows()) {
                 break;
             }
+            for(var j = columnStart; j !== columnEnd + columnIncrementor; j += columnIncrementor) {
+                if(j > this._grid.Rows()) {
+                    break;
+                }
+                space.push(new GridEntry(i, j));
+            }
         }
+        return space;
     };
     return TileSelector;
 })();

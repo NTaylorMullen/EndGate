@@ -1,24 +1,23 @@
 /// <reference path="../../Scripts/endGate.core.client.ts" />
 /// <reference path="CameraDragController.ts" />
+/// <reference path="GridEntry.ts" />
 
 class TileSelector {
-    public SelectedTiles: eg.Graphics.Rectangle[];
-    public GroupSelector: eg.Graphics.Rectangle;
+    private _groupSelector: eg.Graphics.Rectangle;
 
     // Start group selecting if user drags over X pixels
     private static _groupSelectAfter: number = 10;
 
-    constructor(private _grid: eg.Graphics.Grid, scene: eg.Rendering.Scene2d, camera: eg.Rendering.Camera2d, cameraDragController: CameraDragController, mouseHandler: eg.Input.MouseHandler) {
+    constructor(private _grid: eg.Graphics.Grid, scene: eg.Rendering.Scene2d, camera: eg.Rendering.Camera2d, cameraDragController: CameraDragController, mouseHandler: eg.Input.MouseHandler, private _onSelect: (gridEntries: GridEntry[]) => void , private _onDeselect: (bounds: GridEntry[]) => void ) {
         var tiles = _grid.Children(),
             tile: eg.Bounds.BoundingRectangle,
             tileBounds: eg.Bounds.BoundingRectangle[] = [],
             downAt: eg.Vector2d,
             groupSelecting = false;
 
-        this.GroupSelector = new eg.Graphics.Rectangle(0, 0, 0, 0, "rgb(100, 255, 0)");
-        this.GroupSelector.Border(2, "green");
-        this.GroupSelector.Opacity(.4);
-        this.SelectedTiles = [];
+        this._groupSelector = new eg.Graphics.Rectangle(0, 0, 0, 0, "rgb(100, 255, 0)");
+        this._groupSelector.Border(2, "green");
+        this._groupSelector.Opacity(.4);
 
         for (var i = 0; i < tiles.length; i++) {
             tile = <eg.Bounds.BoundingRectangle>tiles[i].GetDrawBounds();
@@ -35,7 +34,7 @@ class TileSelector {
             window.setTimeout(() => {
                 groupSelecting = false;
             }, 50);
-            scene.Remove(this.GroupSelector);
+            scene.Remove(this._groupSelector);
         });
 
         mouseHandler.OnMove.Bind((e: eg.Input.IMouseEvent) => {
@@ -45,89 +44,61 @@ class TileSelector {
 
             if (mouseHandler.IsDown && !groupSelecting && e.Position.Distance(downAt).Magnitude() >= TileSelector._groupSelectAfter) {
                 groupSelecting = true;
-                scene.Add(this.GroupSelector);
+                scene.Add(this._groupSelector);
             }
 
             if (groupSelecting) {
                 locationDifference = e.Position.Subtract(downAt);
 
-                this.GroupSelector.Size = new eg.Size2d(Math.abs(locationDifference.X), Math.abs(locationDifference.Y));
+                this._groupSelector.Size = new eg.Size2d(Math.abs(locationDifference.X), Math.abs(locationDifference.Y));
 
-                this.GroupSelector.Position = e.Position.Subtract(this.GroupSelector.Size.Multiply(.5).Multiply(locationDifference.Sign()));
+                this._groupSelector.Position = e.Position.Subtract(this._groupSelector.Size.Multiply(.5).Multiply(locationDifference.Sign()));
             }
         });
 
         mouseHandler.OnClick.Bind((e: eg.Input.IMouseClickEvent) => {
             // Translate the click to abide by the camera position
             var translatedClick = camera.ToCameraRelative(e.Position),
-                selectedTileBounds: eg.Bounds.BoundingRectangle[] = [],
+                selectedTiles: GridEntry[] = [],
                 groupSelectionBounds: eg.Bounds.BoundingRectangle;
 
             if (!groupSelecting) {
-                for (var i = 0; i < tileBounds.length; i++) {
-                    if (tileBounds[i].ContainsPoint(translatedClick)) {
-                        selectedTileBounds.push(tileBounds[i]);
-                        break;
-                    }
-                }
+                selectedTiles.push(new GridEntry(this._grid.ConvertToRow(translatedClick.Y), this._grid.ConvertToColumn(translatedClick.X)));
             }
             else {
-                groupSelectionBounds = <eg.Bounds.BoundingRectangle>this.GroupSelector.GetDrawBounds();
+                groupSelectionBounds = <eg.Bounds.BoundingRectangle>this._groupSelector.GetDrawBounds();
 
-                for (var i = 0; i < tileBounds.length; i++) {
-                    if (tileBounds[i].Intersects(groupSelectionBounds)) {
-                        selectedTileBounds.push(tileBounds[i]);
-                    }
-                }
+                selectedTiles = this.GetSpaceSelection(this._grid.ConvertToRow(translatedClick.Y), this._grid.ConvertToColumn(translatedClick.X), this._grid.ConvertToRow(downAt.Y), this._grid.ConvertToColumn(downAt.X));
             }
 
             if (e.Button === "Left") {
-                this.Select(selectedTileBounds);
+                this._onSelect(selectedTiles);
             }
             else if (e.Button === "Right") {
-                this.Unselect(selectedTileBounds);
+                this._onDeselect(selectedTiles);
             }
         });
     }
 
+    private GetSpaceSelection(rowStart: number, columnStart: number, rowEnd: number, columnEnd: number): GridEntry[] {
+        var space: GridEntry[] = [],
+            rowIncrementor = (rowEnd >= rowStart) ? 1 : -1,
+            columnIncrementor = (columnEnd >= columnStart) ? 1 : -1;
 
-    private Select(tileBounds: eg.Bounds.BoundingRectangle[]): void {
-        var tile,
-            newPos;
-
-        for (var i = 0; i < this.SelectedTiles.length; i++) {
-            this._grid.RemoveChild(this.SelectedTiles[i]);
-        }
-
-        this.SelectedTiles = [];
-
-        for (var i = 0; i < tileBounds.length; i++) {
-            newPos = tileBounds[i].Position.Subtract(this._grid.Position);
-            tile = new eg.Graphics.Rectangle(newPos.X, newPos.Y, tileBounds[i].Size.Width, tileBounds[i].Size.Height);
-            tile.Border(2, "red");
-            this._grid.AddChild(tile);
-            this.SelectedTiles.push(tile)
-        }
-    }
-
-    private Unselect(tileBounds: eg.Bounds.BoundingRectangle[]): void {
-        var newPos;
-
-        for (var i = 0; i < this.SelectedTiles.length; i++) {
-            newPos = this.SelectedTiles[i].Position.Add(this._grid.Position);
-            for (var j = 0; j < tileBounds.length; j++) {
-                if (newPos.Equivalent(tileBounds[j].Position)) {
-                    this._grid.RemoveChild(this.SelectedTiles[i]);
-                    this.SelectedTiles.splice(i--, 1);
-                    tileBounds.splice(j--, 1);
-                    break;
-                }
-            }
-
-            if (tileBounds.length === 0) {
+        for (var i = rowStart; i !== rowEnd + rowIncrementor; i += rowIncrementor) {
+            if (i > this._grid.Rows()) {
                 break;
             }
-        }
-    }
 
+            for (var j = columnStart; j !== columnEnd + columnIncrementor; j += columnIncrementor) {
+                if (j > this._grid.Rows()) {
+                    break;
+                }
+
+                space.push(new GridEntry(i, j));
+            }
+        }
+
+        return space;
+    }
 }

@@ -11,6 +11,7 @@ var SpriteSheetViewer = (function (_super) {
         this._tileWidth = _tileWidth;
         this._tileHeight = _tileHeight;
         var getSpriteSheet = utilities.find("#getSpriteSheet"), spriteSheetUrl = utilities.find("#spriteSheetUrl");
+        this.SelectedSources = [];
         getSpriteSheet.click(function () {
             _this.loadSpritesheet(spriteSheetUrl.val());
             getSpriteSheet.blur();
@@ -36,7 +37,23 @@ var SpriteSheetViewer = (function (_super) {
                 }
             }
             if(createTileSelector) {
-                _this._tileSelector = new TileSelector(_this._visibleGrid, _this.Scene, _this.Scene.Camera, _this._cameraDragController, _this.Input.Mouse);
+                _this._tileHighlighter = new TileHighlighter(_this._visibleGrid);
+                _this._tileSelector = new TileSelector(_this._visibleGrid, _this.Scene, _this.Scene.Camera, _this._cameraDragController, _this.Input.Mouse, function (tiles) {
+                    _this.SelectedSources = [];
+                    for(var i = 0; i < tiles.length; i++) {
+                        _this.SelectedSources.push((_this._visibleGrid.Get(tiles[i].Row, tiles[i].Column)).Image);
+                    }
+                    _this._tileHighlighter.HighlightTiles(tiles);
+                }, function (tiles) {
+                    var index;
+                    for(var i = 0; i < tiles.length; i++) {
+                        index = _this.SelectedSources.indexOf((_this._visibleGrid.Get(tiles[i].Row, tiles[i].Column)).Image);
+                        if(index >= 0) {
+                            _this.SelectedSources.splice(index, 1);
+                        }
+                    }
+                    _this._tileHighlighter.UnHighlightTiles(tiles);
+                });
             }
             _this.Scene.Add(_this._visibleGrid);
         });

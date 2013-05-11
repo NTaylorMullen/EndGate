@@ -72,10 +72,14 @@
     </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="Scripts" runat="server">
+    <script src="GridEntry.js"></script>
     <script src="MapBuilder.js"></script>
     <script src="SpriteSheetViewer.js"></script>
+    <script src="TileHighlighter.js"></script>
+    <script src="TileFiller.js"></script>
     <script src="TileSelector.js"></script>
     <script src="CameraDragController.js"></script>
     <script src="SetupManager.js"></script>
+    <script src="Blank.js"></script>
     <script src="Main.js"></script>
 </asp:Content>

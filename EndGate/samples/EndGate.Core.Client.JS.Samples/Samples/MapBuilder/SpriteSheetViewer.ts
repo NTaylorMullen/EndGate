@@ -2,17 +2,24 @@
 /// <reference path="../../Scripts/jquery.d.ts" />
 /// <reference path="CameraDragController.ts" />
 /// <reference path="TileSelector.ts" />
+/// <reference path="TileHighlighter.ts" />
+/// <reference path="GridEntry.ts" />
 
 class SpriteSheetViewer extends eg.Game {
+    public SelectedSources: eg.Graphics.Assets.ImageSource[];
+
     private _activeSpriteSheet: eg.Graphics.Assets.ImageSource;
     private _visibleGrid: eg.Graphics.Grid;
     private _cameraDragController: CameraDragController;
     private _tileSelector: TileSelector;
+    private _tileHighlighter: TileHighlighter;
 
     constructor(canvas: HTMLCanvasElement, utilities: JQuery, private _tileWidth: number, private _tileHeight: number) {
         super(canvas);
         var getSpriteSheet = utilities.find("#getSpriteSheet"),
             spriteSheetUrl = utilities.find("#spriteSheetUrl");
+
+        this.SelectedSources = [];
         
         getSpriteSheet.click(() => {
             this.loadSpritesheet(spriteSheetUrl.val());
@@ -21,7 +28,7 @@ class SpriteSheetViewer extends eg.Game {
             spriteSheetUrl.blur();
         });
 
-        this._cameraDragController = new CameraDragController(canvas, this.Scene.Camera, this.Input.Keyboard, this.Input.Mouse);
+        this._cameraDragController = new CameraDragController(canvas, this.Scene.Camera, this.Input.Keyboard, this.Input.Mouse);        
 
         getSpriteSheet.click();
     }
@@ -48,10 +55,30 @@ class SpriteSheetViewer extends eg.Game {
             }
 
             if (createTileSelector) {
-                this._tileSelector = new TileSelector(this._visibleGrid, this.Scene, this.Scene.Camera, this._cameraDragController, this.Input.Mouse);
+                this._tileHighlighter = new TileHighlighter(this._visibleGrid);
+                this._tileSelector = new TileSelector(this._visibleGrid, this.Scene, this.Scene.Camera, this._cameraDragController, this.Input.Mouse, (tiles: GridEntry[]) => {
+                    this.SelectedSources = [];
+
+                    for(var i = 0; i < tiles.length; i++) {
+                        this.SelectedSources.push((<eg.Graphics.Sprite2d>this._visibleGrid.Get(tiles[i].Row, tiles[i].Column)).Image);
+                    }
+
+                    this._tileHighlighter.HighlightTiles(tiles);
+                }, (tiles: GridEntry[]) => {
+                    var index;
+
+                    for (var i = 0; i < tiles.length; i++) {
+                        index = this.SelectedSources.indexOf((<eg.Graphics.Sprite2d>this._visibleGrid.Get(tiles[i].Row, tiles[i].Column)).Image);
+                        if (index >= 0) {
+                            this.SelectedSources.splice(index, 1);
+                        }
+                    }
+
+                    this._tileHighlighter.UnHighlightTiles(tiles);
+                });
             }
 
             this.Scene.Add(this._visibleGrid);
         });
-    }
+    }    
 }

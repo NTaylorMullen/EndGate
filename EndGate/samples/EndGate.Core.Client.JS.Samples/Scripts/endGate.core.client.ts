@@ -3931,6 +3931,117 @@ module EndGate.Graphics {
             }
         }
 
+        public Get(row: number, column: number): Abstractions.Graphic2d {
+            return this._grid[row - 1][column - 1];
+        }
+
+        public GetColumn(column: number): Abstractions.Graphic2d[]{
+            var columnList: Abstractions.Graphic2d[] = [];
+
+            column--;
+
+            for (var i = 0; i < this._rows; i++) {
+                columnList.push(this._grid[i][column]);
+            }
+
+            return columnList;
+        }
+
+        public GetRow(row: number): Abstractions.Graphic2d[] {
+            var rowList: Abstractions.Graphic2d[] = [];
+
+            row--;
+
+            for (var i = 0; i < this._columns; i++) {
+                rowList.push(this._grid[row][i]);
+            }
+
+            return rowList;
+        }
+
+        public GetSpace(rowStart: number, columnStart: number, rowEnd: number, columnEnd: number): Abstractions.Graphic2d[]{
+            var space: Abstractions.Graphic2d[] = [],
+                rowIncrementor = (rowEnd >= rowStart) ? 1 : -1,
+                columnIncrementor = (columnEnd >= columnStart) ? 1 : -1;
+
+            for (var i = rowStart; i !== rowEnd + rowIncrementor; i += rowIncrementor) {
+                if (i > this._rows) {
+                    break;
+                }
+
+                for (var j = columnStart; j !== columnEnd + columnIncrementor; j += columnIncrementor) {
+                    if (j > this._columns) {
+                        break;
+                    }
+
+                    space.push(this._grid[i - 1][j - 1]);
+                }
+            }
+
+            return space;
+        }
+
+        public Clear(row: number, column: number): Abstractions.Graphic2d {
+            var val = this._grid[row - 1][column - 1];
+
+            this._grid[row - 1][column - 1] = null;
+            this.RemoveChild(val);
+
+            return val;
+        }
+
+        public ClearRow(row: number): Abstractions.Graphic2d[] {
+            var vals: Abstractions.Graphic2d[] = [];
+
+            row--;
+
+            for (var i = 0; i < this._columns; i++) {
+                vals.push(this._grid[row][i]);
+                this.RemoveChild(this._grid[row][i]);
+                this._grid[row][i] = null;
+            }
+
+            return vals;
+        }
+
+        public ClearColumn(column: number): Abstractions.Graphic2d[] {
+            var vals: Abstractions.Graphic2d[] = [];
+
+            column--;
+
+            for (var i = 0; i < this._rows; i++) {
+                vals.push(this._grid[i][column]);
+                this.RemoveChild(this._grid[i][column]);
+                this._grid[i][column] = null;
+            }
+
+            return vals;
+        }
+
+        public ClearSpace (rowStart: number, columnStart: number, rowEnd: number, columnEnd: number): Abstractions.Graphic2d[] {
+            var space: Abstractions.Graphic2d[] = [],
+                rowIncrementor = (rowEnd >= rowStart) ? 1 : -1,
+                columnIncrementor = (columnEnd >= columnStart) ? 1 : -1;
+
+            for (var i = rowStart; i !== rowEnd + rowIncrementor; i += rowIncrementor) {
+                if (i > this._rows) {
+                    break;
+                }
+
+                for (var j = columnStart; j !== columnEnd + columnIncrementor; j += columnIncrementor) {
+                    if (j > this._columns) {
+                        break;
+                    }
+
+                    space.push(this._grid[i - 1][j - 1]);
+                    this.RemoveChild(this._grid[i - 1][j - 1]);
+                    this._grid[i - 1][j - 1] = null;
+                }
+            }
+
+            return space;
+        }
+
         public Draw(context: CanvasRenderingContext2D): void {
             super.StartDraw(context);            
 
@@ -3951,6 +4062,14 @@ module EndGate.Graphics {
             bounds.Rotation = this.Rotation;
 
             return bounds;
+        }
+
+        public ConvertToRow(y: number): number {
+            return Math.floor(1 + (y - (this.Position.Y - this._size.HalfHeight())) / this._tileSize.Height);
+        }
+
+        public ConvertToColumn(x: number): number {
+            return Math.floor(1 + (x - (this.Position.X - this._size.HalfWidth())) / this._tileSize.Width);
         }
 
         private GetInsideGridPosition(row: number, column: number): Vector2d {

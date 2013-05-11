@@ -218,6 +218,13 @@
       <DependentUpon>mainLayering.ts</DependentUpon>
     </Content>
     <TypeScriptCompile Include="Samples\MapBuilder\CameraDragController.ts" />
+    <TypeScriptCompile Include="Samples\MapBuilder\Blank.ts" />
+    <Content Include="Samples\MapBuilder\Blank.js">
+      <DependentUpon>Blank.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MapBuilder\Blank.min.js">
+      <DependentUpon>Blank.ts</DependentUpon>
+    </Content>
     <Content Include="Samples\MapBuilder\CameraDragController.js">
       <DependentUpon>CameraDragController.ts</DependentUpon>
     </Content>
@@ -226,6 +233,13 @@
     </Content>
     <Content Include="Samples\MapBuilder\Default.aspx" />
     <TypeScriptCompile Include="Samples\MapBuilder\Main.ts" />
+    <TypeScriptCompile Include="Samples\MapBuilder\GridEntry.ts" />
+    <Content Include="Samples\MapBuilder\GridEntry.js">
+      <DependentUpon>GridEntry.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MapBuilder\GridEntry.min.js">
+      <DependentUpon>GridEntry.ts</DependentUpon>
+    </Content>
     <Content Include="Samples\MapBuilder\Main.js">
       <DependentUpon>Main.ts</DependentUpon>
     </Content>
@@ -254,6 +268,20 @@
       <DependentUpon>SpriteSheetViewer.ts</DependentUpon>
     </Content>
     <TypeScriptCompile Include="Samples\MapBuilder\TileSelector.ts" />
+    <TypeScriptCompile Include="Samples\MapBuilder\TileHighlighter.ts" />
+    <TypeScriptCompile Include="Samples\MapBuilder\TileFiller.ts" />
+    <Content Include="Samples\MapBuilder\TileFiller.js">
+      <DependentUpon>TileFiller.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MapBuilder\TileFiller.min.js">
+      <DependentUpon>TileFiller.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MapBuilder\TileHighlighter.js">
+      <DependentUpon>TileHighlighter.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MapBuilder\TileHighlighter.min.js">
+      <DependentUpon>TileHighlighter.ts</DependentUpon>
+    </Content>
     <Content Include="Samples\MapBuilder\TileSelector.js">
       <DependentUpon>TileSelector.ts</DependentUpon>
     </Content>
@@ -457,6 +485,18 @@
     </Content>
     <Content Include="Samples\MapBuilder\TileSelector.js.map">
       <DependentUpon>TileSelector.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MapBuilder\TileHighlighter.js.map">
+      <DependentUpon>TileHighlighter.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MapBuilder\TileFiller.js.map">
+      <DependentUpon>TileFiller.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MapBuilder\Blank.js.map">
+      <DependentUpon>Blank.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MapBuilder\GridEntry.js.map">
+      <DependentUpon>GridEntry.ts</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <TypeScriptCompile Include="Scripts\endGate.core.client.ts" />
