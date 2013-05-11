@@ -1,6 +1,7 @@
 /// <reference path="../../Scripts/endGate.core.client.ts" />
 /// <reference path="../../Scripts/jquery.d.ts" />
 /// <reference path="CameraDragController.ts" />
+/// <reference path="CameraZoomController.ts" />
 /// <reference path="TileSelector.ts" />
 /// <reference path="TileHighlighter.ts" />
 /// <reference path="GridEntry.ts" />
@@ -11,6 +12,7 @@ class SpriteSheetViewer extends eg.Game {
     private _activeSpriteSheet: eg.Graphics.Assets.ImageSource;
     private _visibleGrid: eg.Graphics.Grid;
     private _cameraDragController: CameraDragController;
+    private _cameraZoomController: CameraZoomController;
     private _tileSelector: TileSelector;
     private _tileHighlighter: TileHighlighter;
 
@@ -29,6 +31,7 @@ class SpriteSheetViewer extends eg.Game {
         });
 
         this._cameraDragController = new CameraDragController(canvas, this.Scene.Camera, this.Input.Keyboard, this.Input.Mouse);        
+        this._cameraZoomController = new CameraZoomController(this.Scene.Camera, this.Input.Mouse);
 
         getSpriteSheet.click();
     }

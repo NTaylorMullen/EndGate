@@ -18,6 +18,7 @@ var SpriteSheetViewer = (function (_super) {
             spriteSheetUrl.blur();
         });
         this._cameraDragController = new CameraDragController(canvas, this.Scene.Camera, this.Input.Keyboard, this.Input.Mouse);
+        this._cameraZoomController = new CameraZoomController(this.Scene.Camera, this.Input.Mouse);
         getSpriteSheet.click();
     }
     SpriteSheetViewer.prototype.loadSpritesheet = function (url) {

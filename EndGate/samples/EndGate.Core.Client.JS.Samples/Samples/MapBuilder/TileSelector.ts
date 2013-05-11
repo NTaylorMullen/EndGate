@@ -68,7 +68,7 @@ class TileSelector {
             else {
                 groupSelectionBounds = <eg.Bounds.BoundingRectangle>this._groupSelector.GetDrawBounds();
 
-                selectedTiles = this.GetSpaceSelection(this._grid.ConvertToRow(translatedClick.Y), this._grid.ConvertToColumn(translatedClick.X), this._grid.ConvertToRow(downAt.Y), this._grid.ConvertToColumn(downAt.X));
+                selectedTiles = this.GetSpaceSelection(this._grid.ConvertToRow(downAt.Y), this._grid.ConvertToColumn(downAt.X), this._grid.ConvertToRow(translatedClick.Y), this._grid.ConvertToColumn(translatedClick.X));
             }
 
             if (e.Button === "Left") {

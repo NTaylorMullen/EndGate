@@ -218,18 +218,18 @@
       <DependentUpon>mainLayering.ts</DependentUpon>
     </Content>
     <TypeScriptCompile Include="Samples\MapBuilder\CameraDragController.ts" />
-    <TypeScriptCompile Include="Samples\MapBuilder\Blank.ts" />
-    <Content Include="Samples\MapBuilder\Blank.js">
-      <DependentUpon>Blank.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\MapBuilder\Blank.min.js">
-      <DependentUpon>Blank.ts</DependentUpon>
-    </Content>
     <Content Include="Samples\MapBuilder\CameraDragController.js">
       <DependentUpon>CameraDragController.ts</DependentUpon>
     </Content>
     <Content Include="Samples\MapBuilder\CameraDragController.min.js">
       <DependentUpon>CameraDragController.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Samples\MapBuilder\CameraZoomController.ts" />
+    <Content Include="Samples\MapBuilder\CameraZoomController.js">
+      <DependentUpon>CameraZoomController.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MapBuilder\CameraZoomController.min.js">
+      <DependentUpon>CameraZoomController.ts</DependentUpon>
     </Content>
     <Content Include="Samples\MapBuilder\Default.aspx" />
     <TypeScriptCompile Include="Samples\MapBuilder\Main.ts" />
@@ -492,11 +492,11 @@
     <Content Include="Samples\MapBuilder\TileFiller.js.map">
       <DependentUpon>TileFiller.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\MapBuilder\Blank.js.map">
-      <DependentUpon>Blank.ts</DependentUpon>
-    </Content>
     <Content Include="Samples\MapBuilder\GridEntry.js.map">
       <DependentUpon>GridEntry.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MapBuilder\CameraZoomController.js.map">
+      <DependentUpon>CameraZoomController.ts</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <TypeScriptCompile Include="Scripts\endGate.core.client.ts" />

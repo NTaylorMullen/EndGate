@@ -6,11 +6,10 @@
             border: 1px solid black;
         }
 
-        .icon-dragCamera {
-            width: 16px;
-            height: 16px;
-            background-image: url('/Content/themes/base/images/ui-icons_222222_256x240.png');
-            background-position: -16px -80px;
+        #builderPane{
+            position: absolute;
+            width: 100%;
+            left: 0;
         }
     </style>
 </asp:Content>
@@ -48,25 +47,25 @@
         </fieldset>
     </div>
 
-    <div id="builderPane" class="hide">
+    <div id="builderPane" class="hide" style="padding-left: 25px;">
         <p class="row">Move the box with <em>w/a/s/d or up/left/right/down.</em></p>
 
         <div class="row">
-            <div class="form-vertical well span8" id="mapBuilderUtilities">
+            <div class="form-vertical well pull-left" id="mapBuilderUtilities">
                 <button class="btn">
                     <i class="icon-dragCamera"></i>
                 </button>
             </div>
-            <div class="form-search well span3" id="spriteSheetViewerUtilities">
+            <div class="form-search well pull-left" id="spriteSheetViewerUtilities">
                 <input id="spriteSheetUrl" type="text" class="input-medium" value="http://localhost:8718/Samples/RawRPG/images/wood_tileset_3.png" placeholder="Spritesheet URL..." />
                 <button id="getSpriteSheet" class="btn">Get</button>
             </div>
         </div>
 
         <div class="row">
-            <div id="mapBuilder" class="form-vertical well span8" style="height: 600px;">
+            <div id="mapBuilder" class="form-vertical well pull-left" style="height: 600px;">
             </div>
-            <div id="spriteSheetViewer" class="form-vertical well span3" style="height:600px;">
+            <div id="spriteSheetViewer" class="form-vertical well pull-left" style="height:600px;">
             </div>
         </div>
     </div>
@@ -79,7 +78,7 @@
     <script src="TileFiller.js"></script>
     <script src="TileSelector.js"></script>
     <script src="CameraDragController.js"></script>
+    <script src="CameraZoomController.js"></script>
     <script src="SetupManager.js"></script>
-    <script src="Blank.js"></script>
     <script src="Main.js"></script>
 </asp:Content>

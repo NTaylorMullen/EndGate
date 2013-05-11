@@ -105,6 +105,9 @@ var EndGate;
                 }
             };
             Grid.prototype.Get = function (row, column) {
+                if(row > this._rows || row <= 0 || column > this._columns || column <= 0) {
+                    return null;
+                }
                 return this._grid[row - 1][column - 1];
             };
             Grid.prototype.GetColumn = function (column) {

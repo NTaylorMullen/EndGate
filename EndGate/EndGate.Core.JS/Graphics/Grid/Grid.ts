@@ -142,6 +142,10 @@ module EndGate.Graphics {
         }
 
         public Get(row: number, column: number): Abstractions.Graphic2d {
+            if (row > this._rows || row <= 0 || column > this._columns || column <= 0) {
+                return null;
+            }
+
             return this._grid[row - 1][column - 1];
         }
 

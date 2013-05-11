@@ -6,7 +6,11 @@
         spriteSheetViewerCanvas: HTMLCanvasElement = < HTMLCanvasElement > document.createElement("canvas"),
         mapBuilderHolder: JQuery = $("#mapBuilder"),
         spriteSheetViewerHolder: JQuery = $("#spriteSheetViewer"),
+        baseWidth = mapBuilderHolder.parent().parent().width() - 100,
         setupManager: SetupManager;
+
+    mapBuilderHolder.width(baseWidth * .666);
+    spriteSheetViewerHolder.width(baseWidth - mapBuilderHolder.width());
 
     mapBuilderCanvas.width = mapBuilderHolder.width();
     mapBuilderCanvas.height = mapBuilderHolder.height();
@@ -18,5 +22,5 @@
     spriteSheetViewerHolder.append(spriteSheetViewerCanvas);
 
     setupManager = new SetupManager($("#setupPane"), $("#builderPane"), spriteSheetViewerCanvas, mapBuilderCanvas);
-    
+
 })($, window);

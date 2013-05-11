@@ -41,7 +41,7 @@ var TileSelector = (function () {
                 selectedTiles.push(new GridEntry(_this._grid.ConvertToRow(translatedClick.Y), _this._grid.ConvertToColumn(translatedClick.X)));
             } else {
                 groupSelectionBounds = _this._groupSelector.GetDrawBounds();
-                selectedTiles = _this.GetSpaceSelection(_this._grid.ConvertToRow(translatedClick.Y), _this._grid.ConvertToColumn(translatedClick.X), _this._grid.ConvertToRow(downAt.Y), _this._grid.ConvertToColumn(downAt.X));
+                selectedTiles = _this.GetSpaceSelection(_this._grid.ConvertToRow(downAt.Y), _this._grid.ConvertToColumn(downAt.X), _this._grid.ConvertToRow(translatedClick.Y), _this._grid.ConvertToColumn(translatedClick.X));
             }
             if(e.Button === "Left") {
                 _this._onSelect(selectedTiles);
