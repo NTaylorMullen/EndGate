@@ -537,14 +537,14 @@
     <Content Include="Samples\RawRPG\images\attribution.txt" />
     <Content Include="Samples\RawRPG\images\golden_knight.png" />
     <Content Include="Samples\RawRPG\images\wood_tileset_3.png" />
-    <TypeScriptCompile  Include="Samples\RawRPG\Knight.ts" />
-    <TypeScriptCompile  Include="Samples\RawRPG\KnightAnimationHandler.ts" />
-    <TypeScriptCompile  Include="Samples\RawRPG\Main.ts" />
-    <TypeScriptCompile  Include="Samples\RawRPG\Player.ts" />
-    <TypeScriptCompile  Include="Samples\RawRPG\RPG.ts" />
-    <TypeScriptCompile  Include="Samples\Shapes\assetsShapes.ts" />
-    <TypeScriptCompile  Include="Samples\Shapes\mainShapes.ts" />
-    <TypeScriptCompile  Include="Samples\Sprites\assetsSprites.ts" />
+    <TypeScriptCompile Include="Samples\RawRPG\Knight.ts" />
+    <TypeScriptCompile Include="Samples\RawRPG\KnightAnimationHandler.ts" />
+    <TypeScriptCompile Include="Samples\RawRPG\Main.ts" />
+    <TypeScriptCompile Include="Samples\RawRPG\Player.ts" />
+    <TypeScriptCompile Include="Samples\RawRPG\RPG.ts" />
+    <TypeScriptCompile Include="Samples\Shapes\assetsShapes.ts" />
+    <TypeScriptCompile Include="Samples\Shapes\mainShapes.ts" />
+    <TypeScriptCompile Include="Samples\Sprites\assetsSprites.ts" />
     <Content Include="Samples\Sprites\html5-logo.png" />
     <Content Include="Samples\Sprites\mainSprites.js">
       <DependentUpon>mainSprites.ts</DependentUpon>
@@ -568,8 +568,8 @@
       <DependentUpon>mainText.ts</DependentUpon>
     </Content>
     <TypeScriptCompile Include="Samples\Text\mainText.ts" />
-    <Content Include="Scripts\endGate.core.client.js" />
-    <Content Include="Scripts\endGate.core.client.ts" />
+    <Content Include="Scripts\endgate.js" />
+    <Content Include="Scripts\endgate.ts" />
     <Content Include="Scripts\jquery-2.0.0.js" />
     <Content Include="Scripts\jquery-2.0.0.min.js" />
     <Content Include="Scripts\jquery-ui-1.10.2.js" />
@@ -734,12 +734,12 @@
     </VisualStudio>
   </ProjectExtensions>
   <Target Name="BeforeBuild">
-    <Delete Files="Scripts\endGate.core.client.ts" />
-    <Delete Files="Scripts\endGate.core.client.js" />
+    <Delete Files="Scripts\endgate.ts" />
+    <Delete Files="Scripts\endgate.js" />
   </Target>
   <Target Name="AfterBuild">
-    <Copy SourceFiles="$(SolutionDir)EndGate.Core.JS\Scripts\endGate.core.client.ts" DestinationFiles="Scripts\endGate.core.client.ts" Condition=" '$(OS)' == 'Windows_NT' " />
-    <Copy SourceFiles="$(SolutionDir)EndGate.Core.JS\Scripts\endGate.core.client.js" DestinationFiles="Scripts\endGate.core.client.js" Condition=" '$(OS)' == 'Windows_NT' " />
+    <Copy SourceFiles="$(SolutionDir)EndGate.Core.JS\Scripts\endgate.ts" DestinationFiles="Scripts\endgate.ts" Condition=" '$(OS)' == 'Windows_NT' " />
+    <Copy SourceFiles="$(SolutionDir)EndGate.Core.JS\Scripts\endgate.js" DestinationFiles="Scripts\endgate.js" Condition=" '$(OS)' == 'Windows_NT' " />
   </Target>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -119,6 +119,13 @@
     <Content Include="Map\Scenery\TileMap.min.js">
       <DependentUpon>TileMap.ts</DependentUpon>
     </Content>
+    <TypeScriptCompile Include="Scripts\endgate.ts" />
+    <Content Include="Scripts\endgate.js">
+      <DependentUpon>endgate.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\endgate.min.js">
+      <DependentUpon>endgate.ts</DependentUpon>
+    </Content>
     <Content Include="Sound\AudioClip.js">
       <DependentUpon>AudioClip.ts</DependentUpon>
     </Content>
@@ -471,13 +478,6 @@
     <Content Include="Rendering\Scene2d.min.js">
       <DependentUpon>Scene2d.ts</DependentUpon>
     </Content>
-    <Content Include="Scripts\endGate.core.client.js">
-      <DependentUpon>endGate.core.client.ts</DependentUpon>
-    </Content>
-    <Content Include="Scripts\endGate.core.client.min.js">
-      <DependentUpon>endGate.core.client.ts</DependentUpon>
-    </Content>
-    <Content Include="Scripts\endGate.core.client.ts" />
     <Content Include="Scripts\_references.js" />
     <TypeScriptCompile Include="Loopers\Looper.ts" />
     <TypeScriptCompile Include="Utilities\EventHandler.ts" />
@@ -699,8 +699,8 @@
     <None Include="Rendering\Scene2d.js.map">
       <DependentUpon>Scene2d.ts</DependentUpon>
     </None>
-    <None Include="Scripts\endGate.core.client.js.map">
-      <DependentUpon>endGate.core.client.ts</DependentUpon>
+    <None Include="Scripts\endgate.js.map">
+      <DependentUpon>endgate.ts</DependentUpon>
     </None>
     <None Include="Sound\AudioClip.js.map">
       <DependentUpon>AudioClip.ts</DependentUpon>

@@ -2,7 +2,7 @@
 
 $inpath = ".\"
 
-$outputFile = "endGate.core.client.ts"
+$outputFile = "endgate.ts"
 
 $outputFilePath = "Scripts\" + $outputFile
 

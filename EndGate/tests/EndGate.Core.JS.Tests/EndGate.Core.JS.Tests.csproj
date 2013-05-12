@@ -68,17 +68,9 @@
   <ItemGroup>
     <Content Include="index.html" />
     <Content Include="packages.config" />
-    <Content Include="Scripts\endGate.core.client.min.js.map">
-      <DependentUpon>endGate.core.client.js</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Scripts\endGate.core.client.ts" />
-    <Content Include="Scripts\endGate.core.client.js">
-      <DependentUpon>endGate.core.client.ts</DependentUpon>
-    </Content>
-    <Content Include="Scripts\endGate.core.client.min.js">
-      <DependentUpon>endGate.core.client.ts</DependentUpon>
-    </Content>
     <None Include="Scripts\jquery-2.0.0.intellisense.js" />
+    <Content Include="Scripts\endgate.js" />
+    <Content Include="Scripts\endgate.ts" />
     <Content Include="Scripts\jquery-2.0.0.js" />
     <Content Include="Scripts\jquery-2.0.0.min.js" />
     <Content Include="Scripts\qunit.extensions.js" />
@@ -178,12 +170,12 @@
     </Task>
   </UsingTask>
   <Target Name="BeforeBuild">
-    <Delete Files="Scripts\endGate.core.client.ts" />
-    <Delete Files="Scripts\endGate.core.client.js" />
+    <Delete Files="Scripts\endgate.ts" />
+    <Delete Files="Scripts\endgate.js" />
   </Target>
   <Target Name="AfterBuild">
-    <Copy SourceFiles="$(SolutionDir)EndGate.Core.JS\Scripts\endGate.core.client.ts" DestinationFiles="Scripts\endGate.core.client.ts" Condition=" '$(OS)' == 'Windows_NT' " />
-    <Copy SourceFiles="$(SolutionDir)EndGate.Core.JS\Scripts\endGate.core.client.js" DestinationFiles="Scripts\endGate.core.client.js" Condition=" '$(OS)' == 'Windows_NT' " />
+    <Copy SourceFiles="$(SolutionDir)EndGate.Core.JS\Scripts\endgate.ts" DestinationFiles="Scripts\endgate.ts" Condition=" '$(OS)' == 'Windows_NT' " />
+    <Copy SourceFiles="$(SolutionDir)EndGate.Core.JS\Scripts\endgate.js" DestinationFiles="Scripts\endgate.js" Condition=" '$(OS)' == 'Windows_NT' " />
     <BuildScriptTags ProjectDirectory="$(MSBuildProjectDirectory)" RelativePath="$(QUnitTestsFolder)">
       <Output PropertyName="JSTests" TaskParameter="ScriptTagsOutput" />
     </BuildScriptTags>
