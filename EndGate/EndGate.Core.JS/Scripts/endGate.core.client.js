@@ -3052,6 +3052,9 @@ var EndGate;
                 return space;
             };
             Grid.prototype.Clear = function (row, column) {
+                if(!this.ValidRow(row) || !this.ValidColumn(column)) {
+                    return null;
+                }
                 var val = this._grid[row - 1][column - 1];
                 this._grid[row - 1][column - 1] = null;
                 this.RemoveChild(val);

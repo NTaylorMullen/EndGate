@@ -680,6 +680,11 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Target Name="BeforeBuild">
+    <Delete Files="Scripts\endGate.core.client.ts" />
+    <Delete Files="Scripts\endGate.core.client.js" />
+  </Target>
+
   <Target Name="AfterBuild">
     <Copy SourceFiles="$(SolutionDir)EndGate.Core.JS\Scripts\endGate.core.client.ts" DestinationFiles="Scripts\endGate.core.client.ts" Condition=" '$(OS)' == 'Windows_NT' " />
     <Copy SourceFiles="$(SolutionDir)EndGate.Core.JS\Scripts\endGate.core.client.js" DestinationFiles="Scripts\endGate.core.client.js" Condition=" '$(OS)' == 'Windows_NT' " />
