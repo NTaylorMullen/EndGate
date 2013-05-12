@@ -57,6 +57,11 @@ class TileSelector {
         });
 
         mouseHandler.OnClick.Bind((e: eg.Input.IMouseClickEvent) => {
+            
+            if (cameraDragController.Active) {
+                return;
+            }
+
             // Translate the click to abide by the camera position
             var translatedClick = camera.ToCameraRelative(e.Position),
                 selectedTiles: GridEntry[] = [],

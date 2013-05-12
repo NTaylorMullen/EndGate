@@ -50,11 +50,14 @@ var SpriteSheetViewer = (function (_super) {
                     }
                     _this._tileHighlighter.HighlightTiles(tiles);
                 }, function (tiles) {
-                    var index;
+                    var index, tile;
                     for(var i = 0; i < tiles.length; i++) {
-                        index = _this.SelectedSources.indexOf((_this._visibleGrid.Get(tiles[i].Row, tiles[i].Column)).Image);
-                        if(index >= 0) {
-                            _this.SelectedSources.splice(index, 1);
+                        tile = _this._visibleGrid.Get(tiles[i].Row, tiles[i].Column);
+                        if(tile) {
+                            index = _this.SelectedSources.indexOf(tile.Image);
+                            if(index >= 0) {
+                                _this.SelectedSources.splice(index, 1);
+                            }
                         }
                     }
                     _this._tileHighlighter.UnHighlightTiles(tiles);

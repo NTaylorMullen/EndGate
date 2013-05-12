@@ -74,12 +74,16 @@ class SpriteSheetViewer extends eg.Game {
 
                     this._tileHighlighter.HighlightTiles(tiles);
                 }, (tiles: GridEntry[]) => {
-                    var index;
+                    var index, tile;
 
                     for (var i = 0; i < tiles.length; i++) {
-                        index = this.SelectedSources.indexOf((<eg.Graphics.Sprite2d>this._visibleGrid.Get(tiles[i].Row, tiles[i].Column)).Image);
-                        if (index >= 0) {
-                            this.SelectedSources.splice(index, 1);
+                        tile = <eg.Graphics.Sprite2d>this._visibleGrid.Get(tiles[i].Row, tiles[i].Column);
+
+                        if (tile) {
+                            index = this.SelectedSources.indexOf(tile.Image);
+                            if (index >= 0) {
+                                this.SelectedSources.splice(index, 1);
+                            }
                         }
                     }
 

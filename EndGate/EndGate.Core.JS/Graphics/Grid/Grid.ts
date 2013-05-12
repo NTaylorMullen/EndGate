@@ -88,6 +88,10 @@ module EndGate.Graphics {
         }
 
         public Fill(row: number, column: number, graphic: Abstractions.Graphic2d): void {
+            if (!this.ValidRow(row) || !this.ValidColumn(column)) {
+                return;
+            }
+
             row--;
             column--;
             graphic.Position = this.GetInsideGridPosition(row, column);
@@ -142,7 +146,7 @@ module EndGate.Graphics {
         }
 
         public Get(row: number, column: number): Abstractions.Graphic2d {
-            if (row > this._rows || row <= 0 || column > this._columns || column <= 0) {
+            if (!this.ValidRow(row) || !this.ValidColumn(column)) {
                 return null;
             }
 
@@ -196,6 +200,10 @@ module EndGate.Graphics {
         }
 
         public Clear(row: number, column: number): Abstractions.Graphic2d {
+            if (!this.ValidRow(row) || !this.ValidColumn(column)) {
+                return null;
+            }
+            
             var val = this._grid[row - 1][column - 1];
 
             this._grid[row - 1][column - 1] = null;
@@ -288,6 +296,14 @@ module EndGate.Graphics {
 
         private GetInsideGridPosition(row: number, column: number): Vector2d {
             return new Vector2d(column * this._tileSize.Width - this._size.HalfWidth() + this._tileSize.HalfWidth(), row * this._tileSize.Height - this._size.HalfHeight() + this._tileSize.HalfHeight());
+        }
+
+        private ValidRow(row: number): bool {
+            return row > 0 && row <= this._rows;
+        }
+
+        private ValidColumn(column: number): bool {
+            return column > 0 && column <= this._columns;
         }
     }
 

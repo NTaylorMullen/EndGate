@@ -680,10 +680,9 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
-  <Target Name="BeforeBuild">
+  <Target Name="AfterBuild">
     <Copy SourceFiles="$(SolutionDir)EndGate.Core.JS\Scripts\endGate.core.client.ts" DestinationFiles="Scripts\endGate.core.client.ts" Condition=" '$(OS)' == 'Windows_NT' " />
-    <Message Text="Compiling endGate.core.client.ts" />
-    <Exec Command="tsc Scripts/endGate.core.client.ts" />
+    <Copy SourceFiles="$(SolutionDir)EndGate.Core.JS\Scripts\endGate.core.client.js" DestinationFiles="Scripts\endGate.core.client.js" Condition=" '$(OS)' == 'Windows_NT' " />
   </Target>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

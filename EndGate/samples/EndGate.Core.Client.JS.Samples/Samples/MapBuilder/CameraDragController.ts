@@ -1,21 +1,21 @@
 /// <reference path="../../Scripts/endGate.core.client.ts" />
 
 class CameraDragController {
-    public Dragging: bool;
+    public Active: bool;
 
-    private _dragActive: bool;
+    private _dragging: bool;
     private _downAt: eg.Vector2d;
     private _upAt: eg.Vector2d;
     private _cameraStartPosition: eg.Vector2d;
 
     constructor(canvas: HTMLCanvasElement, camera: eg.Rendering.Camera2d, keyboardHandler: eg.Input.KeyboardHandler, mouseHandler: eg.Input.MouseHandler) {
-        this.Dragging = false;
-        this._dragActive = false;
+        this._dragging = false;
+        this.Active = false;
 
         keyboardHandler.OnCommandPress("space", (e: eg.Input.KeyboardCommandEvent) => {
-            this._dragActive = !this._dragActive;
+            this.Active = !this.Active;
 
-            if (this._dragActive) {
+            if (this.Active) {
                 canvas.style.cursor = "move";
             }
             else {
@@ -26,17 +26,20 @@ class CameraDragController {
         mouseHandler.OnDown.Bind((e: eg.Input.IMouseClickEvent) => {
             this._downAt = e.Position;
             this._cameraStartPosition = camera.Position.Clone();
-            this.Dragging = true;
+            this._dragging = true;
         });
 
         mouseHandler.OnUp.Bind((e: eg.Input.IMouseClickEvent) => {
             this._upAt = e.Position;
             this._cameraStartPosition = null;
-            this.Dragging = false;
+            // Delay setting the dragging to false, this allows for click events etc. to complete
+            window.setTimeout(function () {
+                this.Dragging = false;
+            }, 150)
         });
 
         mouseHandler.OnMove.Bind((e: eg.Input.IMouseEvent) => {
-            if (this.Dragging && this._dragActive) {
+            if (this._dragging && this._cameraStartPosition && this.Active) {
                 camera.Position = this._cameraStartPosition.Add(this._downAt.Subtract(e.Position));
             }
         });

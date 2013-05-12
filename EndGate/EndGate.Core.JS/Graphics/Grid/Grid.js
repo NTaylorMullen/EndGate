@@ -63,6 +63,9 @@ var EndGate;
                 return this.State.GlobalAlpha(alpha);
             };
             Grid.prototype.Fill = function (row, column, graphic) {
+                if(!this.ValidRow(row) || !this.ValidColumn(column)) {
+                    return;
+                }
                 row--;
                 column--;
                 graphic.Position = this.GetInsideGridPosition(row, column);
@@ -105,7 +108,7 @@ var EndGate;
                 }
             };
             Grid.prototype.Get = function (row, column) {
-                if(row > this._rows || row <= 0 || column > this._columns || column <= 0) {
+                if(!this.ValidRow(row) || !this.ValidColumn(column)) {
                     return null;
                 }
                 return this._grid[row - 1][column - 1];
@@ -142,6 +145,9 @@ var EndGate;
                 return space;
             };
             Grid.prototype.Clear = function (row, column) {
+                if(!this.ValidRow(row) || !this.ValidColumn(column)) {
+                    return null;
+                }
                 var val = this._grid[row - 1][column - 1];
                 this._grid[row - 1][column - 1] = null;
                 this.RemoveChild(val);
@@ -208,6 +214,12 @@ var EndGate;
             };
             Grid.prototype.GetInsideGridPosition = function (row, column) {
                 return new EndGate.Vector2d(column * this._tileSize.Width - this._size.HalfWidth() + this._tileSize.HalfWidth(), row * this._tileSize.Height - this._size.HalfHeight() + this._tileSize.HalfHeight());
+            };
+            Grid.prototype.ValidRow = function (row) {
+                return row > 0 && row <= this._rows;
+            };
+            Grid.prototype.ValidColumn = function (column) {
+                return column > 0 && column <= this._columns;
             };
             return Grid;
         })(Graphics.Abstractions.Graphic2d);

@@ -36,6 +36,9 @@ var TileSelector = (function () {
             }
         });
         mouseHandler.OnClick.Bind(function (e) {
+            if(cameraDragController.Active) {
+                return;
+            }
             var translatedClick = camera.ToCameraRelative(e.Position), selectedTiles = [], groupSelectionBounds;
             if(!groupSelecting) {
                 selectedTiles.push(new GridEntry(_this._grid.ConvertToRow(translatedClick.Y), _this._grid.ConvertToColumn(translatedClick.X)));
