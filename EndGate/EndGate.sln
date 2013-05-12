@@ -10,10 +10,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{781B19
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{C0BAA468-9EA0-4176-B9FD-151A0A8DF798}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EndGate.Core.Tests", "tests\EndGate.Core.Tests\EndGate.Core.Tests.csproj", "{EC353F64-70AA-4A3F-B59A-4845C808BDF9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EndGate.Core", "EndGate.Core\EndGate.Core.csproj", "{97592EF1-7FE4-4EF6-9CCF-EBB5B5B1CE4B}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{49EB18BE-1A16-4D27-A023-8917A910AAD3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{53DD1FBD-BD6F-44C3-A41E-2E2A0E4C8956}"
@@ -35,20 +31,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EndGate.Core.JS.Tests", "te
 		{BDAADAAA-4DD3-4FAA-891C-BD70C442B3BB} = {BDAADAAA-4DD3-4FAA-891C-BD70C442B3BB}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EndGate.Core.Net", "EndGate.Core.Net\EndGate.Core.Net.csproj", "{97592EF1-7FE4-4EF6-9CCF-EBB5B5B1CE4B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EndGate.Core.Net.Tests", "tests\EndGate.Core.Net.Tests\EndGate.Core.Net.Tests.csproj", "{EC353F64-70AA-4A3F-B59A-4845C808BDF9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{97592EF1-7FE4-4EF6-9CCF-EBB5B5B1CE4B} = {97592EF1-7FE4-4EF6-9CCF-EBB5B5B1CE4B}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EC353F64-70AA-4A3F-B59A-4845C808BDF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EC353F64-70AA-4A3F-B59A-4845C808BDF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EC353F64-70AA-4A3F-B59A-4845C808BDF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EC353F64-70AA-4A3F-B59A-4845C808BDF9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{97592EF1-7FE4-4EF6-9CCF-EBB5B5B1CE4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{97592EF1-7FE4-4EF6-9CCF-EBB5B5B1CE4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{97592EF1-7FE4-4EF6-9CCF-EBB5B5B1CE4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{97592EF1-7FE4-4EF6-9CCF-EBB5B5B1CE4B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BDAADAAA-4DD3-4FAA-891C-BD70C442B3BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BDAADAAA-4DD3-4FAA-891C-BD70C442B3BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDAADAAA-4DD3-4FAA-891C-BD70C442B3BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -61,13 +56,21 @@ Global
 		{95189D2C-5919-4DFD-A243-EEAD6DFF401D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95189D2C-5919-4DFD-A243-EEAD6DFF401D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95189D2C-5919-4DFD-A243-EEAD6DFF401D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97592EF1-7FE4-4EF6-9CCF-EBB5B5B1CE4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97592EF1-7FE4-4EF6-9CCF-EBB5B5B1CE4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97592EF1-7FE4-4EF6-9CCF-EBB5B5B1CE4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97592EF1-7FE4-4EF6-9CCF-EBB5B5B1CE4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC353F64-70AA-4A3F-B59A-4845C808BDF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC353F64-70AA-4A3F-B59A-4845C808BDF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC353F64-70AA-4A3F-B59A-4845C808BDF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC353F64-70AA-4A3F-B59A-4845C808BDF9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{EC353F64-70AA-4A3F-B59A-4845C808BDF9} = {C0BAA468-9EA0-4176-B9FD-151A0A8DF798}
 		{95189D2C-5919-4DFD-A243-EEAD6DFF401D} = {C0BAA468-9EA0-4176-B9FD-151A0A8DF798}
+		{EC353F64-70AA-4A3F-B59A-4845C808BDF9} = {C0BAA468-9EA0-4176-B9FD-151A0A8DF798}
 		{18E0BCCA-FA90-41A4-A6C4-073D30071FD9} = {49EB18BE-1A16-4D27-A023-8917A910AAD3}
 	EndGlobalSection
 EndGlobal
