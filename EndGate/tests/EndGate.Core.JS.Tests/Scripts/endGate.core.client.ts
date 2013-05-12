@@ -1445,12 +1445,13 @@ module EndGate.Rendering {
             this.Distance = Camera2d.DefaultDistance;
         }
 
-        public GetDistanceScale(): number{
+        public GetDistanceScale(): number {
             return this.Distance / Camera2d.DefaultDistance;
         }
 
-        public ToCameraRelative(position: Vector2d): Vector2d {            
-            return this.TopLeft().Add(position);
+        public ToCameraRelative(position: Vector2d): Vector2d {
+            var scaledTopLeft = this.Position.Subtract(this.Size.Multiply(this.GetDistanceScale()* .5));
+            return scaledTopLeft.Add(position.Multiply(this.GetDistanceScale()));
         }
 
         public GetInverseDistanceScale(): number {
@@ -3878,6 +3879,10 @@ module EndGate.Graphics {
         }
 
         public Fill(row: number, column: number, graphic: Abstractions.Graphic2d): void {
+            if (!this.ValidRow(row) || !this.ValidColumn(column)) {
+                return;
+            }
+
             row--;
             column--;
             graphic.Position = this.GetInsideGridPosition(row, column);
@@ -3932,6 +3937,10 @@ module EndGate.Graphics {
         }
 
         public Get(row: number, column: number): Abstractions.Graphic2d {
+            if (!this.ValidRow(row) || !this.ValidColumn(column)) {
+                return null;
+            }
+
             return this._grid[row - 1][column - 1];
         }
 
@@ -3982,9 +3991,14 @@ module EndGate.Graphics {
         }
 
         public Clear(row: number, column: number): Abstractions.Graphic2d {
+            if (!this.ValidRow(row) || !this.ValidColumn(column)) {
+                return null;
+            }
+            
             var val = this._grid[row - 1][column - 1];
 
             this._grid[row - 1][column - 1] = null;
+            this.RemoveChild(val);
 
             return val;
         }
@@ -3996,6 +4010,7 @@ module EndGate.Graphics {
 
             for (var i = 0; i < this._columns; i++) {
                 vals.push(this._grid[row][i]);
+                this.RemoveChild(this._grid[row][i]);
                 this._grid[row][i] = null;
             }
 
@@ -4009,6 +4024,7 @@ module EndGate.Graphics {
 
             for (var i = 0; i < this._rows; i++) {
                 vals.push(this._grid[i][column]);
+                this.RemoveChild(this._grid[i][column]);
                 this._grid[i][column] = null;
             }
 
@@ -4031,6 +4047,7 @@ module EndGate.Graphics {
                     }
 
                     space.push(this._grid[i - 1][j - 1]);
+                    this.RemoveChild(this._grid[i - 1][j - 1]);
                     this._grid[i - 1][j - 1] = null;
                 }
             }
@@ -4070,6 +4087,14 @@ module EndGate.Graphics {
 
         private GetInsideGridPosition(row: number, column: number): Vector2d {
             return new Vector2d(column * this._tileSize.Width - this._size.HalfWidth() + this._tileSize.HalfWidth(), row * this._tileSize.Height - this._size.HalfHeight() + this._tileSize.HalfHeight());
+        }
+
+        private ValidRow(row: number): bool {
+            return row > 0 && row <= this._rows;
+        }
+
+        private ValidColumn(column: number): bool {
+            return column > 0 && column <= this._columns;
         }
     }
 

@@ -2,7 +2,7 @@
 
     QUnit.module("Repaint Looper Facts");
 
-    QUnit.asyncTimeoutTest("Repaint Looper single callback works.", testUtilities.defaultTestTimeout, function (end, assert, testName) {
+    QUnit.asyncTimeoutTest("Repaint Looper single callback works.", 10000, function (end, assert, testName) {
         var updates = 0,
             triggered = false,
             gameLoop = new EndGate._.Loopers.RepaintLooper(),
@@ -34,7 +34,7 @@
         };
     });
 
-    QUnit.asyncTimeoutTest("Repaint Looper multiple callback works.", testUtilities.defaultTestTimeout, function (end, assert, testName) {
+    QUnit.asyncTimeoutTest("Repaint Looper multiple callback works.", 10000, function (end, assert, testName) {
         var updates1 = 0,
             updates2 = 0,
             gameLoop = new EndGate._.Loopers.Looper(),

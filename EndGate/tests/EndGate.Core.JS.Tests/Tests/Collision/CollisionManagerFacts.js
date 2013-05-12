@@ -72,7 +72,7 @@
         QUnit.ok(!managerCollisionTriggered);
     });
 
-    QUnit.asyncTimeoutTest("Collision manager works within game.", testUtilities.defaultTestTimeout, function (end, assert, testName) {
+    QUnit.asyncTimeoutTest("Collision manager works within game.", 10000, function (end, assert, testName) {
         var rect = new EndGate.Collision.Collidable(new EndGate.Bounds.BoundingRectangle(EndGate.Vector2d.Zero(), new EndGate.Size2d(30, 50))),
             circle = new EndGate.Collision.Collidable(new EndGate.Bounds.BoundingCircle(EndGate.Vector2d.Zero(), 10)),
             game = new CollisionManagerGame(),

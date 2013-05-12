@@ -4,7 +4,7 @@
 
     QUnit.module("Game Facts");
 
-    QUnit.asyncTimeoutTest("Classes inheriting game have update called.", testUtilities.defaultTestTimeout, function (end, assert, testName) {
+    QUnit.asyncTimeoutTest("Classes inheriting game have update called.", 10000, function (end, assert, testName) {
         var onComplete,
             game = new UpdateTester(40, function () {
                 assert.ok(true, "Limit reached!");
@@ -22,7 +22,7 @@
         };
     });
 
-    QUnit.asyncTimeoutTest("Classes inheriting game have draw called.", testUtilities.defaultTestTimeout, function (end, assert, testName) {
+    QUnit.asyncTimeoutTest("Classes inheriting game have draw called.", 10000, function (end, assert, testName) {
         var onComplete,
             game = new DrawTester(function () {
                 assert.ok(true, "Limit reached!");
@@ -40,7 +40,7 @@
         };
     });
 
-    QUnit.asyncTimeoutTest("Classes inheriting game have update run individually.", testUtilities.defaultTestTimeout, function (end, assert, testName) {
+    QUnit.asyncTimeoutTest("Classes inheriting game have update run individually.", 10000, function (end, assert, testName) {
         var triggered1 = false,
             triggered2 = false,
             game1 = new UpdateTester(60, function () {
@@ -68,7 +68,7 @@
         };
     });
 
-    QUnit.asyncTimeoutTest("Classes inheriting game have draw run individually.", testUtilities.defaultTestTimeout, function (end, assert, testName) {
+    QUnit.asyncTimeoutTest("Classes inheriting game have draw run individually.", 10000, function (end, assert, testName) {
         var triggered1 = false,
             triggered2 = false,
             tryComplete;

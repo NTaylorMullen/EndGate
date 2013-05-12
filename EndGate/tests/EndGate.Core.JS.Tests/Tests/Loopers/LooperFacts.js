@@ -2,7 +2,7 @@
 
     QUnit.module("Looper Facts");
 
-    QUnit.asyncTimeoutTest("Looper single callback works.", testUtilities.defaultTestTimeout, function (end, assert, testName) {
+    QUnit.asyncTimeoutTest("Looper single callback works.", 10000, function (end, assert, testName) {
         var updates = 0,
             triggered = false,
             gameLoop = new EndGate._.Loopers.Looper(),
@@ -34,7 +34,7 @@
         };
     });
 
-    QUnit.asyncTimeoutTest("Looper multiple callback works.", testUtilities.defaultTestTimeout, function (end, assert, testName) {
+    QUnit.asyncTimeoutTest("Looper multiple callback works.", 10000, function (end, assert, testName) {
         var updates = 0,
             triggered = false,
             gameLoop = new EndGate._.Loopers.Looper(),

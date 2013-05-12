@@ -1041,7 +1041,8 @@ var EndGate;
                 return this.Distance / Camera2d.DefaultDistance;
             };
             Camera2d.prototype.ToCameraRelative = function (position) {
-                return this.TopLeft().Add(position);
+                var scaledTopLeft = this.Position.Subtract(this.Size.Multiply(this.GetDistanceScale() * .5));
+                return scaledTopLeft.Add(position.Multiply(this.GetDistanceScale()));
             };
             Camera2d.prototype.GetInverseDistanceScale = function () {
                 return Camera2d.DefaultDistance / this.Distance;
@@ -2969,6 +2970,9 @@ var EndGate;
                 return this.State.GlobalAlpha(alpha);
             };
             Grid.prototype.Fill = function (row, column, graphic) {
+                if(!this.ValidRow(row) || !this.ValidColumn(column)) {
+                    return;
+                }
                 row--;
                 column--;
                 graphic.Position = this.GetInsideGridPosition(row, column);
@@ -3011,6 +3015,9 @@ var EndGate;
                 }
             };
             Grid.prototype.Get = function (row, column) {
+                if(!this.ValidRow(row) || !this.ValidColumn(column)) {
+                    return null;
+                }
                 return this._grid[row - 1][column - 1];
             };
             Grid.prototype.GetColumn = function (column) {
@@ -3045,8 +3052,12 @@ var EndGate;
                 return space;
             };
             Grid.prototype.Clear = function (row, column) {
+                if(!this.ValidRow(row) || !this.ValidColumn(column)) {
+                    return null;
+                }
                 var val = this._grid[row - 1][column - 1];
                 this._grid[row - 1][column - 1] = null;
+                this.RemoveChild(val);
                 return val;
             };
             Grid.prototype.ClearRow = function (row) {
@@ -3054,6 +3065,7 @@ var EndGate;
                 row--;
                 for(var i = 0; i < this._columns; i++) {
                     vals.push(this._grid[row][i]);
+                    this.RemoveChild(this._grid[row][i]);
                     this._grid[row][i] = null;
                 }
                 return vals;
@@ -3063,6 +3075,7 @@ var EndGate;
                 column--;
                 for(var i = 0; i < this._rows; i++) {
                     vals.push(this._grid[i][column]);
+                    this.RemoveChild(this._grid[i][column]);
                     this._grid[i][column] = null;
                 }
                 return vals;
@@ -3078,6 +3091,7 @@ var EndGate;
                             break;
                         }
                         space.push(this._grid[i - 1][j - 1]);
+                        this.RemoveChild(this._grid[i - 1][j - 1]);
                         this._grid[i - 1][j - 1] = null;
                     }
                 }
@@ -3107,6 +3121,12 @@ var EndGate;
             };
             Grid.prototype.GetInsideGridPosition = function (row, column) {
                 return new EndGate.Vector2d(column * this._tileSize.Width - this._size.HalfWidth() + this._tileSize.HalfWidth(), row * this._tileSize.Height - this._size.HalfHeight() + this._tileSize.HalfHeight());
+            };
+            Grid.prototype.ValidRow = function (row) {
+                return row > 0 && row <= this._rows;
+            };
+            Grid.prototype.ValidColumn = function (column) {
+                return column > 0 && column <= this._columns;
             };
             return Grid;
         })(Graphics.Abstractions.Graphic2d);
@@ -3189,3 +3209,4 @@ var EndGate;
     })(EndGate.Map || (EndGate.Map = {}));
     var Map = EndGate.Map;
 })(EndGate || (EndGate = {}));
+//@ sourceMappingURL=endGate.core.client.js.map
