@@ -1,4 +1,4 @@
-/// <reference path="../../Scripts/endGate.core.client.ts" />
+/// <reference path="../../Scripts/endgate.ts" />
 
 class CameraDragController {
     public Active: bool;

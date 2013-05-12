@@ -1,5 +1,5 @@
 /// <reference path="KnightAnimationHandler.ts" />
-/// <reference path="../../Scripts/endGate.core.client.ts" />
+/// <reference path="../../Scripts/endgate.ts" />
 
 class Knight implements eg.IUpdateable extends eg.Collision.Collidable {
     public static HitboxSize: number = 30;

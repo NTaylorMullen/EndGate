@@ -1,5 +1,5 @@
 /// <reference path="../../Scripts/jquery.d.ts" />
-/// <reference path="../../Scripts/endGate.core.client.ts" />
+/// <reference path="../../Scripts/endgate.ts" />
 
 class CharacterMover extends eg.Game {
     private _characterMoveSpeed: number = 100;

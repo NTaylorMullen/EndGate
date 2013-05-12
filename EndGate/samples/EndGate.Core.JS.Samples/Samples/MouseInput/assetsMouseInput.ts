@@ -1,5 +1,5 @@
 /// <reference path="../../Scripts/jquery.d.ts" />
-/// <reference path="../../Scripts/endGate.core.client.ts" />
+/// <reference path="../../Scripts/endgate.ts" />
 
 class MouseMonitor extends eg.Game {
     private _radiusSize: number = 5;

@@ -85,6 +85,7 @@ module EndGate.Input {
             return (e: MouseEvent) => {
                 if (eventHandler.HasBindings()) {
                     eventHandler.Trigger(mouseEventBuilder.call(this, e));
+                    e.preventDefault();
                 }
 
                 return returnValue;

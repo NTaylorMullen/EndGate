@@ -1,5 +1,5 @@
 /// <reference path="../../Scripts/jquery.d.ts" />
-/// <reference path="../../Scripts/endGate.core.client.ts" />
+/// <reference path="../../Scripts/endgate.ts" />
 
 class SpriteBuilder extends eg.Game {
     public Sprite: eg.Graphics.Sprite2d;

@@ -1,4 +1,4 @@
-/// <reference path="../../Scripts/endGate.core.client.ts" />
+/// <reference path="../../Scripts/endgate.ts" />
 /// <reference path="../../Scripts/jquery.d.ts" />
 /// <reference path="CameraDragController.ts" />
 /// <reference path="TileSelector.ts" />

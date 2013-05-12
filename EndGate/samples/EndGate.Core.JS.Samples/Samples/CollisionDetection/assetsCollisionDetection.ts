@@ -1,4 +1,4 @@
-/// <reference path="../../Scripts/endGate.core.client.ts" />
+/// <reference path="../../Scripts/endgate.ts" />
 
 class MovingShape implements eg.IUpdateable extends eg.Collision.Collidable {
     // Rotate 180 deg every second

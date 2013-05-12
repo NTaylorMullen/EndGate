@@ -1,5 +1,5 @@
 /// <reference path="../../Scripts/jquery.d.ts" />
-/// <reference path="../../Scripts/endGate.core.client.ts" />
+/// <reference path="../../Scripts/endgate.ts" />
 
 class CollidableShape implements eg.IUpdateable extends eg.Collision.Collidable {
     public Graphic: eg.Graphics.Abstractions.Shape;

@@ -1,5 +1,5 @@
 /// <reference path="Knight.ts" />
-/// <reference path="../../Scripts/endGate.core.client.ts" />
+/// <reference path="../../Scripts/endgate.ts" />
 
 class KnightAnimationHandler implements eg.IUpdateable {
     private static _animationDirectionMap: string[] = ["Up", "Left", "Down", "Right"];
