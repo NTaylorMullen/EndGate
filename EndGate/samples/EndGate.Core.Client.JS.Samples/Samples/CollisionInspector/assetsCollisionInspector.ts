@@ -77,7 +77,7 @@ class CollisionInspector extends eg.Game {
 
         this._decreasingZIndex = 0;
 
-        this.Input.Mouse.OnDown.Bind((clickEvent: eg.Input.Mouse.IMouseClickEvent) => {
+        this.Input.Mouse.OnDown.Bind((clickEvent: eg.Input.IMouseClickEvent) => {
             var obj = this.GetShapeAt(clickEvent.Position);
 
             if (obj !== null) {
