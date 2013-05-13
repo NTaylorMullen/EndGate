@@ -347,6 +347,13 @@
     <Content Include="Samples\RawRPG\KnightAnimationHandler.min.js">
       <DependentUpon>KnightAnimationHandler.ts</DependentUpon>
     </Content>
+    <TypeScriptCompile Include="Samples\RawRPG\LoadMapHandler.ts" />
+    <Content Include="Samples\RawRPG\LoadMapHandler.js">
+      <DependentUpon>LoadMapHandler.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\RawRPG\LoadMapHandler.min.js">
+      <DependentUpon>LoadMapHandler.ts</DependentUpon>
+    </Content>
     <Content Include="Samples\RawRPG\Main.js">
       <DependentUpon>Main.ts</DependentUpon>
     </Content>
@@ -513,6 +520,11 @@
     </Content>
     <Content Include="Samples\MapBuilder\OutputHandler.js.map">
       <DependentUpon>OutputHandler.ts</DependentUpon>
+    </Content>
+    <None Include="Properties\PublishProfiles\endgate-samples - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\endgate-samples - Web Deploy.pubxml" />
+    <Content Include="Samples\RawRPG\LoadMapHandler.js.map">
+      <DependentUpon>LoadMapHandler.ts</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.0.0.intellisense.js" />
     <TypeScriptCompile Include="Samples\AnimatedSprites\assetsAnimatedSprites.ts" />

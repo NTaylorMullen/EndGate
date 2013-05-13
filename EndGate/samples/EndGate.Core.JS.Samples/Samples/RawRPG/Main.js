@@ -1,10 +1,10 @@
 (function ($, window) {
-    var canvas = document.createElement("canvas"), holder = $("#gameHolder"), rpg = null, resourceSheet = new eg.Graphics.Assets.ImageSource("images/wood_tileset_3.png", 512, 512), resources = eg.Map.SquareTileMap.ExtractTiles(resourceSheet, 32, 32), scenery;
+    var canvas = document.createElement("canvas"), holder = $("#gameHolder"), rpg = null, resourceSheet = new eg.Graphics.Assets.ImageSource("images/wood_tileset_3.png", 512, 512), resources = eg.Map.SquareTileMap.ExtractTiles(resourceSheet, 32, 32), scenery, loadMapHandler;
     canvas.width = holder.width();
     canvas.height = holder.height();
     holder.append(canvas);
     rpg = new RPG(canvas);
-    scenery = new eg.Map.SquareTileMap(canvas.width / 2, canvas.height / 2, 32, 32, resources, [
+    loadMapHandler = new LoadMapHandler(rpg.Map.Scenery, new eg.Vector2d(canvas.width / 2, canvas.height / 2), 27, 47, new eg.Size2d(32, 32), "images/wood_tileset_3.png", [
         [
             155, 
             155, 
@@ -1330,6 +1330,5 @@
         ], 
         
     ]);
-    rpg.Map.Scenery.AddLayer(scenery);
 })($, window);
 //@ sourceMappingURL=Main.js.map
