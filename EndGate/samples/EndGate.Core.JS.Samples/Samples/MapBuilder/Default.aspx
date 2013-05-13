@@ -6,7 +6,7 @@
             border: 1px solid black;
         }
 
-        #builderPane{
+        #builderPane {
             position: absolute;
             width: 100%;
             left: 0;
@@ -17,7 +17,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <ul class="breadcrumb">
         <li><a href="<%: ResolveUrl("~/") %>">EndGate JavaScript Samples</a> <span class="divider">/</span></li>
-        <li class="active">Raw RPG</li>
+        <li class="active">Map Builder</li>
     </ul>
 
     <div class="page-header">
@@ -26,47 +26,110 @@
     </div>
 
     <div id="setupPane" class="form-horizontal well">
-        <fieldset>
-            <legend>Setup</legend>
-            <div class="control-group">
-                <label class="control-label" for="dimensionRows">Dimensions: </label>
-                <div class="controls">
-                    <input id="dimensionRows" class="input-small" type="text" value="100" placeholder="Rows..." /> X <input id="dimensionColumns" class="input-small" type="text" value="100" placeholder="Columns..." />
+        <h3>Setup</h3>
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a href="#createNew" data-toggle="tab">Create New</a>
+            </li>
+            <li class="">
+                <a href="#loadSaved" data-toggle="tab">Load Saved</a>
+            </li>
+        </ul>
+        <div class="tabbable">
+            <div class="tab-content">
+                <div class="tab-pane active" id="createNew">
+                    <div class="control-group">
+                        <label class="control-label" for="dimensionRows">Map Dimensions: </label>
+                        <div class="controls">
+                            <input id="dimensionRows" class="input-small" type="text" value="15" placeholder="Rows..." />
+                            X
+                    <input id="dimensionColumns" class="input-small" type="text" value="15" placeholder="Columns..." />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="tileSizeWidth">Tile Size (Pixels): </label>
+                        <div class="controls">
+                            <input id="tileSizeWidth" class="input-small" type="text" value="32" placeholder="Width..." />
+                            X
+                    <input id="tileSizeHeight" class="input-small" type="text" value="32" placeholder="Height..." />
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="spriteSheetUrl">Sprite Sheet Url: </label>
+                        <div class="controls">
+                            <input id="spriteSheetUrl" type="text" class="input-xxlarge" value="http://endgate-samples.azurewebsites.net/Samples/RawRPG/images/wood_tileset_3.png" placeholder="Spritesheet URL..." />
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button id="createMap" class="btn btn-primary">Create</button>
+                        <button id="resetSetup" class="btn">Reset</button>
+                    </div>
+                </div>
+                <div class="tab-pane" id="loadSaved">
+                    <div class="control-group">
+                        <label class="control-label" for="savedMaps">Saved Maps: </label>
+                        <div class="controls">
+                            <select id="savedMaps"></select>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="savedMaps">Load From Text: </label>
+                        <div class="controls">
+                            <textarea class="input-xlarge" id="loadText" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button id="loadMap" class="btn btn-primary disabled">Load Saved</button>
+                        <button id="loadFromText" class="btn btn-primary">Load Output Text</button>
+                    </div>
                 </div>
             </div>
-            <div class="control-group">
-                <label class="control-label" for="tileSizeWidth">Tile Size: </label>
-                <div class="controls">
-                    <input id="tileSizeWidth" class="input-small" type="text" value="32" placeholder="Width..." /> X <input id="tileSizeHeight" class="input-small" type="text" value="32" placeholder="Height..." />
-                </div>
-            </div>
-            <div class="form-actions">
-                <button id="createMap" class="btn btn-primary">Create</button>
-                <button id="resetSetup" class="btn">Reset</button>
-            </div>
-        </fieldset>
+        </div>
     </div>
 
     <div id="builderPane" class="hide" style="padding-left: 25px;">
-        <p class="row">Move the box with <em>w/a/s/d or up/left/right/down.</em></p>
+        <p class="row">Press space to click and drag around the map.  Select tiles from the Sprite Sheet viewer on the right (left click) and then fill the map on the left (left click).  Clear selections or tiles with a right click.</p>
 
         <div class="row">
             <div class="form-vertical well pull-left" id="mapBuilderUtilities">
-                <button class="btn">
-                    <i class="icon-dragCamera"></i>
-                </button>
-            </div>
-            <div class="form-search well pull-left" id="spriteSheetViewerUtilities">
-                <input id="spriteSheetUrl" type="text" class="input-medium" value="http://localhost:8718/Samples/RawRPG/images/wood_tileset_3.png" placeholder="Spritesheet URL..." />
-                <button id="getSpriteSheet" class="btn">Get</button>
+                <div class="pull-left">
+                    <select id="layers" style="margin-bottom: 0px;">
+                        <option value="0">Background</option>
+                    </select>
+
+                    <input id="layerName" type="text" class="input-medium" value="" style="margin-left: 30px; margin-bottom: 0px;" placeholder="Layer Name..." />
+                    <button id="addLayer" class="btn">Add Layer</button>
+                </div>
+
+                <div class="pull-left" style="margin-left: 50px;">
+                    <select id="outputOptions" style="margin-bottom: 0px">
+                        <option value="0">Save Text (Can be loaded by anyone using Map Builder)</option>
+                        <option value="1">Code (Creates Square Tile Map, much like Raw RPG)</option>
+                    </select>
+                    <button id="output" class="btn">Output</button>
+                </div>
+
+                <div class="pull-right">
+                    <span id="saveDialog"></span>
+                    <input id="saveName" type="text" class="input-medium" value="" style="margin-bottom: 0px;" placeholder="Save Name..." />
+                    <button id="save" class="btn">Save</button>
+                </div>
             </div>
         </div>
 
         <div class="row">
             <div id="mapBuilder" class="form-vertical well pull-left" style="height: 600px;">
             </div>
-            <div id="spriteSheetViewer" class="form-vertical well pull-left" style="height:600px;">
+            <div id="spriteSheetViewer" class="form-vertical well pull-left" style="height: 600px;">
             </div>
+        </div>
+
+        <div class="row form-vertical well">
+            <fieldset>
+                <legend>Output</legend>
+                <div id="outputPanel"></div>
+            </fieldset>
         </div>
     </div>
 </asp:Content>
@@ -80,5 +143,7 @@
     <script src="CameraDragController.js"></script>
     <script src="CameraZoomController.js"></script>
     <script src="SetupManager.js"></script>
+    <script src="PersistenceManager.js"></script>
+    <script src="OutputHandler.js"></script>
     <script src="Main.js"></script>
 </asp:Content>

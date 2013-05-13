@@ -9,21 +9,12 @@ class TileSelector {
     private static _groupSelectAfter: number = 10;
 
     constructor(private _grid: eg.Graphics.Grid, scene: eg.Rendering.Scene2d, camera: eg.Rendering.Camera2d, cameraDragController: CameraDragController, mouseHandler: eg.Input.MouseHandler, private _onSelect: (gridEntries: GridEntry[]) => void , private _onDeselect: (bounds: GridEntry[]) => void ) {
-        var tiles = _grid.Children(),
-            tile: eg.Bounds.BoundingRectangle,
-            tileBounds: eg.Bounds.BoundingRectangle[] = [],
-            downAt: eg.Vector2d,
+        var downAt: eg.Vector2d,
             groupSelecting = false;
 
         this._groupSelector = new eg.Graphics.Rectangle(0, 0, 0, 0, "rgb(100, 255, 0)");
         this._groupSelector.Border(2, "green");
         this._groupSelector.Opacity(.4);
-
-        for (var i = 0; i < tiles.length; i++) {
-            tile = <eg.Bounds.BoundingRectangle>tiles[i].GetDrawBounds();
-            tile.Position = tile.Position.Add(_grid.Position);
-            tileBounds.push(tile);
-        }
 
         mouseHandler.OnDown.Bind((e: eg.Input.IMouseClickEvent) => {
             downAt = camera.ToCameraRelative(e.Position);
@@ -38,6 +29,10 @@ class TileSelector {
         });
 
         mouseHandler.OnMove.Bind((e: eg.Input.IMouseEvent) => {
+            if (cameraDragController.Active) {
+                return;
+            }
+
             var locationDifference: eg.Vector2d;
 
             e.Position = camera.ToCameraRelative(e.Position);

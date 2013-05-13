@@ -32,6 +32,7 @@
 
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="<%: ResolveUrl("~/Scripts/jquery-2.0.0.js") %>"></script>
+    <script src="<%: ResolveUrl("~/Bootstrap/bootstrap.min.js") %>"></script>
     <script src="<%: ResolveUrl("~/Scripts/endgate.js") %>"></script>
 
     <asp:ContentPlaceHolder runat="server" ID="Scripts"></asp:ContentPlaceHolder>

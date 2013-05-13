@@ -53,7 +53,12 @@ module EndGate.Map {
             for (var i = 0; i < mappings.length; i++) {
                 tiles[i] = [];
                 for (var j = 0; j < mappings[i].length; j++) {
-                    tiles[i].push(new Tile(this._Resources[mappings[i][j]], this._grid.TileSize().Width,this._grid.TileSize().Height));
+                    if (mappings[i][j] >= 0) {
+                        tiles[i].push(new Tile(this._Resources[mappings[i][j]], this._grid.TileSize().Width, this._grid.TileSize().Height));
+                    }
+                    else {
+                        tiles[i].push(null);
+                    }
                 }
             }
 

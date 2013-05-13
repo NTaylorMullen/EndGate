@@ -8,64 +8,53 @@
 
 class SpriteSheetViewer extends eg.Game {
     public SelectedSources: eg.Graphics.Assets.ImageSource[];
+    public VisibleGrid: eg.Graphics.Grid;
+    public ActiveSpriteSheet: eg.Graphics.Assets.ImageSource;
 
-    private _activeSpriteSheet: eg.Graphics.Assets.ImageSource;
-    private _visibleGrid: eg.Graphics.Grid;
     private _cameraDragController: CameraDragController;
     private _cameraZoomController: CameraZoomController;
     private _tileSelector: TileSelector;
     private _tileHighlighter: TileHighlighter;
 
-    constructor(canvas: HTMLCanvasElement, utilities: JQuery, private _tileWidth: number, private _tileHeight: number) {
+    constructor(canvas: HTMLCanvasElement, public SpriteSheetUrl: string, private _tileWidth: number, private _tileHeight: number, private _readyCallback?: Function) {
         super(canvas);
-        var getSpriteSheet = utilities.find("#getSpriteSheet"),
-            spriteSheetUrl = utilities.find("#spriteSheetUrl");
 
         this.SelectedSources = [];
-
-        getSpriteSheet.click(() => {
-            this.loadSpritesheet(spriteSheetUrl.val());
-
-            getSpriteSheet.blur();
-            spriteSheetUrl.blur();
-        });
-
         this._cameraDragController = new CameraDragController(canvas, this.Scene.Camera, this.Input.Keyboard, this.Input.Mouse);
         this._cameraZoomController = new CameraZoomController(this.Scene.Camera, this.Input.Mouse);
-
-        getSpriteSheet.click();
+        this.loadSpritesheet(SpriteSheetUrl);
     }
 
     private loadSpritesheet(url: string): void {
-        this._activeSpriteSheet = new eg.Graphics.Assets.ImageSource(url);
+        this.ActiveSpriteSheet = new eg.Graphics.Assets.ImageSource(url);
 
-        this._activeSpriteSheet.OnLoaded.Bind(() => {
+        this.ActiveSpriteSheet.OnLoaded.Bind(() => {
             var createTileSelector = false;
 
-            if (this._visibleGrid) {
+            if (this.VisibleGrid) {
                 this.Scene.Camera.Position = new eg.Vector2d(this.Scene.DrawArea.width / 2, this.Scene.DrawArea.height / 2);
             }
             else {
                 createTileSelector = true;
             }
 
-            this._visibleGrid = new eg.Graphics.Grid(this.Scene.DrawArea.width / 2, this.Scene.DrawArea.height / 2, Math.floor(this._activeSpriteSheet.ClipSize.Height / this._tileHeight), Math.floor(this._activeSpriteSheet.ClipSize.Width / this._tileWidth), this._tileWidth, this._tileHeight, true);
+            this.VisibleGrid = new eg.Graphics.Grid(this.Scene.DrawArea.width / 2, this.Scene.DrawArea.height / 2, Math.floor(this.ActiveSpriteSheet.ClipSize.Height / this._tileHeight), Math.floor(this.ActiveSpriteSheet.ClipSize.Width / this._tileWidth), this._tileWidth, this._tileHeight, true);
 
-            for (var i = 0; i < this._visibleGrid.Rows(); i++) {
-                for (var j = 0; j < this._visibleGrid.Columns(); j++) {
-                    this._visibleGrid.Fill(i + 1, j + 1, new eg.Graphics.Sprite2d(0, 0, this._activeSpriteSheet.Extract(j * this._tileWidth, i * this._tileHeight, this._tileWidth, this._tileHeight)));
+            for (var i = 0; i < this.VisibleGrid.Rows(); i++) {
+                for (var j = 0; j < this.VisibleGrid.Columns(); j++) {
+                    this.VisibleGrid.Fill(i + 1, j + 1, new eg.Graphics.Sprite2d(0, 0, this.ActiveSpriteSheet.Extract(j * this._tileWidth, i * this._tileHeight, this._tileWidth, this._tileHeight)));
                 }
             }
 
             if (createTileSelector) {
-                this._tileHighlighter = new TileHighlighter(this._visibleGrid);
-                this._tileSelector = new TileSelector(this._visibleGrid, this.Scene, this.Scene.Camera, this._cameraDragController, this.Input.Mouse, (tiles: GridEntry[]) => {
+                this._tileHighlighter = new TileHighlighter(this.VisibleGrid);
+                this._tileSelector = new TileSelector(this.VisibleGrid, this.Scene, this.Scene.Camera, this._cameraDragController, this.Input.Mouse, (tiles: GridEntry[]) => {
                     var tile;
 
                     this.SelectedSources = [];
                     
                     for (var i = 0; i < tiles.length; i++) {
-                        tile = <eg.Graphics.Sprite2d>this._visibleGrid.Get(tiles[i].Row, tiles[i].Column);
+                        tile = <eg.Graphics.Sprite2d>this.VisibleGrid.Get(tiles[i].Row, tiles[i].Column);
 
                         if (tile) {
                             this.SelectedSources.push(tile.Image);
@@ -77,7 +66,7 @@ class SpriteSheetViewer extends eg.Game {
                     var index, tile;
 
                     for (var i = 0; i < tiles.length; i++) {
-                        tile = <eg.Graphics.Sprite2d>this._visibleGrid.Get(tiles[i].Row, tiles[i].Column);
+                        tile = <eg.Graphics.Sprite2d>this.VisibleGrid.Get(tiles[i].Row, tiles[i].Column);
 
                         if (tile) {
                             index = this.SelectedSources.indexOf(tile.Image);
@@ -91,7 +80,11 @@ class SpriteSheetViewer extends eg.Game {
                 });
             }
 
-            this.Scene.Add(this._visibleGrid);
+            this.Scene.Add(this.VisibleGrid);
+
+            if (this._readyCallback) {
+                this._readyCallback();
+            }
         });
     }
 }

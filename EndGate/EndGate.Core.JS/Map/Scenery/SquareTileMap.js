@@ -38,7 +38,11 @@ var EndGate;
                 for(var i = 0; i < mappings.length; i++) {
                     tiles[i] = [];
                     for(var j = 0; j < mappings[i].length; j++) {
-                        tiles[i].push(new Map.Tile(this._Resources[mappings[i][j]], this._grid.TileSize().Width, this._grid.TileSize().Height));
+                        if(mappings[i][j] >= 0) {
+                            tiles[i].push(new Map.Tile(this._Resources[mappings[i][j]], this._grid.TileSize().Width, this._grid.TileSize().Height));
+                        } else {
+                            tiles[i].push(null);
+                        }
                     }
                 }
                 this._grid.FillSpace(1, 1, tiles);

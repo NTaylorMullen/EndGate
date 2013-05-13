@@ -5,6 +5,10 @@ class TileFiller {
     constructor(private _grid: eg.Graphics.Grid, private _tileWidth: number, private _tileHeight: number) {
     }
 
+    public ChangeGrid(grid: eg.Graphics.Grid): void {
+        this._grid = grid;
+    }
+
     public Fill(entries: GridEntry[], sources: eg.Graphics.Assets.ImageSource[]): void {
         if (sources.length === 0) {
             return;

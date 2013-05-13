@@ -4,15 +4,10 @@ var TileSelector = (function () {
         this._onSelect = _onSelect;
         this._onDeselect = _onDeselect;
         var _this = this;
-        var tiles = _grid.Children(), tile, tileBounds = [], downAt, groupSelecting = false;
+        var downAt, groupSelecting = false;
         this._groupSelector = new eg.Graphics.Rectangle(0, 0, 0, 0, "rgb(100, 255, 0)");
         this._groupSelector.Border(2, "green");
         this._groupSelector.Opacity(.4);
-        for(var i = 0; i < tiles.length; i++) {
-            tile = tiles[i].GetDrawBounds();
-            tile.Position = tile.Position.Add(_grid.Position);
-            tileBounds.push(tile);
-        }
         mouseHandler.OnDown.Bind(function (e) {
             downAt = camera.ToCameraRelative(e.Position);
         });
@@ -23,6 +18,9 @@ var TileSelector = (function () {
             scene.Remove(_this._groupSelector);
         });
         mouseHandler.OnMove.Bind(function (e) {
+            if(cameraDragController.Active) {
+                return;
+            }
             var locationDifference;
             e.Position = camera.ToCameraRelative(e.Position);
             if(mouseHandler.IsDown && !groupSelecting && e.Position.Distance(downAt).Magnitude() >= TileSelector._groupSelectAfter) {

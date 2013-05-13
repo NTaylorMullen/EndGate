@@ -264,6 +264,20 @@
     <Content Include="Samples\MapBuilder\MapBuilder.min.js">
       <DependentUpon>MapBuilder.ts</DependentUpon>
     </Content>
+    <TypeScriptCompile Include="Samples\MapBuilder\PersistenceManager.ts" />
+    <TypeScriptCompile Include="Samples\MapBuilder\OutputHandler.ts" />
+    <Content Include="Samples\MapBuilder\OutputHandler.js">
+      <DependentUpon>OutputHandler.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MapBuilder\OutputHandler.min.js">
+      <DependentUpon>OutputHandler.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MapBuilder\PersistenceManager.js">
+      <DependentUpon>PersistenceManager.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MapBuilder\PersistenceManager.min.js">
+      <DependentUpon>PersistenceManager.ts</DependentUpon>
+    </Content>
     <Content Include="Samples\MapBuilder\SetupManager.js">
       <DependentUpon>SetupManager.ts</DependentUpon>
     </Content>
@@ -493,6 +507,12 @@
     </Content>
     <Content Include="Samples\Text\mainText.js.map">
       <DependentUpon>mainText.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MapBuilder\PersistenceManager.js.map">
+      <DependentUpon>PersistenceManager.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MapBuilder\OutputHandler.js.map">
+      <DependentUpon>OutputHandler.ts</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.0.0.intellisense.js" />
     <TypeScriptCompile Include="Samples\AnimatedSprites\assetsAnimatedSprites.ts" />

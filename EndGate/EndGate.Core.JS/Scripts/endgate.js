@@ -1389,6 +1389,7 @@ var EndGate;
                 return function (e) {
                     if(eventHandler.HasBindings()) {
                         eventHandler.Trigger(mouseEventBuilder.call(_this, e));
+                        e.preventDefault();
                     }
                     return returnValue;
                 };
@@ -2986,9 +2987,11 @@ var EndGate;
                 for(var i = 0; i < graphicList.length; i++) {
                     for(var j = 0; j < graphicList[i].length; j++) {
                         graphic = graphicList[i][j];
-                        graphic.Position = this.GetInsideGridPosition(i + row, j + column);
-                        this._grid[i + row][j + column] = graphic;
-                        this.AddChild(graphic);
+                        if(graphic) {
+                            graphic.Position = this.GetInsideGridPosition(i + row, j + column);
+                            this._grid[i + row][j + column] = graphic;
+                            this.AddChild(graphic);
+                        }
                     }
                 }
             };
@@ -3198,7 +3201,11 @@ var EndGate;
                 for(var i = 0; i < mappings.length; i++) {
                     tiles[i] = [];
                     for(var j = 0; j < mappings[i].length; j++) {
-                        tiles[i].push(new Map.Tile(this._Resources[mappings[i][j]], this._grid.TileSize().Width, this._grid.TileSize().Height));
+                        if(mappings[i][j] >= 0) {
+                            tiles[i].push(new Map.Tile(this._Resources[mappings[i][j]], this._grid.TileSize().Width, this._grid.TileSize().Height));
+                        } else {
+                            tiles[i].push(null);
+                        }
                     }
                 }
                 this._grid.FillSpace(1, 1, tiles);

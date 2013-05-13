@@ -109,10 +109,12 @@ module EndGate.Graphics {
             for (var i = 0; i < graphicList.length; i++) {
                 for (var j = 0; j < graphicList[i].length; j++) {
                     graphic = graphicList[i][j];
-                    graphic.Position = this.GetInsideGridPosition(i + row, j + column);
+                    if (graphic) {
+                        graphic.Position = this.GetInsideGridPosition(i + row, j + column);
 
-                    this._grid[i + row][j + column] = graphic;
-                    this.AddChild(graphic);
+                        this._grid[i + row][j + column] = graphic;
+                        this.AddChild(graphic);
+                    }
                 }
             }
         }

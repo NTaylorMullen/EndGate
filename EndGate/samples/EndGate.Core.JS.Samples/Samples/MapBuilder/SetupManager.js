@@ -1,11 +1,10 @@
 var SetupManager = (function () {
     function SetupManager(setupPane, builderPane, spriteSheetViewerCanvas, mapBuilderCanvas) {
         var _this = this;
-        var dimensionRows = setupPane.find("#dimensionRows"), dimensionColumns = setupPane.find("#dimensionColumns"), tileSizeWidth = setupPane.find("#tileSizeWidth"), tileSizeHeight = setupPane.find("#tileSizeHeight"), spriteSheetViewerUtilities = builderPane.find("#spriteSheetViewerUtilities"), mapBuilderUtilities = builderPane.find("#mapBuilderUtilities");
-        spriteSheetViewerUtilities.width(spriteSheetViewerCanvas.width);
-        mapBuilderUtilities.width(mapBuilderCanvas.width);
+        var dimensionRows = setupPane.find("#dimensionRows"), dimensionColumns = setupPane.find("#dimensionColumns"), tileSizeWidth = setupPane.find("#tileSizeWidth"), tileSizeHeight = setupPane.find("#tileSizeHeight"), mapBuilderUtilities = builderPane.find("#mapBuilderUtilities"), savedMapsSelect = setupPane.find("#savedMaps"), loadMap = setupPane.find("#loadMap"), loadFromText = setupPane.find("#loadFromText"), loadText = setupPane.find("#loadText"), savedMaps = PersistenceManager.GetSavedMaps();
+        mapBuilderUtilities.width(mapBuilderCanvas.width + spriteSheetViewerCanvas.width + 38);
         setupPane.find("#createMap").click(function () {
-            _this._spriteSheetViewer = new SpriteSheetViewer(spriteSheetViewerCanvas, spriteSheetViewerUtilities, parseFloat(tileSizeWidth.val()), parseFloat(tileSizeHeight.val()));
+            _this._spriteSheetViewer = new SpriteSheetViewer(spriteSheetViewerCanvas, $("#spriteSheetUrl").val(), parseFloat(tileSizeWidth.val()), parseFloat(tileSizeHeight.val()));
             _this._mapBuilder = new MapBuilder(mapBuilderCanvas, mapBuilderUtilities, _this._spriteSheetViewer, parseInt(dimensionRows.val()), parseInt(dimensionColumns.val()), parseFloat(tileSizeWidth.val()), parseFloat(tileSizeHeight.val()));
             setupPane.addClass("hide");
             builderPane.removeClass("hide");
@@ -16,8 +15,37 @@ var SetupManager = (function () {
             tileSizeWidth.val("");
             tileSizeHeight.val("");
         });
-        setupPane.find("#createMap").click();
+        for(var saveName in savedMaps) {
+            savedMapsSelect.append($("<option value='" + saveName + "'>" + saveName + "</option>"));
+            loadMap.removeClass("disabled");
+        }
+        loadMap.click(function () {
+            var saveName = savedMapsSelect.val();
+            if(savedMaps[saveName]) {
+                var settings = savedMaps[saveName];
+                _this.Initialize(settings, spriteSheetViewerCanvas, mapBuilderCanvas, mapBuilderUtilities);
+                setupPane.addClass("hide");
+                builderPane.removeClass("hide");
+            }
+        });
+        loadFromText.click(function () {
+            if(loadText.val().length === 0) {
+                return;
+            }
+            var settings = JSON.parse(loadText.val())._output;
+            loadText.val("");
+            _this.Initialize(settings, spriteSheetViewerCanvas, mapBuilderCanvas, mapBuilderUtilities);
+            setupPane.addClass("hide");
+            builderPane.removeClass("hide");
+        });
     }
+    SetupManager.prototype.Initialize = function (settings, spriteSheetViewerCanvas, mapBuilderCanvas, mapBuilderUtilities) {
+        var _this = this;
+        this._spriteSheetViewer = new SpriteSheetViewer(spriteSheetViewerCanvas, settings.SpriteSheetUrl, settings.TileSize.Width, settings.TileSize.Height, function () {
+            _this._mapBuilder = new MapBuilder(mapBuilderCanvas, mapBuilderUtilities, _this._spriteSheetViewer, settings.Rows, settings.Columns, settings.TileSize.Width, settings.TileSize.Height);
+            _this._mapBuilder.LoadLayersFromResourceMaps(settings.Layers);
+        });
+    };
     return SetupManager;
 })();
 //@ sourceMappingURL=SetupManager.js.map

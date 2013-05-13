@@ -4,6 +4,9 @@ var TileFiller = (function () {
         this._tileWidth = _tileWidth;
         this._tileHeight = _tileHeight;
     }
+    TileFiller.prototype.ChangeGrid = function (grid) {
+        this._grid = grid;
+    };
     TileFiller.prototype.Fill = function (entries, sources) {
         if(sources.length === 0) {
             return;

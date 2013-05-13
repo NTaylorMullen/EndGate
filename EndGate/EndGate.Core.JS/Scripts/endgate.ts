@@ -1957,6 +1957,7 @@ module EndGate.Input {
             return (e: MouseEvent) => {
                 if (eventHandler.HasBindings()) {
                     eventHandler.Trigger(mouseEventBuilder.call(this, e));
+                    e.preventDefault();
                 }
 
                 return returnValue;
@@ -3900,10 +3901,12 @@ module EndGate.Graphics {
             for (var i = 0; i < graphicList.length; i++) {
                 for (var j = 0; j < graphicList[i].length; j++) {
                     graphic = graphicList[i][j];
-                    graphic.Position = this.GetInsideGridPosition(i + row, j + column);
+                    if (graphic) {
+                        graphic.Position = this.GetInsideGridPosition(i + row, j + column);
 
-                    this._grid[i + row][j + column] = graphic;
-                    this.AddChild(graphic);
+                        this._grid[i + row][j + column] = graphic;
+                        this.AddChild(graphic);
+                    }
                 }
             }
         }
@@ -4187,7 +4190,12 @@ module EndGate.Map {
             for (var i = 0; i < mappings.length; i++) {
                 tiles[i] = [];
                 for (var j = 0; j < mappings[i].length; j++) {
-                    tiles[i].push(new Tile(this._Resources[mappings[i][j]], this._grid.TileSize().Width,this._grid.TileSize().Height));
+                    if (mappings[i][j] >= 0) {
+                        tiles[i].push(new Tile(this._Resources[mappings[i][j]], this._grid.TileSize().Width, this._grid.TileSize().Height));
+                    }
+                    else {
+                        tiles[i].push(null);
+                    }
                 }
             }
 
