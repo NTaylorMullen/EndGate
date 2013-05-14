@@ -18,8 +18,7 @@
         </div>
     </div>
     <p class="row">Image <a href="images/attribution.txt" target="_blank">attribution</a>.  Sound <a href="sounds/attribution.txt" target="_blank">attribution</a>.</p>
-</asp:Content>
-<asp:Content ID="Content3" ContentPlaceHolderID="Scripts" runat="server">
-    <script src="assetsAudioHandling.js"></script>
-    <script src="mainAudioHandling.js"></script>
+
+    <script typescript="true" src="assetsAudioHandling.js"></script>
+    <script typescript="true" src="mainAudioHandling.js"></script>
 </asp:Content>

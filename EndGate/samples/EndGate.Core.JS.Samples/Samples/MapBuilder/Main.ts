@@ -7,7 +7,7 @@
         mapBuilderHolder: JQuery = $("#mapBuilder"),
         spriteSheetViewerHolder: JQuery = $("#spriteSheetViewer"),
         baseWidth = mapBuilderHolder.parent().parent().width() - 100,
-        setupManager: SetupManager;
+            setupManager: SetupManager;
 
     mapBuilderHolder.width(baseWidth * .666);
     spriteSheetViewerHolder.width(baseWidth - mapBuilderHolder.width());

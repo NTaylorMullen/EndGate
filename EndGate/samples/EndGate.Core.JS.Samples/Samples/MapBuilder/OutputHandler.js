@@ -20,6 +20,7 @@ var OutputHandler = (function () {
             output.blur();
             outputOptions.blur();
             window.scrollTo(0, document.body.scrollHeight);
+            $("#blockWrapper").height($("#builderPane").height());
         });
     }
     return OutputHandler;

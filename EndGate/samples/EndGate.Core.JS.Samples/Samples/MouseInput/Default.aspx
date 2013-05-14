@@ -26,8 +26,7 @@
         <div id="gameHolder" class="form-vertical well" style="height:400px;">
         </div>
     </div>
-</asp:Content>
-<asp:Content ID="Content3" ContentPlaceHolderID="Scripts" runat="server">
-    <script src="assetsMouseInput.js"></script>
-    <script src="mainMouseInput.js"></script>
+    
+    <script typescript="true" src="assetsMouseInput.js"></script>
+    <script typescript="true" src="mainMouseInput.js"></script>
 </asp:Content>

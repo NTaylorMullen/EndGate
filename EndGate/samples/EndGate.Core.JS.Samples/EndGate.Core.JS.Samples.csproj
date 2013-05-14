@@ -61,6 +61,11 @@
   <ItemGroup>
     <Content Include="Bootstrap\bootstrap.min.css" />
     <Content Include="Bootstrap\bootstrap.min.js" />
+    <Content Include="CodeMirror\codeloader.js" />
+    <Content Include="CodeMirror\codemirror.css" />
+    <Content Include="CodeMirror\codemirror.js" />
+    <Content Include="CodeMirror\javascript.js" />
+    <Content Include="CodeMirror\solarized.css" />
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -525,6 +530,9 @@
     <None Include="Properties\PublishProfiles\endgate-samples - Web Deploy.pubxml" />
     <Content Include="Samples\RawRPG\LoadMapHandler.js.map">
       <DependentUpon>LoadMapHandler.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MapBuilder\SetupManager.min.js.map">
+      <DependentUpon>SetupManager.js</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.0.0.intellisense.js" />
     <TypeScriptCompile Include="Samples\AnimatedSprites\assetsAnimatedSprites.ts" />

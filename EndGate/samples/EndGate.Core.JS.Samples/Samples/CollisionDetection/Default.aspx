@@ -22,8 +22,7 @@
         <div id="gameHolder" class="form-vertical well" style="height:400px;">
         </div>
     </div>
-</asp:Content>
-<asp:Content ID="Content3" ContentPlaceHolderID="Scripts" runat="server">
-    <script src="assetsCollisionDetection.js"></script>
-    <script src="mainCollisionDetection.js"></script>
+    
+    <script typescript="true" src="assetsCollisionDetection.js"></script>
+    <script typescript="true" src="mainCollisionDetection.js"></script>
 </asp:Content>

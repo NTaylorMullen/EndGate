@@ -31,12 +31,11 @@
         <div id="gameHolder" class="form-vertical well" style="height:400px;">
         </div>
     </div>
-</asp:Content>
-<asp:Content ID="Content3" ContentPlaceHolderID="Scripts" runat="server">
-    <script src="Knight.js"></script>
-    <script src="KnightAnimationHandler.js"></script>
-    <script src="Player.js"></script>
-    <script src="LoadMapHandler.js"></script>
-    <script src="RPG.js"></script>
-    <script src="Main.js"></script>
+    
+    <script typescript="true" src="Knight.js"></script>
+    <script typescript="true" src="KnightAnimationHandler.js"></script>
+    <script typescript="true" src="Player.js"></script>
+    <script typescript="true" src="LoadMapHandler.js"></script>
+    <script typescript="true" src="RPG.js"></script>
+    <script typescript="true" src="Main.js"></script>
 </asp:Content>

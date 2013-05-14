@@ -44,6 +44,8 @@ class OutputHandler {
             output.blur();
             outputOptions.blur();
             window.scrollTo(0, document.body.scrollHeight);
+
+            $("#blockWrapper").height($("#builderPane").height());
         });
     }
 

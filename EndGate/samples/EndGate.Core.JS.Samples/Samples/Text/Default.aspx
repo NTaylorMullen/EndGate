@@ -155,10 +155,9 @@
             </div>
         </div>
     </div>
-</asp:Content>
-<asp:Content ID="Content3" ContentPlaceHolderID="Scripts" runat="server">
+    
     <script src="../../Scripts/jquery-ui-1.10.2.js"></script>
-    <script src="assetsText.js"></script>
-    <script src="mainText.js"></script>
+    <script typescript="true" src="assetsText.js"></script>
+    <script typescript="true" src="mainText.js"></script>
 </asp:Content>
 

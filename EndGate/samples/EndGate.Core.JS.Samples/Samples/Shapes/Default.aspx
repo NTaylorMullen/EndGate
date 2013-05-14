@@ -116,9 +116,8 @@
         <div id="gameHolder" class="well span8" style="height: 446px; width: 678px;">
         </div>
     </div>
-</asp:Content>
-<asp:Content ID="Content3" ContentPlaceHolderID="Scripts" runat="server">
+    
     <script src="../../Scripts/jquery-ui-1.10.2.js"></script>
-    <script src="assetsShapes.js"></script>
-    <script src="mainShapes.js"></script>
+    <script typescript="true" src="assetsShapes.js"></script>
+    <script typescript="true" src="mainShapes.js"></script>
 </asp:Content>

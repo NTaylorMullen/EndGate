@@ -5,7 +5,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
     <title>EndGate JavaScript Samples</title>
-    <link href="~/Bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="<%: ResolveUrl("~/Bootstrap/bootstrap.min.css") %>" rel="stylesheet" />
+    <link href="<%: ResolveUrl("~/CodeMirror/codemirror.css") %>" rel="stylesheet" />
+    <link href="<%: ResolveUrl("~/CodeMirror/solarized.css") %>" rel="stylesheet" />
 
     <asp:ContentPlaceHolder ID="HeadContent" runat="server">
     </asp:ContentPlaceHolder>
@@ -26,15 +28,30 @@
     </div>
 
     <div class="container">
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="<%: ResolveUrl("~/Scripts/jquery-2.0.0.js") %>"></script>
+        <script src="<%: ResolveUrl("~/Bootstrap/bootstrap.min.js") %>"></script>
+        <script src="<%: ResolveUrl("~/Scripts/endgate.js") %>"></script>
+        <script src="<%: ResolveUrl("~/CodeMirror/codemirror.js") %>"></script>
+        <script src="<%: ResolveUrl("~/CodeMirror/javascript.js") %>"></script>
+
         <asp:ContentPlaceHolder ID="MainContent" runat="server">
         </asp:ContentPlaceHolder>
+
+        <div id="codeArea">
+            <h3>Code</h3>
+            <div class="row" style="position: relative;">
+                <div id="_fileContent" style="margin-left: 0px; margin-bottom: 150px;">
+                </div>
+                <div class="well" style="position: absolute; top: 0; padding: 8px;">
+                    <ul class="nav nav-list" id="_fileList">
+                        <li class="nav-header">File List</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <script src="<%: ResolveUrl("~/CodeMirror/codeloader.js") %>"></script>
     </div>
-
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="<%: ResolveUrl("~/Scripts/jquery-2.0.0.js") %>"></script>
-    <script src="<%: ResolveUrl("~/Bootstrap/bootstrap.min.js") %>"></script>
-    <script src="<%: ResolveUrl("~/Scripts/endgate.js") %>"></script>
-
-    <asp:ContentPlaceHolder runat="server" ID="Scripts"></asp:ContentPlaceHolder>
 </body>
 </html>

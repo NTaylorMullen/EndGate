@@ -21,6 +21,7 @@ class SetupManager {
         mapBuilderUtilities.width(mapBuilderCanvas.width + spriteSheetViewerCanvas.width + 38);
 
         setupPane.find("#createMap").click(() => {
+            $("#blockWrapper").height($("#builderPane").height());
             this._spriteSheetViewer = new SpriteSheetViewer(spriteSheetViewerCanvas, $("#spriteSheetUrl").val(), parseFloat(tileSizeWidth.val()), parseFloat(tileSizeHeight.val()));
             this._mapBuilder = new MapBuilder(mapBuilderCanvas, mapBuilderUtilities, this._spriteSheetViewer, parseInt(dimensionRows.val()), parseInt(dimensionColumns.val()), parseFloat(tileSizeWidth.val()), parseFloat(tileSizeHeight.val()));
 
@@ -66,17 +67,15 @@ class SetupManager {
 
             setupPane.addClass("hide");
             builderPane.removeClass("hide");
-        });
-
-        //loadMap.click();
-        //setupPane.find("#createMap").click();
+        });        
     }
 
     private Initialize(settings: ISettings, spriteSheetViewerCanvas: HTMLCanvasElement, mapBuilderCanvas: HTMLCanvasElement, mapBuilderUtilities: JQuery): void {
+        $("#blockWrapper").height($("#builderPane").height());
         this._spriteSheetViewer = new SpriteSheetViewer(spriteSheetViewerCanvas, settings.SpriteSheetUrl, settings.TileSize.Width, settings.TileSize.Height,
         () => {
             this._mapBuilder = new MapBuilder(mapBuilderCanvas, mapBuilderUtilities, this._spriteSheetViewer, settings.Rows, settings.Columns, settings.TileSize.Width, settings.TileSize.Height);
-            this._mapBuilder.LoadLayersFromResourceMaps(settings.Layers);
+            this._mapBuilder.LoadLayersFromResourceMaps(settings.Layers);            
         });
     }
 }

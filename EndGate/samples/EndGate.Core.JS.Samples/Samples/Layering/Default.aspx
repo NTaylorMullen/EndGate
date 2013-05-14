@@ -38,8 +38,8 @@
         <div id="gameHolder" class="form-vertical well" style="height:400px;">
         </div>
     </div>
-</asp:Content>
-<asp:Content ID="Content3" ContentPlaceHolderID="Scripts" runat="server">
-    <script src="assetsLayering.js"></script>
-    <script src="mainLayering.js"></script>
+    
+    <script typescript="true" src="assetsLayering.js"></script>
+    <script typescript="true" src="mainLayering.js"></script>
+
 </asp:Content>

@@ -27,8 +27,7 @@
         <div id="gameHolder" class="form-vertical well" style="height:400px;">
         </div>
     </div>
-</asp:Content>
-<asp:Content ID="Content3" ContentPlaceHolderID="Scripts" runat="server">
-    <script src="assetsCamera.js"></script>
-    <script src="mainCamera.js"></script>
+    
+    <script typescript="true" src="assetsCamera.js"></script>
+    <script typescript="true" src="mainCamera.js"></script>
 </asp:Content>

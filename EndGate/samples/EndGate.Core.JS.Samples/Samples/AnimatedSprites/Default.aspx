@@ -27,8 +27,8 @@
     </div>
 
     <p class="row">Image <a href="images/attribution.txt" target="_blank">attribution</a>.</p>
-</asp:Content>
-<asp:Content ID="Content3" ContentPlaceHolderID="Scripts" runat="server">
-    <script src="assetsAnimatedSprites.js"></script>
-    <script src="mainAnimatedSprites.js"></script>
+
+    <script typescript="true" src="assetsAnimatedSprites.js"></script>
+    <script typescript="true" src="mainAnimatedSprites.js"></script>
+
 </asp:Content>

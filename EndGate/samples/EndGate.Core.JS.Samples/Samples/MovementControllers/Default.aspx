@@ -26,8 +26,7 @@
         <div id="gameHolder" class="form-vertical well" style="height:400px;">
         </div>
     </div>
-</asp:Content>
-<asp:Content ID="Content3" ContentPlaceHolderID="Scripts" runat="server">
-    <script src="assetsMovementControllers.js"></script>
-    <script src="mainMovementControllers.js"></script>
+    
+    <script typescript="true" src="assetsMovementControllers.js"></script>
+    <script typescript="true" src="mainMovementControllers.js"></script>
 </asp:Content>
