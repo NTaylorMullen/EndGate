@@ -42,7 +42,7 @@ class SpriteSheetViewer extends eg.Game {
 
             for (var i = 0; i < this.VisibleGrid.Rows(); i++) {
                 for (var j = 0; j < this.VisibleGrid.Columns(); j++) {
-                    this.VisibleGrid.Fill(i + 1, j + 1, new eg.Graphics.Sprite2d(0, 0, this.ActiveSpriteSheet.Extract(j * this._tileWidth, i * this._tileHeight, this._tileWidth, this._tileHeight)));
+                    this.VisibleGrid.Fill(i, j, new eg.Graphics.Sprite2d(0, 0, this.ActiveSpriteSheet.Extract(j * this._tileWidth, i * this._tileHeight, this._tileWidth, this._tileHeight)));
                 }
             }
 

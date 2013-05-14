@@ -29,7 +29,7 @@ var SpriteSheetViewer = (function (_super) {
             _this.VisibleGrid = new eg.Graphics.Grid(_this.Scene.DrawArea.width / 2, _this.Scene.DrawArea.height / 2, Math.floor(_this.ActiveSpriteSheet.ClipSize.Height / _this._tileHeight), Math.floor(_this.ActiveSpriteSheet.ClipSize.Width / _this._tileWidth), _this._tileWidth, _this._tileHeight, true);
             for(var i = 0; i < _this.VisibleGrid.Rows(); i++) {
                 for(var j = 0; j < _this.VisibleGrid.Columns(); j++) {
-                    _this.VisibleGrid.Fill(i + 1, j + 1, new eg.Graphics.Sprite2d(0, 0, _this.ActiveSpriteSheet.Extract(j * _this._tileWidth, i * _this._tileHeight, _this._tileWidth, _this._tileHeight)));
+                    _this.VisibleGrid.Fill(i, j, new eg.Graphics.Sprite2d(0, 0, _this.ActiveSpriteSheet.Extract(j * _this._tileWidth, i * _this._tileHeight, _this._tileWidth, _this._tileHeight)));
                 }
             }
             if(createTileSelector) {

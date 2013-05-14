@@ -55,11 +55,11 @@ var TileSelector = (function () {
     TileSelector.prototype.GetSpaceSelection = function (rowStart, columnStart, rowEnd, columnEnd) {
         var space = [], rowIncrementor = (rowEnd >= rowStart) ? 1 : -1, columnIncrementor = (columnEnd >= columnStart) ? 1 : -1;
         for(var i = rowStart; i !== rowEnd + rowIncrementor; i += rowIncrementor) {
-            if(i > this._grid.Rows()) {
+            if(i >= this._grid.Rows()) {
                 break;
             }
             for(var j = columnStart; j !== columnEnd + columnIncrementor; j += columnIncrementor) {
-                if(j > this._grid.Rows()) {
+                if(j >= this._grid.Rows()) {
                     break;
                 }
                 space.push(new GridEntry(i, j));

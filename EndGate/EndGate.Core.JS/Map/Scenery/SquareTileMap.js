@@ -45,7 +45,7 @@ var EndGate;
                         }
                     }
                 }
-                this._grid.FillSpace(1, 1, tiles);
+                this._grid.FillSpace(0, 0, tiles);
             };
             return SquareTileMap;
         })(Map.TileMap);

@@ -22,7 +22,7 @@ class LoadMapHandler {
             maps: { [name: string]: ISettings; },
             activeTileMaps: eg.Map.SquareTileMap[] = [];
 
-        if (strMaps.length > 0) {
+        if (strMaps && strMaps.length > 0) {
             maps = JSON.parse(strMaps);
         }
         else {

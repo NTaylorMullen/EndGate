@@ -61,22 +61,22 @@ var MapBuilder = (function (_super) {
         return addedLayer;
     };
     MapBuilder.prototype.BuildResourceMap = function (grid) {
-        var resources = this._spriteSheetViewer.VisibleGrid.GetSpace(1, 1, this._spriteSheetViewer.VisibleGrid.Rows(), this._spriteSheetViewer.VisibleGrid.Columns()), rows = grid.Rows(), columns = grid.Columns(), tile, resourceMap = [];
-        for(var i = 1; i <= rows; i++) {
-            resourceMap[i - 1] = [];
-            for(var j = 1; j <= columns; j++) {
+        var resources = this._spriteSheetViewer.VisibleGrid.GetSpace(0, 0, this._spriteSheetViewer.VisibleGrid.Rows() - 1, this._spriteSheetViewer.VisibleGrid.Columns() - 1), rows = grid.Rows(), columns = grid.Columns(), tile, resourceMap = [];
+        for(var i = 0; i < rows; i++) {
+            resourceMap[i] = [];
+            for(var j = 0; j < columns; j++) {
                 tile = grid.Get(i, j);
                 if(tile) {
-                    resourceMap[i - 1][j - 1] = this.FindResource(tile.Image, resources);
+                    resourceMap[i][j] = this.FindResource(tile.Image, resources);
                 } else {
-                    resourceMap[i - 1][j - 1] = -1;
+                    resourceMap[i][j] = -1;
                 }
             }
         }
         return resourceMap;
     };
     MapBuilder.prototype.LoadLayersFromResourceMaps = function (resourceMaps) {
-        var resources = this._spriteSheetViewer.VisibleGrid.GetSpace(1, 1, this._spriteSheetViewer.VisibleGrid.Rows(), this._spriteSheetViewer.VisibleGrid.Columns()), grid, currentLayer, originalLayer = this._layers[0].Layer;
+        var resources = this._spriteSheetViewer.VisibleGrid.GetSpace(0, 0, this._spriteSheetViewer.VisibleGrid.Rows() - 1, this._spriteSheetViewer.VisibleGrid.Columns() - 1), grid, currentLayer, originalLayer = this._layers[0].Layer;
         this.Scene.Remove(originalLayer);
         this._layersSelect.html("");
         this._layers = [];
@@ -86,7 +86,7 @@ var MapBuilder = (function (_super) {
             for(var row = 0; row < resourceMaps[i].Layer.length; row++) {
                 for(var column = 0; column < resourceMaps[i].Layer[row].length; column++) {
                     if(resourceMaps[i].Layer[row][column] !== -1) {
-                        grid.Fill(row + 1, column + 1, new eg.Graphics.Sprite2d(0, 0, resources[resourceMaps[i].Layer[row][column]].Image, this._tileWidth, this._tileHeight));
+                        grid.Fill(row, column, new eg.Graphics.Sprite2d(0, 0, resources[resourceMaps[i].Layer[row][column]].Image, this._tileWidth, this._tileHeight));
                     }
                 }
             }

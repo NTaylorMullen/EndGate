@@ -92,8 +92,6 @@ module EndGate.Graphics {
                 return;
             }
 
-            row--;
-            column--;
             graphic.Position = this.GetInsideGridPosition(row, column);
 
             this._grid[row][column] = graphic;
@@ -102,9 +100,6 @@ module EndGate.Graphics {
 
         public FillSpace(row: number, column: number, graphicList: Abstractions.Graphic2d[][]): void {
             var graphic: Abstractions.Graphic2d;
-
-            row--;
-            column--;
 
             for (var i = 0; i < graphicList.length; i++) {
                 for (var j = 0; j < graphicList[i].length; j++) {
@@ -122,8 +117,6 @@ module EndGate.Graphics {
         public FillRow(row: number, graphicList: Abstractions.Graphic2d[], offset?: number = 0): void {
             var graphic: Abstractions.Graphic2d;
 
-            row--;
-
             for (var i = 0; i < graphicList.length; i++) {
                 graphic = graphicList[i];
                 graphic.Position = this.GetInsideGridPosition(row, i + offset);
@@ -135,8 +128,6 @@ module EndGate.Graphics {
 
         public FillColumn(column: number, graphicList: Abstractions.Graphic2d[], offset?: number = 0): void {
             var graphic: Abstractions.Graphic2d;
-
-            column--;
 
             for (var i = 0; i < graphicList.length; i++) {
                 graphic = graphicList[i];
@@ -152,13 +143,11 @@ module EndGate.Graphics {
                 return null;
             }
 
-            return this._grid[row - 1][column - 1];
+            return this._grid[row][column];
         }
 
         public GetColumn(column: number): Abstractions.Graphic2d[]{
             var columnList: Abstractions.Graphic2d[] = [];
-
-            column--;
 
             for (var i = 0; i < this._rows; i++) {
                 columnList.push(this._grid[i][column]);
@@ -169,8 +158,6 @@ module EndGate.Graphics {
 
         public GetRow(row: number): Abstractions.Graphic2d[] {
             var rowList: Abstractions.Graphic2d[] = [];
-
-            row--;
 
             for (var i = 0; i < this._columns; i++) {
                 rowList.push(this._grid[row][i]);
@@ -185,16 +172,16 @@ module EndGate.Graphics {
                 columnIncrementor = (columnEnd >= columnStart) ? 1 : -1;
 
             for (var i = rowStart; i !== rowEnd + rowIncrementor; i += rowIncrementor) {
-                if (i > this._rows) {
+                if (i >= this._rows) {
                     break;
                 }
 
                 for (var j = columnStart; j !== columnEnd + columnIncrementor; j += columnIncrementor) {
-                    if (j > this._columns) {
+                    if (j >= this._columns) {
                         break;
                     }
 
-                    space.push(this._grid[i - 1][j - 1]);
+                    space.push(this._grid[i][j]);
                 }
             }
 
@@ -206,9 +193,9 @@ module EndGate.Graphics {
                 return null;
             }
             
-            var val = this._grid[row - 1][column - 1];
+            var val = this._grid[row][column];
 
-            this._grid[row - 1][column - 1] = null;
+            this._grid[row][column] = null;
             this.RemoveChild(val);
 
             return val;
@@ -216,8 +203,6 @@ module EndGate.Graphics {
 
         public ClearRow(row: number): Abstractions.Graphic2d[] {
             var vals: Abstractions.Graphic2d[] = [];
-
-            row--;
 
             for (var i = 0; i < this._columns; i++) {
                 vals.push(this._grid[row][i]);
@@ -230,8 +215,6 @@ module EndGate.Graphics {
 
         public ClearColumn(column: number): Abstractions.Graphic2d[] {
             var vals: Abstractions.Graphic2d[] = [];
-
-            column--;
 
             for (var i = 0; i < this._rows; i++) {
                 vals.push(this._grid[i][column]);
@@ -257,9 +240,9 @@ module EndGate.Graphics {
                         break;
                     }
 
-                    space.push(this._grid[i - 1][j - 1]);
-                    this.RemoveChild(this._grid[i - 1][j - 1]);
-                    this._grid[i - 1][j - 1] = null;
+                    space.push(this._grid[i][j]);
+                    this.RemoveChild(this._grid[i][j]);
+                    this._grid[i][j] = null;
                 }
             }
 
@@ -289,11 +272,11 @@ module EndGate.Graphics {
         }
 
         public ConvertToRow(y: number): number {
-            return Math.floor(1 + (y - (this.Position.Y - this._size.HalfHeight())) / this._tileSize.Height);
+            return Math.floor((y - (this.Position.Y - this._size.HalfHeight())) / this._tileSize.Height);
         }
 
         public ConvertToColumn(x: number): number {
-            return Math.floor(1 + (x - (this.Position.X - this._size.HalfWidth())) / this._tileSize.Width);
+            return Math.floor((x - (this.Position.X - this._size.HalfWidth())) / this._tileSize.Width);
         }
 
         private GetInsideGridPosition(row: number, column: number): Vector2d {
@@ -301,11 +284,11 @@ module EndGate.Graphics {
         }
 
         private ValidRow(row: number): bool {
-            return row > 0 && row <= this._rows;
+            return row >= 0 && row < this._rows;
         }
 
         private ValidColumn(column: number): bool {
-            return column > 0 && column <= this._columns;
+            return column >= 0 && column < this._columns;
         }
     }
 

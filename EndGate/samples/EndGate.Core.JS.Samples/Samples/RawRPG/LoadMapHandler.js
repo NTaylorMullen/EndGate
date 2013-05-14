@@ -1,7 +1,7 @@
 var LoadMapHandler = (function () {
     function LoadMapHandler(sceneryHandler, centerPosition, defaultRows, defaultColumns, defaultTileSize, spriteSheetUrl, defaultLayer) {
         var savedMaps = $("#savedMaps"), loadMap = $("#loadMap"), strMaps = localStorage.getItem("mapBuilder"), maps, activeTileMaps = [];
-        if(strMaps.length > 0) {
+        if(strMaps && strMaps.length > 0) {
             maps = JSON.parse(strMaps);
         } else {
             maps = {

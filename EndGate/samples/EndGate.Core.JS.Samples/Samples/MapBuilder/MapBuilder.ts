@@ -84,22 +84,22 @@ class MapBuilder extends eg.Game {
     }
 
     public BuildResourceMap(grid: eg.Graphics.Grid): number[][] {
-        var resources = <eg.Graphics.Sprite2d[]>this._spriteSheetViewer.VisibleGrid.GetSpace(1, 1, this._spriteSheetViewer.VisibleGrid.Rows(), this._spriteSheetViewer.VisibleGrid.Columns()),
+        var resources = <eg.Graphics.Sprite2d[]>this._spriteSheetViewer.VisibleGrid.GetSpace(0, 0, this._spriteSheetViewer.VisibleGrid.Rows()-1, this._spriteSheetViewer.VisibleGrid.Columns()-1),
             rows = grid.Rows(),
             columns = grid.Columns(),
             tile: eg.Graphics.Sprite2d,
             resourceMap: number[][] = [];
 
-        for (var i = 1; i <= rows; i++) {
-            resourceMap[i - 1] = [];
-            for (var j = 1; j <= columns; j++) {
+        for (var i = 0; i < rows; i++) {
+            resourceMap[i] = [];
+            for (var j = 0; j < columns; j++) {
                 tile = <eg.Graphics.Sprite2d>grid.Get(i, j);
 
                 if (tile) {
-                    resourceMap[i-1][j-1] = this.FindResource(tile.Image, resources);
+                    resourceMap[i][j] = this.FindResource(tile.Image, resources);
                 }
                 else {
-                    resourceMap[i-1][j-1] = -1;
+                    resourceMap[i][j] = -1;
                 }
             }
         }
@@ -108,7 +108,7 @@ class MapBuilder extends eg.Game {
     }
 
     public LoadLayersFromResourceMaps(resourceMaps: ILayerMap[]) {
-        var resources = <eg.Graphics.Sprite2d[]>this._spriteSheetViewer.VisibleGrid.GetSpace(1, 1, this._spriteSheetViewer.VisibleGrid.Rows(), this._spriteSheetViewer.VisibleGrid.Columns()),
+        var resources = <eg.Graphics.Sprite2d[]>this._spriteSheetViewer.VisibleGrid.GetSpace(0, 0, this._spriteSheetViewer.VisibleGrid.Rows() - 1, this._spriteSheetViewer.VisibleGrid.Columns() - 1),
             grid: eg.Graphics.Grid,
             currentLayer: ILayer,
             originalLayer: eg.Graphics.Grid = this._layers[0].Layer;
@@ -124,7 +124,7 @@ class MapBuilder extends eg.Game {
             for (var row = 0; row < resourceMaps[i].Layer.length; row++) {
                 for (var column = 0; column < resourceMaps[i].Layer[row].length; column++) {
                     if (resourceMaps[i].Layer[row][column] !== -1) {
-                        grid.Fill(row + 1, column + 1, new eg.Graphics.Sprite2d(0, 0, resources[resourceMaps[i].Layer[row][column]].Image, this._tileWidth, this._tileHeight));
+                        grid.Fill(row, column, new eg.Graphics.Sprite2d(0, 0, resources[resourceMaps[i].Layer[row][column]].Image, this._tileWidth, this._tileHeight));
                     }
                 }
             }

@@ -2974,16 +2974,12 @@ var EndGate;
                 if(!this.ValidRow(row) || !this.ValidColumn(column)) {
                     return;
                 }
-                row--;
-                column--;
                 graphic.Position = this.GetInsideGridPosition(row, column);
                 this._grid[row][column] = graphic;
                 this.AddChild(graphic);
             };
             Grid.prototype.FillSpace = function (row, column, graphicList) {
                 var graphic;
-                row--;
-                column--;
                 for(var i = 0; i < graphicList.length; i++) {
                     for(var j = 0; j < graphicList[i].length; j++) {
                         graphic = graphicList[i][j];
@@ -2998,7 +2994,6 @@ var EndGate;
             Grid.prototype.FillRow = function (row, graphicList, offset) {
                 if (typeof offset === "undefined") { offset = 0; }
                 var graphic;
-                row--;
                 for(var i = 0; i < graphicList.length; i++) {
                     graphic = graphicList[i];
                     graphic.Position = this.GetInsideGridPosition(row, i + offset);
@@ -3009,7 +3004,6 @@ var EndGate;
             Grid.prototype.FillColumn = function (column, graphicList, offset) {
                 if (typeof offset === "undefined") { offset = 0; }
                 var graphic;
-                column--;
                 for(var i = 0; i < graphicList.length; i++) {
                     graphic = graphicList[i];
                     graphic.Position = this.GetInsideGridPosition(i + offset, column);
@@ -3021,11 +3015,10 @@ var EndGate;
                 if(!this.ValidRow(row) || !this.ValidColumn(column)) {
                     return null;
                 }
-                return this._grid[row - 1][column - 1];
+                return this._grid[row][column];
             };
             Grid.prototype.GetColumn = function (column) {
                 var columnList = [];
-                column--;
                 for(var i = 0; i < this._rows; i++) {
                     columnList.push(this._grid[i][column]);
                 }
@@ -3033,7 +3026,6 @@ var EndGate;
             };
             Grid.prototype.GetRow = function (row) {
                 var rowList = [];
-                row--;
                 for(var i = 0; i < this._columns; i++) {
                     rowList.push(this._grid[row][i]);
                 }
@@ -3042,14 +3034,14 @@ var EndGate;
             Grid.prototype.GetSpace = function (rowStart, columnStart, rowEnd, columnEnd) {
                 var space = [], rowIncrementor = (rowEnd >= rowStart) ? 1 : -1, columnIncrementor = (columnEnd >= columnStart) ? 1 : -1;
                 for(var i = rowStart; i !== rowEnd + rowIncrementor; i += rowIncrementor) {
-                    if(i > this._rows) {
+                    if(i >= this._rows) {
                         break;
                     }
                     for(var j = columnStart; j !== columnEnd + columnIncrementor; j += columnIncrementor) {
-                        if(j > this._columns) {
+                        if(j >= this._columns) {
                             break;
                         }
-                        space.push(this._grid[i - 1][j - 1]);
+                        space.push(this._grid[i][j]);
                     }
                 }
                 return space;
@@ -3058,14 +3050,13 @@ var EndGate;
                 if(!this.ValidRow(row) || !this.ValidColumn(column)) {
                     return null;
                 }
-                var val = this._grid[row - 1][column - 1];
-                this._grid[row - 1][column - 1] = null;
+                var val = this._grid[row][column];
+                this._grid[row][column] = null;
                 this.RemoveChild(val);
                 return val;
             };
             Grid.prototype.ClearRow = function (row) {
                 var vals = [];
-                row--;
                 for(var i = 0; i < this._columns; i++) {
                     vals.push(this._grid[row][i]);
                     this.RemoveChild(this._grid[row][i]);
@@ -3075,7 +3066,6 @@ var EndGate;
             };
             Grid.prototype.ClearColumn = function (column) {
                 var vals = [];
-                column--;
                 for(var i = 0; i < this._rows; i++) {
                     vals.push(this._grid[i][column]);
                     this.RemoveChild(this._grid[i][column]);
@@ -3093,9 +3083,9 @@ var EndGate;
                         if(j > this._columns) {
                             break;
                         }
-                        space.push(this._grid[i - 1][j - 1]);
-                        this.RemoveChild(this._grid[i - 1][j - 1]);
-                        this._grid[i - 1][j - 1] = null;
+                        space.push(this._grid[i][j]);
+                        this.RemoveChild(this._grid[i][j]);
+                        this._grid[i][j] = null;
                     }
                 }
                 return space;
@@ -3117,19 +3107,19 @@ var EndGate;
                 return bounds;
             };
             Grid.prototype.ConvertToRow = function (y) {
-                return Math.floor(1 + (y - (this.Position.Y - this._size.HalfHeight())) / this._tileSize.Height);
+                return Math.floor((y - (this.Position.Y - this._size.HalfHeight())) / this._tileSize.Height);
             };
             Grid.prototype.ConvertToColumn = function (x) {
-                return Math.floor(1 + (x - (this.Position.X - this._size.HalfWidth())) / this._tileSize.Width);
+                return Math.floor((x - (this.Position.X - this._size.HalfWidth())) / this._tileSize.Width);
             };
             Grid.prototype.GetInsideGridPosition = function (row, column) {
                 return new EndGate.Vector2d(column * this._tileSize.Width - this._size.HalfWidth() + this._tileSize.HalfWidth(), row * this._tileSize.Height - this._size.HalfHeight() + this._tileSize.HalfHeight());
             };
             Grid.prototype.ValidRow = function (row) {
-                return row > 0 && row <= this._rows;
+                return row >= 0 && row < this._rows;
             };
             Grid.prototype.ValidColumn = function (column) {
-                return column > 0 && column <= this._columns;
+                return column >= 0 && column < this._columns;
             };
             return Grid;
         })(Graphics.Abstractions.Graphic2d);
@@ -3208,7 +3198,7 @@ var EndGate;
                         }
                     }
                 }
-                this._grid.FillSpace(1, 1, tiles);
+                this._grid.FillSpace(0, 0, tiles);
             };
             return SquareTileMap;
         })(Map.TileMap);
