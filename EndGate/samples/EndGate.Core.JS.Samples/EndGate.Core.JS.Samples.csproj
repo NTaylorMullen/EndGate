@@ -131,19 +131,56 @@
     <Content Include="Default.aspx" />
     <Content Include="packages.config" />
     <Content Include="EndGate.Core.JS.Samples.Master" />
-    <Content Include="Samples\AnimatedSprites\assetsAnimatedSprites.js">
-      <DependentUpon>assetsAnimatedSprites.ts</DependentUpon>
+    <TypeScriptCompile Include="Samples\AnimatedSprites\Animation.ts" />
+    <TypeScriptCompile Include="Samples\AnimatedSprites\AnimatedSprites.ts" />
+    <Content Include="Samples\AnimatedSprites\AnimatedSprites.js">
+      <DependentUpon>AnimatedSprites.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\AnimatedSprites\assetsAnimatedSprites.min.js">
-      <DependentUpon>assetsAnimatedSprites.ts</DependentUpon>
+    <Content Include="Samples\AnimatedSprites\AnimatedSprites.min.js">
+      <DependentUpon>AnimatedSprites.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\AnimatedSprites\Animation.js">
+      <DependentUpon>Animation.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\AnimatedSprites\Animation.min.js">
+      <DependentUpon>Animation.ts</DependentUpon>
     </Content>
     <Content Include="Samples\AnimatedSprites\Default.aspx" />
-    <Content Include="Samples\AnimatedSprites\images\Thumbs.db" />
-    <Content Include="Samples\AnimatedSprites\mainAnimatedSprites.js">
-      <DependentUpon>mainAnimatedSprites.ts</DependentUpon>
+    <TypeScriptCompile Include="Samples\AnimatedSprites\FireExplosion.ts" />
+    <TypeScriptCompile Include="Samples\AnimatedSprites\ElectricPulse.ts" />
+    <Content Include="Samples\AnimatedSprites\ElectricPulse.js">
+      <DependentUpon>ElectricPulse.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\AnimatedSprites\mainAnimatedSprites.min.js">
-      <DependentUpon>mainAnimatedSprites.ts</DependentUpon>
+    <TypeScriptCompile Include="Samples\AnimatedSprites\ElectricPulseManager.ts" />
+    <Content Include="Samples\AnimatedSprites\ElectricPulse.min.js">
+      <DependentUpon>ElectricPulse.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\AnimatedSprites\ElectricPulseManager.js">
+      <DependentUpon>ElectricPulseManager.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\AnimatedSprites\ElectricPulseManager.min.js">
+      <DependentUpon>ElectricPulseManager.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\AnimatedSprites\FireExplosion.js">
+      <DependentUpon>FireExplosion.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Samples\AnimatedSprites\FireExplosionManager.ts" />
+    <Content Include="Samples\AnimatedSprites\FireExplosion.min.js">
+      <DependentUpon>FireExplosion.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\AnimatedSprites\FireExplosionManager.js">
+      <DependentUpon>FireExplosionManager.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\AnimatedSprites\FireExplosionManager.min.js">
+      <DependentUpon>FireExplosionManager.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\AnimatedSprites\images\Thumbs.db" />
+    <TypeScriptCompile Include="Samples\AnimatedSprites\Main.ts" />
+    <Content Include="Samples\AnimatedSprites\Main.js">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\AnimatedSprites\Main.min.js">
+      <DependentUpon>Main.ts</DependentUpon>
     </Content>
     <Content Include="Samples\AudioHandling\assetsAudioHandling.js">
       <DependentUpon>assetsAudioHandling.ts</DependentUpon>
@@ -397,12 +434,6 @@
       <DependentUpon>assetsSprites.ts</DependentUpon>
     </Content>
     <Content Include="Samples\Sprites\Default.aspx" />
-    <Content Include="Samples\AnimatedSprites\assetsAnimatedSprites.js.map">
-      <DependentUpon>assetsAnimatedSprites.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\AnimatedSprites\mainAnimatedSprites.js.map">
-      <DependentUpon>mainAnimatedSprites.ts</DependentUpon>
-    </Content>
     <Content Include="Samples\AudioHandling\assetsAudioHandling.js.map">
       <DependentUpon>assetsAudioHandling.ts</DependentUpon>
     </Content>
@@ -534,12 +565,31 @@
     <Content Include="Samples\MapBuilder\SetupManager.min.js.map">
       <DependentUpon>SetupManager.js</DependentUpon>
     </Content>
+    <Content Include="Samples\AnimatedSprites\Animation.js.map">
+      <DependentUpon>Animation.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\AnimatedSprites\FireExplosion.js.map">
+      <DependentUpon>FireExplosion.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\AnimatedSprites\ElectricPulse.js.map">
+      <DependentUpon>ElectricPulse.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\AnimatedSprites\ElectricPulseManager.js.map">
+      <DependentUpon>ElectricPulseManager.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\AnimatedSprites\FireExplosionManager.js.map">
+      <DependentUpon>FireExplosionManager.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\AnimatedSprites\AnimatedSprites.js.map">
+      <DependentUpon>AnimatedSprites.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\AnimatedSprites\Main.js.map">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-2.0.0.intellisense.js" />
-    <TypeScriptCompile Include="Samples\AnimatedSprites\assetsAnimatedSprites.ts" />
     <Content Include="Samples\AnimatedSprites\images\attribution.txt" />
     <Content Include="Samples\AnimatedSprites\images\electric_pulse.png" />
     <Content Include="Samples\AnimatedSprites\images\fire_explosion.png" />
-    <TypeScriptCompile Include="Samples\AnimatedSprites\mainAnimatedSprites.ts" />
     <TypeScriptCompile Include="Samples\AudioHandling\assetsAudioHandling.ts" />
     <Content Include="Samples\AudioHandling\images\attribution.txt" />
     <Content Include="Samples\AudioHandling\images\burning_flame.png" />
