@@ -224,18 +224,31 @@
     </Content>
     <Content Include="Samples\AudioHandling\sounds\fireburning.ogg" />
     <Content Include="Samples\AudioHandling\sounds\smokepoof.ogg" />
-    <Content Include="Samples\Camera\assetsCamera.js">
-      <DependentUpon>assetsCamera.ts</DependentUpon>
+    <TypeScriptCompile Include="Samples\Camera\CameraMover.ts" />
+    <Content Include="Samples\Camera\CameraMover.js">
+      <DependentUpon>CameraMover.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\Camera\assetsCamera.min.js">
-      <DependentUpon>assetsCamera.ts</DependentUpon>
+    <Content Include="Samples\Camera\CameraMover.min.js">
+      <DependentUpon>CameraMover.ts</DependentUpon>
     </Content>
     <Content Include="Samples\Camera\Default.aspx" />
-    <Content Include="Samples\Camera\mainCamera.js">
-      <DependentUpon>mainCamera.ts</DependentUpon>
+    <TypeScriptCompile Include="Samples\Camera\Main.ts" />
+    <Content Include="Samples\Camera\Main.js">
+      <DependentUpon>Main.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\Camera\mainCamera.min.js">
-      <DependentUpon>mainCamera.ts</DependentUpon>
+    <Content Include="Samples\Camera\Main.min.js">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Samples\Camera\MovingDirection.ts" />
+    <Content Include="Samples\Camera\MovingDirection.js">
+      <DependentUpon>MovingDirection.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Samples\Camera\World.ts" />
+    <Content Include="Samples\Camera\World.js">
+      <DependentUpon>World.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\Camera\World.min.js">
+      <DependentUpon>World.ts</DependentUpon>
     </Content>
     <Content Include="Samples\CollisionDetection\assetsCollisionDetection.js">
       <DependentUpon>assetsCollisionDetection.ts</DependentUpon>
@@ -461,12 +474,6 @@
       <DependentUpon>assetsSprites.ts</DependentUpon>
     </Content>
     <Content Include="Samples\Sprites\Default.aspx" />
-    <Content Include="Samples\Camera\assetsCamera.js.map">
-      <DependentUpon>assetsCamera.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\Camera\mainCamera.js.map">
-      <DependentUpon>mainCamera.ts</DependentUpon>
-    </Content>
     <Content Include="Samples\CollisionDetection\assetsCollisionDetection.js.map">
       <DependentUpon>assetsCollisionDetection.ts</DependentUpon>
     </Content>
@@ -622,6 +629,15 @@
     <Content Include="Samples\AudioHandling\AudioHandling.js.map">
       <DependentUpon>AudioHandling.ts</DependentUpon>
     </Content>
+    <Content Include="Samples\Camera\CameraMover.js.map">
+      <DependentUpon>CameraMover.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\Camera\Main.js.map">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\Camera\World.js.map">
+      <DependentUpon>World.ts</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-2.0.0.intellisense.js" />
     <Content Include="Samples\AnimatedSprites\images\attribution.txt" />
     <Content Include="Samples\AnimatedSprites\images\electric_pulse.png" />
@@ -632,8 +648,6 @@
     <Content Include="Samples\AudioHandling\sounds\attribution.txt" />
     <Content Include="Samples\AudioHandling\sounds\fireburning.mp3" />
     <Content Include="Samples\AudioHandling\sounds\smokepoof.mp3" />
-    <TypeScriptCompile Include="Samples\Camera\assetsCamera.ts" />
-    <TypeScriptCompile Include="Samples\Camera\mainCamera.ts" />
     <TypeScriptCompile Include="Samples\CollisionDetection\assetsCollisionDetection.ts" />
     <TypeScriptCompile Include="Samples\CollisionDetection\mainCollisionDetection.ts" />
     <TypeScriptCompile Include="Samples\CollisionInspector\assetsCollisionInspector.ts" />

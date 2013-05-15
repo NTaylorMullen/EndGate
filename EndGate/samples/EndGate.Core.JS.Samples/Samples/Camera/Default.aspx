@@ -28,6 +28,8 @@
         </div>
     </div>
     
-    <script typescript="true" src="assetsCamera.js"></script>
-    <script typescript="true" src="mainCamera.js"></script>
+    <script typescript="true" src="World.js"></script>
+    <script typescript="true" src="MovingDirection.js"></script>
+    <script typescript="true" src="CameraMover.js"></script>
+    <script typescript="true" src="Main.js"></script>
 </asp:Content>

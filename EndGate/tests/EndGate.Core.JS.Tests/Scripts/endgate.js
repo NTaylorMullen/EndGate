@@ -1766,7 +1766,7 @@ var EndGate;
             AudioClip.prototype.IsPlaying = function () {
                 return !this._audio.paused;
             };
-            AudioClip.prototype.Complete = function () {
+            AudioClip.prototype.IsComplete = function () {
                 return this._audio.ended;
             };
             AudioClip.prototype.Play = function () {

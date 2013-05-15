@@ -35,7 +35,9 @@ var CameraMover = (function (_super) {
         ];
         this._cameraPositionHolder = cameraPositionHolder;
         this._cameraDistanceHolder = cameraDistanceHolder;
+        this._world = new World(this.Scene);
         this._cameraLocation = new eg.Graphics.Circle(this.Scene.Camera.Position.X, this.Scene.Camera.Position.Y, 5, "black");
+        this.Scene.Add(this._cameraLocation);
         this._movingDirection = new MovingDirection();
         this.BindKeys(this._upKeys, "OnCommandDown", "Up", true);
         this.BindKeys(this._rightKeys, "OnCommandDown", "Right", true);
@@ -49,26 +51,25 @@ var CameraMover = (function (_super) {
         this.BindKeys(this._leftKeys, "OnCommandUp", "Left", false);
         this.BindKeys(this._zoomInKeys, "OnCommandUp", "ZoomingIn", false);
         this.BindKeys(this._zoomOutKeys, "OnCommandUp", "ZoomingOut", false);
-        this.Scene.Add(this._cameraLocation);
     }
     CameraMover.prototype.Update = function (gameTime) {
-        var cameraPosition;
+        var cameraPosition, movementIncrementor = gameTime.ElapsedSecond * this._cameraMoveSpeed, zoomIncrementor = gameTime.ElapsedSecond * this._cameraZoomSpeed;
         if(this._movingDirection.Up) {
-            this.Scene.Camera.Position.Y -= gameTime.ElapsedSecond * this._cameraMoveSpeed;
+            this.Scene.Camera.Position.Y -= movementIncrementor;
         }
         if(this._movingDirection.Down) {
-            this.Scene.Camera.Position.Y += gameTime.ElapsedSecond * this._cameraMoveSpeed;
+            this.Scene.Camera.Position.Y += movementIncrementor;
         }
         if(this._movingDirection.Left) {
-            this.Scene.Camera.Position.X -= gameTime.ElapsedSecond * this._cameraMoveSpeed;
+            this.Scene.Camera.Position.X -= movementIncrementor;
         }
         if(this._movingDirection.Right) {
-            this.Scene.Camera.Position.X += gameTime.ElapsedSecond * this._cameraMoveSpeed;
+            this.Scene.Camera.Position.X += movementIncrementor;
         }
         if(this._movingDirection.ZoomingIn) {
-            this.Scene.Camera.Distance -= gameTime.ElapsedSecond * this._cameraZoomSpeed;
+            this.Scene.Camera.Distance -= zoomIncrementor;
         } else if(this._movingDirection.ZoomingOut) {
-            this.Scene.Camera.Distance += gameTime.ElapsedSecond * this._cameraZoomSpeed;
+            this.Scene.Camera.Distance += zoomIncrementor;
         }
         this._cameraLocation.Position = this.Scene.Camera.Position;
         cameraPosition = this.Scene.Camera.Position.Clone();
@@ -86,15 +87,4 @@ var CameraMover = (function (_super) {
     };
     return CameraMover;
 })(eg.Game);
-var MovingDirection = (function () {
-    function MovingDirection() {
-        this.Up = false;
-        this.Right = false;
-        this.Down = false;
-        this.Left = false;
-        this.ZoomingIn = false;
-        this.ZoomingOut = false;
-    }
-    return MovingDirection;
-})();
-//@ sourceMappingURL=assetsCamera.js.map
+//@ sourceMappingURL=CameraMover.js.map
