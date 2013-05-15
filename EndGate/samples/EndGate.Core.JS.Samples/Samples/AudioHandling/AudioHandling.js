@@ -25,4 +25,4 @@ var AudioHandler = (function (_super) {
     };
     return AudioHandler;
 })(eg.Game);
-//@ sourceMappingURL=assetsAudioHandling.js.map
+//@ sourceMappingURL=AudioHandling.js.map

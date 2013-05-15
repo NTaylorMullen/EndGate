@@ -39,7 +39,7 @@ module EndGate.Sound {
             return !this._audio.paused;
         }
 
-        public Complete(): bool {
+        public IsComplete(): bool {
             return this._audio.ended;
         }
 
