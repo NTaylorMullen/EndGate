@@ -3,55 +3,6 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var CollidableShape = (function (_super) {
-    __extends(CollidableShape, _super);
-    function CollidableShape(graphic, bounds) {
-        _super.call(this, bounds);
-        this._collisionBorderColor = "black";
-        this._collisionBorderThickness = 4;
-        this._lastCollision = null;
-        this.Graphic = graphic;
-        this.TextPosition = new eg.Graphics.Text2d(graphic.Position.X, graphic.Position.Y, graphic.Position.toString());
-        this.Graphic.BorderColor(this._collisionBorderColor);
-        this.Graphic.BorderThickness(0);
-    }
-    CollidableShape.prototype.Move = function (position) {
-        this.Bounds.Position = this.Graphic.Position = this.TextPosition.Position = position;
-        this.TextPosition.Position.Apply(Math.round);
-        this.TextPosition.Text(this.TextPosition.Position.toString());
-    };
-    CollidableShape.prototype.Rotate = function (rotation) {
-        this.Bounds.Rotation = this.Graphic.Rotation = this.TextPosition.Rotation = this.Graphic.Rotation + rotation;
-    };
-    CollidableShape.prototype.Collided = function (data) {
-        this.Graphic.BorderThickness(this._collisionBorderThickness);
-        this._lastCollision = data;
-        _super.prototype.Collided.call(this, data);
-    };
-    CollidableShape.prototype.Update = function (gameTime) {
-        if(this._lastCollision !== null) {
-            if(!this._lastCollision.With.IsCollidingWith(this)) {
-                this.Graphic.BorderThickness(0);
-                this._lastCollision = null;
-            }
-        }
-    };
-    return CollidableShape;
-})(eg.Collision.Collidable);
-var CollidableRectangle = (function (_super) {
-    __extends(CollidableRectangle, _super);
-    function CollidableRectangle(x, y, width, height, color) {
-        _super.call(this, new eg.Graphics.Rectangle(x, y, width, height, color), new eg.Bounds.BoundingRectangle(new eg.Vector2d(x, y), new eg.Size2d(width, height)));
-    }
-    return CollidableRectangle;
-})(CollidableShape);
-var CollidableCircle = (function (_super) {
-    __extends(CollidableCircle, _super);
-    function CollidableCircle(x, y, radius, color) {
-        _super.call(this, new eg.Graphics.Circle(x, y, radius, color), new eg.Bounds.BoundingCircle(new eg.Vector2d(x, y), radius));
-    }
-    return CollidableCircle;
-})(CollidableShape);
 var CollisionInspector = (function (_super) {
     __extends(CollisionInspector, _super);
     function CollisionInspector(canvas) {
@@ -85,7 +36,6 @@ var CollisionInspector = (function (_super) {
         this._collidableShapes.push(shape);
         shape.Graphic.ZIndex = shape.TextPosition.ZIndex = this._decreasingZIndex--;
         this.Scene.Add(shape.Graphic);
-        this.Scene.Add(shape.TextPosition);
         this.CollisionManager.Monitor(shape);
     };
     CollisionInspector.prototype.Update = function (gameTime) {
@@ -112,4 +62,4 @@ var CollisionInspector = (function (_super) {
     };
     return CollisionInspector;
 })(eg.Game);
-//@ sourceMappingURL=assetsCollisionInspector.js.map
+//@ sourceMappingURL=CollisionInspector.js.map

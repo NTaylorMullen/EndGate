@@ -1,65 +1,5 @@
-/// <reference path="../../Scripts/jquery.d.ts" />
 /// <reference path="../../Scripts/endgate.ts" />
-
-class CollidableShape implements eg.IUpdateable extends eg.Collision.Collidable {
-    public Graphic: eg.Graphics.Abstractions.Shape;
-    public TextPosition: eg.Graphics.Text2d;
-    private _collisionBorderColor: string = "black";
-    private _collisionBorderThickness: number = 4;
-    private _lastCollision: eg.Collision.Assets.CollisionData = null;
-
-    constructor(graphic: eg.Graphics.Abstractions.Shape, bounds: eg.Bounds.Abstractions.Bounds2d) {
-        super(bounds);
-
-        this.Graphic = graphic;
-        this.TextPosition = new eg.Graphics.Text2d(graphic.Position.X, graphic.Position.Y, graphic.Position.toString());
-
-        this.Graphic.BorderColor(this._collisionBorderColor);
-        this.Graphic.BorderThickness(0);
-    }
-
-    public Move(position: eg.Vector2d): void {
-        // Update the graphic location and the bounds location
-        this.Bounds.Position = this.Graphic.Position = this.TextPosition.Position = position;
-
-        // Round the position and then update its text
-        this.TextPosition.Position.Apply(Math.round);
-        this.TextPosition.Text(this.TextPosition.Position.toString());
-    }
-
-    public Rotate(rotation: number) {
-        this.Bounds.Rotation = this.Graphic.Rotation = this.TextPosition.Rotation = this.Graphic.Rotation + rotation;
-    }
-
-    public Collided(data: eg.Collision.Assets.CollisionData): void {        
-        this.Graphic.BorderThickness(this._collisionBorderThickness);
-
-        this._lastCollision = data;
-
-        super.Collided(data);
-    }
-
-    public Update(gameTime: eg.GameTime): void {
-        if (this._lastCollision !== null) {
-            if (!this._lastCollision.With.IsCollidingWith(this)) {
-                this.Graphic.BorderThickness(0);
-                this._lastCollision = null;
-            }
-        }
-    }
-}
-
-class CollidableRectangle extends CollidableShape {
-    constructor(x: number, y: number, width: number, height: number, color: string) {
-        super(new eg.Graphics.Rectangle(x, y, width, height, color), new eg.Bounds.BoundingRectangle(new eg.Vector2d(x, y), new eg.Size2d(width, height)))
-    }
-}
-
-class CollidableCircle extends CollidableShape {
-    constructor(x: number, y: number, radius: number, color: string) {
-        super(new eg.Graphics.Circle(x, y, radius, color), new eg.Bounds.BoundingCircle(new eg.Vector2d(x, y), radius))
-    }
-}
+/// <reference path="CollidableShape.ts" />
 
 class CollisionInspector extends eg.Game {
     private _collidableShapes: CollidableShape[] = [];
@@ -74,30 +14,38 @@ class CollisionInspector extends eg.Game {
 
         this._draggingObject = null;
         this._rotatingObject = null;
-
         this._decreasingZIndex = 0;
 
+        // Triggers when any button gets pressed down within the game area
         this.Input.Mouse.OnDown.Bind((clickEvent: eg.Input.IMouseClickEvent) => {
+            // Find what shape we've clicked
             var obj = this.GetShapeAt(clickEvent.Position);
 
+            // If we've actually clicked an object
             if (obj !== null) {
+                // Move on left click
                 if (clickEvent.Button === "Left") {
                     this._draggingObject = obj;
+                    // Calculate where we clicked the shape
                     this._dragOffset = clickEvent.Position.Subtract(obj.Bounds.Position);
-                }
+                }// Rotate on right click
                 else if (clickEvent.Button === "Right") {
                     this._rotatingObject = obj;
                 }
             }
         });
 
+        // Triggers when any button gets released within the game area
         this.Input.Mouse.OnUp.Bind((clickEvent: eg.Input.IMouseClickEvent) => {
+            // Reset all the dragging behaviors
             this._draggingObject = null;
             this._dragOffset = null;
             this._rotatingObject = null;
         });
 
+        // Triggers when the mouse is moved within the game area
         this.Input.Mouse.OnMove.Bind((mouseEvent: eg.Input.IMouseEvent) => {
+            // Update the current mouse position (so we can track it)
             this._currentMousePosition = mouseEvent.Position;
         });
     }
@@ -111,7 +59,6 @@ class CollisionInspector extends eg.Game {
 
         // For drawing the shape
         this.Scene.Add(shape.Graphic);
-        this.Scene.Add(shape.TextPosition);
 
         // For detecting collision amongst the shapes
         this.CollisionManager.Monitor(shape);
@@ -122,9 +69,11 @@ class CollisionInspector extends eg.Game {
             rotateDirection: number,
             difference: eg.Vector2d;
 
+        // If we're currently dragging an object
         if (this._draggingObject !== null) {
             this._draggingObject.Move(this._currentMousePosition.Add(this._dragOffset.Negate()));
         }
+            // If we're currently rotating an object
         else if (this._rotatingObject !== null) {
             // Rotate faster the further away the mouse is from the center of the rotating object
             difference = this._currentMousePosition.Subtract(this._rotatingObject.Bounds.Position);
@@ -140,6 +89,7 @@ class CollisionInspector extends eg.Game {
         }
     }
 
+    // Find the shape that we click
     private GetShapeAt(position: eg.Vector2d): CollidableShape {
         for (var i = 0; i < this._collidableShapes.length; i++) {
             if (this._collidableShapes[i].Bounds.ContainsPoint(position)) {
