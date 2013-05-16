@@ -250,18 +250,27 @@
     <Content Include="Samples\Camera\World.min.js">
       <DependentUpon>World.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\CollisionDetection\assetsCollisionDetection.js">
-      <DependentUpon>assetsCollisionDetection.ts</DependentUpon>
+    <TypeScriptCompile Include="Samples\CollisionDetection\CollisionDetection.ts" />
+    <Content Include="Samples\CollisionDetection\CollisionDetection.js">
+      <DependentUpon>CollisionDetection.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\CollisionDetection\assetsCollisionDetection.min.js">
-      <DependentUpon>assetsCollisionDetection.ts</DependentUpon>
+    <Content Include="Samples\CollisionDetection\CollisionDetection.min.js">
+      <DependentUpon>CollisionDetection.ts</DependentUpon>
     </Content>
     <Content Include="Samples\CollisionDetection\Default.aspx" />
-    <Content Include="Samples\CollisionDetection\mainCollisionDetection.js">
-      <DependentUpon>mainCollisionDetection.ts</DependentUpon>
+    <TypeScriptCompile Include="Samples\CollisionDetection\Main.ts" />
+    <Content Include="Samples\CollisionDetection\Main.js">
+      <DependentUpon>Main.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\CollisionDetection\mainCollisionDetection.min.js">
-      <DependentUpon>mainCollisionDetection.ts</DependentUpon>
+    <TypeScriptCompile Include="Samples\CollisionDetection\MovingShape.ts" />
+    <Content Include="Samples\CollisionDetection\Main.min.js">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\CollisionDetection\MovingShape.js">
+      <DependentUpon>MovingShape.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\CollisionDetection\MovingShape.min.js">
+      <DependentUpon>MovingShape.ts</DependentUpon>
     </Content>
     <Content Include="Samples\CollisionInspector\assetsCollisionInspector.js">
       <DependentUpon>assetsCollisionInspector.ts</DependentUpon>
@@ -474,12 +483,6 @@
       <DependentUpon>assetsSprites.ts</DependentUpon>
     </Content>
     <Content Include="Samples\Sprites\Default.aspx" />
-    <Content Include="Samples\CollisionDetection\assetsCollisionDetection.js.map">
-      <DependentUpon>assetsCollisionDetection.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\CollisionDetection\mainCollisionDetection.js.map">
-      <DependentUpon>mainCollisionDetection.ts</DependentUpon>
-    </Content>
     <Content Include="Samples\CollisionInspector\assetsCollisionInspector.js.map">
       <DependentUpon>assetsCollisionInspector.ts</DependentUpon>
     </Content>
@@ -638,6 +641,15 @@
     <Content Include="Samples\Camera\World.js.map">
       <DependentUpon>World.ts</DependentUpon>
     </Content>
+    <Content Include="Samples\CollisionDetection\CollisionDetection.js.map">
+      <DependentUpon>CollisionDetection.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\CollisionDetection\MovingShape.js.map">
+      <DependentUpon>MovingShape.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\CollisionDetection\Main.js.map">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-2.0.0.intellisense.js" />
     <Content Include="Samples\AnimatedSprites\images\attribution.txt" />
     <Content Include="Samples\AnimatedSprites\images\electric_pulse.png" />
@@ -648,8 +660,6 @@
     <Content Include="Samples\AudioHandling\sounds\attribution.txt" />
     <Content Include="Samples\AudioHandling\sounds\fireburning.mp3" />
     <Content Include="Samples\AudioHandling\sounds\smokepoof.mp3" />
-    <TypeScriptCompile Include="Samples\CollisionDetection\assetsCollisionDetection.ts" />
-    <TypeScriptCompile Include="Samples\CollisionDetection\mainCollisionDetection.ts" />
     <TypeScriptCompile Include="Samples\CollisionInspector\assetsCollisionInspector.ts" />
     <TypeScriptCompile Include="Samples\CollisionInspector\mainCollisionInspector.ts" />
     <TypeScriptCompile Include="Samples\InputControllers\assetsInputControllers.ts" />

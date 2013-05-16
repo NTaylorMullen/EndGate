@@ -2,24 +2,24 @@
     var canvas = document.createElement("canvas"), holder = $("#gameHolder"), numOfRectangles = $("#numOfRectangles"), numOfCircles = $("#numOfCircles"), clearInput = function () {
         numOfRectangles.val("");
         numOfCircles.val("");
-    }, renderer = null;
+    }, collisionDetection = null;
     canvas.width = holder.width();
     canvas.height = holder.height();
     holder.append(canvas);
-    renderer = new GraphicsRenderer(canvas);
-    renderer.AddRandomRectangle();
+    collisionDetection = new CollisionDetection(canvas);
+    collisionDetection.AddRandomRectangle();
     $("#addItems").click(function () {
         var rectanglesToAdd = parseInt(numOfRectangles.val()) || 0, circlesToAdd = parseInt(numOfCircles.val()) || 0;
         for(var i = 0; i < rectanglesToAdd; i++) {
-            renderer.AddRandomRectangle();
+            collisionDetection.AddRandomRectangle();
         }
         for(var i = 0; i < circlesToAdd; i++) {
-            renderer.AddRandomCircle();
+            collisionDetection.AddRandomCircle();
         }
     });
     $("#clearItems").click(function () {
-        renderer.Clear();
+        collisionDetection.Clear();
         clearInput();
     });
 })($, window);
-//@ sourceMappingURL=mainCollisionDetection.js.map
+//@ sourceMappingURL=Main.js.map
