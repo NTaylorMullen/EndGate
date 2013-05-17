@@ -25,7 +25,7 @@ class CollisionDetection extends eg.Game {
         }
     }
 
-    // Clear Remove all the shapes from the shape list (so they're not updated), Scene so they're not drawn, and CollisionManager so they don't collide
+    // Remove all the shapes from the shape list (so they're not updated), Scene so they're not drawn, and CollisionManager so they don't collide
     public Clear(): void {
         for (var i = 0; i < this._shapes.length; i++) {
             this.Scene.Remove(this._shapes[i].Graphic);

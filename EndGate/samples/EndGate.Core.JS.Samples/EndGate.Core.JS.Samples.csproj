@@ -294,18 +294,20 @@
     <Content Include="Samples\CollisionInspector\Main.min.js">
       <DependentUpon>Main.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\InputControllers\assetsInputControllers.js">
-      <DependentUpon>assetsInputControllers.ts</DependentUpon>
+    <TypeScriptCompile Include="Samples\InputControllers\CharacterControllerGame.ts" />
+    <Content Include="Samples\InputControllers\CharacterControllerGame.js">
+      <DependentUpon>CharacterControllerGame.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\InputControllers\assetsInputControllers.min.js">
-      <DependentUpon>assetsInputControllers.ts</DependentUpon>
+    <Content Include="Samples\InputControllers\CharacterControllerGame.min.js">
+      <DependentUpon>CharacterControllerGame.ts</DependentUpon>
     </Content>
     <Content Include="Samples\InputControllers\Default.aspx" />
-    <Content Include="Samples\InputControllers\mainInputControllers.js">
-      <DependentUpon>mainInputControllers.ts</DependentUpon>
+    <TypeScriptCompile Include="Samples\InputControllers\Main.ts" />
+    <Content Include="Samples\InputControllers\Main.js">
+      <DependentUpon>Main.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\InputControllers\mainInputControllers.min.js">
-      <DependentUpon>mainInputControllers.ts</DependentUpon>
+    <Content Include="Samples\InputControllers\Main.min.js">
+      <DependentUpon>Main.ts</DependentUpon>
     </Content>
     <Content Include="Samples\KeyboardInput\assetsKeyboardInput.js">
       <DependentUpon>assetsKeyboardInput.ts</DependentUpon>
@@ -492,12 +494,6 @@
       <DependentUpon>assetsSprites.ts</DependentUpon>
     </Content>
     <Content Include="Samples\Sprites\Default.aspx" />
-    <Content Include="Samples\InputControllers\assetsInputControllers.js.map">
-      <DependentUpon>assetsInputControllers.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\InputControllers\mainInputControllers.js.map">
-      <DependentUpon>mainInputControllers.ts</DependentUpon>
-    </Content>
     <Content Include="Samples\KeyboardInput\assetsKeyboardInput.js.map">
       <DependentUpon>assetsKeyboardInput.ts</DependentUpon>
     </Content>
@@ -662,6 +658,12 @@
     <Content Include="Samples\CollisionInspector\Main.js.map">
       <DependentUpon>Main.ts</DependentUpon>
     </Content>
+    <Content Include="Samples\InputControllers\Main.js.map">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\InputControllers\CharacterControllerGame.js.map">
+      <DependentUpon>CharacterControllerGame.ts</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-2.0.0.intellisense.js" />
     <Content Include="Samples\AnimatedSprites\images\attribution.txt" />
     <Content Include="Samples\AnimatedSprites\images\electric_pulse.png" />
@@ -672,8 +674,6 @@
     <Content Include="Samples\AudioHandling\sounds\attribution.txt" />
     <Content Include="Samples\AudioHandling\sounds\fireburning.mp3" />
     <Content Include="Samples\AudioHandling\sounds\smokepoof.mp3" />
-    <TypeScriptCompile Include="Samples\InputControllers\assetsInputControllers.ts" />
-    <TypeScriptCompile Include="Samples\InputControllers\mainInputControllers.ts" />
     <TypeScriptCompile Include="Samples\KeyboardInput\assetsKeyboardInput.ts" />
     <TypeScriptCompile Include="Samples\KeyboardInput\mainKeyboardInput.ts" />
     <TypeScriptCompile Include="Samples\Layering\assetsLayering.ts" />
