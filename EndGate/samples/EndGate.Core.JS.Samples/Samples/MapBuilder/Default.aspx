@@ -136,7 +136,8 @@
     </div>
 
     <script typescript="true" src="GridEntry.js"></script>
-    <script typescript="true" src="MapBuilder.js"></script>
+    <script typescript="true" src="LayerManager.js"></script>
+    <script typescript="true" src="MapBuilder.js"></script>    
     <script typescript="true" src="SpriteSheetViewer.js"></script>
     <script typescript="true" src="TileHighlighter.js"></script>
     <script typescript="true" src="TileFiller.js"></script>

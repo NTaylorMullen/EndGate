@@ -5,20 +5,23 @@
 
 class OutputHandler {
     constructor(utilities: JQuery, persistenceManager: PersistenceManager, spriteSheetViewer: SpriteSheetViewer, tileWidth: number, tileHeight: number) {
-        var output: JQuery = utilities.find("#output"),
+        var outputButton: JQuery = utilities.find("#output"),
             outputOptions: JQuery = utilities.find("#outputOptions"),
             outputPanel: JQuery = $("#outputPanel"),
             outputString;
 
-        output.click(() => {
+        outputButton.click(() => {
+            // Output text
             if (outputOptions.val() === "0") {
+                // We use the same "saving" logic to then generate a string that we push out to the user
                 persistenceManager.SaveMap("_output", "_");
-
                 outputString = localStorage.getItem("_");                
             }
+            // Output Code
             else if (outputOptions.val() === "1") {
                 var resourceMappings = persistenceManager.BuildResourceMaps();
 
+                // Build the code template
                 outputString =
                 'class MyGame extends eg.Game {}<br /><br />' +
                 'var myGame = new MyGame(),<br />' +
@@ -41,7 +44,8 @@ class OutputHandler {
             }
 
             outputPanel.html(outputString);
-            output.blur();
+
+            outputButton.blur();
             outputOptions.blur();
             window.scrollTo(0, document.body.scrollHeight);
 

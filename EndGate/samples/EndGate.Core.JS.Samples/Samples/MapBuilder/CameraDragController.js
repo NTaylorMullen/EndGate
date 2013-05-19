@@ -17,7 +17,6 @@ var CameraDragController = (function () {
             _this._dragging = true;
         });
         mouseHandler.OnUp.Bind(function (e) {
-            _this._upAt = e.Position;
             _this._cameraStartPosition = null;
             window.setTimeout(function () {
                 this.Dragging = false;

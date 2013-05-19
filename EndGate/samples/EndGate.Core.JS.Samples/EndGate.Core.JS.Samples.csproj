@@ -393,6 +393,13 @@
     <Content Include="Samples\MapBuilder\GridEntry.min.js">
       <DependentUpon>GridEntry.ts</DependentUpon>
     </Content>
+    <TypeScriptCompile Include="Samples\MapBuilder\LayerManager.ts" />
+    <Content Include="Samples\MapBuilder\LayerManager.js">
+      <DependentUpon>LayerManager.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MapBuilder\LayerManager.min.js">
+      <DependentUpon>LayerManager.ts</DependentUpon>
+    </Content>
     <Content Include="Samples\MapBuilder\Main.js">
       <DependentUpon>Main.ts</DependentUpon>
     </Content>
@@ -720,6 +727,9 @@
     </Content>
     <Content Include="Samples\Layering\LayerController.js.map">
       <DependentUpon>LayerController.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MapBuilder\LayerManager.js.map">
+      <DependentUpon>LayerManager.ts</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.0.0.intellisense.js" />
     <Content Include="Samples\AnimatedSprites\images\attribution.txt" />

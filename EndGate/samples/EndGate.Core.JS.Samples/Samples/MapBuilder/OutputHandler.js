@@ -1,7 +1,7 @@
 var OutputHandler = (function () {
     function OutputHandler(utilities, persistenceManager, spriteSheetViewer, tileWidth, tileHeight) {
-        var output = utilities.find("#output"), outputOptions = utilities.find("#outputOptions"), outputPanel = $("#outputPanel"), outputString;
-        output.click(function () {
+        var outputButton = utilities.find("#output"), outputOptions = utilities.find("#outputOptions"), outputPanel = $("#outputPanel"), outputString;
+        outputButton.click(function () {
             if(outputOptions.val() === "0") {
                 persistenceManager.SaveMap("_output", "_");
                 outputString = localStorage.getItem("_");
@@ -17,7 +17,7 @@ var OutputHandler = (function () {
                 outputString += '<br />]; <br /><br />' + 'for (var i = 0; i < layers.length; i++) {<br />' + '   myGame.Map.Scenery.AddLayer(layers[i]);<br />' + '}<br />';
             }
             outputPanel.html(outputString);
-            output.blur();
+            outputButton.blur();
             outputOptions.blur();
             window.scrollTo(0, document.body.scrollHeight);
             $("#blockWrapper").height($("#builderPane").height());
