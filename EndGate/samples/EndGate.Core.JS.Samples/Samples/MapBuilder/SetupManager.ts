@@ -75,7 +75,7 @@ class SetupManager {
         this._spriteSheetViewer = new SpriteSheetViewer(spriteSheetViewerCanvas, settings.SpriteSheetUrl, settings.TileSize.Width, settings.TileSize.Height,
         () => {
             this._mapBuilder = new MapBuilder(mapBuilderCanvas, mapBuilderUtilities, this._spriteSheetViewer, settings.Rows, settings.Columns, settings.TileSize.Width, settings.TileSize.Height);
-            this._mapBuilder.LoadLayersFromResourceMaps(settings.Layers);            
+            this._mapBuilder.LayerManager.LoadLayersFromResourceMaps(settings.Layers,this._spriteSheetViewer.VisibleGrid);            
         });
     }
 }

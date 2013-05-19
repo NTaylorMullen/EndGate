@@ -18,7 +18,8 @@ class MapBuilder extends eg.Game {
     private _tileFiller: TileFiller;
     private _outputHandler: OutputHandler;
     private _persistenceManager: PersistenceManager;
-    private _layerManager: LayerManager;
+
+    public LayerManager: LayerManager;
 
     constructor(canvas: HTMLCanvasElement, utilities: JQuery, private _spriteSheetViewer: SpriteSheetViewer, private _rows: number, private _columns: number, private _tileWidth: number, private _tileHeight: number) {
         super(canvas);
@@ -33,15 +34,15 @@ class MapBuilder extends eg.Game {
         this._cameraDragController = new CameraDragController(canvas, this.Scene.Camera, this.Input.Keyboard, this.Input.Mouse);
         this._cameraZoomController = new CameraZoomController(this.Scene.Camera, this.Input.Mouse);
         this._persistenceManager = new PersistenceManager(utilities, () => {
-            return this._layerManager.Layers;
+            return this.LayerManager.Layers;
         }, _spriteSheetViewer.SpriteSheetUrl, (grid: eg.Graphics.Grid) => {
             return this.BuildResourceMap(grid)
         });
-        this._layerManager = new LayerManager(this.Scene, this._visibleGrid, $("#layers"), $("#addLayer"), $("#layerName"), (layer: ILayer) => {
+        this.LayerManager = new LayerManager(this.Scene, this._visibleGrid, $("#layers"), $("#addLayer"), $("#layerName"), (layer: ILayer) => {
             this._tileFiller.ChangeGrid(layer.Layer);
         });
         this._outputHandler = new OutputHandler(utilities, this._persistenceManager, _spriteSheetViewer,_tileWidth, _tileHeight);        
-        this._tileFiller = new TileFiller(this._layerManager.SelectedLayer.Layer, _tileWidth, _tileHeight);
+        this._tileFiller = new TileFiller(this.LayerManager.SelectedLayer.Layer, _tileWidth, _tileHeight);
         this._tileSelector = new TileSelector(this._visibleGrid, this.Scene, this.Scene.Camera, this._cameraDragController, this.Input.Mouse,
         (gridEntries: GridEntry[]) => {
             this._tileFiller.Fill(gridEntries, this._spriteSheetViewer.SelectedSources);

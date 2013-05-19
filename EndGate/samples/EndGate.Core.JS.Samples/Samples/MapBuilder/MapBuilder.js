@@ -18,15 +18,15 @@ var MapBuilder = (function (_super) {
         this._cameraDragController = new CameraDragController(canvas, this.Scene.Camera, this.Input.Keyboard, this.Input.Mouse);
         this._cameraZoomController = new CameraZoomController(this.Scene.Camera, this.Input.Mouse);
         this._persistenceManager = new PersistenceManager(utilities, function () {
-            return _this._layerManager.Layers;
+            return _this.LayerManager.Layers;
         }, _spriteSheetViewer.SpriteSheetUrl, function (grid) {
             return _this.BuildResourceMap(grid);
         });
-        this._layerManager = new LayerManager(this.Scene, this._visibleGrid, $("#layers"), $("#addLayer"), $("#layerName"), function (layer) {
+        this.LayerManager = new LayerManager(this.Scene, this._visibleGrid, $("#layers"), $("#addLayer"), $("#layerName"), function (layer) {
             _this._tileFiller.ChangeGrid(layer.Layer);
         });
         this._outputHandler = new OutputHandler(utilities, this._persistenceManager, _spriteSheetViewer, _tileWidth, _tileHeight);
-        this._tileFiller = new TileFiller(this._layerManager.SelectedLayer.Layer, _tileWidth, _tileHeight);
+        this._tileFiller = new TileFiller(this.LayerManager.SelectedLayer.Layer, _tileWidth, _tileHeight);
         this._tileSelector = new TileSelector(this._visibleGrid, this.Scene, this.Scene.Camera, this._cameraDragController, this.Input.Mouse, function (gridEntries) {
             _this._tileFiller.Fill(gridEntries, _this._spriteSheetViewer.SelectedSources);
         }, function (gridEntries) {

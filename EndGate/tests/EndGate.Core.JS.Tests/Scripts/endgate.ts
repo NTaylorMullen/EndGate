@@ -1880,6 +1880,7 @@ module EndGate.Input {
 module EndGate.Input {
 
     export class MouseHandler {
+        // Active flags
         public LeftIsDown: bool;
         public MiddleIsDown: bool;
         public RightIsDown: bool;

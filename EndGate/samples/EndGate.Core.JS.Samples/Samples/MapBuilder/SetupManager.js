@@ -45,7 +45,7 @@ var SetupManager = (function () {
         $("#blockWrapper").height($("#builderPane").height());
         this._spriteSheetViewer = new SpriteSheetViewer(spriteSheetViewerCanvas, settings.SpriteSheetUrl, settings.TileSize.Width, settings.TileSize.Height, function () {
             _this._mapBuilder = new MapBuilder(mapBuilderCanvas, mapBuilderUtilities, _this._spriteSheetViewer, settings.Rows, settings.Columns, settings.TileSize.Width, settings.TileSize.Height);
-            _this._mapBuilder.LoadLayersFromResourceMaps(settings.Layers);
+            _this._mapBuilder.LayerManager.LoadLayersFromResourceMaps(settings.Layers, _this._spriteSheetViewer.VisibleGrid);
         });
     };
     return SetupManager;
