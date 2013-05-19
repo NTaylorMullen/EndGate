@@ -39,7 +39,9 @@
         </div>
     </div>
     
-    <script typescript="true" src="assetsLayering.js"></script>
-    <script typescript="true" src="mainLayering.js"></script>
+    <script typescript="true" src="LayerController.js"></script>
+    <script typescript="true" src="World.js"></script>
+    <script typescript="true" src="LayeringGame.js"></script>
+    <script typescript="true" src="Main.js"></script>
 
 </asp:Content>

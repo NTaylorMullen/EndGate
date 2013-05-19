@@ -22,7 +22,7 @@
             theme: "solarized light"
         });
 
-    $.each($("script[typescript='true']"), function (i, ele) {
+    $.each($("script[typescript='true']").get().reverse(), function (i, ele) {
         var $ele = $(ele),
             jsSrc = $ele.attr("src"),
             tsSrc = jsSrc.substr(0, jsSrc.length - 2) + "ts",

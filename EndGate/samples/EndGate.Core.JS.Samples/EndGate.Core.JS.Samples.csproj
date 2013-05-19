@@ -345,18 +345,34 @@
     <Content Include="Samples\KeyboardInput\Main.min.js">
       <DependentUpon>Main.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\Layering\assetsLayering.js">
-      <DependentUpon>assetsLayering.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\Layering\assetsLayering.min.js">
-      <DependentUpon>assetsLayering.ts</DependentUpon>
-    </Content>
     <Content Include="Samples\Layering\Default.aspx" />
-    <Content Include="Samples\Layering\mainLayering.js">
-      <DependentUpon>mainLayering.ts</DependentUpon>
+    <TypeScriptCompile Include="Samples\Layering\LayeringGame.ts" />
+    <TypeScriptCompile Include="Samples\Layering\LayerController.ts" />
+    <Content Include="Samples\Layering\LayerController.js">
+      <DependentUpon>LayerController.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\Layering\mainLayering.min.js">
-      <DependentUpon>mainLayering.ts</DependentUpon>
+    <Content Include="Samples\Layering\LayerController.min.js">
+      <DependentUpon>LayerController.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\Layering\LayeringGame.js">
+      <DependentUpon>LayeringGame.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Samples\Layering\Main.ts" />
+    <Content Include="Samples\Layering\LayeringGame.min.js">
+      <DependentUpon>LayeringGame.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\Layering\Main.js">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\Layering\Main.min.js">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Samples\Layering\World.ts" />
+    <Content Include="Samples\Layering\World.js">
+      <DependentUpon>World.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\Layering\World.min.js">
+      <DependentUpon>World.ts</DependentUpon>
     </Content>
     <Content Include="Samples\MapBuilder\CameraDragController.js">
       <DependentUpon>CameraDragController.ts</DependentUpon>
@@ -517,12 +533,6 @@
       <DependentUpon>assetsSprites.ts</DependentUpon>
     </Content>
     <Content Include="Samples\Sprites\Default.aspx" />
-    <Content Include="Samples\Layering\assetsLayering.js.map">
-      <DependentUpon>assetsLayering.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\Layering\mainLayering.js.map">
-      <DependentUpon>mainLayering.ts</DependentUpon>
-    </Content>
     <Content Include="Samples\MapBuilder\CameraDragController.js.map">
       <DependentUpon>CameraDragController.ts</DependentUpon>
     </Content>
@@ -699,6 +709,18 @@
     <Content Include="Scripts\endgate.js.map">
       <DependentUpon>endgate.ts</DependentUpon>
     </Content>
+    <Content Include="Samples\Layering\LayeringGame.js.map">
+      <DependentUpon>LayeringGame.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\Layering\Main.js.map">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\Layering\World.js.map">
+      <DependentUpon>World.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\Layering\LayerController.js.map">
+      <DependentUpon>LayerController.ts</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-2.0.0.intellisense.js" />
     <Content Include="Samples\AnimatedSprites\images\attribution.txt" />
     <Content Include="Samples\AnimatedSprites\images\electric_pulse.png" />
@@ -709,8 +731,6 @@
     <Content Include="Samples\AudioHandling\sounds\attribution.txt" />
     <Content Include="Samples\AudioHandling\sounds\fireburning.mp3" />
     <Content Include="Samples\AudioHandling\sounds\smokepoof.mp3" />
-    <TypeScriptCompile Include="Samples\Layering\assetsLayering.ts" />
-    <TypeScriptCompile Include="Samples\Layering\mainLayering.ts" />
     <TypeScriptCompile Include="Samples\MapBuilder\CameraDragController.ts" />
     <TypeScriptCompile Include="Samples\MapBuilder\CameraZoomController.ts" />
     <TypeScriptCompile Include="Samples\MapBuilder\GridEntry.ts" />
