@@ -31,18 +31,21 @@
     <div class="row">
         <div class="keyboard-controller">
             <p class="pull-left">Bind To:
-                <input type="text" placeholder="Binding command..." id="commandToBind" />
+                <input type="text" placeholder="Binding command..." id="bindingCommandInput" />
                 Result:
-                <input type="text" placeholder="Text to show..." id="commandResult" />
-                <button class="btn" id="bindKeyboardInput">Bind</button></p>
+                <input type="text" placeholder="Text to show..." id="bindingResultInput" />
+                <button class="btn" id="bindButton">Bind</button></p>
             <p class="pull-right">
-            <button class="btn" id="unbindKeyboardInput">Unbind</button><select id="commandList"></select></p>
+            <button class="btn" id="unbindButton">Unbind</button><select id="commandHolder"></select></p>
         </div>
 
         <div id="gameHolder" class="form-vertical well" style="height: 400px;">
         </div>
     </div>
     
-    <script typescript="true" src="assetsKeyboardInput.js"></script>
-    <script typescript="true" src="mainKeyboardInput.js"></script>
+    <script typescript="true" src="KeyboardStatusUpdater.js"></script>
+    <script typescript="true" src="CommandManager.js"></script>
+    <script typescript="true" src="CommandBinder.js"></script>
+    <script typescript="true" src="KeyboardInputGame.js"></script>
+    <script typescript="true" src="Main.js"></script>
 </asp:Content>

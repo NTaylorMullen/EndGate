@@ -1559,10 +1559,12 @@ var EndGate;
                 } else if(keyEvent.which) {
                     code = keyEvent.which;
                 }
-                if(!(character = specialKeys[code])) {
-                    character = String.fromCharCode(code).toLowerCase();
-                    if(this.Modifiers.Shift && shiftValues[character]) {
-                        character = shiftValues[character];
+                if(!((character = String.fromCharCode(keyEvent.keyCode)) === keyEvent.key)) {
+                    if(!(character = specialKeys[code])) {
+                        character = String.fromCharCode(code).toLowerCase();
+                        if(this.Modifiers.Shift && shiftValues[character]) {
+                            character = shiftValues[character];
+                        }
                     }
                 }
                 this.Key = character;

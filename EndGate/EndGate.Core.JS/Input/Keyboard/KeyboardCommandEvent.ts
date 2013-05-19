@@ -70,11 +70,13 @@ module EndGate.Input {
                 code = keyEvent.which;
             }
 
-            if (!(character = specialKeys[code])) {
-                character = String.fromCharCode(code).toLowerCase();
+            if (!((character = String.fromCharCode(keyEvent.keyCode)) === keyEvent.key)) {
+                if (!(character = specialKeys[code])) {
+                    character = String.fromCharCode(code).toLowerCase();
 
-                if (this.Modifiers.Shift && shiftValues[character]) {
-                    character = shiftValues[character];
+                    if (this.Modifiers.Shift && shiftValues[character]) {
+                        character = shiftValues[character];
+                    }
                 }
             }
 

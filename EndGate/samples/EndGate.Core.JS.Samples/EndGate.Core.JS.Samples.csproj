@@ -309,18 +309,41 @@
     <Content Include="Samples\InputControllers\Main.min.js">
       <DependentUpon>Main.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\KeyboardInput\assetsKeyboardInput.js">
-      <DependentUpon>assetsKeyboardInput.ts</DependentUpon>
+    <TypeScriptCompile Include="Samples\KeyboardInput\CommandBinder.ts" />
+    <Content Include="Samples\KeyboardInput\CommandBinder.js">
+      <DependentUpon>CommandBinder.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\KeyboardInput\assetsKeyboardInput.min.js">
-      <DependentUpon>assetsKeyboardInput.ts</DependentUpon>
+    <TypeScriptCompile Include="Samples\KeyboardInput\CommandManager.ts" />
+    <Content Include="Samples\KeyboardInput\CommandBinder.min.js">
+      <DependentUpon>CommandBinder.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\KeyboardInput\CommandManager.js">
+      <DependentUpon>CommandManager.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\KeyboardInput\CommandManager.min.js">
+      <DependentUpon>CommandManager.ts</DependentUpon>
     </Content>
     <Content Include="Samples\KeyboardInput\Default.aspx" />
-    <Content Include="Samples\KeyboardInput\mainKeyboardInput.js">
-      <DependentUpon>mainKeyboardInput.ts</DependentUpon>
+    <TypeScriptCompile Include="Samples\KeyboardInput\Main.ts" />
+    <TypeScriptCompile Include="Samples\KeyboardInput\KeyboardInputGame.ts" />
+    <Content Include="Samples\KeyboardInput\KeyboardInputGame.js">
+      <DependentUpon>KeyboardInputGame.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\KeyboardInput\mainKeyboardInput.min.js">
-      <DependentUpon>mainKeyboardInput.ts</DependentUpon>
+    <Content Include="Samples\KeyboardInput\KeyboardInputGame.min.js">
+      <DependentUpon>KeyboardInputGame.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Samples\KeyboardInput\KeyboardStatusUpdater.ts" />
+    <Content Include="Samples\KeyboardInput\KeyboardStatusUpdater.js">
+      <DependentUpon>KeyboardStatusUpdater.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\KeyboardInput\KeyboardStatusUpdater.min.js">
+      <DependentUpon>KeyboardStatusUpdater.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\KeyboardInput\Main.js">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\KeyboardInput\Main.min.js">
+      <DependentUpon>Main.ts</DependentUpon>
     </Content>
     <Content Include="Samples\Layering\assetsLayering.js">
       <DependentUpon>assetsLayering.ts</DependentUpon>
@@ -494,12 +517,6 @@
       <DependentUpon>assetsSprites.ts</DependentUpon>
     </Content>
     <Content Include="Samples\Sprites\Default.aspx" />
-    <Content Include="Samples\KeyboardInput\assetsKeyboardInput.js.map">
-      <DependentUpon>assetsKeyboardInput.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\KeyboardInput\mainKeyboardInput.js.map">
-      <DependentUpon>mainKeyboardInput.ts</DependentUpon>
-    </Content>
     <Content Include="Samples\Layering\assetsLayering.js.map">
       <DependentUpon>assetsLayering.ts</DependentUpon>
     </Content>
@@ -664,6 +681,24 @@
     <Content Include="Samples\InputControllers\CharacterControllerGame.js.map">
       <DependentUpon>CharacterControllerGame.ts</DependentUpon>
     </Content>
+    <Content Include="Samples\KeyboardInput\KeyboardInputGame.js.map">
+      <DependentUpon>KeyboardInputGame.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\KeyboardInput\KeyboardStatusUpdater.js.map">
+      <DependentUpon>KeyboardStatusUpdater.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\KeyboardInput\CommandManager.js.map">
+      <DependentUpon>CommandManager.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\KeyboardInput\CommandBinder.js.map">
+      <DependentUpon>CommandBinder.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\KeyboardInput\Main.js.map">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\endgate.js.map">
+      <DependentUpon>endgate.ts</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-2.0.0.intellisense.js" />
     <Content Include="Samples\AnimatedSprites\images\attribution.txt" />
     <Content Include="Samples\AnimatedSprites\images\electric_pulse.png" />
@@ -674,8 +709,6 @@
     <Content Include="Samples\AudioHandling\sounds\attribution.txt" />
     <Content Include="Samples\AudioHandling\sounds\fireburning.mp3" />
     <Content Include="Samples\AudioHandling\sounds\smokepoof.mp3" />
-    <TypeScriptCompile Include="Samples\KeyboardInput\assetsKeyboardInput.ts" />
-    <TypeScriptCompile Include="Samples\KeyboardInput\mainKeyboardInput.ts" />
     <TypeScriptCompile Include="Samples\Layering\assetsLayering.ts" />
     <TypeScriptCompile Include="Samples\Layering\mainLayering.ts" />
     <TypeScriptCompile Include="Samples\MapBuilder\CameraDragController.ts" />
@@ -727,6 +760,9 @@
     </Content>
     <TypeScriptCompile Include="Samples\Text\mainText.ts" />
     <Content Include="Scripts\endgate.js" />
+    <Content Include="Scripts\endgate.min.js">
+      <DependentUpon>endgate.ts</DependentUpon>
+    </Content>
     <Content Include="Scripts\endgate.ts" />
     <Content Include="Scripts\jquery-2.0.0.js" />
     <Content Include="Scripts\jquery-2.0.0.min.js" />
