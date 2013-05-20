@@ -2,8 +2,8 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
     <style>
-        #codeArea{
-            display:none;
+        #codeArea {
+            display: none;
         }
     </style>
 </asp:Content>
@@ -41,49 +41,9 @@
 
     <div class="row">
         <div class="span4">
-            <h3>Animated Sprites</h3>
-            <p>Demonstrates how to animate sprites with sprite sheets.</p>
-            <p><a class="btn" href="Samples/AnimatedSprites">View sample &raquo;</a></p>
-        </div>
-
-        <div class="span4">
-            <h3>Audio Handling</h3>
-            <p>Demonstrates how to play audio.</p>
-            <p><a class="btn" href="Samples/AudioHandling">View sample &raquo;</a></p>
-        </div>
-
-        <div class="span4">
-            <h3>Raw RPG</h3>
-            <p>Demonstrates a basic RPG setup with an environment, character, controllers etc.</p>
-            <p><a class="btn" href="Samples/RawRPG">View sample &raquo;</a></p>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="span4">
-            <h3>Movement Controllers</h3>
-            <p>Demonstrates how to use Movement Controllers to make moving objects easy.</p>
-            <p><a class="btn" href="Samples/MovementControllers">View sample &raquo;</a></p>
-        </div>
-
-        <div class="span4">
-            <h3>Input Controllers</h3>
-            <p>Demonstrates how to use input controllers to make moving controlling objects dead simple.</p>
-            <p><a class="btn" href="Samples/InputControllers">View sample &raquo;</a></p>
-        </div>
-
-        <div class="span4">
-            <h3>Map Builder</h3>
-            <p>Demonstrates a accumulation of EndGate assets to help create SquareTileMaps visually.</p>
-            <p><a class="btn" href="Samples/MapBuilder">View sample &raquo;</a></p>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="span4">
-            <h3>Layering</h3>
-            <p>Demonstrates how to control the layering of graphics.</p>
-            <p><a class="btn" href="Samples/Layering">View sample &raquo;</a></p>
+            <h3>Mouse Input</h3>
+            <p>Demonstrates how to use a games mouse input handler.</p>
+            <p><a class="btn" href="Samples/MouseInput">View sample &raquo;</a></p>
         </div>
 
         <div class="span4">
@@ -101,21 +61,61 @@
 
     <div class="row">
         <div class="span4">
-            <h3>Mouse Input</h3>
-            <p>Demonstrates how to use a games mouse input handler.</p>
-            <p><a class="btn" href="Samples/MouseInput">View sample &raquo;</a></p>
-        </div>
-
-        <div class="span4">
             <h3>Keyboard Input</h3>
             <p>Demonstrates how to use a games keyboard input handler.</p>
             <p><a class="btn" href="Samples/KeyboardInput">View sample &raquo;</a></p>
         </div>
 
         <div class="span4">
+            <h3>Movement Controllers</h3>
+            <p>Demonstrates how to use Movement Controllers to make moving objects easy.</p>
+            <p><a class="btn" href="Samples/MovementControllers">View sample &raquo;</a></p>
+        </div>
+
+        <div class="span4">
+            <h3>Input Controllers</h3>
+            <p>Demonstrates how to use input controllers to make moving controlling objects dead simple.</p>
+            <p><a class="btn" href="Samples/InputControllers">View sample &raquo;</a></p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="span4">
+            <h3>Layering</h3>
+            <p>Demonstrates how to control the layering of graphics.</p>
+            <p><a class="btn" href="Samples/Layering">View sample &raquo;</a></p>
+        </div>
+
+        <div class="span4">
+            <h3>Animated Sprites</h3>
+            <p>Demonstrates how to animate sprites with sprite sheets.</p>
+            <p><a class="btn" href="Samples/AnimatedSprites">View sample &raquo;</a></p>
+        </div>
+
+        <div class="span4">
+            <h3>Audio Handling</h3>
+            <p>Demonstrates how to play audio.</p>
+            <p><a class="btn" href="Samples/AudioHandling">View sample &raquo;</a></p>
+        </div>        
+    </div>
+
+    <div class="row">
+        <div class="span4">
             <h3>Camera</h3>
             <p>Demonstrates how to use the camera's movement and zooming capabilities.</p>
             <p><a class="btn" href="Samples/Camera">View sample &raquo;</a></p>
+        </div>
+
+        <div class="span4">
+            <h3>Map Builder</h3>
+            <p>Demonstrates a accumulation of EndGate assets to help create SquareTileMaps visually.</p>
+            <p><a class="btn" href="Samples/MapBuilder">View sample &raquo;</a></p>
+        </div>
+
+        <div class="span4">
+            <h3>Raw RPG</h3>
+            <p>Demonstrates a basic RPG setup with an environment, character, controllers etc.</p>
+            <p><a class="btn" href="Samples/RawRPG">View sample &raquo;</a></p>
         </div>
     </div>
 
