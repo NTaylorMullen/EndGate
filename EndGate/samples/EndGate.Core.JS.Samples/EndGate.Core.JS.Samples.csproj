@@ -294,15 +294,12 @@
     <Content Include="Samples\CollisionInspector\Main.min.js">
       <DependentUpon>Main.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="Samples\InputControllers\CharacterControllerGame.ts" />
-    <Content Include="Samples\InputControllers\CharacterControllerGame.js">
-      <DependentUpon>CharacterControllerGame.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\InputControllers\CharacterControllerGame.min.js">
-      <DependentUpon>CharacterControllerGame.ts</DependentUpon>
-    </Content>
     <Content Include="Samples\InputControllers\Default.aspx" />
     <TypeScriptCompile Include="Samples\InputControllers\Main.ts" />
+    <TypeScriptCompile Include="Samples\InputControllers\InputControllerGame.ts" />
+    <Content Include="Samples\InputControllers\InputControllerGame.js">
+      <DependentUpon>InputControllerGame.ts</DependentUpon>
+    </Content>
     <Content Include="Samples\InputControllers\Main.js">
       <DependentUpon>Main.ts</DependentUpon>
     </Content>
@@ -456,31 +453,35 @@
     <Content Include="Samples\MapBuilder\TileSelector.min.js">
       <DependentUpon>TileSelector.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\MouseInput\assetsMouseInput.js">
-      <DependentUpon>assetsMouseInput.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\MouseInput\assetsMouseInput.min.js">
-      <DependentUpon>assetsMouseInput.ts</DependentUpon>
-    </Content>
     <Content Include="Samples\MouseInput\Default.aspx" />
-    <Content Include="Samples\MouseInput\mainMouseInput.js">
-      <DependentUpon>mainMouseInput.ts</DependentUpon>
+    <TypeScriptCompile Include="Samples\MouseInput\Main.ts" />
+    <Content Include="Samples\MouseInput\Main.js">
+      <DependentUpon>Main.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\MouseInput\mainMouseInput.min.js">
-      <DependentUpon>mainMouseInput.ts</DependentUpon>
+    <Content Include="Samples\MouseInput\Main.min.js">
+      <DependentUpon>Main.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\MovementControllers\assetsMovementControllers.js">
-      <DependentUpon>assetsMovementControllers.ts</DependentUpon>
+    <TypeScriptCompile Include="Samples\MouseInput\MouseInputGame.ts" />
+    <Content Include="Samples\MouseInput\MouseInputGame.js">
+      <DependentUpon>MouseInputGame.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\MovementControllers\assetsMovementControllers.min.js">
-      <DependentUpon>assetsMovementControllers.ts</DependentUpon>
+    <Content Include="Samples\MouseInput\MouseInputGame.min.js">
+      <DependentUpon>MouseInputGame.ts</DependentUpon>
     </Content>
     <Content Include="Samples\MovementControllers\Default.aspx" />
-    <Content Include="Samples\MovementControllers\mainMovementControllers.js">
-      <DependentUpon>mainMovementControllers.ts</DependentUpon>
+    <TypeScriptCompile Include="Samples\MovementControllers\Main.ts" />
+    <Content Include="Samples\MovementControllers\Main.js">
+      <DependentUpon>Main.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\MovementControllers\mainMovementControllers.min.js">
-      <DependentUpon>mainMovementControllers.ts</DependentUpon>
+    <Content Include="Samples\MovementControllers\Main.min.js">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Samples\MovementControllers\MovementControllerGame.ts" />
+    <Content Include="Samples\MovementControllers\MovementControllerGame.js">
+      <DependentUpon>MovementControllerGame.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MovementControllers\MovementControllerGame.min.js">
+      <DependentUpon>MovementControllerGame.ts</DependentUpon>
     </Content>
     <Content Include="Samples\RawRPG\Default.aspx" />
     <Content Include="Samples\RawRPG\Knight.js">
@@ -569,18 +570,6 @@
     </Content>
     <Content Include="Samples\MapBuilder\TileSelector.js.map">
       <DependentUpon>TileSelector.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\MouseInput\assetsMouseInput.js.map">
-      <DependentUpon>assetsMouseInput.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\MouseInput\mainMouseInput.js.map">
-      <DependentUpon>mainMouseInput.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\MovementControllers\assetsMovementControllers.js.map">
-      <DependentUpon>assetsMovementControllers.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\MovementControllers\mainMovementControllers.js.map">
-      <DependentUpon>mainMovementControllers.ts</DependentUpon>
     </Content>
     <Content Include="Samples\RawRPG\Knight.js.map">
       <DependentUpon>Knight.ts</DependentUpon>
@@ -695,9 +684,6 @@
     <Content Include="Samples\InputControllers\Main.js.map">
       <DependentUpon>Main.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\InputControllers\CharacterControllerGame.js.map">
-      <DependentUpon>CharacterControllerGame.ts</DependentUpon>
-    </Content>
     <Content Include="Samples\KeyboardInput\KeyboardInputGame.js.map">
       <DependentUpon>KeyboardInputGame.ts</DependentUpon>
     </Content>
@@ -731,6 +717,18 @@
     <Content Include="Samples\MapBuilder\LayerManager.js.map">
       <DependentUpon>LayerManager.ts</DependentUpon>
     </Content>
+    <Content Include="Samples\MouseInput\Main.js.map">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MouseInput\MouseInputGame.js.map">
+      <DependentUpon>MouseInputGame.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MovementControllers\MovementControllerGame.js.map">
+      <DependentUpon>MovementControllerGame.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\MovementControllers\Main.js.map">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-2.0.0.intellisense.js" />
     <Content Include="Samples\AnimatedSprites\images\attribution.txt" />
     <Content Include="Samples\AnimatedSprites\images\electric_pulse.png" />
@@ -751,10 +749,6 @@
     <TypeScriptCompile Include="Samples\MapBuilder\TileFiller.ts" />
     <TypeScriptCompile Include="Samples\MapBuilder\TileHighlighter.ts" />
     <TypeScriptCompile Include="Samples\MapBuilder\TileSelector.ts" />
-    <TypeScriptCompile Include="Samples\MouseInput\assetsMouseInput.ts" />
-    <TypeScriptCompile Include="Samples\MouseInput\mainMouseInput.ts" />
-    <TypeScriptCompile Include="Samples\MovementControllers\assetsMovementControllers.ts" />
-    <TypeScriptCompile Include="Samples\MovementControllers\mainMovementControllers.ts" />
     <Content Include="Samples\RawRPG\images\attribution.txt" />
     <Content Include="Samples\RawRPG\images\golden_knight.png" />
     <Content Include="Samples\RawRPG\images\wood_tileset_3.png" />

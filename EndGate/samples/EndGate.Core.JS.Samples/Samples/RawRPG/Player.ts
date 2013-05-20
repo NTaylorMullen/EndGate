@@ -5,8 +5,12 @@ class Player {
     private _controller: eg.InputControllers.DirectionalInputController;
 
     constructor(keyboard: eg.Input.KeyboardHandler, knight: Knight) {
-        this._controller = new eg.InputControllers.DirectionalInputController(keyboard, () => {
-            knight.MovementController.Move.apply(knight.MovementController, arguments);
+        // Use a DirectionalInputController to handle keyboard input
+        // First parameter is the keyboard handler for the game and the second is the OnMove event
+        // The OnMove event is triggered when the DirectionalInputController detects that the user
+        // is trying to move in a given direction
+        this._controller = new eg.InputControllers.DirectionalInputController(keyboard, (direction: string, startMoving: bool) => {
+            knight.MovementController.Move(direction, startMoving);
         });
     }
 }

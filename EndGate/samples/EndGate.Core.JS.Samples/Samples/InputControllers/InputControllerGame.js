@@ -3,9 +3,9 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var CharacterControllerGame = (function (_super) {
-    __extends(CharacterControllerGame, _super);
-    function CharacterControllerGame(canvas) {
+var InputControllerGame = (function (_super) {
+    __extends(InputControllerGame, _super);
+    function InputControllerGame(canvas) {
         var _this = this;
         _super.call(this, canvas);
         this._characterMoveSpeed = 100;
@@ -19,9 +19,9 @@ var CharacterControllerGame = (function (_super) {
         });
         this.Scene.Add(this._character);
     }
-    CharacterControllerGame.prototype.Update = function (gameTime) {
+    InputControllerGame.prototype.Update = function (gameTime) {
         this._characterMovementController.Update(gameTime);
     };
-    return CharacterControllerGame;
+    return InputControllerGame;
 })(eg.Game);
-//@ sourceMappingURL=CharacterControllerGame.js.map
+//@ sourceMappingURL=InputControllerGame.js.map

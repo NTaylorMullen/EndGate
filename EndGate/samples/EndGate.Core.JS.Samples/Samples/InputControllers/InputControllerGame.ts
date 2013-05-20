@@ -1,7 +1,7 @@
 /// <reference path="../../Scripts/jquery.d.ts" />
 /// <reference path="../../Scripts/endgate.ts" />
 
-class CharacterControllerGame extends eg.Game {
+class InputControllerGame extends eg.Game {
     private _characterMoveSpeed: number = 100;
 
     private _character: eg.Graphics.Rectangle;

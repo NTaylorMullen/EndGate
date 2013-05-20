@@ -1,7 +1,7 @@
 var Player = (function () {
     function Player(keyboard, knight) {
-        this._controller = new eg.InputControllers.DirectionalInputController(keyboard, function () {
-            knight.MovementController.Move.apply(knight.MovementController, arguments);
+        this._controller = new eg.InputControllers.DirectionalInputController(keyboard, function (direction, startMoving) {
+            knight.MovementController.Move(direction, startMoving);
         });
     }
     return Player;

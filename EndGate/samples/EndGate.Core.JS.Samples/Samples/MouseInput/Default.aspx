@@ -27,6 +27,6 @@
         </div>
     </div>
     
-    <script typescript="true" src="assetsMouseInput.js"></script>
-    <script typescript="true" src="mainMouseInput.js"></script>
+    <script typescript="true" src="MouseInputGame.js"></script>
+    <script typescript="true" src="Main.js"></script>
 </asp:Content>

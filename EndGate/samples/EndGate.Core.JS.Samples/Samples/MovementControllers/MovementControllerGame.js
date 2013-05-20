@@ -3,11 +3,13 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var CharacterMover = (function (_super) {
-    __extends(CharacterMover, _super);
-    function CharacterMover(canvas) {
+var MovementControllerGame = (function (_super) {
+    __extends(MovementControllerGame, _super);
+    function MovementControllerGame(canvas) {
         _super.call(this, canvas);
         this._characterMoveSpeed = 100;
+        this._characterSize = new eg.Size2d(50, 30);
+        this._characterColor = "brown";
         this._upKeys = [
             "w", 
             "up"
@@ -24,7 +26,7 @@ var CharacterMover = (function (_super) {
             "a", 
             "left"
         ];
-        this._character = new eg.Graphics.Rectangle(canvas.width / 2, canvas.height / 2, 50, 30, "brown");
+        this._character = new eg.Graphics.Rectangle(canvas.width / 2, canvas.height / 2, this._characterSize.Width, this._characterSize.Height, this._characterColor);
         this._characterMovementController = new eg.MovementControllers.LinearMovementController([
             this._character
         ], this._characterMoveSpeed);
@@ -39,10 +41,10 @@ var CharacterMover = (function (_super) {
         this.BindKeys(this._leftKeys, "OnCommandUp", "Left", false);
         this.Scene.Add(this._character);
     }
-    CharacterMover.prototype.Update = function (gameTime) {
+    MovementControllerGame.prototype.Update = function (gameTime) {
         this._characterMovementController.Update(gameTime);
     };
-    CharacterMover.prototype.BindKeys = function (keyList, bindingAction, direction, directionValue) {
+    MovementControllerGame.prototype.BindKeys = function (keyList, bindingAction, direction, directionValue) {
         var _this = this;
         for(var i = 0; i < keyList.length; i++) {
             this.Input.Keyboard[bindingAction](keyList[i], function () {
@@ -54,6 +56,6 @@ var CharacterMover = (function (_super) {
             });
         }
     };
-    return CharacterMover;
+    return MovementControllerGame;
 })(eg.Game);
-//@ sourceMappingURL=assetsMovementControllers.js.map
+//@ sourceMappingURL=MovementControllerGame.js.map

@@ -1,7 +1,8 @@
 /// <reference path="../../Scripts/jquery.d.ts" />
 /// <reference path="../../Scripts/endgate.ts" />
 
-class MouseMonitor extends eg.Game {
+class MouseInputGame extends eg.Game {
+    // Default values
     private _radiusSize: number = 5;
     private _scrollSpeed: number = 5;
     private _clickColors: { [name: string]: string; } = {
@@ -16,11 +17,13 @@ class MouseMonitor extends eg.Game {
     };
     private _doubleClickColor: string = "#000000";
     private _onMoveColor: string = "#000000";
+
     private _shapes: eg.Graphics.Abstractions.Shape[] = [];
 
     constructor(canvas: HTMLCanvasElement, lastMouseEvent: JQuery) {
         super(canvas);
 
+        // Bind each of the mouse events individually to draw different color circles
         this.Input.Mouse.OnClick.Bind((clickEvent: eg.Input.IMouseClickEvent) => {
             lastMouseEvent.text(clickEvent.Button + " Click at " + clickEvent.Position.toString());
             this.MarkLocationWithCircle(clickEvent.Position, this._radiusSize, this._clickColors[clickEvent.Button]);
@@ -41,13 +44,14 @@ class MouseMonitor extends eg.Game {
             this.MarkLocationWithRectangle(clickEvent.Position, new eg.Size2d(this._radiusSize * 4, this._radiusSize * 4), this._inbetweenColors[clickEvent.Button]);
         });
 
+        // When we move the cursor draw a small circle to represent where the mouse is
         this.Input.Mouse.OnMove.Bind((clickEvent: eg.Input.IMouseEvent) => {
             this.MarkLocationWithCircle(clickEvent.Position, 1, this._onMoveColor);
             lastMouseEvent.text("Mouse move at " + clickEvent.Position.toString());
         });
 
         this.Input.Mouse.OnScroll.Bind((scrollEvent: eg.Input.IMouseScrollEvent) => {
-            // Note we still have access to the Position property here that we can use, I just don't.
+            // Cycle through every shape in the game area and move it according to our scroll direction
             for (var i = 0; i < this._shapes.length; i++) {
                 this._shapes[i].Position = this._shapes[i].Position.Add(scrollEvent.Direction.Multiply(this._scrollSpeed));
             }
@@ -56,6 +60,7 @@ class MouseMonitor extends eg.Game {
         });
     }
 
+    // Helper function to add shapes to our managed shapes list and to the scene simultaneously
     private MarkLocationWithCircle(position: eg.Vector2d, radius: number, color: string): void {
         var shape = new eg.Graphics.Circle(position.X, position.Y, radius, color);
 
@@ -63,6 +68,7 @@ class MouseMonitor extends eg.Game {
         this.Scene.Add(shape);
     }
 
+    // Helper function to add shapes to our managed shapes list and to the scene simultaneously
     private MarkLocationWithRectangle(position: eg.Vector2d, size: eg.Size2d, color: string): void {
         var shape = new eg.Graphics.Rectangle(position.X, position.Y, size.Width, size.Height, color);
 

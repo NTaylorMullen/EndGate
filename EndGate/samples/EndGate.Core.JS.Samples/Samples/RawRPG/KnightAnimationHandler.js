@@ -42,9 +42,7 @@ var KnightAnimationHandler = (function () {
         }
     };
     KnightAnimationHandler.prototype.Update = function (gameTime) {
-        for(var i = 0; i < KnightAnimationHandler._animationDirectionMap.length; i++) {
-            this._animations[KnightAnimationHandler._animationDirectionMap[i]].Update(gameTime);
-        }
+        this._currentAnimation.Update(gameTime);
     };
     return KnightAnimationHandler;
 })();

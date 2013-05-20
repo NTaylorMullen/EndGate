@@ -3,20 +3,31 @@
 /// <reference path="RPG.ts" />
 
 (function ($, window) {
+    // Create a game canvas to use.  If we create a game without providing a canvas it will create a
+    // canvas that fills the entire viewport.
     var canvas: HTMLCanvasElement = < HTMLCanvasElement > document.createElement("canvas"),
         holder: JQuery = $("#gameHolder"),
         rpg: RPG = null,
+        // Build the image source to represent the sprite sheet we will be working with
         resourceSheet: eg.Graphics.Assets.ImageSource = new eg.Graphics.Assets.ImageSource("images/wood_tileset_3.png", 512, 512),
+        // Build a resource array based on the sprite sheet, this is a linear array (not multi-dimensional)
+        // The images/wood_tileset_3.png has 16 tiles per row (512/32) so if we wanted to find a tile on row
+        // 2 column 1 that tile would be at array index 17, this is essentially how the resource array map
+        // that is further below works
         resources: eg.Graphics.Assets.ImageSource[] = eg.Map.SquareTileMap.ExtractTiles(resourceSheet, 32, 32),
-        scenery: eg.Map.SquareTileMap,
         loadMapHandler: LoadMapHandler;
 
+    // Setup the game canvas DOM
     canvas.width = holder.width();
     canvas.height = holder.height();
-
     holder.append(canvas);
 
+    // Create our game
     rpg = new RPG(canvas);
+    
+    // Our LoadMapHandler takes in the default properties to build a default "map", it will also allow you to
+    // load in maps that are created in the MapBuilder.  All of these numbers in this multi-dimensional reference
+    // the array index of our resource map ("resources") that was instantiated above 
     loadMapHandler = new LoadMapHandler(rpg.Map.Scenery, new eg.Vector2d(canvas.width / 2, canvas.height / 2), 27, 47, new eg.Size2d(32, 32), "images/wood_tileset_3.png", [
 [155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155],
 [155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155],

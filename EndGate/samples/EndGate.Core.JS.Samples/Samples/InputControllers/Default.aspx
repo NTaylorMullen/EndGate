@@ -28,6 +28,6 @@
         </div>
     </div>
     
-    <script typescript="true" src="CharacterControllerGame.js"></script>
+    <script typescript="true" src="InputControllerGame.js"></script>
     <script typescript="true" src="Main.js"></script>
 </asp:Content>

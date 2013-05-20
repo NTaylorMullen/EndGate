@@ -29,7 +29,7 @@ var LoadMapHandler = (function () {
                 sceneryHandler.RemoveLayer(activeTileMaps[i]);
             }
             activeTileMaps = [];
-            var settings = maps[savedMaps.val()], resourceSheet = new eg.Graphics.Assets.ImageSource("images/wood_tileset_3.png");
+            var settings = maps[savedMaps.val()], resourceSheet = new eg.Graphics.Assets.ImageSource(settings.SpriteSheetUrl);
             resourceSheet.OnLoaded.Bind(function () {
                 var resources = eg.Map.SquareTileMap.ExtractTiles(resourceSheet, settings.TileSize.Width, settings.TileSize.Height), tileMap;
                 for(var i = 0; i < settings.Layers.length; i++) {

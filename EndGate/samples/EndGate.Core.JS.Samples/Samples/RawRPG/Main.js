@@ -1,5 +1,5 @@
 (function ($, window) {
-    var canvas = document.createElement("canvas"), holder = $("#gameHolder"), rpg = null, resourceSheet = new eg.Graphics.Assets.ImageSource("images/wood_tileset_3.png", 512, 512), resources = eg.Map.SquareTileMap.ExtractTiles(resourceSheet, 32, 32), scenery, loadMapHandler;
+    var canvas = document.createElement("canvas"), holder = $("#gameHolder"), rpg = null, resourceSheet = new eg.Graphics.Assets.ImageSource("images/wood_tileset_3.png", 512, 512), resources = eg.Map.SquareTileMap.ExtractTiles(resourceSheet, 32, 32), loadMapHandler;
     canvas.width = holder.width();
     canvas.height = holder.height();
     holder.append(canvas);

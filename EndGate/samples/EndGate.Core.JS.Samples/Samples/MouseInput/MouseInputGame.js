@@ -3,9 +3,9 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var MouseMonitor = (function (_super) {
-    __extends(MouseMonitor, _super);
-    function MouseMonitor(canvas, lastMouseEvent) {
+var MouseInputGame = (function (_super) {
+    __extends(MouseInputGame, _super);
+    function MouseInputGame(canvas, lastMouseEvent) {
         var _this = this;
         _super.call(this, canvas);
         this._radiusSize = 5;
@@ -50,16 +50,16 @@ var MouseMonitor = (function (_super) {
             lastMouseEvent.text("Mouse scroll at " + scrollEvent.Position.toString() + " in the direction: " + scrollEvent.Direction.toString());
         });
     }
-    MouseMonitor.prototype.MarkLocationWithCircle = function (position, radius, color) {
+    MouseInputGame.prototype.MarkLocationWithCircle = function (position, radius, color) {
         var shape = new eg.Graphics.Circle(position.X, position.Y, radius, color);
         this._shapes.push(shape);
         this.Scene.Add(shape);
     };
-    MouseMonitor.prototype.MarkLocationWithRectangle = function (position, size, color) {
+    MouseInputGame.prototype.MarkLocationWithRectangle = function (position, size, color) {
         var shape = new eg.Graphics.Rectangle(position.X, position.Y, size.Width, size.Height, color);
         this._shapes.push(shape);
         this.Scene.Add(shape);
     };
-    return MouseMonitor;
+    return MouseInputGame;
 })(eg.Game);
-//@ sourceMappingURL=assetsMouseInput.js.map
+//@ sourceMappingURL=MouseInputGame.js.map

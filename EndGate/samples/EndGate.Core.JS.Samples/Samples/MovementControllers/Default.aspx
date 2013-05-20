@@ -27,6 +27,6 @@
         </div>
     </div>
     
-    <script typescript="true" src="assetsMovementControllers.js"></script>
-    <script typescript="true" src="mainMovementControllers.js"></script>
+    <script typescript="true" src="MovementControllerGame.js"></script>
+    <script typescript="true" src="Main.js"></script>
 </asp:Content>
