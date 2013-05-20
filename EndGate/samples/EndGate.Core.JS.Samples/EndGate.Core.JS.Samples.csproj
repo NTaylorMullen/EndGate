@@ -634,6 +634,9 @@
       <DependentUpon>CustomSlider.ts</DependentUpon>
     </Content>
     <TypeScriptCompile Include="Samples\Text\Main.ts" />
+    <Content Include="Samples\Text\CustomSlider.min.js">
+      <DependentUpon>CustomSlider.ts</DependentUpon>
+    </Content>
     <Content Include="Samples\Text\Main.js">
       <DependentUpon>Main.ts</DependentUpon>
     </Content>
@@ -802,6 +805,9 @@
     </Content>
     <Content Include="Samples\Text\Main.js.map">
       <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\Text\CustomSlider.js.map">
+      <DependentUpon>CustomSlider.ts</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-2.0.0.intellisense.js" />
     <Content Include="Samples\AnimatedSprites\images\attribution.txt" />
