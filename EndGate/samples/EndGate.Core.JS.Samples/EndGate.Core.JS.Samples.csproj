@@ -625,11 +625,17 @@
     <Content Include="Samples\Sprites\SpriteGame.js">
       <DependentUpon>SpriteGame.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\Text\assetsText.js.map">
-      <DependentUpon>assetsText.ts</DependentUpon>
+    <TypeScriptCompile Include="Samples\Text\CustomSlider.ts" />
+    <TypeScriptCompile Include="Samples\Text\ColorPicker.ts" />
+    <Content Include="Samples\Text\ColorPicker.js">
+      <DependentUpon>ColorPicker.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\Text\mainText.js.map">
-      <DependentUpon>mainText.ts</DependentUpon>
+    <Content Include="Samples\Text\CustomSlider.js">
+      <DependentUpon>CustomSlider.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Samples\Text\Main.ts" />
+    <Content Include="Samples\Text\Main.js">
+      <DependentUpon>Main.ts</DependentUpon>
     </Content>
     <Content Include="Samples\MapBuilder\PersistenceManager.js.map">
       <DependentUpon>PersistenceManager.ts</DependentUpon>
@@ -726,6 +732,20 @@
     <Content Include="Samples\KeyboardInput\Main.js.map">
       <DependentUpon>Main.ts</DependentUpon>
     </Content>
+    <TypeScriptCompile Include="Samples\Text\TextGame.ts" />
+    <TypeScriptCompile Include="Samples\Text\TextAnimator.ts" />
+    <Content Include="Samples\Text\Main.min.js">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\Text\TextAnimator.js">
+      <DependentUpon>TextAnimator.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\Text\TextAnimator.min.js">
+      <DependentUpon>TextAnimator.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\Text\TextGame.js">
+      <DependentUpon>TextGame.ts</DependentUpon>
+    </Content>
     <Content Include="Scripts\endgate.js.map">
       <DependentUpon>endgate.ts</DependentUpon>
     </Content>
@@ -777,6 +797,12 @@
     <Content Include="Samples\Sprites\Main.js.map">
       <DependentUpon>Main.ts</DependentUpon>
     </Content>
+    <Content Include="Samples\Text\TextAnimator.js.map">
+      <DependentUpon>TextAnimator.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\Text\Main.js.map">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-2.0.0.intellisense.js" />
     <Content Include="Samples\AnimatedSprites\images\attribution.txt" />
     <Content Include="Samples\AnimatedSprites\images\electric_pulse.png" />
@@ -806,21 +832,7 @@
     <TypeScriptCompile Include="Samples\RawRPG\Player.ts" />
     <TypeScriptCompile Include="Samples\RawRPG\RPG.ts" />
     <Content Include="Samples\Sprites\html5-logo.png" />
-    <Content Include="Samples\Text\assetsText.js">
-      <DependentUpon>assetsText.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\Text\assetsText.min.js">
-      <DependentUpon>assetsText.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Samples\Text\assetsText.ts" />
     <Content Include="Samples\Text\Default.aspx" />
-    <Content Include="Samples\Text\mainText.js">
-      <DependentUpon>mainText.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\Text\mainText.min.js">
-      <DependentUpon>mainText.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Samples\Text\mainText.ts" />
     <Content Include="Scripts\endgate.js" />
     <Content Include="Scripts\endgate.min.js">
       <DependentUpon>endgate.ts</DependentUpon>

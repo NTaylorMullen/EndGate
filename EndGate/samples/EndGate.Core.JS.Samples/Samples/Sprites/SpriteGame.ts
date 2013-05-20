@@ -1,5 +1,6 @@
 /// <reference path="../../Scripts/jquery.d.ts" />
 /// <reference path="../../Scripts/endgate.ts" />
+/// <reference path="SpriteAnimator.ts" />
 
 class SpriteGame extends eg.Game {
     public Sprite: eg.Graphics.Sprite2d;

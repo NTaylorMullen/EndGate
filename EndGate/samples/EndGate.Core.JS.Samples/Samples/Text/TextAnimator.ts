@@ -1,92 +1,6 @@
 /// <reference path="../../Scripts/jquery.d.ts" />
 /// <reference path="../../Scripts/endgate.ts" />
 
-class TextBuilder extends eg.Game {
-    public Text: eg.Graphics.Text2d;
-
-    private _textAnimator: TextAnimator;
-
-    constructor(private _canvas: HTMLCanvasElement, targetAnimators: JQuery, defaultPosition: eg.Vector2d, defaultRotation: number, defaultOpacity: number, private _syncSliders: Function) {
-        super(_canvas);
-        var that = this;
-
-        this.Text = new eg.Graphics.Text2d(defaultPosition.X, defaultPosition.Y, "Hello World!");
-        this.Text.FontSettings.FontSize(20);
-        this.Text.FontSettings.FontFamily(eg.Graphics.Assets.FontFamily.TimesNewRoman);
-        this.Scene.Add(this.Text);
-
-        this._textAnimator = new TextAnimator(targetAnimators, defaultPosition, defaultRotation, defaultOpacity, this._syncSliders);
-    }
-
-    public Update(gameTime: eg.GameTime): void {
-        this._textAnimator.ApplyAnimation(this.Text, gameTime);
-    }
-}
-
-class ColorPicker {
-    private sliders: any[];
-
-    constructor(private red: any, private green: any, private blue: any, defaultColor: number[], private oncolorchange: Function) {
-        var updateGraphic = () => {
-            this.UpdateColor();
-        };
-
-        this.sliders = [this.red, this.green, this.blue];
-
-        for (var i = 0; i < 3; i++) {
-            this.sliders[i].slider({
-                orientation: "horizontal",
-                range: "min",
-                max: 255,
-                value: defaultColor[i],
-                animate: true,
-                slide: updateGraphic,
-                change: updateGraphic
-            });
-        }
-
-        this.UpdateColor();
-    }
-
-    private UpdateColor(): void {
-        var red = this.red.slider("value"),
-            green = this.green.slider("value"),
-            blue = this.blue.slider("value");
-
-        this.oncolorchange("rgb(" + red + ", " + green + ", " + blue + ")")
-    }
-}
-
-class CustomSlider {
-
-    constructor(private _target: any, private _min: number, private _max: number, private _defaultValue: number, private onsliderchange: Function) {
-        var sliderChange = () => {
-            this.SliderChange();
-        };
-
-        this._target.slider({
-            orientation: "horizontal",
-            range: "min",
-            min: this._min,
-            max: this._max,
-            value: this._defaultValue,
-            animate: true,
-            slide: sliderChange,
-            change: sliderChange
-        });
-
-        this.SliderChange();
-    }
-
-    public UpdateSlider(val: number): void {
-        this._target.slider("value", val);
-    }
-
-    private SliderChange(): void {
-        this.onsliderchange(parseInt(this._target.slider("value")));
-    }
-}
-
 class TextAnimator {
     public static AnimationSpeed: number = 50;
     public static RotationSpeed: number = Math.PI / 4;
@@ -95,7 +9,7 @@ class TextAnimator {
     public CurrentAnimations: { [animation: string]: bool; } = {
         Position: false,
         Rotation: false,
-        Size: false, 
+        Size: false,
         Opacity: false
     };
     private _lastChanged: number;
@@ -156,7 +70,7 @@ class TextAnimator {
     }
 
     private Size(text: eg.Graphics.Text2d, gameTime: eg.GameTime): void {
-        var incrementor = (TextAnimator.AnimationSpeed/2) * gameTime.ElapsedSecond;
+        var incrementor = (TextAnimator.AnimationSpeed / 2) * gameTime.ElapsedSecond;
 
         text.FontSettings.FontSize(parseFloat(text.FontSettings.FontSize()) + this.Direction * incrementor);
     }
