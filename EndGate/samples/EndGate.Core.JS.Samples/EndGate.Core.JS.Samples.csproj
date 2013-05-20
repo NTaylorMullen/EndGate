@@ -521,18 +521,41 @@
     <Content Include="Samples\RawRPG\RPG.min.js">
       <DependentUpon>RPG.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\Shapes\assetsShapes.js">
-      <DependentUpon>assetsShapes.ts</DependentUpon>
+    <TypeScriptCompile Include="Samples\Shapes\ColorPicker.ts" />
+    <Content Include="Samples\Shapes\ColorPicker.js">
+      <DependentUpon>ColorPicker.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\Shapes\assetsShapes.min.js">
-      <DependentUpon>assetsShapes.ts</DependentUpon>
+    <TypeScriptCompile Include="Samples\Shapes\CustomSlider.ts" />
+    <Content Include="Samples\Shapes\ColorPicker.min.js">
+      <DependentUpon>ColorPicker.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\Shapes\CustomSlider.js">
+      <DependentUpon>CustomSlider.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\Shapes\CustomSlider.min.js">
+      <DependentUpon>CustomSlider.ts</DependentUpon>
     </Content>
     <Content Include="Samples\Shapes\Default.aspx" />
-    <Content Include="Samples\Shapes\mainShapes.js">
-      <DependentUpon>mainShapes.ts</DependentUpon>
+    <TypeScriptCompile Include="Samples\Shapes\Main.ts" />
+    <Content Include="Samples\Shapes\Main.js">
+      <DependentUpon>Main.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\Shapes\mainShapes.min.js">
-      <DependentUpon>mainShapes.ts</DependentUpon>
+    <Content Include="Samples\Shapes\Main.min.js">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Samples\Shapes\ShapeGame.ts" />
+    <TypeScriptCompile Include="Samples\Shapes\ShapeAnimator.ts" />
+    <Content Include="Samples\Shapes\ShapeAnimator.js">
+      <DependentUpon>ShapeAnimator.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\Shapes\ShapeAnimator.min.js">
+      <DependentUpon>ShapeAnimator.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\Shapes\ShapeGame.js">
+      <DependentUpon>ShapeGame.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\Shapes\ShapeGame.min.js">
+      <DependentUpon>ShapeGame.ts</DependentUpon>
     </Content>
     <Content Include="Samples\Sprites\assetsSprites.js">
       <DependentUpon>assetsSprites.ts</DependentUpon>
@@ -585,12 +608,6 @@
     </Content>
     <Content Include="Samples\RawRPG\RPG.js.map">
       <DependentUpon>RPG.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\Shapes\assetsShapes.js.map">
-      <DependentUpon>assetsShapes.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\Shapes\mainShapes.js.map">
-      <DependentUpon>mainShapes.ts</DependentUpon>
     </Content>
     <Content Include="Samples\Sprites\assetsSprites.js.map">
       <DependentUpon>assetsSprites.ts</DependentUpon>
@@ -729,6 +746,21 @@
     <Content Include="Samples\MovementControllers\Main.js.map">
       <DependentUpon>Main.ts</DependentUpon>
     </Content>
+    <Content Include="Samples\Shapes\ShapeAnimator.js.map">
+      <DependentUpon>ShapeAnimator.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\Shapes\Main.js.map">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\Shapes\ColorPicker.js.map">
+      <DependentUpon>ColorPicker.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\Shapes\CustomSlider.js.map">
+      <DependentUpon>CustomSlider.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\Shapes\ShapeGame.js.map">
+      <DependentUpon>ShapeGame.ts</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-2.0.0.intellisense.js" />
     <Content Include="Samples\AnimatedSprites\images\attribution.txt" />
     <Content Include="Samples\AnimatedSprites\images\electric_pulse.png" />
@@ -757,8 +789,6 @@
     <TypeScriptCompile Include="Samples\RawRPG\Main.ts" />
     <TypeScriptCompile Include="Samples\RawRPG\Player.ts" />
     <TypeScriptCompile Include="Samples\RawRPG\RPG.ts" />
-    <TypeScriptCompile Include="Samples\Shapes\assetsShapes.ts" />
-    <TypeScriptCompile Include="Samples\Shapes\mainShapes.ts" />
     <TypeScriptCompile Include="Samples\Sprites\assetsSprites.ts" />
     <Content Include="Samples\Sprites\html5-logo.png" />
     <Content Include="Samples\Sprites\mainSprites.js">
