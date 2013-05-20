@@ -557,11 +557,9 @@
     <Content Include="Samples\Shapes\ShapeGame.min.js">
       <DependentUpon>ShapeGame.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\Sprites\assetsSprites.js">
-      <DependentUpon>assetsSprites.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\Sprites\assetsSprites.min.js">
-      <DependentUpon>assetsSprites.ts</DependentUpon>
+    <TypeScriptCompile Include="Samples\Sprites\CustomSlider.ts" />
+    <Content Include="Samples\Sprites\CustomSlider.js">
+      <DependentUpon>CustomSlider.ts</DependentUpon>
     </Content>
     <Content Include="Samples\Sprites\Default.aspx" />
     <Content Include="Samples\MapBuilder\CameraDragController.js.map">
@@ -609,11 +607,23 @@
     <Content Include="Samples\RawRPG\RPG.js.map">
       <DependentUpon>RPG.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\Sprites\assetsSprites.js.map">
-      <DependentUpon>assetsSprites.ts</DependentUpon>
+    <TypeScriptCompile Include="Samples\Sprites\Main.ts" />
+    <Content Include="Samples\Sprites\Main.js">
+      <DependentUpon>Main.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\Sprites\mainSprites.js.map">
-      <DependentUpon>mainSprites.ts</DependentUpon>
+    <TypeScriptCompile Include="Samples\Sprites\SpriteGame.ts" />
+    <TypeScriptCompile Include="Samples\Sprites\SpriteAnimator.ts" />
+    <Content Include="Samples\Sprites\Main.min.js">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\Sprites\SpriteAnimator.js">
+      <DependentUpon>SpriteAnimator.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\Sprites\SpriteAnimator.min.js">
+      <DependentUpon>SpriteAnimator.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\Sprites\SpriteGame.js">
+      <DependentUpon>SpriteGame.ts</DependentUpon>
     </Content>
     <Content Include="Samples\Text\assetsText.js.map">
       <DependentUpon>assetsText.ts</DependentUpon>
@@ -761,6 +771,12 @@
     <Content Include="Samples\Shapes\ShapeGame.js.map">
       <DependentUpon>ShapeGame.ts</DependentUpon>
     </Content>
+    <Content Include="Samples\Sprites\SpriteAnimator.js.map">
+      <DependentUpon>SpriteAnimator.ts</DependentUpon>
+    </Content>
+    <Content Include="Samples\Sprites\Main.js.map">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-2.0.0.intellisense.js" />
     <Content Include="Samples\AnimatedSprites\images\attribution.txt" />
     <Content Include="Samples\AnimatedSprites\images\electric_pulse.png" />
@@ -789,15 +805,7 @@
     <TypeScriptCompile Include="Samples\RawRPG\Main.ts" />
     <TypeScriptCompile Include="Samples\RawRPG\Player.ts" />
     <TypeScriptCompile Include="Samples\RawRPG\RPG.ts" />
-    <TypeScriptCompile Include="Samples\Sprites\assetsSprites.ts" />
     <Content Include="Samples\Sprites\html5-logo.png" />
-    <Content Include="Samples\Sprites\mainSprites.js">
-      <DependentUpon>mainSprites.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\Sprites\mainSprites.min.js">
-      <DependentUpon>mainSprites.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\Sprites\mainSprites.ts" />
     <Content Include="Samples\Text\assetsText.js">
       <DependentUpon>assetsText.ts</DependentUpon>
     </Content>

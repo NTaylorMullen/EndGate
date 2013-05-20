@@ -41,7 +41,6 @@ class ShapeAnimator {
         if (gameTime.Now.getTime() - this._lastChanged > ShapeAnimator.ChangeDirectionEvery) {
             this.Direction *= -1;
             this._lastChanged = gameTime.Now.getTime();
-            console.log("Changing direction: " + this.Direction);
         }
 
         for (var key in this.CurrentAnimations) {

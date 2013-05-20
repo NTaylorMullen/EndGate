@@ -1,54 +1,3 @@
-var __extends = this.__extends || function (d, b) {
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
-var SpriteBuilder = (function (_super) {
-    __extends(SpriteBuilder, _super);
-    function SpriteBuilder(_canvas, targetAnimators, defaultPosition, defaultSize, defaultRotation, defaultOpacity, _syncSliders) {
-        _super.call(this, _canvas);
-        this._canvas = _canvas;
-        this._syncSliders = _syncSliders;
-        this.Sprite = new eg.Graphics.Sprite2d(this._canvas.width / 2, this._canvas.height / 2, new eg.Graphics.Assets.ImageSource("html5-logo.png", 200, 200));
-        this._spriteAnimator = new SpriteAnimator(targetAnimators, defaultPosition, defaultSize, defaultRotation, defaultOpacity, this._syncSliders);
-        this.Scene.Add(this.Sprite);
-    }
-    SpriteBuilder.prototype.Update = function (gameTime) {
-        this._spriteAnimator.ApplyAnimation(this.Sprite, gameTime);
-    };
-    return SpriteBuilder;
-})(eg.Game);
-var CustomSlider = (function () {
-    function CustomSlider(_target, _min, _max, _defaultValue, onsliderchange) {
-        this._target = _target;
-        this._min = _min;
-        this._max = _max;
-        this._defaultValue = _defaultValue;
-        this.onsliderchange = onsliderchange;
-        var _this = this;
-        var sliderChange = function () {
-            _this.SliderChange();
-        };
-        this._target.slider({
-            orientation: "horizontal",
-            range: "min",
-            min: this._min,
-            max: this._max,
-            value: this._defaultValue,
-            animate: true,
-            slide: sliderChange,
-            change: sliderChange
-        });
-        this.SliderChange();
-    }
-    CustomSlider.prototype.UpdateSlider = function (val) {
-        this._target.slider("value", val);
-    };
-    CustomSlider.prototype.SliderChange = function () {
-        this.onsliderchange(parseInt(this._target.slider("value")));
-    };
-    return CustomSlider;
-})();
 var SpriteAnimator = (function () {
     function SpriteAnimator(spriteAnimators, _defaultPosition, _defaultSize, _defaultRotation, _defaultOpacity, _syncSliders) {
         this._defaultPosition = _defaultPosition;
@@ -85,7 +34,6 @@ var SpriteAnimator = (function () {
         if(gameTime.Now.getTime() - this._lastChanged > SpriteAnimator.ChangeDirectionEvery) {
             this.Direction *= -1;
             this._lastChanged = gameTime.Now.getTime();
-            console.log("Changing direction: " + this.Direction);
         }
         for(var key in this.CurrentAnimations) {
             if(this.CurrentAnimations[key]) {
@@ -118,4 +66,4 @@ var SpriteAnimator = (function () {
     };
     return SpriteAnimator;
 })();
-//@ sourceMappingURL=assetsSprites.js.map
+//@ sourceMappingURL=SpriteAnimator.js.map
