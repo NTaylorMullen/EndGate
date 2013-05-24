@@ -172,10 +172,10 @@
   <Target Name="BeforeBuild">
     <Delete Files="Scripts\endgate.d.ts" />
     <Delete Files="Scripts\endgate.js" />
-  </Target>
-  <Target Name="AfterBuild">
     <Copy SourceFiles="$(SolutionDir)EndGate.Core.JS\Scripts\endgate.d.ts" DestinationFiles="Scripts\endgate.d.ts" Condition=" '$(OS)' == 'Windows_NT' " />
     <Copy SourceFiles="$(SolutionDir)EndGate.Core.JS\Scripts\endgate.js" DestinationFiles="Scripts\endgate.js" Condition=" '$(OS)' == 'Windows_NT' " />
+  </Target>
+  <Target Name="AfterBuild">    
     <BuildScriptTags ProjectDirectory="$(MSBuildProjectDirectory)" RelativePath="$(QUnitTestsFolder)">
       <Output PropertyName="JSTests" TaskParameter="ScriptTagsOutput" />
     </BuildScriptTags>
