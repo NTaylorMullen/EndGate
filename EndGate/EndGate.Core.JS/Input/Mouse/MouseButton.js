@@ -12,4 +12,3 @@ var EndGate;
     })(EndGate.Input || (EndGate.Input = {}));
     var Input = EndGate.Input;
 })(EndGate || (EndGate = {}));
-//@ sourceMappingURL=MouseButton.js.map

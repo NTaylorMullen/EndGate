@@ -58,4 +58,3 @@ var EndGate;
     })(EndGate.Bounds || (EndGate.Bounds = {}));
     var Bounds = EndGate.Bounds;
 })(EndGate || (EndGate = {}));
-//@ sourceMappingURL=BoundingCircle.js.map

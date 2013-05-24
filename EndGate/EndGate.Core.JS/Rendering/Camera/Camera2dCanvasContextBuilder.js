@@ -98,4 +98,3 @@ var EndGate;
     })(EndGate.Rendering || (EndGate.Rendering = {}));
     var Rendering = EndGate.Rendering;
 })(EndGate || (EndGate = {}));
-//@ sourceMappingURL=Camera2dCanvasContextBuilder.js.map

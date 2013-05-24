@@ -49,4 +49,3 @@ var EndGate;
     })();
     EndGate.Game = Game;    
 })(EndGate || (EndGate = {}));
-//@ sourceMappingURL=Game.js.map

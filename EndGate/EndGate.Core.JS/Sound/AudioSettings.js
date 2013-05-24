@@ -19,4 +19,3 @@ var EndGate;
     })(EndGate.Sound || (EndGate.Sound = {}));
     var Sound = EndGate.Sound;
 })(EndGate || (EndGate = {}));
-//@ sourceMappingURL=AudioSettings.js.map

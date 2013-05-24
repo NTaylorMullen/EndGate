@@ -67,4 +67,3 @@ var EndGate;
     })(EndGate.Rendering || (EndGate.Rendering = {}));
     var Rendering = EndGate.Rendering;
 })(EndGate || (EndGate = {}));
-//@ sourceMappingURL=Scene2d.js.map

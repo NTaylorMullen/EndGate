@@ -18,4 +18,3 @@ var EndGate;
     })();
     EndGate.GameTime = GameTime;    
 })(EndGate || (EndGate = {}));
-//@ sourceMappingURL=GameTime.js.map

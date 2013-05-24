@@ -18,4 +18,3 @@ var EndGate;
     })();
     EndGate.GameConfiguration = GameConfiguration;    
 })(EndGate || (EndGate = {}));
-//@ sourceMappingURL=GameConfiguration.js.map

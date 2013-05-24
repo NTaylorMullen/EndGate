@@ -41,4 +41,3 @@ var EndGate;
     })(EndGate.Bounds || (EndGate.Bounds = {}));
     var Bounds = EndGate.Bounds;
 })(EndGate || (EndGate = {}));
-//@ sourceMappingURL=Bounds2d.js.map

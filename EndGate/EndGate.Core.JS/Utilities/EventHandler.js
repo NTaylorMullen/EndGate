@@ -37,4 +37,3 @@ var EndGate;
     })();
     EndGate.EventHandler = EventHandler;    
 })(EndGate || (EndGate = {}));
-//@ sourceMappingURL=EventHandler.js.map

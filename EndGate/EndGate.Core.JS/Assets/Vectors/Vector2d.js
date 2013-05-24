@@ -128,4 +128,3 @@ var EndGate;
     })();
     EndGate.Vector2d = Vector2d;    
 })(EndGate || (EndGate = {}));
-//@ sourceMappingURL=Vector2d.js.map

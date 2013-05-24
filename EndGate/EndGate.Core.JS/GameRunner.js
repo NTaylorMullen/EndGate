@@ -85,4 +85,3 @@ var EndGate;
     var _ = EndGate._;
 })(EndGate || (EndGate = {}));
 var GameRunnerInstance = new EndGate._.GameRunner();
-//@ sourceMappingURL=GameRunner.js.map

@@ -52,4 +52,3 @@ var EndGate;
     })(EndGate.Collision || (EndGate.Collision = {}));
     var Collision = EndGate.Collision;
 })(EndGate || (EndGate = {}));
-//@ sourceMappingURL=CollisionManager.js.map

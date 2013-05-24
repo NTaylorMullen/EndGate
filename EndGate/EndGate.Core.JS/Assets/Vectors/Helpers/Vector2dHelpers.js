@@ -25,4 +25,3 @@ var EndGate;
     })(EndGate._ || (EndGate._ = {}));
     var _ = EndGate._;
 })(EndGate || (EndGate = {}));
-//@ sourceMappingURL=Vector2dHelpers.js.map

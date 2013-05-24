@@ -102,4 +102,3 @@ var EndGate;
     })();
     EndGate.Size2d = Size2d;    
 })(EndGate || (EndGate = {}));
-//@ sourceMappingURL=Size2d.js.map

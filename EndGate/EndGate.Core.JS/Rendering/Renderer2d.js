@@ -58,4 +58,3 @@ var EndGate;
     })(EndGate.Rendering || (EndGate.Rendering = {}));
     var Rendering = EndGate.Rendering;
 })(EndGate || (EndGate = {}));
-//@ sourceMappingURL=Renderer2d.js.map
