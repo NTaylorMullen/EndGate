@@ -1,5 +1,8 @@
 var EndGate;
 (function (EndGate) {
+    /// <reference path="KeyboardCommand.ts" />
+    /// <reference path="KeyboardCommandEvent.ts" />
+    /// <reference path="../../Utilities/EventHandler.ts" />
     (function (Input) {
         var KeyboardHandler = (function () {
             function KeyboardHandler() {
@@ -56,6 +59,7 @@ var EndGate;
                 var _this = this;
                 return function (ke) {
                     var keyboardCommandEvent, propogate = true;
+                    //Don't enable shortcut keys in Input, Text area fields
                     if(_this.FocusingTextArea(ke)) {
                         return;
                     }

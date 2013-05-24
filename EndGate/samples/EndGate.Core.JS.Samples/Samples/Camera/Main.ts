@@ -1,6 +1,6 @@
 /// <reference path="../../Scripts/jquery.d.ts" />
-/// <reference path="../../Scripts/endgate.ts" />
-/// <reference path="CameraMover.ts" />
+/// <reference path="../../Scripts/endgate.d.ts" />
+/// <reference path="Game.ts" />
 
 (function ($, window) {
     // Create a game canvas to use.  If we create a game without providing a canvas it will create a
@@ -9,7 +9,7 @@
         holder: JQuery = $("#gameHolder"),
         cameraPosition: JQuery = $("#cameraPosition"),
         cameraDistance: JQuery = $("#cameraDistance"),
-        cameraMover: CameraMover = null;
+        game: Camera.Game = null;
 
     // Setup the game canvas DOM
     canvas.width = holder.width();
@@ -17,6 +17,6 @@
     holder.append(canvas);
 
     // Create our game
-    cameraMover = new CameraMover(canvas, cameraPosition, cameraDistance);    
+    game = new Camera.Game(canvas, cameraPosition, cameraDistance);    
 
 })($, window);

@@ -1,4 +1,4 @@
-/// <reference path="../../Interfaces/ITyped.d.ts" />
+/// <reference path="../../Interfaces/ITyped.ts" />
 /// <reference path="../Sizes/Size2d.ts" />
 /// <reference path="../../Extensions/MathExtensions.ts" />
 

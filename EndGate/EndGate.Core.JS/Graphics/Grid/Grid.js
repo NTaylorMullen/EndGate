@@ -5,6 +5,10 @@ var __extends = this.__extends || function (d, b) {
 };
 var EndGate;
 (function (EndGate) {
+    /// <reference path="../../Assets/Vectors/Vector2d.ts" />
+    /// <reference path="../../Assets/Sizes/Size2d.ts" />
+    /// <reference path="../Graphic2d.ts" />
+    /// <reference path="../Line2d.ts" />
     (function (Graphics) {
         var Grid = (function (_super) {
             __extends(Grid, _super);

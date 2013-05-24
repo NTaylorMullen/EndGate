@@ -1,3 +1,5 @@
+/// <reference path="../Vectors/Vector2d.ts" />
+/// <reference path="../../Interfaces/ITyped.ts" />
 var EndGate;
 (function (EndGate) {
     var Size2d = (function () {
@@ -92,7 +94,8 @@ var EndGate;
         Size2d.prototype.Clone = function () {
             return new Size2d(this.Width, this.Height);
         };
-        Size2d.prototype.toString = function () {
+        Size2d.prototype.toString = // toString override
+        function () {
             return "(" + this.Width + ", " + this.Height + ")";
         };
         return Size2d;

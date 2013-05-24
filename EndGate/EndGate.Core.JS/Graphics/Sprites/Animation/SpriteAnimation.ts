@@ -1,7 +1,7 @@
 /// <reference path="../../../Utilities/EventHandler.ts" />
 /// <reference path="../../../Assets/Vectors/Vector2d.ts" />
 /// <reference path="../../../Assets/Sizes/Size2d.ts" />
-/// <reference path="../../../Interfaces/IUpdateable.d.ts" />
+/// <reference path="../../../Interfaces/IUpdateable.ts" />
 /// <reference path="../../../GameTime.ts" />
 /// <reference path="../ImageSource.ts" />
 

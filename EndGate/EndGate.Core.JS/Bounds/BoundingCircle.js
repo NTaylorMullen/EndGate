@@ -5,6 +5,9 @@ var __extends = this.__extends || function (d, b) {
 };
 var EndGate;
 (function (EndGate) {
+    /// <reference path="../Assets/Vectors/Vector2d.ts" />
+    /// <reference path="BoundingRectangle.ts" />
+    /// <reference path="Bounds2d.ts" />
     (function (Bounds) {
         var BoundingCircle = (function (_super) {
             __extends(BoundingCircle, _super);
@@ -23,10 +26,12 @@ var EndGate;
             BoundingCircle.prototype.Circumfrence = function () {
                 return 2 * Math.PI * this.Radius;
             };
-            BoundingCircle.prototype.IntersectsCircle = function (circle) {
+            BoundingCircle.prototype.IntersectsCircle = // For some reason when compiled into a single .ts file if this isn't fully declared it doesn't compile
+            function (circle) {
                 return this.Position.Distance(circle.Position).Length() < this.Radius + circle.Radius;
             };
-            BoundingCircle.prototype.IntersectsRectangle = function (rectangle) {
+            BoundingCircle.prototype.IntersectsRectangle = // For some reason when compiled into a single .ts file if this isn't fully declared it doesn't compile
+            function (rectangle) {
                 var translated = (rectangle.Rotation === 0) ? this.Position : this.Position.RotateAround(rectangle.Position, -rectangle.Rotation);
                 var circleDistance = translated.Distance(rectangle.Position);
                 if(circleDistance.X > (rectangle.Size.HalfWidth() + this.Radius)) {

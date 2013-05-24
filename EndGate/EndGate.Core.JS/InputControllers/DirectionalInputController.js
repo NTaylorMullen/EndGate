@@ -1,5 +1,7 @@
 var EndGate;
 (function (EndGate) {
+    /// <reference path="../Input/Keyboard/KeyboardHandler.ts" />
+    /// <reference path="../MovementControllers/LinearDirections.ts" />
     (function (InputControllers) {
         var DirectionalInputController = (function () {
             function DirectionalInputController(keyboard, onMove, upKeys, rightKeys, downKeys, leftKeys) {

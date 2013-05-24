@@ -22,7 +22,7 @@
     <div class="row">
         <select id="savedMaps" style="margin-bottom: 0px;"></select>
         <button class="btn disabled" id="loadMap">Load Map</button>
-        <em>Loads maps created (and saved) via the <a href="../MapBuilder/Default.aspx">Map Builder</a>.</em>
+        <em>Loads maps created (and saved) via the <a href="../MapCreator/Default.aspx">Map Creator</a>.</em>
     </div>
     <br />
     <p class="row">Move the box with <em>w/a/s/d or up/left/right/down.</em></p>
@@ -32,10 +32,10 @@
         </div>
     </div>
     
-    <script typescript="true" src="Knight.js"></script>
-    <script typescript="true" src="KnightAnimationHandler.js"></script>
-    <script typescript="true" src="Player.js"></script>
-    <script typescript="true" src="LoadMapHandler.js"></script>
-    <script typescript="true" src="RPG.js"></script>
-    <script typescript="true" src="Main.js"></script>
+    <script data-typescript="true" src="Knight.js"></script>
+    <script data-typescript="true" src="KnightAnimationHandler.js"></script>
+    <script data-typescript="true" src="Player.js"></script>
+    <script data-typescript="true" src="LoadMapHandler.js"></script>
+    <script data-typescript="true" src="Game.js"></script>
+    <script data-typescript="true" src="Main.js"></script>
 </asp:Content>

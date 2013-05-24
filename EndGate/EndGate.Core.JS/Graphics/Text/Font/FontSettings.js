@@ -1,6 +1,10 @@
 var EndGate;
 (function (EndGate) {
     (function (Graphics) {
+        /// <reference path="FontMeasurement.ts" />
+        /// <reference path="FontFamily.ts" />
+        /// <reference path="FontVariant.ts" />
+        /// <reference path="FontStyle.ts" />
         (function (Assets) {
             var FontSettings = (function () {
                 function FontSettings() {

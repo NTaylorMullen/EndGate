@@ -69,8 +69,8 @@
     <Content Include="index.html" />
     <Content Include="packages.config" />
     <None Include="Scripts\jquery-2.0.0.intellisense.js" />
+    <Content Include="Scripts\endgate.d.ts" />
     <Content Include="Scripts\endgate.js" />
-    <Content Include="Scripts\endgate.ts" />
     <Content Include="Scripts\jquery-2.0.0.js" />
     <Content Include="Scripts\jquery-2.0.0.min.js" />
     <Content Include="Scripts\qunit.extensions.js" />
@@ -170,11 +170,11 @@
     </Task>
   </UsingTask>
   <Target Name="BeforeBuild">
-    <Delete Files="Scripts\endgate.ts" />
+    <Delete Files="Scripts\endgate.d.ts" />
     <Delete Files="Scripts\endgate.js" />
   </Target>
   <Target Name="AfterBuild">
-    <Copy SourceFiles="$(SolutionDir)EndGate.Core.JS\Scripts\endgate.ts" DestinationFiles="Scripts\endgate.ts" Condition=" '$(OS)' == 'Windows_NT' " />
+    <Copy SourceFiles="$(SolutionDir)EndGate.Core.JS\Scripts\endgate.d.ts" DestinationFiles="Scripts\endgate.d.ts" Condition=" '$(OS)' == 'Windows_NT' " />
     <Copy SourceFiles="$(SolutionDir)EndGate.Core.JS\Scripts\endgate.js" DestinationFiles="Scripts\endgate.js" Condition=" '$(OS)' == 'Windows_NT' " />
     <BuildScriptTags ProjectDirectory="$(MSBuildProjectDirectory)" RelativePath="$(QUnitTestsFolder)">
       <Output PropertyName="JSTests" TaskParameter="ScriptTagsOutput" />

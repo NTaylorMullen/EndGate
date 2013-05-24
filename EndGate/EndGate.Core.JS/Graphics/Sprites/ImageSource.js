@@ -1,6 +1,9 @@
 var EndGate;
 (function (EndGate) {
     (function (Graphics) {
+        /// <reference path="../../Assets/Vectors/Vector2d.ts" />
+        /// <reference path="../../Assets/Sizes/Size2d.ts" />
+        /// <reference path="../../Utilities/EventHandler.ts" />
         (function (Assets) {
             var ImageSource = (function () {
                 function ImageSource(imageLocation, width, height, clipX, clipY, clipWidth, clipHeight) {

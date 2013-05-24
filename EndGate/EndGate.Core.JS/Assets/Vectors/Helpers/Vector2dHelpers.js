@@ -1,5 +1,7 @@
 var EndGate;
 (function (EndGate) {
+    /// <reference path="../Vector2d.ts" />
+    /// <reference path="MinMax.ts" />
     (function (_) {
         var Vector2dHelpers = (function () {
             function Vector2dHelpers() { }

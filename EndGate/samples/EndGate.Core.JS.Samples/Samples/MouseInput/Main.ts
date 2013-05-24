@@ -1,5 +1,5 @@
 /// <reference path="../../Scripts/jquery.d.ts" />
-/// <reference path="MouseInputGame.ts" />
+/// <reference path="Game.ts" />
 
 (function ($, window) {
     // Create a game canvas to use.  If we create a game without providing a canvas it will create a
@@ -7,7 +7,7 @@
     var canvas: HTMLCanvasElement = <HTMLCanvasElement>document.createElement("canvas"),
         holder: JQuery = $("#gameHolder"),
         lastMouseEvent: JQuery = $("#lastMouseEvent"),
-        mouseInputGame: MouseInputGame = null;
+        game: MouseInput.Game = null;
 
     // Setup the game canvas DOM
     canvas.width = holder.width();
@@ -15,5 +15,5 @@
     holder.append(canvas);
 
     // Create our game
-    mouseInputGame = new MouseInputGame(canvas, lastMouseEvent);
+    game = new MouseInput.Game(canvas, lastMouseEvent);
 })($, window);

@@ -5,6 +5,9 @@ var __extends = this.__extends || function (d, b) {
 };
 var EndGate;
 (function (EndGate) {
+    /// <reference path="../../Assets/Sizes/Size2d.ts" />
+    /// <reference path="../../Assets/Vectors/Vector2d.ts" />
+    /// <reference path="../../Bounds/BoundingRectangle.ts" />
     (function (Rendering) {
         var Camera2d = (function (_super) {
             __extends(Camera2d, _super);

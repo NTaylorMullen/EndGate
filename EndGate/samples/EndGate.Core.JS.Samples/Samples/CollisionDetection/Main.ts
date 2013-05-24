@@ -1,5 +1,5 @@
 /// <reference path="../../Scripts/jquery.d.ts" />
-/// <reference path="CollisionDetection.ts" />
+/// <reference path="Game.ts" />
 
 (function ($, window) {
     // Create a game canvas to use.  If we create a game without providing a canvas it will create a
@@ -12,7 +12,7 @@
             numOfRectangles.val("");
             numOfCircles.val("");
         },
-        collisionDetection = null;
+        game: CollisionDetection.Game = null;
 
     // Setup the game canvas DOM
     canvas.width = holder.width();
@@ -20,26 +20,26 @@
     holder.append(canvas);
 
     // Create our game
-    collisionDetection = new CollisionDetection(canvas);
+    game = new CollisionDetection.Game(canvas);
 
     // Start off the scene with a single rectangle
-    collisionDetection.AddRandomRectangle();
+    game.AddRandomRectangle();
 
     $("#addItems").click(() => {
         var rectanglesToAdd = parseInt(numOfRectangles.val()) || 0,
             circlesToAdd = parseInt(numOfCircles.val()) || 0;
 
         for (var i = 0; i < rectanglesToAdd; i++) {
-            collisionDetection.AddRandomRectangle();
+            game.AddRandomRectangle();
         }
 
         for (var i = 0; i < circlesToAdd; i++) {
-            collisionDetection.AddRandomCircle();
+            game.AddRandomCircle();
         }
     });
 
     $("#clearItems").click(() => {
-        collisionDetection.Clear();
+        game.Clear();
 
         clearInput();
     });

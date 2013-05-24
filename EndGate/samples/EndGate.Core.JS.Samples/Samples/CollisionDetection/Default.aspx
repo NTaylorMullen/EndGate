@@ -23,7 +23,7 @@
         </div>
     </div>
     
-    <script typescript="true" src="MovingShape.js"></script>
-    <script typescript="true" src="CollisionDetection.js"></script>
-    <script typescript="true" src="Main.js"></script>
+    <script data-typescript="true" src="MovingShape.js"></script>
+    <script data-typescript="true" src="Game.js"></script>
+    <script data-typescript="true" src="Main.js"></script>
 </asp:Content>

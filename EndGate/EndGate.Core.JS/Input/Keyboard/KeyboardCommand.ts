@@ -1,4 +1,4 @@
-/// <reference path="../../Interfaces/IDisposable.d.ts" />
+/// <reference path="../../Interfaces/IDisposable.ts" />
 /// <reference path="../../Utilities/EventHandler.ts" />
 /// <reference path="../../Utilities/NoopTripInvoker.ts" />
 /// <reference path="KeyboardCommandHelper.ts" />

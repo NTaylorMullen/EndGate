@@ -19,10 +19,10 @@
     </div>
     <p class="row">Image <a href="images/attribution.txt" target="_blank">attribution</a>.  Sound <a href="sounds/attribution.txt" target="_blank">attribution</a>.</p>
     
-    <script typescript="true" src="Animation.js"></script>
-    <script typescript="true" src="BurningFlame.js"></script>
-    <script typescript="true" src="SmokePoof.js"></script>
-    <script typescript="true" src="SmokePoofManager.js"></script>
-    <script typescript="true" src="AudioHandling.js"></script>
-    <script typescript="true" src="Main.js"></script>
+    <script data-typescript="true" src="Animation.js"></script>
+    <script data-typescript="true" src="BurningFlame.js"></script>
+    <script data-typescript="true" src="SmokePoof.js"></script>
+    <script data-typescript="true" src="SmokePoofManager.js"></script>
+    <script data-typescript="true" src="Game.js"></script>
+    <script data-typescript="true" src="Main.js"></script>
 </asp:Content>

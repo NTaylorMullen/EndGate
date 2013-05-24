@@ -1,5 +1,11 @@
 var EndGate;
 (function (EndGate) {
+    /// <reference path="../Interfaces/IDisposable.ts" />
+    /// <reference path="../Interfaces/ITyped.ts" />
+    /// <reference path="../Bounds/Bounds2d.ts" />
+    /// <reference path="../Utilities/EventHandler.ts" />
+    /// <reference path="../Assets/Vectors/Vector2d.ts" />
+    /// <reference path="CollisionData.ts" />
     (function (Collision) {
         var Collidable = (function () {
             function Collidable(bounds) {

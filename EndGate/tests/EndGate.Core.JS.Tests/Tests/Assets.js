@@ -3,6 +3,7 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
+/// <reference path="../Scripts/endgate.d.ts" />
 var UpdateTester = (function (_super) {
     __extends(UpdateTester, _super);
     function UpdateTester(updateRate, onUpdateLimit, updateLimit) {

@@ -1,4 +1,4 @@
-/// <reference path="../Scripts/endgate.ts" />
+/// <reference path="../Scripts/endgate.d.ts" />
 
 class UpdateTester extends EndGate.Game {
 

@@ -1,5 +1,5 @@
 /// <reference path="../Vectors/Vector2d.ts" />
-/// <reference path="../../Interfaces/ITyped.d.ts" />
+/// <reference path="../../Interfaces/ITyped.ts" />
 
 module EndGate {
     export class Size2d implements _.ITyped {

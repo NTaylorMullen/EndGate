@@ -5,6 +5,10 @@ var __extends = this.__extends || function (d, b) {
 };
 var EndGate;
 (function (EndGate) {
+    /// <reference path="../../Assets/Sizes/Size2d.ts" />
+    /// <reference path="../../Assets/Vectors/Vector2d.ts" />
+    /// <reference path="../../Bounds/BoundingCircle.ts" />
+    /// <reference path="Shape.ts" />
     (function (Graphics) {
         var Circle = (function (_super) {
             __extends(Circle, _super);

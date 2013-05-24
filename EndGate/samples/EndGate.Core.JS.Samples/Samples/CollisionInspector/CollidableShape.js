@@ -3,40 +3,60 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var CollidableShape = (function (_super) {
-    __extends(CollidableShape, _super);
-    function CollidableShape(Graphic) {
-        _super.call(this, Graphic.GetDrawBounds());
-        this.Graphic = Graphic;
-        this._collisionBorderColor = "black";
-        this._collisionBorderThickness = 4;
-        this._lastCollision = null;
-        this.TextPosition = new eg.Graphics.Text2d(0, 0, Graphic.Position.toString());
-        this.Graphic.BorderColor(this._collisionBorderColor);
-        this.Graphic.BorderThickness(0);
-        this.Graphic.AddChild(this.TextPosition);
-    }
-    CollidableShape.prototype.Move = function (position) {
-        this.Bounds.Position = this.Graphic.Position = position;
-        this.TextPosition.Position.Apply(Math.round);
-        this.TextPosition.Text(this.Graphic.Position.toString());
-    };
-    CollidableShape.prototype.Rotate = function (rotation) {
-        this.Bounds.Rotation = this.Graphic.Rotation = this.Graphic.Rotation + rotation;
-    };
-    CollidableShape.prototype.Collided = function (data) {
-        this.Graphic.BorderThickness(this._collisionBorderThickness);
-        this._lastCollision = data;
-        _super.prototype.Collided.call(this, data);
-    };
-    CollidableShape.prototype.Update = function (gameTime) {
-        if(this._lastCollision !== null) {
-            if(!this._lastCollision.With.IsCollidingWith(this)) {
-                this.Graphic.BorderThickness(0);
-                this._lastCollision = null;
-            }
+/// <reference path="../../Scripts/jquery.d.ts" />
+/// <reference path="../../Scripts/endgate.d.ts" />
+// Wrap in module to keep code out of global scope
+var CollisionInspector;
+(function (CollisionInspector) {
+    var CollidableShape = (function (_super) {
+        __extends(CollidableShape, _super);
+        function CollidableShape(Graphic) {
+                _super.call(this, Graphic.GetDrawBounds());
+            this.Graphic = Graphic;
+            this._collisionBorderColor = "black";
+            this._collisionBorderThickness = 4;
+            this._lastCollision = null;
+            // Set the position to be 0,0 because the text position will be a child of the graphic
+            this.TextPosition = new eg.Graphics.Text2d(0, 0, Graphic.Position.toString());
+            // Set the default border color and thickness.  On Collision the border thickness gets set to a visible thickness.
+            this.Graphic.BorderColor(this._collisionBorderColor);
+            this.Graphic.BorderThickness(0);
+            // All children of Graphic will have a relative position to the graphic
+            // Hence the reason why TextPosition is at 0,0 (the center of the graphic)
+            this.Graphic.AddChild(this.TextPosition);
         }
-    };
-    return CollidableShape;
-})(eg.Collision.Collidable);
+        CollidableShape.prototype.Move = function (position) {
+            // Update the graphic location and the bounds location
+            this.Bounds.Position = this.Graphic.Position = position;
+            // Round the position and then update its text
+            this.TextPosition.Position.Apply(Math.round);
+            this.TextPosition.Text(this.Graphic.Position.toString());
+        };
+        CollidableShape.prototype.Rotate = function (rotation) {
+            // Update bounds and position rotation
+            this.Bounds.Rotation = this.Graphic.Rotation = this.Graphic.Rotation + rotation;
+        };
+        CollidableShape.prototype.Collided = // Triggered when shapes collide with each other
+        function (data) {
+            // Make border thickness visible on collision
+            this.Graphic.BorderThickness(this._collisionBorderThickness);
+            // Save last collision so we can determine when we're no longer colliding
+            this._lastCollision = data;
+            _super.prototype.Collided.call(this, data);
+        };
+        CollidableShape.prototype.Update = function (gameTime) {
+            // If we're currently colliding
+            if(this._lastCollision !== null) {
+                // Check if we're no longer colliding
+                if(!this._lastCollision.With.IsCollidingWith(this)) {
+                    // Reset the border thickness to 0 (invisible)
+                    this.Graphic.BorderThickness(0);
+                    this._lastCollision = null;
+                }
+            }
+        };
+        return CollidableShape;
+    })(eg.Collision.Collidable);
+    CollisionInspector.CollidableShape = CollidableShape;    
+})(CollisionInspector || (CollisionInspector = {}));
 //@ sourceMappingURL=CollidableShape.js.map

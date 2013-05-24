@@ -5,6 +5,10 @@ var __extends = this.__extends || function (d, b) {
 };
 var EndGate;
 (function (EndGate) {
+    /// <reference path="Camera2d.ts" />
+    /// <reference path="../Renderer2d.ts" />
+    /// <reference path="../../Assets/Sizes/Size2d.ts" />
+    /// <reference path="Camera2dCanvasContextBuilder.ts" />
     (function (Rendering) {
         var Camera2dRenderer = (function (_super) {
             __extends(Camera2dRenderer, _super);
@@ -30,6 +34,7 @@ var EndGate;
             };
             Camera2dRenderer.prototype.GetOnScreenRenderables = function (allRenderables) {
                 var onscreen = [], scale = this._camera.GetDistanceScale(), unscale = 1 / scale;
+                // Scale camera size to our zoom level
                 this._camera.Scale(scale, scale);
                 for(var i = 0; i < allRenderables.length; i++) {
                     if(this._camera.Intersects(allRenderables[i].GetDrawBounds())) {

@@ -1,4 +1,4 @@
-/// <reference path="ILooper.d.ts" />
+/// <reference path="ILooper.ts" />
 /// <reference path="../Extensions/WindowExtensions.ts" />
 /// <reference path="LooperCallback.ts" />
 

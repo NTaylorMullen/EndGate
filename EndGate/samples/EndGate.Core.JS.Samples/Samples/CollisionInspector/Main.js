@@ -1,12 +1,20 @@
+/// <reference path="../../Scripts/jquery.d.ts" />
+/// <reference path="../../Scripts/endgate.d.ts" />
+/// <reference path="Game.ts" />
 (function ($, window) {
-    var canvas = document.createElement("canvas"), holder = $("#gameHolder"), collisionInspector = null;
+    // Create a game canvas to use.  If we create a game without providing a canvas it will create a
+    // canvas that fills the entire viewport.
+        var canvas = document.createElement("canvas"), holder = $("#gameHolder"), game = null;
+    // Setup the game canvas DOM
     canvas.width = holder.width();
     canvas.height = holder.height();
     holder.append(canvas);
-    collisionInspector = new CollisionInspector(canvas);
-    collisionInspector.Add(new CollidableShape(new eg.Graphics.Circle(70, canvas.height / 2, 50, "red")));
-    collisionInspector.Add(new CollidableShape(new eg.Graphics.Circle(550, canvas.height / 2, 70, "blue")));
-    collisionInspector.Add(new CollidableShape(new eg.Graphics.Rectangle(300, canvas.height / 2, 200, 100, "green")));
-    collisionInspector.Add(new CollidableShape(new eg.Graphics.Rectangle(800, canvas.height / 2, 150, 75, "orange")));
+    // Create our game
+    game = new CollisionInspector.Game(canvas);
+    // Add objects that we'll be checking collisions for
+    game.Add(new CollisionInspector.CollidableShape(new eg.Graphics.Circle(70, canvas.height / 2, 50, "red")));
+    game.Add(new CollisionInspector.CollidableShape(new eg.Graphics.Circle(550, canvas.height / 2, 70, "blue")));
+    game.Add(new CollisionInspector.CollidableShape(new eg.Graphics.Rectangle(300, canvas.height / 2, 200, 100, "green")));
+    game.Add(new CollisionInspector.CollidableShape(new eg.Graphics.Rectangle(800, canvas.height / 2, 150, 75, "orange")));
 })($, window);
 //@ sourceMappingURL=Main.js.map

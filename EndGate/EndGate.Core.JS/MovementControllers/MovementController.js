@@ -1,6 +1,10 @@
 var EndGate;
 (function (EndGate) {
     (function (MovementControllers) {
+        /// <reference path="../Assets/Vectors/Vector2d.ts" />
+        /// <reference path="../Interfaces/IMoveable.ts" />
+        /// <reference path="../Interfaces/IUpdateable.ts" />
+        /// <reference path="../GameTime.ts" />
         (function (Abstractions) {
             var MovementController = (function () {
                 function MovementController(moveables) {
@@ -20,6 +24,7 @@ var EndGate;
                     return !this._frozen && !this.Velocity.IsZero();
                 };
                 MovementController.prototype.Update = function (gameTime) {
+                    // Sync moveables position and rotation
                     for(var i = 0; i < this._moveables.length; i++) {
                         this._moveables[i].Position = this.Position;
                         this._moveables[i].Rotation = this.Rotation;

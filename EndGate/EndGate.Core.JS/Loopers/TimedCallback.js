@@ -6,6 +6,8 @@ var __extends = this.__extends || function (d, b) {
 var EndGate;
 (function (EndGate) {
     (function (_) {
+        /// <reference path="LooperCallback.ts" />
+        /// <reference path="../Interfaces/ITyped.ts" />
         (function (Loopers) {
             var TimedCallback = (function (_super) {
                 __extends(TimedCallback, _super);

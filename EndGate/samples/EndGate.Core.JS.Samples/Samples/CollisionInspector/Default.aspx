@@ -18,7 +18,7 @@
         </div>
     </div>
     
-    <script typescript="true" src="CollidableShape.js"></script>
-    <script typescript="true" src="CollisionInspector.js"></script>
-    <script typescript="true" src="Main.js"></script>
+    <script data-typescript="true" src="CollidableShape.js"></script>
+    <script data-typescript="true" src="Game.js"></script>
+    <script data-typescript="true" src="Main.js"></script>
 </asp:Content>

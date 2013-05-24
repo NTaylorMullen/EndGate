@@ -5,12 +5,17 @@ var __extends = this.__extends || function (d, b) {
 };
 var EndGate;
 (function (EndGate) {
+    /// <reference path="../Assets/Sizes/Size2d.ts" />
+    /// <reference path="../Assets/Vectors/Vector2d.ts" />
+    /// <reference path="../Bounds/BoundingRectangle.ts" />
+    /// <reference path="Graphic2d.ts" />
     (function (Graphics) {
         var Line2d = (function (_super) {
             __extends(Line2d, _super);
             function Line2d(fromX, fromY, toX, toY, lineWidth, color) {
                 if (typeof lineWidth === "undefined") { lineWidth = 1; }
-                        _super.call(this, EndGate.Vector2d.Zero());
+                        _super.call(this, EndGate.Vector2d.Zero())// Set to zero here then updated in the rest of the constructor (use same logic)
+                ;
                 this._type = "Line2d";
                 this._from = new EndGate.Vector2d(fromX, fromY);
                 this._to = new EndGate.Vector2d(toX, toY);
@@ -37,9 +42,11 @@ var EndGate;
             };
             Line2d.prototype.Draw = function (context) {
                 _super.prototype.StartDraw.call(this, context);
+                // Check if the user has modified the position directly, if so we need to translate the from and to positions accordingly
                 if(!this._cachedPosition.Equivalent(this.Position)) {
                     this.RefreshCache();
                 }
+                // Context origin is at the center point of the line
                 context.beginPath();
                 context.moveTo(this._from.X - this.Position.X, this._from.Y - this.Position.Y);
                 context.lineTo(this._to.X - this.Position.X, this._to.Y - this.Position.Y);

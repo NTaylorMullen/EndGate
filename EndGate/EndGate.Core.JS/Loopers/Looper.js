@@ -1,6 +1,9 @@
 var EndGate;
 (function (EndGate) {
     (function (_) {
+        /// <reference path="../Interfaces/ITyped.ts" />
+        /// <reference path="ILooper.ts" />
+        /// <reference path="TimedCallback.ts" />
         (function (Loopers) {
             var Looper = (function () {
                 function Looper() {
@@ -13,6 +16,7 @@ var EndGate;
                     this._callbacks.push(timedCallback);
                     timedCallback.Active = true;
                     if(this._running) {
+                        // Let initial call stack unwind before initiating the loop
                         window.setTimeout(function () {
                             _this.Loop(timedCallback);
                         }, 0);
@@ -52,6 +56,7 @@ var EndGate;
                     }
                 };
                 Looper.prototype.Dispose = function () {
+                    // We need to "remove" every callback to stop each of their timeouts
                     for(var i = this._callbacks.length - 1; i >= 0; i--) {
                         this.RemoveCallback(this._callbacks[i]);
                     }

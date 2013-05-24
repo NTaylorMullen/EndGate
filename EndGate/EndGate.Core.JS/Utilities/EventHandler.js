@@ -1,3 +1,5 @@
+/// <reference path="../Interfaces/IDisposable.ts" />
+/// <reference path="../Interfaces/ITyped.ts" />
 var EndGate;
 (function (EndGate) {
     var EventHandler = (function () {

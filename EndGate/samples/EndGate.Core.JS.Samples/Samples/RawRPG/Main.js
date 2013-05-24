@@ -1,10 +1,25 @@
+/// <reference path="../../Scripts/jquery.d.ts" />
+/// <reference path="LoadMapHandler.ts" />
+/// <reference path="Game.ts" />
 (function ($, window) {
-    var canvas = document.createElement("canvas"), holder = $("#gameHolder"), rpg = null, resourceSheet = new eg.Graphics.Assets.ImageSource("images/wood_tileset_3.png", 512, 512), resources = eg.Map.SquareTileMap.ExtractTiles(resourceSheet, 32, 32), loadMapHandler;
+    // Create a game canvas to use.  If we create a game without providing a canvas it will create a
+    // canvas that fills the entire viewport.
+        var canvas = document.createElement("canvas"), holder = $("#gameHolder"), game = null, resourceSheet = // Build the image source to represent the sprite sheet we will be working with
+    new eg.Graphics.Assets.ImageSource("images/wood_tileset_3.png", 512, 512), resources = // Build a resource array based on the sprite sheet, this is a linear array (not multi-dimensional)
+    // The images/wood_tileset_3.png has 16 tiles per row (512/32) so if we wanted to find a tile on row
+    // 2 column 1 that tile would be at array index 17, this is essentially how the resource array map
+    // that is further below works
+    eg.Map.SquareTileMap.ExtractTiles(resourceSheet, 32, 32), loadMapHandler;
+    // Setup the game canvas DOM
     canvas.width = holder.width();
     canvas.height = holder.height();
     holder.append(canvas);
-    rpg = new RPG(canvas);
-    loadMapHandler = new LoadMapHandler(rpg.Map.Scenery, new eg.Vector2d(canvas.width / 2, canvas.height / 2), 27, 47, new eg.Size2d(32, 32), "images/wood_tileset_3.png", [
+    // Create our game
+    game = new RawRPG.Game(canvas);
+    // Our LoadMapHandler takes in the default properties to build a default "map", it will also allow you to
+    // load in maps that are created in the MapBuilder.  All of these numbers in this multi-dimensional reference
+    // the array index of our resource map ("resources") that was instantiated above
+    loadMapHandler = new RawRPG.LoadMapHandler(game.Map.Scenery, new eg.Vector2d(canvas.width / 2, canvas.height / 2), 27, 47, new eg.Size2d(32, 32), "images/wood_tileset_3.png", [
         [
             155, 
             155, 

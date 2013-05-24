@@ -5,6 +5,11 @@ var __extends = this.__extends || function (d, b) {
 };
 var EndGate;
 (function (EndGate) {
+    /// <reference path="../../Assets/Vectors/Vector2d.ts" />
+    /// <reference path="../Graphic2d.ts" />
+    /// <reference path="../../Utilities/NoopTripInvoker.ts" />
+    /// <reference path="../../Bounds/BoundingRectangle.ts" />
+    /// <reference path="Font/FontSettings.ts" />
     (function (Graphics) {
         var Text2d = (function (_super) {
             __extends(Text2d, _super);

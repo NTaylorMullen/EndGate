@@ -1,5 +1,7 @@
 var EndGate;
 (function (EndGate) {
+    /// <reference path="../Rendering/Camera/Camera2d.ts" />
+    /// <reference path="Scenery/SceneryHandler.ts" />
     (function (Map) {
         var MapManager = (function () {
             function MapManager(foregroundCanvas, camera) {

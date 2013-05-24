@@ -1,5 +1,7 @@
 var EndGate;
 (function (EndGate) {
+    /// <reference path="Mouse/MouseHandler.ts" />
+    /// <reference path="Keyboard/KeyboardHandler.ts" />
     (function (Input) {
         var InputManager = (function () {
             function InputManager(canvas) {

@@ -1,6 +1,9 @@
 var EndGate;
 (function (EndGate) {
     (function (Rendering) {
+        /// <reference path="../../Assets/Vectors/Vector2d.ts" />
+        /// <reference path="../../Assets/Sizes/Size2d.ts" />
+        /// <reference path="Camera2d.ts" />
         (function (_) {
             var Camera2dCanvasContextBuilder = (function () {
                 function Camera2dCanvasContextBuilder(camera) {

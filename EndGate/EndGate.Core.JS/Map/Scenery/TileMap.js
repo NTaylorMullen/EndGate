@@ -5,6 +5,9 @@ var __extends = this.__extends || function (d, b) {
 };
 var EndGate;
 (function (EndGate) {
+    /// <reference path="../../Assets/Vectors/Vector2d.ts" />
+    /// <reference path="../../Graphics/Graphic2d.ts" />
+    /// <reference path="../../Graphics/Sprites/ImageSource.ts" />
     (function (Map) {
         var TileMap = (function (_super) {
             __extends(TileMap, _super);

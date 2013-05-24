@@ -1,6 +1,7 @@
 var EndGate;
 (function (EndGate) {
     (function (_) {
+        /// <reference path="../Interfaces/ITyped.ts" />
         (function (Loopers) {
             var LooperCallback = (function () {
                 function LooperCallback(callback) {

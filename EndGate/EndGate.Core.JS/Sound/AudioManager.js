@@ -1,5 +1,7 @@
 var EndGate;
 (function (EndGate) {
+    /// <reference path="AudioPlayer.ts" />
+    /// <reference path="AudioSettings.ts" />
     (function (Sound) {
         var AudioManager = (function () {
             function AudioManager() {

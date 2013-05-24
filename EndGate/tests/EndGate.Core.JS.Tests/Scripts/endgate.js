@@ -5,12 +5,6 @@ var __extends = this.__extends || function (d, b) {
 };
 var EndGate;
 (function (EndGate) {
-})(EndGate || (EndGate = {}));
-var EndGate;
-(function (EndGate) {
-    })(EndGate || (EndGate = {}));
-var EndGate;
-(function (EndGate) {
     var GameTime = (function () {
         function GameTime() {
             this._type = "GameTime";
@@ -301,9 +295,6 @@ var EndGate;
 })(EndGate || (EndGate = {}));
 var EndGate;
 (function (EndGate) {
-    })(EndGate || (EndGate = {}));
-var EndGate;
-(function (EndGate) {
     (function (_) {
         (function (Loopers) {
             var LooperCallback = (function () {
@@ -319,12 +310,6 @@ var EndGate;
         })(_.Loopers || (_.Loopers = {}));
         var Loopers = _.Loopers;
     })(EndGate._ || (EndGate._ = {}));
-    var _ = EndGate._;
-})(EndGate || (EndGate = {}));
-var EndGate;
-(function (EndGate) {
-    (function (_) {
-            })(EndGate._ || (EndGate._ = {}));
     var _ = EndGate._;
 })(EndGate || (EndGate = {}));
 var EndGate;
@@ -1055,9 +1040,6 @@ var EndGate;
 })(EndGate || (EndGate = {}));
 var EndGate;
 (function (EndGate) {
-    })(EndGate || (EndGate = {}));
-var EndGate;
-(function (EndGate) {
     (function (Rendering) {
         var Renderer2d = (function () {
             function Renderer2d(renderOnto) {
@@ -1249,7 +1231,6 @@ var EndGate;
     (function (Rendering) {
         var Scene2d = (function () {
             function Scene2d(drawArea, onDraw) {
-                this._type = "Scene";
                 this._actors = [];
                 if(typeof drawArea === "undefined") {
                     drawArea = this.CreateDefaultDrawArea();
@@ -1319,15 +1300,6 @@ var EndGate;
     })(EndGate.Input || (EndGate.Input = {}));
     var Input = EndGate.Input;
 })(EndGate || (EndGate = {}));
-var EndGate;
-(function (EndGate) {
-    })(EndGate || (EndGate = {}));
-var EndGate;
-(function (EndGate) {
-    })(EndGate || (EndGate = {}));
-var EndGate;
-(function (EndGate) {
-    })(EndGate || (EndGate = {}));
 var EndGate;
 (function (EndGate) {
     (function (Input) {
@@ -1986,9 +1958,6 @@ var EndGate;
     })(EndGate.MovementControllers || (EndGate.MovementControllers = {}));
     var MovementControllers = EndGate.MovementControllers;
 })(EndGate || (EndGate = {}));
-var EndGate;
-(function (EndGate) {
-    })(EndGate || (EndGate = {}));
 var EndGate;
 (function (EndGate) {
     (function (MovementControllers) {
@@ -2837,7 +2806,6 @@ var EndGate;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
     var Graphics = EndGate.Graphics;
 })(EndGate || (EndGate = {}));
-var eg = EndGate;
 var EndGate;
 (function (EndGate) {
     (function (Graphics) {
@@ -3208,4 +3176,4 @@ var EndGate;
     })(EndGate.Map || (EndGate.Map = {}));
     var Map = EndGate.Map;
 })(EndGate || (EndGate = {}));
-//@ sourceMappingURL=endgate.js.map
+var eg = EndGate;

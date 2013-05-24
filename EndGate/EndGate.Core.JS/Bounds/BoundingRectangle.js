@@ -5,6 +5,10 @@ var __extends = this.__extends || function (d, b) {
 };
 var EndGate;
 (function (EndGate) {
+    /// <reference path="../Assets/Vectors/Helpers/Vector2dHelpers.ts" />
+    /// <reference path="../Assets/Sizes/Size2d.ts" />
+    /// <reference path="BoundingCircle.ts" />
+    /// <reference path="Bounds2d.ts" />
     (function (Bounds) {
         var BoundingRectangle = (function (_super) {
             __extends(BoundingRectangle, _super);
@@ -54,14 +58,17 @@ var EndGate;
                 }
                 return v.RotateAround(this.Position, this.Rotation);
             };
-            BoundingRectangle.prototype.IntersectsCircle = function (circle) {
+            BoundingRectangle.prototype.IntersectsCircle = // For some reason when compiled into a single .ts file if this isn't fully declared it doesn't compile
+            function (circle) {
                 return circle.IntersectsRectangle(this);
             };
-            BoundingRectangle.prototype.IntersectsRectangle = function (rectangle) {
+            BoundingRectangle.prototype.IntersectsRectangle = // For some reason when compiled into a single .ts file if this isn't fully declared it doesn't compile
+            function (rectangle) {
                 if(this.Rotation === 0 && rectangle.Rotation === 0) {
                     var myTopLeft = this.TopLeft(), myBotRight = this.BotRight(), theirTopLeft = rectangle.TopLeft(), theirBotRight = rectangle.BotRight();
                     return theirTopLeft.X <= myBotRight.X && theirBotRight.X >= myTopLeft.X && theirTopLeft.Y <= myBotRight.Y && theirBotRight.Y >= myTopLeft.Y;
                 } else if(rectangle.Position.Distance(this.Position).Magnitude() <= rectangle.Size.Radius() + this.Size.Radius()) {
+                    // Check if we're somewhat close to the rectangle ect that we might be colliding with
                     var axisList = [
                         this.TopRight().Subtract(this.TopLeft()), 
                         this.TopRight().Subtract(this.BotRight()), 
@@ -74,6 +81,7 @@ var EndGate;
                         var axi = axisList[i];
                         var myProjections = EndGate._.Vector2dHelpers.GetMinMaxProjections(axi, myVertices);
                         var theirProjections = EndGate._.Vector2dHelpers.GetMinMaxProjections(axi, theirVertices);
+                        // No collision
                         if(theirProjections.Max < myProjections.Min || myProjections.Max < theirProjections.Min) {
                             return false;
                         }

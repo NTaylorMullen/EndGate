@@ -28,12 +28,12 @@
 
     <p class="row">Image <a href="images/attribution.txt" target="_blank">attribution</a>.</p>
 
-    <script typescript="true" src="Animation.js"></script>
-    <script typescript="true" src="ElectricPulse.js"></script>
-    <script typescript="true" src="FireExplosion.js"></script>
-    <script typescript="true" src="ElectricPulseManager.js"></script>
-    <script typescript="true" src="FireExplosionManager.js"></script>
-    <script typescript="true" src="AnimatedSprites.js"></script>
-    <script typescript="true" src="Main.js"></script>
+    <script data-typescript="true" src="Animation.js"></script>
+    <script data-typescript="true" src="ElectricPulse.js"></script>
+    <script data-typescript="true" src="FireExplosion.js"></script>
+    <script data-typescript="true" src="ElectricPulseManager.js"></script>
+    <script data-typescript="true" src="FireExplosionManager.js"></script>
+    <script data-typescript="true" src="Game.js"></script>
+    <script data-typescript="true" src="Main.js"></script>
 
 </asp:Content>

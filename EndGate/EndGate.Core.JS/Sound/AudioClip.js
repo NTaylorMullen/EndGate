@@ -1,5 +1,7 @@
 var EndGate;
 (function (EndGate) {
+    /// <reference path="../Utilities/EventHandler.ts" />
+    /// <reference path="AudioSettings.ts" />
     (function (Sound) {
         var supportedAudioTypes = {
             mp3: 'audio/mpeg',
@@ -59,6 +61,7 @@ var EndGate;
             };
             AudioClip.prototype.SetAudioSource = function (source) {
                 var sourceHolder, sourceType;
+                // If we've passed in a list of sources
                 if(!(source instanceof Array)) {
                     source = [
                         source

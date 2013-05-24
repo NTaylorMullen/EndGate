@@ -1,5 +1,11 @@
 var EndGate;
 (function (EndGate) {
+    /// <reference path="../../../Utilities/EventHandler.ts" />
+    /// <reference path="../../../Assets/Vectors/Vector2d.ts" />
+    /// <reference path="../../../Assets/Sizes/Size2d.ts" />
+    /// <reference path="../../../Interfaces/IUpdateable.ts" />
+    /// <reference path="../../../GameTime.ts" />
+    /// <reference path="../ImageSource.ts" />
     (function (Graphics) {
         var SpriteAnimation = (function () {
             function SpriteAnimation(imageSource, fps, frameSize, frameCount, startOffset) {

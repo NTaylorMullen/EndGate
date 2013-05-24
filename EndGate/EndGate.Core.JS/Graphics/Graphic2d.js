@@ -1,6 +1,13 @@
 var EndGate;
 (function (EndGate) {
     (function (Graphics) {
+        /// <reference path="../Interfaces/ITyped.ts" />
+        /// <reference path="../Interfaces/IMoveable.ts" />
+        /// <reference path="../Rendering/IRenderable.ts" />
+        /// <reference path="../Assets/Sizes/Size2d.ts" />
+        /// <reference path="../Assets/Vectors/Vector2d.ts" />
+        /// <reference path="../Bounds/Bounds2d.ts" />
+        /// <reference path="Graphic2dState.ts" />
         (function (Abstractions) {
             var Graphic2d = (function () {
                 function Graphic2d(position) {

@@ -1,9 +1,17 @@
 var EndGate;
 (function (EndGate) {
+    /// <reference path="../Interfaces/IDisposable.ts" />
+    /// <reference path="../Interfaces/ITyped.ts" />
+    /// <reference path="../GameTime.ts" />
+    /// <reference path="../Graphics/Graphic2d.ts" />
+    /// <reference path="../Assets/Sizes/Size2d.ts" />
+    /// <reference path="../Assets/Vectors/Vector2d.ts" />
+    /// <reference path="Camera/Camera2d.ts" />
+    /// <reference path="IRenderer.ts" />
+    /// <reference path="Camera/Camera2dRenderer.ts" />
     (function (Rendering) {
         var Scene2d = (function () {
             function Scene2d(drawArea, onDraw) {
-                this._type = "Scene";
                 this._actors = [];
                 if(typeof drawArea === "undefined") {
                     drawArea = this.CreateDefaultDrawArea();

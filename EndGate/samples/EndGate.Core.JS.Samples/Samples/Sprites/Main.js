@@ -1,48 +1,60 @@
+/// <reference path="../../Scripts/jquery.d.ts" />
+/// <reference path="Game.ts" />
+/// <reference path="CustomSlider.ts" />
+/// <reference path="SpriteAnimator.ts" />
 (function ($, window) {
-    var canvas = document.createElement("canvas"), holder = $("#gameHolder"), spriteGame, rotationSlider, xPositionSlider, yPositionSlider, opacitySlider, widthSlider, heightSlider, ensureValue = function (val, min, max) {
+    // Create a game canvas to use.  If we create a game without providing a canvas it will create a
+    // canvas that fills the entire viewport.
+        var canvas = document.createElement("canvas"), holder = $("#gameHolder"), game, rotationSlider, xPositionSlider, yPositionSlider, opacitySlider, widthSlider, heightSlider, ensureValue = // Instantiates all of the sliders
+    // Return value that is closest to provided value but still within min-max range
+    function (val, min, max) {
         return Math.min(Math.max(val, min), max);
     }, slidersAnimationMappings = {
         Position: function () {
-            xPositionSlider.UpdateSlider(ensureValue(spriteGame.Sprite.Position.X, 0, canvas.width / 2));
-            yPositionSlider.UpdateSlider(ensureValue(spriteGame.Sprite.Position.Y, 0, canvas.height / 2));
+            xPositionSlider.UpdateSlider(ensureValue(game.Sprite.Position.X, 0, canvas.width / 2));
+            yPositionSlider.UpdateSlider(ensureValue(game.Sprite.Position.Y, 0, canvas.height / 2));
         },
         Rotation: function () {
-            rotationSlider.UpdateSlider(ensureValue(spriteGame.Sprite.Rotation * 100, -628, 628));
+            rotationSlider.UpdateSlider(ensureValue(game.Sprite.Rotation * 100, -628, 628));
         },
         Size: function () {
             var newWidth, newHeight;
-            newWidth = spriteGame.Sprite.Size.Width;
-            newHeight = spriteGame.Sprite.Size.Height;
+            newWidth = game.Sprite.Size.Width;
+            newHeight = game.Sprite.Size.Height;
             widthSlider.UpdateSlider(ensureValue(newWidth, 0, canvas.width));
             heightSlider.UpdateSlider(ensureValue(newHeight, 0, canvas.height));
         },
         Opacity: function () {
-            opacitySlider.UpdateSlider(ensureValue(spriteGame.Sprite.Opacity() * 100, 0, 100));
+            opacitySlider.UpdateSlider(ensureValue(game.Sprite.Opacity() * 100, 0, 100));
         }
-    }, syncSliders = function (animation) {
+    }, syncSliders = // Sync sliders is used to make sure that all sliders are showing the correct values
+    function (animation) {
         slidersAnimationMappings[animation]();
     };
+    // Setup DOM
     canvas.width = holder.width();
     canvas.height = holder.height();
     holder.append(canvas);
-    spriteGame = new SpriteGame(canvas, $(".spriteAnimator"), new eg.Vector2d(canvas.width / 2, canvas.height / 2), new eg.Size2d(100, 100), 0, 1, syncSliders);
-    rotationSlider = new CustomSlider($("#rotationSlider"), -628, 628, 0, function (newrotation) {
-        spriteGame.Sprite.Rotation = newrotation / 100;
+    // Create game
+    game = new Sprites.Game(canvas, $(".spriteAnimator"), new eg.Vector2d(canvas.width / 2, canvas.height / 2), new eg.Size2d(100, 100), 0, 1, syncSliders);
+    // Wire up all the sliders
+    rotationSlider = new Sprites.CustomSlider($("#rotationSlider"), -628, 628, 0, function (newrotation) {
+        game.Sprite.Rotation = newrotation / 100;
     });
-    xPositionSlider = new CustomSlider($("#positionXSlider"), 0, canvas.width, spriteGame.Sprite.Position.X, function (newX) {
-        spriteGame.Sprite.Position.X = newX;
+    xPositionSlider = new Sprites.CustomSlider($("#positionXSlider"), 0, canvas.width, game.Sprite.Position.X, function (newX) {
+        game.Sprite.Position.X = newX;
     });
-    yPositionSlider = new CustomSlider($("#positionYSlider"), 0, canvas.height, spriteGame.Sprite.Position.Y, function (newY) {
-        spriteGame.Sprite.Position.Y = newY;
+    yPositionSlider = new Sprites.CustomSlider($("#positionYSlider"), 0, canvas.height, game.Sprite.Position.Y, function (newY) {
+        game.Sprite.Position.Y = newY;
     });
-    opacitySlider = new CustomSlider($("#opacitySlider"), 0, 100, 100, function (newAlpha) {
-        spriteGame.Sprite.Opacity(newAlpha / 100);
+    opacitySlider = new Sprites.CustomSlider($("#opacitySlider"), 0, 100, 100, function (newAlpha) {
+        game.Sprite.Opacity(newAlpha / 100);
     });
-    widthSlider = new CustomSlider($("#widthSlider"), 0, canvas.width, spriteGame.Sprite.Size.Width, function (newWidth) {
-        spriteGame.Sprite.Size.Width = newWidth;
+    widthSlider = new Sprites.CustomSlider($("#widthSlider"), 0, canvas.width, game.Sprite.Size.Width, function (newWidth) {
+        game.Sprite.Size.Width = newWidth;
     });
-    heightSlider = new CustomSlider($("#heightSlider"), 0, canvas.height, spriteGame.Sprite.Size.Height, function (newHeight) {
-        spriteGame.Sprite.Size.Height = newHeight;
+    heightSlider = new Sprites.CustomSlider($("#heightSlider"), 0, canvas.height, game.Sprite.Size.Height, function (newHeight) {
+        game.Sprite.Size.Height = newHeight;
     });
 })($, window);
 //@ sourceMappingURL=Main.js.map

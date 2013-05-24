@@ -1,5 +1,5 @@
-/// <reference path="../Interfaces/IUpdateable.d.ts" />
-/// <reference path="../Interfaces/ITyped.d.ts" />
+/// <reference path="../Interfaces/IUpdateable.ts" />
+/// <reference path="../Interfaces/ITyped.ts" />
 /// <reference path="Collidable.ts" />
 /// <reference path="CollisionData.ts" />
 /// <reference path="../Utilities/EventHandler.ts" />

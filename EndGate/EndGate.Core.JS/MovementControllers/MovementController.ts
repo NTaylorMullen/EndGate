@@ -1,6 +1,6 @@
 /// <reference path="../Assets/Vectors/Vector2d.ts" />
-/// <reference path="../Interfaces/IMoveable.d.ts" />
-/// <reference path="../Interfaces/IUpdateable.d.ts" />
+/// <reference path="../Interfaces/IMoveable.ts" />
+/// <reference path="../Interfaces/IUpdateable.ts" />
 /// <reference path="../GameTime.ts" />
 
 module EndGate.MovementControllers.Abstractions {

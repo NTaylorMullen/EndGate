@@ -1,11 +1,11 @@
 /// <reference path="../Assets/Vectors/Vector2d.ts" />
-/// <reference path="../Interfaces/IMoveable.d.ts" />
+/// <reference path="../Interfaces/IMoveable.ts" />
 /// <reference path="../Utilities/NoopTripInvoker.ts" />
 /// <reference path="../Extensions/MathExtensions.ts" />
 /// <reference path="../GameTime.ts" />
 /// <reference path="../Utilities/EventHandler.ts" />
 /// <reference path="LinearDirections.ts" />
-/// <reference path="IMoveEvent.d.ts" />
+/// <reference path="IMoveEvent.ts" />
 /// <reference path="MovementController.ts" />
 
 module EndGate.MovementControllers {

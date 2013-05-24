@@ -1,6 +1,7 @@
 var EndGate;
 (function (EndGate) {
     (function (Graphics) {
+        /// <reference path="../Interfaces/ITyped.ts" />
         (function (Assets) {
             var Graphic2dState = (function () {
                 function Graphic2dState() {

@@ -1,283 +1,158 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{BDAADAAA-4DD3-4FAA-891C-BD70C442B3BB}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EndGate.Core.JS</RootNamespace>
-    <AssemblyName>EndGate.Core.JS</AssemblyName>
+    <OutputPath>bin</OutputPath>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <DebugSymbols>true</DebugSymbols>
+    <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject />
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>2594</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptIncludeComments>true</TypeScriptIncludeComments>
+    <TypeScriptSourceMap>true</TypeScriptSourceMap>
+    <TypeScriptEnableCompileOnSave>true</TypeScriptEnableCompileOnSave>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptIncludeComments>true</TypeScriptIncludeComments>
+    <TypeScriptSourceMap>true</TypeScriptSourceMap>
+    <TypeScriptEnableCompileOnSave>true</TypeScriptEnableCompileOnSave>
   </PropertyGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="Assets\Vectors\Vector2d.ts" />
-    <TypeScriptCompile Include="Assets\Sizes\Size2d.ts" />
+    <TypeScriptCompile Include="Game.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDictionary Include="EndGateAPI.ts" />
+    <CodeAnalysisDictionary Include="Assets\Sizes\Size2d.ts" />
     <Content Include="Assets\Sizes\Size2d.js">
       <DependentUpon>Size2d.ts</DependentUpon>
     </Content>
     <Content Include="Assets\Sizes\Size2d.min.js">
       <DependentUpon>Size2d.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="Assets\Vectors\Helpers\Vector2dHelpers.ts" />
-    <TypeScriptCompile Include="Assets\Vectors\Helpers\MinMax.ts" />
+    <CodeAnalysisDictionary Include="Assets\Vectors\Helpers\MinMax.ts" />
     <Content Include="Assets\Vectors\Helpers\MinMax.js">
       <DependentUpon>MinMax.ts</DependentUpon>
     </Content>
     <Content Include="Assets\Vectors\Helpers\MinMax.min.js">
       <DependentUpon>MinMax.ts</DependentUpon>
     </Content>
+    <CodeAnalysisDictionary Include="Assets\Vectors\Helpers\Vector2dHelpers.ts" />
     <Content Include="Assets\Vectors\Helpers\Vector2dHelpers.js">
       <DependentUpon>Vector2dHelpers.ts</DependentUpon>
     </Content>
     <Content Include="Assets\Vectors\Helpers\Vector2dHelpers.min.js">
       <DependentUpon>Vector2dHelpers.ts</DependentUpon>
     </Content>
+    <CodeAnalysisDictionary Include="Assets\Vectors\Vector2d.ts" />
     <Content Include="Assets\Vectors\Vector2d.js">
       <DependentUpon>Vector2d.ts</DependentUpon>
     </Content>
     <Content Include="Assets\Vectors\Vector2d.min.js">
       <DependentUpon>Vector2d.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="Interfaces\ITyped.d.ts" />
-    <TypeScriptCompile Include="Extensions\MathExtensions.ts" />
-    <TypeScriptCompile Include="Bounds\Bounds2d.ts" />
-    <TypeScriptCompile Include="Bounds\BoundingCircle.ts" />
-    <TypeScriptCompile Include="Sound\AudioManager.ts" />
-    <TypeScriptCompile Include="Sound\AudioClip.ts" />
-    <TypeScriptCompile Include="MovementControllers\IMoveEvent.d.ts" />
-    <TypeScriptCompile Include="Graphics\Grid\Grid.ts" />
-    <Content Include="Graphics\Grid\Grid.js">
-      <DependentUpon>Grid.ts</DependentUpon>
-    </Content>
-    <Content Include="Graphics\Grid\Grid.min.js">
-      <DependentUpon>Grid.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Graphics\Line2d.ts" />
-    <Content Include="Graphics\Line2d.js">
-      <DependentUpon>Line2d.ts</DependentUpon>
-    </Content>
-    <Content Include="Graphics\Line2d.min.js">
-      <DependentUpon>Line2d.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Map\MapManager.ts" />
-    <Content Include="Map\MapManager.js">
-      <DependentUpon>MapManager.ts</DependentUpon>
-    </Content>
-    <Content Include="Map\MapManager.min.js">
-      <DependentUpon>MapManager.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Map\Scenery\SceneryHandler.ts" />
-    <Content Include="Map\Scenery\SceneryHandler.js">
-      <DependentUpon>SceneryHandler.ts</DependentUpon>
-    </Content>
-    <Content Include="Map\Scenery\SceneryHandler.min.js">
-      <DependentUpon>SceneryHandler.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Map\Scenery\TileMap.ts" />
-    <TypeScriptCompile Include="Map\Scenery\SquareTileMap.ts" />
-    <Content Include="Map\Scenery\SquareTileMap.js">
-      <DependentUpon>SquareTileMap.ts</DependentUpon>
-    </Content>
-    <Content Include="Map\Scenery\SquareTileMap.min.js">
-      <DependentUpon>SquareTileMap.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Map\Scenery\Tile.ts" />
-    <Content Include="Map\Scenery\Tile.js">
-      <DependentUpon>Tile.ts</DependentUpon>
-    </Content>
-    <Content Include="Map\Scenery\Tile.min.js">
-      <DependentUpon>Tile.ts</DependentUpon>
-    </Content>
-    <Content Include="Map\Scenery\TileMap.js">
-      <DependentUpon>TileMap.ts</DependentUpon>
-    </Content>
-    <Content Include="Map\Scenery\TileMap.min.js">
-      <DependentUpon>TileMap.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Scripts\endgate.ts" />
-    <Content Include="Scripts\endgate.js">
-      <DependentUpon>endgate.ts</DependentUpon>
-    </Content>
-    <Content Include="Scripts\endgate.min.js">
-      <DependentUpon>endgate.ts</DependentUpon>
-    </Content>
-    <Content Include="Sound\AudioClip.js">
-      <DependentUpon>AudioClip.ts</DependentUpon>
-    </Content>
-    <Content Include="Sound\AudioClip.min.js">
-      <DependentUpon>AudioClip.ts</DependentUpon>
-    </Content>
-    <Content Include="Sound\AudioManager.js">
-      <DependentUpon>AudioManager.ts</DependentUpon>
-    </Content>
-    <Content Include="Sound\AudioManager.min.js">
-      <DependentUpon>AudioManager.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Sound\AudioPlayer.ts" />
-    <Content Include="Sound\AudioPlayer.js">
-      <DependentUpon>AudioPlayer.ts</DependentUpon>
-    </Content>
-    <Content Include="Sound\AudioPlayer.min.js">
-      <DependentUpon>AudioPlayer.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Sound\AudioSettings.ts" />
-    <Content Include="Sound\AudioSettings.js">
-      <DependentUpon>AudioSettings.ts</DependentUpon>
-    </Content>
-    <Content Include="Sound\AudioSettings.min.js">
-      <DependentUpon>AudioSettings.ts</DependentUpon>
-    </Content>
+    <CodeAnalysisDictionary Include="Bounds\BoundingCircle.ts" />
     <Content Include="Bounds\BoundingCircle.js">
       <DependentUpon>BoundingCircle.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="Bounds\BoundingRectangle.ts" />
     <Content Include="Bounds\BoundingCircle.min.js">
       <DependentUpon>BoundingCircle.ts</DependentUpon>
     </Content>
+    <CodeAnalysisDictionary Include="Bounds\BoundingRectangle.ts" />
     <Content Include="Bounds\BoundingRectangle.js">
       <DependentUpon>BoundingRectangle.ts</DependentUpon>
     </Content>
     <Content Include="Bounds\BoundingRectangle.min.js">
       <DependentUpon>BoundingRectangle.ts</DependentUpon>
     </Content>
+    <CodeAnalysisDictionary Include="Bounds\Bounds2d.ts" />
     <Content Include="Bounds\Bounds2d.js">
       <DependentUpon>Bounds2d.ts</DependentUpon>
     </Content>
     <Content Include="Bounds\Bounds2d.min.js">
       <DependentUpon>Bounds2d.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="Collision\Collidable.ts" />
-    <TypeScriptCompile Include="Rendering\Camera\Camera2d.ts" />
-    <TypeScriptCompile Include="Graphics\Sprites\Sprite2d.ts" />
-    <TypeScriptCompile Include="Graphics\Sprites\ImageSource.ts" />
-    <TypeScriptCompile Include="Graphics\Sprites\Animation\SpriteAnimation.ts" />
-    <TypeScriptCompile Include="EndGateAPI.ts" />
-    <Content Include="EndGateAPI.js">
-      <DependentUpon>EndGateAPI.ts</DependentUpon>
-    </Content>
-    <Content Include="EndGateAPI.min.js">
-      <DependentUpon>EndGateAPI.ts</DependentUpon>
-    </Content>
-    <Content Include="Graphics\Sprites\Animation\SpriteAnimation.js">
-      <DependentUpon>SpriteAnimation.ts</DependentUpon>
-    </Content>
-    <Content Include="Graphics\Sprites\Animation\SpriteAnimation.min.js">
-      <DependentUpon>SpriteAnimation.ts</DependentUpon>
-    </Content>
-    <Content Include="Graphics\Sprites\ImageSource.js">
-      <DependentUpon>ImageSource.ts</DependentUpon>
-    </Content>
-    <Content Include="Graphics\Sprites\ImageSource.min.js">
-      <DependentUpon>ImageSource.ts</DependentUpon>
-    </Content>
-    <Content Include="Graphics\Sprites\Sprite2d.js">
-      <DependentUpon>Sprite2d.ts</DependentUpon>
-    </Content>
-    <Content Include="Graphics\Sprites\Sprite2d.min.js">
-      <DependentUpon>Sprite2d.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Interfaces\IMoveable.d.ts" />
-    <TypeScriptCompile Include="MovementControllers\MovementController.ts" />
-    <TypeScriptCompile Include="MovementControllers\LinearMovementController.ts" />
-    <TypeScriptCompile Include="MovementControllers\LinearDirections.ts" />
-    <TypeScriptCompile Include="InputControllers\DirectionalInputController.ts" />
-    <Content Include="InputControllers\DirectionalInputController.js">
-      <DependentUpon>DirectionalInputController.ts</DependentUpon>
-    </Content>
-    <Content Include="InputControllers\DirectionalInputController.min.js">
-      <DependentUpon>DirectionalInputController.ts</DependentUpon>
-    </Content>
-    <Content Include="MovementControllers\LinearDirections.js">
-      <DependentUpon>LinearDirections.ts</DependentUpon>
-    </Content>
-    <Content Include="MovementControllers\LinearDirections.min.js">
-      <DependentUpon>LinearDirections.ts</DependentUpon>
-    </Content>
-    <Content Include="MovementControllers\LinearMovementController.js">
-      <DependentUpon>LinearMovementController.ts</DependentUpon>
-    </Content>
-    <Content Include="MovementControllers\LinearMovementController.min.js">
-      <DependentUpon>LinearMovementController.ts</DependentUpon>
-    </Content>
-    <Content Include="MovementControllers\MovementController.js">
-      <DependentUpon>MovementController.ts</DependentUpon>
-    </Content>
-    <Content Include="MovementControllers\MovementController.min.js">
-      <DependentUpon>MovementController.ts</DependentUpon>
-    </Content>
-    <Content Include="Rendering\Camera\Camera2d.js">
-      <DependentUpon>Camera2d.ts</DependentUpon>
-    </Content>
-    <Content Include="Rendering\Camera\Camera2d.min.js">
-      <DependentUpon>Camera2d.ts</DependentUpon>
-    </Content>
+    <CodeAnalysisDictionary Include="Collision\Collidable.ts" />
     <Content Include="Collision\Collidable.js">
       <DependentUpon>Collidable.ts</DependentUpon>
     </Content>
     <Content Include="Collision\Collidable.min.js">
       <DependentUpon>Collidable.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="Collision\CollisionData.ts" />
+    <CodeAnalysisDictionary Include="Collision\CollisionData.ts" />
     <Content Include="Collision\CollisionData.js">
       <DependentUpon>CollisionData.ts</DependentUpon>
     </Content>
     <Content Include="Collision\CollisionData.min.js">
       <DependentUpon>CollisionData.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="Collision\CollisionManager.ts" />
+    <CodeAnalysisDictionary Include="Collision\CollisionManager.ts" />
     <Content Include="Collision\CollisionManager.js">
       <DependentUpon>CollisionManager.ts</DependentUpon>
     </Content>
     <Content Include="Collision\CollisionManager.min.js">
       <DependentUpon>CollisionManager.ts</DependentUpon>
     </Content>
+    <Content Include="EndGateAPI.js">
+      <DependentUpon>EndGateAPI.ts</DependentUpon>
+    </Content>
+    <Content Include="EndGateAPI.min.js">
+      <DependentUpon>EndGateAPI.ts</DependentUpon>
+    </Content>
+    <CodeAnalysisDictionary Include="Extensions\MathExtensions.ts" />
     <Content Include="Extensions\MathExtensions.js">
       <DependentUpon>MathExtensions.ts</DependentUpon>
     </Content>
     <Content Include="Extensions\MathExtensions.min.js">
       <DependentUpon>MathExtensions.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="Extensions\WindowExtensions.ts" />
+    <CodeAnalysisDictionary Include="Extensions\WindowExtensions.ts" />
     <Content Include="Extensions\WindowExtensions.js">
       <DependentUpon>WindowExtensions.ts</DependentUpon>
     </Content>
     <Content Include="Extensions\WindowExtensions.min.js">
       <DependentUpon>WindowExtensions.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="GameRunner.ts" />
-    <TypeScriptCompile Include="Game.ts" />
     <Content Include="Game.js">
       <DependentUpon>Game.ts</DependentUpon>
     </Content>
     <Content Include="Game.min.js">
       <DependentUpon>Game.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="GameConfiguration.ts" />
     <Content Include="GameConfiguration.js">
       <DependentUpon>GameConfiguration.ts</DependentUpon>
     </Content>
@@ -290,92 +165,131 @@
     <Content Include="GameRunner.min.js">
       <DependentUpon>GameRunner.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="Interfaces\IDisposable.d.ts" />
-    <TypeScriptCompile Include="GameTime.ts" />
     <Content Include="GameTime.js">
       <DependentUpon>GameTime.ts</DependentUpon>
     </Content>
     <Content Include="GameTime.min.js">
       <DependentUpon>GameTime.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="Interfaces\IUpdateable.d.ts" />
-    <TypeScriptCompile Include="Rendering\Renderer2d.ts" />
-    <TypeScriptCompile Include="Rendering\IRenderer.d.ts" />
-    <TypeScriptCompile Include="Loopers\TimedCallback.ts" />
-    <TypeScriptCompile Include="Graphics\Graphic2d.ts" />
-    <TypeScriptCompile Include="Graphics\Shapes\Circle.ts" />
-    <Content Include="Graphics\Shapes\Circle.js">
-      <DependentUpon>Circle.ts</DependentUpon>
-    </Content>
-    <Content Include="Graphics\Shapes\Circle.min.js">
-      <DependentUpon>Circle.ts</DependentUpon>
-    </Content>
+    <CodeAnalysisDictionary Include="Graphics\Graphic2d.ts" />
     <Content Include="Graphics\Graphic2d.js">
       <DependentUpon>Graphic2d.ts</DependentUpon>
     </Content>
     <Content Include="Graphics\Graphic2d.min.js">
       <DependentUpon>Graphic2d.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="Graphics\Graphic2dState.ts" />
+    <CodeAnalysisDictionary Include="Graphics\Graphic2dState.ts" />
     <Content Include="Graphics\Graphic2dState.js">
       <DependentUpon>Graphic2dState.ts</DependentUpon>
     </Content>
     <Content Include="Graphics\Graphic2dState.min.js">
       <DependentUpon>Graphic2dState.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="Graphics\Shapes\Shape.ts" />
+    <CodeAnalysisDictionary Include="Graphics\Grid\Grid.ts" />
+    <Content Include="Graphics\Grid\Grid.js">
+      <DependentUpon>Grid.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Grid\Grid.min.js">
+      <DependentUpon>Grid.ts</DependentUpon>
+    </Content>
+    <CodeAnalysisDictionary Include="Graphics\Line2d.ts" />
+    <Content Include="Graphics\Line2d.js">
+      <DependentUpon>Line2d.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Line2d.min.js">
+      <DependentUpon>Line2d.ts</DependentUpon>
+    </Content>
+    <CodeAnalysisDictionary Include="Graphics\Shapes\Circle.ts" />
+    <Content Include="Graphics\Shapes\Circle.js">
+      <DependentUpon>Circle.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Shapes\Circle.min.js">
+      <DependentUpon>Circle.ts</DependentUpon>
+    </Content>
+    <CodeAnalysisDictionary Include="Graphics\Shapes\Rectangle.ts" />
+    <Content Include="Graphics\Shapes\Rectangle.js">
+      <DependentUpon>Rectangle.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Shapes\Rectangle.min.js">
+      <DependentUpon>Rectangle.ts</DependentUpon>
+    </Content>
+    <CodeAnalysisDictionary Include="Graphics\Shapes\Shape.ts" />
     <Content Include="Graphics\Shapes\Shape.js">
       <DependentUpon>Shape.ts</DependentUpon>
     </Content>
     <Content Include="Graphics\Shapes\Shape.min.js">
       <DependentUpon>Shape.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="Input\Mouse\MouseHandler.ts" />
-    <TypeScriptCompile Include="Input\Mouse\IMouseEvent.d.ts" />
-    <TypeScriptCompile Include="Input\Mouse\MouseButton.ts" />
-    <TypeScriptCompile Include="Input\Mouse\IMouseClickEvent.d.ts" />
-    <TypeScriptCompile Include="Input\InputManager.ts" />
-    <TypeScriptCompile Include="Graphics\Text\Text2d.ts" />
-    <TypeScriptCompile Include="Graphics\Text\Font\FontSettings.ts" />
-    <TypeScriptCompile Include="Graphics\Text\Font\FontMeasurement.ts" />
-    <TypeScriptCompile Include="Graphics\Text\Font\FontFamily.ts" />
+    <CodeAnalysisDictionary Include="Graphics\Sprites\Animation\SpriteAnimation.ts" />
+    <Content Include="Graphics\Sprites\Animation\SpriteAnimation.js">
+      <DependentUpon>SpriteAnimation.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Sprites\Animation\SpriteAnimation.min.js">
+      <DependentUpon>SpriteAnimation.ts</DependentUpon>
+    </Content>
+    <CodeAnalysisDictionary Include="Graphics\Sprites\ImageSource.ts" />
+    <Content Include="Graphics\Sprites\ImageSource.js">
+      <DependentUpon>ImageSource.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Sprites\ImageSource.min.js">
+      <DependentUpon>ImageSource.ts</DependentUpon>
+    </Content>
+    <CodeAnalysisDictionary Include="Graphics\Sprites\Sprite2d.ts" />
+    <Content Include="Graphics\Sprites\Sprite2d.js">
+      <DependentUpon>Sprite2d.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Sprites\Sprite2d.min.js">
+      <DependentUpon>Sprite2d.ts</DependentUpon>
+    </Content>
+    <CodeAnalysisDictionary Include="Graphics\Text\Font\FontFamily.ts" />
     <Content Include="Graphics\Text\Font\FontFamily.js">
       <DependentUpon>FontFamily.ts</DependentUpon>
     </Content>
     <Content Include="Graphics\Text\Font\FontFamily.min.js">
       <DependentUpon>FontFamily.ts</DependentUpon>
     </Content>
+    <CodeAnalysisDictionary Include="Graphics\Text\Font\FontMeasurement.ts" />
     <Content Include="Graphics\Text\Font\FontMeasurement.js">
       <DependentUpon>FontMeasurement.ts</DependentUpon>
     </Content>
     <Content Include="Graphics\Text\Font\FontMeasurement.min.js">
       <DependentUpon>FontMeasurement.ts</DependentUpon>
     </Content>
+    <CodeAnalysisDictionary Include="Graphics\Text\Font\FontSettings.ts" />
     <Content Include="Graphics\Text\Font\FontSettings.js">
       <DependentUpon>FontSettings.ts</DependentUpon>
     </Content>
     <Content Include="Graphics\Text\Font\FontSettings.min.js">
       <DependentUpon>FontSettings.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="Graphics\Text\Font\FontVariant.ts" />
-    <TypeScriptCompile Include="Graphics\Text\Font\FontStyle.ts" />
+    <CodeAnalysisDictionary Include="Graphics\Text\Font\FontStyle.ts" />
     <Content Include="Graphics\Text\Font\FontStyle.js">
       <DependentUpon>FontStyle.ts</DependentUpon>
     </Content>
     <Content Include="Graphics\Text\Font\FontStyle.min.js">
       <DependentUpon>FontStyle.ts</DependentUpon>
     </Content>
+    <CodeAnalysisDictionary Include="Graphics\Text\Font\FontVariant.ts" />
     <Content Include="Graphics\Text\Font\FontVariant.js">
       <DependentUpon>FontVariant.ts</DependentUpon>
     </Content>
     <Content Include="Graphics\Text\Font\FontVariant.min.js">
       <DependentUpon>FontVariant.ts</DependentUpon>
     </Content>
+    <CodeAnalysisDictionary Include="Graphics\Text\Text2d.ts" />
     <Content Include="Graphics\Text\Text2d.js">
       <DependentUpon>Text2d.ts</DependentUpon>
     </Content>
     <Content Include="Graphics\Text\Text2d.min.js">
       <DependentUpon>Text2d.ts</DependentUpon>
+    </Content>
+    <CodeAnalysisDictionary Include="Input\InputManager.ts" />
+    <CodeAnalysisDictionary Include="InputControllers\DirectionalInputController.ts" />
+    <Content Include="InputControllers\DirectionalInputController.js">
+      <DependentUpon>DirectionalInputController.ts</DependentUpon>
+    </Content>
+    <Content Include="InputControllers\DirectionalInputController.min.js">
+      <DependentUpon>DirectionalInputController.ts</DependentUpon>
     </Content>
     <Content Include="Input\InputManager.js">
       <DependentUpon>InputManager.ts</DependentUpon>
@@ -383,41 +297,62 @@
     <Content Include="Input\InputManager.min.js">
       <DependentUpon>InputManager.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="Input\Mouse\IMouseScrollEvent.d.ts" />
-    <TypeScriptCompile Include="Input\Keyboard\KeyboardHandler.ts" />
-    <TypeScriptCompile Include="Input\Keyboard\KeyboardCommand.ts" />
+    <CodeAnalysisDictionary Include="Input\Keyboard\KeyboardCommand.ts" />
     <Content Include="Input\Keyboard\KeyboardCommand.js">
       <DependentUpon>KeyboardCommand.ts</DependentUpon>
     </Content>
     <Content Include="Input\Keyboard\KeyboardCommand.min.js">
       <DependentUpon>KeyboardCommand.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="Input\Keyboard\KeyboardCommandHelper.ts" />
-    <TypeScriptCompile Include="Input\Keyboard\KeyboardCommandEvent.ts" />
+    <CodeAnalysisDictionary Include="Input\Keyboard\KeyboardCommandEvent.ts" />
     <Content Include="Input\Keyboard\KeyboardCommandEvent.js">
       <DependentUpon>KeyboardCommandEvent.ts</DependentUpon>
     </Content>
     <Content Include="Input\Keyboard\KeyboardCommandEvent.min.js">
       <DependentUpon>KeyboardCommandEvent.ts</DependentUpon>
     </Content>
+    <CodeAnalysisDictionary Include="Input\Keyboard\KeyboardCommandHelper.ts" />
     <Content Include="Input\Keyboard\KeyboardCommandHelper.js">
       <DependentUpon>KeyboardCommandHelper.ts</DependentUpon>
     </Content>
     <Content Include="Input\Keyboard\KeyboardCommandHelper.min.js">
       <DependentUpon>KeyboardCommandHelper.ts</DependentUpon>
     </Content>
+    <CodeAnalysisDictionary Include="Input\Keyboard\KeyboardHandler.ts" />
     <Content Include="Input\Keyboard\KeyboardHandler.js">
       <DependentUpon>KeyboardHandler.ts</DependentUpon>
     </Content>
     <Content Include="Input\Keyboard\KeyboardHandler.min.js">
       <DependentUpon>KeyboardHandler.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="Input\Keyboard\KeyboardModifiers.ts" />
+    <CodeAnalysisDictionary Include="Input\Keyboard\KeyboardModifiers.ts" />
     <Content Include="Input\Keyboard\KeyboardModifiers.js">
       <DependentUpon>KeyboardModifiers.ts</DependentUpon>
     </Content>
     <Content Include="Input\Keyboard\KeyboardModifiers.min.js">
       <DependentUpon>KeyboardModifiers.ts</DependentUpon>
+    </Content>
+    <CodeAnalysisDictionary Include="Input\Mouse\MouseButton.ts" />
+    <TypeScriptCompile Include="Input\Mouse\IMouseClickEvent.ts" />
+    <Content Include="Input\Mouse\IMouseClickEvent.js">
+      <DependentUpon>IMouseClickEvent.ts</DependentUpon>
+    </Content>
+    <Content Include="Input\Mouse\IMouseClickEvent.min.js">
+      <DependentUpon>IMouseClickEvent.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Input\Mouse\IMouseEvent.ts" />
+    <Content Include="Input\Mouse\IMouseEvent.js">
+      <DependentUpon>IMouseEvent.ts</DependentUpon>
+    </Content>
+    <Content Include="Input\Mouse\IMouseEvent.min.js">
+      <DependentUpon>IMouseEvent.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Input\Mouse\IMouseScrollEvent.ts" />
+    <Content Include="Input\Mouse\IMouseScrollEvent.js">
+      <DependentUpon>IMouseScrollEvent.ts</DependentUpon>
+    </Content>
+    <Content Include="Input\Mouse\IMouseScrollEvent.min.js">
+      <DependentUpon>IMouseScrollEvent.ts</DependentUpon>
     </Content>
     <Content Include="Input\Mouse\MouseButton.js">
       <DependentUpon>MouseButton.ts</DependentUpon>
@@ -425,71 +360,48 @@
     <Content Include="Input\Mouse\MouseButton.min.js">
       <DependentUpon>MouseButton.ts</DependentUpon>
     </Content>
+    <CodeAnalysisDictionary Include="Input\Mouse\MouseHandler.ts" />
     <Content Include="Input\Mouse\MouseHandler.js">
       <DependentUpon>MouseHandler.ts</DependentUpon>
     </Content>
     <Content Include="Input\Mouse\MouseHandler.min.js">
       <DependentUpon>MouseHandler.ts</DependentUpon>
     </Content>
-    <Content Include="Loopers\TimedCallback.js">
-      <DependentUpon>TimedCallback.ts</DependentUpon>
+    <TypeScriptCompile Include="Interfaces\ITyped.ts" />
+    <CodeAnalysisDictionary Include="Loopers\Looper.ts" />
+    <TypeScriptCompile Include="Interfaces\IDisposable.ts" />
+    <Content Include="Interfaces\IDisposable.js">
+      <DependentUpon>IDisposable.ts</DependentUpon>
     </Content>
-    <Content Include="Loopers\TimedCallback.min.js">
-      <DependentUpon>TimedCallback.ts</DependentUpon>
+    <Content Include="Interfaces\IDisposable.min.js">
+      <DependentUpon>IDisposable.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="Rendering\IRenderable.d.ts" />
-    <TypeScriptCompile Include="Rendering\Camera\Camera2dRenderer.ts" />
-    <TypeScriptCompile Include="Rendering\Camera\Camera2dCanvasContextBuilder.ts" />
-    <Content Include="Rendering\Camera\Camera2dCanvasContextBuilder.js">
-      <DependentUpon>Camera2dCanvasContextBuilder.ts</DependentUpon>
+    <TypeScriptCompile Include="Interfaces\IMoveable.ts" />
+    <Content Include="Interfaces\IMoveable.js">
+      <DependentUpon>IMoveable.ts</DependentUpon>
     </Content>
-    <Content Include="Rendering\Camera\Camera2dCanvasContextBuilder.min.js">
-      <DependentUpon>Camera2dCanvasContextBuilder.ts</DependentUpon>
+    <Content Include="Interfaces\IMoveable.min.js">
+      <DependentUpon>IMoveable.ts</DependentUpon>
     </Content>
-    <Content Include="Rendering\Camera\Camera2dRenderer.js">
-      <DependentUpon>Camera2dRenderer.ts</DependentUpon>
+    <Content Include="Interfaces\ITyped.js">
+      <DependentUpon>ITyped.ts</DependentUpon>
     </Content>
-    <Content Include="Rendering\Camera\Camera2dRenderer.min.js">
-      <DependentUpon>Camera2dRenderer.ts</DependentUpon>
+    <Content Include="Interfaces\ITyped.min.js">
+      <DependentUpon>ITyped.ts</DependentUpon>
     </Content>
-    <Content Include="Rendering\IRenderable.d.js">
-      <DependentUpon>IRenderable.d.ts</DependentUpon>
+    <TypeScriptCompile Include="Interfaces\IUpdateable.ts" />
+    <Content Include="Interfaces\IUpdateable.js">
+      <DependentUpon>IUpdateable.ts</DependentUpon>
     </Content>
-    <Content Include="Rendering\IRenderer.d.js">
-      <DependentUpon>IRenderer.d.ts</DependentUpon>
+    <Content Include="Interfaces\IUpdateable.min.js">
+      <DependentUpon>IUpdateable.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="Graphics\Shapes\Rectangle.ts" />
-    <Content Include="Graphics\Shapes\Rectangle.js">
-      <DependentUpon>Rectangle.ts</DependentUpon>
+    <TypeScriptCompile Include="Loopers\ILooper.ts" />
+    <Content Include="Loopers\ILooper.js">
+      <DependentUpon>ILooper.ts</DependentUpon>
     </Content>
-    <Content Include="Graphics\Shapes\Rectangle.min.js">
-      <DependentUpon>Rectangle.ts</DependentUpon>
-    </Content>
-    <Content Include="Rendering\Renderer2d.js">
-      <DependentUpon>Renderer2d.ts</DependentUpon>
-    </Content>
-    <Content Include="Rendering\Renderer2d.min.js">
-      <DependentUpon>Renderer2d.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Rendering\Scene2d.ts" />
-    <Content Include="Rendering\Scene2d.js">
-      <DependentUpon>Scene2d.ts</DependentUpon>
-    </Content>
-    <Content Include="Rendering\Scene2d.min.js">
-      <DependentUpon>Scene2d.ts</DependentUpon>
-    </Content>
-    <Content Include="Scripts\_references.js" />
-    <TypeScriptCompile Include="Loopers\Looper.ts" />
-    <TypeScriptCompile Include="Utilities\EventHandler.ts" />
-    <Content Include="Utilities\EventHandler.js">
-      <DependentUpon>EventHandler.ts</DependentUpon>
-    </Content>
-    <Content Include="Utilities\EventHandler.min.js">
-      <DependentUpon>EventHandler.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Loopers\ILooper.d.ts" />
-    <Content Include="Loopers\ILooper.d.js">
-      <DependentUpon>ILooper.d.ts</DependentUpon>
+    <Content Include="Loopers\ILooper.min.js">
+      <DependentUpon>ILooper.ts</DependentUpon>
     </Content>
     <Content Include="Loopers\Looper.js">
       <DependentUpon>Looper.ts</DependentUpon>
@@ -497,239 +409,489 @@
     <Content Include="Loopers\Looper.min.js">
       <DependentUpon>Looper.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="Loopers\LooperCallback.ts" />
+    <CodeAnalysisDictionary Include="Loopers\LooperCallback.ts" />
     <Content Include="Loopers\LooperCallback.js">
       <DependentUpon>LooperCallback.ts</DependentUpon>
     </Content>
     <Content Include="Loopers\LooperCallback.min.js">
       <DependentUpon>LooperCallback.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="Loopers\RepaintLooper.ts" />
+    <CodeAnalysisDictionary Include="Loopers\RepaintLooper.ts" />
     <Content Include="Loopers\RepaintLooper.js">
       <DependentUpon>RepaintLooper.ts</DependentUpon>
     </Content>
     <Content Include="Loopers\RepaintLooper.min.js">
       <DependentUpon>RepaintLooper.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="Utilities\NoopTripInvoker.ts" />
+    <CodeAnalysisDictionary Include="Loopers\TimedCallback.ts" />
+    <Content Include="Loopers\TimedCallback.js">
+      <DependentUpon>TimedCallback.ts</DependentUpon>
+    </Content>
+    <Content Include="Loopers\TimedCallback.min.js">
+      <DependentUpon>TimedCallback.ts</DependentUpon>
+    </Content>
+    <CodeAnalysisDictionary Include="Map\MapManager.ts" />
+    <Content Include="Map\MapManager.js">
+      <DependentUpon>MapManager.ts</DependentUpon>
+    </Content>
+    <Content Include="Map\MapManager.min.js">
+      <DependentUpon>MapManager.ts</DependentUpon>
+    </Content>
+    <CodeAnalysisDictionary Include="Map\Scenery\SceneryHandler.ts" />
+    <Content Include="Map\Scenery\SceneryHandler.js">
+      <DependentUpon>SceneryHandler.ts</DependentUpon>
+    </Content>
+    <Content Include="Map\Scenery\SceneryHandler.min.js">
+      <DependentUpon>SceneryHandler.ts</DependentUpon>
+    </Content>
+    <CodeAnalysisDictionary Include="Map\Scenery\SquareTileMap.ts" />
+    <Content Include="Map\Scenery\SquareTileMap.js">
+      <DependentUpon>SquareTileMap.ts</DependentUpon>
+    </Content>
+    <Content Include="Map\Scenery\SquareTileMap.min.js">
+      <DependentUpon>SquareTileMap.ts</DependentUpon>
+    </Content>
+    <CodeAnalysisDictionary Include="Map\Scenery\Tile.ts" />
+    <Content Include="Map\Scenery\Tile.js">
+      <DependentUpon>Tile.ts</DependentUpon>
+    </Content>
+    <Content Include="Map\Scenery\Tile.min.js">
+      <DependentUpon>Tile.ts</DependentUpon>
+    </Content>
+    <CodeAnalysisDictionary Include="Map\Scenery\TileMap.ts" />
+    <Content Include="Map\Scenery\TileMap.js">
+      <DependentUpon>TileMap.ts</DependentUpon>
+    </Content>
+    <Content Include="Map\Scenery\TileMap.min.js">
+      <DependentUpon>TileMap.ts</DependentUpon>
+    </Content>
+    <CodeAnalysisDictionary Include="MovementControllers\LinearDirections.ts" />
+    <TypeScriptCompile Include="MovementControllers\IMoveEvent.ts" />
+    <Content Include="MovementControllers\IMoveEvent.js">
+      <DependentUpon>IMoveEvent.ts</DependentUpon>
+    </Content>
+    <Content Include="MovementControllers\IMoveEvent.min.js">
+      <DependentUpon>IMoveEvent.ts</DependentUpon>
+    </Content>
+    <Content Include="MovementControllers\LinearDirections.js">
+      <DependentUpon>LinearDirections.ts</DependentUpon>
+    </Content>
+    <Content Include="MovementControllers\LinearDirections.min.js">
+      <DependentUpon>LinearDirections.ts</DependentUpon>
+    </Content>
+    <CodeAnalysisDictionary Include="MovementControllers\LinearMovementController.ts" />
+    <Content Include="MovementControllers\LinearMovementController.js">
+      <DependentUpon>LinearMovementController.ts</DependentUpon>
+    </Content>
+    <Content Include="MovementControllers\LinearMovementController.min.js">
+      <DependentUpon>LinearMovementController.ts</DependentUpon>
+    </Content>
+    <CodeAnalysisDictionary Include="MovementControllers\MovementController.ts" />
+    <Content Include="MovementControllers\MovementController.js">
+      <DependentUpon>MovementController.ts</DependentUpon>
+    </Content>
+    <Content Include="MovementControllers\MovementController.min.js">
+      <DependentUpon>MovementController.ts</DependentUpon>
+    </Content>
+    <CodeAnalysisDictionary Include="Rendering\Camera\Camera2d.ts" />
+    <Content Include="Rendering\Camera\Camera2d.js">
+      <DependentUpon>Camera2d.ts</DependentUpon>
+    </Content>
+    <Content Include="Rendering\Camera\Camera2d.min.js">
+      <DependentUpon>Camera2d.ts</DependentUpon>
+    </Content>
+    <CodeAnalysisDictionary Include="Rendering\Camera\Camera2dCanvasContextBuilder.ts" />
+    <Content Include="Rendering\Camera\Camera2dCanvasContextBuilder.js">
+      <DependentUpon>Camera2dCanvasContextBuilder.ts</DependentUpon>
+    </Content>
+    <Content Include="Rendering\Camera\Camera2dCanvasContextBuilder.min.js">
+      <DependentUpon>Camera2dCanvasContextBuilder.ts</DependentUpon>
+    </Content>
+    <CodeAnalysisDictionary Include="Rendering\Camera\Camera2dRenderer.ts" />
+    <Content Include="Rendering\Camera\Camera2dRenderer.js">
+      <DependentUpon>Camera2dRenderer.ts</DependentUpon>
+    </Content>
+    <Content Include="Rendering\Camera\Camera2dRenderer.min.js">
+      <DependentUpon>Camera2dRenderer.ts</DependentUpon>
+    </Content>
+    <CodeAnalysisDictionary Include="Rendering\Renderer2d.ts" />
+    <TypeScriptCompile Include="Rendering\IRenderable.ts" />
+    <Content Include="Rendering\IRenderable.js">
+      <DependentUpon>IRenderable.ts</DependentUpon>
+    </Content>
+    <Content Include="Rendering\IRenderable.min.js">
+      <DependentUpon>IRenderable.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Rendering\IRenderer.ts" />
+    <Content Include="Rendering\IRenderer.js">
+      <DependentUpon>IRenderer.ts</DependentUpon>
+    </Content>
+    <Content Include="Rendering\IRenderer.min.js">
+      <DependentUpon>IRenderer.ts</DependentUpon>
+    </Content>
+    <Content Include="Rendering\Renderer2d.js">
+      <DependentUpon>Renderer2d.ts</DependentUpon>
+    </Content>
+    <Content Include="Rendering\Renderer2d.min.js">
+      <DependentUpon>Renderer2d.ts</DependentUpon>
+    </Content>
+    <CodeAnalysisDictionary Include="Rendering\Scene2d.ts" />
+    <Content Include="Rendering\Scene2d.js">
+      <DependentUpon>Scene2d.ts</DependentUpon>
+    </Content>
+    <Content Include="Rendering\Scene2d.min.js">
+      <DependentUpon>Scene2d.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\endgate.d.ts" />
+    <Content Include="Scripts\endgate.js">
+      <DependentUpon>endgate.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\endgate.min.js">
+      <DependentUpon>endgate.ts</DependentUpon>
+    </Content>
+    <Content Include="Scripts\endgate.ts" />
+    <Content Include="Scripts\_references.js" />
+    <CodeAnalysisDictionary Include="Sound\AudioClip.ts" />
+    <Content Include="Sound\AudioClip.js">
+      <DependentUpon>AudioClip.ts</DependentUpon>
+    </Content>
+    <Content Include="Sound\AudioClip.min.js">
+      <DependentUpon>AudioClip.ts</DependentUpon>
+    </Content>
+    <CodeAnalysisDictionary Include="Sound\AudioManager.ts" />
+    <Content Include="Sound\AudioManager.js">
+      <DependentUpon>AudioManager.ts</DependentUpon>
+    </Content>
+    <Content Include="Sound\AudioManager.min.js">
+      <DependentUpon>AudioManager.ts</DependentUpon>
+    </Content>
+    <CodeAnalysisDictionary Include="Sound\AudioPlayer.ts" />
+    <Content Include="Sound\AudioPlayer.js">
+      <DependentUpon>AudioPlayer.ts</DependentUpon>
+    </Content>
+    <Content Include="Sound\AudioPlayer.min.js">
+      <DependentUpon>AudioPlayer.ts</DependentUpon>
+    </Content>
+    <CodeAnalysisDictionary Include="Sound\AudioSettings.ts" />
+    <Content Include="Sound\AudioSettings.js">
+      <DependentUpon>AudioSettings.ts</DependentUpon>
+    </Content>
+    <Content Include="Sound\AudioSettings.min.js">
+      <DependentUpon>AudioSettings.ts</DependentUpon>
+    </Content>
+    <CodeAnalysisDictionary Include="Utilities\EventHandler.ts" />
+    <Content Include="Utilities\EventHandler.js">
+      <DependentUpon>EventHandler.ts</DependentUpon>
+    </Content>
+    <Content Include="Utilities\EventHandler.min.js">
+      <DependentUpon>EventHandler.ts</DependentUpon>
+    </Content>
+    <CodeAnalysisDictionary Include="Utilities\NoopTripInvoker.ts" />
     <Content Include="Utilities\NoopTripInvoker.js">
       <DependentUpon>NoopTripInvoker.ts</DependentUpon>
     </Content>
     <Content Include="Utilities\NoopTripInvoker.min.js">
       <DependentUpon>NoopTripInvoker.ts</DependentUpon>
     </Content>
+    <TypeScriptCompile Include="GameTime.ts" />
+    <TypeScriptCompile Include="GameRunner.ts" />
+    <TypeScriptCompile Include="GameConfiguration.ts" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="Assets\Sizes\Size2d.js.map">
-      <DependentUpon>Size2d.ts</DependentUpon>
-    </None>
-    <None Include="Assets\Vectors\Helpers\MinMax.js.map">
-      <DependentUpon>MinMax.ts</DependentUpon>
-    </None>
-    <None Include="Assets\Vectors\Helpers\Vector2dHelpers.js.map">
-      <DependentUpon>Vector2dHelpers.ts</DependentUpon>
-    </None>
-    <None Include="Assets\Vectors\Vector2d.js.map">
-      <DependentUpon>Vector2d.ts</DependentUpon>
-    </None>
-    <None Include="Bounds\BoundingCircle.js.map">
-      <DependentUpon>BoundingCircle.ts</DependentUpon>
-    </None>
-    <None Include="Bounds\BoundingRectangle.js.map">
-      <DependentUpon>BoundingRectangle.ts</DependentUpon>
-    </None>
-    <None Include="Bounds\Bounds2d.js.map">
-      <DependentUpon>Bounds2d.ts</DependentUpon>
-    </None>
-    <None Include="build.ps1" />
-    <None Include="Collision\Collidable.js.map">
-      <DependentUpon>Collidable.ts</DependentUpon>
-    </None>
-    <None Include="Collision\CollisionData.js.map">
-      <DependentUpon>CollisionData.ts</DependentUpon>
-    </None>
-    <None Include="Collision\CollisionManager.js.map">
-      <DependentUpon>CollisionManager.ts</DependentUpon>
-    </None>
-    <None Include="EndGateAPI.js.map">
-      <DependentUpon>EndGateAPI.ts</DependentUpon>
-    </None>
-    <None Include="Extensions\MathExtensions.js.map">
-      <DependentUpon>MathExtensions.ts</DependentUpon>
-    </None>
-    <None Include="Extensions\WindowExtensions.js.map">
-      <DependentUpon>WindowExtensions.ts</DependentUpon>
-    </None>
-    <None Include="Game.js.map">
+    <Content Include="Game.js.map">
       <DependentUpon>Game.ts</DependentUpon>
-    </None>
-    <None Include="GameConfiguration.js.map">
+    </Content>
+    <Content Include="GameConfiguration.js.map">
       <DependentUpon>GameConfiguration.ts</DependentUpon>
-    </None>
-    <None Include="GameRunner.js.map">
+    </Content>
+    <Content Include="GameRunner.js.map">
       <DependentUpon>GameRunner.ts</DependentUpon>
-    </None>
-    <None Include="GameTime.js.map">
+    </Content>
+    <Content Include="GameTime.js.map">
       <DependentUpon>GameTime.ts</DependentUpon>
-    </None>
-    <None Include="Graphics\Graphic2d.js.map">
-      <DependentUpon>Graphic2d.ts</DependentUpon>
-    </None>
-    <None Include="Graphics\Graphic2dState.js.map">
-      <DependentUpon>Graphic2dState.ts</DependentUpon>
-    </None>
-    <None Include="Graphics\Grid\Grid.js.map">
-      <DependentUpon>Grid.ts</DependentUpon>
-    </None>
-    <None Include="Graphics\Line2d.js.map">
-      <DependentUpon>Line2d.ts</DependentUpon>
-    </None>
-    <None Include="Graphics\Shapes\Circle.js.map">
-      <DependentUpon>Circle.ts</DependentUpon>
-    </None>
-    <None Include="Graphics\Shapes\Rectangle.js.map">
-      <DependentUpon>Rectangle.ts</DependentUpon>
-    </None>
-    <None Include="Graphics\Shapes\Shape.js.map">
-      <DependentUpon>Shape.ts</DependentUpon>
-    </None>
-    <None Include="Graphics\Sprites\Animation\SpriteAnimation.js.map">
-      <DependentUpon>SpriteAnimation.ts</DependentUpon>
-    </None>
-    <None Include="Graphics\Sprites\ImageSource.js.map">
-      <DependentUpon>ImageSource.ts</DependentUpon>
-    </None>
-    <None Include="Graphics\Sprites\Sprite2d.js.map">
-      <DependentUpon>Sprite2d.ts</DependentUpon>
-    </None>
-    <None Include="Graphics\Text\Font\FontFamily.js.map">
-      <DependentUpon>FontFamily.ts</DependentUpon>
-    </None>
-    <None Include="Graphics\Text\Font\FontMeasurement.js.map">
-      <DependentUpon>FontMeasurement.ts</DependentUpon>
-    </None>
-    <None Include="Graphics\Text\Font\FontSettings.js.map">
-      <DependentUpon>FontSettings.ts</DependentUpon>
-    </None>
-    <None Include="Graphics\Text\Font\FontStyle.js.map">
-      <DependentUpon>FontStyle.ts</DependentUpon>
-    </None>
-    <None Include="Graphics\Text\Font\FontVariant.js.map">
-      <DependentUpon>FontVariant.ts</DependentUpon>
-    </None>
-    <None Include="Graphics\Text\Text2d.js.map">
-      <DependentUpon>Text2d.ts</DependentUpon>
-    </None>
-    <None Include="InputControllers\DirectionalInputController.js.map">
-      <DependentUpon>DirectionalInputController.ts</DependentUpon>
-    </None>
-    <None Include="Input\InputManager.js.map">
-      <DependentUpon>InputManager.ts</DependentUpon>
-    </None>
-    <None Include="Input\Keyboard\KeyboardCommand.js.map">
-      <DependentUpon>KeyboardCommand.ts</DependentUpon>
-    </None>
-    <None Include="Input\Keyboard\KeyboardCommandEvent.js.map">
-      <DependentUpon>KeyboardCommandEvent.ts</DependentUpon>
-    </None>
-    <None Include="Input\Keyboard\KeyboardCommandHelper.js.map">
-      <DependentUpon>KeyboardCommandHelper.ts</DependentUpon>
-    </None>
-    <None Include="Input\Keyboard\KeyboardHandler.js.map">
-      <DependentUpon>KeyboardHandler.ts</DependentUpon>
-    </None>
-    <None Include="Input\Keyboard\KeyboardModifiers.js.map">
-      <DependentUpon>KeyboardModifiers.ts</DependentUpon>
-    </None>
-    <None Include="Input\Mouse\MouseButton.js.map">
-      <DependentUpon>MouseButton.ts</DependentUpon>
-    </None>
-    <None Include="Input\Mouse\MouseHandler.js.map">
-      <DependentUpon>MouseHandler.ts</DependentUpon>
-    </None>
-    <None Include="Loopers\Looper.js.map">
-      <DependentUpon>Looper.ts</DependentUpon>
-    </None>
-    <None Include="Loopers\LooperCallback.js.map">
-      <DependentUpon>LooperCallback.ts</DependentUpon>
-    </None>
-    <None Include="Loopers\RepaintLooper.js.map">
-      <DependentUpon>RepaintLooper.ts</DependentUpon>
-    </None>
-    <None Include="Loopers\TimedCallback.js.map">
-      <DependentUpon>TimedCallback.ts</DependentUpon>
-    </None>
-    <None Include="Map\MapManager.js.map">
-      <DependentUpon>MapManager.ts</DependentUpon>
-    </None>
-    <None Include="Map\Scenery\SceneryHandler.js.map">
-      <DependentUpon>SceneryHandler.ts</DependentUpon>
-    </None>
-    <None Include="Map\Scenery\SquareTileMap.js.map">
-      <DependentUpon>SquareTileMap.ts</DependentUpon>
-    </None>
-    <None Include="Map\Scenery\Tile.js.map">
-      <DependentUpon>Tile.ts</DependentUpon>
-    </None>
-    <None Include="Map\Scenery\TileMap.js.map">
-      <DependentUpon>TileMap.ts</DependentUpon>
-    </None>
-    <None Include="MovementControllers\LinearDirections.js.map">
-      <DependentUpon>LinearDirections.ts</DependentUpon>
-    </None>
-    <None Include="MovementControllers\LinearMovementController.js.map">
-      <DependentUpon>LinearMovementController.ts</DependentUpon>
-    </None>
-    <None Include="MovementControllers\MovementController.js.map">
-      <DependentUpon>MovementController.ts</DependentUpon>
-    </None>
-    <None Include="Rendering\Camera\Camera2d.js.map">
-      <DependentUpon>Camera2d.ts</DependentUpon>
-    </None>
-    <None Include="Rendering\Camera\Camera2dCanvasContextBuilder.js.map">
-      <DependentUpon>Camera2dCanvasContextBuilder.ts</DependentUpon>
-    </None>
-    <None Include="Rendering\Camera\Camera2dRenderer.js.map">
-      <DependentUpon>Camera2dRenderer.ts</DependentUpon>
-    </None>
-    <None Include="Rendering\Renderer2d.js.map">
-      <DependentUpon>Renderer2d.ts</DependentUpon>
-    </None>
-    <None Include="Rendering\Scene2d.js.map">
-      <DependentUpon>Scene2d.ts</DependentUpon>
-    </None>
-    <None Include="Scripts\endgate.js.map">
-      <DependentUpon>endgate.ts</DependentUpon>
-    </None>
-    <None Include="Sound\AudioClip.js.map">
-      <DependentUpon>AudioClip.ts</DependentUpon>
-    </None>
-    <None Include="Sound\AudioManager.js.map">
-      <DependentUpon>AudioManager.ts</DependentUpon>
-    </None>
-    <None Include="Sound\AudioPlayer.js.map">
-      <DependentUpon>AudioPlayer.ts</DependentUpon>
-    </None>
-    <None Include="Sound\AudioSettings.js.map">
-      <DependentUpon>AudioSettings.ts</DependentUpon>
-    </None>
-    <None Include="Utilities\EventHandler.js.map">
-      <DependentUpon>EventHandler.ts</DependentUpon>
-    </None>
-    <None Include="Utilities\NoopTripInvoker.js.map">
-      <DependentUpon>NoopTripInvoker.ts</DependentUpon>
-    </None>
+    </Content>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Content Include="EndGateAPI.js.map">
+      <DependentUpon>EndGateAPI.ts</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Sizes\Size2d.js.map">
+      <DependentUpon>Size2d.ts</DependentUpon>
+    </Content>
+    <Content Include="Assets\Vectors\Helpers\MinMax.js.map">
+      <DependentUpon>MinMax.ts</DependentUpon>
+    </Content>
+    <Content Include="Assets\Vectors\Helpers\Vector2dHelpers.js.map">
+      <DependentUpon>Vector2dHelpers.ts</DependentUpon>
+    </Content>
+    <Content Include="Assets\Vectors\Vector2d.js.map">
+      <DependentUpon>Vector2d.ts</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Bounds\BoundingCircle.js.map">
+      <DependentUpon>BoundingCircle.ts</DependentUpon>
+    </Content>
+    <Content Include="Bounds\BoundingRectangle.js.map">
+      <DependentUpon>BoundingRectangle.ts</DependentUpon>
+    </Content>
+    <Content Include="Bounds\Bounds2d.js.map">
+      <DependentUpon>Bounds2d.ts</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Collision\Collidable.js.map">
+      <DependentUpon>Collidable.ts</DependentUpon>
+    </Content>
+    <Content Include="Collision\CollisionData.js.map">
+      <DependentUpon>CollisionData.ts</DependentUpon>
+    </Content>
+    <Content Include="Collision\CollisionManager.js.map">
+      <DependentUpon>CollisionManager.ts</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Extensions\MathExtensions.js.map">
+      <DependentUpon>MathExtensions.ts</DependentUpon>
+    </Content>
+    <Content Include="Extensions\WindowExtensions.js.map">
+      <DependentUpon>WindowExtensions.ts</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Graphics\Graphic2d.js.map">
+      <DependentUpon>Graphic2d.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Graphic2dState.js.map">
+      <DependentUpon>Graphic2dState.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Grid\Grid.js.map">
+      <DependentUpon>Grid.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Line2d.js.map">
+      <DependentUpon>Line2d.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Shapes\Circle.js.map">
+      <DependentUpon>Circle.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Shapes\Rectangle.js.map">
+      <DependentUpon>Rectangle.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Shapes\Shape.js.map">
+      <DependentUpon>Shape.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Sprites\Animation\SpriteAnimation.js.map">
+      <DependentUpon>SpriteAnimation.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Sprites\ImageSource.js.map">
+      <DependentUpon>ImageSource.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Sprites\Sprite2d.js.map">
+      <DependentUpon>Sprite2d.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Text\Font\FontFamily.js.map">
+      <DependentUpon>FontFamily.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Text\Font\FontMeasurement.js.map">
+      <DependentUpon>FontMeasurement.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Text\Font\FontSettings.js.map">
+      <DependentUpon>FontSettings.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Text\Font\FontStyle.js.map">
+      <DependentUpon>FontStyle.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Text\Font\FontVariant.js.map">
+      <DependentUpon>FontVariant.ts</DependentUpon>
+    </Content>
+    <Content Include="Graphics\Text\Text2d.js.map">
+      <DependentUpon>Text2d.ts</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Input\InputManager.js.map">
+      <DependentUpon>InputManager.ts</DependentUpon>
+    </Content>
+    <Content Include="Input\Keyboard\KeyboardCommand.js.map">
+      <DependentUpon>KeyboardCommand.ts</DependentUpon>
+    </Content>
+    <Content Include="Input\Keyboard\KeyboardCommandEvent.js.map">
+      <DependentUpon>KeyboardCommandEvent.ts</DependentUpon>
+    </Content>
+    <Content Include="Input\Keyboard\KeyboardCommandHelper.js.map">
+      <DependentUpon>KeyboardCommandHelper.ts</DependentUpon>
+    </Content>
+    <Content Include="Input\Keyboard\KeyboardHandler.js.map">
+      <DependentUpon>KeyboardHandler.ts</DependentUpon>
+    </Content>
+    <Content Include="Input\Keyboard\KeyboardModifiers.js.map">
+      <DependentUpon>KeyboardModifiers.ts</DependentUpon>
+    </Content>
+    <Content Include="Input\Mouse\MouseButton.js.map">
+      <DependentUpon>MouseButton.ts</DependentUpon>
+    </Content>
+    <Content Include="Input\Mouse\MouseHandler.js.map">
+      <DependentUpon>MouseHandler.ts</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="InputControllers\DirectionalInputController.js.map">
+      <DependentUpon>DirectionalInputController.ts</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Loopers\Looper.js.map">
+      <DependentUpon>Looper.ts</DependentUpon>
+    </Content>
+    <Content Include="Loopers\LooperCallback.js.map">
+      <DependentUpon>LooperCallback.ts</DependentUpon>
+    </Content>
+    <Content Include="Loopers\RepaintLooper.js.map">
+      <DependentUpon>RepaintLooper.ts</DependentUpon>
+    </Content>
+    <Content Include="Loopers\TimedCallback.js.map">
+      <DependentUpon>TimedCallback.ts</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Map\MapManager.js.map">
+      <DependentUpon>MapManager.ts</DependentUpon>
+    </Content>
+    <Content Include="Map\Scenery\SceneryHandler.js.map">
+      <DependentUpon>SceneryHandler.ts</DependentUpon>
+    </Content>
+    <Content Include="Map\Scenery\SquareTileMap.js.map">
+      <DependentUpon>SquareTileMap.ts</DependentUpon>
+    </Content>
+    <Content Include="Map\Scenery\Tile.js.map">
+      <DependentUpon>Tile.ts</DependentUpon>
+    </Content>
+    <Content Include="Map\Scenery\TileMap.js.map">
+      <DependentUpon>TileMap.ts</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="MovementControllers\LinearDirections.js.map">
+      <DependentUpon>LinearDirections.ts</DependentUpon>
+    </Content>
+    <Content Include="MovementControllers\LinearMovementController.js.map">
+      <DependentUpon>LinearMovementController.ts</DependentUpon>
+    </Content>
+    <Content Include="MovementControllers\MovementController.js.map">
+      <DependentUpon>MovementController.ts</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Rendering\Camera\Camera2d.js.map">
+      <DependentUpon>Camera2d.ts</DependentUpon>
+    </Content>
+    <Content Include="Rendering\Camera\Camera2dCanvasContextBuilder.js.map">
+      <DependentUpon>Camera2dCanvasContextBuilder.ts</DependentUpon>
+    </Content>
+    <Content Include="Rendering\Camera\Camera2dRenderer.js.map">
+      <DependentUpon>Camera2dRenderer.ts</DependentUpon>
+    </Content>
+    <Content Include="Rendering\Renderer2d.js.map">
+      <DependentUpon>Renderer2d.ts</DependentUpon>
+    </Content>
+    <Content Include="Rendering\Scene2d.js.map">
+      <DependentUpon>Scene2d.ts</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Sound\AudioClip.js.map">
+      <DependentUpon>AudioClip.ts</DependentUpon>
+    </Content>
+    <Content Include="Sound\AudioManager.js.map">
+      <DependentUpon>AudioManager.ts</DependentUpon>
+    </Content>
+    <Content Include="Sound\AudioPlayer.js.map">
+      <DependentUpon>AudioPlayer.ts</DependentUpon>
+    </Content>
+    <Content Include="Sound\AudioSettings.js.map">
+      <DependentUpon>AudioSettings.ts</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Utilities\EventHandler.js.map">
+      <DependentUpon>EventHandler.ts</DependentUpon>
+    </Content>
+    <Content Include="Utilities\NoopTripInvoker.js.map">
+      <DependentUpon>NoopTripInvoker.ts</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="build.ps1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Interfaces\ITyped.js.map">
+      <DependentUpon>ITyped.ts</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Input\Mouse\IMouseClickEvent.js.map">
+      <DependentUpon>IMouseClickEvent.ts</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Input\Mouse\IMouseEvent.js.map">
+      <DependentUpon>IMouseEvent.ts</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Input\Mouse\IMouseScrollEvent.js.map">
+      <DependentUpon>IMouseScrollEvent.ts</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Interfaces\IDisposable.js.map">
+      <DependentUpon>IDisposable.ts</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Interfaces\IMoveable.js.map">
+      <DependentUpon>IMoveable.ts</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Interfaces\IUpdateable.js.map">
+      <DependentUpon>IUpdateable.ts</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Loopers\ILooper.js.map">
+      <DependentUpon>ILooper.ts</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="MovementControllers\IMoveEvent.js.map">
+      <DependentUpon>IMoveEvent.ts</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Rendering\IRenderable.js.map">
+      <DependentUpon>IRenderable.ts</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Rendering\IRenderer.js.map">
+      <DependentUpon>IRenderer.ts</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\endgate.js.map">
+      <DependentUpon>endgate.ts</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\endgate.min.js.map">
+      <DependentUpon>endgate.js</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets" />
   <Target Name="BeforeBuild">
     <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass .\build.ps1" WorkingDirectory="$(ProjectDir)" Condition=" '$(OS)' == 'Windows_NT'" />
   </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

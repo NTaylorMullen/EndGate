@@ -43,9 +43,9 @@
         </div>
     </div>
     
-    <script typescript="true" src="KeyboardStatusUpdater.js"></script>
-    <script typescript="true" src="CommandManager.js"></script>
-    <script typescript="true" src="CommandBinder.js"></script>
-    <script typescript="true" src="KeyboardInputGame.js"></script>
-    <script typescript="true" src="Main.js"></script>
+    <script data-typescript="true" src="KeyboardStatusUpdater.js"></script>
+    <script data-typescript="true" src="CommandManager.js"></script>
+    <script data-typescript="true" src="CommandBinder.js"></script>
+    <script data-typescript="true" src="Game.js"></script>
+    <script data-typescript="true" src="Main.js"></script>
 </asp:Content>

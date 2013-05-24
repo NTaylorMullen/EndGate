@@ -1,3 +1,4 @@
+/// <reference path="Interfaces/ITyped.ts" />
 var EndGate;
 (function (EndGate) {
     var GameTime = (function () {

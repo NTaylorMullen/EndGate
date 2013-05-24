@@ -6,6 +6,8 @@ var __extends = this.__extends || function (d, b) {
 var EndGate;
 (function (EndGate) {
     (function (Graphics) {
+        /// <reference path="../../Assets/Vectors/Vector2d.ts" />
+        /// <reference path="../Graphic2d.ts" />
         (function (Abstractions) {
             var Shape = (function (_super) {
                 __extends(Shape, _super);
@@ -74,9 +76,11 @@ var EndGate;
                     }
                     _super.prototype.EndDraw.call(this, context);
                 };
-                Shape.prototype.BuildPath = function (context) {
+                Shape.prototype.BuildPath = // This should be overridden if you want to build a proper shape
+                function (context) {
                 };
-                Shape.prototype.Draw = function (context) {
+                Shape.prototype.Draw = // You can override this Draw if you want to implement your own logic for applying styles and drawing (do not recommend overriding)
+                function (context) {
                     this.StartDraw(context);
                     this.BuildPath(context);
                     this.EndDraw(context);

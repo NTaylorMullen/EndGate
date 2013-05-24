@@ -1,5 +1,5 @@
-/// <reference path="IRenderer.d.ts" />
-/// <reference path="IRenderable.d.ts" />
+/// <reference path="IRenderer.ts" />
+/// <reference path="IRenderable.ts" />
 /// <reference path="../Utilities/EventHandler.ts" />
 /// <reference path="../Assets/Sizes/Size2d.ts" />
 

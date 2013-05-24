@@ -1,6 +1,6 @@
 /// <reference path="../../Rendering/Camera/Camera2d.ts" />
 /// <reference path="../../Rendering/Camera/Camera2dRenderer.ts" />
-/// <reference path="../../Rendering/IRenderer.d.ts" />
+/// <reference path="../../Rendering/IRenderer.ts" />
 /// <reference path="../../Graphics/Graphic2d.ts" />
 
 module EndGate.Map {

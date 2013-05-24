@@ -1,4 +1,4 @@
-/// <reference path="../Interfaces/IMoveable.d.ts" />
+/// <reference path="../Interfaces/IMoveable.ts" />
 /// <reference path="../Assets/Vectors/Vector2d.ts" />
 /// <reference  path="BoundingRectangle.ts" />
 /// <reference  path="BoundingCircle.ts" />

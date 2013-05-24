@@ -1,7 +1,12 @@
 var EndGate;
 (function (EndGate) {
     (function (_) {
+        /// <reference path="ILooper.ts" />
+        /// <reference path="../Extensions/WindowExtensions.ts" />
+        /// <reference path="LooperCallback.ts" />
         (function (Loopers) {
+            // This looper uses the request animation frame to run its internal loop
+            // The method has been aliased as "OnRepaintCompleted" via the WindowExtensions
             var RepaintLooper = (function () {
                 function RepaintLooper() {
                     this._type = "RepaintLooper";
@@ -23,12 +28,16 @@ var EndGate;
                                 break;
                             }
                         }
+                        // We want to maintain the "this" context, also we need to continuously bind
+                        // the method due to how the underlying native function works
                         window.OnRepaintCompleted(function () {
                             _this.Run();
                         });
                     }
                 };
                 RepaintLooper.prototype.AddCallback = function (looperCallback) {
+                    // This doesn't necessarily need to be here (it wont do any harm) but in order for
+                    // consistency sake I'm putting it in
                     this._callbacksModified = true;
                     this._callbacks.push(looperCallback);
                 };

@@ -1,94 +1,108 @@
+/// <reference path="../../Scripts/jquery.d.ts" />
+/// <reference path="Game.ts" />
+/// <reference path="ColorPicker.ts" />
+/// <reference path="CustomSlider.ts" />
 (function ($, window) {
-    var canvas = document.createElement("canvas"), holder = $("#gameHolder"), shapeGame, shapeColorPicker, borderColorPicker, borderThicknessSlider, rotationSlider, xPositionSlider, yPositionSlider, opacitySlider, widthSlider, heightSlider, shadowXSlider, shadowYSlider, shadowColorPicker, shadowBlurSlider, ensureValue = function (val, min, max) {
+    // Create a game canvas to use.  If we create a game without providing a canvas it will create a
+    // canvas that fills the entire viewport.
+        var canvas = document.createElement("canvas"), holder = $("#gameHolder"), game, shapeColorPicker, borderColorPicker, borderThicknessSlider, rotationSlider, xPositionSlider, yPositionSlider, opacitySlider, widthSlider, heightSlider, shadowXSlider, shadowYSlider, shadowColorPicker, shadowBlurSlider, ensureValue = // Instantiates all of the sliders
+    // Return value that is closest to provided value but still within min-max range
+    function (val, min, max) {
         return Math.min(Math.max(val, min), max);
-    }, slidersAnimationMappings = {
+    }, slidersAnimationMappings = // These functions are used to sync the shapes positions with the sliders
+    {
         Position: function () {
-            xPositionSlider.UpdateSlider(ensureValue(shapeGame.Shape.Position.X, 0, canvas.width / 2));
-            yPositionSlider.UpdateSlider(ensureValue(shapeGame.Shape.Position.Y, 0, canvas.height / 2));
+            xPositionSlider.UpdateSlider(ensureValue(game.Shape.Position.X, 0, canvas.width / 2));
+            yPositionSlider.UpdateSlider(ensureValue(game.Shape.Position.Y, 0, canvas.height / 2));
         },
         Rotation: function () {
-            rotationSlider.UpdateSlider(ensureValue(shapeGame.Shape.Rotation * 100, -628, 628));
+            rotationSlider.UpdateSlider(ensureValue(game.Shape.Rotation * 100, -628, 628));
         },
         Size: function () {
             var newWidth, newHeight;
-            if(shapeGame.Shape._type === "Circle") {
-                newWidth = shapeGame.Shape.Radius;
-                newHeight = shapeGame.Shape.Radius;
+            // Need to special case the Circle due to the difference in how Size is handled
+            if(game.Shape._type === "Circle") {
+                newWidth = game.Shape.Radius;
+                newHeight = game.Shape.Radius;
             } else {
-                newWidth = shapeGame.Shape.Size.Width;
-                newHeight = shapeGame.Shape.Size.Height;
+                newWidth = game.Shape.Size.Width;
+                newHeight = game.Shape.Size.Height;
             }
             widthSlider.UpdateSlider(ensureValue(newWidth, 0, canvas.width));
             heightSlider.UpdateSlider(ensureValue(newHeight, 0, canvas.height));
         },
         Opacity: function () {
-            opacitySlider.UpdateSlider(ensureValue(shapeGame.Shape.Opacity() * 100, 0, 100));
+            opacitySlider.UpdateSlider(ensureValue(game.Shape.Opacity() * 100, 0, 100));
         }
-    }, syncSliders = function (animation) {
+    }, syncSliders = // Sync sliders is used to make sure that all sliders are showing the correct values
+    function (animation) {
         slidersAnimationMappings[animation]();
     };
+    // Setup DOM
     canvas.width = holder.width();
     canvas.height = holder.height();
     holder.append(canvas);
-    shapeGame = new ShapeGame(canvas, $(".shapeBuilder"), $(".shapeAnimator"), new eg.Vector2d(canvas.width / 2, canvas.height / 2), new eg.Size2d(100, 100), 0, 1, syncSliders);
-    shapeColorPicker = new ColorPicker($("#redColorPicker"), $("#greenColorPicker"), $("#blueColorPicker"), [
+    // Create game
+    game = new Shapes.Game(canvas, $(".shapeBuilder"), $(".shapeAnimator"), new eg.Vector2d(canvas.width / 2, canvas.height / 2), new eg.Size2d(100, 100), 0, 1, syncSliders);
+    // Wire up all the sliders
+    shapeColorPicker = new Shapes.ColorPicker($("#redColorPicker"), $("#greenColorPicker"), $("#blueColorPicker"), [
         127, 
         0, 
         127
     ], function (newcolor) {
-        shapeGame.Shape.Color(newcolor);
+        game.Shape.Color(newcolor);
     });
-    rotationSlider = new CustomSlider($("#rotationSlider"), -628, 628, 0, function (newrotation) {
-        shapeGame.Shape.Rotation = newrotation / 100;
+    rotationSlider = new Shapes.CustomSlider($("#rotationSlider"), -628, 628, 0, function (newrotation) {
+        game.Shape.Rotation = newrotation / 100;
     });
-    xPositionSlider = new CustomSlider($("#positionXSlider"), 0, canvas.width, shapeGame.Shape.Position.X, function (newX) {
-        shapeGame.Shape.Position.X = newX;
+    xPositionSlider = new Shapes.CustomSlider($("#positionXSlider"), 0, canvas.width, game.Shape.Position.X, function (newX) {
+        game.Shape.Position.X = newX;
     });
-    yPositionSlider = new CustomSlider($("#positionYSlider"), 0, canvas.height, shapeGame.Shape.Position.Y, function (newY) {
-        shapeGame.Shape.Position.Y = newY;
+    yPositionSlider = new Shapes.CustomSlider($("#positionYSlider"), 0, canvas.height, game.Shape.Position.Y, function (newY) {
+        game.Shape.Position.Y = newY;
     });
-    opacitySlider = new CustomSlider($("#opacitySlider"), 0, 100, 100, function (newAlpha) {
-        shapeGame.Shape.Opacity(newAlpha / 100);
+    opacitySlider = new Shapes.CustomSlider($("#opacitySlider"), 0, 100, 100, function (newAlpha) {
+        game.Shape.Opacity(newAlpha / 100);
     });
-    widthSlider = new CustomSlider($("#widthSlider"), 0, canvas.width, shapeGame.Shape.Size.Width, function (newWidth) {
-        if(shapeGame.Shape._type === "Circle") {
-            shapeGame.Shape.Radius = newWidth;
+    widthSlider = new Shapes.CustomSlider($("#widthSlider"), 0, canvas.width, game.Shape.Size.Width, function (newWidth) {
+        if(game.Shape._type === "Circle") {
+            game.Shape.Radius = newWidth;
         } else {
-            shapeGame.Shape.Size.Width = newWidth;
+            game.Shape.Size.Width = newWidth;
         }
     });
-    heightSlider = new CustomSlider($("#heightSlider"), 0, canvas.height, shapeGame.Shape.Size.Height, function (newHeight) {
-        if(shapeGame.Shape._type === "Circle") {
-            shapeGame.Shape.Radius = newHeight;
+    heightSlider = new Shapes.CustomSlider($("#heightSlider"), 0, canvas.height, game.Shape.Size.Height, function (newHeight) {
+        if(game.Shape._type === "Circle") {
+            game.Shape.Radius = newHeight;
         } else {
-            shapeGame.Shape.Size.Height = newHeight;
+            game.Shape.Size.Height = newHeight;
         }
     });
-    borderColorPicker = new ColorPicker($("#borderRed"), $("#borderGreen"), $("#borderBlue"), [
+    borderColorPicker = new Shapes.ColorPicker($("#borderRed"), $("#borderGreen"), $("#borderBlue"), [
         0, 
         0, 
         0
     ], function (newcolor) {
-        shapeGame.Shape.BorderColor(newcolor);
+        game.Shape.BorderColor(newcolor);
     });
-    borderThicknessSlider = new CustomSlider($("#borderThickness"), 0, 100, 7, function (newThickness) {
-        shapeGame.Shape.BorderThickness(newThickness);
+    borderThicknessSlider = new Shapes.CustomSlider($("#borderThickness"), 0, 100, 7, function (newThickness) {
+        game.Shape.BorderThickness(newThickness);
     });
-    shadowXSlider = new CustomSlider($("#shadowX"), -30, 30, 20, function (newX) {
-        shapeGame.Shape.ShadowX(newX);
+    shadowXSlider = new Shapes.CustomSlider($("#shadowX"), -30, 30, 20, function (newX) {
+        game.Shape.ShadowX(newX);
     });
-    shadowYSlider = new CustomSlider($("#shadowY"), -30, 30, 10, function (newY) {
-        shapeGame.Shape.ShadowY(newY);
+    shadowYSlider = new Shapes.CustomSlider($("#shadowY"), -30, 30, 10, function (newY) {
+        game.Shape.ShadowY(newY);
     });
-    shadowColorPicker = new ColorPicker($("#shadowColorRed"), $("#shadowColorGreen"), $("#shadowColorBlue"), [
+    shadowColorPicker = new Shapes.ColorPicker($("#shadowColorRed"), $("#shadowColorGreen"), $("#shadowColorBlue"), [
         0, 
         0, 
         100
     ], function (newcolor) {
-        shapeGame.Shape.ShadowColor(newcolor);
+        game.Shape.ShadowColor(newcolor);
     });
-    shadowBlurSlider = new CustomSlider($("#shadowBlur"), 0, 300, 55, function (newBlur) {
-        shapeGame.Shape.ShadowBlur(newBlur);
+    shadowBlurSlider = new Shapes.CustomSlider($("#shadowBlur"), 0, 300, 55, function (newBlur) {
+        game.Shape.ShadowBlur(newBlur);
     });
 })($, window);
 //@ sourceMappingURL=Main.js.map

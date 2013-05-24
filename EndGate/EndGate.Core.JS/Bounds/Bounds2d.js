@@ -1,6 +1,10 @@
 var EndGate;
 (function (EndGate) {
     (function (Bounds) {
+        /// <reference path="../Interfaces/IMoveable.ts" />
+        /// <reference path="../Assets/Vectors/Vector2d.ts" />
+        /// <reference  path="BoundingRectangle.ts" />
+        /// <reference  path="BoundingCircle.ts" />
         (function (Abstractions) {
             var Bounds2d = (function () {
                 function Bounds2d(position) {

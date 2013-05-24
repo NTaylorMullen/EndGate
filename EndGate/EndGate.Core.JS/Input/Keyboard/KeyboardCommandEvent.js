@@ -1,5 +1,7 @@
 var EndGate;
 (function (EndGate) {
+    /// <reference path="KeyboardModifiers.ts" />
+    /// <reference path="KeyboardCommand.ts" />
     (function (Input) {
         var shiftValues = {
             "~": "`",

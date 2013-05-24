@@ -1,5 +1,11 @@
 var EndGate;
 (function (EndGate) {
+    /// <reference path="../Interfaces/IUpdateable.ts" />
+    /// <reference path="../Interfaces/ITyped.ts" />
+    /// <reference path="Collidable.ts" />
+    /// <reference path="CollisionData.ts" />
+    /// <reference path="../Utilities/EventHandler.ts" />
+    /// <reference path="../GameTime.ts" />
     (function (Collision) {
         var CollisionManager = (function () {
             function CollisionManager() {

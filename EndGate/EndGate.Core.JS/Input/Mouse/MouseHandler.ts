@@ -1,9 +1,9 @@
 /// <reference path="../../Assets/Vectors/Vector2d.ts" />
 /// <reference path="../../Utilities/EventHandler.ts" />
 /// <reference path="MouseButton.ts" />
-/// <reference path="IMouseEvent.d.ts" />
-/// <reference path="IMouseClickEvent.d.ts" />
-/// <reference path="IMouseScrollEvent.d.ts" />
+/// <reference path="IMouseEvent.ts" />
+/// <reference path="IMouseClickEvent.ts" />
+/// <reference path="IMouseScrollEvent.ts" />
 
 module EndGate.Input {
 

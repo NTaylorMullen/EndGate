@@ -88,8 +88,8 @@
     </div>
     
     <script src="../../Scripts/jquery-ui-1.10.2.js"></script>
-    <script typescript="true" src="CustomSlider.js"></script>
-    <script typescript="true" src="SpriteAnimator.js"></script>
-    <script typescript="true" src="SpriteGame.js"></script>
-    <script typescript="true" src="Main.js"></script>
+    <script data-typescript="true" src="CustomSlider.js"></script>
+    <script data-typescript="true" src="SpriteAnimator.js"></script>
+    <script data-typescript="true" src="Game.js"></script>
+    <script data-typescript="true" src="Main.js"></script>
 </asp:Content>

@@ -1,5 +1,11 @@
 var EndGate;
 (function (EndGate) {
+    /// <reference path="../../Assets/Vectors/Vector2d.ts" />
+    /// <reference path="../../Utilities/EventHandler.ts" />
+    /// <reference path="MouseButton.ts" />
+    /// <reference path="IMouseEvent.ts" />
+    /// <reference path="IMouseClickEvent.ts" />
+    /// <reference path="IMouseScrollEvent.ts" />
     (function (Input) {
         var MouseHandler = (function () {
             function MouseHandler(target) {
@@ -11,6 +17,7 @@ var EndGate;
                 this.OnUp = new EndGate.EventHandler();
                 this.OnMove = new EndGate.EventHandler();
                 this.OnScroll = new EndGate.EventHandler();
+                // Generic flags to check mouse state
                 this.LeftIsDown = false;
                 this.MiddleIsDown = false;
                 this.RightIsDown = false;
@@ -37,6 +44,8 @@ var EndGate;
                 this._target.addEventListener("mousedown", this.BuildEvent(this.OnDown, this.BuildMouseClickEvent), false);
                 this._target.addEventListener("mouseup", this.BuildEvent(this.OnUp, this.BuildMouseClickEvent), false);
                 this._target.addEventListener("mousemove", this.BuildEvent(this.OnMove, this.BuildMouseEvent), false);
+                // OnScroll, in order to detect horizontal scrolling need to hack a bit (browser sniffing)
+                // if we were just doing vertical scrolling we could settle with the else statement in this block
                 if((/MSIE/i.test(navigator.userAgent))) {
                     this._target.addEventListener("wheel", this.BuildEvent(this.OnScroll, function (e) {
                         e.wheelDeltaX = -e.deltaX;

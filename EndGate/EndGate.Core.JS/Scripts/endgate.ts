@@ -1,13 +1,13 @@
-/* IDisposable.d.ts */
-module EndGate {
+/* IDisposable.ts */
+declare module EndGate {
 
     export interface IDisposable {
         Dispose(): void;
     }
 
 }
-/* ITyped.d.ts */
-module EndGate._ {
+/* ITyped.ts */
+declare module EndGate._ {
 
     export interface ITyped {
         _type: string;
@@ -48,10 +48,10 @@ module EndGate {
     }
 
 }
-/* IUpdateable.d.ts */
+/* IUpdateable.ts */
 
 
-module EndGate {
+declare module EndGate {
 
     export interface IUpdateable {
         Update(gameTime: EndGate.GameTime): void;
@@ -414,10 +414,10 @@ module EndGate {
         }
     }
 }
-/* IMoveable.d.ts */
+/* IMoveable.ts */
 
 
-module EndGate {
+declare module EndGate {
 
     export interface IMoveable {
         Position: Vector2d;
@@ -477,10 +477,10 @@ module EndGate.Bounds.Abstractions {
     }
 
 }
-/* IRenderable.d.ts */
+/* IRenderable.ts */
 
 
-module EndGate.Rendering {
+declare module EndGate.Rendering {
 
     export interface IRenderable {
         ZIndex: number;
@@ -508,12 +508,12 @@ module EndGate._.Loopers {
         public ID: number;
     }
 }
-/* ILooper.d.ts */
+/* ILooper.ts */
 
 
 
 
-module EndGate._.Loopers {
+declare module EndGate._.Loopers {
 
     export interface ILooper extends IDisposable, ITyped {
         Start(): void;
@@ -1460,11 +1460,11 @@ module EndGate.Rendering {
     }
 
 }
-/* IRenderer.d.ts */
+/* IRenderer.ts */
 
 
 
-module EndGate.Rendering {
+declare module EndGate.Rendering {
 
     export interface IRenderer extends IDisposable {
         Render(renderables: IRenderable[]): CanvasRenderingContext2D;
@@ -1750,8 +1750,7 @@ module EndGate.Rendering {
 
 module EndGate.Rendering {
 
-    export class Scene2d implements EndGate._.ITyped, IDisposable {
-        public _type: string = "Scene";
+    export class Scene2d implements IDisposable {
 
         public DrawArea: HTMLCanvasElement;
         public Camera: Camera2d;
@@ -1837,34 +1836,34 @@ module EndGate.Input {
     }
 
 }
-/* IMouseEvent.d.ts */
+/* IMouseEvent.ts */
 
 
-module EndGate.Input {
+declare module EndGate.Input {
 
     export interface IMouseEvent {
         Position: Vector2d;
     }
 
 }
-/* IMouseClickEvent.d.ts */
+/* IMouseClickEvent.ts */
 
 
 
-module EndGate.Input {
+declare module EndGate.Input {
 
     export interface IMouseClickEvent extends IMouseEvent {
         Button: string;
     }
 
 }
-/* IMouseScrollEvent.d.ts */
+/* IMouseScrollEvent.ts */
 
 
 
-module EndGate.Input {
+declare module EndGate.Input {
 
-    export interface IMouseScrollEvent extends IMouseEvent{
+    export interface IMouseScrollEvent extends IMouseEvent {
         Direction: Vector2d;
     }
 
@@ -2694,8 +2693,8 @@ module EndGate.MovementControllers.Assets {
     }
 
 }
-/* IMoveEvent.d.ts */
-module EndGate.MovementControllers {
+/* IMoveEvent.ts */
+declare module EndGate.MovementControllers {
 
     export interface IMoveEvent {
         Direction: string;
@@ -3662,34 +3661,6 @@ module EndGate.Graphics {
     }
 
 }
-/* EndGateAPI.ts */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-import eg = EndGate;
 /* Line2d.ts */
 
 
@@ -4190,3 +4161,39 @@ module EndGate.Map {
     }
 
 }
+/* EndGateAPI.ts */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// When this file is compiled into a declaration file it does not include this line,
+// therefore in the build.ps1 we have to append this aliasing module.
+import eg = EndGate;

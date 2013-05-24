@@ -14,6 +14,8 @@
 /// <reference path="Graphics/Shapes/Shape.ts" />
 /// <reference path="Graphics/Shapes/Circle.ts" />
 /// <reference path="Graphics/Shapes/Rectangle.ts" />
+/// <reference path="Graphics/Line2d.ts" />
+/// <reference path="Graphics/Grid/Grid.ts" />
 /// <reference path="Collision/Collidable.ts" />
 /// <reference path="Bounds/BoundingCircle.ts" />
 /// <reference path="Bounds/BoundingRectangle.ts" />
@@ -22,6 +24,12 @@
 /// <reference path="Sound/AudioSettings.ts" />
 /// <reference path="Assets/Sizes/Size2d.ts" />
 /// <reference path="Assets/Vectors/Vector2d.ts" />
+/// <reference path="Map/MapManager.ts" />
+/// <reference path="Map/Scenery/SceneryHandler.ts" />
+/// <reference path="Map/Scenery/SquareTileMap.ts" />
+/// <reference path="Map/Scenery/Tile.ts" />
+/// <reference path="Map/Scenery/TileMap.ts" />
 
-
+// When this file is compiled into a declaration file it does not include this line,
+// therefore in the build.ps1 we have to append this aliasing module.
 import eg = EndGate;

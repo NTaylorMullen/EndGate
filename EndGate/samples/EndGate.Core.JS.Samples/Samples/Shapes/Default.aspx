@@ -118,9 +118,9 @@
     </div>
     
     <script src="../../Scripts/jquery-ui-1.10.2.js"></script>
-    <script typescript="true" src="ColorPicker.js"></script>
-    <script typescript="true" src="CustomSlider.js"></script>
-    <script typescript="true" src="ShapeAnimator.js"></script>
-    <script typescript="true" src="ShapeGame.js"></script>
-    <script typescript="true" src="Main.js"></script>
+    <script data-typescript="true" src="ColorPicker.js"></script>
+    <script data-typescript="true" src="CustomSlider.js"></script>
+    <script data-typescript="true" src="ShapeAnimator.js"></script>
+    <script data-typescript="true" src="Game.js"></script>
+    <script data-typescript="true" src="Main.js"></script>
 </asp:Content>

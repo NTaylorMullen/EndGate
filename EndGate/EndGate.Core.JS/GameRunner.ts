@@ -1,4 +1,4 @@
-/// <reference path="Interfaces/ITyped.d.ts" />
+/// <reference path="Interfaces/ITyped.ts" />
 /// <reference path="Loopers/Looper.ts" />
 /// <reference path="Loopers/RepaintLooper.ts" />
 /// <reference path="Loopers/TimedCallback.ts" />

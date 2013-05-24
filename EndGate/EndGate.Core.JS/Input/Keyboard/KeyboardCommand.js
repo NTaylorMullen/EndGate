@@ -1,6 +1,11 @@
 var EndGate;
 (function (EndGate) {
     (function (Input) {
+        /// <reference path="../../Interfaces/IDisposable.ts" />
+        /// <reference path="../../Utilities/EventHandler.ts" />
+        /// <reference path="../../Utilities/NoopTripInvoker.ts" />
+        /// <reference path="KeyboardCommandHelper.ts" />
+        /// <reference path="KeyboardModifiers.ts" />
         (function (Assets) {
             var KeyboardCommand = (function () {
                 function KeyboardCommand(command, action) {

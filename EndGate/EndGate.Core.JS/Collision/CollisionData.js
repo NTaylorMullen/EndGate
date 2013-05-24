@@ -1,6 +1,8 @@
 var EndGate;
 (function (EndGate) {
     (function (Collision) {
+        /// <reference path="../Assets/Vectors/Vector2d.ts" />
+        /// <reference path="Collidable.ts" />
         (function (Assets) {
             var CollisionData = (function () {
                 function CollisionData(at, w) {

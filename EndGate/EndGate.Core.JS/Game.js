@@ -1,3 +1,14 @@
+/// <reference path="Interfaces/IDisposable.ts" />
+/// <reference path="Interfaces/ITyped.ts" />
+/// <reference path="Interfaces/IUpdateable.ts" />
+/// <reference path="Rendering/IRenderable.ts" />
+/// <reference path="GameRunner.ts" />
+/// <reference path="GameConfiguration.ts" />
+/// <reference path="Collision/CollisionManager.ts" />
+/// <reference path="Rendering/Scene2d.ts" />
+/// <reference path="Input/InputManager.ts" />
+/// <reference path="Sound/AudioManager.ts" />
+/// <reference path="Map/MapManager.ts" />
 var EndGate;
 (function (EndGate) {
     var Game = (function () {
@@ -27,7 +38,8 @@ var EndGate;
             this.Map.Scenery.Draw();
             this.Scene.Draw();
         };
-        Game.prototype.Draw = function (context) {
+        Game.prototype.Draw = // This is called by the scene
+        function (context) {
         };
         Game.prototype.Dispose = function () {
             this.Scene.Dispose();

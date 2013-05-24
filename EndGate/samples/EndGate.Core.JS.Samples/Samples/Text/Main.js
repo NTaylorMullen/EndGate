@@ -1,7 +1,17 @@
+/// <reference path="../../Scripts/jquery.d.ts" />
+/// <reference path="../../Scripts/endgate.d.ts" />
+/// <reference path="Game.ts" />
+/// <reference path="ColorPicker.ts" />
+/// <reference path="CustomSlider.ts" />
 (function ($, window) {
-    var canvas = document.createElement("canvas"), holder = $("#gameHolder"), textGame, textColorPicker, borderColorPicker, borderThicknessSlider, rotationSlider, xPositionSlider, yPositionSlider, fontSizeSlider, opacitySlider, shadowXSlider, shadowYSlider, shadowColorPicker, shadowBlurSlider, fontFamilySelect = $("#fontFamilySelect"), fontFamilyTypeSelect = $("#fontFamilyTypeSelect"), fontWeightSelect = $("#fontWeightSelect"), fontStyleSelect = $("#fontStyleSelect"), ensureValue = function (val, min, max) {
+    // Create a game canvas to use.  If we create a game without providing a canvas it will create a
+    // canvas that fills the entire viewport.
+        var canvas = document.createElement("canvas"), holder = $("#gameHolder"), game, textColorPicker, borderColorPicker, borderThicknessSlider, rotationSlider, xPositionSlider, yPositionSlider, fontSizeSlider, opacitySlider, shadowXSlider, shadowYSlider, shadowColorPicker, shadowBlurSlider, fontFamilySelect = // Instantiates all of the sliders
+    $("#fontFamilySelect"), fontFamilyTypeSelect = $("#fontFamilyTypeSelect"), fontWeightSelect = $("#fontWeightSelect"), fontStyleSelect = $("#fontStyleSelect"), ensureValue = // Return value that is closest to provided value but still within min-max range
+    function (val, min, max) {
         return Math.min(Math.max(val, min), max);
-    }, fillSelect = function (select, optionList, onchange) {
+    }, fillSelect = // These functions are used to sync the shapes positions with the sliders
+    function (select, optionList, onchange) {
         for(var property in optionList) {
             if(property !== "_map") {
                 select.append("<option value=\"" + property + "\">" + property + "</option>");
@@ -10,81 +20,86 @@
         select.change(onchange);
     }, slidersAnimationMappings = {
         Position: function () {
-            xPositionSlider.UpdateSlider(ensureValue(textGame.Text.Position.X, 0, canvas.width / 2));
-            yPositionSlider.UpdateSlider(ensureValue(textGame.Text.Position.Y, 0, canvas.height / 2));
+            xPositionSlider.UpdateSlider(ensureValue(game.Text.Position.X, 0, canvas.width / 2));
+            yPositionSlider.UpdateSlider(ensureValue(game.Text.Position.Y, 0, canvas.height / 2));
         },
         Rotation: function () {
-            rotationSlider.UpdateSlider(ensureValue(textGame.Text.Rotation * 100, -628, 628));
+            rotationSlider.UpdateSlider(ensureValue(game.Text.Rotation * 100, -628, 628));
         },
         Size: function () {
-            fontSizeSlider.UpdateSlider(ensureValue(parseFloat(textGame.Text.FontSettings.FontSize()), 0, 100));
+            fontSizeSlider.UpdateSlider(ensureValue(parseFloat(game.Text.FontSettings.FontSize()), 0, 100));
         },
         Opacity: function () {
-            opacitySlider.UpdateSlider(ensureValue(textGame.Text.Opacity() * 100, 0, 100));
+            opacitySlider.UpdateSlider(ensureValue(game.Text.Opacity() * 100, 0, 100));
         }
-    }, syncSliders = function (animation) {
+    }, syncSliders = // Sync sliders is used to make sure that all sliders are showing the correct values
+    function (animation) {
         slidersAnimationMappings[animation]();
     };
+    // Setup DOM
     canvas.width = holder.width();
     canvas.height = holder.height();
     holder.append(canvas);
-    textGame = new TextGame(canvas, $(".textAnimator"), new eg.Vector2d(canvas.width / 2, canvas.height / 2), 0, 1, syncSliders);
-    textColorPicker = new ColorPicker($("#redColorPicker"), $("#greenColorPicker"), $("#blueColorPicker"), [
+    // Create game
+    game = new Texts.Game(canvas, $(".textAnimator"), new eg.Vector2d(canvas.width / 2, canvas.height / 2), 0, 1, syncSliders);
+    // Wire up all the sliders
+    textColorPicker = new Texts.ColorPicker($("#redColorPicker"), $("#greenColorPicker"), $("#blueColorPicker"), [
         127, 
         0, 
         127
     ], function (newcolor) {
-        textGame.Text.Color(newcolor);
+        game.Text.Color(newcolor);
     });
-    rotationSlider = new CustomSlider($("#rotationSlider"), -628, 628, 0, function (newrotation) {
-        textGame.Text.Rotation = newrotation / 100;
+    rotationSlider = new Texts.CustomSlider($("#rotationSlider"), -628, 628, 0, function (newrotation) {
+        game.Text.Rotation = newrotation / 100;
     });
-    xPositionSlider = new CustomSlider($("#positionXSlider"), 0, canvas.width, textGame.Text.Position.X, function (newX) {
-        textGame.Text.Position.X = newX;
+    xPositionSlider = new Texts.CustomSlider($("#positionXSlider"), 0, canvas.width, game.Text.Position.X, function (newX) {
+        game.Text.Position.X = newX;
     });
-    yPositionSlider = new CustomSlider($("#positionYSlider"), 0, canvas.height, textGame.Text.Position.Y, function (newY) {
-        textGame.Text.Position.Y = newY;
+    yPositionSlider = new Texts.CustomSlider($("#positionYSlider"), 0, canvas.height, game.Text.Position.Y, function (newY) {
+        game.Text.Position.Y = newY;
     });
-    opacitySlider = new CustomSlider($("#opacitySlider"), 0, 100, 100, function (newAlpha) {
-        textGame.Text.Opacity(newAlpha / 100);
+    opacitySlider = new Texts.CustomSlider($("#opacitySlider"), 0, 100, 100, function (newAlpha) {
+        game.Text.Opacity(newAlpha / 100);
     });
-    fontSizeSlider = new CustomSlider($("#fontSizeSlider"), 0, 100, 20, function (newSize) {
-        textGame.Text.FontSettings.FontSize(newSize);
+    fontSizeSlider = new Texts.CustomSlider($("#fontSizeSlider"), 0, 100, 20, function (newSize) {
+        game.Text.FontSettings.FontSize(newSize);
     });
-    borderColorPicker = new ColorPicker($("#borderRed"), $("#borderGreen"), $("#borderBlue"), [
+    borderColorPicker = new Texts.ColorPicker($("#borderRed"), $("#borderGreen"), $("#borderBlue"), [
         0, 
         0, 
         0
     ], function (newcolor) {
-        textGame.Text.BorderColor(newcolor);
+        game.Text.BorderColor(newcolor);
     });
-    borderThicknessSlider = new CustomSlider($("#borderThickness"), 0, 100, 0, function (newThickness) {
-        textGame.Text.BorderThickness(newThickness);
+    borderThicknessSlider = new Texts.CustomSlider($("#borderThickness"), 0, 100, 0, function (newThickness) {
+        game.Text.BorderThickness(newThickness);
     });
-    shadowXSlider = new CustomSlider($("#shadowX"), -30, 30, 20, function (newX) {
-        textGame.Text.ShadowX(newX);
+    shadowXSlider = new Texts.CustomSlider($("#shadowX"), -30, 30, 20, function (newX) {
+        game.Text.ShadowX(newX);
     });
-    shadowYSlider = new CustomSlider($("#shadowY"), -30, 30, 10, function (newY) {
-        textGame.Text.ShadowY(newY);
+    shadowYSlider = new Texts.CustomSlider($("#shadowY"), -30, 30, 10, function (newY) {
+        game.Text.ShadowY(newY);
     });
-    shadowColorPicker = new ColorPicker($("#shadowColorRed"), $("#shadowColorGreen"), $("#shadowColorBlue"), [
+    shadowColorPicker = new Texts.ColorPicker($("#shadowColorRed"), $("#shadowColorGreen"), $("#shadowColorBlue"), [
         0, 
         0, 
         100
     ], function (newcolor) {
-        textGame.Text.ShadowColor(newcolor);
+        game.Text.ShadowColor(newcolor);
     });
-    shadowBlurSlider = new CustomSlider($("#shadowBlur"), 0, 300, 55, function (newBlur) {
-        textGame.Text.ShadowBlur(newBlur);
+    shadowBlurSlider = new Texts.CustomSlider($("#shadowBlur"), 0, 300, 55, function (newBlur) {
+        game.Text.ShadowBlur(newBlur);
     });
+    // Wire up text selections
     fillSelect(fontFamilySelect, eg.Graphics.Assets.FontFamily, function () {
-        textGame.Text.FontSettings.FontFamily(eg.Graphics.Assets.FontFamily[$(this).val()]);
+        game.Text.FontSettings.FontFamily(eg.Graphics.Assets.FontFamily[$(this).val()]);
     });
     fillSelect(fontStyleSelect, eg.Graphics.Assets.FontStyle, function () {
-        textGame.Text.FontSettings.FontStyle(eg.Graphics.Assets.FontStyle[$(this).val()]);
+        game.Text.FontSettings.FontStyle(eg.Graphics.Assets.FontStyle[$(this).val()]);
     });
     fontWeightSelect.change(function () {
-        textGame.Text.FontSettings.FontWeight($(this).val());
+        game.Text.FontSettings.FontWeight($(this).val());
     });
 })($, window);
 //@ sourceMappingURL=Main.js.map

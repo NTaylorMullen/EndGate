@@ -1,5 +1,5 @@
 /// <reference path="LooperCallback.ts" />
-/// <reference path="../Interfaces/ITyped.d.ts" />
+/// <reference path="../Interfaces/ITyped.ts" />
 
 module EndGate._.Loopers {
 

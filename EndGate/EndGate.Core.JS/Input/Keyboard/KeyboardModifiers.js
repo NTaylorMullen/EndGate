@@ -1,6 +1,7 @@
 var EndGate;
 (function (EndGate) {
     (function (Input) {
+        /// <reference path="KeyboardCommand.ts" />
         (function (Assets) {
             var KeyboardModifiers = (function () {
                 function KeyboardModifiers(ctrl, alt, shift) {

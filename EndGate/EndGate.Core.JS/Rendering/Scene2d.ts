@@ -1,17 +1,16 @@
-/// <reference path="../Interfaces/IDisposable.d.ts" />
-/// <reference path="../Interfaces/ITyped.d.ts" />
+/// <reference path="../Interfaces/IDisposable.ts" />
+/// <reference path="../Interfaces/ITyped.ts" />
 /// <reference path="../GameTime.ts" />
 /// <reference path="../Graphics/Graphic2d.ts" />
 /// <reference path="../Assets/Sizes/Size2d.ts" />
 /// <reference path="../Assets/Vectors/Vector2d.ts" />
 /// <reference path="Camera/Camera2d.ts" />
-/// <reference path="IRenderer.d.ts" />
+/// <reference path="IRenderer.ts" />
 /// <reference path="Camera/Camera2dRenderer.ts" />
 
 module EndGate.Rendering {
 
-    export class Scene2d implements EndGate._.ITyped, IDisposable {
-        public _type: string = "Scene";
+    export class Scene2d implements IDisposable {
 
         public DrawArea: HTMLCanvasElement;
         public Camera: Camera2d;

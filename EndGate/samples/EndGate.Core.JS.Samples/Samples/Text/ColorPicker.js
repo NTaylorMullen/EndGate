@@ -1,35 +1,44 @@
-var ColorPicker = (function () {
-    function ColorPicker(red, green, blue, defaultColor, _onColorChange) {
-        this.red = red;
-        this.green = green;
-        this.blue = blue;
-        this._onColorChange = _onColorChange;
-        var _this = this;
-        var updateGraphic = function () {
-            _this.UpdateColor();
-        };
-        this.sliders = [
-            this.red, 
-            this.green, 
-            this.blue
-        ];
-        for(var i = 0; i < 3; i++) {
-            this.sliders[i].slider({
-                orientation: "horizontal",
-                range: "min",
-                max: 255,
-                value: defaultColor[i],
-                animate: true,
-                slide: updateGraphic,
-                change: updateGraphic
-            });
+// Wrap in module to keep code out of global scope, misspelling of Texts is purposeful to avoid namespace conflict
+var Texts;
+(function (Texts) {
+    var ColorPicker = (function () {
+        function ColorPicker(red, green, blue, defaultColor, _onColorChange) {
+            this.red = red;
+            this.green = green;
+            this.blue = blue;
+            this._onColorChange = _onColorChange;
+            var _this = this;
+            var updateGraphic = function () {
+                _this.UpdateColor();
+            };
+            // build the sliders, at this point these are just the holders for the sliders
+            this.sliders = [
+                this.red, 
+                this.green, 
+                this.blue
+            ];
+            // Cycle through all the sliders and set them up with default values (jquery ui)
+            for(var i = 0; i < 3; i++) {
+                this.sliders[i].slider({
+                    orientation: "horizontal",
+                    range: "min",
+                    max: 255,
+                    value: defaultColor[i],
+                    animate: true,
+                    slide: updateGraphic,
+                    change: updateGraphic
+                });
+            }
+            this.UpdateColor();
         }
-        this.UpdateColor();
-    }
-    ColorPicker.prototype.UpdateColor = function () {
-        var red = this.red.slider("value"), green = this.green.slider("value"), blue = this.blue.slider("value");
-        this._onColorChange("rgb(" + red + ", " + green + ", " + blue + ")");
-    };
-    return ColorPicker;
-})();
+        ColorPicker.prototype.UpdateColor = function () {
+            // Pull the slider values
+                        var red = this.red.slider("value"), green = this.green.slider("value"), blue = this.blue.slider("value");
+            // Post the updated color to the callback
+            this._onColorChange("rgb(" + red + ", " + green + ", " + blue + ")");
+        };
+        return ColorPicker;
+    })();
+    Texts.ColorPicker = ColorPicker;    
+})(Texts || (Texts = {}));
 //@ sourceMappingURL=ColorPicker.js.map
