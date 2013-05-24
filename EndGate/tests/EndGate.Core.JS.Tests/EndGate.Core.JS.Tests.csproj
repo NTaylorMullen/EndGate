@@ -81,9 +81,6 @@
     <Content Include="Tests\Assets.js">
       <DependentUpon>Assets.ts</DependentUpon>
     </Content>
-    <Content Include="Tests\Assets.min.js">
-      <DependentUpon>Assets.ts</DependentUpon>
-    </Content>
     <Content Include="Tests\Assets\Sizes\Size2dFacts.js" />
     <Content Include="Tests\Assets\Vectors\Vector2dFacts.js" />
     <Content Include="Tests\Assets\Vectors\Vector2dHelperFacts.js" />
@@ -141,6 +138,18 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptIncludeComments>true</TypeScriptIncludeComments>
+    <TypeScriptSourceMap>true</TypeScriptSourceMap>
+    <TypeScriptEnableCompileOnSave>true</TypeScriptEnableCompileOnSave>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptIncludeComments>true</TypeScriptIncludeComments>
+    <TypeScriptSourceMap>true</TypeScriptSourceMap>
+    <TypeScriptEnableCompileOnSave>true</TypeScriptEnableCompileOnSave>
+  </PropertyGroup>
   <UsingTask TaskName="BuildScriptTags" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
     <ParameterGroup>
       <ProjectDirectory Required="true" />
@@ -175,12 +184,13 @@
     <Copy SourceFiles="$(SolutionDir)EndGate.Core.JS\Scripts\endgate.d.ts" DestinationFiles="Scripts\endgate.d.ts" Condition=" '$(OS)' == 'Windows_NT' " />
     <Copy SourceFiles="$(SolutionDir)EndGate.Core.JS\Scripts\endgate.js" DestinationFiles="Scripts\endgate.js" Condition=" '$(OS)' == 'Windows_NT' " />
   </Target>
-  <Target Name="AfterBuild">    
+  <Target Name="AfterBuild">
     <BuildScriptTags ProjectDirectory="$(MSBuildProjectDirectory)" RelativePath="$(QUnitTestsFolder)">
       <Output PropertyName="JSTests" TaskParameter="ScriptTagsOutput" />
     </BuildScriptTags>
     <FileUpdate Files="index.html" Regex="&lt;!-- ##JS## --&gt;((.|\r|\n)*?)&lt;!-- ##JS## --&gt;" ReplacementText="&lt;!-- ##JS## --&gt;$(JSTests)&lt;!-- ##JS## --&gt;" Condition=" '$(OS)' == 'Windows_NT'" />
   </Target>
+  <Import Project="$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
