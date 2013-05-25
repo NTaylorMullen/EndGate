@@ -16,11 +16,11 @@ namespace EndGate.Core.Net.Tests
         }
 
         [Fact]
-        public void CircumfrenceWorks()
+        public void CircumferenceWorks()
         {
             var obj = new BoundingCircle(10);
 
-            Assert.Equal(Math.Round(obj.Circumfrence()), 63);
+            Assert.Equal(Math.Round(obj.Circumference()), 63);
         }
 
         [Fact]

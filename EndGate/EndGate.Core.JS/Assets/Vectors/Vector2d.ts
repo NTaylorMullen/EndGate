@@ -5,28 +5,28 @@
 module EndGate {
 
     /**
-    * Defines a two dimensional vector object which specifies an X and Y
+    * Defines a two dimensional vector object which specifies an X and Y.
     */
     export class Vector2d implements _.ITyped {
         public _type: string = "Vector2d";
 
         /**
-        * Gets or sets the X component of the vector
+        * Gets or sets the X component of the vector.
         */
         public X: number;
         /**
-        * Gets or sets the Y component of the vector
+        * Gets or sets the Y component of the vector.
         */
         public Y: number;
 
         /**
-        * Creates a new instance of Vector2d with the X and Y components initialized to 0
+        * Creates a new instance of Vector2d with the X and Y components initialized to 0.
         */
         constructor();
         /**
-        * Creates a new instance of Vector2d
-        * @param x Initial value of the X component of the Vector2d
-        * @param y Initial value of the Y component of the Vector2d
+        * Creates a new instance of Vector2d.
+        * @param x Initial value of the X component of the Vector2d.
+        * @param y Initial value of the Y component of the Vector2d.
         */
         constructor(x: number, y: number);
         constructor(x?: number, y?: number) {

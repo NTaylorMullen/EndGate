@@ -65,29 +65,29 @@ declare module EndGate {
 module EndGate {
 
     /**
-    * Defines a two dimensional size object which specifies a Width and Height
+    * Defines a two dimensional size object which specifies a Width and Height.
     */
     export class Size2d implements _.ITyped {
         public _type: string = "Size2d";
 
         /**
-        * Gets or sets the horizontal component of this Size structure
+        * Gets or sets the horizontal component of this Size structure.
         */
         public Width: number;
         /**
-        * Gets or sets the vertical component of this Size structure
+        * Gets or sets the vertical component of this Size structure.
         */
         public Height: number;
 
         /**
-        * Creates a new instance of Size2d
-        * @param size Initial value of the Width and Height components of Size2d
+        * Creates a new instance of Size2d.
+        * @param size Initial value of the Width and Height components of Size2d.
         */
         constructor(size: number);
         /**
-        * Creates a new instance of Size2d
-        * @param width Initial value of the Width component of Size2d
-        * @param height Initial value of the Height component of Size2d
+        * Creates a new instance of Size2d.
+        * @param width Initial value of the Width component of Size2d.
+        * @param height Initial value of the Height component of Size2d.
         */
         constructor(width: number, height: number);
         constructor(first: number, second?: number) {
@@ -360,28 +360,28 @@ Math.roundTo = function (val?: number, decimals?: number): number {
 module EndGate {
 
     /**
-    * Defines a two dimensional vector object which specifies an X and Y
+    * Defines a two dimensional vector object which specifies an X and Y.
     */
     export class Vector2d implements _.ITyped {
         public _type: string = "Vector2d";
 
         /**
-        * Gets or sets the X component of the vector
+        * Gets or sets the X component of the vector.
         */
         public X: number;
         /**
-        * Gets or sets the Y component of the vector
+        * Gets or sets the Y component of the vector.
         */
         public Y: number;
 
         /**
-        * Creates a new instance of Vector2d with the X and Y components initialized to 0
+        * Creates a new instance of Vector2d with the X and Y components initialized to 0.
         */
         constructor();
         /**
-        * Creates a new instance of Vector2d
-        * @param x Initial value of the X component of the Vector2d
-        * @param y Initial value of the Y component of the Vector2d
+        * Creates a new instance of Vector2d.
+        * @param x Initial value of the X component of the Vector2d.
+        * @param y Initial value of the Y component of the Vector2d.
         */
         constructor(x: number, y: number);
         constructor(x?: number, y?: number) {
@@ -1541,37 +1541,65 @@ module EndGate._ {
 
 module EndGate.Bounds {
 
+    /**
+    * Defines a circle that can be used to detect intersections.
+    */
     export class BoundingCircle implements _.ITyped extends Abstractions.Bounds2d {
         public _type: string = "BoundingCircle";
         public _boundsType: string = "BoundingCircle";
 
+        /**
+        * Gets or sets the Radius of the circle.
+        */
         public Radius: number;
 
+        /**
+        * Creates a new instance of BoundingCircle.
+        * @param position Initial position of BoundingCircle.
+        * @param radius Initial radius of the BoundingCircle.
+        */
         constructor(position: Vector2d, radius: number) {
             super(position);
 
             this.Radius = radius;
+            var foo = new BoundingCircle(Vector2d.Zero(), 3);
         }
 
-        public Scale(x: number, y: number): void {
-            this.Radius *= x;
+        /**
+        * Scales the radius of the BoundingCircle.
+        * @param scale Value to multiply the radius by.
+        */
+        public Scale(scale: number): void {
+            this.Radius *= scale;
         }
 
+        /**
+        * Calculates the area of the BoundingCircle.
+        */
         public Area(): number {
             return Math.PI * this.Radius * this.Radius;
         }
 
-        public Circumfrence(): number {
+        /**
+        * Calculates the circumference of the BoundingCircle.
+        */
+        public Circumference(): number {
             return 2 * Math.PI * this.Radius;
         }
 
-        // For some reason when compiled into a single .ts file if this isn't fully declared it doesn't compile
-        public IntersectsCircle(circle: EndGate.Bounds.BoundingCircle): bool {
+        /**
+        * Determines if the current BoundingCircle is intersecting the provided BoundingCircle.
+        * @param circle BoundingCircle to check intersection with.
+        */
+        public IntersectsCircle(circle: BoundingCircle): bool {
             return this.Position.Distance(circle.Position).Length() < this.Radius + circle.Radius;
         }
 
-        // For some reason when compiled into a single .ts file if this isn't fully declared it doesn't compile
-        public IntersectsRectangle(rectangle: EndGate.Bounds.BoundingRectangle): bool {
+        /**
+        * Determines if the current BoundingCircle is intersecting the provided BoundingRectangle.
+        * @param rectangle BoundingRectangle to check intersection with.
+        */
+        public IntersectsRectangle(rectangle: BoundingRectangle): bool {
             var translated = (rectangle.Rotation === 0)
                                   ? this.Position
                                   : this.Position.RotateAround(rectangle.Position, -rectangle.Rotation);
@@ -1589,6 +1617,10 @@ module EndGate.Bounds {
             return (cornerDistance_sq <= (this.Radius * this.Radius));
         }
 
+        /**
+        * Determines if the current BoundingCircle contains the provided Vector2d.
+        * @param point A point.
+        */
         public ContainsPoint(point: Vector2d): bool {
             return this.Position.Distance(point).Magnitude() < this.Radius;
         }

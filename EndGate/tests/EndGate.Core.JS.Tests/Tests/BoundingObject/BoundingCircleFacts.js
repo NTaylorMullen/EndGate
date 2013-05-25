@@ -11,7 +11,7 @@
     QUnit.test("Circumference Works", function () {
         var obj = new EndGate.Bounds.BoundingCircle(EndGate.Vector2d.Zero(), 10);
 
-        QUnit.equal(Math.round(obj.Circumfrence()), 63);
+        QUnit.equal(Math.round(obj.Circumference()), 63);
     });
 
     QUnit.test("Is colliding with other circle works", function () {

@@ -30,26 +30,26 @@ interface Math {
 }
 module EndGate {
     /**
-    * Defines a two dimensional vector object which specifies an X and Y
+    * Defines a two dimensional vector object which specifies an X and Y.
     */
     class Vector2d implements _.ITyped {
         public _type: string;
         /**
-        * Gets or sets the X component of the vector
+        * Gets or sets the X component of the vector.
         */
         public X: number;
         /**
-        * Gets or sets the Y component of the vector
+        * Gets or sets the Y component of the vector.
         */
         public Y: number;
         /**
-        * Creates a new instance of Vector2d with the X and Y components initialized to 0
+        * Creates a new instance of Vector2d with the X and Y components initialized to 0.
         */
         constructor();
         /**
-        * Creates a new instance of Vector2d
-        * @param x Initial value of the X component of the Vector2d
-        * @param y Initial value of the Y component of the Vector2d
+        * Creates a new instance of Vector2d.
+        * @param x Initial value of the X component of the Vector2d.
+        * @param y Initial value of the Y component of the Vector2d.
         */
         constructor(x: number, y: number);
         /**
@@ -232,27 +232,27 @@ module EndGate {
 }
 module EndGate {
     /**
-    * Defines a two dimensional size object which specifies a Width and Height
+    * Defines a two dimensional size object which specifies a Width and Height.
     */
     class Size2d implements _.ITyped {
         public _type: string;
         /**
-        * Gets or sets the horizontal component of this Size structure
+        * Gets or sets the horizontal component of this Size structure.
         */
         public Width: number;
         /**
-        * Gets or sets the vertical component of this Size structure
+        * Gets or sets the vertical component of this Size structure.
         */
         public Height: number;
         /**
-        * Creates a new instance of Size2d
-        * @param size Initial value of the Width and Height components of Size2d
+        * Creates a new instance of Size2d.
+        * @param size Initial value of the Width and Height components of Size2d.
         */
         constructor(size: number);
         /**
-        * Creates a new instance of Size2d
-        * @param width Initial value of the Width component of Size2d
-        * @param height Initial value of the Height component of Size2d
+        * Creates a new instance of Size2d.
+        * @param width Initial value of the Width component of Size2d.
+        * @param height Initial value of the Height component of Size2d.
         */
         constructor(width: number, height: number);
         /**
@@ -413,16 +413,49 @@ module EndGate._ {
     }
 }
 module EndGate.Bounds {
+    /**
+    * Defines a circle that can be used to detect intersections.
+    */
     class BoundingCircle extends Abstractions.Bounds2d implements _.ITyped {
         public _type: string;
         public _boundsType: string;
+        /**
+        * Gets or sets the Radius of the circle.
+        */
         public Radius: number;
+        /**
+        * Creates a new instance of BoundingCircle.
+        * @param position Initial position of BoundingCircle.
+        * @param radius Initial radius of the BoundingCircle.
+        */
         constructor(position: Vector2d, radius: number);
-        public Scale(x: number, y: number): void;
+        /**
+        * Scales the radius of the BoundingCircle.
+        * @param scale Value to multiply the radius by.
+        */
+        public Scale(scale: number): void;
+        /**
+        * Calculates the area of the BoundingCircle.
+        */
         public Area(): number;
-        public Circumfrence(): number;
+        /**
+        * Calculates the circumference of the BoundingCircle.
+        */
+        public Circumference(): number;
+        /**
+        * Determines if the current BoundingCircle is intersecting the provided BoundingCircle.
+        * @param circle BoundingCircle to check intersection with.
+        */
         public IntersectsCircle(circle: BoundingCircle): bool;
+        /**
+        * Determines if the current BoundingCircle is intersecting the provided BoundingRectangle.
+        * @param rectangle BoundingRectangle to check intersection with.
+        */
         public IntersectsRectangle(rectangle: BoundingRectangle): bool;
+        /**
+        * Determines if the current BoundingCircle contains the provided Vector2d.
+        * @param point A point.
+        */
         public ContainsPoint(point: Vector2d): bool;
     }
 }

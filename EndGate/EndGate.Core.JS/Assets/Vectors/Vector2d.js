@@ -4,7 +4,7 @@
 var EndGate;
 (function (EndGate) {
     /**
-    * Defines a two dimensional vector object which specifies an X and Y
+    * Defines a two dimensional vector object which specifies an X and Y.
     */
     var Vector2d = (function () {
         function Vector2d(x, y) {

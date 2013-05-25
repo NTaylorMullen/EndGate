@@ -17,7 +17,7 @@ namespace EndGate.Core.Net.BoundingObject
             return Math.PI * Radius * Radius;
         }
 
-        public double Circumfrence()
+        public double Circumference()
         {
             return 2 * Math.PI * Radius;
         }

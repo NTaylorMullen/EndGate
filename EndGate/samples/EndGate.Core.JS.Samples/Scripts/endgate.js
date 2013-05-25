@@ -876,14 +876,15 @@ var EndGate;
                 this._type = "BoundingCircle";
                 this._boundsType = "BoundingCircle";
                 this.Radius = radius;
+                var foo = new BoundingCircle(EndGate.Vector2d.Zero(), 3);
             }
-            BoundingCircle.prototype.Scale = function (x, y) {
-                this.Radius *= x;
+            BoundingCircle.prototype.Scale = function (scale) {
+                this.Radius *= scale;
             };
             BoundingCircle.prototype.Area = function () {
                 return Math.PI * this.Radius * this.Radius;
             };
-            BoundingCircle.prototype.Circumfrence = function () {
+            BoundingCircle.prototype.Circumference = function () {
                 return 2 * Math.PI * this.Radius;
             };
             BoundingCircle.prototype.IntersectsCircle = function (circle) {

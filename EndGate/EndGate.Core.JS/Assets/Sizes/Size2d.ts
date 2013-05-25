@@ -4,29 +4,29 @@
 module EndGate {
 
     /**
-    * Defines a two dimensional size object which specifies a Width and Height
+    * Defines a two dimensional size object which specifies a Width and Height.
     */
     export class Size2d implements _.ITyped {
         public _type: string = "Size2d";
 
         /**
-        * Gets or sets the horizontal component of this Size structure
+        * Gets or sets the horizontal component of this Size structure.
         */
         public Width: number;
         /**
-        * Gets or sets the vertical component of this Size structure
+        * Gets or sets the vertical component of this Size structure.
         */
         public Height: number;
 
         /**
-        * Creates a new instance of Size2d
-        * @param size Initial value of the Width and Height components of Size2d
+        * Creates a new instance of Size2d.
+        * @param size Initial value of the Width and Height components of Size2d.
         */
         constructor(size: number);
         /**
-        * Creates a new instance of Size2d
-        * @param width Initial value of the Width component of Size2d
-        * @param height Initial value of the Height component of Size2d
+        * Creates a new instance of Size2d.
+        * @param width Initial value of the Width component of Size2d.
+        * @param height Initial value of the Height component of Size2d.
         */
         constructor(width: number, height: number);
         constructor(first: number, second?: number) {
