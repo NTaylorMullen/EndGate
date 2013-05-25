@@ -11,7 +11,7 @@ module AnimatedSprites {
 
         constructor(canvas: HTMLCanvasElement) {
             super(canvas);
-
+             
             this._fireExplosionManager = new FireExplosionManager(this.Input.Mouse, this.Scene);
             this._electricPulseManager = new ElectricPulseManager(this.Input.Mouse, this.Scene);
         }
