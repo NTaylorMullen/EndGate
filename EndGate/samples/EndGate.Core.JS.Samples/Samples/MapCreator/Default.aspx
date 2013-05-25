@@ -57,7 +57,7 @@
                     <div class="control-group">
                         <label class="control-label" for="spriteSheetUrl">Sprite Sheet Url: </label>
                         <div class="controls">
-                            <input id="spriteSheetUrl" type="text" class="input-xxlarge" value="http://endgate-samples.azurewebsites.net/Samples/RawRPG/images/wood_tileset_3.png" placeholder="Spritesheet URL..." />
+                            <input id="spriteSheetUrl" type="text" class="input-xxlarge" value="http://endgate.azurewebsites.net/Samples/RawRPG/images/wood_tileset_3.png" placeholder="Spritesheet URL..." />
                         </div>
                     </div>
                     <div class="form-actions">
