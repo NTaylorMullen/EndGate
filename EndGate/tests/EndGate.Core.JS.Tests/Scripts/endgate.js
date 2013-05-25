@@ -25,10 +25,10 @@ var EndGate;
 var EndGate;
 (function (EndGate) {
     var Size2d = (function () {
-        function Size2d(width, height) {
+        function Size2d(first, second) {
             this._type = "Size2d";
-            this.Width = width || 0;
-            this.Height = typeof height !== "undefined" ? height : this.Width;
+            this.Width = first || 0;
+            this.Height = typeof second !== "undefined" ? second : this.Width;
         }
         Size2d.Zero = function Zero() {
             return new Size2d(0, 0);
@@ -110,8 +110,8 @@ var EndGate;
         Size2d.prototype.Negate = function () {
             return new Size2d(this.Width * -1, this.Height * -1);
         };
-        Size2d.prototype.Equivalent = function (v) {
-            return this.Width === v.Width && this.Height === v.Height;
+        Size2d.prototype.Equivalent = function (size) {
+            return this.Width === size.Width && this.Height === size.Height;
         };
         Size2d.prototype.Clone = function () {
             return new Size2d(this.Width, this.Height);
