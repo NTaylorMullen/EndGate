@@ -116,7 +116,7 @@ foreach($file in $dependencyArray)
 
 Clear-Content $outputDeclarationPath
 
-tsc --out $outputDeclarationPath --declaration $allFilesStr
+tsc --comments --out $outputDeclarationPath --declaration $allFilesStr
 
 # Since TypeScript will not push imports into declaration files I need to append the alias via the build step
 Add-Content $outputDeclarationPath "import eg = EndGate;"
