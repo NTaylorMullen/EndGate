@@ -3,11 +3,10 @@
 var EndGate;
 (function (EndGate) {
     /**
-    * Defines a two dimensional Size object which specifies a Width and Height
+    * Defines a two dimensional size object which specifies a Width and Height
     */
     var Size2d = (function () {
         function Size2d(first, second) {
-            /** internal */
             this._type = "Size2d";
             this.Width = first || 0;
             this.Height = typeof second !== "undefined" ? second : this.Width;

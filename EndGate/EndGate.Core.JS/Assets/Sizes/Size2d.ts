@@ -4,10 +4,9 @@
 module EndGate {
 
     /**
-    * Defines a two dimensional Size object which specifies a Width and Height
+    * Defines a two dimensional size object which specifies a Width and Height
     */
     export class Size2d implements _.ITyped {
-        /** internal */
         public _type: string = "Size2d";
 
         /**

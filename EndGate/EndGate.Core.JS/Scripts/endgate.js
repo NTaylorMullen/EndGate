@@ -142,8 +142,8 @@ var EndGate;
         Vector2d.One = function One() {
             return new Vector2d(1, 1);
         };
-        Vector2d.prototype.ProjectOnto = function (v) {
-            return v.Multiply(this.Dot(v) / v.Dot(v));
+        Vector2d.prototype.ProjectOnto = function (vector) {
+            return vector.Multiply(this.Dot(vector) / vector.Dot(vector));
         };
         Vector2d.prototype.RotateAround = function (point, angle, precision) {
             if (typeof precision === "undefined") { precision = 2; }
@@ -169,8 +169,8 @@ var EndGate;
         Vector2d.prototype.Length = function () {
             return this.Magnitude();
         };
-        Vector2d.prototype.Dot = function (v1) {
-            return v1.X * this.X + v1.Y * this.Y;
+        Vector2d.prototype.Dot = function (vector) {
+            return vector.X * this.X + vector.Y * this.Y;
         };
         Vector2d.prototype.Abs = function () {
             return new Vector2d(Math.abs(this.X), Math.abs(this.Y));
@@ -178,8 +178,8 @@ var EndGate;
         Vector2d.prototype.Sign = function () {
             return new Vector2d(this.X / Math.abs(this.X), this.Y / Math.abs(this.Y));
         };
-        Vector2d.prototype.Distance = function (v1) {
-            return new Vector2d(Math.abs(v1.X - this.X), Math.abs(v1.Y - this.Y));
+        Vector2d.prototype.Distance = function (vector) {
+            return new Vector2d(Math.abs(vector.X - this.X), Math.abs(vector.Y - this.Y));
         };
         Vector2d.prototype.Add = function (val) {
             if(val._type === "Vector2d") {
@@ -241,8 +241,8 @@ var EndGate;
         Vector2d.prototype.Negate = function () {
             return new Vector2d(this.X * -1, this.Y * -1);
         };
-        Vector2d.prototype.Equivalent = function (v) {
-            return this.X === v.X && this.Y === v.Y;
+        Vector2d.prototype.Equivalent = function (vector) {
+            return this.X === vector.X && this.Y === vector.Y;
         };
         Vector2d.prototype.Clone = function () {
             return new Vector2d(this.X, this.Y);
