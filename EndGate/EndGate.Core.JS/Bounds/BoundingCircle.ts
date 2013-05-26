@@ -18,8 +18,8 @@ module EndGate.Bounds {
 
         /**
         * Creates a new instance of BoundingCircle.
-        * @param position Initial position of BoundingCircle.
-        * @param radius Initial radius of the BoundingCircle.
+        * @param position Initial Position of the BoundingCircle.
+        * @param radius Initial Radius of the BoundingCircle.
         */
         constructor(position: Vector2d, radius: number) {
             super(position);
@@ -33,6 +33,8 @@ module EndGate.Bounds {
         * @param scale Value to multiply the radius by.
         */
         public Scale(scale: number): void {
+            // This is an overloaded version of Bounds2d Scale but we don't care
+            // about the second parameter within a BoundingCircle
             this.Radius *= scale;
         }
 

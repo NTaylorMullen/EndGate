@@ -10,19 +10,35 @@ var EndGate;
     /// <reference path="BoundingCircle.ts" />
     /// <reference path="Bounds2d.ts" />
     (function (Bounds) {
+        /**
+        * Defines a rectangle that can be used to detect intersections.
+        */
         var BoundingRectangle = (function (_super) {
             __extends(BoundingRectangle, _super);
+            /**
+            * Creates a new instance of BoundingRectangle.
+            * @param position Initial Position of the BoundingRectangle.
+            * @param size Initial Size of the BoundingRectangle.
+            */
             function BoundingRectangle(position, size) {
                         _super.call(this, position);
                 this._type = "BoundingRectangle";
                 this._boundsType = "BoundingRectangle";
                 this.Size = size;
             }
-            BoundingRectangle.prototype.Scale = function (x, y) {
+            BoundingRectangle.prototype.Scale = /**
+            * Scales the width and height of the BoundingRectangle.
+            * @param x Value to multiply the width by.
+            * @param y Value to multiply the height by.
+            */
+            function (x, y) {
                 this.Size.Width *= x;
-                this.Size.Height *= x;
+                this.Size.Height *= y;
             };
-            BoundingRectangle.prototype.Vertices = function () {
+            BoundingRectangle.prototype.Vertices = /**
+            * Returns a list of vertices that are the locations of each corner of the BoundingRectangle. Format: [TopLeft, TopRight, BotLeft, BotRight].
+            */
+            function () {
                 return [
                     this.TopLeft(), 
                     this.TopRight(), 
@@ -30,39 +46,57 @@ var EndGate;
                     this.BotRight()
                 ];
             };
-            BoundingRectangle.prototype.TopLeft = function () {
+            BoundingRectangle.prototype.TopLeft = /**
+            * Calculates the top left corner of the BoundingRectangle.
+            */
+            function () {
                 var v = new EndGate.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
                 if(this.Rotation === 0) {
                     return v;
                 }
                 return v.RotateAround(this.Position, this.Rotation);
             };
-            BoundingRectangle.prototype.TopRight = function () {
+            BoundingRectangle.prototype.TopRight = /**
+            * Calculates the top right corner of the BoundingRectangle.
+            */
+            function () {
                 var v = new EndGate.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
                 if(this.Rotation === 0) {
                     return v;
                 }
                 return v.RotateAround(this.Position, this.Rotation);
             };
-            BoundingRectangle.prototype.BotLeft = function () {
+            BoundingRectangle.prototype.BotLeft = /**
+            * Calculates the bottom left corner of the BoundingRectangle.
+            */
+            function () {
                 var v = new EndGate.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
                 if(this.Rotation === 0) {
                     return v;
                 }
                 return v.RotateAround(this.Position, this.Rotation);
             };
-            BoundingRectangle.prototype.BotRight = function () {
+            BoundingRectangle.prototype.BotRight = /**
+            * Calculates the bottom right corner of the BoundingRectangle.
+            */
+            function () {
                 var v = new EndGate.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
                 if(this.Rotation === 0) {
                     return v;
                 }
                 return v.RotateAround(this.Position, this.Rotation);
             };
-            BoundingRectangle.prototype.IntersectsCircle = // For some reason when compiled into a single .ts file if this isn't fully declared it doesn't compile
+            BoundingRectangle.prototype.IntersectsCircle = /**
+            * Determines if the current BoundingRectangle is intersecting the provided BoundingCircle.
+            * @param circle BoundingCircle to check intersection with.
+            */
             function (circle) {
                 return circle.IntersectsRectangle(this);
             };
-            BoundingRectangle.prototype.IntersectsRectangle = // For some reason when compiled into a single .ts file if this isn't fully declared it doesn't compile
+            BoundingRectangle.prototype.IntersectsRectangle = /**
+            * Determines if the current BoundingRectangle is intersecting the provided BoundingRectangle.
+            * @param rectangle BoundingRectangle to check intersection with.
+            */
             function (rectangle) {
                 if(this.Rotation === 0 && rectangle.Rotation === 0) {
                     var myTopLeft = this.TopLeft(), myBotRight = this.BotRight(), theirTopLeft = rectangle.TopLeft(), theirBotRight = rectangle.BotRight();
@@ -90,7 +124,11 @@ var EndGate;
                 }
                 return false;
             };
-            BoundingRectangle.prototype.ContainsPoint = function (point) {
+            BoundingRectangle.prototype.ContainsPoint = /**
+            * Determines if the current BoundingRectangle contains the provided Vector2d.
+            * @param point A point.
+            */
+            function (point) {
                 var savedRotation = this.Rotation;
                 if(this.Rotation !== 0) {
                     this.Rotation = 0;

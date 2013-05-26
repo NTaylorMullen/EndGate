@@ -5,26 +5,48 @@
 
 module EndGate.Bounds {
 
+    /**
+    * Defines a rectangle that can be used to detect intersections.
+    */
     export class BoundingRectangle implements _.ITyped extends Abstractions.Bounds2d {
         public _type: string = "BoundingRectangle";
         public _boundsType: string = "BoundingRectangle";
 
+        /**
+        * Gets or sets the Size of the rectangle.
+        */
         public Size: Size2d;
 
+        /**
+        * Creates a new instance of BoundingRectangle.
+        * @param position Initial Position of the BoundingRectangle.
+        * @param size Initial Size of the BoundingRectangle.
+        */
         constructor(position: Vector2d, size: Size2d) {
             super(position);
             this.Size = size;
         }
 
+        /**
+        * Scales the width and height of the BoundingRectangle.
+        * @param x Value to multiply the width by.
+        * @param y Value to multiply the height by.
+        */
         public Scale(x: number, y: number): void {
             this.Size.Width *= x;
-            this.Size.Height *= x;
+            this.Size.Height *= y;
         }
 
+        /**
+        * Returns a list of vertices that are the locations of each corner of the BoundingRectangle. Format: [TopLeft, TopRight, BotLeft, BotRight].
+        */
         public Vertices(): Vector2d[] {
             return [this.TopLeft(), this.TopRight(), this.BotLeft(), this.BotRight()];
         }
 
+        /** 
+        * Calculates the top left corner of the BoundingRectangle.
+        */
         public TopLeft(): Vector2d {
             var v = new Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
             if (this.Rotation === 0) {
@@ -34,6 +56,9 @@ module EndGate.Bounds {
             return v.RotateAround(this.Position, this.Rotation);
         }
 
+        /** 
+        * Calculates the top right corner of the BoundingRectangle.
+        */
         public TopRight(): Vector2d {
             var v = new Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
             if (this.Rotation === 0) {
@@ -43,6 +68,9 @@ module EndGate.Bounds {
             return v.RotateAround(this.Position, this.Rotation);
         }
 
+        /** 
+        * Calculates the bottom left corner of the BoundingRectangle.
+        */
         public BotLeft(): Vector2d {
             var v = new Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
             if (this.Rotation === 0) {
@@ -52,6 +80,9 @@ module EndGate.Bounds {
             return v.RotateAround(this.Position, this.Rotation);
         }
 
+        /** 
+        * Calculates the bottom right corner of the BoundingRectangle.
+        */
         public BotRight(): Vector2d {
             var v = new Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
             if (this.Rotation === 0) {
@@ -61,13 +92,19 @@ module EndGate.Bounds {
             return v.RotateAround(this.Position, this.Rotation);
         }
 
-        // For some reason when compiled into a single .ts file if this isn't fully declared it doesn't compile
-        public IntersectsCircle(circle: EndGate.Bounds.BoundingCircle): bool {
+        /**
+        * Determines if the current BoundingRectangle is intersecting the provided BoundingCircle.
+        * @param circle BoundingCircle to check intersection with.
+        */
+        public IntersectsCircle(circle: BoundingCircle): bool {
             return circle.IntersectsRectangle(this);
         }
 
-        // For some reason when compiled into a single .ts file if this isn't fully declared it doesn't compile
-        public IntersectsRectangle(rectangle: EndGate.Bounds.BoundingRectangle): bool {
+        /**
+        * Determines if the current BoundingRectangle is intersecting the provided BoundingRectangle.
+        * @param rectangle BoundingRectangle to check intersection with.
+        */
+        public IntersectsRectangle(rectangle: BoundingRectangle): bool {
             if (this.Rotation === 0 && rectangle.Rotation === 0) {
                 var myTopLeft = this.TopLeft(),
                     myBotRight = this.BotRight(),
@@ -98,6 +135,10 @@ module EndGate.Bounds {
             return false;
         }
 
+        /**
+        * Determines if the current BoundingRectangle contains the provided Vector2d.
+        * @param point A point.
+        */
         public ContainsPoint(point: Vector2d): bool {
             var savedRotation: number = this.Rotation;
 
@@ -112,7 +153,7 @@ module EndGate.Bounds {
             this.Rotation = savedRotation;
 
             return point.X <= myBotRight.X && point.X >= myTopLeft.X && point.Y <= myBotRight.Y && point.Y >= myTopLeft.Y;
-        }        
+        }
     }
 
 }

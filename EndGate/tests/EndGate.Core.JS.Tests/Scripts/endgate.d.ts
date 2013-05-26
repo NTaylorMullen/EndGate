@@ -425,8 +425,8 @@ module EndGate.Bounds {
         public Radius: number;
         /**
         * Creates a new instance of BoundingCircle.
-        * @param position Initial position of BoundingCircle.
-        * @param radius Initial radius of the BoundingCircle.
+        * @param position Initial Position of the BoundingCircle.
+        * @param radius Initial Radius of the BoundingCircle.
         */
         constructor(position: Vector2d, radius: number);
         /**
@@ -460,19 +460,62 @@ module EndGate.Bounds {
     }
 }
 module EndGate.Bounds {
+    /**
+    * Defines a rectangle that can be used to detect intersections.
+    */
     class BoundingRectangle extends Abstractions.Bounds2d implements _.ITyped {
         public _type: string;
         public _boundsType: string;
+        /**
+        * Gets or sets the Size of the rectangle.
+        */
         public Size: Size2d;
+        /**
+        * Creates a new instance of BoundingRectangle.
+        * @param position Initial Position of the BoundingRectangle.
+        * @param size Initial Size of the BoundingRectangle.
+        */
         constructor(position: Vector2d, size: Size2d);
+        /**
+        * Scales the width and height of the BoundingRectangle.
+        * @param x Value to multiply the width by.
+        * @param y Value to multiply the height by.
+        */
         public Scale(x: number, y: number): void;
+        /**
+        * Returns a list of vertices that are the locations of each corner of the BoundingRectangle. Format: [TopLeft, TopRight, BotLeft, BotRight].
+        */
         public Vertices(): Vector2d[];
+        /**
+        * Calculates the top left corner of the BoundingRectangle.
+        */
         public TopLeft(): Vector2d;
+        /**
+        * Calculates the top right corner of the BoundingRectangle.
+        */
         public TopRight(): Vector2d;
+        /**
+        * Calculates the bottom left corner of the BoundingRectangle.
+        */
         public BotLeft(): Vector2d;
+        /**
+        * Calculates the bottom right corner of the BoundingRectangle.
+        */
         public BotRight(): Vector2d;
+        /**
+        * Determines if the current BoundingRectangle is intersecting the provided BoundingCircle.
+        * @param circle BoundingCircle to check intersection with.
+        */
         public IntersectsCircle(circle: BoundingCircle): bool;
+        /**
+        * Determines if the current BoundingRectangle is intersecting the provided BoundingRectangle.
+        * @param rectangle BoundingRectangle to check intersection with.
+        */
         public IntersectsRectangle(rectangle: BoundingRectangle): bool;
+        /**
+        * Determines if the current BoundingRectangle contains the provided Vector2d.
+        * @param point A point.
+        */
         public ContainsPoint(point: Vector2d): bool;
     }
 }

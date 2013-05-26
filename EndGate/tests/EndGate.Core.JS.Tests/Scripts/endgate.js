@@ -930,7 +930,7 @@ var EndGate;
             }
             BoundingRectangle.prototype.Scale = function (x, y) {
                 this.Size.Width *= x;
-                this.Size.Height *= x;
+                this.Size.Height *= y;
             };
             BoundingRectangle.prototype.Vertices = function () {
                 return [

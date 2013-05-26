@@ -16,8 +16,8 @@ var EndGate;
             __extends(BoundingCircle, _super);
             /**
             * Creates a new instance of BoundingCircle.
-            * @param position Initial position of BoundingCircle.
-            * @param radius Initial radius of the BoundingCircle.
+            * @param position Initial Position of the BoundingCircle.
+            * @param radius Initial Radius of the BoundingCircle.
             */
             function BoundingCircle(position, radius) {
                         _super.call(this, position);
@@ -31,6 +31,8 @@ var EndGate;
             * @param scale Value to multiply the radius by.
             */
             function (scale) {
+                // This is an overloaded version of Bounds2d Scale but we don't care
+                // about the second parameter within a BoundingCircle
                 this.Radius *= scale;
             };
             BoundingCircle.prototype.Area = /**
