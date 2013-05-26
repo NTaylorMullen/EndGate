@@ -259,10 +259,10 @@ var EndGate;
     (function (Bounds) {
         (function (Abstractions) {
             var Bounds2d = (function () {
-                function Bounds2d(position) {
+                function Bounds2d(position, rotation) {
                     this._boundsType = "Bounds2d";
                     this.Position = position;
-                    this.Rotation = 0;
+                    this.Rotation = rotation || 0;
                 }
                 Bounds2d.prototype.Scale = function (x, y) {
                     throw new Error("This method is abstract!");
