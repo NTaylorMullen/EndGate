@@ -622,7 +622,7 @@ var EndGate;
                 this._type = "Collidable";
                 this._disposed = false;
                 this.Bounds = bounds;
-                this.ID = Collidable._collidableIDs++;
+                this._id = Collidable._collidableIDs++;
                 this.OnCollision = new EndGate.EventHandler();
                 this.OnDisposed = new EndGate.EventHandler();
             }
@@ -638,7 +638,7 @@ var EndGate;
                     this._disposed = true;
                     this.OnDisposed.Trigger(this);
                 } else {
-                    throw new Error("Cannot dispose collidable twice.");
+                    throw new Error("Cannot dispose collidable more than once.");
                 }
             };
             return Collidable;
@@ -667,7 +667,7 @@ var EndGate;
             };
             CollisionManager.prototype.Unmonitor = function (obj) {
                 for(var i = 0; i < this._collidables.length; i++) {
-                    if(this._collidables[i].ID === obj.ID) {
+                    if(this._collidables[i]._id === obj._id) {
                         this._collidables.splice(i, 1);
                         break;
                     }

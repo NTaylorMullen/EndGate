@@ -35,7 +35,7 @@ module EndGate.Collision {
 
         public Unmonitor(obj: Collidable): void {
             for (var i = 0; i < this._collidables.length; i++) {
-                if (this._collidables[i].ID === obj.ID) {
+                if (this._collidables[i]._id === obj._id) {
                     this._collidables.splice(i, 1);
                     break;
                 }
