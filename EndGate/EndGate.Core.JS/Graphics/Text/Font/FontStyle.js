@@ -2,6 +2,9 @@ var EndGate;
 (function (EndGate) {
     (function (Graphics) {
         (function (Assets) {
+            /**
+            * Defines valid FontStyles that can be used to modify the font's style for Text2d's.
+            */
             (function (FontStyle) {
                 FontStyle._map = [];
                 FontStyle._map[0] = "Normal";
@@ -12,27 +15,26 @@ var EndGate;
                 FontStyle.Oblique = 2;
             })(Assets.FontStyle || (Assets.FontStyle = {}));
             var FontStyle = Assets.FontStyle;
-            var FontStyleHelper = (function () {
-                function FontStyleHelper() { }
-                FontStyleHelper._Initialize = function _Initialize() {
-                    FontStyleHelper._styles = ({
+            var _FontStyleHelper = (function () {
+                function _FontStyleHelper() { }
+                _FontStyleHelper._Initialize = function _Initialize() {
+                    _FontStyleHelper._styles = ({
                     });
                     for(var style in FontStyle) {
                         if(style !== "_map") {
-                            FontStyleHelper._styles[FontStyle[style]] = style;
+                            _FontStyleHelper._styles[FontStyle[style]] = style;
                         }
                     }
                 };
-                FontStyleHelper.Get = function Get(style) {
-                    return FontStyleHelper._styles[style];
+                _FontStyleHelper.Get = function Get(style) {
+                    return _FontStyleHelper._styles[style];
                 };
-                return FontStyleHelper;
+                return _FontStyleHelper;
             })();
-            Assets.FontStyleHelper = FontStyleHelper;            
-            FontStyleHelper._Initialize();
+            Assets._FontStyleHelper = _FontStyleHelper;            
+            _FontStyleHelper._Initialize();
         })(Graphics.Assets || (Graphics.Assets = {}));
         var Assets = Graphics.Assets;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
     var Graphics = EndGate.Graphics;
 })(EndGate || (EndGate = {}));
-//@ sourceMappingURL=FontStyle.js.map

@@ -2,6 +2,9 @@ var EndGate;
 (function (EndGate) {
     (function (Graphics) {
         (function (Assets) {
+            /**
+            * Defines valid FontMeasurements that can be used to increase or decrease font sizes of Text2d's.
+            */
             (function (FontMeasurement) {
                 FontMeasurement._map = [];
                 FontMeasurement._map[0] = "Ems";
@@ -15,26 +18,25 @@ var EndGate;
             })(Assets.FontMeasurement || (Assets.FontMeasurement = {}));
             var FontMeasurement = Assets.FontMeasurement;
             ;
-            var FontMeasurementHelper = (function () {
-                function FontMeasurementHelper() { }
-                FontMeasurementHelper._Initialize = function _Initialize() {
-                    FontMeasurementHelper._measurements = [
+            var _FontMeasurementHelper = (function () {
+                function _FontMeasurementHelper() { }
+                _FontMeasurementHelper._Initialize = function _Initialize() {
+                    _FontMeasurementHelper._measurements = [
                         "em", 
                         "px", 
                         "pt", 
                         "%"
                     ];
                 };
-                FontMeasurementHelper.Get = function Get(measurement) {
-                    return FontMeasurementHelper._measurements[measurement];
+                _FontMeasurementHelper.Get = function Get(measurement) {
+                    return _FontMeasurementHelper._measurements[measurement];
                 };
-                return FontMeasurementHelper;
+                return _FontMeasurementHelper;
             })();
-            Assets.FontMeasurementHelper = FontMeasurementHelper;            
-            FontMeasurementHelper._Initialize();
+            Assets._FontMeasurementHelper = _FontMeasurementHelper;            
+            _FontMeasurementHelper._Initialize();
         })(Graphics.Assets || (Graphics.Assets = {}));
         var Assets = Graphics.Assets;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
     var Graphics = EndGate.Graphics;
 })(EndGate || (EndGate = {}));
-//@ sourceMappingURL=FontMeasurement.js.map

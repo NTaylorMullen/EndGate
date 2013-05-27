@@ -6,7 +6,15 @@ var EndGate;
         /// <reference path="FontVariant.ts" />
         /// <reference path="FontStyle.ts" />
         (function (Assets) {
+            /**
+            * Defines a set of font settings that are used to modify the appearance of text that is drawn via Text2d's.
+            */
             var FontSettings = (function () {
+                /**
+                * Creates a new instance of the FontSettings object with the following default values.
+                * FontSize: 10px
+                * FontFamily: Times New Roman
+                */
                 function FontSettings() {
                     this._cachedState = {
                         fontSize: "10px",
@@ -21,21 +29,21 @@ var EndGate;
                 FontSettings.prototype.FontSize = function (size, measurement) {
                     if (typeof measurement === "undefined") { measurement = Assets.FontMeasurement.Points; }
                     if(size !== undefined) {
-                        return this.GetOrSetCache("fontSize", size.toString() + Assets.FontMeasurementHelper.Get(measurement));
+                        return this.GetOrSetCache("fontSize", size.toString() + Assets._FontMeasurementHelper.Get(measurement));
                     }
                     return this._cachedState["fontSize"];
                 };
                 FontSettings.prototype.FontFamily = function (family) {
-                    return this.GetOrSetCache("fontFamily", Assets.FontFamilyHelper.Get(family));
+                    return this.GetOrSetCache("fontFamily", Assets._FontFamilyHelper.Get(family));
                 };
                 FontSettings.prototype.FontVariant = function (variant) {
-                    return this.GetOrSetCache("fontVariant", Assets.FontVariantHelper.Get(variant));
+                    return this.GetOrSetCache("fontVariant", Assets._FontVariantHelper.Get(variant));
                 };
                 FontSettings.prototype.FontWeight = function (weight) {
                     return this.GetOrSetCache("fontWeight", weight);
                 };
                 FontSettings.prototype.FontStyle = function (style) {
-                    return this.GetOrSetCache("fontStyle", Assets.FontStyleHelper.Get(style));
+                    return this.GetOrSetCache("fontStyle", Assets._FontStyleHelper.Get(style));
                 };
                 FontSettings.prototype._BuildFont = function () {
                     var font;
@@ -69,4 +77,3 @@ var EndGate;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
     var Graphics = EndGate.Graphics;
 })(EndGate || (EndGate = {}));
-//@ sourceMappingURL=FontSettings.js.map

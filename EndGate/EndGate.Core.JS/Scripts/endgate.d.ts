@@ -1160,19 +1160,25 @@ module EndGate.InputControllers {
     }
 }
 module EndGate.Graphics.Assets {
+    /**
+    * Defines valid FontMeasurements that can be used to increase or decrease font sizes of Text2d's.
+    */
     enum FontMeasurement {
         Ems,
         Pixels,
         Points,
         Percent,
     }
-    class FontMeasurementHelper {
+    class _FontMeasurementHelper {
         static _measurements: string[];
         static _Initialize(): void;
         static Get(measurement: FontMeasurement): string;
     }
 }
 module EndGate.Graphics.Assets {
+    /**
+    * Defines valid FontFamilies that can be used to display Text2d's differently.
+    */
     enum FontFamily {
         Antiqua,
         Arial,
@@ -1198,7 +1204,7 @@ module EndGate.Graphics.Assets {
         TimesNewRoman,
         Verdana,
     }
-    class FontFamilyHelper {
+    class _FontFamilyHelper {
         static _families: {
             [family: number]: string;
         };
@@ -1207,11 +1213,14 @@ module EndGate.Graphics.Assets {
     }
 }
 module EndGate.Graphics.Assets {
+    /**
+    * Defines valid FontVariant's that can be used to change the appearance of Text2d's.
+    */
     enum FontVariant {
         Normal,
         SmallCaps,
     }
-    class FontVariantHelper {
+    class _FontVariantHelper {
         static _variants: {
             [variant: number]: string;
         };
@@ -1220,12 +1229,15 @@ module EndGate.Graphics.Assets {
     }
 }
 module EndGate.Graphics.Assets {
+    /**
+    * Defines valid FontStyles that can be used to modify the font's style for Text2d's.
+    */
     enum FontStyle {
         Normal,
         Italic,
         Oblique,
     }
-    class FontStyleHelper {
+    class _FontStyleHelper {
         static _styles: {
             [family: number]: string;
         };
@@ -1234,44 +1246,238 @@ module EndGate.Graphics.Assets {
     }
 }
 module EndGate.Graphics.Assets {
+    /**
+    * Defines a set of font settings that are used to modify the appearance of text that is drawn via Text2d's.
+    */
     class FontSettings {
         private _cachedState;
         private _cachedFont;
         private _refreshCache;
+        /**
+        * Creates a new instance of the FontSettings object with the following default values.
+        * FontSize: 10px
+        * FontFamily: Times New Roman
+        */
         constructor();
-        public FontSize(size?: number, measurement?: FontMeasurement): string;
-        public FontFamily(family?: FontFamily): string;
-        public FontVariant(variant?: FontVariant): string;
-        public FontWeight(weight?: string): string;
-        public FontStyle(style?: FontStyle): string;
+        /**
+        * Gets the current font size.
+        */
+        public FontSize(): string;
+        /**
+        * Sets and gets the current font size with the measurement in points.
+        * @param size The new font size.
+        */
+        public FontSize(size: number): string;
+        /**
+        * Sets and gets the current font size.
+        * @param size The new font size.
+        * @param measurement The new font sizes measurement type.
+        */
+        public FontSize(size: number, measurement: FontMeasurement): string;
+        /**
+        * Gets the current font family.
+        */
+        public FontFamily(): string;
+        /**
+        * Sets and gets the current font family.
+        * @param family The new font family.
+        */
+        public FontFamily(family: FontFamily): string;
+        /**
+        * Gets the current font variant.
+        */
+        public FontVariant(): string;
+        /**
+        * Sets and gets the current font variant.
+        * @param variant The new font variant.
+        */
+        public FontVariant(variant: FontVariant): string;
+        /**
+        * Gets the current font weight.
+        */
+        public FontWeight(): string;
+        /**
+        * Sets and gets the current font weight.
+        * @param weight The new font weight.
+        */
+        public FontWeight(weight: string): string;
+        /**
+        * Gets the current font style.
+        */
+        public FontStyle(): string;
+        /**
+        * Sets and gets the current font style.
+        * @param style The new font style.
+        */
+        public FontStyle(style: FontStyle): string;
         public _BuildFont(): string;
         private GetOrSetCache(property, value);
     }
 }
 module EndGate.Graphics {
+    /**
+    * Defines a drawable text element.
+    */
     class Text2d extends Abstractions.Graphic2d {
         public _type: string;
-        public FontSettings: Assets.FontSettings;
+        private _fontSettings;
         private _text;
         private _stroker;
+        private _recalculateBoundsSize;
         private _drawBounds;
-        constructor(x: number, y: number, text: string, color?: string);
-        public Align(alignment?: string): string;
-        public Baseline(baseline?: string): string;
-        public Color(color?: string): string;
+        /**
+        * Creates a new instance of the Text2d object.
+        * @param x Initial horizontal location of the Text2d.
+        * @param y Initial vertical location of the Text2d.
+        * @param text Initial text of the Text2d.
+        */
+        constructor(x: number, y: number, text: string);
+        /**
+        * Creates a new instance of the Text2d object with a specified color.
+        * @param x Initial horizontal location of the Text2d.
+        * @param y Initial vertical location of the Text2d.
+        * @param text Initial text of the Text2d.
+        * @param color Initial color of the Text2d.
+        */
+        constructor(x: number, y: number, text: string, color: string);
+        /**
+        * Gets the text alignment of the Text2d.
+        */
+        public Align(): string;
+        /**
+        * Gets and sets the text alignment of the Text2d.
+        * @param alignment The new textual alignment for the Text2d.  Values are "start", "end", "left", "center", or "right".
+        */
+        public Align(alignment: string): string;
+        /**
+        * Gets the text baseline of the Text2d.
+        */
+        public Baseline(): string;
+        /**
+        * Gets and sets the text baseline of the Text2d.
+        * @param baseline The new textual baseline for the Text2d.  Values are "top", "hanging", "middle", "alphabetic", "ideographic", and "bottom".
+        */
+        public Baseline(baseline: string): string;
+        /**
+        * Gets the current text color.
+        */
+        public Color(): string;
+        /**
+        * Gets and sets the current text color.
+        * @param color The new color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        */
+        public Color(color: string): string;
+        /**
+        * Sets the current shadow x and y positions.
+        * @param x The shadows new horizontal position.
+        * @param y The shadows new vertical position.
+        */
         public Shadow(x: number, y: number): void;
+        /**
+        * Sets the current shadow x and y positions and shadows color.
+        * @param x The shadows new horizontal position.
+        * @param y The shadows new vertical position.
+        * @param color The new shadow color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        */
         public Shadow(x: number, y: number, color: string): void;
+        /**
+        * Sets the current shadow x and y positions and shadows color.
+        * @param x The shadows new horizontal position.
+        * @param y The shadows new vertical position.
+        * @param color The new shadow color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        * @param blur The new shadow blur.
+        */
         public Shadow(x: number, y: number, color: string, blur: number): void;
-        public ShadowColor(color?: string): string;
-        public ShadowX(val?: number): number;
-        public ShadowY(val?: number): number;
-        public ShadowBlur(val?: number): number;
-        public Opacity(alpha?: number): number;
-        public Text(text?: string): string;
+        /**
+        * Gets the current shadow color.
+        */
+        public ShadowColor(): string;
+        /**
+        * Sets and gets the current shadow color.
+        * @param color The new shadow color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        */
+        public ShadowColor(color: string): string;
+        /**
+        * Gets the current horizontal shadow position.
+        */
+        public ShadowX(): number;
+        /**
+        * Sets and gets the current horizontal shadow position.
+        * @param x The shadows new horizontal position.
+        */
+        public ShadowX(x: number): number;
+        /**
+        * Gets the current vertical shadow position.
+        */
+        public ShadowY(): number;
+        /**
+        * Sets and gets the current vertical shadow position.
+        * @param y The shadows new vertical position.
+        */
+        public ShadowY(y: number): number;
+        /**
+        * Gets the current shadow blur.
+        */
+        public ShadowBlur(): number;
+        /**
+        * Sets and gets the current shadow blur.
+        * @param blur The shadows new blur.
+        */
+        public ShadowBlur(blur: number): number;
+        /**
+        * Gets the current opacity.  Value is between 0 and 1.
+        */
+        public Opacity(): number;
+        /**
+        * Sets and gets the current opacity.
+        * @param alpha New opacity, value is between 0 and 1.
+        */
+        public Opacity(alpha: number): number;
+        /**
+        * Gets the Text2d's FontSetting's.
+        */
+        public FontSettings(): Assets.FontSettings;
+        /**
+        * Gets the current Text2d's text.
+        */
+        public Text(): string;
+        /**
+        * Sets and gets the current Text2d's text.
+        * @param text The new text.
+        */
+        public Text(text: string): string;
+        /**
+        * Sets the current borders thickness and color.
+        * @param thickness The new border thickness in pixels.
+        * @param color The new border color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        */
         public Border(thickness: number, color: string): void;
-        public BorderThickness(thickness?: number): number;
-        public BorderColor(color?: string): string;
+        /**
+        * Gets the current border thickness.
+        */
+        public BorderThickness(): number;
+        /**
+        * Sets and gets the current border thickness.
+        * @param thickness The new border thickness in pixels.
+        */
+        public BorderThickness(thickness: number): number;
+        /**
+        * Gets the current border color.
+        */
+        public BorderColor(): string;
+        /**
+        * Sets and gets the current border color.
+        * @param color The new border color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        */
+        public BorderColor(color: string): string;
+        /**
+        * Draws the text onto the given context.  If this Text2d is part of a scene the Draw function will be called automatically.
+        * @param context The canvas context to draw the text onto.
+        */
         public Draw(context: CanvasRenderingContext2D): void;
+        /**
+        * The bounding area that represents where the Text2d will draw.
+        */
         public GetDrawBounds(): Bounds.Abstractions.Bounds2d;
     }
 }
@@ -1657,6 +1863,7 @@ module EndGate.Graphics {
         public Size: Size2d;
         /**
         * Creates a new instance of the Rectangle object.
+        
         * @param x Initial horizontal location of the Rectangle.
         * @param y Initial vertical location of the Rectangle.
         * @param width Initial width of the Rectangle.

@@ -13,8 +13,8 @@ module KeyboardInput {
 
         constructor(keyboard: eg.Input.KeyboardHandler, bindPostion: eg.Vector2d, gameScene: eg.Rendering.Scene2d, bindButton: JQuery, unbindButton: JQuery, bindingCommandInput: JQuery, bindingResultInput: JQuery, commandHolder: JQuery) {
             this._bindingTextViewer = new eg.Graphics.Text2d(bindPostion.X, bindPostion.Y, "");
-            this._bindingTextViewer.FontSettings.FontSize(this._fontSize);
-            this._bindingTextViewer.FontSettings.FontWeight(this._fontWeight);
+            this._bindingTextViewer.FontSettings().FontSize(this._fontSize);
+            this._bindingTextViewer.FontSettings().FontWeight(this._fontWeight);
             gameScene.Add(this._bindingTextViewer);
 
             this._commandManager = new CommandManager(keyboard, commandHolder);

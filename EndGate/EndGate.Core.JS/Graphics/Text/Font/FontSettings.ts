@@ -5,11 +5,19 @@
 
 module EndGate.Graphics.Assets {
 
+    /**
+    * Defines a set of font settings that are used to modify the appearance of text that is drawn via Text2d's.
+    */
     export class FontSettings {
         private _cachedState: { [property: string]: any; };
         private _cachedFont: string;
         private _refreshCache: bool;
 
+        /**
+        * Creates a new instance of the FontSettings object with the following default values.
+        * FontSize: 10px
+        * FontFamily: Times New Roman
+        */
         constructor() {
             this._cachedState = {
                 fontSize: "10px",
@@ -23,28 +31,79 @@ module EndGate.Graphics.Assets {
             this._BuildFont();
         }
 
+        /**
+        * Gets the current font size.
+        */
+        public FontSize(): string;
+        /**
+        * Sets and gets the current font size with the measurement in points.
+        * @param size The new font size.
+        */
+        public FontSize(size: number): string;
+        /**
+        * Sets and gets the current font size.
+        * @param size The new font size.
+        * @param measurement The new font sizes measurement type.
+        */
+        public FontSize(size: number, measurement: FontMeasurement): string;
         public FontSize(size?: number, measurement: FontMeasurement = FontMeasurement.Points): string {
             if (size !== undefined) {
-                return this.GetOrSetCache("fontSize", size.toString() + FontMeasurementHelper.Get(measurement));
+                return this.GetOrSetCache("fontSize", size.toString() + _FontMeasurementHelper.Get(measurement));
             }
             
             return this._cachedState["fontSize"];
         }
 
+        /**
+        * Gets the current font family.
+        */
+        public FontFamily(): string;
+        /**
+        * Sets and gets the current font family.
+        * @param family The new font family.
+        */
+        public FontFamily(family: FontFamily): string;
         public FontFamily(family?: FontFamily): string {
-            return this.GetOrSetCache("fontFamily", FontFamilyHelper.Get(family));
+            return this.GetOrSetCache("fontFamily", _FontFamilyHelper.Get(family));
         }
 
+        /**
+        * Gets the current font variant.
+        */
+        public FontVariant(): string;
+        /**
+        * Sets and gets the current font variant.
+        * @param variant The new font variant.
+        */
+        public FontVariant(variant: FontVariant): string;
         public FontVariant(variant?: FontVariant): string {
-            return this.GetOrSetCache("fontVariant", FontVariantHelper.Get(variant));
+            return this.GetOrSetCache("fontVariant", _FontVariantHelper.Get(variant));
         }
 
+        /**
+        * Gets the current font weight.
+        */
+        public FontWeight(): string;
+        /**
+        * Sets and gets the current font weight.
+        * @param weight The new font weight.
+        */
+        public FontWeight(weight: string): string;
         public FontWeight(weight?: string): string {
             return this.GetOrSetCache("fontWeight", weight);
         }
 
+        /**
+        * Gets the current font style.
+        */
+        public FontStyle(): string;
+        /**
+        * Sets and gets the current font style.
+        * @param style The new font style.
+        */
+        public FontStyle(style: FontStyle): string;
         public FontStyle(style?: FontStyle): string {
-            return this.GetOrSetCache("fontStyle", FontStyleHelper.Get(style));
+            return this.GetOrSetCache("fontStyle", _FontStyleHelper.Get(style));
         }
 
         public _BuildFont(): string {

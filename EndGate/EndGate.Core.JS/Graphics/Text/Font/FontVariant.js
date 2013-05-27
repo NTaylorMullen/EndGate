@@ -2,6 +2,9 @@ var EndGate;
 (function (EndGate) {
     (function (Graphics) {
         (function (Assets) {
+            /**
+            * Defines valid FontVariant's that can be used to change the appearance of Text2d's.
+            */
             (function (FontVariant) {
                 FontVariant._map = [];
                 FontVariant._map[0] = "Normal";
@@ -11,28 +14,27 @@ var EndGate;
             })(Assets.FontVariant || (Assets.FontVariant = {}));
             var FontVariant = Assets.FontVariant;
             ;
-            var FontVariantHelper = (function () {
-                function FontVariantHelper() { }
-                FontVariantHelper._Initialize = function _Initialize() {
-                    FontVariantHelper._variants = ({
+            var _FontVariantHelper = (function () {
+                function _FontVariantHelper() { }
+                _FontVariantHelper._Initialize = function _Initialize() {
+                    _FontVariantHelper._variants = ({
                     });
                     for(var family in FontVariant) {
                         if(family !== "_map") {
-                            FontVariantHelper._variants[FontVariant[family]] = family;
+                            _FontVariantHelper._variants[FontVariant[family]] = family;
                         }
                     }
-                    FontVariantHelper._variants["SmallCaps"] = "Times New Roman";
+                    _FontVariantHelper._variants["SmallCaps"] = "Times New Roman";
                 };
-                FontVariantHelper.Get = function Get(variant) {
-                    return FontVariantHelper._variants[variant];
+                _FontVariantHelper.Get = function Get(variant) {
+                    return _FontVariantHelper._variants[variant];
                 };
-                return FontVariantHelper;
+                return _FontVariantHelper;
             })();
-            Assets.FontVariantHelper = FontVariantHelper;            
-            FontVariantHelper._Initialize();
+            Assets._FontVariantHelper = _FontVariantHelper;            
+            _FontVariantHelper._Initialize();
         })(Graphics.Assets || (Graphics.Assets = {}));
         var Assets = Graphics.Assets;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
     var Graphics = EndGate.Graphics;
 })(EndGate || (EndGate = {}));
-//@ sourceMappingURL=FontVariant.js.map

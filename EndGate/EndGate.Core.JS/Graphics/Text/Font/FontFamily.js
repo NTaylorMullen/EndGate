@@ -2,6 +2,9 @@ var EndGate;
 (function (EndGate) {
     (function (Graphics) {
         (function (Assets) {
+            /**
+            * Defines valid FontFamilies that can be used to display Text2d's differently.
+            */
             (function (FontFamily) {
                 FontFamily._map = [];
                 FontFamily._map[0] = "Antiqua";
@@ -77,4 +80,3 @@ var EndGate;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
     var Graphics = EndGate.Graphics;
 })(EndGate || (EndGate = {}));
-//@ sourceMappingURL=FontFamily.js.map

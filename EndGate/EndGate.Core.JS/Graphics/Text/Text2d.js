@@ -11,6 +11,9 @@ var EndGate;
     /// <reference path="../../Bounds/BoundingRectangle.ts" />
     /// <reference path="Font/FontSettings.ts" />
     (function (Graphics) {
+        /**
+        * Defines a drawable text element.
+        */
         var Text2d = (function (_super) {
             __extends(Text2d, _super);
             function Text2d(x, y, text, color) {
@@ -23,7 +26,8 @@ var EndGate;
                     context.strokeText(_this._text, 0, 0);
                 });
                 this._drawBounds = new EndGate.Bounds.BoundingRectangle(this.Position, EndGate.Size2d.One());
-                this.FontSettings = new Graphics.Assets.FontSettings();
+                this._recalculateBoundsSize = true;
+                this._fontSettings = new Graphics.Assets.FontSettings();
                 this.Align("center");
                 this.Baseline("middle");
                 this.Color(color);
@@ -46,25 +50,38 @@ var EndGate;
             Text2d.prototype.ShadowColor = function (color) {
                 return this.State.ShadowColor(color);
             };
-            Text2d.prototype.ShadowX = function (val) {
-                return this.State.ShadowOffsetX(val);
+            Text2d.prototype.ShadowX = function (x) {
+                return this.State.ShadowOffsetX(x);
             };
-            Text2d.prototype.ShadowY = function (val) {
-                return this.State.ShadowOffsetY(val);
+            Text2d.prototype.ShadowY = function (y) {
+                return this.State.ShadowOffsetY(y);
             };
-            Text2d.prototype.ShadowBlur = function (val) {
-                return this.State.ShadowBlur(val);
+            Text2d.prototype.ShadowBlur = function (blur) {
+                return this.State.ShadowBlur(blur);
             };
             Text2d.prototype.Opacity = function (alpha) {
                 return this.State.GlobalAlpha(alpha);
             };
+            Text2d.prototype.FontSettings = /**
+            * Gets the Text2d's FontSetting's.
+            */
+            function () {
+                this._recalculateBoundsSize = true;
+                return this._fontSettings;
+            };
             Text2d.prototype.Text = function (text) {
                 if(typeof text !== "undefined") {
+                    this._recalculateBoundsSize = true;
                     this._text = text;
                 }
                 return this._text;
             };
-            Text2d.prototype.Border = function (thickness, color) {
+            Text2d.prototype.Border = /**
+            * Sets the current borders thickness and color.
+            * @param thickness The new border thickness in pixels.
+            * @param color The new border color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+            */
+            function (thickness, color) {
                 this.BorderThickness(thickness);
                 this.BorderColor(color);
             };
@@ -80,18 +97,29 @@ var EndGate;
                 this._stroker.Trip();
                 return this.State.StrokeStyle(color);
             };
-            Text2d.prototype.Draw = function (context) {
+            Text2d.prototype.Draw = /**
+            * Draws the text onto the given context.  If this Text2d is part of a scene the Draw function will be called automatically.
+            * @param context The canvas context to draw the text onto.
+            */
+            function (context) {
                 var textSize;
-                _super.prototype.StartDraw.call(this, context);
-                this.State.Font(this.FontSettings._BuildFont());
-                textSize = context.measureText(this._text);
-                this._drawBounds.Size.Width = textSize.width;
-                this._drawBounds.Size.Height = parseInt(this.FontSettings.FontSize()) * 1.5;
+                _super.prototype._StartDraw.call(this, context);
+                this.State.Font(this._fontSettings._BuildFont());
                 context.fillText(this._text, 0, 0);
                 this._stroker.Invoke(context);
-                _super.prototype.EndDraw.call(this, context);
+                _super.prototype._EndDraw.call(this, context);
+                // Only recalculate bounds if the text or font has changed since the last draw.
+                if(this._recalculateBoundsSize) {
+                    this._recalculateBoundsSize = false;
+                    textSize = context.measureText(this._text);
+                    this._drawBounds.Size.Width = textSize.width;
+                    this._drawBounds.Size.Height = parseInt(this._fontSettings.FontSize()) * 1.5;
+                }
             };
-            Text2d.prototype.GetDrawBounds = function () {
+            Text2d.prototype.GetDrawBounds = /**
+            * The bounding area that represents where the Text2d will draw.
+            */
+            function () {
                 this._drawBounds.Rotation = this.Rotation;
                 this._drawBounds.Position = this.Position;
                 return this._drawBounds;

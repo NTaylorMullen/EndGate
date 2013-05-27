@@ -75,7 +75,7 @@ module Texts {
         private Size(text: eg.Graphics.Text2d, gameTime: eg.GameTime): void {
             var incrementor = (TextAnimator.AnimationSpeed / 2) * gameTime.ElapsedSecond;
 
-            text.FontSettings.FontSize(parseFloat(text.FontSettings.FontSize()) + this.Direction * incrementor);
+            text.FontSettings().FontSize(parseFloat(text.FontSettings().FontSize()) + this.Direction * incrementor);
         }
 
         private Opacity(text: eg.Graphics.Text2d, gameTime: eg.GameTime): void {

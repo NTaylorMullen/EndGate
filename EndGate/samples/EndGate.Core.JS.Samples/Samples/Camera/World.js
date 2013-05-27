@@ -25,7 +25,7 @@ var Camera;
         };
         World.prototype.CreateRotatedText = function (x, y, text, rotation) {
             var text = new eg.Graphics.Text2d(x, y, text);
-            text.FontSettings.FontSize(16);
+            text.FontSettings().FontSize(16);
             text.Rotation = rotation;
             return text;
         };

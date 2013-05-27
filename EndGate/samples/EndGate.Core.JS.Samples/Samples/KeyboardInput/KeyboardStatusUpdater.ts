@@ -25,7 +25,7 @@ module KeyboardInput {
             var keyStatus = new eg.Graphics.Text2d(xOffset, yOffset, "");
 
             // Apply default font settings
-            keyStatus.FontSettings.FontSize(this._fontSize);
+            keyStatus.FontSettings().FontSize(this._fontSize);
             keyStatus.Align(this._fontAlignment);
 
             // Add to game scene so the text is drawn

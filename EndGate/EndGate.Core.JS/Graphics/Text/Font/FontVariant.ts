@@ -1,31 +1,34 @@
 module EndGate.Graphics.Assets {
 
+    /**
+    * Defines valid FontVariant's that can be used to change the appearance of Text2d's.
+    */
     export enum FontVariant {
         Normal,
         SmallCaps
     };
 
-    export class FontVariantHelper {
+    export class _FontVariantHelper {
         public static _variants: { [variant: number]: string; };
 
         public static _Initialize() {
-            FontVariantHelper._variants = (<{ [family: number]: string; } >{});
+            _FontVariantHelper._variants = (<{ [family: number]: string; } >{});
 
             for (var family in FontVariant) {
                 if (family !== "_map") {
-                    FontVariantHelper._variants[FontVariant[family]] = family;
+                    _FontVariantHelper._variants[FontVariant[family]] = family;
                 }
             }
 
-            FontVariantHelper._variants["SmallCaps"] = "Times New Roman";
+            _FontVariantHelper._variants["SmallCaps"] = "Times New Roman";
         }
 
         public static Get(variant: FontVariant): string {
-            return FontVariantHelper._variants[variant];
+            return _FontVariantHelper._variants[variant];
         }
     }
 
-    FontVariantHelper._Initialize();
+    _FontVariantHelper._Initialize();
 
 }
 

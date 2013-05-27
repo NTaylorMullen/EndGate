@@ -1,5 +1,8 @@
 module EndGate.Graphics.Assets {
 
+    /**
+    * Defines valid FontFamilies that can be used to display Text2d's differently.
+    */
     export enum FontFamily {
         Antiqua,
         Arial,
@@ -26,26 +29,26 @@ module EndGate.Graphics.Assets {
         Verdana
     };
 
-    export class FontFamilyHelper {
+    export class _FontFamilyHelper {
         public static _families: { [family: number]: string; };
 
         public static _Initialize() {
-            FontFamilyHelper._families = (<{ [family: number]: string; } >{});
+            _FontFamilyHelper._families = (<{ [family: number]: string; } >{});
 
             for (var family in FontFamily) {
                 if (family !== "_map") {
-                    FontFamilyHelper._families[FontFamily[family]] = family;
+                    _FontFamilyHelper._families[FontFamily[family]] = family;
                 }
             }
 
-            FontFamilyHelper._families[FontFamily["TimesNewRoman"]] = "Times New Roman";
+            _FontFamilyHelper._families[FontFamily["TimesNewRoman"]] = "Times New Roman";
         }
 
         public static Get(family: FontFamily): string {
-            return FontFamilyHelper._families[family];
+            return _FontFamilyHelper._families[family];
         }
     }
 
-    FontFamilyHelper._Initialize();
+    _FontFamilyHelper._Initialize();
 
 }

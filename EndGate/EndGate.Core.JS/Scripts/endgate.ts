@@ -3400,6 +3400,9 @@ module EndGate.InputControllers {
 /* FontMeasurement.ts */
 module EndGate.Graphics.Assets {
 
+    /**
+    * Defines valid FontMeasurements that can be used to increase or decrease font sizes of Text2d's.
+    */
     export enum FontMeasurement {
         Ems,
         Pixels,
@@ -3407,23 +3410,26 @@ module EndGate.Graphics.Assets {
         Percent
     };
 
-    export class FontMeasurementHelper {
+    export class _FontMeasurementHelper {
         public static _measurements: string[];
 
         public static _Initialize() {
-            FontMeasurementHelper._measurements = ["em", "px", "pt", "%"];
+            _FontMeasurementHelper._measurements = ["em", "px", "pt", "%"];
         }
 
         public static Get(measurement: FontMeasurement): string {
-            return FontMeasurementHelper._measurements[measurement];
+            return _FontMeasurementHelper._measurements[measurement];
         }
     }
 
-    FontMeasurementHelper._Initialize();
+    _FontMeasurementHelper._Initialize();
 }
 /* FontFamily.ts */
 module EndGate.Graphics.Assets {
 
+    /**
+    * Defines valid FontFamilies that can be used to display Text2d's differently.
+    */
     export enum FontFamily {
         Antiqua,
         Arial,
@@ -3450,89 +3456,95 @@ module EndGate.Graphics.Assets {
         Verdana
     };
 
-    export class FontFamilyHelper {
+    export class _FontFamilyHelper {
         public static _families: { [family: number]: string; };
 
         public static _Initialize() {
-            FontFamilyHelper._families = (<{ [family: number]: string; } >{});
+            _FontFamilyHelper._families = (<{ [family: number]: string; } >{});
 
             for (var family in FontFamily) {
                 if (family !== "_map") {
-                    FontFamilyHelper._families[FontFamily[family]] = family;
+                    _FontFamilyHelper._families[FontFamily[family]] = family;
                 }
             }
 
-            FontFamilyHelper._families[FontFamily["TimesNewRoman"]] = "Times New Roman";
+            _FontFamilyHelper._families[FontFamily["TimesNewRoman"]] = "Times New Roman";
         }
 
         public static Get(family: FontFamily): string {
-            return FontFamilyHelper._families[family];
+            return _FontFamilyHelper._families[family];
         }
     }
 
-    FontFamilyHelper._Initialize();
+    _FontFamilyHelper._Initialize();
 
 }
 /* FontVariant.ts */
 module EndGate.Graphics.Assets {
 
+    /**
+    * Defines valid FontVariant's that can be used to change the appearance of Text2d's.
+    */
     export enum FontVariant {
         Normal,
         SmallCaps
     };
 
-    export class FontVariantHelper {
+    export class _FontVariantHelper {
         public static _variants: { [variant: number]: string; };
 
         public static _Initialize() {
-            FontVariantHelper._variants = (<{ [family: number]: string; } >{});
+            _FontVariantHelper._variants = (<{ [family: number]: string; } >{});
 
             for (var family in FontVariant) {
                 if (family !== "_map") {
-                    FontVariantHelper._variants[FontVariant[family]] = family;
+                    _FontVariantHelper._variants[FontVariant[family]] = family;
                 }
             }
 
-            FontVariantHelper._variants["SmallCaps"] = "Times New Roman";
+            _FontVariantHelper._variants["SmallCaps"] = "Times New Roman";
         }
 
         public static Get(variant: FontVariant): string {
-            return FontVariantHelper._variants[variant];
+            return _FontVariantHelper._variants[variant];
         }
     }
 
-    FontVariantHelper._Initialize();
+    _FontVariantHelper._Initialize();
 
 }
 
 /* FontStyle.ts */
 module EndGate.Graphics.Assets {
 
+    /**
+    * Defines valid FontStyles that can be used to modify the font's style for Text2d's.
+    */
     export enum FontStyle {
         Normal,
         Italic,
         Oblique
     }
 
-    export class FontStyleHelper {
+    export class _FontStyleHelper {
         public static _styles: { [family: number]: string; };
 
         public static _Initialize() {
-            FontStyleHelper._styles = (<{ [family: number]: string; } >{});
+            _FontStyleHelper._styles = (<{ [family: number]: string; } >{});
 
             for (var style in FontStyle) {
                 if (style !== "_map") {
-                    FontStyleHelper._styles[FontStyle[style]] = style;
+                    _FontStyleHelper._styles[FontStyle[style]] = style;
                 }
             }
         }
 
         public static Get(style: FontStyle): string {
-            return FontStyleHelper._styles[style];
+            return _FontStyleHelper._styles[style];
         }
     }
 
-    FontStyleHelper._Initialize();
+    _FontStyleHelper._Initialize();
 
 }
 
@@ -3544,11 +3556,19 @@ module EndGate.Graphics.Assets {
 
 module EndGate.Graphics.Assets {
 
+    /**
+    * Defines a set of font settings that are used to modify the appearance of text that is drawn via Text2d's.
+    */
     export class FontSettings {
         private _cachedState: { [property: string]: any; };
         private _cachedFont: string;
         private _refreshCache: bool;
 
+        /**
+        * Creates a new instance of the FontSettings object with the following default values.
+        * FontSize: 10px
+        * FontFamily: Times New Roman
+        */
         constructor() {
             this._cachedState = {
                 fontSize: "10px",
@@ -3562,28 +3582,79 @@ module EndGate.Graphics.Assets {
             this._BuildFont();
         }
 
+        /**
+        * Gets the current font size.
+        */
+        public FontSize(): string;
+        /**
+        * Sets and gets the current font size with the measurement in points.
+        * @param size The new font size.
+        */
+        public FontSize(size: number): string;
+        /**
+        * Sets and gets the current font size.
+        * @param size The new font size.
+        * @param measurement The new font sizes measurement type.
+        */
+        public FontSize(size: number, measurement: FontMeasurement): string;
         public FontSize(size?: number, measurement: FontMeasurement = FontMeasurement.Points): string {
             if (size !== undefined) {
-                return this.GetOrSetCache("fontSize", size.toString() + FontMeasurementHelper.Get(measurement));
+                return this.GetOrSetCache("fontSize", size.toString() + _FontMeasurementHelper.Get(measurement));
             }
             
             return this._cachedState["fontSize"];
         }
 
+        /**
+        * Gets the current font family.
+        */
+        public FontFamily(): string;
+        /**
+        * Sets and gets the current font family.
+        * @param family The new font family.
+        */
+        public FontFamily(family: FontFamily): string;
         public FontFamily(family?: FontFamily): string {
-            return this.GetOrSetCache("fontFamily", FontFamilyHelper.Get(family));
+            return this.GetOrSetCache("fontFamily", _FontFamilyHelper.Get(family));
         }
 
+        /**
+        * Gets the current font variant.
+        */
+        public FontVariant(): string;
+        /**
+        * Sets and gets the current font variant.
+        * @param variant The new font variant.
+        */
+        public FontVariant(variant: FontVariant): string;
         public FontVariant(variant?: FontVariant): string {
-            return this.GetOrSetCache("fontVariant", FontVariantHelper.Get(variant));
+            return this.GetOrSetCache("fontVariant", _FontVariantHelper.Get(variant));
         }
 
+        /**
+        * Gets the current font weight.
+        */
+        public FontWeight(): string;
+        /**
+        * Sets and gets the current font weight.
+        * @param weight The new font weight.
+        */
+        public FontWeight(weight: string): string;
         public FontWeight(weight?: string): string {
             return this.GetOrSetCache("fontWeight", weight);
         }
 
+        /**
+        * Gets the current font style.
+        */
+        public FontStyle(): string;
+        /**
+        * Sets and gets the current font style.
+        * @param style The new font style.
+        */
+        public FontStyle(style: FontStyle): string;
         public FontStyle(style?: FontStyle): string {
-            return this.GetOrSetCache("fontStyle", FontStyleHelper.Get(style));
+            return this.GetOrSetCache("fontStyle", _FontStyleHelper.Get(style));
         }
 
         public _BuildFont(): string {
@@ -3629,16 +3700,35 @@ module EndGate.Graphics.Assets {
 
 module EndGate.Graphics {
 
+    /**
+    * Defines a drawable text element.
+    */
     export class Text2d extends Abstractions.Graphic2d {
-        public _type: string = "Text2d";
-        public FontSettings: Assets.FontSettings;
+        public _type: string = "Text2d";        
 
+        private _fontSettings: Assets.FontSettings;
         private _text: string;
         private _stroker: _.Utilities.NoopTripInvoker;
+        private _recalculateBoundsSize: bool;
 
         // For GetDrawBounds
         private _drawBounds: Bounds.BoundingRectangle;
 
+        /**
+        * Creates a new instance of the Text2d object.
+        * @param x Initial horizontal location of the Text2d.
+        * @param y Initial vertical location of the Text2d.
+        * @param text Initial text of the Text2d.
+        */
+        constructor(x: number, y: number, text: string);
+        /**
+        * Creates a new instance of the Text2d object with a specified color.
+        * @param x Initial horizontal location of the Text2d.
+        * @param y Initial vertical location of the Text2d.
+        * @param text Initial text of the Text2d.
+        * @param color Initial color of the Text2d.
+        */
+        constructor(x: number, y: number, text: string, color: string);
         constructor(x: number, y: number, text: string, color: string = "black") {
             super(new Vector2d(x, y));
 
@@ -3648,27 +3738,73 @@ module EndGate.Graphics {
             });
 
             this._drawBounds = new Bounds.BoundingRectangle(this.Position, Size2d.One());
+            this._recalculateBoundsSize = true;
 
-            this.FontSettings = new Assets.FontSettings();
+            this._fontSettings = new Assets.FontSettings();
             this.Align("center");
             this.Baseline("middle");
             this.Color(color);
         }
 
+        /**
+        * Gets the text alignment of the Text2d.
+        */
+        public Align(): string;
+        /**
+        * Gets and sets the text alignment of the Text2d.
+        * @param alignment The new textual alignment for the Text2d.  Values are "start", "end", "left", "center", or "right".
+        */
+        public Align(alignment: string): string;
         public Align(alignment?: string): string {
             return this.State.TextAlign(alignment);
         }
 
+        /**
+        * Gets the text baseline of the Text2d.
+        */
+        public Baseline(): string;
+        /**
+        * Gets and sets the text baseline of the Text2d.
+        * @param baseline The new textual baseline for the Text2d.  Values are "top", "hanging", "middle", "alphabetic", "ideographic", and "bottom".
+        */
+        public Baseline(baseline: string): string;
         public Baseline(baseline?: string): string {
             return this.State.TextBaseline(baseline);
         }
 
+        /**
+        * Gets the current text color.
+        */
+        public Color(): string;
+        /**
+        * Gets and sets the current text color.
+        * @param color The new color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        */
+        public Color(color: string): string;
         public Color(color?: string): string {
             return this.State.FillStyle(color);
         }
 
+        /**
+        * Sets the current shadow x and y positions.
+        * @param x The shadows new horizontal position.
+        * @param y The shadows new vertical position.
+        */
         public Shadow(x: number, y: number): void;
+        /**
+        * Sets the current shadow x and y positions and shadows color.
+        * @param x The shadows new horizontal position.
+        * @param y The shadows new vertical position.
+        * @param color The new shadow color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        */
         public Shadow(x: number, y: number, color: string): void;
+        /**
+        * Sets the current shadow x and y positions and shadows color.
+        * @param x The shadows new horizontal position.
+        * @param y The shadows new vertical position.
+        * @param color The new shadow color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        * @param blur The new shadow blur.
+        */
         public Shadow(x: number, y: number, color: string, blur: number): void;
         public Shadow(x: number, y: number, color?: string, blur?: number): void {
             this.ShadowX(x);
@@ -3677,39 +3813,117 @@ module EndGate.Graphics {
             this.ShadowBlur(blur);
         }
 
+        /**
+        * Gets the current shadow color.
+        */
+        public ShadowColor(): string;
+        /**
+        * Sets and gets the current shadow color.
+        * @param color The new shadow color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        */
+        public ShadowColor(color: string): string;
         public ShadowColor(color?: string): string {
             return this.State.ShadowColor(color);
         }
 
-        public ShadowX(val?: number): number {
-            return this.State.ShadowOffsetX(val);
+        /**
+        * Gets the current horizontal shadow position.
+        */
+        public ShadowX(): number;
+        /**
+        * Sets and gets the current horizontal shadow position.
+        * @param x The shadows new horizontal position.
+        */
+        public ShadowX(x: number): number;
+        public ShadowX(x?: number): number {
+            return this.State.ShadowOffsetX(x);
         }
 
-        public ShadowY(val?: number): number {
-            return this.State.ShadowOffsetY(val);
+        /**
+        * Gets the current vertical shadow position.
+        */
+        public ShadowY(): number;
+        /**
+        * Sets and gets the current vertical shadow position.
+        * @param y The shadows new vertical position.
+        */
+        public ShadowY(y: number): number;
+        public ShadowY(y?: number): number {
+            return this.State.ShadowOffsetY(y);
         }
 
-        public ShadowBlur(val?: number): number {
-            return this.State.ShadowBlur(val);
+        /**
+        * Gets the current shadow blur.
+        */
+        public ShadowBlur(): number;
+        /**
+        * Sets and gets the current shadow blur.
+        * @param blur The shadows new blur.
+        */
+        public ShadowBlur(blur: number): number;
+        public ShadowBlur(blur?: number): number {
+            return this.State.ShadowBlur(blur);
         }
 
+        /**
+        * Gets the current opacity.  Value is between 0 and 1.
+        */
+        public Opacity(): number;
+        /**
+        * Sets and gets the current opacity.
+        * @param alpha New opacity, value is between 0 and 1.
+        */
+        public Opacity(alpha: number): number;
         public Opacity(alpha?: number): number {
             return this.State.GlobalAlpha(alpha);
         }
 
+        /**
+        * Gets the Text2d's FontSetting's.
+        */
+        public FontSettings(): Assets.FontSettings {
+            this._recalculateBoundsSize = true;
+
+            return this._fontSettings;
+        }
+
+        /**
+        * Gets the current Text2d's text.
+        */
+        public Text(): string;
+        /**
+        * Sets and gets the current Text2d's text.
+        * @param text The new text.
+        */
+        public Text(text: string): string;
         public Text(text?: string): string {
             if (typeof text !== "undefined") {
+                this._recalculateBoundsSize = true;
                 this._text = text;
             }
 
             return this._text;
         }
 
+        /**
+        * Sets the current borders thickness and color.
+        * @param thickness The new border thickness in pixels.
+        * @param color The new border color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        */
         public Border(thickness: number, color: string): void {
             this.BorderThickness(thickness);
             this.BorderColor(color);
         }
 
+        /**
+        * Gets the current border thickness.
+        */
+        public BorderThickness(): number;
+        /**
+        * Sets and gets the current border thickness.
+        * @param thickness The new border thickness in pixels.
+        */
+        public BorderThickness(thickness: number): number;
         public BorderThickness(thickness?: number): number {
             if (thickness === 0) {
                 this._stroker.Reset();
@@ -3721,28 +3935,48 @@ module EndGate.Graphics {
             return this.State.LineWidth(thickness);
         }
 
+        /**
+        * Gets the current border color.
+        */
+        public BorderColor(): string;
+        /**
+        * Sets and gets the current border color.
+        * @param color The new border color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        */
+        public BorderColor(color: string): string;
         public BorderColor(color?: string): string {
             this._stroker.Trip();
             return this.State.StrokeStyle(color);
         }
 
+        /**
+        * Draws the text onto the given context.  If this Text2d is part of a scene the Draw function will be called automatically.
+        * @param context The canvas context to draw the text onto.
+        */
         public Draw(context: CanvasRenderingContext2D): void {
             var textSize;
 
             super._StartDraw(context);
 
-            this.State.Font(this.FontSettings._BuildFont());
-
-            textSize = context.measureText(this._text);
-            this._drawBounds.Size.Width = textSize.width;
-            this._drawBounds.Size.Height = parseInt(this.FontSettings.FontSize()) * 1.5;
+            this.State.Font(this._fontSettings._BuildFont());
 
             context.fillText(this._text, 0, 0);
             this._stroker.Invoke(context);
 
             super._EndDraw(context);
+
+            // Only recalculate bounds if the text or font has changed since the last draw.
+            if (this._recalculateBoundsSize) {
+                this._recalculateBoundsSize = false;
+                textSize = context.measureText(this._text);
+                this._drawBounds.Size.Width = textSize.width;
+                this._drawBounds.Size.Height = parseInt(this._fontSettings.FontSize()) * 1.5;
+            }
         }
 
+        /**
+        * The bounding area that represents where the Text2d will draw.
+        */
         public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
             this._drawBounds.Rotation = this.Rotation;
             this._drawBounds.Position = this.Position;
@@ -4444,6 +4678,7 @@ module EndGate.Graphics {
 
         /**
         * Creates a new instance of the Rectangle object.
+        
         * @param x Initial horizontal location of the Rectangle.
         * @param y Initial vertical location of the Rectangle.
         * @param width Initial width of the Rectangle.

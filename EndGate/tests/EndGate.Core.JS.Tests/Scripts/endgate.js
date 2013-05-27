@@ -2164,23 +2164,23 @@ var EndGate;
             })(Assets.FontMeasurement || (Assets.FontMeasurement = {}));
             var FontMeasurement = Assets.FontMeasurement;
             ;
-            var FontMeasurementHelper = (function () {
-                function FontMeasurementHelper() { }
-                FontMeasurementHelper._Initialize = function _Initialize() {
-                    FontMeasurementHelper._measurements = [
+            var _FontMeasurementHelper = (function () {
+                function _FontMeasurementHelper() { }
+                _FontMeasurementHelper._Initialize = function _Initialize() {
+                    _FontMeasurementHelper._measurements = [
                         "em", 
                         "px", 
                         "pt", 
                         "%"
                     ];
                 };
-                FontMeasurementHelper.Get = function Get(measurement) {
-                    return FontMeasurementHelper._measurements[measurement];
+                _FontMeasurementHelper.Get = function Get(measurement) {
+                    return _FontMeasurementHelper._measurements[measurement];
                 };
-                return FontMeasurementHelper;
+                return _FontMeasurementHelper;
             })();
-            Assets.FontMeasurementHelper = FontMeasurementHelper;            
-            FontMeasurementHelper._Initialize();
+            Assets._FontMeasurementHelper = _FontMeasurementHelper;            
+            _FontMeasurementHelper._Initialize();
         })(Graphics.Assets || (Graphics.Assets = {}));
         var Assets = Graphics.Assets;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
@@ -2241,25 +2241,25 @@ var EndGate;
             })(Assets.FontFamily || (Assets.FontFamily = {}));
             var FontFamily = Assets.FontFamily;
             ;
-            var FontFamilyHelper = (function () {
-                function FontFamilyHelper() { }
-                FontFamilyHelper._Initialize = function _Initialize() {
-                    FontFamilyHelper._families = ({
+            var _FontFamilyHelper = (function () {
+                function _FontFamilyHelper() { }
+                _FontFamilyHelper._Initialize = function _Initialize() {
+                    _FontFamilyHelper._families = ({
                     });
                     for(var family in FontFamily) {
                         if(family !== "_map") {
-                            FontFamilyHelper._families[FontFamily[family]] = family;
+                            _FontFamilyHelper._families[FontFamily[family]] = family;
                         }
                     }
-                    FontFamilyHelper._families[FontFamily["TimesNewRoman"]] = "Times New Roman";
+                    _FontFamilyHelper._families[FontFamily["TimesNewRoman"]] = "Times New Roman";
                 };
-                FontFamilyHelper.Get = function Get(family) {
-                    return FontFamilyHelper._families[family];
+                _FontFamilyHelper.Get = function Get(family) {
+                    return _FontFamilyHelper._families[family];
                 };
-                return FontFamilyHelper;
+                return _FontFamilyHelper;
             })();
-            Assets.FontFamilyHelper = FontFamilyHelper;            
-            FontFamilyHelper._Initialize();
+            Assets._FontFamilyHelper = _FontFamilyHelper;            
+            _FontFamilyHelper._Initialize();
         })(Graphics.Assets || (Graphics.Assets = {}));
         var Assets = Graphics.Assets;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
@@ -2278,25 +2278,25 @@ var EndGate;
             })(Assets.FontVariant || (Assets.FontVariant = {}));
             var FontVariant = Assets.FontVariant;
             ;
-            var FontVariantHelper = (function () {
-                function FontVariantHelper() { }
-                FontVariantHelper._Initialize = function _Initialize() {
-                    FontVariantHelper._variants = ({
+            var _FontVariantHelper = (function () {
+                function _FontVariantHelper() { }
+                _FontVariantHelper._Initialize = function _Initialize() {
+                    _FontVariantHelper._variants = ({
                     });
                     for(var family in FontVariant) {
                         if(family !== "_map") {
-                            FontVariantHelper._variants[FontVariant[family]] = family;
+                            _FontVariantHelper._variants[FontVariant[family]] = family;
                         }
                     }
-                    FontVariantHelper._variants["SmallCaps"] = "Times New Roman";
+                    _FontVariantHelper._variants["SmallCaps"] = "Times New Roman";
                 };
-                FontVariantHelper.Get = function Get(variant) {
-                    return FontVariantHelper._variants[variant];
+                _FontVariantHelper.Get = function Get(variant) {
+                    return _FontVariantHelper._variants[variant];
                 };
-                return FontVariantHelper;
+                return _FontVariantHelper;
             })();
-            Assets.FontVariantHelper = FontVariantHelper;            
-            FontVariantHelper._Initialize();
+            Assets._FontVariantHelper = _FontVariantHelper;            
+            _FontVariantHelper._Initialize();
         })(Graphics.Assets || (Graphics.Assets = {}));
         var Assets = Graphics.Assets;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
@@ -2316,24 +2316,24 @@ var EndGate;
                 FontStyle.Oblique = 2;
             })(Assets.FontStyle || (Assets.FontStyle = {}));
             var FontStyle = Assets.FontStyle;
-            var FontStyleHelper = (function () {
-                function FontStyleHelper() { }
-                FontStyleHelper._Initialize = function _Initialize() {
-                    FontStyleHelper._styles = ({
+            var _FontStyleHelper = (function () {
+                function _FontStyleHelper() { }
+                _FontStyleHelper._Initialize = function _Initialize() {
+                    _FontStyleHelper._styles = ({
                     });
                     for(var style in FontStyle) {
                         if(style !== "_map") {
-                            FontStyleHelper._styles[FontStyle[style]] = style;
+                            _FontStyleHelper._styles[FontStyle[style]] = style;
                         }
                     }
                 };
-                FontStyleHelper.Get = function Get(style) {
-                    return FontStyleHelper._styles[style];
+                _FontStyleHelper.Get = function Get(style) {
+                    return _FontStyleHelper._styles[style];
                 };
-                return FontStyleHelper;
+                return _FontStyleHelper;
             })();
-            Assets.FontStyleHelper = FontStyleHelper;            
-            FontStyleHelper._Initialize();
+            Assets._FontStyleHelper = _FontStyleHelper;            
+            _FontStyleHelper._Initialize();
         })(Graphics.Assets || (Graphics.Assets = {}));
         var Assets = Graphics.Assets;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
@@ -2358,21 +2358,21 @@ var EndGate;
                 FontSettings.prototype.FontSize = function (size, measurement) {
                     if (typeof measurement === "undefined") { measurement = Assets.FontMeasurement.Points; }
                     if(size !== undefined) {
-                        return this.GetOrSetCache("fontSize", size.toString() + Assets.FontMeasurementHelper.Get(measurement));
+                        return this.GetOrSetCache("fontSize", size.toString() + Assets._FontMeasurementHelper.Get(measurement));
                     }
                     return this._cachedState["fontSize"];
                 };
                 FontSettings.prototype.FontFamily = function (family) {
-                    return this.GetOrSetCache("fontFamily", Assets.FontFamilyHelper.Get(family));
+                    return this.GetOrSetCache("fontFamily", Assets._FontFamilyHelper.Get(family));
                 };
                 FontSettings.prototype.FontVariant = function (variant) {
-                    return this.GetOrSetCache("fontVariant", Assets.FontVariantHelper.Get(variant));
+                    return this.GetOrSetCache("fontVariant", Assets._FontVariantHelper.Get(variant));
                 };
                 FontSettings.prototype.FontWeight = function (weight) {
                     return this.GetOrSetCache("fontWeight", weight);
                 };
                 FontSettings.prototype.FontStyle = function (style) {
-                    return this.GetOrSetCache("fontStyle", Assets.FontStyleHelper.Get(style));
+                    return this.GetOrSetCache("fontStyle", Assets._FontStyleHelper.Get(style));
                 };
                 FontSettings.prototype._BuildFont = function () {
                     var font;
@@ -2421,7 +2421,8 @@ var EndGate;
                     context.strokeText(_this._text, 0, 0);
                 });
                 this._drawBounds = new EndGate.Bounds.BoundingRectangle(this.Position, EndGate.Size2d.One());
-                this.FontSettings = new Graphics.Assets.FontSettings();
+                this._recalculateBoundsSize = true;
+                this._fontSettings = new Graphics.Assets.FontSettings();
                 this.Align("center");
                 this.Baseline("middle");
                 this.Color(color);
@@ -2444,20 +2445,25 @@ var EndGate;
             Text2d.prototype.ShadowColor = function (color) {
                 return this.State.ShadowColor(color);
             };
-            Text2d.prototype.ShadowX = function (val) {
-                return this.State.ShadowOffsetX(val);
+            Text2d.prototype.ShadowX = function (x) {
+                return this.State.ShadowOffsetX(x);
             };
-            Text2d.prototype.ShadowY = function (val) {
-                return this.State.ShadowOffsetY(val);
+            Text2d.prototype.ShadowY = function (y) {
+                return this.State.ShadowOffsetY(y);
             };
-            Text2d.prototype.ShadowBlur = function (val) {
-                return this.State.ShadowBlur(val);
+            Text2d.prototype.ShadowBlur = function (blur) {
+                return this.State.ShadowBlur(blur);
             };
             Text2d.prototype.Opacity = function (alpha) {
                 return this.State.GlobalAlpha(alpha);
             };
+            Text2d.prototype.FontSettings = function () {
+                this._recalculateBoundsSize = true;
+                return this._fontSettings;
+            };
             Text2d.prototype.Text = function (text) {
                 if(typeof text !== "undefined") {
+                    this._recalculateBoundsSize = true;
                     this._text = text;
                 }
                 return this._text;
@@ -2481,13 +2487,16 @@ var EndGate;
             Text2d.prototype.Draw = function (context) {
                 var textSize;
                 _super.prototype._StartDraw.call(this, context);
-                this.State.Font(this.FontSettings._BuildFont());
-                textSize = context.measureText(this._text);
-                this._drawBounds.Size.Width = textSize.width;
-                this._drawBounds.Size.Height = parseInt(this.FontSettings.FontSize()) * 1.5;
+                this.State.Font(this._fontSettings._BuildFont());
                 context.fillText(this._text, 0, 0);
                 this._stroker.Invoke(context);
                 _super.prototype._EndDraw.call(this, context);
+                if(this._recalculateBoundsSize) {
+                    this._recalculateBoundsSize = false;
+                    textSize = context.measureText(this._text);
+                    this._drawBounds.Size.Width = textSize.width;
+                    this._drawBounds.Size.Height = parseInt(this._fontSettings.FontSize()) * 1.5;
+                }
             };
             Text2d.prototype.GetDrawBounds = function () {
                 this._drawBounds.Rotation = this.Rotation;

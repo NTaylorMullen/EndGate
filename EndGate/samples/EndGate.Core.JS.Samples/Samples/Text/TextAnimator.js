@@ -59,7 +59,7 @@ var Texts;
         };
         TextAnimator.prototype.Size = function (text, gameTime) {
             var incrementor = (TextAnimator.AnimationSpeed / 2) * gameTime.ElapsedSecond;
-            text.FontSettings.FontSize(parseFloat(text.FontSettings.FontSize()) + this.Direction * incrementor);
+            text.FontSettings().FontSize(parseFloat(text.FontSettings().FontSize()) + this.Direction * incrementor);
         };
         TextAnimator.prototype.Opacity = function (text, gameTime) {
             var incrementor = .33 * gameTime.ElapsedSecond;

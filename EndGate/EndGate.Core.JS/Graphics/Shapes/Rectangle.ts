@@ -52,7 +52,7 @@ module EndGate.Graphics {
 
         public _BuildPath(context: CanvasRenderingContext2D): void {
             context.rect(-this.Size.HalfWidth(), -this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
-        }        
+        }
     }
 
 }
