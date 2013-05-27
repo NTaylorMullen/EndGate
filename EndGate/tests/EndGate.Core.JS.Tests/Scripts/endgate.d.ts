@@ -667,9 +667,23 @@ module EndGate {
     }
 }
 module EndGate.Collision.Assets {
+    /**
+    * Defines a data object that is used to describe a collision event.
+    */
     class CollisionData {
+        /**
+        * Where the collision occurred.
+        */
         public At: Vector2d;
+        /**
+        * Who collided with you.
+        */
         public With: Collidable;
+        /**
+        * Creates a new instance of the CollisionData object.
+        * @param at Initial value of the At component of CollisionData.
+        * @param w Initial value of the With component of CollisionData.
+        */
         constructor(at: Vector2d, w: Collidable);
     }
 }
@@ -692,7 +706,8 @@ module EndGate.Collision {
         */
         constructor(bounds: Bounds.Abstractions.Bounds2d);
         /**
-        * Event: Triggered when a Collision happens.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Event: Triggered when a collision happens.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Passes a CollisionData object to bound functions.
         */
         public OnCollision: EventHandler;
         /**
@@ -716,14 +731,38 @@ module EndGate.Collision {
     }
 }
 module EndGate.Collision {
+    /**
+    * Defines a manager that will check for collisions between objects that it is monitoring.
+    */
     class CollisionManager implements IUpdateable, _.ITyped {
         public _type: string;
-        public _collidables: Collidable[];
+        private _collidables;
         private _enabled;
+        /**
+        * Creates a new instance of CollisionManager.
+        */
         constructor();
+        /**
+        * Event: Triggered when a collision happens among two of the monitored objects.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Passes two CollisionData objects to bound functions.
+        */
         public OnCollision: EventHandler;
+        /**
+        * Monitors the provided collidable and will trigger its Collided function and OnCollision event whenever a collision occurs with it and another Collidable.
+        * If the provided collidable gets disposed it will automatically become unmonitored.
+        * @param obj Collidable to monitor.
+        */
         public Monitor(obj: Collidable): void;
+        /**
+        * Unmonitors the provided collidable.  The Collided function and OnCollision event will no longer be triggered when an actual collision may have occured.
+        * Disposing a monitored collidable will automatically be unmonitored
+        * @param obj Collidable to unmonitor.
+        */
         public Unmonitor(obj: Collidable): void;
+        /**
+        * Checks for collisions within its monitored objects.  Games CollisionManager's automatically have their Update functions called at the beginning of each update loop.
+        * @param gameTime The current game time object.
+        */
         public Update(gameTime: GameTime): void;
     }
 }

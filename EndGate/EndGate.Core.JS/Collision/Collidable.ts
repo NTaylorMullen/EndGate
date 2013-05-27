@@ -36,7 +36,8 @@ module EndGate.Collision {
         }
 
         /**
-        * Event: Triggered when a Collision happens.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Event: Triggered when a collision happens.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Passes a CollisionData object to bound functions.
         */
         public OnCollision: EventHandler;
         /**
