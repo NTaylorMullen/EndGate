@@ -10,11 +10,14 @@ var EndGate;
     /// <reference path="../Graphic2d.ts" />
     /// <reference path="../Line2d.ts" />
     (function (Graphics) {
+        /**
+        * Defines a grid that can be used to store other graphics in a grid like structure.
+        */
         var Grid = (function (_super) {
             __extends(Grid, _super);
-            function Grid(x, y, rows, columns, tileWidth, tileHeight, drawGridLines, color) {
+            function Grid(x, y, rows, columns, tileWidth, tileHeight, drawGridLines, gridLineColor) {
                 if (typeof drawGridLines === "undefined") { drawGridLines = false; }
-                if (typeof color === "undefined") { color = "gray"; }
+                if (typeof gridLineColor === "undefined") { gridLineColor = "gray"; }
                         _super.call(this, new EndGate.Vector2d(x, y));
                 this._type = "Grid";
                 var halfSize, topLeft, bottomRight;
@@ -23,7 +26,7 @@ var EndGate;
                 this._grid = [];
                 this._rows = rows;
                 this._columns = columns;
-                this._drawGridLines = drawGridLines;
+                this.DrawGridLines = drawGridLines;
                 this._gridLines = [];
                 halfSize = this._size.Multiply(.5);
                 topLeft = new EndGate.Vector2d(-halfSize.Width, -halfSize.Height);
@@ -40,9 +43,9 @@ var EndGate;
                 }
                 this._gridLines.push(new Graphics.Line2d(topLeft.X, bottomRight.Y, bottomRight.X, bottomRight.Y, 1));
                 this._gridLines.push(new Graphics.Line2d(bottomRight.X, topLeft.Y, bottomRight.X, bottomRight.Y, 1));
-                this.Color(color);
+                this.GridLineColor(gridLineColor);
             }
-            Grid.prototype.Color = function (color) {
+            Grid.prototype.GridLineColor = function (color) {
                 if(typeof color !== "undefined") {
                     this._gridLineColor = color;
                     for(var i = 0; i < this._gridLines.length; i++) {
@@ -51,22 +54,40 @@ var EndGate;
                 }
                 return this._gridLineColor;
             };
-            Grid.prototype.Size = function () {
+            Grid.prototype.Size = /**
+            * Gets the size of the grid.
+            */
+            function () {
                 return this._size.Clone();
             };
-            Grid.prototype.TileSize = function () {
+            Grid.prototype.TileSize = /**
+            * Gets the size of the tiles.
+            */
+            function () {
                 return this._tileSize.Clone();
             };
-            Grid.prototype.Rows = function () {
+            Grid.prototype.Rows = /**
+            * Gets the number of rows
+            */
+            function () {
                 return this._rows;
             };
-            Grid.prototype.Columns = function () {
+            Grid.prototype.Columns = /**
+            * Gets the number of columns
+            */
+            function () {
                 return this._columns;
             };
             Grid.prototype.Opacity = function (alpha) {
                 return this.State.GlobalAlpha(alpha);
             };
-            Grid.prototype.Fill = function (row, column, graphic) {
+            Grid.prototype.Fill = /**
+            * Fills a tile with the provided graphic.
+            * @param row The row.
+            * @param column The column.
+            * @param graphic The graphic to fill the tile with.
+            */
+            function (row, column, graphic) {
                 if(!this.ValidRow(row) || !this.ValidColumn(column)) {
                     return;
                 }
@@ -74,7 +95,33 @@ var EndGate;
                 this._grid[row][column] = graphic;
                 this.AddChild(graphic);
             };
-            Grid.prototype.FillSpace = function (row, column, graphicList) {
+            Grid.prototype.FillRow = function (row, graphicList, columnOffset) {
+                if (typeof columnOffset === "undefined") { columnOffset = 0; }
+                var graphic;
+                for(var i = 0; i < graphicList.length; i++) {
+                    graphic = graphicList[i];
+                    graphic.Position = this.GetInsideGridPosition(row, i + columnOffset);
+                    this._grid[row][i + columnOffset] = graphic;
+                    this.AddChild(graphic);
+                }
+            };
+            Grid.prototype.FillColumn = function (column, graphicList, rowOffset) {
+                if (typeof rowOffset === "undefined") { rowOffset = 0; }
+                var graphic;
+                for(var i = 0; i < graphicList.length; i++) {
+                    graphic = graphicList[i];
+                    graphic.Position = this.GetInsideGridPosition(i + rowOffset, column);
+                    this._grid[i + rowOffset][column] = graphic;
+                    this.AddChild(graphic);
+                }
+            };
+            Grid.prototype.FillSpace = /**
+            * Fills a tile with the provided graphic.
+            * @param row The row to start filling at.
+            * @param column The column to start filling at.
+            * @param graphicList The list of graphics to fill the space with.  The space will be filled with as many elements that are contained within the multi-dimensional graphicList.
+            */
+            function (row, column, graphicList) {
                 var graphic;
                 for(var i = 0; i < graphicList.length; i++) {
                     for(var j = 0; j < graphicList[i].length; j++) {
@@ -87,47 +134,41 @@ var EndGate;
                     }
                 }
             };
-            Grid.prototype.FillRow = function (row, graphicList, offset) {
-                if (typeof offset === "undefined") { offset = 0; }
-                var graphic;
-                for(var i = 0; i < graphicList.length; i++) {
-                    graphic = graphicList[i];
-                    graphic.Position = this.GetInsideGridPosition(row, i + offset);
-                    this._grid[row][i + offset] = graphic;
-                    this.AddChild(graphic);
-                }
-            };
-            Grid.prototype.FillColumn = function (column, graphicList, offset) {
-                if (typeof offset === "undefined") { offset = 0; }
-                var graphic;
-                for(var i = 0; i < graphicList.length; i++) {
-                    graphic = graphicList[i];
-                    graphic.Position = this.GetInsideGridPosition(i + offset, column);
-                    this._grid[i + offset][column] = graphic;
-                    this.AddChild(graphic);
-                }
-            };
-            Grid.prototype.Get = function (row, column) {
+            Grid.prototype.Get = /**
+            * Gets a graphic within the grid.
+            * @param row The row.
+            * @param column The column.
+            */
+            function (row, column) {
                 if(!this.ValidRow(row) || !this.ValidColumn(column)) {
                     return null;
                 }
                 return this._grid[row][column];
             };
-            Grid.prototype.GetColumn = function (column) {
-                var columnList = [];
-                for(var i = 0; i < this._rows; i++) {
-                    columnList.push(this._grid[i][column]);
-                }
-                return columnList;
-            };
-            Grid.prototype.GetRow = function (row) {
+            Grid.prototype.GetRow = function (row, columnOffset) {
+                if (typeof columnOffset === "undefined") { columnOffset = 0; }
                 var rowList = [];
-                for(var i = 0; i < this._columns; i++) {
+                for(var i = columnOffset; i < this._columns; i++) {
                     rowList.push(this._grid[row][i]);
                 }
                 return rowList;
             };
-            Grid.prototype.GetSpace = function (rowStart, columnStart, rowEnd, columnEnd) {
+            Grid.prototype.GetColumn = function (column, rowOffset) {
+                if (typeof rowOffset === "undefined") { rowOffset = 0; }
+                var columnList = [];
+                for(var i = rowOffset; i < this._rows; i++) {
+                    columnList.push(this._grid[i][column]);
+                }
+                return columnList;
+            };
+            Grid.prototype.GetSpace = /**
+            * Retrieves graphics within row column cross section.
+            * @param rowStart The row to start pulling graphics from.
+            * @param columnStart The column to start pulling graphics from.
+            * @param rowEnd The row to stop pulling graphics from.
+            * @param columnEnd The column to stop pulling graphics from.
+            */
+            function (rowStart, columnStart, rowEnd, columnEnd) {
                 var space = [], rowIncrementor = (rowEnd >= rowStart) ? 1 : -1, columnIncrementor = (columnEnd >= columnStart) ? 1 : -1;
                 for(var i = rowStart; i !== rowEnd + rowIncrementor; i += rowIncrementor) {
                     if(i >= this._rows) {
@@ -142,7 +183,12 @@ var EndGate;
                 }
                 return space;
             };
-            Grid.prototype.Clear = function (row, column) {
+            Grid.prototype.Clear = /**
+            * Clear a grid tile.
+            * @param row The row.
+            * @param column The column.
+            */
+            function (row, column) {
                 if(!this.ValidRow(row) || !this.ValidColumn(column)) {
                     return null;
                 }
@@ -151,7 +197,8 @@ var EndGate;
                 this.RemoveChild(val);
                 return val;
             };
-            Grid.prototype.ClearRow = function (row) {
+            Grid.prototype.ClearRow = function (row, columnOffset) {
+                if (typeof columnOffset === "undefined") { columnOffset = 0; }
                 var vals = [];
                 for(var i = 0; i < this._columns; i++) {
                     vals.push(this._grid[row][i]);
@@ -160,7 +207,8 @@ var EndGate;
                 }
                 return vals;
             };
-            Grid.prototype.ClearColumn = function (column) {
+            Grid.prototype.ClearColumn = function (column, rowOffset) {
+                if (typeof rowOffset === "undefined") { rowOffset = 0; }
                 var vals = [];
                 for(var i = 0; i < this._rows; i++) {
                     vals.push(this._grid[i][column]);
@@ -169,7 +217,14 @@ var EndGate;
                 }
                 return vals;
             };
-            Grid.prototype.ClearSpace = function (rowStart, columnStart, rowEnd, columnEnd) {
+            Grid.prototype.ClearSpace = /**
+            * Clears graphics within row column cross section.
+            * @param rowStart The row to start clearing graphics from.
+            * @param columnStart The column to start clearing graphics from.
+            * @param rowEnd The row to stop clearing graphics from.
+            * @param columnEnd The column to stop clearing graphics from.
+            */
+            function (rowStart, columnStart, rowEnd, columnEnd) {
                 var space = [], rowIncrementor = (rowEnd >= rowStart) ? 1 : -1, columnIncrementor = (columnEnd >= columnStart) ? 1 : -1;
                 for(var i = rowStart; i !== rowEnd + rowIncrementor; i += rowIncrementor) {
                     if(i > this._rows) {
@@ -186,26 +241,41 @@ var EndGate;
                 }
                 return space;
             };
-            Grid.prototype.Draw = function (context) {
+            Grid.prototype.Draw = /**
+            * Draws the grid onto the given context.  If this grid is part of a scene the Draw function will be called automatically.
+            * @param context The canvas context to draw the grid onto.
+            */
+            function (context) {
                 _super.prototype.StartDraw.call(this, context);
                 context.save();
                 _super.prototype.EndDraw.call(this, context);
-                if(this._drawGridLines) {
+                if(this.DrawGridLines) {
                     for(var i = 0; i < this._gridLines.length; i++) {
                         this._gridLines[i].Draw(context);
                     }
                 }
                 context.restore();
             };
-            Grid.prototype.GetDrawBounds = function () {
+            Grid.prototype.GetDrawBounds = /**
+            * The bounding area that represents where the grid will draw.
+            */
+            function () {
                 var bounds = new EndGate.Bounds.BoundingRectangle(this.Position, this._size);
                 bounds.Rotation = this.Rotation;
                 return bounds;
             };
-            Grid.prototype.ConvertToRow = function (y) {
+            Grid.prototype.ConvertToRow = /**
+            * Converts the provided vertical coordinate to a row number that is based on the current grid.
+            * @param y The vertical coordinate to convert to a row.
+            */
+            function (y) {
                 return Math.floor((y - (this.Position.Y - this._size.HalfHeight())) / this._tileSize.Height);
             };
-            Grid.prototype.ConvertToColumn = function (x) {
+            Grid.prototype.ConvertToColumn = /**
+            * Converts the provided horizontal coordinate to a column number that is based on the current grid.
+            * @param x The horizontal component to convert to a column.
+            */
+            function (x) {
                 return Math.floor((x - (this.Position.X - this._size.HalfWidth())) / this._tileSize.Width);
             };
             Grid.prototype.GetInsideGridPosition = function (row, column) {
@@ -223,4 +293,3 @@ var EndGate;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
     var Graphics = EndGate.Graphics;
 })(EndGate || (EndGate = {}));
-//@ sourceMappingURL=Grid.js.map
