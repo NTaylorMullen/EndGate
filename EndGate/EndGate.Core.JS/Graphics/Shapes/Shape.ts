@@ -204,8 +204,8 @@ module EndGate.Graphics.Abstractions {
         }
 
         /**
-        * Draws the shape onto the given context.  If this grid is part of a scene the Draw function will be called automatically.
-        * @param context The canvas context to draw the grid onto.
+        * Draws the shape onto the given context.  If this shape is part of a scene the Draw function will be called automatically.
+        * @param context The canvas context to draw the shape onto.
         */
         public Draw(context: CanvasRenderingContext2D): void { // You can override this Draw if you want to implement your own logic for applying styles and drawing (do not recommend overriding)
             this._StartDraw(context);

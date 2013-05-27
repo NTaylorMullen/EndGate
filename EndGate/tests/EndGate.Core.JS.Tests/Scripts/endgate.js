@@ -876,7 +876,6 @@ var EndGate;
                 this._type = "BoundingCircle";
                 this._boundsType = "BoundingCircle";
                 this.Radius = radius;
-                var foo = new BoundingCircle(EndGate.Vector2d.Zero(), 3);
             }
             BoundingCircle.prototype.Scale = function (scale) {
                 this.Radius *= scale;

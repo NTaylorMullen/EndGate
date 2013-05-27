@@ -31,7 +31,7 @@ module EndGate.Graphics.Assets {
         */
         constructor(imageLocation: string);
         /**
-        * Creates a new instance of the ImageSource object with a specified width and height.  If width and height are smaller than the actual width and height of the image source the image will be stretched
+        * Creates a new instance of the ImageSource object with a specified width and height.  ClipSize defaults to the full size and the ClipLocation defaults to (0,0). If width and height are not equal to the actual width and height of the image source the image will be stretched
         * @param imageLocation Image source url (this cannot change after construction).
         * @param width The width of the base image (this cannot change after construction).
         * @param height The height of the base image (this cannot change after construction).

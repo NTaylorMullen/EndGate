@@ -84,7 +84,7 @@ var EndGate;
                 function (context) {
                 };
                 Shape.prototype.Draw = /**
-                * Draws the shape onto the given context.  If this grid is part of a scene the Draw function will be called automatically.
+                * Draws the shape onto the given context.  If this shape is part of a scene the Draw function will be called automatically.
                 * @param context The canvas context to draw the grid onto.
                 */
                 function (context) {
