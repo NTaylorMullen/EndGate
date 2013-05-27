@@ -48,7 +48,7 @@ module EndGate.Graphics {
         }
 
         public Draw(context: CanvasRenderingContext2D): void {
-            super.StartDraw(context);
+            super._StartDraw(context);
 
             // Check if the user has modified the position directly, if so we need to translate the from and to positions accordingly
             if (!this._cachedPosition.Equivalent(this.Position)) {
@@ -61,7 +61,7 @@ module EndGate.Graphics {
             context.lineTo(this._to.X - this.Position.X, this._to.Y - this.Position.Y);
             context.stroke();
 
-            super.EndDraw(context);
+            super._EndDraw(context);
         }
 
         public GetDrawBounds(): Bounds.Abstractions.Bounds2d {

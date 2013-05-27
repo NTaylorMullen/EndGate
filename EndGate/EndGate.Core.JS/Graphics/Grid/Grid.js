@@ -11,7 +11,7 @@ var EndGate;
     /// <reference path="../Line2d.ts" />
     (function (Graphics) {
         /**
-        * Defines a grid that can be used to store other graphics in a grid like structure.
+        * Defines a drawable grid that can be used to store other graphics in a grid like structure.
         */
         var Grid = (function (_super) {
             __extends(Grid, _super);
@@ -246,9 +246,9 @@ var EndGate;
             * @param context The canvas context to draw the grid onto.
             */
             function (context) {
-                _super.prototype.StartDraw.call(this, context);
+                _super.prototype._StartDraw.call(this, context);
                 context.save();
-                _super.prototype.EndDraw.call(this, context);
+                _super.prototype._EndDraw.call(this, context);
                 if(this.DrawGridLines) {
                     for(var i = 0; i < this._gridLines.length; i++) {
                         this._gridLines[i].Draw(context);

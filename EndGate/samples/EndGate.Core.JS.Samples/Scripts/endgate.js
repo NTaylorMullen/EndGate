@@ -800,7 +800,7 @@ var EndGate;
                 Graphic2d.prototype.Children = function () {
                     return this._children;
                 };
-                Graphic2d.prototype.StartDraw = function (context) {
+                Graphic2d.prototype._StartDraw = function (context) {
                     context.save();
                     this.State.SetContextState(context);
                     context.translate(this.Position.X, this.Position.Y);
@@ -808,7 +808,7 @@ var EndGate;
                         context.rotate(this.Rotation);
                     }
                 };
-                Graphic2d.prototype.EndDraw = function (context) {
+                Graphic2d.prototype._EndDraw = function (context) {
                     for(var i = 0; i < this._children.length; i++) {
                         this._children[i].Draw(context);
                     }
@@ -2437,12 +2437,10 @@ var EndGate;
                 return this.State.FillStyle(color);
             };
             Text2d.prototype.Shadow = function (x, y, color, blur) {
-                return [
-                    this.ShadowX(x), 
-                    this.ShadowY(y), 
-                    this.ShadowColor(color), 
-                    this.ShadowBlur(blur)
-                ];
+                this.ShadowX(x);
+                this.ShadowY(y);
+                this.ShadowColor(color);
+                this.ShadowBlur(blur);
             };
             Text2d.prototype.ShadowColor = function (color) {
                 return this.State.ShadowColor(color);
@@ -2466,10 +2464,8 @@ var EndGate;
                 return this._text;
             };
             Text2d.prototype.Border = function (thickness, color) {
-                return [
-                    this.BorderThickness(thickness), 
-                    this.BorderColor(color)
-                ];
+                this.BorderThickness(thickness);
+                this.BorderColor(color);
             };
             Text2d.prototype.BorderThickness = function (thickness) {
                 if(thickness === 0) {
@@ -2485,14 +2481,14 @@ var EndGate;
             };
             Text2d.prototype.Draw = function (context) {
                 var textSize;
-                _super.prototype.StartDraw.call(this, context);
+                _super.prototype._StartDraw.call(this, context);
                 this.State.Font(this.FontSettings._BuildFont());
                 textSize = context.measureText(this._text);
                 this._drawBounds.Size.Width = textSize.width;
                 this._drawBounds.Size.Height = parseInt(this.FontSettings.FontSize()) * 1.5;
                 context.fillText(this._text, 0, 0);
                 this._stroker.Invoke(context);
-                _super.prototype.EndDraw.call(this, context);
+                _super.prototype._EndDraw.call(this, context);
             };
             Text2d.prototype.GetDrawBounds = function () {
                 this._drawBounds.Rotation = this.Rotation;
@@ -2565,9 +2561,9 @@ var EndGate;
                 return this.State.GlobalAlpha(alpha);
             };
             Sprite2d.prototype.Draw = function (context) {
-                _super.prototype.StartDraw.call(this, context);
+                _super.prototype._StartDraw.call(this, context);
                 context.drawImage(this.Image.Source, this.Image.ClipLocation.X, this.Image.ClipLocation.Y, this.Image.ClipSize.Width, this.Image.ClipSize.Height, -this.Size.HalfWidth(), -this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
-                _super.prototype.EndDraw.call(this, context);
+                _super.prototype._EndDraw.call(this, context);
             };
             Sprite2d.prototype.GetDrawBounds = function () {
                 var bounds = new EndGate.Bounds.BoundingRectangle(this.Position, this.Size);
@@ -2693,10 +2689,8 @@ var EndGate;
                     return this.State.FillStyle(color);
                 };
                 Shape.prototype.Border = function (thickness, color) {
-                    return [
-                        this.BorderThickness(thickness), 
-                        this.BorderColor(color)
-                    ];
+                    this.BorderThickness(thickness);
+                    this.BorderColor(color);
                 };
                 Shape.prototype.BorderThickness = function (thickness) {
                     return this.State.LineWidth(thickness);
@@ -2706,34 +2700,32 @@ var EndGate;
                     return this.State.StrokeStyle(color);
                 };
                 Shape.prototype.Shadow = function (x, y, color, blur) {
-                    return [
-                        this.ShadowX(x), 
-                        this.ShadowY(y), 
-                        this.ShadowColor(color), 
-                        this.ShadowBlur(blur)
-                    ];
+                    this.ShadowX(x);
+                    this.ShadowY(y);
+                    this.ShadowColor(color);
+                    this.ShadowBlur(blur);
                 };
                 Shape.prototype.ShadowColor = function (color) {
                     this._fill = true;
                     return this.State.ShadowColor(color);
                 };
-                Shape.prototype.ShadowX = function (val) {
-                    return this.State.ShadowOffsetX(val);
+                Shape.prototype.ShadowX = function (x) {
+                    return this.State.ShadowOffsetX(x);
                 };
-                Shape.prototype.ShadowY = function (val) {
-                    return this.State.ShadowOffsetY(val);
+                Shape.prototype.ShadowY = function (y) {
+                    return this.State.ShadowOffsetY(y);
                 };
-                Shape.prototype.ShadowBlur = function (val) {
-                    return this.State.ShadowBlur(val);
+                Shape.prototype.ShadowBlur = function (blur) {
+                    return this.State.ShadowBlur(blur);
                 };
                 Shape.prototype.Opacity = function (alpha) {
                     return this.State.GlobalAlpha(alpha);
                 };
-                Shape.prototype.StartDraw = function (context) {
+                Shape.prototype._StartDraw = function (context) {
                     context.beginPath();
-                    _super.prototype.StartDraw.call(this, context);
+                    _super.prototype._StartDraw.call(this, context);
                 };
-                Shape.prototype.EndDraw = function (context) {
+                Shape.prototype._EndDraw = function (context) {
                     if(this._fill) {
                         context.fill();
                     }
@@ -2742,14 +2734,14 @@ var EndGate;
                     } else {
                         context.closePath();
                     }
-                    _super.prototype.EndDraw.call(this, context);
+                    _super.prototype._EndDraw.call(this, context);
                 };
-                Shape.prototype.BuildPath = function (context) {
+                Shape.prototype._BuildPath = function (context) {
                 };
                 Shape.prototype.Draw = function (context) {
-                    this.StartDraw(context);
-                    this.BuildPath(context);
-                    this.EndDraw(context);
+                    this._StartDraw(context);
+                    this._BuildPath(context);
+                    this._EndDraw(context);
                 };
                 return Shape;
             })(Abstractions.Graphic2d);
@@ -2769,13 +2761,13 @@ var EndGate;
                 this._type = "Circle";
                 this.Radius = radius;
             }
-            Circle.prototype.BuildPath = function (context) {
-                context.arc(0, 0, this.Radius, 0, (Math).twoPI);
-            };
             Circle.prototype.GetDrawBounds = function () {
                 var bounds = new EndGate.Bounds.BoundingCircle(this.Position, this.Radius);
                 bounds.Rotation = this.Rotation;
                 return bounds;
+            };
+            Circle.prototype._BuildPath = function (context) {
+                context.arc(0, 0, this.Radius, 0, (Math).twoPI);
             };
             return Circle;
         })(Graphics.Abstractions.Shape);
@@ -2793,13 +2785,13 @@ var EndGate;
                 this._type = "Rectangle";
                 this.Size = new EndGate.Size2d(width, height);
             }
-            Rectangle.prototype.BuildPath = function (context) {
-                context.rect(-this.Size.HalfWidth(), -this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
-            };
             Rectangle.prototype.GetDrawBounds = function () {
                 var bounds = new EndGate.Bounds.BoundingRectangle(this.Position, this.Size);
                 bounds.Rotation = this.Rotation;
                 return bounds;
+            };
+            Rectangle.prototype._BuildPath = function (context) {
+                context.rect(-this.Size.HalfWidth(), -this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
             };
             return Rectangle;
         })(Graphics.Abstractions.Shape);
@@ -2840,7 +2832,7 @@ var EndGate;
                 return this.State.LineCap(cap);
             };
             Line2d.prototype.Draw = function (context) {
-                _super.prototype.StartDraw.call(this, context);
+                _super.prototype._StartDraw.call(this, context);
                 if(!this._cachedPosition.Equivalent(this.Position)) {
                     this.RefreshCache();
                 }
@@ -2848,7 +2840,7 @@ var EndGate;
                 context.moveTo(this._from.X - this.Position.X, this._from.Y - this.Position.Y);
                 context.lineTo(this._to.X - this.Position.X, this._to.Y - this.Position.Y);
                 context.stroke();
-                _super.prototype.EndDraw.call(this, context);
+                _super.prototype._EndDraw.call(this, context);
             };
             Line2d.prototype.GetDrawBounds = function () {
                 var bounds = new EndGate.Bounds.BoundingRectangle(this.Position, new EndGate.Size2d(this._boundsWidth, this.LineWidth()));
@@ -2887,9 +2879,9 @@ var EndGate;
     (function (Graphics) {
         var Grid = (function (_super) {
             __extends(Grid, _super);
-            function Grid(x, y, rows, columns, tileWidth, tileHeight, drawGridLines, color) {
+            function Grid(x, y, rows, columns, tileWidth, tileHeight, drawGridLines, gridLineColor) {
                 if (typeof drawGridLines === "undefined") { drawGridLines = false; }
-                if (typeof color === "undefined") { color = "gray"; }
+                if (typeof gridLineColor === "undefined") { gridLineColor = "gray"; }
                         _super.call(this, new EndGate.Vector2d(x, y));
                 this._type = "Grid";
                 var halfSize, topLeft, bottomRight;
@@ -2898,7 +2890,7 @@ var EndGate;
                 this._grid = [];
                 this._rows = rows;
                 this._columns = columns;
-                this._drawGridLines = drawGridLines;
+                this.DrawGridLines = drawGridLines;
                 this._gridLines = [];
                 halfSize = this._size.Multiply(.5);
                 topLeft = new EndGate.Vector2d(-halfSize.Width, -halfSize.Height);
@@ -2915,9 +2907,9 @@ var EndGate;
                 }
                 this._gridLines.push(new Graphics.Line2d(topLeft.X, bottomRight.Y, bottomRight.X, bottomRight.Y, 1));
                 this._gridLines.push(new Graphics.Line2d(bottomRight.X, topLeft.Y, bottomRight.X, bottomRight.Y, 1));
-                this.Color(color);
+                this.GridLineColor(gridLineColor);
             }
-            Grid.prototype.Color = function (color) {
+            Grid.prototype.GridLineColor = function (color) {
                 if(typeof color !== "undefined") {
                     this._gridLineColor = color;
                     for(var i = 0; i < this._gridLines.length; i++) {
@@ -2949,6 +2941,26 @@ var EndGate;
                 this._grid[row][column] = graphic;
                 this.AddChild(graphic);
             };
+            Grid.prototype.FillRow = function (row, graphicList, columnOffset) {
+                if (typeof columnOffset === "undefined") { columnOffset = 0; }
+                var graphic;
+                for(var i = 0; i < graphicList.length; i++) {
+                    graphic = graphicList[i];
+                    graphic.Position = this.GetInsideGridPosition(row, i + columnOffset);
+                    this._grid[row][i + columnOffset] = graphic;
+                    this.AddChild(graphic);
+                }
+            };
+            Grid.prototype.FillColumn = function (column, graphicList, rowOffset) {
+                if (typeof rowOffset === "undefined") { rowOffset = 0; }
+                var graphic;
+                for(var i = 0; i < graphicList.length; i++) {
+                    graphic = graphicList[i];
+                    graphic.Position = this.GetInsideGridPosition(i + rowOffset, column);
+                    this._grid[i + rowOffset][column] = graphic;
+                    this.AddChild(graphic);
+                }
+            };
             Grid.prototype.FillSpace = function (row, column, graphicList) {
                 var graphic;
                 for(var i = 0; i < graphicList.length; i++) {
@@ -2962,45 +2974,27 @@ var EndGate;
                     }
                 }
             };
-            Grid.prototype.FillRow = function (row, graphicList, offset) {
-                if (typeof offset === "undefined") { offset = 0; }
-                var graphic;
-                for(var i = 0; i < graphicList.length; i++) {
-                    graphic = graphicList[i];
-                    graphic.Position = this.GetInsideGridPosition(row, i + offset);
-                    this._grid[row][i + offset] = graphic;
-                    this.AddChild(graphic);
-                }
-            };
-            Grid.prototype.FillColumn = function (column, graphicList, offset) {
-                if (typeof offset === "undefined") { offset = 0; }
-                var graphic;
-                for(var i = 0; i < graphicList.length; i++) {
-                    graphic = graphicList[i];
-                    graphic.Position = this.GetInsideGridPosition(i + offset, column);
-                    this._grid[i + offset][column] = graphic;
-                    this.AddChild(graphic);
-                }
-            };
             Grid.prototype.Get = function (row, column) {
                 if(!this.ValidRow(row) || !this.ValidColumn(column)) {
                     return null;
                 }
                 return this._grid[row][column];
             };
-            Grid.prototype.GetColumn = function (column) {
-                var columnList = [];
-                for(var i = 0; i < this._rows; i++) {
-                    columnList.push(this._grid[i][column]);
-                }
-                return columnList;
-            };
-            Grid.prototype.GetRow = function (row) {
+            Grid.prototype.GetRow = function (row, columnOffset) {
+                if (typeof columnOffset === "undefined") { columnOffset = 0; }
                 var rowList = [];
-                for(var i = 0; i < this._columns; i++) {
+                for(var i = columnOffset; i < this._columns; i++) {
                     rowList.push(this._grid[row][i]);
                 }
                 return rowList;
+            };
+            Grid.prototype.GetColumn = function (column, rowOffset) {
+                if (typeof rowOffset === "undefined") { rowOffset = 0; }
+                var columnList = [];
+                for(var i = rowOffset; i < this._rows; i++) {
+                    columnList.push(this._grid[i][column]);
+                }
+                return columnList;
             };
             Grid.prototype.GetSpace = function (rowStart, columnStart, rowEnd, columnEnd) {
                 var space = [], rowIncrementor = (rowEnd >= rowStart) ? 1 : -1, columnIncrementor = (columnEnd >= columnStart) ? 1 : -1;
@@ -3026,7 +3020,8 @@ var EndGate;
                 this.RemoveChild(val);
                 return val;
             };
-            Grid.prototype.ClearRow = function (row) {
+            Grid.prototype.ClearRow = function (row, columnOffset) {
+                if (typeof columnOffset === "undefined") { columnOffset = 0; }
                 var vals = [];
                 for(var i = 0; i < this._columns; i++) {
                     vals.push(this._grid[row][i]);
@@ -3035,7 +3030,8 @@ var EndGate;
                 }
                 return vals;
             };
-            Grid.prototype.ClearColumn = function (column) {
+            Grid.prototype.ClearColumn = function (column, rowOffset) {
+                if (typeof rowOffset === "undefined") { rowOffset = 0; }
                 var vals = [];
                 for(var i = 0; i < this._rows; i++) {
                     vals.push(this._grid[i][column]);
@@ -3062,10 +3058,10 @@ var EndGate;
                 return space;
             };
             Grid.prototype.Draw = function (context) {
-                _super.prototype.StartDraw.call(this, context);
+                _super.prototype._StartDraw.call(this, context);
                 context.save();
-                _super.prototype.EndDraw.call(this, context);
-                if(this._drawGridLines) {
+                _super.prototype._EndDraw.call(this, context);
+                if(this.DrawGridLines) {
                     for(var i = 0; i < this._gridLines.length; i++) {
                         this._gridLines[i].Draw(context);
                     }
@@ -3148,9 +3144,9 @@ var EndGate;
                 return resources;
             };
             SquareTileMap.prototype.Draw = function (context) {
-                _super.prototype.StartDraw.call(this, context);
+                _super.prototype._StartDraw.call(this, context);
                 this._grid.Draw(context);
-                _super.prototype.EndDraw.call(this, context);
+                _super.prototype._EndDraw.call(this, context);
             };
             SquareTileMap.prototype.GetDrawBounds = function () {
                 var bounds = this._grid.GetDrawBounds();

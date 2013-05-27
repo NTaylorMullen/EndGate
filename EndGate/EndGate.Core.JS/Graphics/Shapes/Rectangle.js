@@ -10,6 +10,9 @@ var EndGate;
     /// <reference path="../../Bounds/BoundingRectangle.ts" />
     /// <reference path="Shape.ts" />
     (function (Graphics) {
+        /**
+        * Defines a drawable rectangle.
+        */
         var Rectangle = (function (_super) {
             __extends(Rectangle, _super);
             function Rectangle(x, y, width, height, color) {
@@ -17,13 +20,16 @@ var EndGate;
                 this._type = "Rectangle";
                 this.Size = new EndGate.Size2d(width, height);
             }
-            Rectangle.prototype.BuildPath = function (context) {
-                context.rect(-this.Size.HalfWidth(), -this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
-            };
-            Rectangle.prototype.GetDrawBounds = function () {
+            Rectangle.prototype.GetDrawBounds = /**
+            * The bounding area that represents where the Rectangle will draw.
+            */
+            function () {
                 var bounds = new EndGate.Bounds.BoundingRectangle(this.Position, this.Size);
                 bounds.Rotation = this.Rotation;
                 return bounds;
+            };
+            Rectangle.prototype._BuildPath = function (context) {
+                context.rect(-this.Size.HalfWidth(), -this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
             };
             return Rectangle;
         })(Graphics.Abstractions.Shape);
@@ -31,4 +37,3 @@ var EndGate;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
     var Graphics = EndGate.Graphics;
 })(EndGate || (EndGate = {}));
-//@ sourceMappingURL=Rectangle.js.map

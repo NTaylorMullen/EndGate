@@ -6,7 +6,7 @@
 module EndGate.Graphics {
 
     /**
-    * Defines a grid that can be used to store other graphics in a grid like structure.
+    * Defines a drawable grid that can be used to store other graphics in a grid like structure.
     */
     export class Grid extends Abstractions.Graphic2d {
         public _type: string = "Grid";
@@ -101,7 +101,7 @@ module EndGate.Graphics {
         public GridLineColor(): string;
         /**
         * Gets and sets the current grid line color.  Grid lines are only drawn of DrawGridLines is set to true.
-        * @param color The new grid line color.
+        * @param color The new grid line color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
         */
         public GridLineColor(color: string): string;
         public GridLineColor(color?: string): string {
@@ -430,10 +430,10 @@ module EndGate.Graphics {
         * @param context The canvas context to draw the grid onto.
         */
         public Draw(context: CanvasRenderingContext2D): void {
-            super.StartDraw(context);
+            super._StartDraw(context);
 
             context.save();
-            super.EndDraw(context);
+            super._EndDraw(context);
 
             if (this.DrawGridLines) {
                 for (var i = 0; i < this._gridLines.length; i++) {

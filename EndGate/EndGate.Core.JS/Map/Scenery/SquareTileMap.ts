@@ -32,11 +32,11 @@ module EndGate.Map {
         }
 
         public Draw(context: CanvasRenderingContext2D): void {
-            super.StartDraw(context);
+            super._StartDraw(context);
 
             this._grid.Draw(context);
 
-            super.EndDraw(context);
+            super._EndDraw(context);
         }
 
         public GetDrawBounds(): Bounds.Abstractions.Bounds2d {

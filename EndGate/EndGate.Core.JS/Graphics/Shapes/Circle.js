@@ -10,6 +10,9 @@ var EndGate;
     /// <reference path="../../Bounds/BoundingCircle.ts" />
     /// <reference path="Shape.ts" />
     (function (Graphics) {
+        /**
+        * Defines a drawable circle.
+        */
         var Circle = (function (_super) {
             __extends(Circle, _super);
             function Circle(x, y, radius, color) {
@@ -17,13 +20,16 @@ var EndGate;
                 this._type = "Circle";
                 this.Radius = radius;
             }
-            Circle.prototype.BuildPath = function (context) {
-                context.arc(0, 0, this.Radius, 0, (Math).twoPI);
-            };
-            Circle.prototype.GetDrawBounds = function () {
+            Circle.prototype.GetDrawBounds = /**
+            * The bounding area that represents where the Circle will draw.
+            */
+            function () {
                 var bounds = new EndGate.Bounds.BoundingCircle(this.Position, this.Radius);
                 bounds.Rotation = this.Rotation;
                 return bounds;
+            };
+            Circle.prototype._BuildPath = function (context) {
+                context.arc(0, 0, this.Radius, 0, (Math).twoPI);
             };
             return Circle;
         })(Graphics.Abstractions.Shape);
@@ -31,4 +37,3 @@ var EndGate;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
     var Graphics = EndGate.Graphics;
 })(EndGate || (EndGate = {}));
-//@ sourceMappingURL=Circle.js.map

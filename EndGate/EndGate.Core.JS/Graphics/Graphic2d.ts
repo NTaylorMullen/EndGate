@@ -48,7 +48,7 @@ module EndGate.Graphics.Abstractions {
             return this._children;
         }
 
-        public StartDraw(context: CanvasRenderingContext2D): void {
+        public _StartDraw(context: CanvasRenderingContext2D): void {
             context.save();
             this.State.SetContextState(context);
 
@@ -59,7 +59,7 @@ module EndGate.Graphics.Abstractions {
             }
         }
 
-        public EndDraw(context: CanvasRenderingContext2D): void {
+        public _EndDraw(context: CanvasRenderingContext2D): void {
             for (var i = 0; i < this._children.length; i++) {
                 this._children[i].Draw(context);
             }

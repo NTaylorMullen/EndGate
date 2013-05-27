@@ -36,7 +36,7 @@ var EndGate;
                 Graphic2d.prototype.Children = function () {
                     return this._children;
                 };
-                Graphic2d.prototype.StartDraw = function (context) {
+                Graphic2d.prototype._StartDraw = function (context) {
                     context.save();
                     this.State.SetContextState(context);
                     context.translate(this.Position.X, this.Position.Y);
@@ -44,7 +44,7 @@ var EndGate;
                         context.rotate(this.Rotation);
                     }
                 };
-                Graphic2d.prototype.EndDraw = function (context) {
+                Graphic2d.prototype._EndDraw = function (context) {
                     for(var i = 0; i < this._children.length; i++) {
                         this._children[i].Draw(context);
                     }

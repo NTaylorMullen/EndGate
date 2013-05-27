@@ -44,8 +44,14 @@ module EndGate.Graphics {
             return this.State.FillStyle(color);
         }
 
-        public Shadow(x?: number, y?: number, color?: string, blur?: number): any[] {
-            return [this.ShadowX(x), this.ShadowY(y), this.ShadowColor(color), this.ShadowBlur(blur)];
+        public Shadow(x: number, y: number): void;
+        public Shadow(x: number, y: number, color: string): void;
+        public Shadow(x: number, y: number, color: string, blur: number): void;
+        public Shadow(x: number, y: number, color?: string, blur?: number): void {
+            this.ShadowX(x);
+            this.ShadowY(y);
+            this.ShadowColor(color);
+            this.ShadowBlur(blur);
         }
 
         public ShadowColor(color?: string): string {
@@ -76,8 +82,9 @@ module EndGate.Graphics {
             return this._text;
         }
 
-        public Border(thickness?: number, color?: string): any[] {
-            return [this.BorderThickness(thickness), this.BorderColor(color)];
+        public Border(thickness: number, color: string): void {
+            this.BorderThickness(thickness);
+            this.BorderColor(color);
         }
 
         public BorderThickness(thickness?: number): number {
@@ -99,7 +106,7 @@ module EndGate.Graphics {
         public Draw(context: CanvasRenderingContext2D): void {
             var textSize;
 
-            super.StartDraw(context);
+            super._StartDraw(context);
 
             this.State.Font(this.FontSettings._BuildFont());
 
@@ -110,7 +117,7 @@ module EndGate.Graphics {
             context.fillText(this._text, 0, 0);
             this._stroker.Invoke(context);
 
-            super.EndDraw(context);
+            super._EndDraw(context);
         }
 
         public GetDrawBounds(): Bounds.Abstractions.Bounds2d {

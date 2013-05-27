@@ -38,12 +38,10 @@ var EndGate;
                 return this.State.FillStyle(color);
             };
             Text2d.prototype.Shadow = function (x, y, color, blur) {
-                return [
-                    this.ShadowX(x), 
-                    this.ShadowY(y), 
-                    this.ShadowColor(color), 
-                    this.ShadowBlur(blur)
-                ];
+                this.ShadowX(x);
+                this.ShadowY(y);
+                this.ShadowColor(color);
+                this.ShadowBlur(blur);
             };
             Text2d.prototype.ShadowColor = function (color) {
                 return this.State.ShadowColor(color);
@@ -67,10 +65,8 @@ var EndGate;
                 return this._text;
             };
             Text2d.prototype.Border = function (thickness, color) {
-                return [
-                    this.BorderThickness(thickness), 
-                    this.BorderColor(color)
-                ];
+                this.BorderThickness(thickness);
+                this.BorderColor(color);
             };
             Text2d.prototype.BorderThickness = function (thickness) {
                 if(thickness === 0) {
@@ -106,4 +102,3 @@ var EndGate;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
     var Graphics = EndGate.Graphics;
 })(EndGate || (EndGate = {}));
-//@ sourceMappingURL=Text2d.js.map

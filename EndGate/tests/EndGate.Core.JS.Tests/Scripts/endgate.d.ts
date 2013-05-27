@@ -803,8 +803,8 @@ module EndGate.Graphics.Abstractions {
         public AddChild(graphic: Graphic2d): void;
         public RemoveChild(graphic: Graphic2d): bool;
         public Children(): Graphic2d[];
-        public StartDraw(context: CanvasRenderingContext2D): void;
-        public EndDraw(context: CanvasRenderingContext2D): void;
+        public _StartDraw(context: CanvasRenderingContext2D): void;
+        public _EndDraw(context: CanvasRenderingContext2D): void;
         public Draw(context: CanvasRenderingContext2D): void;
         public GetDrawBounds(): Bounds.Abstractions.Bounds2d;
     }
@@ -1259,14 +1259,16 @@ module EndGate.Graphics {
         public Align(alignment?: string): string;
         public Baseline(baseline?: string): string;
         public Color(color?: string): string;
-        public Shadow(x?: number, y?: number, color?: string, blur?: number): any[];
+        public Shadow(x: number, y: number): void;
+        public Shadow(x: number, y: number, color: string): void;
+        public Shadow(x: number, y: number, color: string, blur: number): void;
         public ShadowColor(color?: string): string;
         public ShadowX(val?: number): number;
         public ShadowY(val?: number): number;
         public ShadowBlur(val?: number): number;
         public Opacity(alpha?: number): number;
         public Text(text?: string): string;
-        public Border(thickness?: number, color?: string): any[];
+        public Border(thickness: number, color: string): void;
         public BorderThickness(thickness?: number): number;
         public BorderColor(color?: string): string;
         public Draw(context: CanvasRenderingContext2D): void;
@@ -1328,43 +1330,197 @@ module EndGate.Graphics {
     }
 }
 module EndGate.Graphics.Abstractions {
+    /**
+    * Abstract drawable shape type that is used create customizable drawable graphics.
+    */
     class Shape extends Graphic2d {
         public _type: string;
         private _fill;
         private _stroke;
-        constructor(position: Vector2d, color?: string);
-        public Color(color?: string): string;
-        public Border(thickness?: number, color?: string): any[];
-        public BorderThickness(thickness?: number): number;
-        public BorderColor(color?: string): string;
-        public Shadow(x?: number, y?: number, color?: string, blur?: number): any[];
-        public ShadowColor(color?: string): string;
-        public ShadowX(val?: number): number;
-        public ShadowY(val?: number): number;
-        public ShadowBlur(val?: number): number;
-        public Opacity(alpha?: number): number;
-        public StartDraw(context: CanvasRenderingContext2D): void;
-        public EndDraw(context: CanvasRenderingContext2D): void;
-        public BuildPath(context: CanvasRenderingContext2D): void;
+        /**
+        * Should only ever be called by derived classes.
+        * @param position Initial Position of the current shape object.
+        */
+        constructor(position: Vector2d);
+        /**
+        * Should only ever be called by derived classes.
+        * @param position Initial Position of the current shape object.
+        * @param color Initial Color of the current shape object.
+        */
+        constructor(position: Vector2d, color: string);
+        /**
+        * Gets the current shape color.
+        */
+        public Color(): string;
+        /**
+        * Gets and sets the current shape color.
+        * @param color The new color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        */
+        public Color(color: string): string;
+        /**
+        * Sets the current borders thickness and color.
+        * @param thickness The new border thickness in pixels.
+        * @param color The new border color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        */
+        public Border(thickness: number, color: string): void;
+        /**
+        * Gets the current border thickness.
+        */
+        public BorderThickness(): number;
+        /**
+        * Sets and gets the current border thickness.
+        * @param thickness The new border thickness in pixels.
+        */
+        public BorderThickness(thickness: number): number;
+        /**
+        * Gets the current border color.
+        */
+        public BorderColor(): string;
+        /**
+        * Sets and gets the current border color.
+        * @param color The new border color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        */
+        public BorderColor(color: string): string;
+        /**
+        * Sets the current shadow x and y positions.
+        * @param x The shadows new horizontal position.
+        * @param y The shadows new vertical position.
+        */
+        public Shadow(x: number, y: number): void;
+        /**
+        * Sets the current shadow x and y positions and shadows color.
+        * @param x The shadows new horizontal position.
+        * @param y The shadows new vertical position.
+        * @param color The new shadow color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        */
+        public Shadow(x: number, y: number, color: string): void;
+        /**
+        * Sets the current shadow x and y positions and shadows color.
+        * @param x The shadows new horizontal position.
+        * @param y The shadows new vertical position.
+        * @param color The new shadow color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        * @param blur The new shadow blur.
+        */
+        public Shadow(x: number, y: number, color: string, blur: number): void;
+        /**
+        * Gets the current shadow color.
+        */
+        public ShadowColor(): string;
+        /**
+        * Sets and gets the current shadow color.
+        * @param color The new shadow color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        */
+        public ShadowColor(color: string): string;
+        /**
+        * Gets the current horizontal shadow position.
+        */
+        public ShadowX(): number;
+        /**
+        * Sets and gets the current horizontal shadow position.
+        * @param x The shadows new horizontal position.
+        */
+        public ShadowX(x: number): number;
+        /**
+        * Gets the current vertical shadow position.
+        */
+        public ShadowY(): number;
+        /**
+        * Sets and gets the current vertical shadow position.
+        * @param y The shadows new vertical position.
+        */
+        public ShadowY(y: number): number;
+        /**
+        * Gets the current shadow blur.
+        */
+        public ShadowBlur(): number;
+        /**
+        * Sets and gets the current shadow blur.
+        * @param blur The shadows new blur.
+        */
+        public ShadowBlur(blur: number): number;
+        /**
+        * Gets the current opacity.  Value is between 0 and 1.
+        */
+        public Opacity(): number;
+        /**
+        * Sets and gets the current opacity.
+        * @param alpha New opacity, value is between 0 and 1.
+        */
+        public Opacity(alpha: number): number;
+        public _StartDraw(context: CanvasRenderingContext2D): void;
+        public _EndDraw(context: CanvasRenderingContext2D): void;
+        public _BuildPath(context: CanvasRenderingContext2D): void;
+        /**
+        * Draws the shape onto the given context.  If this grid is part of a scene the Draw function will be called automatically.
+        * @param context The canvas context to draw the grid onto.
+        */
         public Draw(context: CanvasRenderingContext2D): void;
     }
 }
 module EndGate.Graphics {
+    /**
+    * Defines a drawable circle.
+    */
     class Circle extends Abstractions.Shape {
         public _type: string;
+        /**
+        * Gets or sets the Radius of the Circle.
+        */
         public Radius: number;
-        constructor(x: number, y: number, radius: number, color?: string);
-        public BuildPath(context: CanvasRenderingContext2D): void;
+        /**
+        * Creates a new instance of the Circle object.
+        * @param x Initial horizontal location of the Circle.
+        * @param y Initial vertical location of the Circle.
+        * @param radius Initial Radius of the Circle.
+        */
+        constructor(x: number, y: number, radius: number);
+        /**
+        * Creates a new instance of the Circle object with a specified color.
+        * @param x Initial horizontal location of the Circle.
+        * @param y Initial vertical location of the Circle.
+        * @param radius Initial Radius of the Circle.
+        * @param color Initial color of the Circle.
+        */
+        constructor(x: number, y: number, radius: number, color: string);
+        /**
+        * The bounding area that represents where the Circle will draw.
+        */
         public GetDrawBounds(): Bounds.Abstractions.Bounds2d;
+        public _BuildPath(context: CanvasRenderingContext2D): void;
     }
 }
 module EndGate.Graphics {
+    /**
+    * Defines a drawable rectangle.
+    */
     class Rectangle extends Abstractions.Shape {
         public _type: string;
+        /**
+        * Gets or sets the Size of the Rectangle.
+        */
         public Size: Size2d;
-        constructor(x: number, y: number, width: number, height: number, color?: string);
-        public BuildPath(context: CanvasRenderingContext2D): void;
+        /**
+        * Creates a new instance of the Rectangle object.
+        * @param x Initial horizontal location of the Rectangle.
+        * @param y Initial vertical location of the Rectangle.
+        * @param width Initial width of the Rectangle.
+        * @param height Initial height of the Rectangle.
+        */
+        constructor(x: number, y: number, width: number, height: number);
+        /**
+        * Creates a new instance of the Rectangle object with a specified color.
+        * @param x Initial horizontal location of the Rectangle.
+        * @param y Initial vertical location of the Rectangle.
+        * @param width Initial width of the Rectangle.
+        * @param height Initial height of the Rectangle.
+        * @param color Initial color of the Rectangle.
+        */
+        constructor(x: number, y: number, width: number, height: number, color: string);
+        /**
+        * The bounding area that represents where the Rectangle will draw.
+        */
         public GetDrawBounds(): Bounds.Abstractions.Bounds2d;
+        public _BuildPath(context: CanvasRenderingContext2D): void;
     }
 }
 module EndGate.Graphics {
@@ -1389,8 +1545,15 @@ module EndGate.Graphics {
     }
 }
 module EndGate.Graphics {
+    /**
+    * Defines a drawable grid that can be used to store other graphics in a grid like structure.
+    */
     class Grid extends Abstractions.Graphic2d {
         public _type: string;
+        /**
+        * Gets or sets the DrawGridLines property.  Indicates whether the grids column and row lines will be drawn.
+        */
+        public DrawGridLines: bool;
         private _size;
         private _tileSize;
         private _grid;
@@ -1398,30 +1561,204 @@ module EndGate.Graphics {
         private _positionOffset;
         private _rows;
         private _columns;
-        private _drawGridLines;
         private _gridLineColor;
-        constructor(x: number, y: number, rows: number, columns: number, tileWidth: number, tileHeight: number, drawGridLines?: bool, color?: string);
-        public Color(color?: string): string;
+        /**
+        * Creates a new instance of the Grid object.
+        * @param x Initial horizontal location of the grid.
+        * @param y Initial vertical location of the grid.
+        * @param rows Number of rows the grid will have (this cannot change after construction).
+        * @param columns Number of columns the grid will have (this cannot change after construction).
+        * @param tileWidth The width of the grid tiles (this cannot change after construction).
+        * @param tileHeight The height of the grid tiles (this cannot change after construction).
+        */
+        constructor(x: number, y: number, rows: number, columns: number, tileWidth: number, tileHeight: number);
+        /**
+        * Creates a new instance of the Grid object.
+        * @param x Initial horizontal location of the grid.
+        * @param y Initial vertical location of the grid.
+        * @param rows Number of rows the grid will have (this cannot change after construction).
+        * @param columns Number of columns the grid will have (this cannot change after construction).
+        * @param tileWidth The width of the grid tiles (this cannot change after construction).
+        * @param tileHeight The height of the grid tiles (this cannot change after construction).
+        * @param drawGridLines Initial value for DrawGridLines.
+        */
+        constructor(x: number, y: number, rows: number, columns: number, tileWidth: number, tileHeight: number, drawGridLines: bool);
+        /**
+        * Creates a new instance of the Grid object.
+        * @param x Initial horizontal location of the grid.
+        * @param y Initial vertical location of the grid.
+        * @param rows Number of rows the grid will have (this cannot change after construction).
+        * @param columns Number of columns the grid will have (this cannot change after construction).
+        * @param tileWidth The width of the grid tiles (this cannot change after construction).
+        * @param tileHeight The height of the grid tiles (this cannot change after construction).
+        * @param drawGridLines Initial value for DrawGridLines.
+        * @param gridLineColor Initial grid line color (only useful if drawGridLines is true);
+        */
+        constructor(x: number, y: number, rows: number, columns: number, tileWidth: number, tileHeight: number, drawGridLines: bool, gridLineColor: string);
+        /**
+        * Gets the current grid line color.  Grid lines are only drawn of DrawGridLines is set to true.
+        */
+        public GridLineColor(): string;
+        /**
+        * Gets and sets the current grid line color.  Grid lines are only drawn of DrawGridLines is set to true.
+        * @param color The new grid line color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        */
+        public GridLineColor(color: string): string;
+        /**
+        * Gets the size of the grid.
+        */
         public Size(): Size2d;
+        /**
+        * Gets the size of the tiles.
+        */
         public TileSize(): Size2d;
+        /**
+        * Gets the number of rows
+        */
         public Rows(): number;
+        /**
+        * Gets the number of columns
+        */
         public Columns(): number;
-        public Opacity(alpha?: number): number;
+        /**
+        * Gets the current opacity.  Value is between 0 and 1.
+        */
+        public Opacity(): number;
+        /**
+        * Sets and gets the current opacity.
+        * @param alpha New opacity, value is between 0 and 1.
+        */
+        public Opacity(alpha: number): number;
+        /**
+        * Fills a tile with the provided graphic.
+        * @param row The row.
+        * @param column The column.
+        * @param graphic The graphic to fill the tile with.
+        */
         public Fill(row: number, column: number, graphic: Abstractions.Graphic2d): void;
+        /**
+        * Fills a row with the provided graphics
+        * @param row The row to fill.
+        * @param graphicList The list of graphics to fill the row with.  The row will be filled with as many elements that are contained within the graphicList.
+        */
+        public FillRow(row: number, graphicList: Abstractions.Graphic2d[]): void;
+        /**
+        * Fills a row with the provided graphics starting at the provided column
+        * @param row The row to fill.
+        * @param graphicList The list of graphics to fill the row with.  The row will be filled with as many elements that are contained within the graphicList.
+        * @param columnOffset The column to start filling at.
+        */
+        public FillRow(row: number, graphicList: Abstractions.Graphic2d[], columnOffset: number): void;
+        /**
+        * Fills a column with the provided graphics
+        * @param column The column to fill.
+        * @param graphicList The list of graphics to fill the column with.  The column will be filled with as many elements that are contained within the graphicList.
+        */
+        public FillColumn(column: number, graphicList: Abstractions.Graphic2d[]): void;
+        /**
+        * Fills a column with the provided graphics starting at the provided row.
+        * @param column The column to fill.
+        * @param graphicList The list of graphics to fill the column with.  The column will be filled with as many elements that are contained within the graphicList.
+        * @param rowOffset The row to start filling at.
+        */
+        public FillColumn(column: number, graphicList: Abstractions.Graphic2d[], rowOffset: number): void;
+        /**
+        * Fills a tile with the provided graphic.
+        * @param row The row to start filling at.
+        * @param column The column to start filling at.
+        * @param graphicList The list of graphics to fill the space with.  The space will be filled with as many elements that are contained within the multi-dimensional graphicList.
+        */
         public FillSpace(row: number, column: number, graphicList: Abstractions.Graphic2d[][]): void;
-        public FillRow(row: number, graphicList: Abstractions.Graphic2d[], offset?: number): void;
-        public FillColumn(column: number, graphicList: Abstractions.Graphic2d[], offset?: number): void;
+        /**
+        * Gets a graphic within the grid.
+        * @param row The row.
+        * @param column The column.
+        */
         public Get(row: number, column: number): Abstractions.Graphic2d;
-        public GetColumn(column: number): Abstractions.Graphic2d[];
+        /**
+        * Retrieves graphics within the provided row.
+        * @param row The row to retrieve.
+        */
         public GetRow(row: number): Abstractions.Graphic2d[];
+        /**
+        * Retrieves graphics within the row starting at the provided column offset.
+        * @param row The row to retrieve.
+        * @param columnOffset The column to start retrieving the row at.
+        */
+        public GetRow(row: number, columnOffset: number): Abstractions.Graphic2d[];
+        /**
+        * Retrieves graphics within the provided column.
+        * @param column The column to retrieve.
+        */
+        public GetColumn(column: number): Abstractions.Graphic2d[];
+        /**
+        * Retrieves graphics within the column starting at the provided row offset.
+        * @param column The column to retrieve.
+        * @param rowOffset The row to start retrieving the column at.
+        */
+        public GetColumn(column: number, rowOffset: number): Abstractions.Graphic2d[];
+        /**
+        * Retrieves graphics within row column cross section.
+        * @param rowStart The row to start pulling graphics from.
+        * @param columnStart The column to start pulling graphics from.
+        * @param rowEnd The row to stop pulling graphics from.
+        * @param columnEnd The column to stop pulling graphics from.
+        */
         public GetSpace(rowStart: number, columnStart: number, rowEnd: number, columnEnd: number): Abstractions.Graphic2d[];
+        /**
+        * Clear a grid tile.
+        * @param row The row.
+        * @param column The column.
+        */
         public Clear(row: number, column: number): Abstractions.Graphic2d;
+        /**
+        * Clears graphics within the provided row.
+        * @param row The row to clear.
+        */
         public ClearRow(row: number): Abstractions.Graphic2d[];
+        /**
+        * Clears graphics within the row starting at the provided column offset.
+        * @param row The row to clear.
+        * @param columnOffset The column to start clearing the row at.
+        */
+        public ClearRow(row: number, columnOffset: number): Abstractions.Graphic2d[];
+        /**
+        * Clears graphics within the provided column.
+        * @param column The column to clear.
+        */
         public ClearColumn(column: number): Abstractions.Graphic2d[];
+        /**
+        * Clears graphics within the column starting at the provided column offset.
+        * @param column The column to clear.
+        * @param rowOffset The row to start clearing the column at.
+        */
+        public ClearColumn(column: number, rowOffset: number): Abstractions.Graphic2d[];
+        /**
+        * Clears graphics within row column cross section.
+        * @param rowStart The row to start clearing graphics from.
+        * @param columnStart The column to start clearing graphics from.
+        * @param rowEnd The row to stop clearing graphics from.
+        * @param columnEnd The column to stop clearing graphics from.
+        */
         public ClearSpace(rowStart: number, columnStart: number, rowEnd: number, columnEnd: number): Abstractions.Graphic2d[];
+        /**
+        * Draws the grid onto the given context.  If this grid is part of a scene the Draw function will be called automatically.
+        * @param context The canvas context to draw the grid onto.
+        */
         public Draw(context: CanvasRenderingContext2D): void;
+        /**
+        * The bounding area that represents where the grid will draw.
+        */
         public GetDrawBounds(): Bounds.Abstractions.Bounds2d;
+        /**
+        * Converts the provided vertical coordinate to a row number that is based on the current grid.
+        * @param y The vertical coordinate to convert to a row.
+        */
         public ConvertToRow(y: number): number;
+        /**
+        * Converts the provided horizontal coordinate to a column number that is based on the current grid.
+        * @param x The horizontal component to convert to a column.
+        */
         public ConvertToColumn(x: number): number;
         private GetInsideGridPosition(row, column);
         private ValidRow(row);
