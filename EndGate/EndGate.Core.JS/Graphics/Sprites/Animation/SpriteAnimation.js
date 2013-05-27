@@ -7,6 +7,9 @@ var EndGate;
     /// <reference path="../../../GameTime.ts" />
     /// <reference path="../ImageSource.ts" />
     (function (Graphics) {
+        /**
+        * Defines an animation that can be drawn to the screen.
+        */
         var SpriteAnimation = (function () {
             function SpriteAnimation(imageSource, fps, frameSize, frameCount, startOffset) {
                 if (typeof startOffset === "undefined") { startOffset = EndGate.Vector2d.Zero(); }
@@ -22,7 +25,10 @@ var EndGate;
                 this.OnComplete = new EndGate.EventHandler();
                 this.Fps(fps);
             }
-            SpriteAnimation.prototype.IsPlaying = function () {
+            SpriteAnimation.prototype.IsPlaying = /**
+            * Determines if the animation is currently playing.
+            */
+            function () {
                 return this._playing;
             };
             SpriteAnimation.prototype.Play = function (repeat) {
@@ -32,7 +38,10 @@ var EndGate;
                 this._playing = true;
                 this.UpdateImageSource();
             };
-            SpriteAnimation.prototype.Pause = function () {
+            SpriteAnimation.prototype.Pause = /**
+            * Pauses the animation.
+            */
+            function () {
                 this._playing = false;
             };
             SpriteAnimation.prototype.Step = function (count) {
@@ -58,7 +67,10 @@ var EndGate;
                     this.Reset();
                 }
             };
-            SpriteAnimation.prototype.Reset = function () {
+            SpriteAnimation.prototype.Reset = /**
+            * Resets the current animation frame to 0.
+            */
+            function () {
                 this._currentFrame = 0;
                 this.UpdateImageSource();
             };
@@ -69,7 +81,11 @@ var EndGate;
                 }
                 return this._fps;
             };
-            SpriteAnimation.prototype.Update = function (gameTime) {
+            SpriteAnimation.prototype.Update = /**
+            * Updates the animations current frame.  Needs to be updated in order to play the animation.
+            * @param gameTime The current game time object.
+            */
+            function (gameTime) {
                 var timeSinceStep = gameTime.Now.getTime() - this._lastStepAt, stepCount = 0;
                 if(this._playing) {
                     stepCount = Math.floor(timeSinceStep / this._stepEvery);
@@ -97,4 +113,3 @@ var EndGate;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
     var Graphics = EndGate.Graphics;
 })(EndGate || (EndGate = {}));
-//@ sourceMappingURL=SpriteAnimation.js.map

@@ -1276,17 +1276,68 @@ module EndGate.Graphics {
     }
 }
 module EndGate.Graphics.Assets {
+    /**
+    * Defines an image resource that can be used within Sprite's, SpriteAnimation's and other drawable graphics.
+    */
     class ImageSource {
-        public Loaded: bool;
+        /**
+        * Gets or sets the ClipLocation.  Represents where the image clip is within the base image.
+        */
         public ClipLocation: Vector2d;
+        /**
+        * Gets or sets the ClipSize.  Represents how large the image clip is within the base image.
+        */
         public ClipSize: Size2d;
-        public Size: Size2d;
+        /**
+        * Gets the base image source.  Should not be modified once the ImageSource has been constructed
+        */
         public Source: HTMLImageElement;
+        private _size;
+        private _loaded;
         private _imageLocation;
+        /**
+        * Creates a new instance of the ImageSource object.
+        * @param imageLocation Image source url (this cannot change after construction).
+        */
         constructor(imageLocation: string);
-        constructor(imageLocation: string, width?: number, height?: number);
-        constructor(imageLocation: string, width?: number, height?: number, clipX?: number, clipY?: number, clipWidth?: number, clipHeight?: number);
+        /**
+        * Creates a new instance of the ImageSource object with a specified width and height.  If width and height are smaller than the actual width and height of the image source the image will be stretched
+        * @param imageLocation Image source url (this cannot change after construction).
+        * @param width The width of the base image (this cannot change after construction).
+        * @param height The height of the base image (this cannot change after construction).
+        */
+        constructor(imageLocation: string, width: number, height: number);
+        /**
+        * Creates a new instance of the ImageSource object with a specified width and height and a clip location.  If width and height are smaller than the actual width and height of the image source the image will be stretched
+        * @param imageLocation Image source url (this cannot change after construction).
+        * @param width The width of the base image (this cannot change after construction).
+        * @param height The height of the base image (this cannot change after construction).
+        * @param clipX The horizontal location of the clip.
+        * @param clipY The vertical location of the clip.
+        * @param clipWidth The width of the clip.  Ultimately this width is the width that is drawn to the screen.
+        * @param clipHeight The height of the clip.  Ultimately this height is the height that is drawn to the screen.
+        */
+        constructor(imageLocation: string, width: number, height: number, clipX: number, clipY: number, clipWidth: number, clipHeight: number);
+        /**
+        * Event: Triggered when the base image is finished loading.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Passes the ImageSource to the bound functions.
+        */
         public OnLoaded: EventHandler;
+        /**
+        * Returns the base Size of the image source.
+        */
+        public Size(): Size2d;
+        /**
+        * Determines if the ImageSource has been loaded.
+        */
+        public Loaded(): bool;
+        /**
+        * Returns an ImageSource that is extracted from the current ImageSource based on the provided clip location and clip size.
+        * @param clipX The horizontal location of the clip.
+        * @param clipY The vertical location of the clip.
+        * @param clipWidth The width of the clip.
+        * @param clipHeight The height of the clip.
+        */
         public Extract(clipX: number, clipY: number, clipWidth: number, clipHeight: number): ImageSource;
     }
 }
@@ -1302,6 +1353,9 @@ module EndGate.Graphics {
     }
 }
 module EndGate.Graphics {
+    /**
+    * Defines an animation that can be drawn to the screen.
+    */
     class SpriteAnimation {
         private _imageSource;
         private _fps;
@@ -1314,15 +1368,78 @@ module EndGate.Graphics {
         private _framesPerRow;
         private _lastStepAt;
         private _stepEvery;
+        /**
+        * Creates a new instance of the SpriteAnimation object.
+        * @param imageSource The Sprite sheet that contains the image frames used to display the animation.
+        * @param fps How fast to play the animation (frames per second).  This value should not be less than the games update interval.
+        * @param frameSize How large each animation frame is within the imageSource sprite sheet.
+        * @param frameCount How many frames to play for the animation.
+        */
+        constructor(imageSource: Assets.ImageSource, fps: number, frameSize: Size2d, frameCount: number);
+        /**
+        * Creates a new instance of the SpriteAnimation object.
+        * @param imageSource The Sprite sheet that contains the image frames used to display the animation.
+        * @param fps How fast to play the animation (frames per second).  This value should not be less than the games update interval.
+        * @param frameSize How large each animation frame is within the imageSource sprite sheet.
+        * @param frameCount How many frames to play for the animation.
+        * @param startOffset The positional offset within the imageSource on where the set of animation frames begin.
+        */
         constructor(imageSource: Assets.ImageSource, fps: number, frameSize: Size2d, frameCount: number, startOffset?: Vector2d);
+        /**
+        * Event: Triggered when the animation has completed, will not trigger if the animation is repeating.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        */
         public OnComplete: EventHandler;
+        /**
+        * Determines if the animation is currently playing.
+        */
         public IsPlaying(): bool;
-        public Play(repeat?: bool): void;
+        /**
+        * Plays the animation.
+        */
+        public Play(): void;
+        /**
+        * Plays the animation.
+        * @param repeat Whether to play the animation on repeat.
+        */
+        public Play(repeat: bool): void;
+        /**
+        * Pauses the animation.
+        */
         public Pause(): void;
-        public Step(count?: number): void;
-        public Stop(resetFrame?: bool): void;
+        /**
+        * Steps the animation 1 frame forward.  If not repeating and the animation surpasses the maximum frame count, the animation will stop and the OnComplete event will trigger.
+        */
+        public Step(): void;
+        /**
+        * Steps the animation 1 frame forward.  If not repeating and the animation surpasses the maximum frame count, the animation will stop and the OnComplete event will trigger.
+        * @param count How many frames to move forward
+        */
+        public Step(count: number): void;
+        /**
+        * Stops the animation and resets the current animation frame to 0.
+        */
+        public Stop(): void;
+        /**
+        * Stops the animation.
+        * @param resetFrame Whether to reset the current animation frame to 0.
+        */
+        public Stop(resetFrame: bool): void;
+        /**
+        * Resets the current animation frame to 0.
+        */
         public Reset(): void;
-        public Fps(newFps?: number): number;
+        /**
+        * Gets the current frames per second.
+        */
+        public Fps(): number;
+        /**
+        * Sets and gets the current frames per second.
+        */
+        public Fps(newFps: number): number;
+        /**
+        * Updates the animations current frame.  Needs to be updated in order to play the animation.
+        * @param gameTime The current game time object.
+        */
         public Update(gameTime: GameTime): void;
         private UpdateImageSource();
         private GetFrameRow();

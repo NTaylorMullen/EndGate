@@ -1676,7 +1676,6 @@ module EndGate.Bounds {
             super(position);
 
             this.Radius = radius;
-            var foo = new BoundingCircle(Vector2d.Zero(), 3);
         }
 
         /**
@@ -3760,32 +3759,64 @@ module EndGate.Graphics {
 
 module EndGate.Graphics.Assets {
 
+    /**
+    * Defines an image resource that can be used within Sprite's, SpriteAnimation's and other drawable graphics.
+    */
     export class ImageSource {
-        public Loaded: bool;
+        /**
+        * Gets or sets the ClipLocation.  Represents where the image clip is within the base image.
+        */
         public ClipLocation: Vector2d;
+        /**
+        * Gets or sets the ClipSize.  Represents how large the image clip is within the base image.
+        */
         public ClipSize: Size2d;
-        public Size: Size2d;
+        /**
+        * Gets the base image source.  Should not be modified once the ImageSource has been constructed
+        */
         public Source: HTMLImageElement;
 
+        private _size: Size2d;
+        private _loaded: bool;
         private _imageLocation;
 
+        /**
+        * Creates a new instance of the ImageSource object.
+        * @param imageLocation Image source url (this cannot change after construction). 
+        */
         constructor(imageLocation: string);
-        constructor(imageLocation: string, width?: number, height?: number);
-        constructor(imageLocation: string, width?: number, height?: number, clipX?: number = 0, clipY?: number = 0, clipWidth?: number, clipHeight?: number);
-        constructor(imageLocation: string, width?: number, height?: number, clipX?: number = 0, clipY?: number = 0, clipWidth?: number = width, clipHeight?: number = height) {
+        /**
+        * Creates a new instance of the ImageSource object with a specified width and height.  If width and height are smaller than the actual width and height of the image source the image will be stretched
+        * @param imageLocation Image source url (this cannot change after construction).
+        * @param width The width of the base image (this cannot change after construction).
+        * @param height The height of the base image (this cannot change after construction).
+        */
+        constructor(imageLocation: string, width: number, height: number);
+        /**
+        * Creates a new instance of the ImageSource object with a specified width and height and a clip location.  If width and height are smaller than the actual width and height of the image source the image will be stretched
+        * @param imageLocation Image source url (this cannot change after construction).
+        * @param width The width of the base image (this cannot change after construction).
+        * @param height The height of the base image (this cannot change after construction).
+        * @param clipX The horizontal location of the clip.
+        * @param clipY The vertical location of the clip.
+        * @param clipWidth The width of the clip.  Ultimately this width is the width that is drawn to the screen.
+        * @param clipHeight The height of the clip.  Ultimately this height is the height that is drawn to the screen.
+        */
+        constructor(imageLocation: string, width: number, height: number, clipX: number, clipY: number, clipWidth: number, clipHeight: number);
+        constructor(imageLocation: string, width?: number, height?: number, clipX: number = 0, clipY: number = 0, clipWidth: number = width, clipHeight: number = height) {
             var setSize = typeof width !== "undefined";
 
-            this.Loaded = false;
-            this.OnLoaded = new EventHandler();                
+            this._loaded = false;
+            this.OnLoaded = new EventHandler();
             this.Source = new Image();
 
             this.Source.onload = () => {
-                this.Loaded = true;
+                this._loaded = true;
 
                 if (!setSize) {
-                    this.Size = new Size2d(this.Source.width, this.Source.height);
+                    this._size = new Size2d(this.Source.width, this.Source.height);
                     this.ClipLocation = Vector2d.Zero();
-                    this.ClipSize = this.Size.Clone();
+                    this.ClipSize = this._size.Clone();
                 }
 
                 this.OnLoaded.Trigger(this);
@@ -3795,16 +3826,41 @@ module EndGate.Graphics.Assets {
             this._imageLocation = imageLocation;
 
             if (setSize) {
-                this.Size = new Size2d(width, height);
+                this._size = new Size2d(width, height);
                 this.ClipLocation = new Vector2d(clipX, clipY);
                 this.ClipSize = new Size2d(clipWidth, clipHeight);
             }
         }
 
+        /**
+        * Event: Triggered when the base image is finished loading.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Passes the ImageSource to the bound functions.
+        */
         public OnLoaded: EventHandler;
 
+        /**
+        * Returns the base Size of the image source.
+        */
+        public Size(): Size2d {
+            return this._size.Clone();
+        }
+
+        /**
+        * Determines if the ImageSource has been loaded.
+        */
+        public Loaded(): bool {
+            return this._loaded;
+        }
+
+        /**
+        * Returns an ImageSource that is extracted from the current ImageSource based on the provided clip location and clip size.
+        * @param clipX The horizontal location of the clip.
+        * @param clipY The vertical location of the clip.
+        * @param clipWidth The width of the clip.
+        * @param clipHeight The height of the clip.
+        */
         public Extract(clipX: number, clipY: number, clipWidth: number, clipHeight: number): ImageSource {
-            return new ImageSource(this._imageLocation, this.Size.Width, this.Size.Height, clipX, clipY, clipWidth, clipHeight);
+            return new ImageSource(this._imageLocation, this._size.Width, this._size.Height, clipX, clipY, clipWidth, clipHeight);
         }
     }
 
@@ -3862,6 +3918,9 @@ module EndGate.Graphics {
 
 module EndGate.Graphics {
 
+    /**
+    * Defines an animation that can be drawn to the screen.
+    */
     export class SpriteAnimation {
         private _imageSource: Assets.ImageSource;
         private _fps: number;
@@ -3877,7 +3936,24 @@ module EndGate.Graphics {
         // Step to the next frame ever X ms
         private _stepEvery: number;
 
-        constructor(imageSource: Assets.ImageSource, fps: number, frameSize: Size2d, frameCount: number, startOffset?: Vector2d = Vector2d.Zero()) {
+        /**
+        * Creates a new instance of the SpriteAnimation object.
+        * @param imageSource The Sprite sheet that contains the image frames used to display the animation.
+        * @param fps How fast to play the animation (frames per second).  This value should not be less than the games update interval.
+        * @param frameSize How large each animation frame is within the imageSource sprite sheet.
+        * @param frameCount How many frames to play for the animation.
+        */
+        constructor(imageSource: Assets.ImageSource, fps: number, frameSize: Size2d, frameCount: number);
+        /**
+        * Creates a new instance of the SpriteAnimation object.
+        * @param imageSource The Sprite sheet that contains the image frames used to display the animation.
+        * @param fps How fast to play the animation (frames per second).  This value should not be less than the games update interval.
+        * @param frameSize How large each animation frame is within the imageSource sprite sheet.
+        * @param frameCount How many frames to play for the animation.
+        * @param startOffset The positional offset within the imageSource on where the set of animation frames begin.
+        */
+        constructor(imageSource: Assets.ImageSource, fps: number, frameSize: Size2d, frameCount: number, startOffset: Vector2d = Vector2d.Zero());
+        constructor(imageSource: Assets.ImageSource, fps: number, frameSize: Size2d, frameCount: number, startOffset: Vector2d = Vector2d.Zero()) {
             this._imageSource = imageSource;
             this._frameSize = frameSize;
             this._frameCount = frameCount;
@@ -3886,19 +3962,34 @@ module EndGate.Graphics {
             this._repeating = false;
             this._currentFrame = 0;
             this._framesPerRow = Math.min(Math.floor((imageSource.ClipSize.Width - startOffset.X) / frameSize.Width), frameCount);
-            this._lastStepAt = 0;            
+            this._lastStepAt = 0;
 
             this.OnComplete = new EventHandler();
 
             this.Fps(fps);
         }
 
+        /**
+        * Event: Triggered when the animation has completed, will not trigger if the animation is repeating.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        */
         public OnComplete: EventHandler;
 
+        /**
+        * Determines if the animation is currently playing.
+        */
         public IsPlaying(): bool {
             return this._playing;
         }
 
+        /**
+        * Plays the animation.
+        */
+        public Play(): void;
+        /**
+        * Plays the animation.
+        * @param repeat Whether to play the animation on repeat.
+        */
+        public Play(repeat: bool): void;
         public Play(repeat?: bool = false): void {
             this._lastStepAt = new Date().getTime();
             this._repeating = repeat;
@@ -3906,11 +3997,23 @@ module EndGate.Graphics {
             this.UpdateImageSource();
         }
 
+        /**
+        * Pauses the animation.
+        */
         public Pause(): void {
             this._playing = false;
         }
 
-        public Step(count?: number = 1): void {           
+        /**
+        * Steps the animation 1 frame forward.  If not repeating and the animation surpasses the maximum frame count, the animation will stop and the OnComplete event will trigger.
+        */
+        public Step(): void;
+        /**
+        * Steps the animation 1 frame forward.  If not repeating and the animation surpasses the maximum frame count, the animation will stop and the OnComplete event will trigger.
+        * @param count How many frames to move forward
+        */
+        public Step(count: number): void;
+        public Step(count: number = 1): void {
             this._currentFrame += count;
 
             if (this._currentFrame >= this._frameCount) {
@@ -3929,18 +4032,38 @@ module EndGate.Graphics {
             }
         }
 
-        public Stop(resetFrame?: bool = true): void {
+        /**
+        * Stops the animation and resets the current animation frame to 0.
+        */
+        public Stop(): void;
+        /**
+        * Stops the animation.
+        * @param resetFrame Whether to reset the current animation frame to 0.
+        */
+        public Stop(resetFrame: bool): void;
+        public Stop(resetFrame: bool = true): void {
             this._playing = false;
             if (resetFrame) {
                 this.Reset();
             }
         }
 
+        /**
+        * Resets the current animation frame to 0.
+        */
         public Reset(): void {
             this._currentFrame = 0;
             this.UpdateImageSource();
         }
 
+        /**
+        * Gets the current frames per second.
+        */
+        public Fps(): number;
+        /**
+        * Sets and gets the current frames per second.
+        */
+        public Fps(newFps: number): number;
         public Fps(newFps?: number): number {
             if (typeof newFps !== "undefined") {
                 this._fps = newFps;
@@ -3950,6 +4073,10 @@ module EndGate.Graphics {
             return this._fps;
         }
 
+        /**
+        * Updates the animations current frame.  Needs to be updated in order to play the animation.
+        * @param gameTime The current game time object.
+        */
         public Update(gameTime: GameTime): void {
             var timeSinceStep = gameTime.Now.getTime() - this._lastStepAt,
                 stepCount = 0;

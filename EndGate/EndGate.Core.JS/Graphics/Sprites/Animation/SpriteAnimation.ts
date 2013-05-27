@@ -7,6 +7,9 @@
 
 module EndGate.Graphics {
 
+    /**
+    * Defines an animation that can be drawn to the screen.
+    */
     export class SpriteAnimation {
         private _imageSource: Assets.ImageSource;
         private _fps: number;
@@ -22,7 +25,24 @@ module EndGate.Graphics {
         // Step to the next frame ever X ms
         private _stepEvery: number;
 
-        constructor(imageSource: Assets.ImageSource, fps: number, frameSize: Size2d, frameCount: number, startOffset?: Vector2d = Vector2d.Zero()) {
+        /**
+        * Creates a new instance of the SpriteAnimation object.
+        * @param imageSource The Sprite sheet that contains the image frames used to display the animation.
+        * @param fps How fast to play the animation (frames per second).  This value should not be less than the games update interval.
+        * @param frameSize How large each animation frame is within the imageSource sprite sheet.
+        * @param frameCount How many frames to play for the animation.
+        */
+        constructor(imageSource: Assets.ImageSource, fps: number, frameSize: Size2d, frameCount: number);
+        /**
+        * Creates a new instance of the SpriteAnimation object.
+        * @param imageSource The Sprite sheet that contains the image frames used to display the animation.
+        * @param fps How fast to play the animation (frames per second).  This value should not be less than the games update interval.
+        * @param frameSize How large each animation frame is within the imageSource sprite sheet.
+        * @param frameCount How many frames to play for the animation.
+        * @param startOffset The positional offset within the imageSource on where the set of animation frames begin.
+        */
+        constructor(imageSource: Assets.ImageSource, fps: number, frameSize: Size2d, frameCount: number, startOffset: Vector2d = Vector2d.Zero());
+        constructor(imageSource: Assets.ImageSource, fps: number, frameSize: Size2d, frameCount: number, startOffset: Vector2d = Vector2d.Zero()) {
             this._imageSource = imageSource;
             this._frameSize = frameSize;
             this._frameCount = frameCount;
@@ -31,19 +51,34 @@ module EndGate.Graphics {
             this._repeating = false;
             this._currentFrame = 0;
             this._framesPerRow = Math.min(Math.floor((imageSource.ClipSize.Width - startOffset.X) / frameSize.Width), frameCount);
-            this._lastStepAt = 0;            
+            this._lastStepAt = 0;
 
             this.OnComplete = new EventHandler();
 
             this.Fps(fps);
         }
 
+        /**
+        * Event: Triggered when the animation has completed, will not trigger if the animation is repeating.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        */
         public OnComplete: EventHandler;
 
+        /**
+        * Determines if the animation is currently playing.
+        */
         public IsPlaying(): bool {
             return this._playing;
         }
 
+        /**
+        * Plays the animation.
+        */
+        public Play(): void;
+        /**
+        * Plays the animation.
+        * @param repeat Whether to play the animation on repeat.
+        */
+        public Play(repeat: bool): void;
         public Play(repeat?: bool = false): void {
             this._lastStepAt = new Date().getTime();
             this._repeating = repeat;
@@ -51,11 +86,23 @@ module EndGate.Graphics {
             this.UpdateImageSource();
         }
 
+        /**
+        * Pauses the animation.
+        */
         public Pause(): void {
             this._playing = false;
         }
 
-        public Step(count?: number = 1): void {           
+        /**
+        * Steps the animation 1 frame forward.  If not repeating and the animation surpasses the maximum frame count, the animation will stop and the OnComplete event will trigger.
+        */
+        public Step(): void;
+        /**
+        * Steps the animation 1 frame forward.  If not repeating and the animation surpasses the maximum frame count, the animation will stop and the OnComplete event will trigger.
+        * @param count How many frames to move forward
+        */
+        public Step(count: number): void;
+        public Step(count: number = 1): void {
             this._currentFrame += count;
 
             if (this._currentFrame >= this._frameCount) {
@@ -74,18 +121,38 @@ module EndGate.Graphics {
             }
         }
 
-        public Stop(resetFrame?: bool = true): void {
+        /**
+        * Stops the animation and resets the current animation frame to 0.
+        */
+        public Stop(): void;
+        /**
+        * Stops the animation.
+        * @param resetFrame Whether to reset the current animation frame to 0.
+        */
+        public Stop(resetFrame: bool): void;
+        public Stop(resetFrame: bool = true): void {
             this._playing = false;
             if (resetFrame) {
                 this.Reset();
             }
         }
 
+        /**
+        * Resets the current animation frame to 0.
+        */
         public Reset(): void {
             this._currentFrame = 0;
             this.UpdateImageSource();
         }
 
+        /**
+        * Gets the current frames per second.
+        */
+        public Fps(): number;
+        /**
+        * Sets and gets the current frames per second.
+        */
+        public Fps(newFps: number): number;
         public Fps(newFps?: number): number {
             if (typeof newFps !== "undefined") {
                 this._fps = newFps;
@@ -95,6 +162,10 @@ module EndGate.Graphics {
             return this._fps;
         }
 
+        /**
+        * Updates the animations current frame.  Needs to be updated in order to play the animation.
+        * @param gameTime The current game time object.
+        */
         public Update(gameTime: GameTime): void {
             var timeSinceStep = gameTime.Now.getTime() - this._lastStepAt,
                 stepCount = 0;

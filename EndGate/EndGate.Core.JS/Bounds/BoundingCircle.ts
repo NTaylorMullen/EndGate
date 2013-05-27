@@ -25,7 +25,6 @@ module EndGate.Bounds {
             super(position);
 
             this.Radius = radius;
-            var foo = new BoundingCircle(Vector2d.Zero(), 3);
         }
 
         /**

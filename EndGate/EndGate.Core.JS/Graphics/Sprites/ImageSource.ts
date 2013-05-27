@@ -4,32 +4,64 @@
 
 module EndGate.Graphics.Assets {
 
+    /**
+    * Defines an image resource that can be used within Sprite's, SpriteAnimation's and other drawable graphics.
+    */
     export class ImageSource {
-        public Loaded: bool;
+        /**
+        * Gets or sets the ClipLocation.  Represents where the image clip is within the base image.
+        */
         public ClipLocation: Vector2d;
+        /**
+        * Gets or sets the ClipSize.  Represents how large the image clip is within the base image.
+        */
         public ClipSize: Size2d;
-        public Size: Size2d;
+        /**
+        * Gets the base image source.  Should not be modified once the ImageSource has been constructed
+        */
         public Source: HTMLImageElement;
 
+        private _size: Size2d;
+        private _loaded: bool;
         private _imageLocation;
 
+        /**
+        * Creates a new instance of the ImageSource object.
+        * @param imageLocation Image source url (this cannot change after construction). 
+        */
         constructor(imageLocation: string);
-        constructor(imageLocation: string, width?: number, height?: number);
-        constructor(imageLocation: string, width?: number, height?: number, clipX?: number = 0, clipY?: number = 0, clipWidth?: number, clipHeight?: number);
-        constructor(imageLocation: string, width?: number, height?: number, clipX?: number = 0, clipY?: number = 0, clipWidth?: number = width, clipHeight?: number = height) {
+        /**
+        * Creates a new instance of the ImageSource object with a specified width and height.  If width and height are smaller than the actual width and height of the image source the image will be stretched
+        * @param imageLocation Image source url (this cannot change after construction).
+        * @param width The width of the base image (this cannot change after construction).
+        * @param height The height of the base image (this cannot change after construction).
+        */
+        constructor(imageLocation: string, width: number, height: number);
+        /**
+        * Creates a new instance of the ImageSource object with a specified width and height and a clip location.  If width and height are smaller than the actual width and height of the image source the image will be stretched
+        * @param imageLocation Image source url (this cannot change after construction).
+        * @param width The width of the base image (this cannot change after construction).
+        * @param height The height of the base image (this cannot change after construction).
+        * @param clipX The horizontal location of the clip.
+        * @param clipY The vertical location of the clip.
+        * @param clipWidth The width of the clip.  Ultimately this width is the width that is drawn to the screen.
+        * @param clipHeight The height of the clip.  Ultimately this height is the height that is drawn to the screen.
+        */
+        constructor(imageLocation: string, width: number, height: number, clipX: number, clipY: number, clipWidth: number, clipHeight: number);
+        constructor(imageLocation: string, width?: number, height?: number, clipX: number = 0, clipY: number = 0, clipWidth: number = width, clipHeight: number = height) {
             var setSize = typeof width !== "undefined";
 
-            this.Loaded = false;
-            this.OnLoaded = new EventHandler();                
+            this._loaded = false;
+            this.OnLoaded = new EventHandler();
             this.Source = new Image();
 
             this.Source.onload = () => {
-                this.Loaded = true;
+                this._loaded = true;
 
                 if (!setSize) {
-                    this.Size = new Size2d(this.Source.width, this.Source.height);
+                    this._size = new Size2d(this.Source.width, this.Source.height);
                     this.ClipLocation = Vector2d.Zero();
-                    this.ClipSize = this.Size.Clone();
+                    this.ClipSize = this._size.Clone();
                 }
 
                 this.OnLoaded.Trigger(this);
@@ -39,16 +71,41 @@ module EndGate.Graphics.Assets {
             this._imageLocation = imageLocation;
 
             if (setSize) {
-                this.Size = new Size2d(width, height);
+                this._size = new Size2d(width, height);
                 this.ClipLocation = new Vector2d(clipX, clipY);
                 this.ClipSize = new Size2d(clipWidth, clipHeight);
             }
         }
 
+        /**
+        * Event: Triggered when the base image is finished loading.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Passes the ImageSource to the bound functions.
+        */
         public OnLoaded: EventHandler;
 
+        /**
+        * Returns the base Size of the image source.
+        */
+        public Size(): Size2d {
+            return this._size.Clone();
+        }
+
+        /**
+        * Determines if the ImageSource has been loaded.
+        */
+        public Loaded(): bool {
+            return this._loaded;
+        }
+
+        /**
+        * Returns an ImageSource that is extracted from the current ImageSource based on the provided clip location and clip size.
+        * @param clipX The horizontal location of the clip.
+        * @param clipY The vertical location of the clip.
+        * @param clipWidth The width of the clip.
+        * @param clipHeight The height of the clip.
+        */
         public Extract(clipX: number, clipY: number, clipWidth: number, clipHeight: number): ImageSource {
-            return new ImageSource(this._imageLocation, this.Size.Width, this.Size.Height, clipX, clipY, clipWidth, clipHeight);
+            return new ImageSource(this._imageLocation, this._size.Width, this._size.Height, clipX, clipY, clipWidth, clipHeight);
         }
     }
 
