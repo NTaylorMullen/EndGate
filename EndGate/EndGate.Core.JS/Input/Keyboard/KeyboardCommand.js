@@ -7,7 +7,15 @@ var EndGate;
         /// <reference path="KeyboardCommandHelper.ts" />
         /// <reference path="KeyboardModifiers.ts" />
         (function (Assets) {
+            /**
+            * Defines a class that is used to represent a keyboard command.
+            */
             var KeyboardCommand = (function () {
+                /**
+                * Creates a new instance of the KeyboardCommand object.
+                * @param command Initial command required to trigger the action function.
+                * @param action Initial action to be triggered when the command is executed..
+                */
                 function KeyboardCommand(command, action) {
                     var _this = this;
                     this.Action = action;
@@ -18,7 +26,10 @@ var EndGate;
                         _this.OnDispose.Trigger();
                     }, true);
                 }
-                KeyboardCommand.prototype.Dispose = function () {
+                KeyboardCommand.prototype.Dispose = /**
+                * Triggers the OnDisposed event.  If this KeyboardCommand is used with a KeyboardHandler it will no longer trigger the Action function.
+                */
+                function () {
                     this._onDisposeInvoker.InvokeOnce();
                 };
                 return KeyboardCommand;

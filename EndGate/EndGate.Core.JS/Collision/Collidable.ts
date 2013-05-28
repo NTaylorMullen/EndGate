@@ -41,7 +41,7 @@ module EndGate.Collision {
         */
         public OnCollision: EventHandler;
         /**
-        * Event: Triggered when a Collision happens.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Event: Triggered when a Collidable has been disposed.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public OnDisposed: EventHandler;
 

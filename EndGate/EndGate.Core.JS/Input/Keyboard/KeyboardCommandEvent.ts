@@ -53,10 +53,23 @@ module EndGate.Input {
             "123": "f12"
         };
 
+    /**
+    * Defines a KeyboardCommandEvent object that represents when a command has been attempted.
+    */
     export class KeyboardCommandEvent {
+        /**
+        * The key that was hit.
+        */
         public Key: string;
+        /**
+        * The modifier status.
+        */
         public Modifiers: Assets.KeyboardModifiers;
 
+        /**
+        * Creates a new instance of the KeyboardCommandEvent object.
+        * @param keyEvent The raw key event from the DOM.
+        */
         constructor(keyEvent: KeyboardEvent) {
             var code,
                 character;
@@ -83,6 +96,10 @@ module EndGate.Input {
             this.Key = character;
         }
 
+        /**
+        * Determines if the KeyboardCommand matches the KeyboardCommandEvent
+        * @command The KeyboardCommand to check.
+        */
         public Matches(command: Assets.KeyboardCommand): bool {
             return this.Key.toLowerCase() === command.Key.toLowerCase() && command.Modifiers.Equivalent(this.Modifiers);
         }

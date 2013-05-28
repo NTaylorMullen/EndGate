@@ -2,21 +2,47 @@
 
 module EndGate.Input.Assets {
 
+    /**
+    * Defines an object that is used to represent a keyboard modifier state to determine if Ctrl, Alt, or Shift is being pressed.
+    */
     export class KeyboardModifiers {
+        /**
+        * Gets or sets the Ctrl component.  Represents if a Ctrl key is down.
+        */
         public Ctrl: bool;
+        /**
+        * Gets or sets the Alt component.  Represents if an Alt key is down.
+        */
         public Alt: bool;
+        /**
+        * Gets or sets the Shift component.  Represents if a Shift key is down.
+        */
         public Shift: bool;
 
+        /**
+        * Creates a new instance of the KeyboardModifiers object.
+        * @param ctrl The initial value of the Ctrl component.
+        * @param alt The initial value of the Alt component.
+        * @param shift The initial value of the Shift component.
+        */
         constructor(ctrl: bool, alt: bool, shift: bool) {
             this.Ctrl = ctrl;
             this.Alt = alt;
             this.Shift = shift;
         }
 
+        /**
+        * Determines whether this KeyboardModifiers object has the same ctrl, alt, and shift states as the provided KeyboardModifiers.
+        * @param vector The Vector2d to compare the current Vector2d to.
+        */
         public Equivalent(modifier: KeyboardModifiers): bool {
             return this.Ctrl === modifier.Ctrl && this.Alt === modifier.Alt && this.Shift === modifier.Shift;
         }
 
+        /**
+        * Builds a KeyboardModifiers object to represent the state of an expected keyCommand
+        * @param keyCommand The command to analyze.
+        */
         public static BuildFromCommandString(keyCommand: string): KeyboardModifiers {
             var ctrl = (keyCommand.toLowerCase().indexOf("ctrl+") >= 0) ? true : false,
                 alt = (keyCommand.toLowerCase().indexOf("alt+") >= 0) ? true : false,

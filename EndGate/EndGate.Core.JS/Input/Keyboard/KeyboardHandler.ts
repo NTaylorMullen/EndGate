@@ -4,6 +4,9 @@
 
 module EndGate.Input {
 
+    /**
+    * Defines a manager that will check for keyboard commands and execute appropriate functions.
+    */
     export class KeyboardHandler {
         private static _keyboardCommandIds: number = 0;
         private _target: HTMLCanvasElement;
@@ -11,6 +14,9 @@ module EndGate.Input {
         private _onDownCommands: { [id: number]: Assets.KeyboardCommand; };
         private _onUpCommands: { [id: number]: Assets.KeyboardCommand; };
 
+        /**
+        * Creates a new instance of the KeyboardHandler object.
+        */
         constructor() {
             this._onPressCommands = (<any>{});
             this._onDownCommands = (<any>{});
@@ -23,18 +29,45 @@ module EndGate.Input {
             this.Wire();
         }
 
+        /**
+        * Event: Triggered when any key press occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Passes a KeyboardCommandEvent object to bound functions.
+        */
         public OnKeyPress: EventHandler;
+        /**
+        * Event: Triggered when any key goes down.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Passes a KeyboardCommandEvent object to bound functions.
+        */
         public OnKeyDown: EventHandler;
+        /**
+        * Event: Triggered when any key comes up.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Passes a KeyboardCommandEvent object to bound functions.
+        */
         public OnKeyUp: EventHandler;
 
+        /**
+        * Binds function to be called when the keyCommand is pressed.  To unbind the function, dispose of the returned KeyboardCommand.
+        * @param keyCommand The command string required to execute the action.
+        * @param action The action to execute when the keyCommand has been pressed.
+        */
         public OnCommandPress(keyCommand: string, action: Function): Assets.KeyboardCommand {
             return this.UpdateCache(keyCommand, action, this._onPressCommands);
         }
 
+        /**
+        * Binds function to be called when the keyCommand goes down.  To unbind the function, dispose of the returned KeyboardCommand.
+        * @param keyCommand The command string required to execute the action.
+        * @param action The action to execute when the keyCommand has is down.
+        */
         public OnCommandDown(keyCommand: string, action: Function): Assets.KeyboardCommand {
             return this.UpdateCache(keyCommand, action, this._onDownCommands);
         }
 
+        /**
+        * Binds function to be called when the keyCommand comes up.  To unbind the function, dispose of the returned KeyboardCommand.
+        * @param keyCommand The command string required to execute the action.
+        * @param action The action to execute when the keyCommand comes up.
+        */
         public OnCommandUp(keyCommand: string, action: Function): Assets.KeyboardCommand {
             return this.UpdateCache(keyCommand, action, this._onUpCommands);
         }

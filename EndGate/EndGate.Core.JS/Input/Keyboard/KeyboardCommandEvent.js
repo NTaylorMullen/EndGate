@@ -52,7 +52,14 @@ var EndGate;
             "122": "f11",
             "123": "f12"
         };
+        /**
+        * Defines a KeyboardCommandEvent object that represents when a command has been attempted.
+        */
         var KeyboardCommandEvent = (function () {
+            /**
+            * Creates a new instance of the KeyboardCommandEvent object.
+            * @param keyEvent The raw key event from the DOM.
+            */
             function KeyboardCommandEvent(keyEvent) {
                 var code, character;
                 this.Modifiers = new Input.Assets.KeyboardModifiers(keyEvent.ctrlKey, keyEvent.altKey, keyEvent.shiftKey);
@@ -71,7 +78,11 @@ var EndGate;
                 }
                 this.Key = character;
             }
-            KeyboardCommandEvent.prototype.Matches = function (command) {
+            KeyboardCommandEvent.prototype.Matches = /**
+            * Determines if the KeyboardCommand matches the KeyboardCommandEvent
+            * @command The KeyboardCommand to check.
+            */
+            function (command) {
                 return this.Key.toLowerCase() === command.Key.toLowerCase() && command.Modifiers.Equivalent(this.Modifiers);
             };
             return KeyboardCommandEvent;

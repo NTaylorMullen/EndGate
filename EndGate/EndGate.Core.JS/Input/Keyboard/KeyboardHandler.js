@@ -4,7 +4,13 @@ var EndGate;
     /// <reference path="KeyboardCommandEvent.ts" />
     /// <reference path="../../Utilities/EventHandler.ts" />
     (function (Input) {
+        /**
+        * Defines a manager that will check for keyboard commands and execute appropriate functions.
+        */
         var KeyboardHandler = (function () {
+            /**
+            * Creates a new instance of the KeyboardHandler object.
+            */
             function KeyboardHandler() {
                 this._onPressCommands = ({
                 });
@@ -18,13 +24,28 @@ var EndGate;
                 this.Wire();
             }
             KeyboardHandler._keyboardCommandIds = 0;
-            KeyboardHandler.prototype.OnCommandPress = function (keyCommand, action) {
+            KeyboardHandler.prototype.OnCommandPress = /**
+            * Binds function to be called when the keyCommand is pressed.  To unbind the function, dispose of the returned KeyboardCommand.
+            * @param keyCommand The command string required to execute the action.
+            * @param action The action to execute when the keyCommand has been pressed.
+            */
+            function (keyCommand, action) {
                 return this.UpdateCache(keyCommand, action, this._onPressCommands);
             };
-            KeyboardHandler.prototype.OnCommandDown = function (keyCommand, action) {
+            KeyboardHandler.prototype.OnCommandDown = /**
+            * Binds function to be called when the keyCommand goes down.  To unbind the function, dispose of the returned KeyboardCommand.
+            * @param keyCommand The command string required to execute the action.
+            * @param action The action to execute when the keyCommand has is down.
+            */
+            function (keyCommand, action) {
                 return this.UpdateCache(keyCommand, action, this._onDownCommands);
             };
-            KeyboardHandler.prototype.OnCommandUp = function (keyCommand, action) {
+            KeyboardHandler.prototype.OnCommandUp = /**
+            * Binds function to be called when the keyCommand comes up.  To unbind the function, dispose of the returned KeyboardCommand.
+            * @param keyCommand The command string required to execute the action.
+            * @param action The action to execute when the keyCommand comes up.
+            */
+            function (keyCommand, action) {
                 return this.UpdateCache(keyCommand, action, this._onUpCommands);
             };
             KeyboardHandler.prototype.UpdateCache = function (keyCommand, action, store) {

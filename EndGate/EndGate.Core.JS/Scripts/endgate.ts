@@ -1310,7 +1310,7 @@ module EndGate.Collision {
         */
         public OnCollision: EventHandler;
         /**
-        * Event: Triggered when a Collision happens.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Event: Triggered when a Collidable has been disposed.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public OnDisposed: EventHandler;
 
@@ -2553,21 +2553,47 @@ module EndGate._.Utilities {
 
 module EndGate.Input.Assets {
 
+    /**
+    * Defines an object that is used to represent a keyboard modifier state to determine if Ctrl, Alt, or Shift is being pressed.
+    */
     export class KeyboardModifiers {
+        /**
+        * Gets or sets the Ctrl component.  Represents if a Ctrl key is down.
+        */
         public Ctrl: bool;
+        /**
+        * Gets or sets the Alt component.  Represents if an Alt key is down.
+        */
         public Alt: bool;
+        /**
+        * Gets or sets the Shift component.  Represents if a Shift key is down.
+        */
         public Shift: bool;
 
+        /**
+        * Creates a new instance of the KeyboardModifiers object.
+        * @param ctrl The initial value of the Ctrl component.
+        * @param alt The initial value of the Alt component.
+        * @param shift The initial value of the Shift component.
+        */
         constructor(ctrl: bool, alt: bool, shift: bool) {
             this.Ctrl = ctrl;
             this.Alt = alt;
             this.Shift = shift;
         }
 
+        /**
+        * Determines whether this KeyboardModifiers object has the same ctrl, alt, and shift states as the provided KeyboardModifiers.
+        * @param vector The Vector2d to compare the current Vector2d to.
+        */
         public Equivalent(modifier: KeyboardModifiers): bool {
             return this.Ctrl === modifier.Ctrl && this.Alt === modifier.Alt && this.Shift === modifier.Shift;
         }
 
+        /**
+        * Builds a KeyboardModifiers object to represent the state of an expected keyCommand
+        * @param keyCommand The command to analyze.
+        */
         public static BuildFromCommandString(keyCommand: string): KeyboardModifiers {
             var ctrl = (keyCommand.toLowerCase().indexOf("ctrl+") >= 0) ? true : false,
                 alt = (keyCommand.toLowerCase().indexOf("alt+") >= 0) ? true : false,
@@ -2634,10 +2660,23 @@ module EndGate.Input {
             "123": "f12"
         };
 
+    /**
+    * Defines a KeyboardCommandEvent object that represents when a command has been attempted.
+    */
     export class KeyboardCommandEvent {
+        /**
+        * The key that was hit.
+        */
         public Key: string;
+        /**
+        * The modifier status.
+        */
         public Modifiers: Assets.KeyboardModifiers;
 
+        /**
+        * Creates a new instance of the KeyboardCommandEvent object.
+        * @param keyEvent The raw key event from the DOM.
+        */
         constructor(keyEvent: KeyboardEvent) {
             var code,
                 character;
@@ -2664,6 +2703,10 @@ module EndGate.Input {
             this.Key = character;
         }
 
+        /**
+        * Determines if the KeyboardCommand matches the KeyboardCommandEvent
+        * @command The KeyboardCommand to check.
+        */
         public Matches(command: Assets.KeyboardCommand): bool {
             return this.Key.toLowerCase() === command.Key.toLowerCase() && command.Modifiers.Equivalent(this.Modifiers);
         }
@@ -2698,13 +2741,30 @@ module EndGate.Input._ {
 
 module EndGate.Input.Assets {
 
+    /**
+    * Defines a class that is used to represent a keyboard command.
+    */
     export class KeyboardCommand implements IDisposable {
+        /**
+        * Gets or sets the Key that is required to trigger the Action.
+        */
         public Key: string;
+        /**
+        * Gets or sets the Action that is triggered when the KeyboardCommand has been successfully executed.
+        */
         public Action: Function;
+        /**
+        * Gets or sets the Modifiers that are required to trigger the Action.
+        */
         public Modifiers: Assets.KeyboardModifiers;
 
         private _onDisposeInvoker: EndGate._.Utilities.NoopTripInvoker;
 
+        /**
+        * Creates a new instance of the KeyboardCommand object.
+        * @param command Initial command required to trigger the action function.
+        * @param action Initial action to be triggered when the command is executed..
+        */
         constructor(command: string, action: Function) {
             this.Action = action;
             this.Modifiers = Assets.KeyboardModifiers.BuildFromCommandString(command);
@@ -2716,8 +2776,14 @@ module EndGate.Input.Assets {
             }, true);
         }
 
+        /**
+        * Event: Triggered when a KeyboardCommand has been disposed.  If this KeyboardCommand is used with a KeyboardHandler it will no longer trigger the Action function.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        */
         public OnDispose: EventHandler;
 
+        /**
+        * Triggers the OnDisposed event.  If this KeyboardCommand is used with a KeyboardHandler it will no longer trigger the Action function.
+        */
         public Dispose(): void {
             this._onDisposeInvoker.InvokeOnce();
         }
@@ -2731,6 +2797,9 @@ module EndGate.Input.Assets {
 
 module EndGate.Input {
 
+    /**
+    * Defines a manager that will check for keyboard commands and execute appropriate functions.
+    */
     export class KeyboardHandler {
         private static _keyboardCommandIds: number = 0;
         private _target: HTMLCanvasElement;
@@ -2738,6 +2807,9 @@ module EndGate.Input {
         private _onDownCommands: { [id: number]: Assets.KeyboardCommand; };
         private _onUpCommands: { [id: number]: Assets.KeyboardCommand; };
 
+        /**
+        * Creates a new instance of the KeyboardHandler object.
+        */
         constructor() {
             this._onPressCommands = (<any>{});
             this._onDownCommands = (<any>{});
@@ -2750,18 +2822,45 @@ module EndGate.Input {
             this.Wire();
         }
 
+        /**
+        * Event: Triggered when any key press occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Passes a KeyboardCommandEvent object to bound functions.
+        */
         public OnKeyPress: EventHandler;
+        /**
+        * Event: Triggered when any key goes down.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Passes a KeyboardCommandEvent object to bound functions.
+        */
         public OnKeyDown: EventHandler;
+        /**
+        * Event: Triggered when any key comes up.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Passes a KeyboardCommandEvent object to bound functions.
+        */
         public OnKeyUp: EventHandler;
 
+        /**
+        * Binds function to be called when the keyCommand is pressed.  To unbind the function, dispose of the returned KeyboardCommand.
+        * @param keyCommand The command string required to execute the action.
+        * @param action The action to execute when the keyCommand has been pressed.
+        */
         public OnCommandPress(keyCommand: string, action: Function): Assets.KeyboardCommand {
             return this.UpdateCache(keyCommand, action, this._onPressCommands);
         }
 
+        /**
+        * Binds function to be called when the keyCommand goes down.  To unbind the function, dispose of the returned KeyboardCommand.
+        * @param keyCommand The command string required to execute the action.
+        * @param action The action to execute when the keyCommand has is down.
+        */
         public OnCommandDown(keyCommand: string, action: Function): Assets.KeyboardCommand {
             return this.UpdateCache(keyCommand, action, this._onDownCommands);
         }
 
+        /**
+        * Binds function to be called when the keyCommand comes up.  To unbind the function, dispose of the returned KeyboardCommand.
+        * @param keyCommand The command string required to execute the action.
+        * @param action The action to execute when the keyCommand comes up.
+        */
         public OnCommandUp(keyCommand: string, action: Function): Assets.KeyboardCommand {
             return this.UpdateCache(keyCommand, action, this._onUpCommands);
         }
