@@ -277,12 +277,12 @@
       <DependentUpon>SceneryHandler.ts</DependentUpon>
     </Content>
     <CodeAnalysisDictionary Include="Map\Scenery\SquareTileMap.ts" />
+    <TypeScriptCompile Include="Map\Scenery\SquareTile.ts" />
+    <Content Include="Map\Scenery\SquareTile.js">
+      <DependentUpon>SquareTile.ts</DependentUpon>
+    </Content>
     <Content Include="Map\Scenery\SquareTileMap.js">
       <DependentUpon>SquareTileMap.ts</DependentUpon>
-    </Content>
-    <CodeAnalysisDictionary Include="Map\Scenery\Tile.ts" />
-    <Content Include="Map\Scenery\Tile.js">
-      <DependentUpon>Tile.ts</DependentUpon>
     </Content>
     <CodeAnalysisDictionary Include="Map\Scenery\TileMap.ts" />
     <Content Include="Map\Scenery\TileMap.js">

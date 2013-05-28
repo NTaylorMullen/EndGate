@@ -5,20 +5,39 @@ var EndGate;
     /// <reference path="../../Rendering/IRenderer.ts" />
     /// <reference path="../../Graphics/Graphic2d.ts" />
     (function (Map) {
+        /**
+        * Defines a SceneryHandler which specializes in drawing large background type layers to depict scenery.
+        */
         var SceneryHandler = (function () {
-            function SceneryHandler(foregroundCanvas, camera) {
-                this._camera = camera;
+            /**
+            * Creates a new instance of the SceneryHandler object.
+            * @param scene The primary scene that this SceneryHandler will play behind.
+            */
+            function SceneryHandler(scene) {
+                this._camera = scene.Camera;
                 this._layers = [];
-                this._sceneryCanvas = this.BuildSceneryCanvas(foregroundCanvas);
+                this._sceneryCanvas = this.BuildSceneryCanvas(scene.DrawArea);
                 this._renderer = new EndGate.Rendering.Camera2dRenderer(this._sceneryCanvas, this._camera);
             }
-            SceneryHandler.prototype.AddLayer = function (layer) {
+            SceneryHandler.prototype.AddLayer = /**
+            * Adds a layer to the scenery.
+            * @param layer The layer to add.
+            */
+            function (layer) {
                 this._layers.push(layer);
             };
-            SceneryHandler.prototype.RemoveLayer = function (layer) {
+            SceneryHandler.prototype.RemoveLayer = /**
+            * Removes a layer from the scenery.
+            * @param layer The layer to remove.
+            */
+            function (layer) {
                 this._layers.splice(this._layers.indexOf(layer), 1);
             };
-            SceneryHandler.prototype.Draw = function () {
+            SceneryHandler.prototype.Draw = /**
+            * Draws all layers onto the given context.  If this is used via a MapManager object, Draw will automatically be called.
+            * @param context The canvas context to draw the scenery onto.
+            */
+            function () {
                 this._layers.sort(EndGate.Graphics.Abstractions.Graphic2d._zindexSort);
                 this._renderer.Render(this._layers);
             };

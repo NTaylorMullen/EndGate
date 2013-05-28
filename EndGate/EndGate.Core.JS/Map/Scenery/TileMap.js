@@ -9,8 +9,17 @@ var EndGate;
     /// <reference path="../../Graphics/Graphic2d.ts" />
     /// <reference path="../../Graphics/Sprites/ImageSource.ts" />
     (function (Map) {
+        /**
+        * Defines an abstract class TileMap that takes an array of resources to be mapped to tiles.
+        */
         var TileMap = (function (_super) {
             __extends(TileMap, _super);
+            /**
+            * Creates a new instance of the TileMap object.
+            * @param x Initial horizontal location of the tile map.
+            * @param y Initial vertical location of the tile map.
+            * @param resources A one dimensional array of image resources that make up the tile map (this cannot change after construction).
+            */
             function TileMap(x, y, resources) {
                         _super.call(this, new EndGate.Vector2d(x, y));
                 this._Resources = resources;
@@ -21,4 +30,3 @@ var EndGate;
     })(EndGate.Map || (EndGate.Map = {}));
     var Map = EndGate.Map;
 })(EndGate || (EndGate = {}));
-//@ sourceMappingURL=TileMap.js.map

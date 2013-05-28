@@ -9,8 +9,11 @@ var EndGate;
     /// <reference path="../../Graphics/Sprites/ImageSource.ts" />
     /// <reference path="../../Graphics/Grid/Grid.ts" />
     /// <reference path="TileMap.ts" />
-    /// <reference path="Tile.ts" />
+    /// <reference path="SquareTile.ts" />
     (function (Map) {
+        /**
+        * Defines a structure that is proficient at creating diverse tile maps based off of a resource image.  Best drawn via a SceneryHandler.
+        */
         var SquareTileMap = (function (_super) {
             __extends(SquareTileMap, _super);
             function SquareTileMap(x, y, tileWidth, tileHeight, resources, mappings, drawGridLines) {
@@ -19,7 +22,13 @@ var EndGate;
                 this._grid = new EndGate.Graphics.Grid(0, 0, mappings.length, mappings[0].length, tileWidth, tileHeight, drawGridLines);
                 this.FillGridWith(mappings);
             }
-            SquareTileMap.ExtractTiles = function ExtractTiles(imageSource, tileWidth, tileHeight) {
+            SquareTileMap.ExtractTiles = /**
+            * Helper function used to take a SpriteSheet image and create a one dimensional resource tile array.
+            * @param imageSource The sprite sheet to extract the tile resources from.
+            * @param tileWidth The width of the sprite sheet tiles.
+            * @param tileHeight The height of the sprite sheet tiles.
+            */
+            function ExtractTiles(imageSource, tileWidth, tileHeight) {
                 var resources = [], framesPerRow = Math.floor(imageSource.ClipSize.Width / tileWidth), rows = Math.floor(imageSource.ClipSize.Height / tileHeight);
                 for(var i = 0; i < rows; i++) {
                     for(var j = 0; j < framesPerRow; j++) {
@@ -28,12 +37,19 @@ var EndGate;
                 }
                 return resources;
             };
-            SquareTileMap.prototype.Draw = function (context) {
-                _super.prototype.StartDraw.call(this, context);
+            SquareTileMap.prototype.Draw = /**
+            * Draws the SquareTileMap onto the given context.  If the SquareTileMap is part of a Scene2d or SceneryHandler the Draw function will be called automatically.
+            * @param context The canvas context to draw the SquareTileMap onto.
+            */
+            function (context) {
+                _super.prototype._StartDraw.call(this, context);
                 this._grid.Draw(context);
-                _super.prototype.EndDraw.call(this, context);
+                _super.prototype._EndDraw.call(this, context);
             };
-            SquareTileMap.prototype.GetDrawBounds = function () {
+            SquareTileMap.prototype.GetDrawBounds = /**
+            * The bounding area that represents where the SquareTileMap will draw.
+            */
+            function () {
                 var bounds = this._grid.GetDrawBounds();
                 bounds.Position = this.Position;
                 return bounds;
@@ -44,7 +60,7 @@ var EndGate;
                     tiles[i] = [];
                     for(var j = 0; j < mappings[i].length; j++) {
                         if(mappings[i][j] >= 0) {
-                            tiles[i].push(new Map.Tile(this._Resources[mappings[i][j]], this._grid.TileSize().Width, this._grid.TileSize().Height));
+                            tiles[i].push(new Map.SquareTile(this._Resources[mappings[i][j]], this._grid.TileSize().Width, this._grid.TileSize().Height));
                         } else {
                             tiles[i].push(null);
                         }
@@ -58,4 +74,3 @@ var EndGate;
     })(EndGate.Map || (EndGate.Map = {}));
     var Map = EndGate.Map;
 })(EndGate || (EndGate = {}));
-//@ sourceMappingURL=SquareTileMap.js.map

@@ -8,16 +8,24 @@ var EndGate;
     /// <reference path="../../Graphics/Sprites/ImageSource.ts" />
     /// <reference path="../../Graphics/Sprites/Sprite2d.ts" />
     (function (Map) {
-        var Tile = (function (_super) {
-            __extends(Tile, _super);
-            function Tile(image, width, height) {
+        /**
+        * Defines a SquareTile that is used by the SquareTileMap.  Represents one tile within the tile map.
+        */
+        var SquareTile = (function (_super) {
+            __extends(SquareTile, _super);
+            /**
+            * Creates a new instance of the SquareTile object.
+            * @param image The image that is within the tile.
+            * @param width The width of the tile.
+            * @param height The height of the tile.
+            */
+            function SquareTile(image, width, height) {
                         _super.call(this, 0, 0, image, width, height)// Set position to 0 because the tile gets updated when it gets added to the tile map
                 ;
             }
-            return Tile;
+            return SquareTile;
         })(EndGate.Graphics.Sprite2d);
-        Map.Tile = Tile;        
+        Map.SquareTile = SquareTile;        
     })(EndGate.Map || (EndGate.Map = {}));
     var Map = EndGate.Map;
 })(EndGate || (EndGate = {}));
-//@ sourceMappingURL=Tile.js.map

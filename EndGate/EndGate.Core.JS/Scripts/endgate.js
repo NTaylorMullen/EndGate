@@ -1862,10 +1862,10 @@ var EndGate;
 (function (EndGate) {
     (function (Map) {
         var SceneryHandler = (function () {
-            function SceneryHandler(foregroundCanvas, camera) {
-                this._camera = camera;
+            function SceneryHandler(scene) {
+                this._camera = scene.Camera;
                 this._layers = [];
-                this._sceneryCanvas = this.BuildSceneryCanvas(foregroundCanvas);
+                this._sceneryCanvas = this.BuildSceneryCanvas(scene.DrawArea);
                 this._renderer = new EndGate.Rendering.Camera2dRenderer(this._sceneryCanvas, this._camera);
             }
             SceneryHandler.prototype.AddLayer = function (layer) {
@@ -1897,8 +1897,8 @@ var EndGate;
 (function (EndGate) {
     (function (Map) {
         var MapManager = (function () {
-            function MapManager(foregroundCanvas, camera) {
-                this.Scenery = new Map.SceneryHandler(foregroundCanvas, camera);
+            function MapManager(scene) {
+                this.Scenery = new Map.SceneryHandler(scene);
             }
             return MapManager;
         })();
@@ -1921,7 +1921,7 @@ var EndGate;
             this.Audio = new EndGate.Sound.AudioManager();
             this.CollisionManager = new EndGate.Collision.CollisionManager();
             this.Configuration = new EndGate.GameConfiguration(GameRunnerInstance.Register(this));
-            this.Map = new EndGate.Map.MapManager(this.Scene.DrawArea, this.Scene.Camera);
+            this.Map = new EndGate.Map.MapManager(this.Scene);
         }
         Game._gameIds = 0;
         Game.prototype.PrepareUpdate = function () {
@@ -3180,14 +3180,14 @@ var EndGate;
 var EndGate;
 (function (EndGate) {
     (function (Map) {
-        var Tile = (function (_super) {
-            __extends(Tile, _super);
-            function Tile(image, width, height) {
+        var SquareTile = (function (_super) {
+            __extends(SquareTile, _super);
+            function SquareTile(image, width, height) {
                         _super.call(this, 0, 0, image, width, height);
             }
-            return Tile;
+            return SquareTile;
         })(EndGate.Graphics.Sprite2d);
-        Map.Tile = Tile;        
+        Map.SquareTile = SquareTile;        
     })(EndGate.Map || (EndGate.Map = {}));
     var Map = EndGate.Map;
 })(EndGate || (EndGate = {}));
@@ -3227,7 +3227,7 @@ var EndGate;
                     tiles[i] = [];
                     for(var j = 0; j < mappings[i].length; j++) {
                         if(mappings[i][j] >= 0) {
-                            tiles[i].push(new Map.Tile(this._Resources[mappings[i][j]], this._grid.TileSize().Width, this._grid.TileSize().Height));
+                            tiles[i].push(new Map.SquareTile(this._Resources[mappings[i][j]], this._grid.TileSize().Width, this._grid.TileSize().Height));
                         } else {
                             tiles[i].push(null);
                         }

@@ -38,7 +38,7 @@ module EndGate {
             this.Audio = new Sound.AudioManager();
             this.CollisionManager = new Collision.CollisionManager();
             this.Configuration = new GameConfiguration(GameRunnerInstance.Register(this))
-            this.Map = new Map.MapManager(this.Scene.DrawArea, this.Scene.Camera);
+            this.Map = new Map.MapManager(this.Scene);
         }
 
         public PrepareUpdate(): void {

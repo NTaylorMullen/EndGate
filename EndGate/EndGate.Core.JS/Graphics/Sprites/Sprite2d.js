@@ -24,7 +24,7 @@ var EndGate;
                 this.Size = new EndGate.Size2d(width, height);
             }
             Sprite2d.prototype.Opacity = function (alpha) {
-                return this.State.GlobalAlpha(alpha);
+                return this._State.GlobalAlpha(alpha);
             };
             Sprite2d.prototype.Draw = /**
             * Draws the sprite onto the given context.  If this sprite is part of a scene the Draw function will be called automatically.

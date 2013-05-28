@@ -1270,22 +1270,51 @@ module EndGate.Sound {
     }
 }
 module EndGate.Map {
+    /**
+    * Defines a SceneryHandler which specializes in drawing large background type layers to depict scenery.
+    */
     class SceneryHandler {
         private _sceneryCanvas;
         private _camera;
         private _layers;
         private _renderer;
-        constructor(foregroundCanvas: HTMLCanvasElement, camera: Rendering.Camera2d);
+        /**
+        * Creates a new instance of the SceneryHandler object.
+        * @param scene The primary scene that this SceneryHandler will play behind.
+        */
+        constructor(scene: Rendering.Scene2d);
+        /**
+        * Adds a layer to the scenery.
+        * @param layer The layer to add.
+        */
         public AddLayer(layer: Graphics.Abstractions.Graphic2d): void;
+        /**
+        * Removes a layer from the scenery.
+        * @param layer The layer to remove.
+        */
         public RemoveLayer(layer: Graphics.Abstractions.Graphic2d): void;
+        /**
+        * Draws all layers onto the given context.  If this is used via a MapManager object, Draw will automatically be called.
+        * @param context The canvas context to draw the scenery onto.
+        */
         public Draw(): void;
         private BuildSceneryCanvas(foreground);
     }
 }
 module EndGate.Map {
+    /**
+    * Defines a map manager that is used to manage Scenery.  Will eventually be expanded to handle obstacles.
+    */
     class MapManager {
+        /**
+        * Used to draw larger images that are used to depict backgrounds or other scenery.
+        */
         public Scenery: SceneryHandler;
-        constructor(foregroundCanvas: HTMLCanvasElement, camera: Rendering.Camera2d);
+        /**
+        * Creates a new instance of the MapManager object.
+        * @param scene The Scene2d that is used to draw smaller objects within the game (the foreground scene).
+        */
+        constructor(scene: Rendering.Scene2d);
     }
 }
 module EndGate {
@@ -2452,22 +2481,76 @@ module EndGate.Graphics {
     }
 }
 module EndGate.Map {
+    /**
+    * Defines an abstract class TileMap that takes an array of resources to be mapped to tiles.
+    */
     class TileMap extends Graphics.Abstractions.Graphic2d {
         public _Resources: Graphics.Assets.ImageSource[];
+        /**
+        * Creates a new instance of the TileMap object.
+        * @param x Initial horizontal location of the tile map.
+        * @param y Initial vertical location of the tile map.
+        * @param resources A one dimensional array of image resources that make up the tile map (this cannot change after construction).
+        */
         constructor(x: number, y: number, resources: Graphics.Assets.ImageSource[]);
     }
 }
 module EndGate.Map {
-    class Tile extends Graphics.Sprite2d {
+    /**
+    * Defines a SquareTile that is used by the SquareTileMap.  Represents one tile within the tile map.
+    */
+    class SquareTile extends Graphics.Sprite2d {
+        /**
+        * Creates a new instance of the SquareTile object.
+        * @param image The image that is within the tile.
+        * @param width The width of the tile.
+        * @param height The height of the tile.
+        */
         constructor(image: Graphics.Assets.ImageSource, width: number, height: number);
     }
 }
 module EndGate.Map {
+    /**
+    * Defines a structure that is proficient at creating diverse tile maps based off of a resource image.  Best drawn via a SceneryHandler.
+    */
     class SquareTileMap extends TileMap {
         private _grid;
-        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.Assets.ImageSource[], mappings: number[][], drawGridLines?: bool);
+        /**
+        * Creates a new instance of the SquareTileMap object.
+        * @param x Initial horizontal location of the tile map.
+        * @param y Initial vertical location of the tile map.
+        * @param tileWidth The width of the tile map tiles (this cannot change after construction).
+        * @param tileHeight The height of the tile map tiles (this cannot change after construction).
+        * @param resources A one dimensional array of image resources that make up the tile map (this cannot change after construction).
+        * @param mappings A two dimensional array numbers that map directly to the resources array to define the square tile map (this cannot change after construction).
+        */
+        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.Assets.ImageSource[], mappings: number[][]);
+        /**
+        * Creates a new instance of the SquareTileMap object.
+        * @param x Initial horizontal location of the tile map.
+        * @param y Initial vertical location of the tile map.
+        * @param tileWidth The width of the tile map tiles (this cannot change after construction).
+        * @param tileHeight The height of the tile map tiles (this cannot change after construction).
+        * @param resources A one dimensional array of image resources that make up the tile map (this cannot change after construction).
+        * @param mappings A two dimensional array numbers that map directly to the resources array to define the square tile map (this cannot change after construction).
+        * @param drawGridLines Whether or not to draw the tile maps grid lines. Useful when trying to pinpoint specific tiles (this cannot change after construction).
+        */
+        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.Assets.ImageSource[], mappings: number[][], drawGridLines: bool);
+        /**
+        * Helper function used to take a SpriteSheet image and create a one dimensional resource tile array.
+        * @param imageSource The sprite sheet to extract the tile resources from.
+        * @param tileWidth The width of the sprite sheet tiles.
+        * @param tileHeight The height of the sprite sheet tiles.
+        */
         static ExtractTiles(imageSource: Graphics.Assets.ImageSource, tileWidth: number, tileHeight: number): Graphics.Assets.ImageSource[];
+        /**
+        * Draws the SquareTileMap onto the given context.  If the SquareTileMap is part of a Scene2d or SceneryHandler the Draw function will be called automatically.
+        * @param context The canvas context to draw the SquareTileMap onto.
+        */
         public Draw(context: CanvasRenderingContext2D): void;
+        /**
+        * The bounding area that represents where the SquareTileMap will draw.
+        */
         public GetDrawBounds(): Bounds.Abstractions.Bounds2d;
         private FillGridWith(mappings);
     }

@@ -24,7 +24,7 @@ var EndGate;
             this.Audio = new EndGate.Sound.AudioManager();
             this.CollisionManager = new EndGate.Collision.CollisionManager();
             this.Configuration = new EndGate.GameConfiguration(GameRunnerInstance.Register(this));
-            this.Map = new EndGate.Map.MapManager(this.Scene.DrawArea, this.Scene.Camera);
+            this.Map = new EndGate.Map.MapManager(this.Scene);
         }
         Game._gameIds = 0;
         Game.prototype.PrepareUpdate = function () {
