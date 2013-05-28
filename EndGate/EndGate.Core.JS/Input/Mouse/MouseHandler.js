@@ -7,7 +7,14 @@ var EndGate;
     /// <reference path="IMouseClickEvent.ts" />
     /// <reference path="IMouseScrollEvent.ts" />
     (function (Input) {
+        /**
+        * Defines a handler that will monitor mouse events over a specified area and will execute appropriate functions based on the events.
+        */
         var MouseHandler = (function () {
+            /**
+            * Creates a new instance of the MouseHandler object.
+            * @param target The object to monitor mouse events for.
+            */
             function MouseHandler(target) {
                 var _this = this;
                 this._target = target;
@@ -33,9 +40,9 @@ var EndGate;
             }
             MouseHandler.MouseButtonArray = [
                 null, 
-                Input.MouseButton.Left, 
-                Input.MouseButton.Middle, 
-                Input.MouseButton.Right
+                Input._.MouseButton.Left, 
+                Input._.MouseButton.Middle, 
+                Input._.MouseButton.Right
             ];
             MouseHandler.prototype.Wire = function () {
                 var _this = this;
@@ -97,7 +104,7 @@ var EndGate;
                 if(event.which) {
                     return MouseHandler.MouseButtonArray[event.which];
                 }
-                return Input.MouseButton.Right;
+                return Input._.MouseButton.Right;
             };
             MouseHandler.prototype.GetMouseScrollDierction = function (event) {
                 return new EndGate.Vector2d(-Math.max(-1, Math.min(1, event.wheelDeltaX)), -Math.max(-1, Math.min(1, event.wheelDeltaY)));

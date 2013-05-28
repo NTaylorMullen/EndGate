@@ -5,7 +5,7 @@
 module EndGate.Input {
 
     /**
-    * Defines a manager that will check for keyboard commands and execute appropriate functions.
+    * Defines a handler that will check for keyboard commands and execute appropriate functions.
     */
     export class KeyboardHandler {
         private static _keyboardCommandIds: number = 0;

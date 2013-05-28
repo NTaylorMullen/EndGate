@@ -7,19 +7,38 @@
 
 module EndGate.Input {
 
+    /**
+    * Defines a handler that will monitor mouse events over a specified area and will execute appropriate functions based on the events.
+    */
     export class MouseHandler {
         // Active flags
+        /**
+        * Indicates if the left mouse button is down
+        */
         public LeftIsDown: bool;
+        /**
+        * Indicates if the middle mouse button is down
+        */
         public MiddleIsDown: bool;
+        /**
+        * Indicates if the right mouse button is down
+        */
         public RightIsDown: bool;
+        /**
+        * Indicates if any mouse button is down.
+        */
         public IsDown: bool;
 
         // Used to determine mouse buttons without using extra conditional statements, performance enhancer
-        private static MouseButtonArray = [null, MouseButton.Left, MouseButton.Middle, MouseButton.Right];
+        private static MouseButtonArray = [null, _.MouseButton.Left, _.MouseButton.Middle, _.MouseButton.Right];
 
-        private _target: HTMLCanvasElement;
+        private _target: HTMLElement;
 
-        constructor(target: HTMLCanvasElement) {
+        /**
+        * Creates a new instance of the MouseHandler object.
+        * @param target The object to monitor mouse events for.
+        */
+        constructor(target: HTMLElement) {
             this._target = target;
 
             this.OnClick = new EventHandler();
@@ -47,11 +66,35 @@ module EndGate.Input {
             });
         }
 
+        /**
+        * Event: Triggered when a mouse click occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Passes an IMouseClickEvent event object to bound functions.
+        */
         public OnClick: EventHandler;
+        /**
+        * Event: Triggered when a mouse double click occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Passes an IMouseClickEvent event object to bound functions.
+        */
         public OnDoubleClick: EventHandler;
+        /**
+        * Event: Triggered when a mouse down event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Passes an IMouseClickEvent event object to bound functions.
+        */
         public OnDown: EventHandler;
+        /**
+        * Event: Triggered when a mouse up event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Passes an IMouseClickEvent event object to bound functions.
+        */
         public OnUp: EventHandler;
+        /**
+        * Event: Triggered when a mouse move event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Passes an IMouseEvent event object to bound functions.
+        */
         public OnMove: EventHandler;
+        /**
+        * Event: Triggered when a mouse scroll event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Passes an IMouseScrollEvent event object to bound functions.
+        */
         public OnScroll: EventHandler;
 
         private Wire(): void {
@@ -125,7 +168,7 @@ module EndGate.Input {
                 return MouseHandler.MouseButtonArray[event.which];
             }
 
-            return MouseButton.Right;
+            return _.MouseButton.Right;
         }
 
         private GetMouseScrollDierction(event: any): Vector2d{

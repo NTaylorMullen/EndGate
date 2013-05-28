@@ -1292,14 +1292,17 @@ var EndGate;
 var EndGate;
 (function (EndGate) {
     (function (Input) {
-        var MouseButton = (function () {
-            function MouseButton() { }
-            MouseButton.Left = "Left";
-            MouseButton.Middle = "Middle";
-            MouseButton.Right = "Right";
-            return MouseButton;
-        })();
-        Input.MouseButton = MouseButton;        
+        (function (_) {
+            var MouseButton = (function () {
+                function MouseButton() { }
+                MouseButton.Left = "Left";
+                MouseButton.Middle = "Middle";
+                MouseButton.Right = "Right";
+                return MouseButton;
+            })();
+            _.MouseButton = MouseButton;            
+        })(Input._ || (Input._ = {}));
+        var _ = Input._;
     })(EndGate.Input || (EndGate.Input = {}));
     var Input = EndGate.Input;
 })(EndGate || (EndGate = {}));
@@ -1331,9 +1334,9 @@ var EndGate;
             }
             MouseHandler.MouseButtonArray = [
                 null, 
-                Input.MouseButton.Left, 
-                Input.MouseButton.Middle, 
-                Input.MouseButton.Right
+                Input._.MouseButton.Left, 
+                Input._.MouseButton.Middle, 
+                Input._.MouseButton.Right
             ];
             MouseHandler.prototype.Wire = function () {
                 var _this = this;
@@ -1393,7 +1396,7 @@ var EndGate;
                 if(event.which) {
                     return MouseHandler.MouseButtonArray[event.which];
                 }
-                return Input.MouseButton.Right;
+                return Input._.MouseButton.Right;
             };
             MouseHandler.prototype.GetMouseScrollDierction = function (event) {
                 return new EndGate.Vector2d(-Math.max(-1, Math.min(1, event.wheelDeltaX)), -Math.max(-1, Math.min(1, event.wheelDeltaY)));
@@ -1683,8 +1686,8 @@ var EndGate;
 (function (EndGate) {
     (function (Input) {
         var InputManager = (function () {
-            function InputManager(canvas) {
-                this.Mouse = new Input.MouseHandler(canvas);
+            function InputManager(target) {
+                this.Mouse = new Input.MouseHandler(target);
                 this.Keyboard = new Input.KeyboardHandler();
             }
             return InputManager;

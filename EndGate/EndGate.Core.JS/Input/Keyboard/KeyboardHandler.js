@@ -5,7 +5,7 @@ var EndGate;
     /// <reference path="../../Utilities/EventHandler.ts" />
     (function (Input) {
         /**
-        * Defines a manager that will check for keyboard commands and execute appropriate functions.
+        * Defines a handler that will check for keyboard commands and execute appropriate functions.
         */
         var KeyboardHandler = (function () {
             /**

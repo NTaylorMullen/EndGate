@@ -2334,7 +2334,7 @@ module EndGate.Rendering {
 
 }
 /* MouseButton.ts */
-module EndGate.Input {
+module EndGate.Input._ {
 
     export class MouseButton {
         public static Left: string = "Left";
@@ -2348,7 +2348,13 @@ module EndGate.Input {
 
 declare module EndGate.Input {
 
+    /**
+    * Represents a mouse event being triggered on the Game area.
+    */
     export interface IMouseEvent {
+        /**
+        * The location of the mouse relative to the game area.
+        */
         Position: Vector2d;
     }
 
@@ -2359,7 +2365,13 @@ declare module EndGate.Input {
 
 declare module EndGate.Input {
 
+    /**
+    * Represents a mouse click event being triggered on the Game area.
+    */
     export interface IMouseClickEvent extends IMouseEvent {
+        /**
+        * The mouse button that was clicked. Values can be "Left", "Right", or "Middle".
+        */
         Button: string;
     }
 
@@ -2370,7 +2382,13 @@ declare module EndGate.Input {
 
 declare module EndGate.Input {
 
+    /**
+    * Represents a mouse scroll event being triggered on the Game area.
+    */
     export interface IMouseScrollEvent extends IMouseEvent {
+        /**
+        * The scroll direction. The Vector2d will contain 1, -1, or 0 values depending on the mouse scroll.
+        */
         Direction: Vector2d;
     }
 
@@ -2385,19 +2403,38 @@ declare module EndGate.Input {
 
 module EndGate.Input {
 
+    /**
+    * Defines a handler that will monitor mouse events over a specified area and will execute appropriate functions based on the events.
+    */
     export class MouseHandler {
         // Active flags
+        /**
+        * Indicates if the left mouse button is down
+        */
         public LeftIsDown: bool;
+        /**
+        * Indicates if the middle mouse button is down
+        */
         public MiddleIsDown: bool;
+        /**
+        * Indicates if the right mouse button is down
+        */
         public RightIsDown: bool;
+        /**
+        * Indicates if any mouse button is down.
+        */
         public IsDown: bool;
 
         // Used to determine mouse buttons without using extra conditional statements, performance enhancer
-        private static MouseButtonArray = [null, MouseButton.Left, MouseButton.Middle, MouseButton.Right];
+        private static MouseButtonArray = [null, _.MouseButton.Left, _.MouseButton.Middle, _.MouseButton.Right];
 
-        private _target: HTMLCanvasElement;
+        private _target: HTMLElement;
 
-        constructor(target: HTMLCanvasElement) {
+        /**
+        * Creates a new instance of the MouseHandler object.
+        * @param target The object to monitor mouse events for.
+        */
+        constructor(target: HTMLElement) {
             this._target = target;
 
             this.OnClick = new EventHandler();
@@ -2425,11 +2462,35 @@ module EndGate.Input {
             });
         }
 
+        /**
+        * Event: Triggered when a mouse click occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Passes an IMouseClickEvent event object to bound functions.
+        */
         public OnClick: EventHandler;
+        /**
+        * Event: Triggered when a mouse double click occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Passes an IMouseClickEvent event object to bound functions.
+        */
         public OnDoubleClick: EventHandler;
+        /**
+        * Event: Triggered when a mouse down event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Passes an IMouseClickEvent event object to bound functions.
+        */
         public OnDown: EventHandler;
+        /**
+        * Event: Triggered when a mouse up event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Passes an IMouseClickEvent event object to bound functions.
+        */
         public OnUp: EventHandler;
+        /**
+        * Event: Triggered when a mouse move event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Passes an IMouseEvent event object to bound functions.
+        */
         public OnMove: EventHandler;
+        /**
+        * Event: Triggered when a mouse scroll event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Passes an IMouseScrollEvent event object to bound functions.
+        */
         public OnScroll: EventHandler;
 
         private Wire(): void {
@@ -2503,7 +2564,7 @@ module EndGate.Input {
                 return MouseHandler.MouseButtonArray[event.which];
             }
 
-            return MouseButton.Right;
+            return _.MouseButton.Right;
         }
 
         private GetMouseScrollDierction(event: any): Vector2d{
@@ -2798,7 +2859,7 @@ module EndGate.Input.Assets {
 module EndGate.Input {
 
     /**
-    * Defines a manager that will check for keyboard commands and execute appropriate functions.
+    * Defines a handler that will check for keyboard commands and execute appropriate functions.
     */
     export class KeyboardHandler {
         private static _keyboardCommandIds: number = 0;
@@ -2941,12 +3002,25 @@ module EndGate.Input {
 
 module EndGate.Input {
 
+    /**
+    * Defines an all around Input handler which manages mouse and keyboard events.
+    */
     export class InputManager {
+        /**
+        * Used to bind functions to mouse related events.
+        */
         public Mouse: MouseHandler;
+        /**
+        * Used to bind functions to keyboard related events.
+        */
         public Keyboard: KeyboardHandler;
 
-        constructor(canvas: HTMLCanvasElement) {
-            this.Mouse = new MouseHandler(canvas);
+        /**
+        * Creates a new instance of the InputManager object.
+        * @param target The object through which mouse events will be monitored on.
+        */
+        constructor(target: HTMLElement) {
+            this.Mouse = new MouseHandler(target);
             this.Keyboard = new KeyboardHandler();
         }
     }
