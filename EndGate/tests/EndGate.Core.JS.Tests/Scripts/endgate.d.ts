@@ -1399,16 +1399,45 @@ module EndGate.MovementControllers {
     }
 }
 module EndGate.MovementControllers.Abstractions {
+    /**
+    * Abstract class that holds moveable objects and synchronizes positions across them.
+    */
     class MovementController implements IMoveable, IUpdateable {
+        /**
+        * Gets or sets the position of the MovementController
+        */
         public Position: Vector2d;
+        /**
+        * Gets or sets the velocity of the MovementController.
+        */
         public Velocity: Vector2d;
+        /**
+        * Gets or sets the rotation of the MovementController
+        */
         public Rotation: number;
         public _frozen: bool;
         private _moveables;
+        /**
+        * Should only ever be called by derived classes.
+        * @param moveables Moveable objects to synchronize.
+        */
         constructor(moveables: IMoveable[]);
+        /**
+        * Prevents the MovementController from updating object locations.
+        */
         public Freeze(): void;
+        /**
+        * Used to re-enable movement within the MovementController.
+        */
         public Thaw(): void;
+        /**
+        * Determines if the MovementController is moving.  Frozen MovementControllers are not considered moving.
+        */
         public IsMoving(): bool;
+        /**
+        * Synchronizes the current position with all tracked moveable objects.  MovementController's must be updated in order to move.
+        * @param gameTime The current game time object.
+        */
         public Update(gameTime: GameTime): void;
     }
 }
