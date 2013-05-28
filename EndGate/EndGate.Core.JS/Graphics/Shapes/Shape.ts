@@ -44,7 +44,7 @@ module EndGate.Graphics.Abstractions {
         public Color(color: string): string;
         public Color(color?: string): string {
             this._fill = true;
-            return this.State.FillStyle(color);
+            return this._State.FillStyle(color);
         }
         
         /**
@@ -67,7 +67,7 @@ module EndGate.Graphics.Abstractions {
         */
         public BorderThickness(thickness: number): number;
         public BorderThickness(thickness?: number): number {
-            return this.State.LineWidth(thickness);
+            return this._State.LineWidth(thickness);
         }
         
         /**
@@ -81,7 +81,7 @@ module EndGate.Graphics.Abstractions {
         public BorderColor(color: string): string;
         public BorderColor(color?: string): string {
             this._stroke = true;
-            return this.State.StrokeStyle(color);
+            return this._State.StrokeStyle(color);
         }
 
         /**
@@ -123,7 +123,7 @@ module EndGate.Graphics.Abstractions {
         public ShadowColor(color: string): string;
         public ShadowColor(color?: string): string {
             this._fill = true;
-            return this.State.ShadowColor(color);
+            return this._State.ShadowColor(color);
         }
 
         /**
@@ -136,7 +136,7 @@ module EndGate.Graphics.Abstractions {
         */
         public ShadowX(x: number): number;
         public ShadowX(x?: number): number {
-            return this.State.ShadowOffsetX(x);
+            return this._State.ShadowOffsetX(x);
         }
 
         /**
@@ -149,7 +149,7 @@ module EndGate.Graphics.Abstractions {
         */
         public ShadowY(y: number): number;
         public ShadowY(y?: number): number {
-            return this.State.ShadowOffsetY(y);
+            return this._State.ShadowOffsetY(y);
         }
 
         /**
@@ -162,7 +162,7 @@ module EndGate.Graphics.Abstractions {
         */
         public ShadowBlur(blur: number): number;
         public ShadowBlur(blur?: number): number {
-            return this.State.ShadowBlur(blur);
+            return this._State.ShadowBlur(blur);
         }
 
         /**
@@ -175,7 +175,7 @@ module EndGate.Graphics.Abstractions {
         */
         public Opacity(alpha: number): number;
         public Opacity(alpha?: number): number {
-            return this.State.GlobalAlpha(alpha);
+            return this._State.GlobalAlpha(alpha);
         }
 
         public _StartDraw(context: CanvasRenderingContext2D): void {

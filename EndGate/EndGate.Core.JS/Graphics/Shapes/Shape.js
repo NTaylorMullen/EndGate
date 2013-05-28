@@ -25,7 +25,7 @@ var EndGate;
                 }
                 Shape.prototype.Color = function (color) {
                     this._fill = true;
-                    return this.State.FillStyle(color);
+                    return this._State.FillStyle(color);
                 };
                 Shape.prototype.Border = /**
                 * Sets the current borders thickness and color.
@@ -37,11 +37,11 @@ var EndGate;
                     this.BorderColor(color);
                 };
                 Shape.prototype.BorderThickness = function (thickness) {
-                    return this.State.LineWidth(thickness);
+                    return this._State.LineWidth(thickness);
                 };
                 Shape.prototype.BorderColor = function (color) {
                     this._stroke = true;
-                    return this.State.StrokeStyle(color);
+                    return this._State.StrokeStyle(color);
                 };
                 Shape.prototype.Shadow = function (x, y, color, blur) {
                     this.ShadowX(x);
@@ -51,19 +51,19 @@ var EndGate;
                 };
                 Shape.prototype.ShadowColor = function (color) {
                     this._fill = true;
-                    return this.State.ShadowColor(color);
+                    return this._State.ShadowColor(color);
                 };
                 Shape.prototype.ShadowX = function (x) {
-                    return this.State.ShadowOffsetX(x);
+                    return this._State.ShadowOffsetX(x);
                 };
                 Shape.prototype.ShadowY = function (y) {
-                    return this.State.ShadowOffsetY(y);
+                    return this._State.ShadowOffsetY(y);
                 };
                 Shape.prototype.ShadowBlur = function (blur) {
-                    return this.State.ShadowBlur(blur);
+                    return this._State.ShadowBlur(blur);
                 };
                 Shape.prototype.Opacity = function (alpha) {
-                    return this.State.GlobalAlpha(alpha);
+                    return this._State.GlobalAlpha(alpha);
                 };
                 Shape.prototype._StartDraw = function (context) {
                     context.beginPath();
@@ -85,7 +85,7 @@ var EndGate;
                 };
                 Shape.prototype.Draw = /**
                 * Draws the shape onto the given context.  If this shape is part of a scene the Draw function will be called automatically.
-                * @param context The canvas context to draw the grid onto.
+                * @param context The canvas context to draw the shape onto.
                 */
                 function (context) {
                     // You can override this Draw if you want to implement your own logic for applying styles and drawing (do not recommend overriding)

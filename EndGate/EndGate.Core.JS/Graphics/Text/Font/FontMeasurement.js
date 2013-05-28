@@ -18,23 +18,35 @@ var EndGate;
             })(Assets.FontMeasurement || (Assets.FontMeasurement = {}));
             var FontMeasurement = Assets.FontMeasurement;
             ;
-            var _FontMeasurementHelper = (function () {
-                function _FontMeasurementHelper() { }
-                _FontMeasurementHelper._Initialize = function _Initialize() {
-                    _FontMeasurementHelper._measurements = [
-                        "em", 
-                        "px", 
-                        "pt", 
-                        "%"
-                    ];
-                };
-                _FontMeasurementHelper.Get = function Get(measurement) {
-                    return _FontMeasurementHelper._measurements[measurement];
-                };
-                return _FontMeasurementHelper;
-            })();
-            Assets._FontMeasurementHelper = _FontMeasurementHelper;            
-            _FontMeasurementHelper._Initialize();
+        })(Graphics.Assets || (Graphics.Assets = {}));
+        var Assets = Graphics.Assets;
+    })(EndGate.Graphics || (EndGate.Graphics = {}));
+    var Graphics = EndGate.Graphics;
+})(EndGate || (EndGate = {}));
+var EndGate;
+(function (EndGate) {
+    (function (Graphics) {
+        (function (Assets) {
+            (function (_) {
+                var FontMeasurementHelper = (function () {
+                    function FontMeasurementHelper() { }
+                    FontMeasurementHelper._Initialize = function _Initialize() {
+                        FontMeasurementHelper._measurements = [
+                            "em", 
+                            "px", 
+                            "pt", 
+                            "%"
+                        ];
+                    };
+                    FontMeasurementHelper.Get = function Get(measurement) {
+                        return FontMeasurementHelper._measurements[measurement];
+                    };
+                    return FontMeasurementHelper;
+                })();
+                _.FontMeasurementHelper = FontMeasurementHelper;                
+                FontMeasurementHelper._Initialize();
+            })(Assets._ || (Assets._ = {}));
+            var _ = Assets._;
         })(Graphics.Assets || (Graphics.Assets = {}));
         var Assets = Graphics.Assets;
     })(EndGate.Graphics || (EndGate.Graphics = {}));

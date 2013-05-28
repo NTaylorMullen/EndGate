@@ -32,16 +32,20 @@ var EndGate;
                 return this.GetOrSetLinePoint("to", newPosition);
             };
             Line2d.prototype.Color = function (color) {
-                return this.State.StrokeStyle(color);
+                return this._State.FillStyle(color);
             };
             Line2d.prototype.LineWidth = function (width) {
-                return this.State.LineWidth(width);
+                return this._State.LineWidth(width);
             };
             Line2d.prototype.LineCap = function (cap) {
-                return this.State.LineCap(cap);
+                return this._State.LineCap(cap);
             };
-            Line2d.prototype.Draw = function (context) {
-                _super.prototype.StartDraw.call(this, context);
+            Line2d.prototype.Draw = /**
+            * Draws the line onto the given context.  If this Line2d is part of a scene the Draw function will be called automatically.
+            * @param context The canvas context to draw the line onto.
+            */
+            function (context) {
+                _super.prototype._StartDraw.call(this, context);
                 // Check if the user has modified the position directly, if so we need to translate the from and to positions accordingly
                 if(!this._cachedPosition.Equivalent(this.Position)) {
                     this.RefreshCache();
@@ -51,9 +55,12 @@ var EndGate;
                 context.moveTo(this._from.X - this.Position.X, this._from.Y - this.Position.Y);
                 context.lineTo(this._to.X - this.Position.X, this._to.Y - this.Position.Y);
                 context.stroke();
-                _super.prototype.EndDraw.call(this, context);
+                _super.prototype._EndDraw.call(this, context);
             };
-            Line2d.prototype.GetDrawBounds = function () {
+            Line2d.prototype.GetDrawBounds = /**
+            * The bounding area that represents where the Line2d will draw.
+            */
+            function () {
                 var bounds = new EndGate.Bounds.BoundingRectangle(this.Position, new EndGate.Size2d(this._boundsWidth, this.LineWidth()));
                 bounds.Rotation = Math.atan2(this._difference.Y, this._difference.X) + this.Rotation;
                 return bounds;
@@ -85,4 +92,3 @@ var EndGate;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
     var Graphics = EndGate.Graphics;
 })(EndGate || (EndGate = {}));
-//@ sourceMappingURL=Line2d.js.map

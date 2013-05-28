@@ -8,19 +8,21 @@ module EndGate.Graphics.Assets {
         Pixels,
         Points,
         Percent
-    };
+    };    
+}
 
-    export class _FontMeasurementHelper {
+module EndGate.Graphics.Assets._ {
+    export class FontMeasurementHelper {
         public static _measurements: string[];
 
         public static _Initialize() {
-            _FontMeasurementHelper._measurements = ["em", "px", "pt", "%"];
+            FontMeasurementHelper._measurements = ["em", "px", "pt", "%"];
         }
 
         public static Get(measurement: FontMeasurement): string {
-            return _FontMeasurementHelper._measurements[measurement];
+            return FontMeasurementHelper._measurements[measurement];
         }
     }
 
-    _FontMeasurementHelper._Initialize();
+    FontMeasurementHelper._Initialize();
 }

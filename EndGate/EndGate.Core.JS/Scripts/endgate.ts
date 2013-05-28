@@ -1438,11 +1438,9 @@ module EndGate.Collision {
 /* Graphic2dState.ts */
 
 
-module EndGate.Graphics.Assets {
+module EndGate.Graphics.Assets._ {
 
-    export class Graphic2dState implements _.ITyped {
-        public _type: string ="Graphic2dState";
-
+    export class Graphic2dState {
         private _cachedState: { [property: string]: any; };
 
         constructor() {
@@ -1536,13 +1534,26 @@ module EndGate.Graphics.Assets {
 
 module EndGate.Graphics.Abstractions {
 
+    /**
+    * Abstract drawable graphic type that is used create the base for graphics.
+    */
     export class Graphic2d implements _.ITyped, Rendering.IRenderable, IMoveable {
         public _type: string = "Graphic2d";
 
+        /**
+        * Gets or sets the ZIndex of the Graphic2d.  The ZIndex is used to control draw order.  Higher ZIndexes appear above lower ZIndexed graphics.
+        */
         public ZIndex: number;
+        /**
+        * Gets or sets the Position of the Graphic2d.  The Position determines where the graphic will be drawn on the screen.
+        */
         public Position: Vector2d;
+        /**
+        * Gets or sets the Rotation of the Graphic2d..
+        */
         public Rotation: number;
-        public State: Assets.Graphic2dState;
+
+        public _State: Assets._.Graphic2dState;
 
         private static _zindexSort: (a: Graphic2d, b: Graphic2d) => number = (a: Graphic2d, b: Graphic2d) => { return a.ZIndex - b.ZIndex; };
 
@@ -1552,15 +1563,24 @@ module EndGate.Graphics.Abstractions {
             this.Position = position;
             this.Rotation = 0;
             this.ZIndex = 0;
-            this.State = new Assets.Graphic2dState();
+            this._State = new Assets._.Graphic2dState();
             this._children = [];
         }
 
+        /**
+        * Adds a child to the Graphic2d.  Children are drawn with relative positions to the parent Graphic2d.  Children
+        * of a Graphic2d should not be added to the Scene, parent Graphic2d's are responsible for drawing their children.
+        * @param graphic Child to add.
+        */
         public AddChild(graphic: Graphic2d): void {
             this._children.push(graphic);
             this._children.sort(Graphic2d._zindexSort);
         }
 
+        /**
+        * Removes a child from the Graphic2d.  Returns a Boolean value indicating whether or not the child was able to be removed.
+        * @param graphic Child to remove.
+        */
         public RemoveChild(graphic: Graphic2d): bool {
             var index = this._children.indexOf(graphic);
 
@@ -1572,13 +1592,16 @@ module EndGate.Graphics.Abstractions {
             return false;
         }
 
+        /**
+        * Returns the list of children for the current Graphic2d.
+        */
         public Children(): Graphic2d[]{
             return this._children;
         }
 
         public _StartDraw(context: CanvasRenderingContext2D): void {
             context.save();
-            this.State.SetContextState(context);
+            this._State.SetContextState(context);
 
             context.translate(this.Position.X, this.Position.Y);
 
@@ -1595,9 +1618,17 @@ module EndGate.Graphics.Abstractions {
             context.restore();
         }
 
+        /**
+        * Abstract: Should be overridden to draw the derived class onto the context.  If this graphic is part of a scene the Draw function will be called automatically.
+        * @param context The canvas context to draw the graphic onto.
+        */
         public Draw(context: CanvasRenderingContext2D): void {
+            throw new Error("The Draw method is abstract on Graphic2d and should not be called.");
         }
 
+        /**
+        * Abstract: Should be overridden to return the bounding area that represents where the graphic will draw.
+        */
         public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
             throw new Error("GetDrawBounds is abstract, it must be implemented.");
         }
@@ -3408,21 +3439,23 @@ module EndGate.Graphics.Assets {
         Pixels,
         Points,
         Percent
-    };
+    };    
+}
 
-    export class _FontMeasurementHelper {
+module EndGate.Graphics.Assets._ {
+    export class FontMeasurementHelper {
         public static _measurements: string[];
 
         public static _Initialize() {
-            _FontMeasurementHelper._measurements = ["em", "px", "pt", "%"];
+            FontMeasurementHelper._measurements = ["em", "px", "pt", "%"];
         }
 
         public static Get(measurement: FontMeasurement): string {
-            return _FontMeasurementHelper._measurements[measurement];
+            return FontMeasurementHelper._measurements[measurement];
         }
     }
 
-    _FontMeasurementHelper._Initialize();
+    FontMeasurementHelper._Initialize();
 }
 /* FontFamily.ts */
 module EndGate.Graphics.Assets {
@@ -3456,28 +3489,30 @@ module EndGate.Graphics.Assets {
         Verdana
     };
 
-    export class _FontFamilyHelper {
+}
+
+module EndGate.Graphics.Assets._ {
+    export class FontFamilyHelper {
         public static _families: { [family: number]: string; };
 
         public static _Initialize() {
-            _FontFamilyHelper._families = (<{ [family: number]: string; } >{});
+            FontFamilyHelper._families = (<{ [family: number]: string; } >{});
 
             for (var family in FontFamily) {
                 if (family !== "_map") {
-                    _FontFamilyHelper._families[FontFamily[family]] = family;
+                    FontFamilyHelper._families[FontFamily[family]] = family;
                 }
             }
 
-            _FontFamilyHelper._families[FontFamily["TimesNewRoman"]] = "Times New Roman";
+            FontFamilyHelper._families[FontFamily["TimesNewRoman"]] = "Times New Roman";
         }
 
         public static Get(family: FontFamily): string {
-            return _FontFamilyHelper._families[family];
+            return FontFamilyHelper._families[family];
         }
     }
 
-    _FontFamilyHelper._Initialize();
-
+    FontFamilyHelper._Initialize();
 }
 /* FontVariant.ts */
 module EndGate.Graphics.Assets {
@@ -3488,32 +3523,33 @@ module EndGate.Graphics.Assets {
     export enum FontVariant {
         Normal,
         SmallCaps
-    };
-
-    export class _FontVariantHelper {
-        public static _variants: { [variant: number]: string; };
-
-        public static _Initialize() {
-            _FontVariantHelper._variants = (<{ [family: number]: string; } >{});
-
-            for (var family in FontVariant) {
-                if (family !== "_map") {
-                    _FontVariantHelper._variants[FontVariant[family]] = family;
-                }
-            }
-
-            _FontVariantHelper._variants["SmallCaps"] = "Times New Roman";
-        }
-
-        public static Get(variant: FontVariant): string {
-            return _FontVariantHelper._variants[variant];
-        }
-    }
-
-    _FontVariantHelper._Initialize();
+    };    
 
 }
 
+module EndGate.Graphics.Assets._ {
+    export class FontVariantHelper {
+        public static _variants: { [variant: number]: string; };
+
+        public static _Initialize() {
+            FontVariantHelper._variants = (<{ [family: number]: string; } >{});
+
+            for (var family in FontVariant) {
+                if (family !== "_map") {
+                    FontVariantHelper._variants[FontVariant[family]] = family;
+                }
+            }
+
+            FontVariantHelper._variants["SmallCaps"] = "Times New Roman";
+        }
+
+        public static Get(variant: FontVariant): string {
+            return FontVariantHelper._variants[variant];
+        }
+    }
+
+    FontVariantHelper._Initialize();
+}
 /* FontStyle.ts */
 module EndGate.Graphics.Assets {
 
@@ -3526,28 +3562,29 @@ module EndGate.Graphics.Assets {
         Oblique
     }
 
-    export class _FontStyleHelper {
+}
+
+module EndGate.Graphics.Assets._ {
+    export class FontStyleHelper {
         public static _styles: { [family: number]: string; };
 
         public static _Initialize() {
-            _FontStyleHelper._styles = (<{ [family: number]: string; } >{});
+            FontStyleHelper._styles = (<{ [family: number]: string; } >{});
 
             for (var style in FontStyle) {
                 if (style !== "_map") {
-                    _FontStyleHelper._styles[FontStyle[style]] = style;
+                    FontStyleHelper._styles[FontStyle[style]] = style;
                 }
             }
         }
 
         public static Get(style: FontStyle): string {
-            return _FontStyleHelper._styles[style];
+            return FontStyleHelper._styles[style];
         }
     }
 
-    _FontStyleHelper._Initialize();
-
+    FontStyleHelper._Initialize();
 }
-
 /* FontSettings.ts */
 
 
@@ -3599,7 +3636,7 @@ module EndGate.Graphics.Assets {
         public FontSize(size: number, measurement: FontMeasurement): string;
         public FontSize(size?: number, measurement: FontMeasurement = FontMeasurement.Points): string {
             if (size !== undefined) {
-                return this.GetOrSetCache("fontSize", size.toString() + _FontMeasurementHelper.Get(measurement));
+                return this.GetOrSetCache("fontSize", size.toString() + _.FontMeasurementHelper.Get(measurement));
             }
             
             return this._cachedState["fontSize"];
@@ -3615,7 +3652,7 @@ module EndGate.Graphics.Assets {
         */
         public FontFamily(family: FontFamily): string;
         public FontFamily(family?: FontFamily): string {
-            return this.GetOrSetCache("fontFamily", _FontFamilyHelper.Get(family));
+            return this.GetOrSetCache("fontFamily", _.FontFamilyHelper.Get(family));
         }
 
         /**
@@ -3628,7 +3665,7 @@ module EndGate.Graphics.Assets {
         */
         public FontVariant(variant: FontVariant): string;
         public FontVariant(variant?: FontVariant): string {
-            return this.GetOrSetCache("fontVariant", _FontVariantHelper.Get(variant));
+            return this.GetOrSetCache("fontVariant", _.FontVariantHelper.Get(variant));
         }
 
         /**
@@ -3654,7 +3691,7 @@ module EndGate.Graphics.Assets {
         */
         public FontStyle(style: FontStyle): string;
         public FontStyle(style?: FontStyle): string {
-            return this.GetOrSetCache("fontStyle", _FontStyleHelper.Get(style));
+            return this.GetOrSetCache("fontStyle", _.FontStyleHelper.Get(style));
         }
 
         public _BuildFont(): string {
@@ -3756,7 +3793,7 @@ module EndGate.Graphics {
         */
         public Align(alignment: string): string;
         public Align(alignment?: string): string {
-            return this.State.TextAlign(alignment);
+            return this._State.TextAlign(alignment);
         }
 
         /**
@@ -3769,7 +3806,7 @@ module EndGate.Graphics {
         */
         public Baseline(baseline: string): string;
         public Baseline(baseline?: string): string {
-            return this.State.TextBaseline(baseline);
+            return this._State.TextBaseline(baseline);
         }
 
         /**
@@ -3782,7 +3819,7 @@ module EndGate.Graphics {
         */
         public Color(color: string): string;
         public Color(color?: string): string {
-            return this.State.FillStyle(color);
+            return this._State.FillStyle(color);
         }
 
         /**
@@ -3823,7 +3860,7 @@ module EndGate.Graphics {
         */
         public ShadowColor(color: string): string;
         public ShadowColor(color?: string): string {
-            return this.State.ShadowColor(color);
+            return this._State.ShadowColor(color);
         }
 
         /**
@@ -3836,7 +3873,7 @@ module EndGate.Graphics {
         */
         public ShadowX(x: number): number;
         public ShadowX(x?: number): number {
-            return this.State.ShadowOffsetX(x);
+            return this._State.ShadowOffsetX(x);
         }
 
         /**
@@ -3849,7 +3886,7 @@ module EndGate.Graphics {
         */
         public ShadowY(y: number): number;
         public ShadowY(y?: number): number {
-            return this.State.ShadowOffsetY(y);
+            return this._State.ShadowOffsetY(y);
         }
 
         /**
@@ -3862,7 +3899,7 @@ module EndGate.Graphics {
         */
         public ShadowBlur(blur: number): number;
         public ShadowBlur(blur?: number): number {
-            return this.State.ShadowBlur(blur);
+            return this._State.ShadowBlur(blur);
         }
 
         /**
@@ -3875,7 +3912,7 @@ module EndGate.Graphics {
         */
         public Opacity(alpha: number): number;
         public Opacity(alpha?: number): number {
-            return this.State.GlobalAlpha(alpha);
+            return this._State.GlobalAlpha(alpha);
         }
 
         /**
@@ -3932,7 +3969,7 @@ module EndGate.Graphics {
                 this._stroker.Trip();
             }
 
-            return this.State.LineWidth(thickness);
+            return this._State.LineWidth(thickness);
         }
 
         /**
@@ -3946,7 +3983,7 @@ module EndGate.Graphics {
         public BorderColor(color: string): string;
         public BorderColor(color?: string): string {
             this._stroker.Trip();
-            return this.State.StrokeStyle(color);
+            return this._State.StrokeStyle(color);
         }
 
         /**
@@ -3958,7 +3995,7 @@ module EndGate.Graphics {
 
             super._StartDraw(context);
 
-            this.State.Font(this._fontSettings._BuildFont());
+            this._State.Font(this._fontSettings._BuildFont());
 
             context.fillText(this._text, 0, 0);
             this._stroker.Invoke(context);
@@ -4155,7 +4192,7 @@ module EndGate.Graphics {
         */
         public Opacity(alpha: number): number;
         public Opacity(alpha?: number): number {
-            return this.State.GlobalAlpha(alpha);
+            return this._State.GlobalAlpha(alpha);
         }
 
         /**
@@ -4431,7 +4468,7 @@ module EndGate.Graphics.Abstractions {
         public Color(color: string): string;
         public Color(color?: string): string {
             this._fill = true;
-            return this.State.FillStyle(color);
+            return this._State.FillStyle(color);
         }
         
         /**
@@ -4454,7 +4491,7 @@ module EndGate.Graphics.Abstractions {
         */
         public BorderThickness(thickness: number): number;
         public BorderThickness(thickness?: number): number {
-            return this.State.LineWidth(thickness);
+            return this._State.LineWidth(thickness);
         }
         
         /**
@@ -4468,7 +4505,7 @@ module EndGate.Graphics.Abstractions {
         public BorderColor(color: string): string;
         public BorderColor(color?: string): string {
             this._stroke = true;
-            return this.State.StrokeStyle(color);
+            return this._State.StrokeStyle(color);
         }
 
         /**
@@ -4510,7 +4547,7 @@ module EndGate.Graphics.Abstractions {
         public ShadowColor(color: string): string;
         public ShadowColor(color?: string): string {
             this._fill = true;
-            return this.State.ShadowColor(color);
+            return this._State.ShadowColor(color);
         }
 
         /**
@@ -4523,7 +4560,7 @@ module EndGate.Graphics.Abstractions {
         */
         public ShadowX(x: number): number;
         public ShadowX(x?: number): number {
-            return this.State.ShadowOffsetX(x);
+            return this._State.ShadowOffsetX(x);
         }
 
         /**
@@ -4536,7 +4573,7 @@ module EndGate.Graphics.Abstractions {
         */
         public ShadowY(y: number): number;
         public ShadowY(y?: number): number {
-            return this.State.ShadowOffsetY(y);
+            return this._State.ShadowOffsetY(y);
         }
 
         /**
@@ -4549,7 +4586,7 @@ module EndGate.Graphics.Abstractions {
         */
         public ShadowBlur(blur: number): number;
         public ShadowBlur(blur?: number): number {
-            return this.State.ShadowBlur(blur);
+            return this._State.ShadowBlur(blur);
         }
 
         /**
@@ -4562,7 +4599,7 @@ module EndGate.Graphics.Abstractions {
         */
         public Opacity(alpha: number): number;
         public Opacity(alpha?: number): number {
-            return this.State.GlobalAlpha(alpha);
+            return this._State.GlobalAlpha(alpha);
         }
 
         public _StartDraw(context: CanvasRenderingContext2D): void {
@@ -4678,7 +4715,6 @@ module EndGate.Graphics {
 
         /**
         * Creates a new instance of the Rectangle object.
-        
         * @param x Initial horizontal location of the Rectangle.
         * @param y Initial vertical location of the Rectangle.
         * @param width Initial width of the Rectangle.
@@ -4713,7 +4749,7 @@ module EndGate.Graphics {
 
         public _BuildPath(context: CanvasRenderingContext2D): void {
             context.rect(-this.Size.HalfWidth(), -this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
-        }        
+        }
     }
 
 }
@@ -4734,7 +4770,34 @@ module EndGate.Graphics {
         private _boundsWidth: number;
         private _cachedPosition: Vector2d;
 
-        constructor(fromX: number, fromY: number, toX: number, toY: number, lineWidth?: number = 1, color?: string) {
+        /**
+        * Creates a new instance of the Line2d object with a line width of 1.
+        * @param fromX Starting horizontal coordinate.
+        * @param fromY Starting vertical coordinate.
+        * @param toX Ending horizontal coordinate.
+        * @param toY Ending vertical coordinate.
+        */
+        constructor(fromX: number, fromY: number, toX: number, toY: number);
+        /**
+        * Creates a new instance of the Line2d object with a specified line width.
+        * @param fromX Starting horizontal coordinate.
+        * @param fromY Starting vertical coordinate.
+        * @param toX Ending horizontal coordinate.
+        * @param toY Ending vertical coordinate.
+        * @param lineWidth Initial thickness of the line.
+        */
+        constructor(fromX: number, fromY: number, toX: number, toY: number, lineWidth: number);
+        /**
+        * Creates a new instance of the Line2d object with a specified line width and color.
+        * @param fromX Starting horizontal coordinate.
+        * @param fromY Starting vertical coordinate.
+        * @param toX Ending horizontal coordinate.
+        * @param toY Ending vertical coordinate.
+        * @param lineWidth Initial thickness of the line.
+        * @param color Initial color of the line.
+        */
+        constructor(fromX: number, fromY: number, toX: number, toY: number, lineWidth: number, color: string);
+        constructor(fromX: number, fromY: number, toX: number, toY: number, lineWidth: number = 1, color?: string) {
             super(Vector2d.Zero());// Set to zero here then updated in the rest of the constructor (use same logic)
 
             this._from = new Vector2d(fromX, fromY);
@@ -4747,26 +4810,75 @@ module EndGate.Graphics {
             }
         }
 
+        /**
+        * Gets the From location of the Line2d.
+        */
+        public From(): Vector2d;
+        /**
+        * Sets and gets the new From location of the Line2d.
+        * @param newPosition New From location.
+        */
+        public From(newPosition: Vector2d): Vector2d;
         public From(newPosition?: Vector2d): Vector2d {
             return this.GetOrSetLinePoint("from", newPosition);
         }
 
+        /**
+        * Gets the To location of the Line2d.
+        */
+        public To(): Vector2d;
+        /**
+        * Sets and gets the new To location of the Line2d.
+        * @param newPosition New To location.
+        */
+        public To(newPosition: Vector2d): Vector2d;
         public To(newPosition?: Vector2d): Vector2d {
             return this.GetOrSetLinePoint("to", newPosition);
         }
 
+        /**
+        * Gets the current line color.
+        */
+        public Color(): string;
+        /**
+        * Gets and sets the current line color.
+        * @param color The new color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        */
+        public Color(color: string): string;
         public Color(color?: string): string {
-            return this.State.StrokeStyle(color);
+            return this._State.FillStyle(color);
         }
 
+        /**
+        * Gets the current line width.
+        */
+        public LineWidth(): number;
+        /**
+        * Gets and sets the current line width.
+        * @param width The new line width.
+        */
+        public LineWidth(width: number): number;
         public LineWidth(width?: number): number {
-            return this.State.LineWidth(width);
+            return this._State.LineWidth(width);
         }
 
+        /**
+        * Gets the current line cap.
+        */
+        public LineCap(): string;
+        /**
+        * Gets and sets the current line cap.
+        * @param width The new line cap.  Values can be "butt", "round", "square".
+        */
+        public LineCap(cap: string): string;
         public LineCap(cap?: string): string {
-            return this.State.LineCap(cap);
+            return this._State.LineCap(cap);
         }
 
+        /**
+        * Draws the line onto the given context.  If this Line2d is part of a scene the Draw function will be called automatically.
+        * @param context The canvas context to draw the line onto.
+        */
         public Draw(context: CanvasRenderingContext2D): void {
             super._StartDraw(context);
 
@@ -4784,6 +4896,9 @@ module EndGate.Graphics {
             super._EndDraw(context);
         }
 
+        /**
+        * The bounding area that represents where the Line2d will draw.
+        */
         public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
             var bounds = new Bounds.BoundingRectangle(this.Position, new Size2d(this._boundsWidth, this.LineWidth()));
 
@@ -4976,7 +5091,7 @@ module EndGate.Graphics {
         */
         public Opacity(alpha: number): number;
         public Opacity(alpha?: number): number {
-            return this.State.GlobalAlpha(alpha);
+            return this._State.GlobalAlpha(alpha);
         }
 
         /**

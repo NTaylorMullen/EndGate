@@ -14,7 +14,34 @@ module EndGate.Graphics {
         private _boundsWidth: number;
         private _cachedPosition: Vector2d;
 
-        constructor(fromX: number, fromY: number, toX: number, toY: number, lineWidth?: number = 1, color?: string) {
+        /**
+        * Creates a new instance of the Line2d object with a line width of 1.
+        * @param fromX Starting horizontal coordinate.
+        * @param fromY Starting vertical coordinate.
+        * @param toX Ending horizontal coordinate.
+        * @param toY Ending vertical coordinate.
+        */
+        constructor(fromX: number, fromY: number, toX: number, toY: number);
+        /**
+        * Creates a new instance of the Line2d object with a specified line width.
+        * @param fromX Starting horizontal coordinate.
+        * @param fromY Starting vertical coordinate.
+        * @param toX Ending horizontal coordinate.
+        * @param toY Ending vertical coordinate.
+        * @param lineWidth Initial thickness of the line.
+        */
+        constructor(fromX: number, fromY: number, toX: number, toY: number, lineWidth: number);
+        /**
+        * Creates a new instance of the Line2d object with a specified line width and color.
+        * @param fromX Starting horizontal coordinate.
+        * @param fromY Starting vertical coordinate.
+        * @param toX Ending horizontal coordinate.
+        * @param toY Ending vertical coordinate.
+        * @param lineWidth Initial thickness of the line.
+        * @param color Initial color of the line.
+        */
+        constructor(fromX: number, fromY: number, toX: number, toY: number, lineWidth: number, color: string);
+        constructor(fromX: number, fromY: number, toX: number, toY: number, lineWidth: number = 1, color?: string) {
             super(Vector2d.Zero());// Set to zero here then updated in the rest of the constructor (use same logic)
 
             this._from = new Vector2d(fromX, fromY);
@@ -27,26 +54,75 @@ module EndGate.Graphics {
             }
         }
 
+        /**
+        * Gets the From location of the Line2d.
+        */
+        public From(): Vector2d;
+        /**
+        * Sets and gets the new From location of the Line2d.
+        * @param newPosition New From location.
+        */
+        public From(newPosition: Vector2d): Vector2d;
         public From(newPosition?: Vector2d): Vector2d {
             return this.GetOrSetLinePoint("from", newPosition);
         }
 
+        /**
+        * Gets the To location of the Line2d.
+        */
+        public To(): Vector2d;
+        /**
+        * Sets and gets the new To location of the Line2d.
+        * @param newPosition New To location.
+        */
+        public To(newPosition: Vector2d): Vector2d;
         public To(newPosition?: Vector2d): Vector2d {
             return this.GetOrSetLinePoint("to", newPosition);
         }
 
+        /**
+        * Gets the current line color.
+        */
+        public Color(): string;
+        /**
+        * Gets and sets the current line color.
+        * @param color The new color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        */
+        public Color(color: string): string;
         public Color(color?: string): string {
-            return this.State.StrokeStyle(color);
+            return this._State.FillStyle(color);
         }
 
+        /**
+        * Gets the current line width.
+        */
+        public LineWidth(): number;
+        /**
+        * Gets and sets the current line width.
+        * @param width The new line width.
+        */
+        public LineWidth(width: number): number;
         public LineWidth(width?: number): number {
-            return this.State.LineWidth(width);
+            return this._State.LineWidth(width);
         }
 
+        /**
+        * Gets the current line cap.
+        */
+        public LineCap(): string;
+        /**
+        * Gets and sets the current line cap.
+        * @param width The new line cap.  Values can be "butt", "round", "square".
+        */
+        public LineCap(cap: string): string;
         public LineCap(cap?: string): string {
-            return this.State.LineCap(cap);
+            return this._State.LineCap(cap);
         }
 
+        /**
+        * Draws the line onto the given context.  If this Line2d is part of a scene the Draw function will be called automatically.
+        * @param context The canvas context to draw the line onto.
+        */
         public Draw(context: CanvasRenderingContext2D): void {
             super._StartDraw(context);
 
@@ -64,6 +140,9 @@ module EndGate.Graphics {
             super._EndDraw(context);
         }
 
+        /**
+        * The bounding area that represents where the Line2d will draw.
+        */
         public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
             var bounds = new Bounds.BoundingRectangle(this.Position, new Size2d(this._boundsWidth, this.LineWidth()));
 

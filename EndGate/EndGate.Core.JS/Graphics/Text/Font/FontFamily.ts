@@ -29,26 +29,28 @@ module EndGate.Graphics.Assets {
         Verdana
     };
 
-    export class _FontFamilyHelper {
+}
+
+module EndGate.Graphics.Assets._ {
+    export class FontFamilyHelper {
         public static _families: { [family: number]: string; };
 
         public static _Initialize() {
-            _FontFamilyHelper._families = (<{ [family: number]: string; } >{});
+            FontFamilyHelper._families = (<{ [family: number]: string; } >{});
 
             for (var family in FontFamily) {
                 if (family !== "_map") {
-                    _FontFamilyHelper._families[FontFamily[family]] = family;
+                    FontFamilyHelper._families[FontFamily[family]] = family;
                 }
             }
 
-            _FontFamilyHelper._families[FontFamily["TimesNewRoman"]] = "Times New Roman";
+            FontFamilyHelper._families[FontFamily["TimesNewRoman"]] = "Times New Roman";
         }
 
         public static Get(family: FontFamily): string {
-            return _FontFamilyHelper._families[family];
+            return FontFamilyHelper._families[family];
         }
     }
 
-    _FontFamilyHelper._Initialize();
-
+    FontFamilyHelper._Initialize();
 }

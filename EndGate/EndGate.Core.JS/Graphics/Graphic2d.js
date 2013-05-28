@@ -9,23 +9,35 @@ var EndGate;
         /// <reference path="../Bounds/Bounds2d.ts" />
         /// <reference path="Graphic2dState.ts" />
         (function (Abstractions) {
+            /**
+            * Abstract drawable graphic type that is used create the base for graphics.
+            */
             var Graphic2d = (function () {
                 function Graphic2d(position) {
                     this._type = "Graphic2d";
                     this.Position = position;
                     this.Rotation = 0;
                     this.ZIndex = 0;
-                    this.State = new Graphics.Assets.Graphic2dState();
+                    this._State = new Graphics.Assets._.Graphic2dState();
                     this._children = [];
                 }
                 Graphic2d._zindexSort = function (a, b) {
                     return a.ZIndex - b.ZIndex;
                 };
-                Graphic2d.prototype.AddChild = function (graphic) {
+                Graphic2d.prototype.AddChild = /**
+                * Adds a child to the Graphic2d.  Children are drawn with relative positions to the parent Graphic2d.  Children
+                * of a Graphic2d should not be added to the Scene, parent Graphic2d's are responsible for drawing their children.
+                * @param graphic Child to add.
+                */
+                function (graphic) {
                     this._children.push(graphic);
                     this._children.sort(Graphic2d._zindexSort);
                 };
-                Graphic2d.prototype.RemoveChild = function (graphic) {
+                Graphic2d.prototype.RemoveChild = /**
+                * Removes a child from the Graphic2d.  Returns a Boolean value indicating whether or not the child was able to be removed.
+                * @param graphic Child to remove.
+                */
+                function (graphic) {
                     var index = this._children.indexOf(graphic);
                     if(index >= 0) {
                         this._children.splice(index, 1);
@@ -33,12 +45,15 @@ var EndGate;
                     }
                     return false;
                 };
-                Graphic2d.prototype.Children = function () {
+                Graphic2d.prototype.Children = /**
+                * Returns the list of children for the current Graphic2d.
+                */
+                function () {
                     return this._children;
                 };
                 Graphic2d.prototype._StartDraw = function (context) {
                     context.save();
-                    this.State.SetContextState(context);
+                    this._State.SetContextState(context);
                     context.translate(this.Position.X, this.Position.Y);
                     if(this.Rotation !== 0) {
                         context.rotate(this.Rotation);
@@ -50,9 +65,17 @@ var EndGate;
                     }
                     context.restore();
                 };
-                Graphic2d.prototype.Draw = function (context) {
+                Graphic2d.prototype.Draw = /**
+                * Abstract: Should be overridden to draw the derived class onto the context.  If this graphic is part of a scene the Draw function will be called automatically.
+                * @param context The canvas context to draw the graphic onto.
+                */
+                function (context) {
+                    throw new Error("The Draw method is abstract on Graphic2d and should not be called.");
                 };
-                Graphic2d.prototype.GetDrawBounds = function () {
+                Graphic2d.prototype.GetDrawBounds = /**
+                * Abstract: Should be overridden to return the bounding area that represents where the graphic will draw.
+                */
+                function () {
                     throw new Error("GetDrawBounds is abstract, it must be implemented.");
                 };
                 return Graphic2d;

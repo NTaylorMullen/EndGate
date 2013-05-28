@@ -9,25 +9,26 @@ module EndGate.Graphics.Assets {
         Oblique
     }
 
-    export class _FontStyleHelper {
+}
+
+module EndGate.Graphics.Assets._ {
+    export class FontStyleHelper {
         public static _styles: { [family: number]: string; };
 
         public static _Initialize() {
-            _FontStyleHelper._styles = (<{ [family: number]: string; } >{});
+            FontStyleHelper._styles = (<{ [family: number]: string; } >{});
 
             for (var style in FontStyle) {
                 if (style !== "_map") {
-                    _FontStyleHelper._styles[FontStyle[style]] = style;
+                    FontStyleHelper._styles[FontStyle[style]] = style;
                 }
             }
         }
 
         public static Get(style: FontStyle): string {
-            return _FontStyleHelper._styles[style];
+            return FontStyleHelper._styles[style];
         }
     }
 
-    _FontStyleHelper._Initialize();
-
+    FontStyleHelper._Initialize();
 }
-

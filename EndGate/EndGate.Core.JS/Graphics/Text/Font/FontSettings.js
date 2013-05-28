@@ -29,21 +29,21 @@ var EndGate;
                 FontSettings.prototype.FontSize = function (size, measurement) {
                     if (typeof measurement === "undefined") { measurement = Assets.FontMeasurement.Points; }
                     if(size !== undefined) {
-                        return this.GetOrSetCache("fontSize", size.toString() + Assets._FontMeasurementHelper.Get(measurement));
+                        return this.GetOrSetCache("fontSize", size.toString() + Assets._.FontMeasurementHelper.Get(measurement));
                     }
                     return this._cachedState["fontSize"];
                 };
                 FontSettings.prototype.FontFamily = function (family) {
-                    return this.GetOrSetCache("fontFamily", Assets._FontFamilyHelper.Get(family));
+                    return this.GetOrSetCache("fontFamily", Assets._.FontFamilyHelper.Get(family));
                 };
                 FontSettings.prototype.FontVariant = function (variant) {
-                    return this.GetOrSetCache("fontVariant", Assets._FontVariantHelper.Get(variant));
+                    return this.GetOrSetCache("fontVariant", Assets._.FontVariantHelper.Get(variant));
                 };
                 FontSettings.prototype.FontWeight = function (weight) {
                     return this.GetOrSetCache("fontWeight", weight);
                 };
                 FontSettings.prototype.FontStyle = function (style) {
-                    return this.GetOrSetCache("fontStyle", Assets._FontStyleHelper.Get(style));
+                    return this.GetOrSetCache("fontStyle", Assets._.FontStyleHelper.Get(style));
                 };
                 FontSettings.prototype._BuildFont = function () {
                     var font;

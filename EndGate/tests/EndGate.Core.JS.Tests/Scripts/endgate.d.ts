@@ -766,9 +766,8 @@ module EndGate.Collision {
         public Update(gameTime: GameTime): void;
     }
 }
-module EndGate.Graphics.Assets {
-    class Graphic2dState implements _.ITyped {
-        public _type: string;
+module EndGate.Graphics.Assets._ {
+    class Graphic2dState {
         private _cachedState;
         constructor();
         public StrokeStyle(value?: string): string;
@@ -791,21 +790,52 @@ module EndGate.Graphics.Assets {
     }
 }
 module EndGate.Graphics.Abstractions {
+    /**
+    * Abstract drawable graphic type that is used create the base for graphics.
+    */
     class Graphic2d implements _.ITyped, Rendering.IRenderable, IMoveable {
         public _type: string;
+        /**
+        * Gets or sets the ZIndex of the Graphic2d.  The ZIndex is used to control draw order.  Higher ZIndexes appear above lower ZIndexed graphics.
+        */
         public ZIndex: number;
+        /**
+        * Gets or sets the Position of the Graphic2d.  The Position determines where the graphic will be drawn on the screen.
+        */
         public Position: Vector2d;
+        /**
+        * Gets or sets the Rotation of the Graphic2d..
+        */
         public Rotation: number;
-        public State: Assets.Graphic2dState;
+        public _State: Assets._.Graphic2dState;
         private static _zindexSort;
         private _children;
         constructor(position: Vector2d);
+        /**
+        * Adds a child to the Graphic2d.  Children are drawn with relative positions to the parent Graphic2d.  Children
+        * of a Graphic2d should not be added to the Scene, parent Graphic2d's are responsible for drawing their children.
+        * @param graphic Child to add.
+        */
         public AddChild(graphic: Graphic2d): void;
+        /**
+        * Removes a child from the Graphic2d.  Returns a Boolean value indicating whether or not the child was able to be removed.
+        * @param graphic Child to remove.
+        */
         public RemoveChild(graphic: Graphic2d): bool;
+        /**
+        * Returns the list of children for the current Graphic2d.
+        */
         public Children(): Graphic2d[];
         public _StartDraw(context: CanvasRenderingContext2D): void;
         public _EndDraw(context: CanvasRenderingContext2D): void;
+        /**
+        * Abstract: Should be overridden to draw the derived class onto the context.  If this graphic is part of a scene the Draw function will be called automatically.
+        * @param context The canvas context to draw the graphic onto.
+        */
         public Draw(context: CanvasRenderingContext2D): void;
+        /**
+        * Abstract: Should be overridden to return the bounding area that represents where the graphic will draw.
+        */
         public GetDrawBounds(): Bounds.Abstractions.Bounds2d;
     }
 }
@@ -1169,7 +1199,9 @@ module EndGate.Graphics.Assets {
         Points,
         Percent,
     }
-    class _FontMeasurementHelper {
+}
+module EndGate.Graphics.Assets._ {
+    class FontMeasurementHelper {
         static _measurements: string[];
         static _Initialize(): void;
         static Get(measurement: FontMeasurement): string;
@@ -1204,7 +1236,9 @@ module EndGate.Graphics.Assets {
         TimesNewRoman,
         Verdana,
     }
-    class _FontFamilyHelper {
+}
+module EndGate.Graphics.Assets._ {
+    class FontFamilyHelper {
         static _families: {
             [family: number]: string;
         };
@@ -1220,7 +1254,9 @@ module EndGate.Graphics.Assets {
         Normal,
         SmallCaps,
     }
-    class _FontVariantHelper {
+}
+module EndGate.Graphics.Assets._ {
+    class FontVariantHelper {
         static _variants: {
             [variant: number]: string;
         };
@@ -1237,7 +1273,9 @@ module EndGate.Graphics.Assets {
         Italic,
         Oblique,
     }
-    class _FontStyleHelper {
+}
+module EndGate.Graphics.Assets._ {
+    class FontStyleHelper {
         static _styles: {
             [family: number]: string;
         };
@@ -1863,7 +1901,6 @@ module EndGate.Graphics {
         public Size: Size2d;
         /**
         * Creates a new instance of the Rectangle object.
-        
         * @param x Initial horizontal location of the Rectangle.
         * @param y Initial vertical location of the Rectangle.
         * @param width Initial width of the Rectangle.
@@ -1894,13 +1931,86 @@ module EndGate.Graphics {
         private _difference;
         private _boundsWidth;
         private _cachedPosition;
-        constructor(fromX: number, fromY: number, toX: number, toY: number, lineWidth?: number, color?: string);
-        public From(newPosition?: Vector2d): Vector2d;
-        public To(newPosition?: Vector2d): Vector2d;
-        public Color(color?: string): string;
-        public LineWidth(width?: number): number;
-        public LineCap(cap?: string): string;
+        /**
+        * Creates a new instance of the Line2d object with a line width of 1.
+        * @param fromX Starting horizontal coordinate.
+        * @param fromY Starting vertical coordinate.
+        * @param toX Ending horizontal coordinate.
+        * @param toY Ending vertical coordinate.
+        */
+        constructor(fromX: number, fromY: number, toX: number, toY: number);
+        /**
+        * Creates a new instance of the Line2d object with a specified line width.
+        * @param fromX Starting horizontal coordinate.
+        * @param fromY Starting vertical coordinate.
+        * @param toX Ending horizontal coordinate.
+        * @param toY Ending vertical coordinate.
+        * @param lineWidth Initial thickness of the line.
+        */
+        constructor(fromX: number, fromY: number, toX: number, toY: number, lineWidth: number);
+        /**
+        * Creates a new instance of the Line2d object with a specified line width and color.
+        * @param fromX Starting horizontal coordinate.
+        * @param fromY Starting vertical coordinate.
+        * @param toX Ending horizontal coordinate.
+        * @param toY Ending vertical coordinate.
+        * @param lineWidth Initial thickness of the line.
+        * @param color Initial color of the line.
+        */
+        constructor(fromX: number, fromY: number, toX: number, toY: number, lineWidth: number, color: string);
+        /**
+        * Gets the From location of the Line2d.
+        */
+        public From(): Vector2d;
+        /**
+        * Sets and gets the new From location of the Line2d.
+        * @param newPosition New From location.
+        */
+        public From(newPosition: Vector2d): Vector2d;
+        /**
+        * Gets the To location of the Line2d.
+        */
+        public To(): Vector2d;
+        /**
+        * Sets and gets the new To location of the Line2d.
+        * @param newPosition New To location.
+        */
+        public To(newPosition: Vector2d): Vector2d;
+        /**
+        * Gets the current line color.
+        */
+        public Color(): string;
+        /**
+        * Gets and sets the current line color.
+        * @param color The new color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        */
+        public Color(color: string): string;
+        /**
+        * Gets the current line width.
+        */
+        public LineWidth(): number;
+        /**
+        * Gets and sets the current line width.
+        * @param width The new line width.
+        */
+        public LineWidth(width: number): number;
+        /**
+        * Gets the current line cap.
+        */
+        public LineCap(): string;
+        /**
+        * Gets and sets the current line cap.
+        * @param width The new line cap.  Values can be "butt", "round", "square".
+        */
+        public LineCap(cap: string): string;
+        /**
+        * Draws the line onto the given context.  If this Line2d is part of a scene the Draw function will be called automatically.
+        * @param context The canvas context to draw the line onto.
+        */
         public Draw(context: CanvasRenderingContext2D): void;
+        /**
+        * The bounding area that represents where the Line2d will draw.
+        */
         public GetDrawBounds(): Bounds.Abstractions.Bounds2d;
         private UpdatePosition();
         private RefreshCache();

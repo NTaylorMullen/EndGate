@@ -62,7 +62,7 @@ module EndGate.Graphics {
         */
         public Align(alignment: string): string;
         public Align(alignment?: string): string {
-            return this.State.TextAlign(alignment);
+            return this._State.TextAlign(alignment);
         }
 
         /**
@@ -75,7 +75,7 @@ module EndGate.Graphics {
         */
         public Baseline(baseline: string): string;
         public Baseline(baseline?: string): string {
-            return this.State.TextBaseline(baseline);
+            return this._State.TextBaseline(baseline);
         }
 
         /**
@@ -88,7 +88,7 @@ module EndGate.Graphics {
         */
         public Color(color: string): string;
         public Color(color?: string): string {
-            return this.State.FillStyle(color);
+            return this._State.FillStyle(color);
         }
 
         /**
@@ -129,7 +129,7 @@ module EndGate.Graphics {
         */
         public ShadowColor(color: string): string;
         public ShadowColor(color?: string): string {
-            return this.State.ShadowColor(color);
+            return this._State.ShadowColor(color);
         }
 
         /**
@@ -142,7 +142,7 @@ module EndGate.Graphics {
         */
         public ShadowX(x: number): number;
         public ShadowX(x?: number): number {
-            return this.State.ShadowOffsetX(x);
+            return this._State.ShadowOffsetX(x);
         }
 
         /**
@@ -155,7 +155,7 @@ module EndGate.Graphics {
         */
         public ShadowY(y: number): number;
         public ShadowY(y?: number): number {
-            return this.State.ShadowOffsetY(y);
+            return this._State.ShadowOffsetY(y);
         }
 
         /**
@@ -168,7 +168,7 @@ module EndGate.Graphics {
         */
         public ShadowBlur(blur: number): number;
         public ShadowBlur(blur?: number): number {
-            return this.State.ShadowBlur(blur);
+            return this._State.ShadowBlur(blur);
         }
 
         /**
@@ -181,7 +181,7 @@ module EndGate.Graphics {
         */
         public Opacity(alpha: number): number;
         public Opacity(alpha?: number): number {
-            return this.State.GlobalAlpha(alpha);
+            return this._State.GlobalAlpha(alpha);
         }
 
         /**
@@ -238,7 +238,7 @@ module EndGate.Graphics {
                 this._stroker.Trip();
             }
 
-            return this.State.LineWidth(thickness);
+            return this._State.LineWidth(thickness);
         }
 
         /**
@@ -252,7 +252,7 @@ module EndGate.Graphics {
         public BorderColor(color: string): string;
         public BorderColor(color?: string): string {
             this._stroker.Trip();
-            return this.State.StrokeStyle(color);
+            return this._State.StrokeStyle(color);
         }
 
         /**
@@ -264,7 +264,7 @@ module EndGate.Graphics {
 
             super._StartDraw(context);
 
-            this.State.Font(this._fontSettings._BuildFont());
+            this._State.Font(this._fontSettings._BuildFont());
 
             context.fillText(this._text, 0, 0);
             this._stroker.Invoke(context);

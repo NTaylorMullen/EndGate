@@ -48,7 +48,7 @@ module EndGate.Graphics.Assets {
         public FontSize(size: number, measurement: FontMeasurement): string;
         public FontSize(size?: number, measurement: FontMeasurement = FontMeasurement.Points): string {
             if (size !== undefined) {
-                return this.GetOrSetCache("fontSize", size.toString() + _FontMeasurementHelper.Get(measurement));
+                return this.GetOrSetCache("fontSize", size.toString() + _.FontMeasurementHelper.Get(measurement));
             }
             
             return this._cachedState["fontSize"];
@@ -64,7 +64,7 @@ module EndGate.Graphics.Assets {
         */
         public FontFamily(family: FontFamily): string;
         public FontFamily(family?: FontFamily): string {
-            return this.GetOrSetCache("fontFamily", _FontFamilyHelper.Get(family));
+            return this.GetOrSetCache("fontFamily", _.FontFamilyHelper.Get(family));
         }
 
         /**
@@ -77,7 +77,7 @@ module EndGate.Graphics.Assets {
         */
         public FontVariant(variant: FontVariant): string;
         public FontVariant(variant?: FontVariant): string {
-            return this.GetOrSetCache("fontVariant", _FontVariantHelper.Get(variant));
+            return this.GetOrSetCache("fontVariant", _.FontVariantHelper.Get(variant));
         }
 
         /**
@@ -103,7 +103,7 @@ module EndGate.Graphics.Assets {
         */
         public FontStyle(style: FontStyle): string;
         public FontStyle(style?: FontStyle): string {
-            return this.GetOrSetCache("fontStyle", _FontStyleHelper.Get(style));
+            return this.GetOrSetCache("fontStyle", _.FontStyleHelper.Get(style));
         }
 
         public _BuildFont(): string {

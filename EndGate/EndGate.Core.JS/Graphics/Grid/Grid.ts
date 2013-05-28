@@ -154,7 +154,7 @@ module EndGate.Graphics {
         */
         public Opacity(alpha: number): number;
         public Opacity(alpha?: number): number {
-            return this.State.GlobalAlpha(alpha);
+            return this._State.GlobalAlpha(alpha);
         }
 
         /**
