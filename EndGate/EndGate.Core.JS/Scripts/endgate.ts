@@ -3410,12 +3410,30 @@ module EndGate {
 /* LinearDirections.ts */
 module EndGate.MovementControllers.Assets {
 
+    /**
+    * Defines a direction management object that represents directional state.
+    */
     export class LinearDirections {
+        /**
+        * Indicates whether the object is moving left.
+        */
         public Left: bool;
+        /**
+        * Indicates whether the object is moving right.
+        */
         public Right: bool;
+        /**
+        * Indicates whether the object is moving up.
+        */
         public Up: bool;
+        /**
+        * Indicates whether the object is moving down.
+        */
         public Down: bool;
 
+        /**
+        * Creates a new instance of the LinearDirection object with all directions= indicators initially set to false.
+        */
         constructor() {
             this.Left = false;
             this.Right = false;
@@ -3428,8 +3446,17 @@ module EndGate.MovementControllers.Assets {
 /* IMoveEvent.ts */
 declare module EndGate.MovementControllers {
 
+    /**
+    * Represents a move event object that is used to depict a movement, specifically a direction and whether or not the move started or stopped.
+    */
     export interface IMoveEvent {
+        /**
+        * The movement direction.
+        */
         Direction: string;
+        /**
+        * Whether or not the move started or stopped.
+        */
         StartMoving: bool;
     }
 
@@ -3493,13 +3520,37 @@ module EndGate.MovementControllers.Abstractions {
 
 module EndGate.MovementControllers {
 
+    /**
+    * Defines a LinearMovementController that can move objects Up, Right, Left, Down or a combination.
+    */
     export class LinearMovementController extends Abstractions.MovementController {
         private _moveSpeed: number;
         private _moving: Assets.LinearDirections;
         private _rotationUpdater: EndGate._.Utilities.NoopTripInvoker;
         private _velocityUpdater: Function;
 
-        constructor(moveables: IMoveable[], moveSpeed: number, rotateWithMovements?: bool = true, multiDirectional?: bool = true) {
+        /**
+        * Creates a new instance of the LinearMovementController object which rotates the provided moveable's on movements and can move diagonally.
+        * @param moveables Array of moveable objects that will be moved when the movement controller moves (this cannot change after construction).
+        * @param moveSpeed How fast the movement controller will move.
+        */
+        constructor(moveables: IMoveable[], moveSpeed: number);
+        /**
+        * Creates a new instance of the LinearMovementController object which can move diagonally.
+        * @param moveables Array of moveable objects that will be moved when the movement controller moves (this cannot change after construction).
+        * @param moveSpeed How fast the movement controller will move.
+        * @param rotateWithMovements Whether the moveables should rotate to face their moving direction, default is true (this cannot change after construction).
+        */
+        constructor(moveables: IMoveable[], moveSpeed: number, rotateWithMovements: bool);
+        /**
+        * Creates a new instance of the LinearMovementController object..
+        * @param moveables Array of moveable objects that will be moved when the movement controller moves (this cannot change after construction).
+        * @param moveSpeed How fast the movement controller will move.
+        * @param rotateWithMovements Whether the moveables should rotate to face their moving direction.  Default is true (this cannot change after construction).
+        * @param multiDirectional Whether multiple movements can occur simultaneously, resulting in diagonal movements. Default is true (this cannot change after construction).
+        */
+        constructor(moveables: IMoveable[], moveSpeed: number, rotateWithMovements: bool, multiDirectional: bool);
+        constructor(moveables: IMoveable[], moveSpeed: number, rotateWithMovements: bool = true, multiDirectional: bool = true) {
             super(moveables);
 
             this._moveSpeed = moveSpeed;
@@ -3517,20 +3568,45 @@ module EndGate.MovementControllers {
             }
         }
 
+        /**
+        * Event: Triggered when a the movement controller starts or stops a movement.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Passes an IMoveEvent to bound functions.
+        */
         public OnMove: EventHandler;
 
+        /**
+        * Determines if the movement controller is moving in the provided direction.
+        * @param direction The direction to check.
+        */
         public IsMovingInDirection(direction: string): bool {
             return this._moving[direction] || false;
         }
 
+        /**
+        * Starts moving the movement controller in the specified direction.
+        * @param direction The direction to start moving.
+        */
         public StartMoving(direction: string): void {
             this.Move(direction, true);
         }
-
+        
+        /**
+        * Stops the movement controller from moving in the specified direction.
+        * @param direction The direction to stop moving.
+        */
         public StopMoving(direction: string): void {
             this.Move(direction, false);
         }
 
+        /**
+        * Gets the current move speed.
+        */
+        public MoveSpeed(): number;
+        /**
+        * Sets and gets the current move speed.
+        * @param speed The new move speed.
+        */
+        public MoveSpeed(speed: number): number;
         public MoveSpeed(speed?: number): number {
             if (typeof speed !== "undefined") {
                 this._moveSpeed = speed;
@@ -3540,6 +3616,10 @@ module EndGate.MovementControllers {
             return this._moveSpeed;
         }
 
+        /**
+        * Moves the LinearMovementController in the currently active directions.  MovementController's must be updated in order to move.
+        * @param gameTime The current game time object.
+        */
         public Update(gameTime: GameTime): void {
             if (!this._frozen) {
                 this.Position = this.Position.Add(this.Velocity.Multiply(gameTime.ElapsedSecond));
@@ -3548,6 +3628,11 @@ module EndGate.MovementControllers {
             }
         }
 
+        /**
+        * Triggers a move event on the MovementController.
+        * @param direction The direction to start or stop moving.
+        * @param startMoving Whether the movement is starting or stopping.
+        */
         public Move(direction: string, startMoving: bool): void {
             if (typeof this._moving[direction] !== "undefined") {
                 this._moving[direction] = startMoving;

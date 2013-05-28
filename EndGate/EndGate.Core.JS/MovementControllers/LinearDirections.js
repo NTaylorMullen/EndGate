@@ -2,7 +2,13 @@ var EndGate;
 (function (EndGate) {
     (function (MovementControllers) {
         (function (Assets) {
+            /**
+            * Defines a direction management object that represents directional state.
+            */
             var LinearDirections = (function () {
+                /**
+                * Creates a new instance of the LinearDirection object with all directions= indicators initially set to false.
+                */
                 function LinearDirections() {
                     this.Left = false;
                     this.Right = false;
@@ -17,4 +23,3 @@ var EndGate;
     })(EndGate.MovementControllers || (EndGate.MovementControllers = {}));
     var MovementControllers = EndGate.MovementControllers;
 })(EndGate || (EndGate = {}));
-//@ sourceMappingURL=LinearDirections.js.map

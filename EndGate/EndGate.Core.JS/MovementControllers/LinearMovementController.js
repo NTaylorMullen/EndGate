@@ -15,6 +15,9 @@ var EndGate;
     /// <reference path="IMoveEvent.ts" />
     /// <reference path="MovementController.ts" />
     (function (MovementControllers) {
+        /**
+        * Defines a LinearMovementController that can move objects Up, Right, Left, Down or a combination.
+        */
         var LinearMovementController = (function (_super) {
             __extends(LinearMovementController, _super);
             function LinearMovementController(moveables, moveSpeed, rotateWithMovements, multiDirectional) {
@@ -34,13 +37,25 @@ var EndGate;
                     this._velocityUpdater = this.UpdateVelocityNoMultiDirection;
                 }
             }
-            LinearMovementController.prototype.IsMovingInDirection = function (direction) {
+            LinearMovementController.prototype.IsMovingInDirection = /**
+            * Determines if the movement controller is moving in the provided direction.
+            * @param direction The direction to check.
+            */
+            function (direction) {
                 return this._moving[direction] || false;
             };
-            LinearMovementController.prototype.StartMoving = function (direction) {
+            LinearMovementController.prototype.StartMoving = /**
+            * Starts moving the movement controller in the specified direction.
+            * @param direction The direction to start moving.
+            */
+            function (direction) {
                 this.Move(direction, true);
             };
-            LinearMovementController.prototype.StopMoving = function (direction) {
+            LinearMovementController.prototype.StopMoving = /**
+            * Stops the movement controller from moving in the specified direction.
+            * @param direction The direction to stop moving.
+            */
+            function (direction) {
                 this.Move(direction, false);
             };
             LinearMovementController.prototype.MoveSpeed = function (speed) {
@@ -50,13 +65,22 @@ var EndGate;
                 }
                 return this._moveSpeed;
             };
-            LinearMovementController.prototype.Update = function (gameTime) {
+            LinearMovementController.prototype.Update = /**
+            * Moves the LinearMovementController in the currently active directions.  MovementController's must be updated in order to move.
+            * @param gameTime The current game time object.
+            */
+            function (gameTime) {
                 if(!this._frozen) {
                     this.Position = this.Position.Add(this.Velocity.Multiply(gameTime.ElapsedSecond));
                     _super.prototype.Update.call(this, gameTime);
                 }
             };
-            LinearMovementController.prototype.Move = function (direction, startMoving) {
+            LinearMovementController.prototype.Move = /**
+            * Triggers a move event on the MovementController.
+            * @param direction The direction to start or stop moving.
+            * @param startMoving Whether the movement is starting or stopping.
+            */
+            function (direction, startMoving) {
                 if(typeof this._moving[direction] !== "undefined") {
                     this._moving[direction] = startMoving;
                     this._velocityUpdater();
@@ -116,4 +140,3 @@ var EndGate;
     })(EndGate.MovementControllers || (EndGate.MovementControllers = {}));
     var MovementControllers = EndGate.MovementControllers;
 })(EndGate || (EndGate = {}));
-//@ sourceMappingURL=LinearMovementController.js.map

@@ -1357,17 +1357,44 @@ module EndGate._ {
 }
 var GameRunnerInstance: EndGate._.GameRunner;
 module EndGate.MovementControllers.Assets {
+    /**
+    * Defines a direction management object that represents directional state.
+    */
     class LinearDirections {
+        /**
+        * Indicates whether the object is moving left.
+        */
         public Left: bool;
+        /**
+        * Indicates whether the object is moving right.
+        */
         public Right: bool;
+        /**
+        * Indicates whether the object is moving up.
+        */
         public Up: bool;
+        /**
+        * Indicates whether the object is moving down.
+        */
         public Down: bool;
+        /**
+        * Creates a new instance of the LinearDirection object with all directions= indicators initially set to false.
+        */
         constructor();
     }
 }
 module EndGate.MovementControllers {
+    /**
+    * Represents a move event object that is used to depict a movement, specifically a direction and whether or not the move started or stopped.
+    */
     interface IMoveEvent {
+        /**
+        * The movement direction.
+        */
         Direction: string;
+        /**
+        * Whether or not the move started or stopped.
+        */
         StartMoving: bool;
     }
 }
@@ -1386,18 +1413,74 @@ module EndGate.MovementControllers.Abstractions {
     }
 }
 module EndGate.MovementControllers {
+    /**
+    * Defines a LinearMovementController that can move objects Up, Right, Left, Down or a combination.
+    */
     class LinearMovementController extends Abstractions.MovementController {
         private _moveSpeed;
         private _moving;
         private _rotationUpdater;
         private _velocityUpdater;
-        constructor(moveables: IMoveable[], moveSpeed: number, rotateWithMovements?: bool, multiDirectional?: bool);
+        /**
+        * Creates a new instance of the LinearMovementController object which rotates the provided moveable's on movements and can move diagonally.
+        * @param moveables Array of moveable objects that will be moved when the movement controller moves (this cannot change after construction).
+        * @param moveSpeed How fast the movement controller will move.
+        */
+        constructor(moveables: IMoveable[], moveSpeed: number);
+        /**
+        * Creates a new instance of the LinearMovementController object which can move diagonally.
+        * @param moveables Array of moveable objects that will be moved when the movement controller moves (this cannot change after construction).
+        * @param moveSpeed How fast the movement controller will move.
+        * @param rotateWithMovements Whether the moveables should rotate to face their moving direction, default is true (this cannot change after construction).
+        */
+        constructor(moveables: IMoveable[], moveSpeed: number, rotateWithMovements: bool);
+        /**
+        * Creates a new instance of the LinearMovementController object..
+        * @param moveables Array of moveable objects that will be moved when the movement controller moves (this cannot change after construction).
+        * @param moveSpeed How fast the movement controller will move.
+        * @param rotateWithMovements Whether the moveables should rotate to face their moving direction.  Default is true (this cannot change after construction).
+        * @param multiDirectional Whether multiple movements can occur simultaneously, resulting in diagonal movements. Default is true (this cannot change after construction).
+        */
+        constructor(moveables: IMoveable[], moveSpeed: number, rotateWithMovements: bool, multiDirectional: bool);
+        /**
+        * Event: Triggered when a the movement controller starts or stops a movement.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Passes an IMoveEvent to bound functions.
+        */
         public OnMove: EventHandler;
+        /**
+        * Determines if the movement controller is moving in the provided direction.
+        * @param direction The direction to check.
+        */
         public IsMovingInDirection(direction: string): bool;
+        /**
+        * Starts moving the movement controller in the specified direction.
+        * @param direction The direction to start moving.
+        */
         public StartMoving(direction: string): void;
+        /**
+        * Stops the movement controller from moving in the specified direction.
+        * @param direction The direction to stop moving.
+        */
         public StopMoving(direction: string): void;
-        public MoveSpeed(speed?: number): number;
+        /**
+        * Gets the current move speed.
+        */
+        public MoveSpeed(): number;
+        /**
+        * Sets and gets the current move speed.
+        * @param speed The new move speed.
+        */
+        public MoveSpeed(speed: number): number;
+        /**
+        * Moves the LinearMovementController in the currently active directions.  MovementController's must be updated in order to move.
+        * @param gameTime The current game time object.
+        */
         public Update(gameTime: GameTime): void;
+        /**
+        * Triggers a move event on the MovementController.
+        * @param direction The direction to start or stop moving.
+        * @param startMoving Whether the movement is starting or stopping.
+        */
         public Move(direction: string, startMoving: bool): void;
         private UpdateVelocityNoMultiDirection();
         private UpdateVelocityWithMultiDirection();
