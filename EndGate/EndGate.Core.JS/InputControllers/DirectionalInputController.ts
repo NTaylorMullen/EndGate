@@ -3,12 +3,31 @@
 
 module EndGate.InputControllers {
 
+    /**
+    * Defines a DirectionalInputController that will monitor Up, Right, Left, and Down movement attempts.
+    */
     export class DirectionalInputController {
         private _keyboard: Input.KeyboardHandler;
         private _onMove: (direction: string, startMoving: bool) => void;
         private _directions: MovementControllers.Assets.LinearDirections;
 
-        constructor(keyboard: Input.KeyboardHandler, onMove: (direction: string, startMoving: bool) => void , upKeys?: string[] = ["w", "Up"], rightKeys?: string[] = ["d", "Right"], downKeys?: string[] = ["s", "Down"], leftKeys?: string[] = ["a", "Left"]) {
+        /**
+        * Creates a new instance of the DirectionalInputController object with default key controls.
+        * @param keyboard A keyboard handler in order to bind directional events.
+        * @param onMove The function to trigger when the user attempts to perform a move.  Passes the direction ("Left", "Right", "Up", "Down") and whether the movement was started or stopped.
+        */
+        constructor(keyboard: Input.KeyboardHandler, onMove: (direction: string, startMoving: bool) => void);
+        /**
+        * Creates a new instance of the DirectionalInputController object with custom key controls.
+        * @param keyboard A keyboard handler in order to bind directional events.
+        * @param onMove The function to trigger when the user attempts to perform a move.  Passes the direction ("Left", "Right", "Up", "Down") and whether the movement was started or stopped.
+        * @param upKeys Array of keys to trigger an "Up" movement.  Default is ["w", "Up"].
+        * @param rightKeys Array of keys to trigger a "Right" movement.  Default is ["d", "Right"].
+        * @param downKeys Array of keys to trigger a "Down" movement.  Default is ["s", "Down"].
+        * @param leftKeys Array of keys to trigger a "Left" movement.  Default is ["a", "Left"].
+        */
+        constructor(keyboard: Input.KeyboardHandler, onMove: (direction: string, startMoving: bool) => void , upKeys: string[], rightKeys: string[], downKeys: string[], leftKeys: string[]);
+        constructor(keyboard: Input.KeyboardHandler, onMove: (direction: string, startMoving: bool) => void, upKeys: string[] = ["w", "Up"], rightKeys: string[] = ["d", "Right"], downKeys: string[] = ["s", "Down"], leftKeys: string[] = ["a", "Left"]) {
             this._keyboard = keyboard;
             this._onMove = onMove;
             this._directions = new MovementControllers.Assets.LinearDirections();

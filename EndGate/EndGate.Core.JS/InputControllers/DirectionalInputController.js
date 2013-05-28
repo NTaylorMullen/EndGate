@@ -3,6 +3,9 @@ var EndGate;
     /// <reference path="../Input/Keyboard/KeyboardHandler.ts" />
     /// <reference path="../MovementControllers/LinearDirections.ts" />
     (function (InputControllers) {
+        /**
+        * Defines a DirectionalInputController that will monitor Up, Right, Left, and Down movement attempts.
+        */
         var DirectionalInputController = (function () {
             function DirectionalInputController(keyboard, onMove, upKeys, rightKeys, downKeys, leftKeys) {
                 if (typeof upKeys === "undefined") { upKeys = [
@@ -50,4 +53,3 @@ var EndGate;
     })(EndGate.InputControllers || (EndGate.InputControllers = {}));
     var InputControllers = EndGate.InputControllers;
 })(EndGate || (EndGate = {}));
-//@ sourceMappingURL=DirectionalInputController.js.map
