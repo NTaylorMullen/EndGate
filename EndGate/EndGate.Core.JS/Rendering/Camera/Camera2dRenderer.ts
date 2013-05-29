@@ -5,44 +5,56 @@
 
 module EndGate.Rendering {
 
+    /**
+    * Defines a camera rendering object that when used in conjunction with a Camera2d draws all objects in a camera relative position.
+    */
     export class Camera2dRenderer extends Renderer2d {
         private _camera: Camera2d;
         private _contextBuilder: _.Camera2dCanvasContextBuilder;
 
+        /**
+        * Creates a new instance of the Camera2dRenderer.
+        * @param renderOnto The canvas to render onto.
+        * @param camera The camera that ultimately decides what is drawn to the renderOnto canvas.
+        */
         constructor(renderOnto: HTMLCanvasElement, camera: Camera2d) {
             super(renderOnto);
 
             this._camera = camera;
             this._contextBuilder = new _.Camera2dCanvasContextBuilder(this._camera);
 
-            this.OnRendererSizeChange.Bind(this._contextBuilder.UpdateCanvasCenter);
-            this._contextBuilder.UpdateCanvasCenter(new Size2d(renderOnto.width, renderOnto.height));
-            this._bufferContext = this._contextBuilder.BuildFrom(this._bufferContext);
+            this.OnRendererSizeChange.Bind(this._contextBuilder._UpdateCanvasCenter);
+            this._contextBuilder._UpdateCanvasCenter(new Size2d(renderOnto.width, renderOnto.height));
+            this._BufferContext = this._contextBuilder.Build(this._BufferContext);
 
         }
 
+        /**
+        * Renders the provided renderables onto the renderOnto canvas.  Returns the canvas that was rendered onto.
+        * @param renderables Array of items that are to be rendered. 
+        */
         public Render(renderables: IRenderable[]): CanvasRenderingContext2D {
             var context,
-                inverseScale = this._camera.GetInverseDistanceScale();
+                inverseScale = this._camera._GetInverseDistanceScale();
 
-            this._bufferContext.save();
-            this._bufferContext.scale(inverseScale, inverseScale)
+            this._BufferContext.save();
+            this._BufferContext.scale(inverseScale, inverseScale)
 
             context = super.Render(this.GetOnScreenRenderables(renderables));
 
-            this._bufferContext.restore();
+            this._BufferContext.restore();
 
             return context;
         }
 
         public _ClearBuffer() {
-            var cameraScale = this._camera.GetDistanceScale();
-            (<any>this._bufferContext).unModifiedClearRect(0, 0, this._bufferCanvas.width * cameraScale, this._bufferCanvas.height * cameraScale);
+            var cameraScale = this._camera._GetDistanceScale();
+            (<any>this._BufferContext).unModifiedClearRect(0, 0, this._BufferCanvas.width * cameraScale, this._BufferCanvas.height * cameraScale);
         }
 
         private GetOnScreenRenderables(allRenderables: IRenderable[]): IRenderable[] {
             var onscreen: IRenderable[] = [],
-                scale = this._camera.GetDistanceScale(),
+                scale = this._camera._GetDistanceScale(),
                 unscale = 1 / scale;
 
             // Scale camera size to our zoom level

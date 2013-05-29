@@ -5,41 +5,56 @@
 
 module EndGate.Rendering {
 
-    export class Renderer2d implements IRenderer {
+    /**
+    * Defines a 2d renderer that uses a double buffer to draw graphics.
+    */
+    export class Renderer2d implements _.IRenderer {
         public static _zindexSort: (a: IRenderable, b: IRenderable) => number = (a: IRenderable, b: IRenderable) => { return a.ZIndex - b.ZIndex; };
+
+        public _BufferCanvas: HTMLCanvasElement;
+        public _BufferContext: CanvasRenderingContext2D; // Protected
 
         // These essentially are used to create a double buffer for rendering
         private _visibleCanvas: HTMLCanvasElement;
         private _visibleContext: CanvasRenderingContext2D;
-        public _bufferCanvas: HTMLCanvasElement;
-        public _bufferContext: CanvasRenderingContext2D; // Protected
-
         private _disposed: bool;
 
+        /**
+        * Creates a new instance of the Renderer2d object.
+        * @param renderOnto The canvas to render onto.
+        */
         constructor(renderOnto: HTMLCanvasElement) {
             this._visibleCanvas = renderOnto;
             this._visibleContext = renderOnto.getContext("2d");
 
             // Create an equally sized canvas for a buffer
-            this._bufferCanvas = <HTMLCanvasElement>document.createElement("canvas");
-            this._bufferContext = this._bufferCanvas.getContext("2d");
+            this._BufferCanvas = <HTMLCanvasElement>document.createElement("canvas");
+            this._BufferContext = this._BufferCanvas.getContext("2d");
             this.OnRendererSizeChange = new EventHandler();
             this.UpdateBufferSize();
 
             this._disposed = false;
         }
 
+        /**
+        * Event: Triggered when the renderOnto canvas changes size.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Passes the new size as a Size2d.
+        */
         public OnRendererSizeChange: EventHandler;
 
+        /**
+        * Renders the provided renderables onto the renderOnto canvas.  Returns the canvas that was rendered onto.
+        * @param renderables Array of items that are to be rendered. 
+        */
         public Render(renderables: IRenderable[]): CanvasRenderingContext2D {
             // Check if our visible canvas has changed size
-            if (this._bufferCanvas.width !== this._visibleCanvas.width || this._bufferCanvas.height !== this._visibleCanvas.height) {
+            if (this._BufferCanvas.width !== this._visibleCanvas.width || this._BufferCanvas.height !== this._visibleCanvas.height) {
                 this.UpdateBufferSize();
             }
 
             // Push buffer to screen
             this._visibleContext.clearRect(0, 0, this._visibleCanvas.width, this._visibleCanvas.height);
-            this._visibleContext.drawImage(this._bufferCanvas, 0, 0);
+            this._visibleContext.drawImage(this._BufferCanvas, 0, 0);
             // Clear our buffer to prepare it for new drawings
             this._ClearBuffer();
 
@@ -50,12 +65,15 @@ module EndGate.Rendering {
             // dev decide how they manipulate the canvas            
 
             for (var i = 0; i < renderables.length; i++) {
-                renderables[i].Draw(this._bufferContext);
+                renderables[i].Draw(this._BufferContext);
             }
 
-            return this._bufferContext;
+            return this._BufferContext;
         }
 
+        /**
+        * Destroys the visible canvas.
+        */
         public Dispose(): void {
             if (!this._disposed) {
                 this._disposed = true;
@@ -65,12 +83,12 @@ module EndGate.Rendering {
         }
 
         public _ClearBuffer() {
-            this._bufferContext.clearRect(0, 0, this._bufferCanvas.width, this._bufferCanvas.height);
+            this._BufferContext.clearRect(0, 0, this._BufferCanvas.width, this._BufferCanvas.height);
         }
 
         private UpdateBufferSize() {
-            this._bufferCanvas.width = this._visibleCanvas.width;
-            this._bufferCanvas.height = this._visibleCanvas.height;
+            this._BufferCanvas.width = this._visibleCanvas.width;
+            this._BufferCanvas.height = this._visibleCanvas.height;
             this.OnRendererSizeChange.Trigger(new Size2d(this._visibleCanvas.width, this._visibleCanvas.height))
         }
     }

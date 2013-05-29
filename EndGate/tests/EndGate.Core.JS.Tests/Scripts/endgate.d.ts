@@ -605,9 +605,22 @@ module EndGate.Bounds.Abstractions {
     }
 }
 module EndGate.Rendering {
+    /**
+    * Represents a renderable object that can be drawn to a canvas.
+    */
     interface IRenderable {
+        /**
+        * Gets or sets the ZIndex.  The ZIndex is used to control draw order.  Higher ZIndexes appear above lower ZIndexed renderables.
+        */
         ZIndex: number;
+        /**
+        * Draws the renderable to the provided canvas context
+        * @param context The canvas context to draw the renderable onto.
+        */
         Draw(context: CanvasRenderingContext2D): void;
+        /**
+        * Returns the bounding area that represents where the renderable will draw.
+        */
         GetDrawBounds(): Bounds.Abstractions.Bounds2d;
     }
 }
@@ -862,71 +875,167 @@ module EndGate.Graphics.Abstractions {
     }
 }
 module EndGate.Rendering {
+    /**
+    * Defines a camera that is used to define a viewport.  Should be used in conjunction with a Camera2dRenderer to render graphics as if being viewed through a camera.
+    */
     class Camera2d extends Bounds.BoundingRectangle {
+        /**
+        *  The distance in which the Camera2d will default to and the distance that defines the 100% scale value.
+        */
         static DefaultDistance: number;
         public _type: string;
+        /**
+        * Gets or sets the camera distance.  This represents how far away the Camera is from the game canvas.  0 is directly on top of the canvas while DefaultDistance represents 100% scale.
+        */
         public Distance: number;
+        /**
+        * Creates a new instance of the Camera2d object.
+        * @param position Initial position of the camera.
+        * @param size Initial size of the camera.
+        */
         constructor(position: Vector2d, size: Size2d);
-        public GetDistanceScale(): number;
+        /**
+        * Converts an absolute position (0 to cameras Size) to a camera relative position.  Most useful when used to convert mouse click coordinates to scene coordinates.
+        * @position The absolute position to convert.  0 position represents the top or left hand side of the camera.
+        */
         public ToCameraRelative(position: Vector2d): Vector2d;
-        public GetInverseDistanceScale(): number;
+        public _GetInverseDistanceScale(): number;
+        public _GetDistanceScale(): number;
     }
 }
-module EndGate.Rendering {
+module EndGate.Rendering._ {
     interface IRenderer extends IDisposable {
         Render(renderables: IRenderable[]): CanvasRenderingContext2D;
     }
 }
 module EndGate.Rendering {
-    class Renderer2d implements IRenderer {
+    /**
+    * Defines a 2d renderer that uses a double buffer to draw graphics.
+    */
+    class Renderer2d implements _.IRenderer {
         static _zindexSort: (a: IRenderable, b: IRenderable) => number;
+        public _BufferCanvas: HTMLCanvasElement;
+        public _BufferContext: CanvasRenderingContext2D;
         private _visibleCanvas;
         private _visibleContext;
-        public _bufferCanvas: HTMLCanvasElement;
-        public _bufferContext: CanvasRenderingContext2D;
         private _disposed;
+        /**
+        * Creates a new instance of the Renderer2d object.
+        * @param renderOnto The canvas to render onto.
+        */
         constructor(renderOnto: HTMLCanvasElement);
+        /**
+        * Event: Triggered when the renderOnto canvas changes size.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Passes the new size as a Size2d.
+        */
         public OnRendererSizeChange: EventHandler;
+        /**
+        * Renders the provided renderables onto the renderOnto canvas.  Returns the canvas that was rendered onto.
+        * @param renderables Array of items that are to be rendered.
+        */
         public Render(renderables: IRenderable[]): CanvasRenderingContext2D;
+        /**
+        * Destroys the visible canvas.
+        */
         public Dispose(): void;
         public _ClearBuffer(): void;
         private UpdateBufferSize();
     }
 }
 module EndGate.Rendering._ {
+    /**
+    * Defines a builder that is used to build a camera sensitive CanvasRenderingContext2d so that anything drawn to it becomes relative to the Camera2d.
+    */
     class Camera2dCanvasContextBuilder {
         private _camera;
         private _canvasCenter;
         private _translated;
         private _translationState;
+        /**
+        * Creates a new instance of the Camera2dCanvasContextBuilder object.
+        * @param camera Camera to link to built CanvasRenderingContext2d's (Cannot change after construction).
+        */
         constructor(camera: Camera2d);
-        public BuildFrom(context: CanvasRenderingContext2D): CanvasRenderingContext2D;
-        public UpdateCanvasCenter(newSize: Size2d): void;
-        public BuildPositionReplacer(replacee: Function, positionArgOffset?: number, argCount?: number): any;
+        /**
+        * Builds a new CanvasRenderingContext2d around the provided context that is linked to the camera.  Anything drawn to the context becomes relative to the camera.
+        * @param context The context to build the camera linked context around.
+        */
+        public Build(context: CanvasRenderingContext2D): CanvasRenderingContext2D;
+        public _UpdateCanvasCenter(newSize: Size2d): void;
+        private BuildPositionReplacer(replacee, positionArgOffset?, argCount?);
     }
 }
 module EndGate.Rendering {
+    /**
+    * Defines a camera rendering object that when used in conjunction with a Camera2d draws all objects in a camera relative position.
+    */
     class Camera2dRenderer extends Renderer2d {
         private _camera;
         private _contextBuilder;
+        /**
+        * Creates a new instance of the Camera2dRenderer.
+        * @param renderOnto The canvas to render onto.
+        * @param camera The camera that ultimately decides what is drawn to the renderOnto canvas.
+        */
         constructor(renderOnto: HTMLCanvasElement, camera: Camera2d);
+        /**
+        * Renders the provided renderables onto the renderOnto canvas.  Returns the canvas that was rendered onto.
+        * @param renderables Array of items that are to be rendered.
+        */
         public Render(renderables: IRenderable[]): CanvasRenderingContext2D;
         public _ClearBuffer(): void;
         private GetOnScreenRenderables(allRenderables);
     }
 }
 module EndGate.Rendering {
+    /**
+    * Defines a scene object that is used to maintain a list of renderable objects that are rendered onto a joint game area.
+    */
     class Scene2d implements IDisposable {
+        /**
+        * The canvas that the Scene2d uses as its game area.
+        */
         public DrawArea: HTMLCanvasElement;
+        /**
+        * The game camera.
+        */
         public Camera: Camera2d;
         private _actors;
         private _renderer;
         private _onDraw;
         private _disposed;
-        constructor(drawArea?: HTMLCanvasElement, onDraw?: (context: CanvasRenderingContext2D) => void);
+        /**
+        * Creates a new instance of the Scene2d object.  The game canvas is created and appended to the HTML body to fill the screen.
+        */
+        constructor();
+        /**
+        * Creates a new instance of the Scene2d object.  The game canvas is created and appended to the HTML body to fill the screen.
+        * @param onDraw Callback to execute whenever the Scene's draw is triggered.
+        */
+        constructor(onDraw: (context: CanvasRenderingContext2D) => void);
+        /**
+        * Creates a new instance of the Scene2d object.
+        * @param onDraw Callback to execute whenever the Scene's draw is triggered.
+        * @param drawArea The game canvas to draw onto.
+        */
+        constructor(onDraw: (context: CanvasRenderingContext2D) => void, drawArea: HTMLCanvasElement);
+        /**
+        * Adds an actor to the scene.  All actors added to the scene have their Draw function called automatically.
+        * @param actor The graphic to add to the scene.
+        */
         public Add(actor: Graphics.Abstractions.Graphic2d): void;
+        /**
+        * Removes an actor from the scene.  The actor will no longer have its Draw called.
+        * @param actor The graphic to remove from the scene.
+        */
         public Remove(actor: Graphics.Abstractions.Graphic2d): void;
+        /**
+        * Draws all actors within the Scene and triggers the Scene2d's onDraw callback.
+        */
         public Draw(): void;
+        /**
+        * Destroys the game canvas and clears the Scene2d's actors.
+        */
         public Dispose(): void;
         private ApplyStyles(drawArea);
         private CreateDefaultDrawArea();

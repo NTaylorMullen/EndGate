@@ -841,9 +841,22 @@ module EndGate.Bounds.Abstractions {
 
 declare module EndGate.Rendering {
 
+    /**
+    * Represents a renderable object that can be drawn to a canvas.
+    */
     export interface IRenderable {
+        /**
+        * Gets or sets the ZIndex.  The ZIndex is used to control draw order.  Higher ZIndexes appear above lower ZIndexed renderables.
+        */
         ZIndex: number;
+        /**
+        * Draws the renderable to the provided canvas context
+        * @param context The canvas context to draw the renderable onto.
+        */
         Draw(context: CanvasRenderingContext2D): void;
+        /**
+        * Returns the bounding area that represents where the renderable will draw.
+        */
         GetDrawBounds(): Bounds.Abstractions.Bounds2d;
     }
 
@@ -1962,29 +1975,47 @@ module EndGate.Bounds {
 
 module EndGate.Rendering {
 
+    /**
+    * Defines a camera that is used to define a viewport.  Should be used in conjunction with a Camera2dRenderer to render graphics as if being viewed through a camera.
+    */
     export class Camera2d extends Bounds.BoundingRectangle {
+        /**
+        *  The distance in which the Camera2d will default to and the distance that defines the 100% scale value.
+        */
         public static DefaultDistance: number = 1000;
         public _type: string = "Camera2d";
 
+        /**
+        * Gets or sets the camera distance.  This represents how far away the Camera is from the game canvas.  0 is directly on top of the canvas while DefaultDistance represents 100% scale.
+        */
         public Distance: number;
 
+        /**
+        * Creates a new instance of the Camera2d object.
+        * @param position Initial position of the camera.
+        * @param size Initial size of the camera.
+        */
         constructor(position: Vector2d, size: Size2d) {
             super(position, size);
 
             this.Distance = Camera2d.DefaultDistance;
-        }
+        }        
 
-        public GetDistanceScale(): number {
-            return this.Distance / Camera2d.DefaultDistance;
-        }
-
+        /**
+        * Converts an absolute position (0 to cameras Size) to a camera relative position.  Most useful when used to convert mouse click coordinates to scene coordinates.
+        * @position The absolute position to convert.  0 position represents the top or left hand side of the camera.
+        */
         public ToCameraRelative(position: Vector2d): Vector2d {
-            var scaledTopLeft = this.Position.Subtract(this.Size.Multiply(this.GetDistanceScale()* .5));
-            return scaledTopLeft.Add(position.Multiply(this.GetDistanceScale()));
+            var scaledTopLeft = this.Position.Subtract(this.Size.Multiply(this._GetDistanceScale()* .5));
+            return scaledTopLeft.Add(position.Multiply(this._GetDistanceScale()));
         }
 
-        public GetInverseDistanceScale(): number {
+        public _GetInverseDistanceScale(): number {
             return Camera2d.DefaultDistance / this.Distance;
+        }
+
+        public _GetDistanceScale(): number {
+            return this.Distance / Camera2d.DefaultDistance;
         }
     }
 
@@ -1993,7 +2024,7 @@ module EndGate.Rendering {
 
 
 
-declare module EndGate.Rendering {
+declare module EndGate.Rendering._ {
 
     export interface IRenderer extends IDisposable {
         Render(renderables: IRenderable[]): CanvasRenderingContext2D;
@@ -2008,41 +2039,56 @@ declare module EndGate.Rendering {
 
 module EndGate.Rendering {
 
-    export class Renderer2d implements IRenderer {
+    /**
+    * Defines a 2d renderer that uses a double buffer to draw graphics.
+    */
+    export class Renderer2d implements _.IRenderer {
         public static _zindexSort: (a: IRenderable, b: IRenderable) => number = (a: IRenderable, b: IRenderable) => { return a.ZIndex - b.ZIndex; };
+
+        public _BufferCanvas: HTMLCanvasElement;
+        public _BufferContext: CanvasRenderingContext2D; // Protected
 
         // These essentially are used to create a double buffer for rendering
         private _visibleCanvas: HTMLCanvasElement;
         private _visibleContext: CanvasRenderingContext2D;
-        public _bufferCanvas: HTMLCanvasElement;
-        public _bufferContext: CanvasRenderingContext2D; // Protected
-
         private _disposed: bool;
 
+        /**
+        * Creates a new instance of the Renderer2d object.
+        * @param renderOnto The canvas to render onto.
+        */
         constructor(renderOnto: HTMLCanvasElement) {
             this._visibleCanvas = renderOnto;
             this._visibleContext = renderOnto.getContext("2d");
 
             // Create an equally sized canvas for a buffer
-            this._bufferCanvas = <HTMLCanvasElement>document.createElement("canvas");
-            this._bufferContext = this._bufferCanvas.getContext("2d");
+            this._BufferCanvas = <HTMLCanvasElement>document.createElement("canvas");
+            this._BufferContext = this._BufferCanvas.getContext("2d");
             this.OnRendererSizeChange = new EventHandler();
             this.UpdateBufferSize();
 
             this._disposed = false;
         }
 
+        /**
+        * Event: Triggered when the renderOnto canvas changes size.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Passes the new size as a Size2d.
+        */
         public OnRendererSizeChange: EventHandler;
 
+        /**
+        * Renders the provided renderables onto the renderOnto canvas.  Returns the canvas that was rendered onto.
+        * @param renderables Array of items that are to be rendered. 
+        */
         public Render(renderables: IRenderable[]): CanvasRenderingContext2D {
             // Check if our visible canvas has changed size
-            if (this._bufferCanvas.width !== this._visibleCanvas.width || this._bufferCanvas.height !== this._visibleCanvas.height) {
+            if (this._BufferCanvas.width !== this._visibleCanvas.width || this._BufferCanvas.height !== this._visibleCanvas.height) {
                 this.UpdateBufferSize();
             }
 
             // Push buffer to screen
             this._visibleContext.clearRect(0, 0, this._visibleCanvas.width, this._visibleCanvas.height);
-            this._visibleContext.drawImage(this._bufferCanvas, 0, 0);
+            this._visibleContext.drawImage(this._BufferCanvas, 0, 0);
             // Clear our buffer to prepare it for new drawings
             this._ClearBuffer();
 
@@ -2053,12 +2099,15 @@ module EndGate.Rendering {
             // dev decide how they manipulate the canvas            
 
             for (var i = 0; i < renderables.length; i++) {
-                renderables[i].Draw(this._bufferContext);
+                renderables[i].Draw(this._BufferContext);
             }
 
-            return this._bufferContext;
+            return this._BufferContext;
         }
 
+        /**
+        * Destroys the visible canvas.
+        */
         public Dispose(): void {
             if (!this._disposed) {
                 this._disposed = true;
@@ -2068,12 +2117,12 @@ module EndGate.Rendering {
         }
 
         public _ClearBuffer() {
-            this._bufferContext.clearRect(0, 0, this._bufferCanvas.width, this._bufferCanvas.height);
+            this._BufferContext.clearRect(0, 0, this._BufferCanvas.width, this._BufferCanvas.height);
         }
 
         private UpdateBufferSize() {
-            this._bufferCanvas.width = this._visibleCanvas.width;
-            this._bufferCanvas.height = this._visibleCanvas.height;
+            this._BufferCanvas.width = this._visibleCanvas.width;
+            this._BufferCanvas.height = this._visibleCanvas.height;
             this.OnRendererSizeChange.Trigger(new Size2d(this._visibleCanvas.width, this._visibleCanvas.height))
         }
     }
@@ -2086,12 +2135,19 @@ module EndGate.Rendering {
 
 module EndGate.Rendering._ {
 
+    /**
+    * Defines a builder that is used to build a camera sensitive CanvasRenderingContext2d so that anything drawn to it becomes relative to the Camera2d.
+    */
     export class Camera2dCanvasContextBuilder {
         private _camera: Camera2d;
         private _canvasCenter: Vector2d;
         private _translated: bool;
         private _translationState: any[];
 
+        /**
+        * Creates a new instance of the Camera2dCanvasContextBuilder object.
+        * @param camera Camera to link to built CanvasRenderingContext2d's (Cannot change after construction).
+        */
         constructor(camera: Camera2d) {
             this._camera = camera;
             this._canvasCenter = this._camera.Position.Clone();
@@ -2100,7 +2156,11 @@ module EndGate.Rendering._ {
             this._translationState.push(this._translated);
         }
 
-        public BuildFrom(context: CanvasRenderingContext2D): CanvasRenderingContext2D {
+        /**
+        * Builds a new CanvasRenderingContext2d around the provided context that is linked to the camera.  Anything drawn to the context becomes relative to the camera.
+        * @param context The context to build the camera linked context around.
+        */
+        public Build(context: CanvasRenderingContext2D): CanvasRenderingContext2D {
             var that = this,
                 savedCreateRadialGradient = context.createRadialGradient,
                 savedTranslate = context.translate,
@@ -2117,7 +2177,7 @@ module EndGate.Rendering._ {
             context.clearRect = this.BuildPositionReplacer(context.clearRect);
             context.createLinearGradient = this.BuildPositionReplacer(context.createLinearGradient, 0, 4);
             context.createRadialGradient = function () {
-                var scale = that._camera.GetDistanceScale();
+                var scale = that._camera._GetDistanceScale();
                 arguments[0] += -that._camera.Position.X + that._canvasCenter.X * scale;
                 arguments[1] += -that._camera.Position.Y + that._canvasCenter.Y * scale;
                 arguments[3] += -that._camera.Position.X + that._canvasCenter.X * scale;
@@ -2161,7 +2221,7 @@ module EndGate.Rendering._ {
                 var scale;
 
                 if (!that._translated) {
-                    scale = that._camera.GetDistanceScale();
+                    scale = that._camera._GetDistanceScale();
 
                     arguments[0] += -that._camera.Position.X + that._canvasCenter.X * scale;
                     arguments[1] += -that._camera.Position.Y + that._canvasCenter.Y * scale;
@@ -2175,12 +2235,12 @@ module EndGate.Rendering._ {
             return context;
         }
 
-        public UpdateCanvasCenter(newSize: Size2d): void {
+        public _UpdateCanvasCenter(newSize: Size2d): void {
             this._canvasCenter.X = newSize.Width / 2;
             this._canvasCenter.Y = newSize.Height / 2;
         }
 
-        public BuildPositionReplacer(replacee: Function, positionArgOffset: number = 0, argCount: number = 2): any {
+        private BuildPositionReplacer(replacee: Function, positionArgOffset: number = 0, argCount: number = 2): any {
             var that = this,
                 axiList = ["X", "Y"];
 
@@ -2189,7 +2249,7 @@ module EndGate.Rendering._ {
                     axi: string;
 
                 if (!that._translated) {
-                    scale = that._camera.GetDistanceScale();
+                    scale = that._camera._GetDistanceScale();
                     for (var i = 0; i < argCount; i++) {
                         axi = axiList[i % 2];
                         arguments[positionArgOffset + i] += -that._camera.Position[axi] + that._canvasCenter[axi] * scale;
@@ -2210,44 +2270,56 @@ module EndGate.Rendering._ {
 
 module EndGate.Rendering {
 
+    /**
+    * Defines a camera rendering object that when used in conjunction with a Camera2d draws all objects in a camera relative position.
+    */
     export class Camera2dRenderer extends Renderer2d {
         private _camera: Camera2d;
         private _contextBuilder: _.Camera2dCanvasContextBuilder;
 
+        /**
+        * Creates a new instance of the Camera2dRenderer.
+        * @param renderOnto The canvas to render onto.
+        * @param camera The camera that ultimately decides what is drawn to the renderOnto canvas.
+        */
         constructor(renderOnto: HTMLCanvasElement, camera: Camera2d) {
             super(renderOnto);
 
             this._camera = camera;
             this._contextBuilder = new _.Camera2dCanvasContextBuilder(this._camera);
 
-            this.OnRendererSizeChange.Bind(this._contextBuilder.UpdateCanvasCenter);
-            this._contextBuilder.UpdateCanvasCenter(new Size2d(renderOnto.width, renderOnto.height));
-            this._bufferContext = this._contextBuilder.BuildFrom(this._bufferContext);
+            this.OnRendererSizeChange.Bind(this._contextBuilder._UpdateCanvasCenter);
+            this._contextBuilder._UpdateCanvasCenter(new Size2d(renderOnto.width, renderOnto.height));
+            this._BufferContext = this._contextBuilder.Build(this._BufferContext);
 
         }
 
+        /**
+        * Renders the provided renderables onto the renderOnto canvas.  Returns the canvas that was rendered onto.
+        * @param renderables Array of items that are to be rendered. 
+        */
         public Render(renderables: IRenderable[]): CanvasRenderingContext2D {
             var context,
-                inverseScale = this._camera.GetInverseDistanceScale();
+                inverseScale = this._camera._GetInverseDistanceScale();
 
-            this._bufferContext.save();
-            this._bufferContext.scale(inverseScale, inverseScale)
+            this._BufferContext.save();
+            this._BufferContext.scale(inverseScale, inverseScale)
 
             context = super.Render(this.GetOnScreenRenderables(renderables));
 
-            this._bufferContext.restore();
+            this._BufferContext.restore();
 
             return context;
         }
 
         public _ClearBuffer() {
-            var cameraScale = this._camera.GetDistanceScale();
-            (<any>this._bufferContext).unModifiedClearRect(0, 0, this._bufferCanvas.width * cameraScale, this._bufferCanvas.height * cameraScale);
+            var cameraScale = this._camera._GetDistanceScale();
+            (<any>this._BufferContext).unModifiedClearRect(0, 0, this._BufferCanvas.width * cameraScale, this._BufferCanvas.height * cameraScale);
         }
 
         private GetOnScreenRenderables(allRenderables: IRenderable[]): IRenderable[] {
             var onscreen: IRenderable[] = [],
-                scale = this._camera.GetDistanceScale(),
+                scale = this._camera._GetDistanceScale(),
                 unscale = 1 / scale;
 
             // Scale camera size to our zoom level
@@ -2279,30 +2351,47 @@ module EndGate.Rendering {
 
 module EndGate.Rendering {
 
+    /**
+    * Defines a scene object that is used to maintain a list of renderable objects that are rendered onto a joint game area.
+    */
     export class Scene2d implements IDisposable {
-
+        /**
+        * The canvas that the Scene2d uses as its game area.
+        */
         public DrawArea: HTMLCanvasElement;
+        /**
+        * The game camera.
+        */
         public Camera: Camera2d;
 
         private _actors: Graphics.Abstractions.Graphic2d[];
-        private _renderer: IRenderer;
+        private _renderer: _.IRenderer;
         private _onDraw: (context: CanvasRenderingContext2D) => void;
-
         private _disposed: bool;
 
-        constructor(drawArea?: HTMLCanvasElement, onDraw?: (context: CanvasRenderingContext2D) => void ) {
+        /**
+        * Creates a new instance of the Scene2d object.  The game canvas is created and appended to the HTML body to fill the screen.
+        */
+        constructor();
+        /**
+        * Creates a new instance of the Scene2d object.  The game canvas is created and appended to the HTML body to fill the screen.
+        * @param onDraw Callback to execute whenever the Scene's draw is triggered.
+        */
+        constructor(onDraw: (context: CanvasRenderingContext2D) => void);
+        /**
+        * Creates a new instance of the Scene2d object.
+        * @param onDraw Callback to execute whenever the Scene's draw is triggered.
+        * @param drawArea The game canvas to draw onto.
+        */
+        constructor(onDraw: (context: CanvasRenderingContext2D) => void , drawArea: HTMLCanvasElement);
+        constructor(onDraw: (context: CanvasRenderingContext2D) => void = _ => { }, drawArea?: HTMLCanvasElement) {
             this._actors = [];
 
             if (typeof drawArea === "undefined") {
                 drawArea = this.CreateDefaultDrawArea();
             }
 
-            if (typeof onDraw === "undefined") {
-                this._onDraw = _ => { };
-            }
-            else {
-                this._onDraw = onDraw;
-            }
+            this._onDraw = onDraw;
 
             this.ApplyStyles(drawArea);
 
@@ -2312,10 +2401,18 @@ module EndGate.Rendering {
             this._disposed = false;
         }
 
+        /**
+        * Adds an actor to the scene.  All actors added to the scene have their Draw function called automatically.
+        * @param actor The graphic to add to the scene.
+        */
         public Add(actor: Graphics.Abstractions.Graphic2d): void {
             this._actors.push(actor);
         }
 
+        /**
+        * Removes an actor from the scene.  The actor will no longer have its Draw called.
+        * @param actor The graphic to remove from the scene.
+        */
         public Remove(actor: Graphics.Abstractions.Graphic2d): void {
             for (var i = 0; i < this._actors.length; i++) {
                 if (this._actors[i] === actor) {
@@ -2325,15 +2422,24 @@ module EndGate.Rendering {
             }
         }
 
+        /**
+        * Draws all actors within the Scene and triggers the Scene2d's onDraw callback.
+        */
         public Draw(): void {
             this._onDraw(this._renderer.Render(this._actors));
         }
 
+        /**
+        * Destroys the game canvas and clears the Scene2d's actors.
+        */
         public Dispose(): void {
             if (!this._disposed) {
                 this._disposed = true;
                 this._actors = [];
                 this._renderer.Dispose();
+            }
+            else {
+                throw new Error("Scene2d cannot be disposed more than once");
             }
         }
 
@@ -3369,9 +3475,9 @@ module EndGate {
             this._gameTime = new GameTime();
             this.ID = Game._gameIds++;
 
-            this.Scene = new Rendering.Scene2d(gameCanvas, context => {
+            this.Scene = new Rendering.Scene2d(context => {
                 this.Draw(context);
-            });
+            }, gameCanvas);
 
             this.Input = new Input.InputManager(this.Scene.DrawArea);
             this.Audio = new Sound.AudioManager();

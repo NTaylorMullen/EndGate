@@ -1025,15 +1025,15 @@ var EndGate;
                 this.Distance = Camera2d.DefaultDistance;
             }
             Camera2d.DefaultDistance = 1000;
-            Camera2d.prototype.GetDistanceScale = function () {
-                return this.Distance / Camera2d.DefaultDistance;
-            };
             Camera2d.prototype.ToCameraRelative = function (position) {
-                var scaledTopLeft = this.Position.Subtract(this.Size.Multiply(this.GetDistanceScale() * .5));
-                return scaledTopLeft.Add(position.Multiply(this.GetDistanceScale()));
+                var scaledTopLeft = this.Position.Subtract(this.Size.Multiply(this._GetDistanceScale() * .5));
+                return scaledTopLeft.Add(position.Multiply(this._GetDistanceScale()));
             };
-            Camera2d.prototype.GetInverseDistanceScale = function () {
+            Camera2d.prototype._GetInverseDistanceScale = function () {
                 return Camera2d.DefaultDistance / this.Distance;
+            };
+            Camera2d.prototype._GetDistanceScale = function () {
+                return this.Distance / Camera2d.DefaultDistance;
             };
             return Camera2d;
         })(EndGate.Bounds.BoundingRectangle);
@@ -1048,8 +1048,8 @@ var EndGate;
             function Renderer2d(renderOnto) {
                 this._visibleCanvas = renderOnto;
                 this._visibleContext = renderOnto.getContext("2d");
-                this._bufferCanvas = document.createElement("canvas");
-                this._bufferContext = this._bufferCanvas.getContext("2d");
+                this._BufferCanvas = document.createElement("canvas");
+                this._BufferContext = this._BufferCanvas.getContext("2d");
                 this.OnRendererSizeChange = new EndGate.EventHandler();
                 this.UpdateBufferSize();
                 this._disposed = false;
@@ -1058,17 +1058,17 @@ var EndGate;
                 return a.ZIndex - b.ZIndex;
             };
             Renderer2d.prototype.Render = function (renderables) {
-                if(this._bufferCanvas.width !== this._visibleCanvas.width || this._bufferCanvas.height !== this._visibleCanvas.height) {
+                if(this._BufferCanvas.width !== this._visibleCanvas.width || this._BufferCanvas.height !== this._visibleCanvas.height) {
                     this.UpdateBufferSize();
                 }
                 this._visibleContext.clearRect(0, 0, this._visibleCanvas.width, this._visibleCanvas.height);
-                this._visibleContext.drawImage(this._bufferCanvas, 0, 0);
+                this._visibleContext.drawImage(this._BufferCanvas, 0, 0);
                 this._ClearBuffer();
                 renderables.sort(Renderer2d._zindexSort);
                 for(var i = 0; i < renderables.length; i++) {
-                    renderables[i].Draw(this._bufferContext);
+                    renderables[i].Draw(this._BufferContext);
                 }
-                return this._bufferContext;
+                return this._BufferContext;
             };
             Renderer2d.prototype.Dispose = function () {
                 if(!this._disposed) {
@@ -1077,11 +1077,11 @@ var EndGate;
                 }
             };
             Renderer2d.prototype._ClearBuffer = function () {
-                this._bufferContext.clearRect(0, 0, this._bufferCanvas.width, this._bufferCanvas.height);
+                this._BufferContext.clearRect(0, 0, this._BufferCanvas.width, this._BufferCanvas.height);
             };
             Renderer2d.prototype.UpdateBufferSize = function () {
-                this._bufferCanvas.width = this._visibleCanvas.width;
-                this._bufferCanvas.height = this._visibleCanvas.height;
+                this._BufferCanvas.width = this._visibleCanvas.width;
+                this._BufferCanvas.height = this._visibleCanvas.height;
                 this.OnRendererSizeChange.Trigger(new EndGate.Size2d(this._visibleCanvas.width, this._visibleCanvas.height));
             };
             return Renderer2d;
@@ -1102,7 +1102,7 @@ var EndGate;
                     this._translationState = [];
                     this._translationState.push(this._translated);
                 }
-                Camera2dCanvasContextBuilder.prototype.BuildFrom = function (context) {
+                Camera2dCanvasContextBuilder.prototype.Build = function (context) {
                     var that = this, savedCreateRadialGradient = context.createRadialGradient, savedTranslate = context.translate, savedSave = context.save, savedRestore = context.restore, savedDrawImage1 = this.BuildPositionReplacer(context.drawImage, 1), savedDrawImage2 = this.BuildPositionReplacer(context.drawImage, 5);
                     (context).unModifiedClearRect = context.clearRect;
                     context.arc = this.BuildPositionReplacer(context.arc);
@@ -1111,7 +1111,7 @@ var EndGate;
                     context.clearRect = this.BuildPositionReplacer(context.clearRect);
                     context.createLinearGradient = this.BuildPositionReplacer(context.createLinearGradient, 0, 4);
                     context.createRadialGradient = function () {
-                        var scale = that._camera.GetDistanceScale();
+                        var scale = that._camera._GetDistanceScale();
                         arguments[0] += -that._camera.Position.X + that._canvasCenter.X * scale;
                         arguments[1] += -that._camera.Position.Y + that._canvasCenter.Y * scale;
                         arguments[3] += -that._camera.Position.X + that._canvasCenter.X * scale;
@@ -1147,7 +1147,7 @@ var EndGate;
                     context.translate = function () {
                         var scale;
                         if(!that._translated) {
-                            scale = that._camera.GetDistanceScale();
+                            scale = that._camera._GetDistanceScale();
                             arguments[0] += -that._camera.Position.X + that._canvasCenter.X * scale;
                             arguments[1] += -that._camera.Position.Y + that._canvasCenter.Y * scale;
                         }
@@ -1156,7 +1156,7 @@ var EndGate;
                     };
                     return context;
                 };
-                Camera2dCanvasContextBuilder.prototype.UpdateCanvasCenter = function (newSize) {
+                Camera2dCanvasContextBuilder.prototype._UpdateCanvasCenter = function (newSize) {
                     this._canvasCenter.X = newSize.Width / 2;
                     this._canvasCenter.Y = newSize.Height / 2;
                 };
@@ -1170,7 +1170,7 @@ var EndGate;
                     return function () {
                         var scale, axi;
                         if(!that._translated) {
-                            scale = that._camera.GetDistanceScale();
+                            scale = that._camera._GetDistanceScale();
                             for(var i = 0; i < argCount; i++) {
                                 axi = axiList[i % 2];
                                 arguments[positionArgOffset + i] += -that._camera.Position[axi] + that._canvasCenter[axi] * scale;
@@ -1196,24 +1196,24 @@ var EndGate;
                         _super.call(this, renderOnto);
                 this._camera = camera;
                 this._contextBuilder = new Rendering._.Camera2dCanvasContextBuilder(this._camera);
-                this.OnRendererSizeChange.Bind(this._contextBuilder.UpdateCanvasCenter);
-                this._contextBuilder.UpdateCanvasCenter(new EndGate.Size2d(renderOnto.width, renderOnto.height));
-                this._bufferContext = this._contextBuilder.BuildFrom(this._bufferContext);
+                this.OnRendererSizeChange.Bind(this._contextBuilder._UpdateCanvasCenter);
+                this._contextBuilder._UpdateCanvasCenter(new EndGate.Size2d(renderOnto.width, renderOnto.height));
+                this._BufferContext = this._contextBuilder.Build(this._BufferContext);
             }
             Camera2dRenderer.prototype.Render = function (renderables) {
-                var context, inverseScale = this._camera.GetInverseDistanceScale();
-                this._bufferContext.save();
-                this._bufferContext.scale(inverseScale, inverseScale);
+                var context, inverseScale = this._camera._GetInverseDistanceScale();
+                this._BufferContext.save();
+                this._BufferContext.scale(inverseScale, inverseScale);
                 context = _super.prototype.Render.call(this, this.GetOnScreenRenderables(renderables));
-                this._bufferContext.restore();
+                this._BufferContext.restore();
                 return context;
             };
             Camera2dRenderer.prototype._ClearBuffer = function () {
-                var cameraScale = this._camera.GetDistanceScale();
-                (this._bufferContext).unModifiedClearRect(0, 0, this._bufferCanvas.width * cameraScale, this._bufferCanvas.height * cameraScale);
+                var cameraScale = this._camera._GetDistanceScale();
+                (this._BufferContext).unModifiedClearRect(0, 0, this._BufferCanvas.width * cameraScale, this._BufferCanvas.height * cameraScale);
             };
             Camera2dRenderer.prototype.GetOnScreenRenderables = function (allRenderables) {
-                var onscreen = [], scale = this._camera.GetDistanceScale(), unscale = 1 / scale;
+                var onscreen = [], scale = this._camera._GetDistanceScale(), unscale = 1 / scale;
                 this._camera.Scale(scale, scale);
                 for(var i = 0; i < allRenderables.length; i++) {
                     if(this._camera.Intersects(allRenderables[i].GetDrawBounds())) {
@@ -1233,17 +1233,14 @@ var EndGate;
 (function (EndGate) {
     (function (Rendering) {
         var Scene2d = (function () {
-            function Scene2d(drawArea, onDraw) {
+            function Scene2d(onDraw, drawArea) {
+                if (typeof onDraw === "undefined") { onDraw = function (_) {
+                }; }
                 this._actors = [];
                 if(typeof drawArea === "undefined") {
                     drawArea = this.CreateDefaultDrawArea();
                 }
-                if(typeof onDraw === "undefined") {
-                    this._onDraw = function (_) {
-                    };
-                } else {
-                    this._onDraw = onDraw;
-                }
+                this._onDraw = onDraw;
                 this.ApplyStyles(drawArea);
                 this.DrawArea = drawArea;
                 this.Camera = new Rendering.Camera2d(new EndGate.Vector2d(this.DrawArea.width / 2, this.DrawArea.height / 2), new EndGate.Size2d(this.DrawArea.width, this.DrawArea.height));
@@ -1269,6 +1266,8 @@ var EndGate;
                     this._disposed = true;
                     this._actors = [];
                     this._renderer.Dispose();
+                } else {
+                    throw new Error("Scene2d cannot be disposed more than once");
                 }
             };
             Scene2d.prototype.ApplyStyles = function (drawArea) {
@@ -1914,9 +1913,9 @@ var EndGate;
             this._type = "Game";
             this._gameTime = new EndGate.GameTime();
             this.ID = Game._gameIds++;
-            this.Scene = new EndGate.Rendering.Scene2d(gameCanvas, function (context) {
+            this.Scene = new EndGate.Rendering.Scene2d(function (context) {
                 _this.Draw(context);
-            });
+            }, gameCanvas);
             this.Input = new EndGate.Input.InputManager(this.Scene.DrawArea);
             this.Audio = new EndGate.Sound.AudioManager();
             this.CollisionManager = new EndGate.Collision.CollisionManager();

@@ -30,9 +30,9 @@ module EndGate {
             this._gameTime = new GameTime();
             this.ID = Game._gameIds++;
 
-            this.Scene = new Rendering.Scene2d(gameCanvas, context => {
+            this.Scene = new Rendering.Scene2d(context => {
                 this.Draw(context);
-            });
+            }, gameCanvas);
 
             this.Input = new Input.InputManager(this.Scene.DrawArea);
             this.Audio = new Sound.AudioManager();

@@ -17,9 +17,9 @@ var EndGate;
             this._type = "Game";
             this._gameTime = new EndGate.GameTime();
             this.ID = Game._gameIds++;
-            this.Scene = new EndGate.Rendering.Scene2d(gameCanvas, function (context) {
+            this.Scene = new EndGate.Rendering.Scene2d(function (context) {
                 _this.Draw(context);
-            });
+            }, gameCanvas);
             this.Input = new EndGate.Input.InputManager(this.Scene.DrawArea);
             this.Audio = new EndGate.Sound.AudioManager();
             this.CollisionManager = new EndGate.Collision.CollisionManager();

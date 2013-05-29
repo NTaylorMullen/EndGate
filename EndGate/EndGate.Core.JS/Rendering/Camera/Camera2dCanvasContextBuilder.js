@@ -5,7 +5,14 @@ var EndGate;
         /// <reference path="../../Assets/Sizes/Size2d.ts" />
         /// <reference path="Camera2d.ts" />
         (function (_) {
+            /**
+            * Defines a builder that is used to build a camera sensitive CanvasRenderingContext2d so that anything drawn to it becomes relative to the Camera2d.
+            */
             var Camera2dCanvasContextBuilder = (function () {
+                /**
+                * Creates a new instance of the Camera2dCanvasContextBuilder object.
+                * @param camera Camera to link to built CanvasRenderingContext2d's (Cannot change after construction).
+                */
                 function Camera2dCanvasContextBuilder(camera) {
                     this._camera = camera;
                     this._canvasCenter = this._camera.Position.Clone();
@@ -13,7 +20,11 @@ var EndGate;
                     this._translationState = [];
                     this._translationState.push(this._translated);
                 }
-                Camera2dCanvasContextBuilder.prototype.BuildFrom = function (context) {
+                Camera2dCanvasContextBuilder.prototype.Build = /**
+                * Builds a new CanvasRenderingContext2d around the provided context that is linked to the camera.  Anything drawn to the context becomes relative to the camera.
+                * @param context The context to build the camera linked context around.
+                */
+                function (context) {
                     var that = this, savedCreateRadialGradient = context.createRadialGradient, savedTranslate = context.translate, savedSave = context.save, savedRestore = context.restore, savedDrawImage1 = this.BuildPositionReplacer(context.drawImage, 1), savedDrawImage2 = this.BuildPositionReplacer(context.drawImage, 5);
                     (context).unModifiedClearRect = context.clearRect;
                     context.arc = this.BuildPositionReplacer(context.arc);
@@ -22,7 +33,7 @@ var EndGate;
                     context.clearRect = this.BuildPositionReplacer(context.clearRect);
                     context.createLinearGradient = this.BuildPositionReplacer(context.createLinearGradient, 0, 4);
                     context.createRadialGradient = function () {
-                        var scale = that._camera.GetDistanceScale();
+                        var scale = that._camera._GetDistanceScale();
                         arguments[0] += -that._camera.Position.X + that._canvasCenter.X * scale;
                         arguments[1] += -that._camera.Position.Y + that._canvasCenter.Y * scale;
                         arguments[3] += -that._camera.Position.X + that._canvasCenter.X * scale;
@@ -58,7 +69,7 @@ var EndGate;
                     context.translate = function () {
                         var scale;
                         if(!that._translated) {
-                            scale = that._camera.GetDistanceScale();
+                            scale = that._camera._GetDistanceScale();
                             arguments[0] += -that._camera.Position.X + that._canvasCenter.X * scale;
                             arguments[1] += -that._camera.Position.Y + that._canvasCenter.Y * scale;
                         }
@@ -67,7 +78,7 @@ var EndGate;
                     };
                     return context;
                 };
-                Camera2dCanvasContextBuilder.prototype.UpdateCanvasCenter = function (newSize) {
+                Camera2dCanvasContextBuilder.prototype._UpdateCanvasCenter = function (newSize) {
                     this._canvasCenter.X = newSize.Width / 2;
                     this._canvasCenter.Y = newSize.Height / 2;
                 };
@@ -81,7 +92,7 @@ var EndGate;
                     return function () {
                         var scale, axi;
                         if(!that._translated) {
-                            scale = that._camera.GetDistanceScale();
+                            scale = that._camera._GetDistanceScale();
                             for(var i = 0; i < argCount; i++) {
                                 axi = axiList[i % 2];
                                 arguments[positionArgOffset + i] += -that._camera.Position[axi] + that._canvasCenter[axi] * scale;

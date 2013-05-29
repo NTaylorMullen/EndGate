@@ -4,12 +4,19 @@
 
 module EndGate.Rendering._ {
 
+    /**
+    * Defines a builder that is used to build a camera sensitive CanvasRenderingContext2d so that anything drawn to it becomes relative to the Camera2d.
+    */
     export class Camera2dCanvasContextBuilder {
         private _camera: Camera2d;
         private _canvasCenter: Vector2d;
         private _translated: bool;
         private _translationState: any[];
 
+        /**
+        * Creates a new instance of the Camera2dCanvasContextBuilder object.
+        * @param camera Camera to link to built CanvasRenderingContext2d's (Cannot change after construction).
+        */
         constructor(camera: Camera2d) {
             this._camera = camera;
             this._canvasCenter = this._camera.Position.Clone();
@@ -18,7 +25,11 @@ module EndGate.Rendering._ {
             this._translationState.push(this._translated);
         }
 
-        public BuildFrom(context: CanvasRenderingContext2D): CanvasRenderingContext2D {
+        /**
+        * Builds a new CanvasRenderingContext2d around the provided context that is linked to the camera.  Anything drawn to the context becomes relative to the camera.
+        * @param context The context to build the camera linked context around.
+        */
+        public Build(context: CanvasRenderingContext2D): CanvasRenderingContext2D {
             var that = this,
                 savedCreateRadialGradient = context.createRadialGradient,
                 savedTranslate = context.translate,
@@ -35,7 +46,7 @@ module EndGate.Rendering._ {
             context.clearRect = this.BuildPositionReplacer(context.clearRect);
             context.createLinearGradient = this.BuildPositionReplacer(context.createLinearGradient, 0, 4);
             context.createRadialGradient = function () {
-                var scale = that._camera.GetDistanceScale();
+                var scale = that._camera._GetDistanceScale();
                 arguments[0] += -that._camera.Position.X + that._canvasCenter.X * scale;
                 arguments[1] += -that._camera.Position.Y + that._canvasCenter.Y * scale;
                 arguments[3] += -that._camera.Position.X + that._canvasCenter.X * scale;
@@ -79,7 +90,7 @@ module EndGate.Rendering._ {
                 var scale;
 
                 if (!that._translated) {
-                    scale = that._camera.GetDistanceScale();
+                    scale = that._camera._GetDistanceScale();
 
                     arguments[0] += -that._camera.Position.X + that._canvasCenter.X * scale;
                     arguments[1] += -that._camera.Position.Y + that._canvasCenter.Y * scale;
@@ -93,12 +104,12 @@ module EndGate.Rendering._ {
             return context;
         }
 
-        public UpdateCanvasCenter(newSize: Size2d): void {
+        public _UpdateCanvasCenter(newSize: Size2d): void {
             this._canvasCenter.X = newSize.Width / 2;
             this._canvasCenter.Y = newSize.Height / 2;
         }
 
-        public BuildPositionReplacer(replacee: Function, positionArgOffset: number = 0, argCount: number = 2): any {
+        private BuildPositionReplacer(replacee: Function, positionArgOffset: number = 0, argCount: number = 2): any {
             var that = this,
                 axiList = ["X", "Y"];
 
@@ -107,7 +118,7 @@ module EndGate.Rendering._ {
                     axi: string;
 
                 if (!that._translated) {
-                    scale = that._camera.GetDistanceScale();
+                    scale = that._camera._GetDistanceScale();
                     for (var i = 0; i < argCount; i++) {
                         axi = axiList[i % 2];
                         arguments[positionArgOffset + i] += -that._camera.Position[axi] + that._canvasCenter[axi] * scale;
