@@ -3157,14 +3157,63 @@ module EndGate.Input {
 /* AudioSettings.ts */
 module EndGate.Sound {
 
+    /**
+    * Defines a set of settings that are used to play AudioClip's a custom way.
+    */
     export class AudioSettings {
+        /**
+        * The default audio settings.
+        */
         public static Default: AudioSettings = new AudioSettings();
-        public Repeat: bool;
-        public Volume: number;
-        public AutoPlay: bool;
-        public Preload: string;
 
-        constructor(repeat?: bool = false, volume?: number = 100, autoplay?: bool = false, preload?: string = "auto") {
+        /**
+        * Gets or sets the repeat function of the AudioClip.
+        */
+        public Repeat: bool;
+        /**
+        * Gets or sets the volume level of the AudioClip. Value between 0-100.
+        */
+        public Volume: number;
+        /**
+        * Gets or sets the auto play functionality of the AudioClip.
+        */
+        public AutoPlay: bool;
+        /**
+        * Gets or sets the preload functionality of the AudioClip.  Values can be "auto", "metadata", or "none".
+        */
+        public Preload: string;
+        
+        /**
+        * Creates a new instance of the AudioSettings object with default values.
+        */
+        constructor();
+        /**
+        * Creates a new instance of the AudioSettings object.
+        * @param repeat Initial value of the repeat component.
+        */
+        constructor(repeat: bool);
+        /**
+        * Creates a new instance of the AudioSettings object.
+        * @param repeat Initial value of the repeat component.
+        * @param volume Initial value of the volume component. Value between 0-100.
+        */
+        constructor(repeat: bool, volume: number);
+        /**
+        * Creates a new instance of the AudioSettings object.
+        * @param repeat Initial value of the repeat component.
+        * @param volume Initial value of the volume component. Value between 0-100.
+        * @param autoplay Initial value of the auto play component.
+        */
+        constructor(repeat: bool, volume: number, autoplay: bool);
+        /**
+        * Creates a new instance of the AudioSettings object.
+        * @param repeat Initial value of the repeat component.
+        * @param volume Initial value of the volume component. Value between 0-100.
+        * @param autoplay Initial value of the auto play component.
+        * @param preload Initial value of the preload component.  Values can be "auto", "metadata", or "none".
+        */
+        constructor(repeat: bool, volume: number, autoplay: bool, preload: string);
+        constructor(repeat: bool = false, volume: number = 100, autoplay: bool = false, preload: string = "auto") {
             this.Repeat = repeat;
             this.Volume = volume;
             this.AutoPlay = autoplay;
@@ -3187,11 +3236,36 @@ module EndGate.Sound {
         m4a: 'audio/x-m4a'
     };
 
+    /**
+    * Defines a single audio clip that can be played, stopped or paused.
+    */
     export class AudioClip {
         private _audio: HTMLAudioElement;
         private _settings: AudioSettings;
 
-        constructor(source: any, settings?: AudioSettings = AudioSettings.Default) {
+        /**
+        * Creates a new instance of the AudioClip object.
+        * @param source An array of source paths to audio clips.  Pass in multiple audio types of the same clip to ensure cross browser compatibility.
+        */
+        constructor(source: string[]);
+        /**
+        * Creates a new instance of the AudioClip object.
+        * @param source Source path to an audio clip.
+        */
+        constructor(source: string);
+        /**
+        * Creates a new instance of the AudioClip object.
+        * @param source Source path to an audio clip.
+        * @param settings Audio clip settings.
+        */
+        constructor(source: string, settings: AudioSettings = AudioSettings.Default);
+        /**
+        * Creates a new instance of the AudioClip object.
+        * @param source An array of source paths to audio clips.  Pass in multiple audio types of the same clip to ensure cross browser compatibility.
+        * @param settings Audio clip settings.
+        */
+        constructor(source: string[], settings: AudioSettings = AudioSettings.Default);
+        constructor(source: any, settings: AudioSettings = AudioSettings.Default) {
             this._settings = settings;
             this._audio = <HTMLAudioElement>document.createElement("audio");
             this.SetAudioSource(source);
@@ -3200,6 +3274,10 @@ module EndGate.Sound {
             this.OnComplete = new EventHandler();
         }
 
+        /**
+        * Event: Triggered when the audio clip has completed, will not trigger if the audio clip is repeating.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Passes the DOM's ended event to bound functions.
+        */
         public OnComplete: EventHandler;
 
         public Volume(percent?: number): number {
@@ -3211,14 +3289,23 @@ module EndGate.Sound {
             return this._settings.Volume;
         }
 
+        /**
+        * Determines if the AudioClip is currently playing.
+        */
         public IsPlaying(): bool {
             return !this._audio.paused;
         }
 
+        /**
+        * Determines if the AudioClip has completed.
+        */
         public IsComplete(): bool {
             return this._audio.ended;
         }
 
+        /**
+        * Plays the current audio clip.
+        */
         public Play(): void {
             if (this._audio.readyState === <any>0) {
                 this._audio.addEventListener("canplay", () => {
@@ -3230,10 +3317,17 @@ module EndGate.Sound {
             }
         }
 
+        /**
+        * Pauses the current audio clip.
+        */
         public Pause(): void {
             this._audio.pause();
         }
 
+        /**
+        * Seeks the audio clip to the provided time.
+        * @param time The time to seek to.
+        */
         public Seek(time: number): void {
             if (this._audio.readyState === <any>0) {
                 this._audio.addEventListener("canplay", () => {
@@ -3245,6 +3339,9 @@ module EndGate.Sound {
             }
         }
 
+        /**
+        * Stops the current audio clip and seeks back to time 0.
+        */
         public Stop(): void {
             this.Seek(0);
             this._audio.pause();
@@ -3292,13 +3389,35 @@ module EndGate.Sound {
 
 module EndGate.Sound {
 
+    /**
+    * Defines an AudioPlayer that is mapped to a specific source.  Ultimately used to play the same sound simultaneously.
+    */
     export class AudioPlayer {
         private _source: any;
 
-        constructor(sourceLocation: any) {
-            this._source = sourceLocation;
+        /**
+        * Creates a new instance of the AudioPlayer object.
+        * @param source Source path to an audio clip.
+        */
+        constructor(source: string);
+        /**
+        * Creates a new instance of the AudioPlayer object.
+        * @param source An array of source paths to audio clips.  Pass in multiple audio types of the same clip to ensure cross browser compatibility.
+        */
+        constructor(source: string[]);
+        constructor(source: any) {
+            this._source = source;
         }
 
+        /**
+        * Builds an AudioClip and plays it with the default settings.  Returns the built audio clip.
+        */
+        public Play(): AudioClip;
+        /**
+        * Builds an AudioClip and plays it with the provided settings.  Returns the built audio clip.
+        * @param settings Audio settings to play the AudioClip with.
+        */
+        public Play(settings: AudioSettings): AudioClip;
         public Play(settings?: AudioSettings = AudioSettings.Default): AudioClip {
             var clip = new AudioClip(this._source, settings);
 
@@ -3315,19 +3434,41 @@ module EndGate.Sound {
 
 module EndGate.Sound {
 
+    /**
+    * Defines an audio manager that is used to preload AudioClip's that can be played at any time.
+    */
     export class AudioManager {
         private _audioPlayers: { [name: string]: AudioPlayer; };
 
+        /**
+        * Creates a new instance of the AudioManager object.
+        */
         constructor() {
             this._audioPlayers = {};
         }
 
+        /**
+        * Loads AudioPlayer for the provided clip info.  Returns the loaded player for easy access.
+        * @param name The mapped name for the AudioPlayer.
+        * @param src Source path to an audio clip.
+        */
+        public Load(name: string, src: string): AudioPlayer;
+        /**
+        * Loads an audio player, returns the AudioPlayer for easy access.
+        * @param name The mapped name for the AudioPlayer.
+        * @param src An array of source paths to audio clips.  Pass in multiple audio types of the same clip to ensure cross browser compatibility.
+        */
+        public Load(name: string, src: string[]): AudioPlayer;
         public Load(name: string, src: any): AudioPlayer {
             this._audioPlayers[name] = new AudioPlayer(src);
 
             return this._audioPlayers[name];
         }
 
+        /**
+        * Unload player that is mapped to the provided name.
+        * @param name The mapped name of the AudioPlayer to unload.
+        */
         public Unload(name: string): AudioPlayer {
             var player = this._audioPlayers[name];
 
@@ -3336,11 +3477,26 @@ module EndGate.Sound {
             return player;
         }
 
-        public Play(name: string, settings?: AudioSettings = AudioSettings.Default): AudioClip {
+        /**
+        * Plays a new audio clip that's mapped to the provided name with the default audio settings.
+        * @param name The mapped name of the AudioPlayer to Play.
+        */
+        public Play(name: string): AudioClip;
+        /**
+        * Plays a new audio clip that's mapped to the provided name.
+        * @param name The mapped name of the AudioPlayer to Play.
+        * @param settings The audio settings to play the clip with.
+        */
+        public Play(name: string, settings: AudioSettings = AudioSettings.Default): AudioClip;
+        public Play(name: string, settings: AudioSettings = AudioSettings.Default): AudioClip {
             return this._audioPlayers[name].Play(settings);
         }
 
-        public GetPlayer(name: string): AudioPlayer {
+        /**
+        * Retrieves a loaded audio player under the provided name.
+        * @param name The mapped name of the AudioPlayer to retrieve.
+        */
+        public GetAudioPlayer(name: string): AudioPlayer {
             return this._audioPlayers[name];
         }
     }

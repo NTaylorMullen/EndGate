@@ -3,9 +3,12 @@ var EndGate;
     /// <reference path="AudioClip.ts" />
     /// <reference path="AudioSettings.ts" />
     (function (Sound) {
+        /**
+        * Defines an AudioPlayer that is mapped to a specific source.  Ultimately used to play the same sound simultaneously.
+        */
         var AudioPlayer = (function () {
-            function AudioPlayer(sourceLocation) {
-                this._source = sourceLocation;
+            function AudioPlayer(source) {
+                this._source = source;
             }
             AudioPlayer.prototype.Play = function (settings) {
                 if (typeof settings === "undefined") { settings = Sound.AudioSettings.Default; }

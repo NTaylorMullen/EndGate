@@ -1812,8 +1812,8 @@ var EndGate;
 (function (EndGate) {
     (function (Sound) {
         var AudioPlayer = (function () {
-            function AudioPlayer(sourceLocation) {
-                this._source = sourceLocation;
+            function AudioPlayer(source) {
+                this._source = source;
             }
             AudioPlayer.prototype.Play = function (settings) {
                 if (typeof settings === "undefined") { settings = Sound.AudioSettings.Default; }
@@ -1848,7 +1848,7 @@ var EndGate;
                 if (typeof settings === "undefined") { settings = Sound.AudioSettings.Default; }
                 return this._audioPlayers[name].Play(settings);
             };
-            AudioManager.prototype.GetPlayer = function (name) {
+            AudioManager.prototype.GetAudioPlayer = function (name) {
                 return this._audioPlayers[name];
             };
             return AudioManager;

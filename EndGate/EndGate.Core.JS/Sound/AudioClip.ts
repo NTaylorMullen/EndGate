@@ -11,11 +11,36 @@ module EndGate.Sound {
         m4a: 'audio/x-m4a'
     };
 
+    /**
+    * Defines a single audio clip that can be played, stopped or paused.
+    */
     export class AudioClip {
         private _audio: HTMLAudioElement;
         private _settings: AudioSettings;
 
-        constructor(source: any, settings?: AudioSettings = AudioSettings.Default) {
+        /**
+        * Creates a new instance of the AudioClip object.
+        * @param source An array of source paths to audio clips.  Pass in multiple audio types of the same clip to ensure cross browser compatibility.
+        */
+        constructor(source: string[]);
+        /**
+        * Creates a new instance of the AudioClip object.
+        * @param source Source path to an audio clip.
+        */
+        constructor(source: string);
+        /**
+        * Creates a new instance of the AudioClip object.
+        * @param source Source path to an audio clip.
+        * @param settings Audio clip settings.
+        */
+        constructor(source: string, settings: AudioSettings = AudioSettings.Default);
+        /**
+        * Creates a new instance of the AudioClip object.
+        * @param source An array of source paths to audio clips.  Pass in multiple audio types of the same clip to ensure cross browser compatibility.
+        * @param settings Audio clip settings.
+        */
+        constructor(source: string[], settings: AudioSettings = AudioSettings.Default);
+        constructor(source: any, settings: AudioSettings = AudioSettings.Default) {
             this._settings = settings;
             this._audio = <HTMLAudioElement>document.createElement("audio");
             this.SetAudioSource(source);
@@ -24,6 +49,10 @@ module EndGate.Sound {
             this.OnComplete = new EventHandler();
         }
 
+        /**
+        * Event: Triggered when the audio clip has completed, will not trigger if the audio clip is repeating.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Passes the DOM's ended event to bound functions.
+        */
         public OnComplete: EventHandler;
 
         public Volume(percent?: number): number {
@@ -35,14 +64,23 @@ module EndGate.Sound {
             return this._settings.Volume;
         }
 
+        /**
+        * Determines if the AudioClip is currently playing.
+        */
         public IsPlaying(): bool {
             return !this._audio.paused;
         }
 
+        /**
+        * Determines if the AudioClip has completed.
+        */
         public IsComplete(): bool {
             return this._audio.ended;
         }
 
+        /**
+        * Plays the current audio clip.
+        */
         public Play(): void {
             if (this._audio.readyState === <any>0) {
                 this._audio.addEventListener("canplay", () => {
@@ -54,10 +92,17 @@ module EndGate.Sound {
             }
         }
 
+        /**
+        * Pauses the current audio clip.
+        */
         public Pause(): void {
             this._audio.pause();
         }
 
+        /**
+        * Seeks the audio clip to the provided time.
+        * @param time The time to seek to.
+        */
         public Seek(time: number): void {
             if (this._audio.readyState === <any>0) {
                 this._audio.addEventListener("canplay", () => {
@@ -69,6 +114,9 @@ module EndGate.Sound {
             }
         }
 
+        /**
+        * Stops the current audio clip and seeks back to time 0.
+        */
         public Stop(): void {
             this.Seek(0);
             this._audio.pause();

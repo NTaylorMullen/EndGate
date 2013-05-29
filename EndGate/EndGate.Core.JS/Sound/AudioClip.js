@@ -10,6 +10,9 @@ var EndGate;
             aac: 'audio/aac',
             m4a: 'audio/x-m4a'
         };
+        /**
+        * Defines a single audio clip that can be played, stopped or paused.
+        */
         var AudioClip = (function () {
             function AudioClip(source, settings) {
                 if (typeof settings === "undefined") { settings = Sound.AudioSettings.Default; }
@@ -26,13 +29,22 @@ var EndGate;
                 }
                 return this._settings.Volume;
             };
-            AudioClip.prototype.IsPlaying = function () {
+            AudioClip.prototype.IsPlaying = /**
+            * Determines if the AudioClip is currently playing.
+            */
+            function () {
                 return !this._audio.paused;
             };
-            AudioClip.prototype.IsComplete = function () {
+            AudioClip.prototype.IsComplete = /**
+            * Determines if the AudioClip has completed.
+            */
+            function () {
                 return this._audio.ended;
             };
-            AudioClip.prototype.Play = function () {
+            AudioClip.prototype.Play = /**
+            * Plays the current audio clip.
+            */
+            function () {
                 var _this = this;
                 if(this._audio.readyState === 0) {
                     this._audio.addEventListener("canplay", function () {
@@ -42,10 +54,17 @@ var EndGate;
                     this._audio.play();
                 }
             };
-            AudioClip.prototype.Pause = function () {
+            AudioClip.prototype.Pause = /**
+            * Pauses the current audio clip.
+            */
+            function () {
                 this._audio.pause();
             };
-            AudioClip.prototype.Seek = function (time) {
+            AudioClip.prototype.Seek = /**
+            * Seeks the audio clip to the provided time.
+            * @param time The time to seek to.
+            */
+            function (time) {
                 var _this = this;
                 if(this._audio.readyState === 0) {
                     this._audio.addEventListener("canplay", function () {
@@ -55,7 +74,10 @@ var EndGate;
                     this._audio.currentTime = time;
                 }
             };
-            AudioClip.prototype.Stop = function () {
+            AudioClip.prototype.Stop = /**
+            * Stops the current audio clip and seeks back to time 0.
+            */
+            function () {
                 this.Seek(0);
                 this._audio.pause();
             };

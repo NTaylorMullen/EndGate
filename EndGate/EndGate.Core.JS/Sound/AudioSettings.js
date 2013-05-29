@@ -1,6 +1,9 @@
 var EndGate;
 (function (EndGate) {
     (function (Sound) {
+        /**
+        * Defines a set of settings that are used to play AudioClip's a custom way.
+        */
         var AudioSettings = (function () {
             function AudioSettings(repeat, volume, autoplay, preload) {
                 if (typeof repeat === "undefined") { repeat = false; }
