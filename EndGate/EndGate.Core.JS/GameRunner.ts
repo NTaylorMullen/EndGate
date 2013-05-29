@@ -45,14 +45,14 @@ module EndGate._ {
             var updateCallback,
                 drawCallback;
 
-            if (this._updateCallbacks[game.ID]) {
-                updateCallback = this._updateCallbacks[game.ID];
-                drawCallback = this._drawCallbacks[game.ID];
+            if (this._updateCallbacks[game._ID]) {
+                updateCallback = this._updateCallbacks[game._ID];
+                drawCallback = this._drawCallbacks[game._ID];
 
                 this._updateLoop.RemoveCallback(updateCallback);
                 this._drawLoop.RemoveCallback(drawCallback);
-                delete this._updateCallbacks[game.ID];
-                delete this._drawCallbacks[game.ID];
+                delete this._updateCallbacks[game._ID];
+                delete this._drawCallbacks[game._ID];
 
                 this._callbackCount--
 
@@ -80,20 +80,20 @@ module EndGate._ {
 
         private CreateAndCacheUpdateCallback(game: Game): Loopers.TimedCallback {
             var updateCallback = new Loopers.TimedCallback(0, () => {
-                game.PrepareUpdate();
+                game._PrepareUpdate();
             });
 
-            this._updateCallbacks[game.ID] = updateCallback;            
+            this._updateCallbacks[game._ID] = updateCallback;            
 
             return updateCallback;
         };
 
         private CreateAndCacheDrawCallback(game: Game): Loopers.LooperCallback {
             var drawCallback = new Loopers.LooperCallback(() => {
-                game.PrepareDraw();
+                game._PrepareDraw();
             });
 
-            this._drawCallbacks[game.ID] = drawCallback;
+            this._drawCallbacks[game._ID] = drawCallback;
 
             return drawCallback;
         }

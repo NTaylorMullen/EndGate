@@ -15,14 +15,35 @@ module EndGate._ {
     }
 }
 module EndGate {
+    /**
+    * Defines a game time class that is used to manage update timing execution as well as total game time.
+    */
     class GameTime implements _.ITyped {
         public _type: string;
+        /**
+        * The current date time at the start of the Update.
+        */
         public Now: Date;
+        /**
+        * Total amount of milliseconds surpassed since construction.
+        */
         public Total: number;
+        /**
+        * Elapsed milliseconds since last Update.
+        */
         public Elapsed: number;
+        /**
+        * Elapsed second since last Update.  It's essentially 1/Elapsed.
+        */
         public ElapsedSecond: number;
         private _start;
+        /**
+        * Creates a new instance of the GameTime object.
+        */
         constructor();
+        /**
+        * Updates the game time object.  Causes the gameTime to refresh all its components.
+        */
         public Update(): void;
     }
 }
@@ -681,23 +702,59 @@ module EndGate._.Loopers {
     }
 }
 module EndGate {
+    /**
+    * Defines a GameConfiguration object that is used to represent the current state of a Game object.
+    */
     class GameConfiguration {
         private _defaultUpdateRate;
         private _updateRateSetter;
         private _updateRate;
+        /**
+        * Creates a new instance of the GameConfiguration object.
+        * @param updateRateSetter A function that updates the rate of "Update" execution.
+        */
         constructor(updateRateSetter: (updateRate: number) => void);
-        public UpdateRate(updateRate?: number): number;
+        /**
+        * Gets the current update rate.
+        */
+        public UpdateRate(): number;
+        /**
+        * Sets and gets the update rate.
+        * @param updateRate The new update rate. X many updates per second.
+        */
+        public UpdateRate(updateRate: number): number;
     }
 }
 module EndGate {
+    /**
+    * Defines an event handler object that can maintain bound functions and trigger them on demand.
+    */
     class EventHandler implements _.ITyped {
         public _type: string;
         private _actions;
         private _hasBindings;
+        /**
+        * Creates a new instance of the EventHandler object.
+        */
         constructor();
+        /**
+        * Binds the provided action to the EventHandler.  Trigger will execute all bound functions.
+        * @param action Function to execute on EventHandler Trigger.
+        */
         public Bind(action: Function): void;
+        /**
+        * Unbinds the provided action from the EventHandler.
+        * @param action Function to unbind.  The action will no longer be executed when the EventHandler gets Triggered.
+        */
         public Unbind(action: Function): void;
+        /**
+        * Determines if the EventHandler has active bindings.
+        */
         public HasBindings(): bool;
+        /**
+        * Executes all bound functions and passes the provided args to each.
+        * @param args Arguments to pass to each bound function.
+        */
         public Trigger(...args: any[]): void;
     }
 }
@@ -1576,22 +1633,61 @@ module EndGate.Map {
     }
 }
 module EndGate {
+    /**
+    * Defines a virtual Game object that is meant to be derived from.  Games contain a multitude of management objects to control every aspect of the game.
+    */
     class Game implements _.ITyped, IUpdateable, IDisposable {
         public _type: string;
-        public ID: number;
+        /**
+        * The games configuration.  Used to modify settings such as the game update rate.
+        */
         public Configuration: GameConfiguration;
+        /**
+        * A collision manager which is used to actively detect collisions between monitored Collidable's.
+        */
         public CollisionManager: Collision.CollisionManager;
+        /**
+        * A scene manager which is used to draw Graphic2d's onto the game screen.
+        */
         public Scene: Rendering.Scene2d;
+        /**
+        * An input manager which is used to monitor mouse and keyboard events.
+        */
         public Input: Input.InputManager;
+        /**
+        * An audio manager which is used to load, manage and play audio clips.
+        */
         public Audio: Sound.AudioManager;
+        /**
+        * A map manager that is used to draw large Graphic2d's (Layer's) to the background.
+        */
         public Map: Map.MapManager;
+        public _ID: number;
         private static _gameIds;
         private _gameTime;
-        constructor(gameCanvas?: HTMLCanvasElement);
-        public PrepareUpdate(): void;
+        /**
+        * Creates a new instance of the Game object.  A default canvas will be created that fills the DOM body.
+        */
+        constructor();
+        /**
+        * Creates a new instance of the Game object.
+        * @param gameCanvas The canvas to utilize as the game area.
+        */
+        constructor(gameCanvas: HTMLCanvasElement);
+        public _PrepareUpdate(): void;
+        /**
+        * Triggered on a regular interval defined by the GameConfiguration.
+        * @param gameTime The global game time object.  Used to represent total time running and used to track update interval elapsed speeds.
+        */
         public Update(gameTime: GameTime): void;
-        public PrepareDraw(): void;
+        public _PrepareDraw(): void;
+        /**
+        * Triggered as fast as possible.  Determined by the current browsers repaint rate.
+        */
         public Draw(context: CanvasRenderingContext2D): void;
+        /**
+        * Removes game canvas and disposes all tracked objects.
+        */
         public Dispose(): void;
     }
 }

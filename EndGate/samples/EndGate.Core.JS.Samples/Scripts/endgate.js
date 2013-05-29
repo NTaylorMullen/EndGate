@@ -487,13 +487,13 @@ var EndGate;
             };
             GameRunner.prototype.Unregister = function (game) {
                 var updateCallback, drawCallback;
-                if(this._updateCallbacks[game.ID]) {
-                    updateCallback = this._updateCallbacks[game.ID];
-                    drawCallback = this._drawCallbacks[game.ID];
+                if(this._updateCallbacks[game._ID]) {
+                    updateCallback = this._updateCallbacks[game._ID];
+                    drawCallback = this._drawCallbacks[game._ID];
                     this._updateLoop.RemoveCallback(updateCallback);
                     this._drawLoop.RemoveCallback(drawCallback);
-                    delete this._updateCallbacks[game.ID];
-                    delete this._drawCallbacks[game.ID];
+                    delete this._updateCallbacks[game._ID];
+                    delete this._drawCallbacks[game._ID];
                     this._callbackCount--;
                     this.TryLoopStop();
                 }
@@ -516,16 +516,16 @@ var EndGate;
             };
             GameRunner.prototype.CreateAndCacheUpdateCallback = function (game) {
                 var updateCallback = new _.Loopers.TimedCallback(0, function () {
-                    game.PrepareUpdate();
+                    game._PrepareUpdate();
                 });
-                this._updateCallbacks[game.ID] = updateCallback;
+                this._updateCallbacks[game._ID] = updateCallback;
                 return updateCallback;
             };
             GameRunner.prototype.CreateAndCacheDrawCallback = function (game) {
                 var drawCallback = new _.Loopers.LooperCallback(function () {
-                    game.PrepareDraw();
+                    game._PrepareDraw();
                 });
-                this._drawCallbacks[game.ID] = drawCallback;
+                this._drawCallbacks[game._ID] = drawCallback;
                 return drawCallback;
             };
             GameRunner.prototype.CreateUpdateRateSetter = function (callback) {
@@ -1912,7 +1912,7 @@ var EndGate;
             var _this = this;
             this._type = "Game";
             this._gameTime = new EndGate.GameTime();
-            this.ID = Game._gameIds++;
+            this._ID = Game._gameIds++;
             this.Scene = new EndGate.Rendering.Scene2d(function (context) {
                 _this.Draw(context);
             }, gameCanvas);
@@ -1923,14 +1923,14 @@ var EndGate;
             this.Map = new EndGate.Map.MapManager(this.Scene);
         }
         Game._gameIds = 0;
-        Game.prototype.PrepareUpdate = function () {
+        Game.prototype._PrepareUpdate = function () {
             this._gameTime.Update();
             this.CollisionManager.Update(this._gameTime);
             this.Update(this._gameTime);
         };
         Game.prototype.Update = function (gameTime) {
         };
-        Game.prototype.PrepareDraw = function () {
+        Game.prototype._PrepareDraw = function () {
             this.Map.Scenery.Draw();
             this.Scene.Draw();
         };

@@ -11,12 +11,15 @@
 /// <reference path="Map/MapManager.ts" />
 var EndGate;
 (function (EndGate) {
+    /**
+    * Defines a virtual Game object that is meant to be derived from.  Games contain a multitude of management objects to control every aspect of the game.
+    */
     var Game = (function () {
         function Game(gameCanvas) {
             var _this = this;
             this._type = "Game";
             this._gameTime = new EndGate.GameTime();
-            this.ID = Game._gameIds++;
+            this._ID = Game._gameIds++;
             this.Scene = new EndGate.Rendering.Scene2d(function (context) {
                 _this.Draw(context);
             }, gameCanvas);
@@ -27,21 +30,31 @@ var EndGate;
             this.Map = new EndGate.Map.MapManager(this.Scene);
         }
         Game._gameIds = 0;
-        Game.prototype.PrepareUpdate = function () {
+        Game.prototype._PrepareUpdate = function () {
             this._gameTime.Update();
             this.CollisionManager.Update(this._gameTime);
             this.Update(this._gameTime);
         };
-        Game.prototype.Update = function (gameTime) {
+        Game.prototype.Update = /**
+        * Triggered on a regular interval defined by the GameConfiguration.
+        * @param gameTime The global game time object.  Used to represent total time running and used to track update interval elapsed speeds.
+        */
+        function (gameTime) {
         };
-        Game.prototype.PrepareDraw = function () {
+        Game.prototype._PrepareDraw = function () {
             this.Map.Scenery.Draw();
             this.Scene.Draw();
         };
-        Game.prototype.Draw = // This is called by the scene
+        Game.prototype.Draw = /**
+        * Triggered as fast as possible.  Determined by the current browsers repaint rate.
+        */
         function (context) {
-        };
-        Game.prototype.Dispose = function () {
+            // This is called by the scene
+                    };
+        Game.prototype.Dispose = /**
+        * Removes game canvas and disposes all tracked objects.
+        */
+        function () {
             this.Scene.Dispose();
             GameRunnerInstance.Unregister(this);
         };

@@ -25,23 +25,43 @@ declare module EndGate._ {
 
 module EndGate {
 
+    /**
+    * Defines a game time class that is used to manage update timing execution as well as total game time.
+    */
     export class GameTime implements _.ITyped {
         public _type: string = "GameTime";
 
+        /**
+        * The current date time at the start of the Update.
+        */
         public Now: Date;
-        // Time in milliseconds
+        /**
+        * Total amount of milliseconds surpassed since construction.
+        */
         public Total: number;
+        /**
+        * Elapsed milliseconds since last Update.
+        */
         public Elapsed: number;
+        /**
+        * Elapsed second since last Update.  It's essentially 1/Elapsed.
+        */
         public ElapsedSecond: number;
 
         // Start time in milliseconds
         private _start: number;
 
+        /**
+        * Creates a new instance of the GameTime object.
+        */
         constructor() {
             this.Now = new Date();
             this._start = this.Now.getTime();
         }
 
+        /**
+        * Updates the game time object.  Causes the gameTime to refresh all its components.
+        */
         public Update(): void {
             var now = new Date(),
                 nowMs = now.getTime();
@@ -1137,14 +1157,14 @@ module EndGate._ {
             var updateCallback,
                 drawCallback;
 
-            if (this._updateCallbacks[game.ID]) {
-                updateCallback = this._updateCallbacks[game.ID];
-                drawCallback = this._drawCallbacks[game.ID];
+            if (this._updateCallbacks[game._ID]) {
+                updateCallback = this._updateCallbacks[game._ID];
+                drawCallback = this._drawCallbacks[game._ID];
 
                 this._updateLoop.RemoveCallback(updateCallback);
                 this._drawLoop.RemoveCallback(drawCallback);
-                delete this._updateCallbacks[game.ID];
-                delete this._drawCallbacks[game.ID];
+                delete this._updateCallbacks[game._ID];
+                delete this._drawCallbacks[game._ID];
 
                 this._callbackCount--
 
@@ -1172,20 +1192,20 @@ module EndGate._ {
 
         private CreateAndCacheUpdateCallback(game: Game): Loopers.TimedCallback {
             var updateCallback = new Loopers.TimedCallback(0, () => {
-                game.PrepareUpdate();
+                game._PrepareUpdate();
             });
 
-            this._updateCallbacks[game.ID] = updateCallback;            
+            this._updateCallbacks[game._ID] = updateCallback;            
 
             return updateCallback;
         };
 
         private CreateAndCacheDrawCallback(game: Game): Loopers.LooperCallback {
             var drawCallback = new Loopers.LooperCallback(() => {
-                game.PrepareDraw();
+                game._PrepareDraw();
             });
 
-            this._drawCallbacks[game.ID] = drawCallback;
+            this._drawCallbacks[game._ID] = drawCallback;
 
             return drawCallback;
         }
@@ -1202,16 +1222,32 @@ var GameRunnerInstance: EndGate._.GameRunner = new EndGate._.GameRunner();
 /* GameConfiguration.ts */
 module EndGate {
 
+    /**
+    * Defines a GameConfiguration object that is used to represent the current state of a Game object.
+    */
     export class GameConfiguration {
         private _defaultUpdateRate: number = 40;
         private _updateRateSetter: (updateRate: number) => void;
         private _updateRate: number;
 
+        /**
+        * Creates a new instance of the GameConfiguration object.
+        * @param updateRateSetter A function that updates the rate of "Update" execution.
+        */
         constructor(updateRateSetter: (updateRate: number) => void ) {
             this._updateRateSetter = updateRateSetter;
             this.UpdateRate(this._defaultUpdateRate);
         }
 
+        /**
+        * Gets the current update rate.
+        */
+        public UpdateRate(): number;
+        /**
+        * Sets and gets the update rate.
+        * @param updateRate The new update rate. X many updates per second.
+        */
+        public UpdateRate(updateRate: number): number;
         public UpdateRate(updateRate?: number): number {
             if (typeof updateRate !== "undefined") {
                 this._updateRate = updateRate;
@@ -1230,22 +1266,36 @@ module EndGate {
 
 module EndGate {
 
+    /**
+    * Defines an event handler object that can maintain bound functions and trigger them on demand.
+    */
     export class EventHandler implements _.ITyped {
         public _type: string = "Event";
 
         private _actions: Function[];
         private _hasBindings: bool;
 
+        /**
+        * Creates a new instance of the EventHandler object.
+        */
         constructor() {
             this._actions = [];
             this._hasBindings = false;
         }
 
+        /**
+        * Binds the provided action to the EventHandler.  Trigger will execute all bound functions.
+        * @param action Function to execute on EventHandler Trigger.
+        */
         public Bind(action: Function): void {
             this._actions.push(action);
             this._hasBindings = true;
         }
 
+        /**
+        * Unbinds the provided action from the EventHandler.
+        * @param action Function to unbind.  The action will no longer be executed when the EventHandler gets Triggered.
+        */
         public Unbind(action: Function): void {
             for (var i = 0; i < this._actions.length; i++) {
                 if (this._actions[i] === action) {
@@ -1257,10 +1307,17 @@ module EndGate {
             }
         }
 
+        /**
+        * Determines if the EventHandler has active bindings.
+        */
         public HasBindings(): bool {
             return this._hasBindings;
         }
 
+        /**
+        * Executes all bound functions and passes the provided args to each.
+        * @param args Arguments to pass to each bound function.
+        */
         public Trigger(...args: any[]): void {
             for (var i = 0; i < this._actions.length; i++) {
                 this._actions[i].apply(this, args);
@@ -3613,23 +3670,54 @@ module EndGate.Map {
 
 module EndGate {
 
+    /**
+    * Defines a virtual Game object that is meant to be derived from.  Games contain a multitude of management objects to control every aspect of the game.
+    */
     export class Game implements _.ITyped, IUpdateable, IDisposable {
         public _type: string = "Game";
-
-        public ID: number;
+        
+        /**
+        * The games configuration.  Used to modify settings such as the game update rate.
+        */
         public Configuration: GameConfiguration;
+        /**
+        * A collision manager which is used to actively detect collisions between monitored Collidable's.
+        */
         public CollisionManager: Collision.CollisionManager;
+        /**
+        * A scene manager which is used to draw Graphic2d's onto the game screen.
+        */
         public Scene: Rendering.Scene2d;
+        /**
+        * An input manager which is used to monitor mouse and keyboard events.
+        */
         public Input: Input.InputManager;
+        /**
+        * An audio manager which is used to load, manage and play audio clips.
+        */
         public Audio: Sound.AudioManager;
+        /**
+        * A map manager that is used to draw large Graphic2d's (Layer's) to the background.
+        */
         public Map: Map.MapManager;
+
+        public _ID: number;
 
         private static _gameIds: number = 0;
         private _gameTime: GameTime;
 
+        /**
+        * Creates a new instance of the Game object.  A default canvas will be created that fills the DOM body.
+        */
+        constructor();
+        /**
+        * Creates a new instance of the Game object.
+        * @param gameCanvas The canvas to utilize as the game area.
+        */
+        constructor(gameCanvas: HTMLCanvasElement);
         constructor(gameCanvas?:HTMLCanvasElement) {
             this._gameTime = new GameTime();
-            this.ID = Game._gameIds++;
+            this._ID = Game._gameIds++;
 
             this.Scene = new Rendering.Scene2d(context => {
                 this.Draw(context);
@@ -3642,25 +3730,35 @@ module EndGate {
             this.Map = new Map.MapManager(this.Scene);
         }
 
-        public PrepareUpdate(): void {
+        public _PrepareUpdate(): void {
             this._gameTime.Update();
 
             this.CollisionManager.Update(this._gameTime);
             this.Update(this._gameTime);
         }
 
+        /**
+        * Triggered on a regular interval defined by the GameConfiguration.
+        * @param gameTime The global game time object.  Used to represent total time running and used to track update interval elapsed speeds.
+        */
         public Update(gameTime: GameTime): void {
         }
 
-        public PrepareDraw(): void {
+        public _PrepareDraw(): void {
             this.Map.Scenery.Draw();
             this.Scene.Draw();
         }
 
-        // This is called by the scene
+        /**
+        * Triggered as fast as possible.  Determined by the current browsers repaint rate.
+        */
         public Draw(context: CanvasRenderingContext2D): void {
+            // This is called by the scene
         }
 
+        /**
+        * Removes game canvas and disposes all tracked objects.
+        */
         public Dispose()
         {
             this.Scene.Dispose();
