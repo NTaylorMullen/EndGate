@@ -794,7 +794,7 @@ module EndGate.Collision {
         private _disposed;
         /**
         * Creates a new instance of Collidable.
-        * @param position Initial bounds for the Collidable.
+        * @param bounds Initial bounds for the Collidable.
         */
         constructor(bounds: Bounds.Abstractions.Bounds2d);
         /**

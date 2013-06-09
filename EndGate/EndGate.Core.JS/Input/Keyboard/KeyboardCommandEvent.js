@@ -80,7 +80,7 @@ var EndGate;
             }
             KeyboardCommandEvent.prototype.Matches = /**
             * Determines if the KeyboardCommand matches the KeyboardCommandEvent
-            * @command The KeyboardCommand to check.
+            * @param command The KeyboardCommand to check.
             */
             function (command) {
                 return this.Key.toLowerCase() === command.Key.toLowerCase() && command.Modifiers.Equivalent(this.Modifiers);

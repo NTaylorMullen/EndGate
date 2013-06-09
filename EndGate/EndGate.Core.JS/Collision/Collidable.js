@@ -13,7 +13,7 @@ var EndGate;
         var Collidable = (function () {
             /**
             * Creates a new instance of Collidable.
-            * @param position Initial bounds for the Collidable.
+            * @param bounds Initial bounds for the Collidable.
             */
             function Collidable(bounds) {
                 this._type = "Collidable";

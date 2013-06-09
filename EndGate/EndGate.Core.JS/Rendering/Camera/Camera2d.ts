@@ -32,7 +32,7 @@ module EndGate.Rendering {
 
         /**
         * Converts an absolute position (0 to cameras Size) to a camera relative position.  Most useful when used to convert mouse click coordinates to scene coordinates.
-        * @position The absolute position to convert.  0 position represents the top or left hand side of the camera.
+        * @param position The absolute position to convert.  0 position represents the top or left hand side of the camera.
         */
         public ToCameraRelative(position: Vector2d): Vector2d {
             var scaledTopLeft = this.Position.Subtract(this.Size.Multiply(this._GetDistanceScale()* .5));

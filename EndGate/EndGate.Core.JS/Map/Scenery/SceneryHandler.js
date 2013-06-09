@@ -1,6 +1,7 @@
 var EndGate;
 (function (EndGate) {
     /// <reference path="../../Rendering/Camera/Camera2d.ts" />
+    /// <reference path="../../Rendering/Scene2d.ts" />
     /// <reference path="../../Rendering/Camera/Camera2dRenderer.ts" />
     /// <reference path="../../Rendering/IRenderer.ts" />
     /// <reference path="../../Graphics/Graphic2d.ts" />
@@ -35,7 +36,6 @@ var EndGate;
             };
             SceneryHandler.prototype.Draw = /**
             * Draws all layers onto the given context.  If this is used via a MapManager object, Draw will automatically be called.
-            * @param context The canvas context to draw the scenery onto.
             */
             function () {
                 this._layers.sort(EndGate.Graphics.Abstractions.Graphic2d._zindexSort);

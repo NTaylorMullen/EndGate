@@ -1,4 +1,5 @@
 /// <reference path="../../Rendering/Camera/Camera2d.ts" />
+/// <reference path="../../Rendering/Scene2d.ts" />
 /// <reference path="../../Rendering/Camera/Camera2dRenderer.ts" />
 /// <reference path="../../Rendering/IRenderer.ts" />
 /// <reference path="../../Graphics/Graphic2d.ts" />
@@ -43,7 +44,6 @@ module EndGate.Map {
 
         /**
         * Draws all layers onto the given context.  If this is used via a MapManager object, Draw will automatically be called.
-        * @param context The canvas context to draw the scenery onto.
         */
         public Draw(): void {
             this._layers.sort(Graphics.Abstractions.Graphic2d._zindexSort);

@@ -27,7 +27,7 @@ var EndGate;
             Camera2d.DefaultDistance = 1000;
             Camera2d.prototype.ToCameraRelative = /**
             * Converts an absolute position (0 to cameras Size) to a camera relative position.  Most useful when used to convert mouse click coordinates to scene coordinates.
-            * @position The absolute position to convert.  0 position represents the top or left hand side of the camera.
+            * @param position The absolute position to convert.  0 position represents the top or left hand side of the camera.
             */
             function (position) {
                 var scaledTopLeft = this.Position.Subtract(this.Size.Multiply(this._GetDistanceScale() * .5));

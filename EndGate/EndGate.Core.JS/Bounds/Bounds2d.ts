@@ -55,7 +55,7 @@ module EndGate.Bounds.Abstractions {
 
         /**
         * Determines if the current bounded object intersects another bounded object.
-        * @param point A point.
+        * @param obj Bounding object to check collision with.
         */
         public Intersects(obj: Bounds2d): bool;
         /**

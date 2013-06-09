@@ -33,7 +33,7 @@ module EndGate.Input.Assets {
 
         /**
         * Determines whether this KeyboardModifiers object has the same ctrl, alt, and shift states as the provided KeyboardModifiers.
-        * @param vector The Vector2d to compare the current Vector2d to.
+        * @param modifier The KeyboardModifiers to compare the current modifiers to.
         */
         public Equivalent(modifier: KeyboardModifiers): bool {
             return this.Ctrl === modifier.Ctrl && this.Alt === modifier.Alt && this.Shift === modifier.Shift;
