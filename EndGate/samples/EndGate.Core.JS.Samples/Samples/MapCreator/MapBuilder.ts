@@ -56,6 +56,11 @@ module MapCreator {
 
             // Draw the visible grid and the default layer
             this.Scene.Add(this._visibleGrid);
+
+            // Bind the "g" key to the "DrawGridLines" functionality of the visible grid
+            this.Input.Keyboard.OnCommandDown("g", () => {
+                this._visibleGrid.DrawGridLines = !this._visibleGrid.DrawGridLines;
+            });
         }
 
         public BuildResourceMap(grid: eg.Graphics.Grid): number[][] {

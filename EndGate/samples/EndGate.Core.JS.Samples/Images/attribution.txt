@@ -1,0 +1,9 @@
+Attribution:
+
+The tile sheet is broken up into 4 different tile sheets.
+Top left, top right, bottom left and bottom right.
+
+Top Left: http://opengameart.org/content/rpg-tiles-cobble-stone-paths-town-objects
+Top Right: http://opengameart.org/content/2d-lost-garden-tileset-transition-to-jetrels-wood-tileset
+Bot Left: http://opengameart.org/content/castle-tiles-for-rpgs
+Bot Right: http://opengameart.org/content/2d-lost-garden-zelda-style-tiles-resized-to-32x32-with-additions

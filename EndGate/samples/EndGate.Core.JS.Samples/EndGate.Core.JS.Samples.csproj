@@ -141,6 +141,8 @@
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tooltip.min.css" />
     <Content Include="Default.aspx" />
+    <Content Include="Images\attribution.txt" />
+    <Content Include="Images\combined-tiles.png" />
     <Content Include="packages.config" />
     <Content Include="EndGate.Core.JS.Samples.Master" />
     <TypeScriptCompile Include="Samples\AnimatedSprites\Animation.ts" />

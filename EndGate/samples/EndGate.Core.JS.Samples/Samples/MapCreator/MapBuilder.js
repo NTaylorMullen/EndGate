@@ -51,6 +51,10 @@ var MapCreator;
             });
             // Draw the visible grid and the default layer
             this.Scene.Add(this._visibleGrid);
+            // Bind the "g" key to the "DrawGridLines" functionality of the visible grid
+            this.Input.Keyboard.OnCommandDown("g", function () {
+                _this._visibleGrid.DrawGridLines = !_this._visibleGrid.DrawGridLines;
+            });
         }
         MapBuilder.prototype.BuildResourceMap = function (grid) {
             var resources = this._spriteSheetViewer.VisibleGrid.GetSpace(0, 0, this._spriteSheetViewer.VisibleGrid.Rows() - 1, this._spriteSheetViewer.VisibleGrid.Columns() - 1), rows = grid.Rows(), columns = grid.Columns(), tile, resourceMap = [];
