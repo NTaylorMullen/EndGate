@@ -813,7 +813,7 @@ module EndGate.Bounds.Abstractions {
 
         /**
         * Determines if the current bounded object intersects another bounded object.
-        * @param point A point.
+        * @param obj Bounding object to check collision with.
         */
         public Intersects(obj: Bounds2d): bool;
         /**
@@ -2060,7 +2060,7 @@ module EndGate.Rendering {
 
         /**
         * Converts an absolute position (0 to cameras Size) to a camera relative position.  Most useful when used to convert mouse click coordinates to scene coordinates.
-        * @position The absolute position to convert.  0 position represents the top or left hand side of the camera.
+        * @param position The absolute position to convert.  0 position represents the top or left hand side of the camera.
         */
         public ToCameraRelative(position: Vector2d): Vector2d {
             var scaledTopLeft = this.Position.Subtract(this.Size.Multiply(this._GetDistanceScale()* .5));
@@ -2830,7 +2830,7 @@ module EndGate.Input.Assets {
 
         /**
         * Determines whether this KeyboardModifiers object has the same ctrl, alt, and shift states as the provided KeyboardModifiers.
-        * @param vector The Vector2d to compare the current Vector2d to.
+        * @param modifier The KeyboardModifiers to compare the current modifiers to.
         */
         public Equivalent(modifier: KeyboardModifiers): bool {
             return this.Ctrl === modifier.Ctrl && this.Alt === modifier.Alt && this.Shift === modifier.Shift;
@@ -2951,7 +2951,7 @@ module EndGate.Input {
 
         /**
         * Determines if the KeyboardCommand matches the KeyboardCommandEvent
-        * @command The KeyboardCommand to check.
+        * @param command The KeyboardCommand to check.
         */
         public Matches(command: Assets.KeyboardCommand): bool {
             return this.Key.toLowerCase() === command.Key.toLowerCase() && command.Modifiers.Equivalent(this.Modifiers);
@@ -3565,6 +3565,7 @@ module EndGate.Sound {
 
 
 
+
 module EndGate.Map {
 
     /**
@@ -3605,7 +3606,6 @@ module EndGate.Map {
 
         /**
         * Draws all layers onto the given context.  If this is used via a MapManager object, Draw will automatically be called.
-        * @param context The canvas context to draw the scenery onto.
         */
         public Draw(): void {
             this._layers.sort(Graphics.Abstractions.Graphic2d._zindexSort);

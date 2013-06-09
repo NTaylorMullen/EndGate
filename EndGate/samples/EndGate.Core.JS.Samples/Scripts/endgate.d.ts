@@ -600,7 +600,7 @@ module EndGate.Bounds.Abstractions {
         public ContainsPoint(point: Vector2d): bool;
         /**
         * Determines if the current bounded object intersects another bounded object.
-        * @param point A point.
+        * @param obj Bounding object to check collision with.
         */
         public Intersects(obj: Bounds2d): bool;
         /**
@@ -953,7 +953,7 @@ module EndGate.Rendering {
         constructor(position: Vector2d, size: Size2d);
         /**
         * Converts an absolute position (0 to cameras Size) to a camera relative position.  Most useful when used to convert mouse click coordinates to scene coordinates.
-        * @position The absolute position to convert.  0 position represents the top or left hand side of the camera.
+        * @param position The absolute position to convert.  0 position represents the top or left hand side of the camera.
         */
         public ToCameraRelative(position: Vector2d): Vector2d;
         public _GetInverseDistanceScale(): number;
@@ -1244,7 +1244,7 @@ module EndGate.Input.Assets {
         constructor(ctrl: bool, alt: bool, shift: bool);
         /**
         * Determines whether this KeyboardModifiers object has the same ctrl, alt, and shift states as the provided KeyboardModifiers.
-        * @param vector The Vector2d to compare the current Vector2d to.
+        * @param modifier The KeyboardModifiers to compare the current modifiers to.
         */
         public Equivalent(modifier: KeyboardModifiers): bool;
         /**
@@ -1274,7 +1274,7 @@ module EndGate.Input {
         constructor(keyEvent: KeyboardEvent);
         /**
         * Determines if the KeyboardCommand matches the KeyboardCommandEvent
-        * @command The KeyboardCommand to check.
+        * @param command The KeyboardCommand to check.
         */
         public Matches(command: Assets.KeyboardCommand): bool;
     }
@@ -1610,7 +1610,6 @@ module EndGate.Map {
         public RemoveLayer(layer: Graphics.Abstractions.Graphic2d): void;
         /**
         * Draws all layers onto the given context.  If this is used via a MapManager object, Draw will automatically be called.
-        * @param context The canvas context to draw the scenery onto.
         */
         public Draw(): void;
         private BuildSceneryCanvas(foreground);
