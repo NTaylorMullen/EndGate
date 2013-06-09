@@ -107,6 +107,7 @@
                         <select id="outputOptions" style="margin-bottom: 0px">
                             <option value="0">Save Text (Can be loaded by anyone using Map Builder)</option>
                             <option value="1">Code (Creates Square Tile Map, much like Raw RPG)</option>
+                            <option value="2">Image (png)</option>
                         </select>
                         <button id="output" class="btn">Output</button>
                     </div>

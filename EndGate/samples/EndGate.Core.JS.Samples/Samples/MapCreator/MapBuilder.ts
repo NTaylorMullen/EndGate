@@ -44,7 +44,7 @@ module MapCreator {
             this.LayerManager = new LayerManager(this.Scene, this._visibleGrid, $("#layers"), $("#addLayer"), $("#layerName"), (layer: ILayer) => {
                 this._tileFiller.ChangeGrid(layer.Layer);
             });
-            this._outputHandler = new OutputHandler(utilities, this._persistenceManager, _spriteSheetViewer, _tileWidth, _tileHeight);
+            this._outputHandler = new OutputHandler(utilities, this._persistenceManager, this, _spriteSheetViewer, _tileWidth, _tileHeight);
             this._tileFiller = new TileFiller(this.LayerManager.SelectedLayer.Layer, _tileWidth, _tileHeight);
             this._tileSelector = new TileSelector(this._visibleGrid, this.Scene, this.Scene.Camera, this._cameraDragController, this.Input.Mouse,
             (gridEntries: GridEntry[]) => {

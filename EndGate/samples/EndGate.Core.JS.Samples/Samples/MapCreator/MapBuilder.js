@@ -42,7 +42,7 @@ var MapCreator;
             this.LayerManager = new MapCreator.LayerManager(this.Scene, this._visibleGrid, $("#layers"), $("#addLayer"), $("#layerName"), function (layer) {
                 _this._tileFiller.ChangeGrid(layer.Layer);
             });
-            this._outputHandler = new MapCreator.OutputHandler(utilities, this._persistenceManager, _spriteSheetViewer, _tileWidth, _tileHeight);
+            this._outputHandler = new MapCreator.OutputHandler(utilities, this._persistenceManager, this, _spriteSheetViewer, _tileWidth, _tileHeight);
             this._tileFiller = new MapCreator.TileFiller(this.LayerManager.SelectedLayer.Layer, _tileWidth, _tileHeight);
             this._tileSelector = new MapCreator.TileSelector(this._visibleGrid, this.Scene, this.Scene.Camera, this._cameraDragController, this.Input.Mouse, function (gridEntries) {
                 _this._tileFiller.Fill(gridEntries, _this._spriteSheetViewer.SelectedSources);

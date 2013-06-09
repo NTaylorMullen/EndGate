@@ -2,12 +2,13 @@
 /// <reference path="../../Scripts/jquery.d.ts" />
 /// <reference path="PersistenceManager.ts" />
 /// <reference path="SpriteSheetViewer.ts" />
+/// <reference path="MapBuilder.ts" />
 
 // Wrap in module to keep code out of global scope
 module MapCreator {
 
     export class OutputHandler {
-        constructor(utilities: JQuery, persistenceManager: PersistenceManager, spriteSheetViewer: SpriteSheetViewer, tileWidth: number, tileHeight: number) {
+        constructor(utilities: JQuery, persistenceManager: PersistenceManager, mapBuilder: MapBuilder, spriteSheetViewer: SpriteSheetViewer, tileWidth: number, tileHeight: number) {
             var outputButton: JQuery = utilities.find("#output"),
                 outputOptions: JQuery = utilities.find("#outputOptions"),
                 outputPanel: JQuery = $("#outputPanel"),
@@ -45,6 +46,34 @@ module MapCreator {
                         '   myGame.Map.Scenery.AddLayer(layers[i]);<br />' +
                         '}<br />';
                 }
+                else if (outputOptions.val() === "2") {
+                    var parent: HTMLElement = document.createElement("div"),
+                        copyCanvas: HTMLCanvasElement = <HTMLCanvasElement>document.createElement("canvas"),
+                        size: eg.Size2d = mapBuilder.LayerManager.SelectedLayer.Layer.Size(),
+                        tempGame: eg.Game,
+                        img: string;
+
+                    copyCanvas.width = size.Width;
+                    copyCanvas.height = size.Height;
+
+                    parent.style.width = size.Width + "px";
+                    parent.style.height = size.Height + "px";
+
+                    parent.appendChild(copyCanvas);
+
+                    tempGame = new eg.Game(copyCanvas);
+                    tempGame.Scene.Add(mapBuilder.LayerManager.SelectedLayer.Layer);
+                    tempGame.Scene.Camera.Position = mapBuilder.LayerManager.SelectedLayer.Layer.Position;
+
+                    tempGame.Scene.Draw();
+                    tempGame.Scene.Draw();
+
+                    img = copyCanvas.toDataURL("image/png");
+                    tempGame.Dispose();
+                    tempGame = null;                    
+
+                    outputString = '<img src="' + img + '"/>';
+                }
 
                 outputPanel.html(outputString);
 
@@ -53,6 +82,10 @@ module MapCreator {
                 window.scrollTo(0, document.body.scrollHeight);
 
                 $("#blockWrapper").height($("#builderPane").height());
+
+                setTimeout(function () {
+                    $("#blockWrapper").height($("#builderPane").height());
+                }, 500);
             });
         }
 

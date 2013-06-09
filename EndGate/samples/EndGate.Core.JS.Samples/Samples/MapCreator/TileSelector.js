@@ -67,7 +67,7 @@ var MapCreator;
                     break;
                 }
                 for(var j = columnStart; j !== columnEnd + columnIncrementor; j += columnIncrementor) {
-                    if(j >= this._grid.Rows()) {
+                    if(j >= this._grid.Columns()) {
                         break;
                     }
                     space.push(new MapCreator.GridEntry(i, j));
