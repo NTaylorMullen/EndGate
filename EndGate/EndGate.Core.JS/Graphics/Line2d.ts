@@ -90,7 +90,7 @@ module EndGate.Graphics {
         */
         public Color(color: string): string;
         public Color(color?: string): string {
-            return this._State.FillStyle(color);
+            return this._State.StrokeStyle(color);
         }
 
         /**

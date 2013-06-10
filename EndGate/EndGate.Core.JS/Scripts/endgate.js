@@ -2890,7 +2890,7 @@ var EndGate;
                 return this.GetOrSetLinePoint("to", newPosition);
             };
             Line2d.prototype.Color = function (color) {
-                return this._State.FillStyle(color);
+                return this._State.StrokeStyle(color);
             };
             Line2d.prototype.LineWidth = function (width) {
                 return this._State.LineWidth(width);
