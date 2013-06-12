@@ -136,6 +136,10 @@ var EndGate;
             this.X = x || 0;
             this.Y = y || 0;
         }
+        Vector2d.prototype.Reflect = function (normal) {
+            var normalUnit = normal.Unit(), num = this.Dot(normalUnit) * 2;
+            return new Vector2d(this.X - num * normalUnit.X, this.Y - num * normalUnit.Y);
+        };
         Vector2d.Zero = function Zero() {
             return new Vector2d(0, 0);
         };
@@ -177,6 +181,10 @@ var EndGate;
         };
         Vector2d.prototype.Sign = function () {
             return new Vector2d(this.X / Math.abs(this.X), this.Y / Math.abs(this.Y));
+        };
+        Vector2d.prototype.Unit = function () {
+            var magnitude = this.Magnitude();
+            return new Vector2d(this.X / magnitude, this.Y / magnitude);
         };
         Vector2d.prototype.Distance = function (vector) {
             return new Vector2d(Math.abs(vector.X - this.X), Math.abs(vector.Y - this.Y));
@@ -934,7 +942,7 @@ var EndGate;
                 this.Size.Width *= x;
                 this.Size.Height *= y;
             };
-            BoundingRectangle.prototype.Vertices = function () {
+            BoundingRectangle.prototype.Corners = function () {
                 return [
                     this.TopLeft(), 
                     this.TopRight(), 
@@ -984,8 +992,8 @@ var EndGate;
                         rectangle.TopLeft().Subtract(rectangle.BotLeft()), 
                         rectangle.TopLeft().Subtract(rectangle.TopRight())
                     ];
-                    var myVertices = this.Vertices();
-                    var theirVertices = rectangle.Vertices();
+                    var myVertices = this.Corners();
+                    var theirVertices = rectangle.Corners();
                     for(var i = 0; i < axisList.length; i++) {
                         var axi = axisList[i];
                         var myProjections = EndGate._.Vector2dHelpers.GetMinMaxProjections(axi, myVertices);
@@ -2890,7 +2898,7 @@ var EndGate;
                 return this.GetOrSetLinePoint("to", newPosition);
             };
             Line2d.prototype.Color = function (color) {
-                return this._State.FillStyle(color);
+                return this._State.StrokeStyle(color);
             };
             Line2d.prototype.LineWidth = function (width) {
                 return this._State.LineWidth(width);

@@ -112,7 +112,7 @@
             vertices,
             vertex;
 
-        vertices = rect.Vertices();
+        vertices = rect.Corners();
 
         QUnit.ok(rect.ContainsPoint(rect.Position));
 
@@ -135,7 +135,7 @@
 
         rect.Rotation = Math.PI / 4;
 
-        vertices = rect.Vertices();
+        vertices = rect.Corners();
 
         QUnit.ok(rect.ContainsPoint(rect.Position));
 

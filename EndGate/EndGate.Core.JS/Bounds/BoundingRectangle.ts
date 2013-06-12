@@ -40,7 +40,7 @@ module EndGate.Bounds {
         /**
         * Returns a list of vertices that are the locations of each corner of the BoundingRectangle. Format: [TopLeft, TopRight, BotLeft, BotRight].
         */
-        public Vertices(): Vector2d[] {
+        public Corners(): Vector2d[] {
             return [this.TopLeft(), this.TopRight(), this.BotLeft(), this.BotRight()];
         }
 
@@ -115,8 +115,8 @@ module EndGate.Bounds {
             }
             else if (rectangle.Position.Distance(this.Position).Magnitude() <= rectangle.Size.Radius() + this.Size.Radius()) {// Check if we're somewhat close to the rectangle ect that we might be colliding with
                 var axisList: Vector2d[] = [this.TopRight().Subtract(this.TopLeft()), this.TopRight().Subtract(this.BotRight()), rectangle.TopLeft().Subtract(rectangle.BotLeft()), rectangle.TopLeft().Subtract(rectangle.TopRight())];
-                var myVertices = this.Vertices();
-                var theirVertices = rectangle.Vertices();
+                var myVertices = this.Corners();
+                var theirVertices = rectangle.Corners();
 
                 for (var i: number = 0; i < axisList.length; i++) {
                     var axi = axisList[i];

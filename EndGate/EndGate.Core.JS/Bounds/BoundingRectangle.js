@@ -35,7 +35,7 @@ var EndGate;
                 this.Size.Width *= x;
                 this.Size.Height *= y;
             };
-            BoundingRectangle.prototype.Vertices = /**
+            BoundingRectangle.prototype.Corners = /**
             * Returns a list of vertices that are the locations of each corner of the BoundingRectangle. Format: [TopLeft, TopRight, BotLeft, BotRight].
             */
             function () {
@@ -109,8 +109,8 @@ var EndGate;
                         rectangle.TopLeft().Subtract(rectangle.BotLeft()), 
                         rectangle.TopLeft().Subtract(rectangle.TopRight())
                     ];
-                    var myVertices = this.Vertices();
-                    var theirVertices = rectangle.Vertices();
+                    var myVertices = this.Corners();
+                    var theirVertices = rectangle.Corners();
                     for(var i = 0; i < axisList.length; i++) {
                         var axi = axisList[i];
                         var myProjections = EndGate._.Vector2dHelpers.GetMinMaxProjections(axi, myVertices);

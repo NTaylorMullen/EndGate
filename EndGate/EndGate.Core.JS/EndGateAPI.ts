@@ -27,7 +27,6 @@
 /// <reference path="Map/MapManager.ts" />
 /// <reference path="Map/Scenery/SceneryHandler.ts" />
 /// <reference path="Map/Scenery/SquareTileMap.ts" />
-/// <reference path="Map/Scenery/Tile.ts" />
 /// <reference path="Map/Scenery/TileMap.ts" />
 
 // When this file is compiled into a declaration file it does not include this line,

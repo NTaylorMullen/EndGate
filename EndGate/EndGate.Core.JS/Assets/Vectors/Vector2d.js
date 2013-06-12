@@ -12,6 +12,14 @@ var EndGate;
             this.X = x || 0;
             this.Y = y || 0;
         }
+        Vector2d.prototype.Reflect = /**
+        * Returns a Vector2d that's reflected over the normal.
+        * @param normal The normal to reflect over.
+        */
+        function (normal) {
+            var normalUnit = normal.Unit(), num = this.Dot(normalUnit) * 2;
+            return new Vector2d(this.X - num * normalUnit.X, this.Y - num * normalUnit.Y);
+        };
         Vector2d.Zero = /**
         * Returns a Vector2d with all its components set to zero.
         */
@@ -90,6 +98,13 @@ var EndGate;
         */
         function () {
             return new Vector2d(this.X / Math.abs(this.X), this.Y / Math.abs(this.Y));
+        };
+        Vector2d.prototype.Unit = /**
+        * Returns the unit vector of the current vector.
+        */
+        function () {
+            var magnitude = this.Magnitude();
+            return new Vector2d(this.X / magnitude, this.Y / magnitude);
         };
         Vector2d.prototype.Distance = /**
         * Calculates the distance between the current vector and the provided one.

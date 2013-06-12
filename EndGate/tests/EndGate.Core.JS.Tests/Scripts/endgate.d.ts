@@ -87,6 +87,11 @@ module EndGate {
         */
         constructor(x: number, y: number);
         /**
+        * Returns a Vector2d that's reflected over the normal.
+        * @param normal The normal to reflect over.
+        */
+        public Reflect(normal: Vector2d): Vector2d;
+        /**
         * Returns a Vector2d with all its components set to zero.
         */
         static Zero(): Vector2d;
@@ -147,6 +152,10 @@ module EndGate {
         * Returns a Vector2d that has its X and Y components converted to -1, 0 or 1 depending on the current Vector2d's component values.
         */
         public Sign(): Vector2d;
+        /**
+        * Returns the unit vector of the current vector.
+        */
+        public Unit(): Vector2d;
         /**
         * Calculates the distance between the current vector and the provided one.
         */
@@ -528,7 +537,7 @@ module EndGate.Bounds {
         /**
         * Returns a list of vertices that are the locations of each corner of the BoundingRectangle. Format: [TopLeft, TopRight, BotLeft, BotRight].
         */
-        public Vertices(): Vector2d[];
+        public Corners(): Vector2d[];
         /**
         * Calculates the top left corner of the BoundingRectangle.
         */

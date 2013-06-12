@@ -423,6 +423,17 @@ module EndGate {
         }
 
         /**
+        * Returns a Vector2d that's reflected over the normal.
+        * @param normal The normal to reflect over.
+        */
+        public Reflect(normal: Vector2d): Vector2d {
+            var normalUnit = normal.Unit(),
+                num = this.Dot(normalUnit) * 2;
+
+            return new Vector2d(this.X - num * normalUnit.X, this.Y - num * normalUnit.Y);
+        }
+
+        /**
         * Returns a Vector2d with all its components set to zero.
         */
         public static Zero(): Vector2d {
@@ -480,7 +491,7 @@ module EndGate {
         * Executes the action with the X and Y components of this Vector2d.
         * @param action The function to pass the X and Y components to.
         */
-        public Trigger(action: (val: number) => void): void {
+        public Trigger(action: (val: number) => void ): void {
             action(this.X);
             action(this.Y);
         }
@@ -530,6 +541,15 @@ module EndGate {
         }
 
         /**
+        * Returns the unit vector of the current vector.
+        */
+        public Unit(): Vector2d {
+            var magnitude = this.Magnitude();
+
+            return new Vector2d(this.X / magnitude, this.Y / magnitude);
+        }
+
+        /**
         * Calculates the distance between the current vector and the provided one.
         */
         public Distance(vector: Vector2d): Vector2d {
@@ -551,7 +571,7 @@ module EndGate {
         * @param val The number to add.
         */
         public Add(val: number): Vector2d;
-        public Add(val: any): Vector2d{
+        public Add(val: any): Vector2d {
             if (val._type === "Vector2d") {
                 return new Vector2d(this.X + val.X, this.Y + val.Y);
             }
@@ -604,7 +624,7 @@ module EndGate {
         * Returns a Vector2d that is the result of subtracting the X and Y of this Vector2d by the provided number.
         * @param val The number to subtract.
         */
-        public Subtract(val: number): Vector2d;        
+        public Subtract(val: number): Vector2d;
         public Subtract(val: any): Vector2d {
             if (val._type === "Vector2d") {
                 return new Vector2d(this.X - val.X, this.Y - val.Y);
@@ -1908,7 +1928,7 @@ module EndGate.Bounds {
         /**
         * Returns a list of vertices that are the locations of each corner of the BoundingRectangle. Format: [TopLeft, TopRight, BotLeft, BotRight].
         */
-        public Vertices(): Vector2d[] {
+        public Corners(): Vector2d[] {
             return [this.TopLeft(), this.TopRight(), this.BotLeft(), this.BotRight()];
         }
 
@@ -1983,8 +2003,8 @@ module EndGate.Bounds {
             }
             else if (rectangle.Position.Distance(this.Position).Magnitude() <= rectangle.Size.Radius() + this.Size.Radius()) {// Check if we're somewhat close to the rectangle ect that we might be colliding with
                 var axisList: Vector2d[] = [this.TopRight().Subtract(this.TopLeft()), this.TopRight().Subtract(this.BotRight()), rectangle.TopLeft().Subtract(rectangle.BotLeft()), rectangle.TopLeft().Subtract(rectangle.TopRight())];
-                var myVertices = this.Vertices();
-                var theirVertices = rectangle.Vertices();
+                var myVertices = this.Corners();
+                var theirVertices = rectangle.Corners();
 
                 for (var i: number = 0; i < axisList.length; i++) {
                     var axi = axisList[i];
@@ -6296,7 +6316,6 @@ module EndGate.Map {
 
 }
 /* EndGateAPI.ts */
-
 
 
 
