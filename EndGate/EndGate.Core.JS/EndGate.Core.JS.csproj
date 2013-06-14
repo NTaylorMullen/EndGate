@@ -58,6 +58,10 @@
   <ItemGroup>
     <CodeAnalysisDictionary Include="EndGateAPI.ts" />
     <CodeAnalysisDictionary Include="Assets\Sizes\Size2d.ts" />
+    <TypeScriptCompile Include="Assets\Matrixes\Matrix2x2.ts" />
+    <Content Include="Assets\Matrixes\Matrix2x2.js">
+      <DependentUpon>Matrix2x2.ts</DependentUpon>
+    </Content>
     <Content Include="Assets\Sizes\Size2d.js">
       <DependentUpon>Size2d.ts</DependentUpon>
     </Content>

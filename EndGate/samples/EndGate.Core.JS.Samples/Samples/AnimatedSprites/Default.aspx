@@ -17,12 +17,12 @@
     <div class="page-header">
         <h2>Animated Sprites</h2>
         <p>Demonstrates how to animate sprites with sprite sheets.</p>
-    </div>    
+    </div>
 
     <p class="row ">Move your mouse around in the black area and click to see animated images.  Sprite sheets: <a href="images/electric_pulse.png" target="_blank">Electricity</a>, <a href="images/fire_explosion.png" target="_blank">Fire</a></p>
 
-    <div class="row">        
-        <div id="gameHolder" class="form-vertical well" style="height:400px;">
+    <div class="row">
+        <div id="gameHolder" class="form-vertical well" style="height: 400px;">
         </div>
     </div>
 

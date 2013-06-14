@@ -3249,3 +3249,111 @@ var EndGate;
     var Map = EndGate.Map;
 })(EndGate || (EndGate = {}));
 var eg = EndGate;
+var EndGate;
+(function (EndGate) {
+    var Matrix2x2 = (function () {
+        function Matrix2x2(topLeft, topRight, botLeft, botRight) {
+            if (typeof topLeft === "undefined") { topLeft = 0; }
+            if (typeof topRight === "undefined") { topRight = 0; }
+            if (typeof botLeft === "undefined") { botLeft = 0; }
+            if (typeof botRight === "undefined") { botRight = 0; }
+            this._type = "Matrix2x2";
+            this.Values = [
+                [
+                    topLeft, 
+                    topRight
+                ], 
+                [
+                    botLeft, 
+                    botRight
+                ]
+            ];
+        }
+        Matrix2x2.prototype.Apply = function (action) {
+            this.Values[0][0] = action(this.Values[0][0]);
+            this.Values[0][1] = action(this.Values[0][1]);
+            this.Values[1][0] = action(this.Values[1][0]);
+            this.Values[1][1] = action(this.Values[1][1]);
+        };
+        Matrix2x2.prototype.Trigger = function (action) {
+            action(this.Values[0][0]);
+            action(this.Values[0][1]);
+            action(this.Values[1][0]);
+            action(this.Values[1][1]);
+        };
+        Matrix2x2.prototype.Add = function (val) {
+            if(val._type === "Matrix2x2") {
+                return new Matrix2x2(this.Values[0][0] + val.Values[0][0], this.Values[0][1] + val.Values[0][1], this.Values[1][0] + val.Values[1][0], this.Values[1][1] + val.Values[1][1]);
+            } else {
+                return new Matrix2x2(this.Values[0][0] + val, this.Values[0][1] + val, this.Values[1][0] + val, this.Values[1][1] + val);
+            }
+        };
+        Matrix2x2.prototype.Multiply = function (val) {
+            if(val._type === "Matrix2x2") {
+                return new Matrix2x2(this.Values[0][0] * val.Values[0][0] + this.Values[0][1] * val.Values[1][0], this.Values[0][0] * val.Values[0][1] + this.Values[0][1] * val.Values[1][1], this.Values[1][0] * val.Values[0][0] + this.Values[1][1] * val.Values[1][0], this.Values[1][0] * val.Values[0][1] + this.Values[1][1] * val.Values[1][1]);
+            } else {
+                return new Matrix2x2(this.Values[0][0] * val, this.Values[0][1] * val, this.Values[1][0] * val, this.Values[1][1] * val);
+            }
+        };
+        Matrix2x2.prototype.Subtract = function (val) {
+            if(val._type === "Matrix2x2") {
+                return new Matrix2x2(this.Values[0][0] - val.Values[0][0], this.Values[0][1] - val.Values[0][1], this.Values[1][0] - val.Values[1][0], this.Values[1][1] - val.Values[1][1]);
+            } else {
+                return new Matrix2x2(this.Values[0][0] - val, this.Values[0][1] - val, this.Values[1][0] - val, this.Values[1][1] - val);
+            }
+        };
+        Matrix2x2.prototype.SubtractFrom = function (val) {
+            if(val._type === "Matrix2x2") {
+                return new Matrix2x2(val.Values[0][0] - this.Values[0][0], val.Values[0][1] - this.Values[0][1], val.Values[1][0] - this.Values[1][0], val.Values[1][1] - this.Values[1][1]);
+            } else {
+                return new Matrix2x2(val - this.Values[0][0], val - this.Values[0][1], val - this.Values[1][0], val - this.Values[1][1]);
+            }
+        };
+        Matrix2x2.prototype.Divide = function (val) {
+            if(val._type === "Matrix2x2") {
+                return new Matrix2x2(this.Values[0][0] / val.Values[0][0], this.Values[0][1] / val.Values[0][1], this.Values[1][0] / val.Values[1][0], this.Values[1][1] / val.Values[1][1]);
+            } else {
+                return new Matrix2x2(this.Values[0][0] / val, this.Values[0][1] / val, this.Values[1][0] / val, this.Values[1][1] / val);
+            }
+        };
+        Matrix2x2.prototype.DivideFrom = function (val) {
+            if(val._type === "Matrix2x2") {
+                return new Matrix2x2(val.Values[0][0] / this.Values[0][0], val.Values[0][1] / this.Values[0][1], val.Values[1][0] / this.Values[1][0], val.Values[1][1] / this.Values[1][1]);
+            } else {
+                return new Matrix2x2(val / this.Values[0][0], val / this.Values[0][1], val / this.Values[1][0], val / this.Values[1][1]);
+            }
+        };
+        Matrix2x2.prototype.Transform = function (vector) {
+            return new EndGate.Vector2d(this.Values[0][0] * vector.X + this.Values[0][1] * vector.Y, this.Values[1][0] * vector.X + this.Values[1][1] * vector.Y);
+        };
+        Matrix2x2.prototype.Transpose = function () {
+            return new Matrix2x2(this.Values[0][0], this.Values[1][0], this.Values[0][1], this.Values[1][1]);
+        };
+        Matrix2x2.prototype.Determinant = function () {
+            return this.Values[0][0] * this.Values[1][1] - this.Values[0][1] * this.Values[1][0];
+        };
+        Matrix2x2.prototype.Inverse = function () {
+            return new Matrix2x2(this.Values[1][1], -this.Values[0][1], -this.Values[1][0], this.Values[0][0]).Multiply(1 / this.Determinant());
+        };
+        Matrix2x2.prototype.Clone = function () {
+            return new Matrix2x2(this.Values[0][0], this.Values[0][1], this.Values[1][0], this.Values[1][1]);
+        };
+        Matrix2x2.prototype.Equivalent = function (matrix) {
+            return this.Values[0][0] === matrix.Values[0][0] && this.Values[0][1] === matrix.Values[0][1] && this.Values[1][0] === matrix.Values[1][0] && this.Values[1][1] === matrix.Values[1][1];
+        };
+        Matrix2x2.prototype.toString = function () {
+            return this.Values[0].toString() + " " + this.Values[1].toString();
+        };
+        Matrix2x2.Scale = function Scale(vector) {
+            return new Matrix2x2(vector.X, 0, 0, vector.Y);
+        };
+        Matrix2x2.Zero = function Zero() {
+            return new Matrix2x2();
+        };
+        Matrix2x2.Identity = function Identity() {
+            return new Matrix2x2(1, 0, 0, 1);
+        };
+        return Matrix2x2;
+    })();
+    EndGate.Matrix2x2 = Matrix2x2;    
+})(EndGate || (EndGate = {}));
