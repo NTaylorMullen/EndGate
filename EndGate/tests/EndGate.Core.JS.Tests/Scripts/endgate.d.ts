@@ -3144,7 +3144,7 @@ module EndGate {
         public Clone(): Matrix2x2;
         /**
         * Determines whether this Matrix2x2 has the same row and column values as the provided Matrix2x2.
-        * @param vector The Matrix2x2 to compare the current Matrix2x2 to.
+        * @param matrix The Matrix2x2 to compare the current Matrix2x2 to.
         */
         public Equivalent(matrix: Matrix2x2): bool;
         /**
