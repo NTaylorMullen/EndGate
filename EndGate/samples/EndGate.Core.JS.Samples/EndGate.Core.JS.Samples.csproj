@@ -146,6 +146,32 @@
     <Content Include="CodeMirror\codemirror.css" />
     <Content Include="CodeMirror\codemirror.js" />
     <Content Include="CodeMirror\javascript.js" />
+    <Content Include="Content\Samples\AnimatedSprites\thumbnail.png" />
+    <Content Include="Content\Samples\AudioHandling\thumbnail.png" />
+    <Content Include="Content\Samples\Camera\thumbnail.png" />
+    <Content Include="Content\Samples\CollisionDetection\thumbnail.png" />
+    <Content Include="Content\Samples\CollisionInspector\thumbnail.png" />
+    <Content Include="Content\Samples\InputControllers\thumbnail.png" />
+    <Content Include="Content\Samples\KeyboardInput\thumbnail.png" />
+    <Content Include="Content\Samples\Layering\thumbnail.png" />
+    <Content Include="Content\Samples\MapCreator\thumbnail.png" />
+    <Content Include="Content\Samples\MouseInput\thumbnail.png" />
+    <Content Include="Content\Samples\MovementControllers\thumbnail.png" />
+    <Content Include="Content\Samples\RawRPG\thumbnail.png" />
+    <Content Include="Content\Samples\Shapes\thumbnail.png" />
+    <Content Include="Content\Samples\Sprites\thumbnail.png" />
+    <Content Include="Content\Samples\Text\thumbnail.png" />
+    <Content Include="Styles\boxrow.css">
+      <DependentUpon>boxrow.less</DependentUpon>
+    </Content>
+    <Content Include="Styles\boxrow.less" />
+    <Content Include="Styles\boxrow.min.css">
+      <DependentUpon>boxrow.less</DependentUpon>
+    </Content>
+    <Content Include="Styles\utilities.css">
+      <DependentUpon>utilities.less</DependentUpon>
+    </Content>
+    <Content Include="Styles\utilities.less" />
     <TypeScriptCompile Include="Content\Samples\Text\ColorPicker.ts" />
     <Content Include="Content\Samples\Text\ColorPicker.js">
       <DependentUpon>ColorPicker.ts</DependentUpon>
@@ -168,6 +194,9 @@
     </Content>
     <Content Include="Images\attribution.txt" />
     <Content Include="Images\combined-tiles.png" />
+    <Content Include="Styles\utilities.min.css">
+      <DependentUpon>utilities.less</DependentUpon>
+    </Content>
     <Content Include="Views\Samples\Text.cshtml" />
     <TypeScriptCompile Include="Content\Samples\Sprites\CustomSlider.ts" />
     <Content Include="Content\Samples\Sprites\CustomSlider.js">
@@ -531,7 +560,6 @@
     </Content>
     <Content Include="Scripts\endgate.d.ts" />
     <Content Include="Scripts\endgate.js" />
-    <Content Include="Content\Samples\AnimatedSprites\images\Thumbs.db" />
     <Content Include="Content\Samples\AnimatedSprites\Animation.min.js.map">
       <DependentUpon>Animation.js</DependentUpon>
     </Content>

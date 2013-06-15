@@ -9,115 +9,238 @@
             display: none;
         }
     </style>
+
+    @Styles.Render("~/Styles/boxrow.css")
 }
 
-<div class="hero-unit">
-    <h1>EndGate Samples</h1>
-    <p>Powered by TypeScript to build elegant games.</p>
+<div class="page-header section_header">
+    <h3>Samples</h3>
+    <p>The below samples are built to showcase some features the EndGate framework provides.  If you'd like to submit a helpful sample shoot an email over to <a href="mailto:contact@endgate.net" target="_blank">contact@endgate.net</a> or submit a Pull Request on <a href="https://github.com/NTaylorMullen/EndGate" target="_blank">EndGate's GitHub page</a>.</p>
+    <p><em>Note:</em> At the top of each sample will be directions on how to interact with it and at the bottom of each sample will be the code used to create it.</p>
 </div>
 
-<div class="page-header">
-    <h2>Samples</h2>
-</div>
-
-<!-- Samples -->
-<div class="row">
+<div class="row boxrow">
     <div class="span4">
-        <h3>Shapes</h3>
-        <p>Demonstrates how to use the shapes graphics library.</p>
-        <p><a class="btn" href="@Url.RouteUrl("Default", new {controller="Samples", action="Shapes"})">View sample &raquo;</a></p>
+        <div class="img">
+            <a href="@Url.RouteUrl("Default", new { controller = "Samples", action = "Shapes" })">
+                <img src="~/Content/Samples/Shapes/thumbnail.png" />
+            </a>
+        </div>
+        <div class="text">
+            <h5><a href="@Url.RouteUrl("Default", new { controller = "Samples", action = "Shapes" })">Shapes</a></h5>
+            <p>Demonstrates how to use the shapes graphics library.</p>
+        </div>
+        <div class="author_box">
+            <h6>N. Taylor Mullen</h6>
+        </div>
     </div>
-
     <div class="span4">
-        <h3>Text</h3>
-        <p>Demonstrates how to use the Text2d object within the graphics library.</p>
-        <p><a class="btn" href="@Url.RouteUrl("Default", new {controller="Samples", action="Text"})">View sample &raquo;</a></p>
+        <div class="img">
+            <a href="@Url.RouteUrl("Default", new { controller = "Samples", action = "Text" })">
+                <img src="~/Content/Samples/Text/thumbnail.png" />
+            </a>
+        </div>
+        <div class="text">
+            <h5><a href="@Url.RouteUrl("Default", new { controller = "Samples", action = "Text" })">Text</a></h5>
+            <p>Demonstrates how to use the Text2d object within the graphics library.</p>
+        </div>
+        <div class="author_box">
+            <h6>N. Taylor Mullen</h6>
+        </div>
     </div>
-
-    <div class="span4">
-        <h3>Sprites</h3>
-        <p>Demonstrates how to use the sprites (images) graphics library.</p>
-        <p><a class="btn" href="@Url.RouteUrl("Default", new {controller="Samples", action="Sprites"})">View sample &raquo;</a></p>
-    </div>
-</div>
-
-<div class="row">
-    <div class="span4">
-        <h3>Mouse Input</h3>
-        <p>Demonstrates how to use a games mouse input handler.</p>
-        <p><a class="btn" href="@Url.RouteUrl("Default", new {controller="Samples", action="MouseInput"})">View sample &raquo;</a></p>
-    </div>
-
-    <div class="span4">
-        <h3>Collision Detection</h3>
-        <p>Demonstrates how to use the client to detect collisions.</p>
-        <p><a class="btn" href="@Url.RouteUrl("Default", new {controller="Samples", action="CollisionDetection"})">View sample &raquo;</a></p>
-    </div>
-
-    <div class="span4">
-        <h3>Collision Inspector</h3>
-        <p>Allows the dragging and rotating of shapes to inspect collisions closely.</p>
-        <p><a class="btn" href="@Url.RouteUrl("Default", new {controller="Samples", action="CollisionInspector"})">View sample &raquo;</a></p>
-    </div>
-</div>
-
-<div class="row">
-    <div class="span4">
-        <h3>Keyboard Input</h3>
-        <p>Demonstrates how to use a games keyboard input handler.</p>
-        <p><a class="btn" href="@Url.RouteUrl("Default", new {controller="Samples", action="KeyboardInput"})">View sample &raquo;</a></p>
-    </div>
-
-    <div class="span4">
-        <h3>Movement Controllers</h3>
-        <p>Demonstrates how to use Movement Controllers to make moving objects easy.</p>
-        <p><a class="btn" href="@Url.RouteUrl("Default", new {controller="Samples", action="MovementControllers"})">View sample &raquo;</a></p>
-    </div>
-
-    <div class="span4">
-        <h3>Input Controllers</h3>
-        <p>Demonstrates how to use input controllers to make moving controlling objects dead simple.</p>
-        <p><a class="btn" href="@Url.RouteUrl("Default", new {controller="Samples", action="InputControllers"})">View sample &raquo;</a></p>
+    <div class="span4 last">
+        <div class="img">
+            <a href="@Url.RouteUrl("Default", new { controller = "Samples", action = "Sprites" })">
+                <img src="~/Content/Samples/Sprites/thumbnail.png" />
+            </a>
+        </div>
+        <div class="text">
+            <h5><a href="@Url.RouteUrl("Default", new { controller = "Samples", action = "Sprites" })">Sprites</a></h5>
+            <p>Demonstrates how to use the sprites (images) graphics library.</p>
+        </div>
+        <div class="author_box">
+            <h6>N. Taylor Mullen</h6>
+        </div>
     </div>
 </div>
 
-<div class="row">
+<div class="row boxrow">
     <div class="span4">
-        <h3>Layering</h3>
-        <p>Demonstrates how to control the layering of graphics.</p>
-        <p><a class="btn" href="@Url.RouteUrl("Default", new {controller="Samples", action="Layering"})">View sample &raquo;</a></p>
+        <div class="img">
+            <a href="@Url.RouteUrl("Default", new { controller = "Samples", action = "MouseInput" })">
+                <img src="~/Content/Samples/MouseInput/thumbnail.png" />
+            </a>
+        </div>
+        <div class="text">
+            <h5><a href="@Url.RouteUrl("Default", new { controller = "Samples", action = "MouseInput" })">Mouse Input</a></h5>
+            <p>Demonstrates how to use a games mouse input handler.</p>
+        </div>
+        <div class="author_box">
+            <h6>N. Taylor Mullen</h6>
+        </div>
     </div>
-
     <div class="span4">
-        <h3>Animated Sprites</h3>
-        <p>Demonstrates how to animate sprites with sprite sheets.</p>
-        <p><a class="btn" href="@Url.RouteUrl("Default", new {controller="Samples", action="AnimatedSprites"})">View sample &raquo;</a></p>
+        <div class="img">
+            <a href="@Url.RouteUrl("Default", new { controller = "Samples", action = "CollisionDetection" })">
+                <img src="~/Content/Samples/CollisionDetection/thumbnail.png" />
+            </a>
+        </div>
+        <div class="text">
+            <h5><a href="@Url.RouteUrl("Default", new { controller = "Samples", action = "CollisionDetection" })">Collision Detection</a></h5>
+            <p>Demonstrates how to use the client to detect collisions.</p>
+        </div>
+        <div class="author_box">
+            <h6>N. Taylor Mullen</h6>
+        </div>
     </div>
-
-    <div class="span4">
-        <h3>Audio Handling</h3>
-        <p>Demonstrates how to play audio.</p>
-        <p><a class="btn" href="@Url.RouteUrl("Default", new {controller="Samples", action="AudioHandling"})">View sample &raquo;</a></p>
-    </div>        
+    <div class="span4 last">
+        <div class="img">
+            <a href="@Url.RouteUrl("Default", new { controller = "Samples", action = "CollisionInspector" })">
+                <img src="~/Content/Samples/CollisionInspector/thumbnail.png" />
+            </a>
+        </div>
+        <div class="text">
+            <h5><a href="@Url.RouteUrl("Default", new { controller = "Samples", action = "CollisionInspector" })">Collision Inspector</a></h5>
+            <p>Allows the dragging and rotating of shapes to inspect collisions closely.</p>
+        </div>
+        <div class="author_box">
+            <h6>N. Taylor Mullen</h6>
+        </div>
+    </div>
 </div>
 
-<div class="row">
+<div class="row boxrow">
     <div class="span4">
-        <h3>Camera</h3>
-        <p>Demonstrates how to use the camera's movement and zooming capabilities.</p>
-        <p><a class="btn" href="@Url.RouteUrl("Default", new {controller="Samples", action="Camera"})">View sample &raquo;</a></p>
+        <div class="img">
+            <a href="@Url.RouteUrl("Default", new { controller = "Samples", action = "KeyboardInput" })">
+                <img src="~/Content/Samples/KeyboardInput/thumbnail.png" />
+            </a>
+        </div>
+        <div class="text">
+            <h5><a href="@Url.RouteUrl("Default", new { controller = "Samples", action = "KeyboardInput" })">Keyboard Input</a></h5>
+            <p>Demonstrates how to use a games keyboard input handler.</p>
+        </div>
+        <div class="author_box">
+            <h6>N. Taylor Mullen</h6>
+        </div>
     </div>
-
     <div class="span4">
-        <h3>Map Creator</h3>
-        <p>Demonstrates a accumulation of EndGate assets to help create SquareTileMaps visually.</p>
-        <p><a class="btn" href="@Url.RouteUrl("Default", new {controller="Samples", action="MapCreator"})">View sample &raquo;</a></p>
+        <div class="img">
+            <a href="@Url.RouteUrl("Default", new { controller = "Samples", action = "MovementControllers" })">
+                <img src="~/Content/Samples/MovementControllers/thumbnail.png" />
+            </a>
+        </div>
+        <div class="text">
+            <h5><a href="@Url.RouteUrl("Default", new { controller = "Samples", action = "MovementControllers" })">Movement Controllers</a></h5>
+            <p>Demonstrates how to use Movement Controllers to make moving objects easy.</p>
+        </div>
+        <div class="author_box">
+            <h6>N. Taylor Mullen</h6>
+        </div>
     </div>
+    <div class="span4 last">
+        <div class="img">
+            <a href="@Url.RouteUrl("Default", new { controller = "Samples", action = "InputControllers" })">
+                <img src="~/Content/Samples/InputControllers/thumbnail.png" />
+            </a>
+        </div>
+        <div class="text">
+            <h5><a href="@Url.RouteUrl("Default", new { controller = "Samples", action = "InputControllers" })">Input Controllers</a></h5>
+            <p>Demonstrates how to use input controllers to make moving controlling objects dead simple.</p>
+        </div>
+        <div class="author_box">
+            <h6>N. Taylor Mullen</h6>
+        </div>
+    </div>
+</div>
 
+<div class="row boxrow">
     <div class="span4">
-        <h3>Raw RPG</h3>
-        <p>Demonstrates a basic RPG setup with an environment, character, controllers etc.</p>
-        <p><a class="btn" href="@Url.RouteUrl("Default", new {controller="Samples", action="RawRPG"})">View sample &raquo;</a></p>
+        <div class="img">
+            <a href="@Url.RouteUrl("Default", new { controller = "Samples", action = "AnimatedSprites" })">
+                <img src="~/Content/Samples/AnimatedSprites/thumbnail.png" />
+            </a>
+        </div>
+        <div class="text">
+            <h5><a href="@Url.RouteUrl("Default", new { controller = "Samples", action = "AnimatedSprites" })">Animated Sprites</a></h5>
+            <p>Demonstrates how to animate sprites with sprite sheets.</p>
+        </div>
+        <div class="author_box">
+            <h6>N. Taylor Mullen</h6>
+        </div>
+    </div>
+    <div class="span4">
+        <div class="img">
+            <a href="@Url.RouteUrl("Default", new { controller = "Samples", action = "Layering" })">
+                <img src="~/Content/Samples/Layering/thumbnail.png" />
+            </a>
+        </div>
+        <div class="text">
+            <h5><a href="@Url.RouteUrl("Default", new { controller = "Samples", action = "Layering" })">Layering</a></h5>
+            <p>Demonstrates how to control the layering of graphics.</p>
+        </div>
+        <div class="author_box">
+            <h6>N. Taylor Mullen</h6>
+        </div>
+    </div>
+    <div class="span4 last">
+        <div class="img">
+            <a href="@Url.RouteUrl("Default", new { controller = "Samples", action = "AudioHandling" })">
+                <img src="~/Content/Samples/AudioHandling/thumbnail.png" />
+            </a>
+        </div>
+        <div class="text">
+            <h5><a href="@Url.RouteUrl("Default", new { controller = "Samples", action = "AudioHandling" })">Audio Handling</a></h5>
+            <p>Demonstrates how to play audio.</p>
+        </div>
+        <div class="author_box">
+            <h6>N. Taylor Mullen</h6>
+        </div>
+    </div>
+</div>
+
+<div class="row boxrow">
+    <div class="span4">
+        <div class="img">
+            <a href="@Url.RouteUrl("Default", new { controller = "Samples", action = "MapCreator" })">
+                <img src="~/Content/Samples/MapCreator/thumbnail.png" />
+            </a>
+        </div>
+        <div class="text">
+            <h5><a href="@Url.RouteUrl("Default", new { controller = "Samples", action = "MapCreator" })">Map Creator</a></h5>
+            <p>Demonstrates a accumulation of EndGate assets to help create SquareTileMaps visually.</p>
+        </div>
+        <div class="author_box">
+            <h6>N. Taylor Mullen</h6>
+        </div>
+    </div>
+    <div class="span4">
+        <div class="img">
+            <a href="@Url.RouteUrl("Default", new { controller = "Samples", action = "Camera" })">
+                <img src="~/Content/Samples/Camera/thumbnail.png" />
+            </a>
+        </div>
+        <div class="text">
+            <h5><a href="@Url.RouteUrl("Default", new { controller = "Samples", action = "Camera" })">Camera</a></h5>
+            <p>Demonstrates how to use the camera's movement and zooming capabilities.</p>
+        </div>
+        <div class="author_box">
+            <h6>N. Taylor Mullen</h6>
+        </div>
+    </div>
+    <div class="span4 last">
+        <div class="img">
+            <a href="@Url.RouteUrl("Default", new { controller = "Samples", action = "RawRPG" })">
+                <img src="~/Content/Samples/RawRPG/thumbnail.png" />
+            </a>
+        </div>
+        <div class="text">
+            <h5><a href="@Url.RouteUrl("Default", new { controller = "Samples", action = "RawRPG" })">Raw RPG</a></h5>
+            <p>Demonstrates a basic RPG setup with an environment, character, controllers etc.</p>
+        </div>
+        <div class="author_box">
+            <h6>N. Taylor Mullen</h6>
+        </div>
     </div>
 </div>
 

@@ -1,0 +1,61 @@
+﻿@import "utilities.less";
+
+.boxrow {
+    .span4 {
+        background: white;
+        margin-left: 0;
+        margin-right: 20px;
+        margin-bottom: 20px;
+        .borderRadius(4px);
+        .boxShadow(0px 0px 8px 0px #E0E0E0);
+
+        .img {
+            position: relative;
+        }
+
+        .text {
+            margin: 18px auto 0;
+            width: 83%;
+
+            h5 {
+                margin: 0 0 8px 0;
+                font-size: 20px;
+                line-height:23px;
+
+                a {
+                    color: #333;
+                }
+            }
+        }
+
+        .author_box {
+            margin: 12px auto 20px;
+            border-top: 1px solid #ededed;
+            overflow: hidden;
+            text-align: left;
+            width: 85%;
+            padding-top: 12px;
+
+            h6 {
+                margin: 0 0 3px 0;
+                font-size: 13px;
+                line-height: 15px;
+                font-style: italic;
+                font-weight: normal;
+                color: #b2b2b2;
+            }
+        }
+
+        &.last {
+            margin-right: 0;
+        }
+
+        &:hover {
+            .boxShadow(0px 1px 5px 1px rgb(216, 216, 216));
+
+            .text h5 a {
+                color: #1189D9;
+            }
+        }
+    }
+}
