@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.SampleName = "Audio Handling";
+    Layout = "~/Views/Shared/_SamplesLayout.cshtml";
+}
+
+<div class="page-header">
+    <h2>@ViewBag.SampleName</h2>
+    <p>Demonstrates how to play audio.</p>
+</div>    
+
+<p class="row ">You should hear a fire crackling noise on the start of the page and then clicking on the game area will play a separate noise.</p>
+
+<div class="row">        
+    <div id="gameHolder" class="form-vertical well" style="height:400px;">
+    </div>
+</div>
+<p class="row">Image <a href="~/Content/Samples/AudioHandling/images/attribution.txt" target="_blank">attribution</a>.  Sound <a href="~/Content/Samples/AnimatedSprites/sounds/attribution.txt" target="_blank">attribution</a>.</p>
+    
+@section scripts {
+    <script data-typescript="true" src="~/Content/Samples/AudioHandling/Animation.js"></script>
+    <script data-typescript="true" src="~/Content/Samples/AudioHandling/BurningFlame.js"></script>
+    <script data-typescript="true" src="~/Content/Samples/AudioHandling/SmokePoof.js"></script>
+    <script data-typescript="true" src="~/Content/Samples/AudioHandling/SmokePoofManager.js"></script>
+    <script data-typescript="true" src="~/Content/Samples/AudioHandling/Game.js"></script>
+    <script data-typescript="true" src="~/Content/Samples/AudioHandling/Main.js"></script>
+}

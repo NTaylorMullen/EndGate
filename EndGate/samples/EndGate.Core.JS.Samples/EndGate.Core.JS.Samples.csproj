@@ -7,13 +7,14 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{18E0BCCA-FA90-41A4-A6C4-073D30071FD9}</ProjectGuid>
-    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <ProjectGuid>{6FB8F9C4-0785-49E3-A77A-930789F61281}</ProjectGuid>
+    <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EndGate.Core.JS.Samples</RootNamespace>
     <AssemblyName>EndGate.Core.JS.Samples</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -52,32 +53,160 @@
     <TypeScriptEnableCompileOnSave>true</TypeScriptEnableCompileOnSave>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Antlr3.Runtime">
+      <HintPath>..\..\packages\WebGrease.1.1.0\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\..\packages\Microsoft.AspNet.Web.Optimization.1.0.0\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Mvc.FixedDisplayModes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.FixedDisplayModes.1.0.0\lib\net40\Microsoft.Web.Mvc.FixedDisplayModes.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.4.0.20710.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Core.4.0.20710.0\lib\net40\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.20710.0\lib\net40\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.4.0.20710.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.2.0.20715.0\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <HintPath>..\..\packages\WebGrease.1.1.0\lib\WebGrease.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Bootstrap\bootstrap.min.css" />
-    <Content Include="Bootstrap\bootstrap.min.js" />
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="Controllers\SamplesController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Content Include="Bootstrap\bootstrap.css" />
+    <Content Include="Bootstrap\bootstrap.js" />
     <Content Include="CodeMirror\codeloader.js" />
     <Content Include="CodeMirror\codemirror.css" />
     <Content Include="CodeMirror\codemirror.js" />
     <Content Include="CodeMirror\javascript.js" />
-    <Content Include="CodeMirror\solarized.css" />
+    <TypeScriptCompile Include="Content\Samples\Text\ColorPicker.ts" />
+    <Content Include="Content\Samples\Text\ColorPicker.js">
+      <DependentUpon>ColorPicker.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Content\Samples\Text\CustomSlider.ts" />
+    <Content Include="Content\Samples\Text\CustomSlider.js">
+      <DependentUpon>CustomSlider.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Content\Samples\Text\Game.ts" />
+    <Content Include="Content\Samples\Text\Game.js">
+      <DependentUpon>Game.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Content\Samples\Text\Main.ts" />
+    <Content Include="Content\Samples\Text\Main.js">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Content\Samples\Text\TextAnimator.ts" />
+    <Content Include="Content\Samples\Text\TextAnimator.js">
+      <DependentUpon>TextAnimator.ts</DependentUpon>
+    </Content>
+    <Content Include="Images\attribution.txt" />
+    <Content Include="Images\combined-tiles.png" />
+    <Content Include="Views\Samples\Text.cshtml" />
+    <TypeScriptCompile Include="Content\Samples\Sprites\CustomSlider.ts" />
+    <Content Include="Content\Samples\Sprites\CustomSlider.js">
+      <DependentUpon>CustomSlider.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Content\Samples\Sprites\Game.ts" />
+    <Content Include="Content\Samples\Sprites\Game.js">
+      <DependentUpon>Game.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\Sprites\html5-logo.png" />
+    <TypeScriptCompile Include="Content\Samples\Sprites\Main.ts" />
+    <Content Include="Content\Samples\Sprites\Main.js">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Content\Samples\Sprites\SpriteAnimator.ts" />
+    <Content Include="Content\Samples\Sprites\SpriteAnimator.js">
+      <DependentUpon>SpriteAnimator.ts</DependentUpon>
+    </Content>
+    <Content Include="Views\Samples\Sprites.cshtml" />
+    <TypeScriptCompile Include="Content\Samples\Shapes\ColorPicker.ts" />
+    <Content Include="Content\Samples\Shapes\ColorPicker.js">
+      <DependentUpon>ColorPicker.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Content\Samples\Shapes\CustomSlider.ts" />
+    <Content Include="Content\Samples\Shapes\CustomSlider.js">
+      <DependentUpon>CustomSlider.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Content\Samples\Shapes\Game.ts" />
+    <Content Include="Content\Samples\Shapes\Game.js">
+      <DependentUpon>Game.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Content\Samples\Shapes\Main.ts" />
+    <Content Include="Content\Samples\Shapes\Main.js">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Content\Samples\Shapes\ShapeAnimator.ts" />
+    <Content Include="Content\Samples\Shapes\ShapeAnimator.js">
+      <DependentUpon>ShapeAnimator.ts</DependentUpon>
+    </Content>
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -140,687 +269,521 @@
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tooltip.min.css" />
-    <Content Include="Default.aspx" />
-    <Content Include="Images\attribution.txt" />
-    <Content Include="Images\combined-tiles.png" />
-    <Content Include="packages.config" />
-    <Content Include="EndGate.Core.JS.Samples.Master" />
-    <TypeScriptCompile Include="Samples\AnimatedSprites\Animation.ts" />
-    <Content Include="Samples\AnimatedSprites\Animation.js">
-      <DependentUpon>Animation.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\AnimatedSprites\Default.aspx" />
-    <TypeScriptCompile Include="Samples\AnimatedSprites\FireExplosion.ts" />
-    <TypeScriptCompile Include="Samples\AnimatedSprites\ElectricPulse.ts" />
-    <Content Include="Samples\AnimatedSprites\ElectricPulse.js">
-      <DependentUpon>ElectricPulse.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Samples\AnimatedSprites\ElectricPulseManager.ts" />
-    <Content Include="Samples\AnimatedSprites\ElectricPulseManager.js">
-      <DependentUpon>ElectricPulseManager.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\AnimatedSprites\FireExplosion.js">
-      <DependentUpon>FireExplosion.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Samples\AnimatedSprites\FireExplosionManager.ts" />
-    <Content Include="Samples\AnimatedSprites\FireExplosionManager.js">
-      <DependentUpon>FireExplosionManager.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Samples\AnimatedSprites\Game.ts" />
-    <Content Include="Samples\AnimatedSprites\Game.js">
+    <Content Include="Views\Samples\Shapes.cshtml" />
+    <TypeScriptCompile Include="Content\Samples\RawRPG\Game.ts" />
+    <Content Include="Content\Samples\RawRPG\Game.js">
       <DependentUpon>Game.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\AnimatedSprites\images\Thumbs.db" />
-    <TypeScriptCompile Include="Samples\AnimatedSprites\Main.ts" />
-    <Content Include="Samples\AnimatedSprites\Main.js">
-      <DependentUpon>Main.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Samples\AudioHandling\Animation.ts" />
-    <Content Include="Samples\AudioHandling\Animation.js">
-      <DependentUpon>Animation.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Samples\AudioHandling\BurningFlame.ts" />
-    <Content Include="Samples\AudioHandling\BurningFlame.js">
-      <DependentUpon>BurningFlame.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\AudioHandling\Default.aspx" />
-    <TypeScriptCompile Include="Samples\AudioHandling\Main.ts" />
-    <TypeScriptCompile Include="Samples\AudioHandling\Game.ts" />
-    <Content Include="Samples\AudioHandling\Game.js">
-      <DependentUpon>Game.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\AudioHandling\Main.js">
-      <DependentUpon>Main.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Samples\AudioHandling\SmokePoof.ts" />
-    <Content Include="Samples\AudioHandling\SmokePoof.js">
-      <DependentUpon>SmokePoof.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Samples\AudioHandling\SmokePoofManager.ts" />
-    <Content Include="Samples\AudioHandling\SmokePoofManager.js">
-      <DependentUpon>SmokePoofManager.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\AudioHandling\sounds\fireburning.ogg" />
-    <Content Include="Samples\AudioHandling\sounds\smokepoof.ogg" />
-    <Content Include="Samples\Camera\Default.aspx" />
-    <TypeScriptCompile Include="Samples\Camera\Main.ts" />
-    <TypeScriptCompile Include="Samples\Camera\Game.ts" />
-    <Content Include="Samples\Camera\Game.js">
-      <DependentUpon>Game.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\Camera\Main.js">
-      <DependentUpon>Main.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Samples\Camera\MovingDirection.ts" />
-    <Content Include="Samples\Camera\MovingDirection.js">
-      <DependentUpon>MovingDirection.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Samples\Camera\World.ts" />
-    <Content Include="Samples\Camera\World.js">
-      <DependentUpon>World.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\CollisionDetection\Default.aspx" />
-    <TypeScriptCompile Include="Samples\CollisionDetection\Main.ts" />
-    <TypeScriptCompile Include="Samples\CollisionDetection\Game.ts" />
-    <Content Include="Samples\CollisionDetection\Game.js">
-      <DependentUpon>Game.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\CollisionDetection\Main.js">
-      <DependentUpon>Main.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Samples\CollisionDetection\MovingShape.ts" />
-    <Content Include="Samples\CollisionDetection\MovingShape.js">
-      <DependentUpon>MovingShape.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Samples\CollisionInspector\CollidableShape.ts" />
-    <Content Include="Samples\CollisionInspector\CollidableShape.js">
-      <DependentUpon>CollidableShape.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\CollisionInspector\Default.aspx" />
-    <TypeScriptCompile Include="Samples\CollisionInspector\Main.ts" />
-    <TypeScriptCompile Include="Samples\CollisionInspector\Game.ts" />
-    <Content Include="Samples\CollisionInspector\Game.js">
-      <DependentUpon>Game.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\CollisionInspector\Main.js">
-      <DependentUpon>Main.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\InputControllers\Default.aspx" />
-    <TypeScriptCompile Include="Samples\InputControllers\Main.ts" />
-    <TypeScriptCompile Include="Samples\InputControllers\Game.ts" />
-    <Content Include="Samples\InputControllers\Game.js">
-      <DependentUpon>Game.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\InputControllers\Main.js">
-      <DependentUpon>Main.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Samples\KeyboardInput\CommandBinder.ts" />
-    <Content Include="Samples\KeyboardInput\CommandBinder.js">
-      <DependentUpon>CommandBinder.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Samples\KeyboardInput\CommandManager.ts" />
-    <Content Include="Samples\KeyboardInput\CommandManager.js">
-      <DependentUpon>CommandManager.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\KeyboardInput\Default.aspx" />
-    <TypeScriptCompile Include="Samples\KeyboardInput\Main.ts" />
-    <TypeScriptCompile Include="Samples\KeyboardInput\Game.ts" />
-    <Content Include="Samples\KeyboardInput\Game.js">
-      <DependentUpon>Game.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Samples\KeyboardInput\KeyboardStatusUpdater.ts" />
-    <Content Include="Samples\KeyboardInput\KeyboardStatusUpdater.js">
-      <DependentUpon>KeyboardStatusUpdater.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\KeyboardInput\Main.js">
-      <DependentUpon>Main.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\Layering\Default.aspx" />
-    <TypeScriptCompile Include="Samples\Layering\LayerController.ts" />
-    <TypeScriptCompile Include="Samples\Layering\Game.ts" />
-    <Content Include="Samples\Layering\Game.js">
-      <DependentUpon>Game.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\Layering\LayerController.js">
-      <DependentUpon>LayerController.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Samples\Layering\Main.ts" />
-    <Content Include="Samples\Layering\Main.js">
-      <DependentUpon>Main.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Samples\Layering\World.ts" />
-    <Content Include="Samples\Layering\World.js">
-      <DependentUpon>World.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\MapCreator\CameraDragController.js">
-      <DependentUpon>CameraDragController.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\MapCreator\CameraZoomController.js">
-      <DependentUpon>CameraZoomController.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\MapCreator\Default.aspx" />
-    <Content Include="Samples\MapCreator\GridEntry.js">
-      <DependentUpon>GridEntry.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Samples\MapCreator\LayerManager.ts" />
-    <Content Include="Samples\MapCreator\LayerManager.js">
-      <DependentUpon>LayerManager.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\MapCreator\Main.js">
-      <DependentUpon>Main.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\MapCreator\MapBuilder.js">
-      <DependentUpon>MapBuilder.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Samples\MapCreator\PersistenceManager.ts" />
-    <TypeScriptCompile Include="Samples\MapCreator\OutputHandler.ts" />
-    <Content Include="Samples\MapCreator\OutputHandler.js">
-      <DependentUpon>OutputHandler.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\MapCreator\PersistenceManager.js">
-      <DependentUpon>PersistenceManager.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\MapCreator\SetupManager.js">
-      <DependentUpon>SetupManager.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\MapCreator\SpriteSheetViewer.js">
-      <DependentUpon>SpriteSheetViewer.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\MapCreator\TileFiller.js">
-      <DependentUpon>TileFiller.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\MapCreator\TileHighlighter.js">
-      <DependentUpon>TileHighlighter.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\MapCreator\TileSelector.js">
-      <DependentUpon>TileSelector.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\MouseInput\Default.aspx" />
-    <TypeScriptCompile Include="Samples\MouseInput\Main.ts" />
-    <TypeScriptCompile Include="Samples\MouseInput\Game.ts" />
-    <Content Include="Samples\MouseInput\Game.js">
-      <DependentUpon>Game.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\MouseInput\Main.js">
-      <DependentUpon>Main.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\MovementControllers\Default.aspx" />
-    <TypeScriptCompile Include="Samples\MovementControllers\Main.ts" />
-    <TypeScriptCompile Include="Samples\MovementControllers\Game.ts" />
-    <Content Include="Samples\MovementControllers\Game.js">
-      <DependentUpon>Game.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\MovementControllers\Main.js">
-      <DependentUpon>Main.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\RawRPG\Default.aspx" />
-    <TypeScriptCompile Include="Samples\RawRPG\Game.ts" />
-    <Content Include="Samples\RawRPG\Game.js">
-      <DependentUpon>Game.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\RawRPG\Knight.js">
+    <Content Include="Content\Samples\RawRPG\images\attribution.txt" />
+    <Content Include="Content\Samples\RawRPG\images\golden_knight.png" />
+    <Content Include="Content\Samples\RawRPG\images\wood_tileset_3.png" />
+    <TypeScriptCompile Include="Content\Samples\RawRPG\Knight.ts" />
+    <Content Include="Content\Samples\RawRPG\Knight.js">
       <DependentUpon>Knight.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\RawRPG\KnightAnimationHandler.js">
+    <TypeScriptCompile Include="Content\Samples\RawRPG\KnightAnimationHandler.ts" />
+    <Content Include="Content\Samples\RawRPG\KnightAnimationHandler.js">
       <DependentUpon>KnightAnimationHandler.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="Samples\RawRPG\LoadMapHandler.ts" />
-    <Content Include="Samples\RawRPG\LoadMapHandler.js">
+    <TypeScriptCompile Include="Content\Samples\RawRPG\LoadMapHandler.ts" />
+    <Content Include="Content\Samples\RawRPG\LoadMapHandler.js">
       <DependentUpon>LoadMapHandler.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\RawRPG\Main.js">
+    <TypeScriptCompile Include="Content\Samples\RawRPG\Main.ts" />
+    <Content Include="Content\Samples\RawRPG\Main.js">
       <DependentUpon>Main.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\RawRPG\Player.js">
+    <TypeScriptCompile Include="Content\Samples\RawRPG\Player.ts" />
+    <Content Include="Content\Samples\RawRPG\Player.js">
       <DependentUpon>Player.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="Samples\Shapes\ColorPicker.ts" />
-    <Content Include="Samples\Shapes\ColorPicker.js">
-      <DependentUpon>ColorPicker.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Samples\Shapes\CustomSlider.ts" />
-    <Content Include="Samples\Shapes\CustomSlider.js">
-      <DependentUpon>CustomSlider.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\Shapes\Default.aspx" />
-    <TypeScriptCompile Include="Samples\Shapes\Main.ts" />
-    <TypeScriptCompile Include="Samples\Shapes\Game.ts" />
-    <Content Include="Samples\Shapes\Game.js">
+    <Content Include="Views\Samples\RawRPG.cshtml" />
+    <TypeScriptCompile Include="Content\Samples\MovementControllers\Game.ts" />
+    <Content Include="Content\Samples\MovementControllers\Game.js">
       <DependentUpon>Game.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\Shapes\Main.js">
+    <TypeScriptCompile Include="Content\Samples\MovementControllers\Main.ts" />
+    <Content Include="Content\Samples\MovementControllers\Main.js">
       <DependentUpon>Main.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="Samples\Shapes\ShapeAnimator.ts" />
-    <Content Include="Samples\Shapes\ShapeAnimator.js">
-      <DependentUpon>ShapeAnimator.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Samples\Sprites\CustomSlider.ts" />
-    <Content Include="Samples\Sprites\CustomSlider.js">
-      <DependentUpon>CustomSlider.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\Sprites\Default.aspx" />
-    <Content Include="Samples\MapCreator\CameraDragController.js.map">
+    <Content Include="Views\Samples\MouseInput.cshtml" />
+    <Content Include="Views\Samples\MovementControllers.cshtml" />
+    <TypeScriptCompile Include="Content\Samples\MapCreator\CameraDragController.ts" />
+    <Content Include="Content\Samples\MapCreator\CameraDragController.js">
       <DependentUpon>CameraDragController.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\MapCreator\CameraZoomController.js.map">
+    <TypeScriptCompile Include="Content\Samples\MapCreator\CameraZoomController.ts" />
+    <Content Include="Content\Samples\MapCreator\CameraZoomController.js">
       <DependentUpon>CameraZoomController.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\MapCreator\GridEntry.js.map">
+    <TypeScriptCompile Include="Content\Samples\MapCreator\GridEntry.ts" />
+    <Content Include="Content\Samples\MapCreator\GridEntry.js">
       <DependentUpon>GridEntry.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\MapCreator\MapBuilder.js.map">
-      <DependentUpon>MapBuilder.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\MapCreator\Main.js.map">
-      <DependentUpon>Main.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\MapCreator\SetupManager.js.map">
-      <DependentUpon>SetupManager.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\MapCreator\SpriteSheetViewer.js.map">
-      <DependentUpon>SpriteSheetViewer.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\MapCreator\TileFiller.js.map">
-      <DependentUpon>TileFiller.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\MapCreator\TileHighlighter.js.map">
-      <DependentUpon>TileHighlighter.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\MapCreator\TileSelector.js.map">
-      <DependentUpon>TileSelector.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\RawRPG\Knight.js.map">
-      <DependentUpon>Knight.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\RawRPG\KnightAnimationHandler.js.map">
-      <DependentUpon>KnightAnimationHandler.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\RawRPG\Main.js.map">
-      <DependentUpon>Main.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\RawRPG\Player.js.map">
-      <DependentUpon>Player.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Samples\Sprites\Main.ts" />
-    <TypeScriptCompile Include="Samples\Sprites\Game.ts" />
-    <Content Include="Samples\Sprites\Game.js">
-      <DependentUpon>Game.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\Sprites\Main.js">
-      <DependentUpon>Main.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Samples\Sprites\SpriteAnimator.ts" />
-    <Content Include="Samples\Sprites\SpriteAnimator.js">
-      <DependentUpon>SpriteAnimator.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Samples\Text\CustomSlider.ts" />
-    <TypeScriptCompile Include="Samples\Text\ColorPicker.ts" />
-    <Content Include="Samples\Text\ColorPicker.js">
-      <DependentUpon>ColorPicker.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\Text\CustomSlider.js">
-      <DependentUpon>CustomSlider.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Samples\Text\Main.ts" />
-    <TypeScriptCompile Include="Samples\Text\Game.ts" />
-    <Content Include="Samples\Text\Game.js">
-      <DependentUpon>Game.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\Text\Main.js">
-      <DependentUpon>Main.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\MapCreator\PersistenceManager.js.map">
-      <DependentUpon>PersistenceManager.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\MapCreator\OutputHandler.js.map">
-      <DependentUpon>OutputHandler.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\RawRPG\LoadMapHandler.js.map">
-      <DependentUpon>LoadMapHandler.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\MapCreator\SetupManager.min.js.map">
-      <DependentUpon>SetupManager.js</DependentUpon>
-    </Content>
-    <Content Include="Samples\AnimatedSprites\Animation.js.map">
-      <DependentUpon>Animation.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\AnimatedSprites\FireExplosion.js.map">
-      <DependentUpon>FireExplosion.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\AnimatedSprites\ElectricPulse.js.map">
-      <DependentUpon>ElectricPulse.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\AnimatedSprites\ElectricPulseManager.js.map">
-      <DependentUpon>ElectricPulseManager.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\AnimatedSprites\FireExplosionManager.js.map">
-      <DependentUpon>FireExplosionManager.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\AnimatedSprites\Main.js.map">
-      <DependentUpon>Main.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\AudioHandling\Animation.js.map">
-      <DependentUpon>Animation.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\AudioHandling\SmokePoof.js.map">
-      <DependentUpon>SmokePoof.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\AudioHandling\SmokePoofManager.js.map">
-      <DependentUpon>SmokePoofManager.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\AudioHandling\Main.js.map">
-      <DependentUpon>Main.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\Camera\Main.js.map">
-      <DependentUpon>Main.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\Camera\World.js.map">
-      <DependentUpon>World.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\CollisionDetection\MovingShape.js.map">
-      <DependentUpon>MovingShape.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\CollisionDetection\Main.js.map">
-      <DependentUpon>Main.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\CollisionInspector\CollidableShape.js.map">
-      <DependentUpon>CollidableShape.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\CollisionInspector\Main.js.map">
-      <DependentUpon>Main.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\InputControllers\Main.js.map">
-      <DependentUpon>Main.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\KeyboardInput\KeyboardStatusUpdater.js.map">
-      <DependentUpon>KeyboardStatusUpdater.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\KeyboardInput\CommandManager.js.map">
-      <DependentUpon>CommandManager.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\KeyboardInput\CommandBinder.js.map">
-      <DependentUpon>CommandBinder.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\KeyboardInput\Main.js.map">
-      <DependentUpon>Main.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Samples\Text\TextAnimator.ts" />
-    <Content Include="Samples\Text\TextAnimator.js">
-      <DependentUpon>TextAnimator.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\Layering\Main.js.map">
-      <DependentUpon>Main.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\Layering\World.js.map">
-      <DependentUpon>World.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\Layering\LayerController.js.map">
-      <DependentUpon>LayerController.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\MapCreator\LayerManager.js.map">
+    <TypeScriptCompile Include="Content\Samples\MapCreator\LayerManager.ts" />
+    <Content Include="Content\Samples\MapCreator\LayerManager.js">
       <DependentUpon>LayerManager.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\MouseInput\Main.js.map">
+    <TypeScriptCompile Include="Content\Samples\MapCreator\Main.ts" />
+    <Content Include="Content\Samples\MapCreator\Main.js">
       <DependentUpon>Main.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\MovementControllers\Main.js.map">
-      <DependentUpon>Main.ts</DependentUpon>
+    <TypeScriptCompile Include="Content\Samples\MapCreator\MapBuilder.ts" />
+    <Content Include="Content\Samples\MapCreator\MapBuilder.js">
+      <DependentUpon>MapBuilder.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\Shapes\ShapeAnimator.js.map">
-      <DependentUpon>ShapeAnimator.ts</DependentUpon>
+    <TypeScriptCompile Include="Content\Samples\MapCreator\OutputHandler.ts" />
+    <Content Include="Content\Samples\MapCreator\OutputHandler.js">
+      <DependentUpon>OutputHandler.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\Shapes\Main.js.map">
-      <DependentUpon>Main.ts</DependentUpon>
+    <TypeScriptCompile Include="Content\Samples\MapCreator\PersistenceManager.ts" />
+    <Content Include="Content\Samples\MapCreator\PersistenceManager.js">
+      <DependentUpon>PersistenceManager.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\Shapes\ColorPicker.js.map">
-      <DependentUpon>ColorPicker.ts</DependentUpon>
+    <TypeScriptCompile Include="Content\Samples\MapCreator\SetupManager.ts" />
+    <Content Include="Content\Samples\MapCreator\SetupManager.js">
+      <DependentUpon>SetupManager.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\Shapes\CustomSlider.js.map">
-      <DependentUpon>CustomSlider.ts</DependentUpon>
+    <TypeScriptCompile Include="Content\Samples\MapCreator\SpriteSheetViewer.ts" />
+    <Content Include="Content\Samples\MapCreator\SpriteSheetViewer.js">
+      <DependentUpon>SpriteSheetViewer.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\Sprites\SpriteAnimator.js.map">
-      <DependentUpon>SpriteAnimator.ts</DependentUpon>
+    <TypeScriptCompile Include="Content\Samples\MapCreator\TileFiller.ts" />
+    <Content Include="Content\Samples\MapCreator\TileFiller.js">
+      <DependentUpon>TileFiller.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\Sprites\Main.js.map">
-      <DependentUpon>Main.ts</DependentUpon>
+    <TypeScriptCompile Include="Content\Samples\MapCreator\TileHighlighter.ts" />
+    <Content Include="Content\Samples\MapCreator\TileHighlighter.js">
+      <DependentUpon>TileHighlighter.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\Text\TextAnimator.js.map">
-      <DependentUpon>TextAnimator.ts</DependentUpon>
+    <TypeScriptCompile Include="Content\Samples\MapCreator\TileSelector.ts" />
+    <Content Include="Content\Samples\MapCreator\TileSelector.js">
+      <DependentUpon>TileSelector.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\Text\Main.js.map">
-      <DependentUpon>Main.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\Text\CustomSlider.js.map">
-      <DependentUpon>CustomSlider.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\AnimatedSprites\Animation.min.js.map">
-      <DependentUpon>Animation.js</DependentUpon>
-    </Content>
-    <Content Include="Samples\AnimatedSprites\Game.js.map">
+    <TypeScriptCompile Include="Content\Samples\MouseInput\Game.ts" />
+    <Content Include="Content\Samples\MouseInput\Game.js">
       <DependentUpon>Game.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\Text\ColorPicker.js.map">
-      <DependentUpon>ColorPicker.ts</DependentUpon>
+    <TypeScriptCompile Include="Content\Samples\MouseInput\Main.ts" />
+    <Content Include="Content\Samples\MouseInput\Main.js">
+      <DependentUpon>Main.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\Text\Game.js.map">
+    <Content Include="Views\Samples\MapCreator.cshtml" />
+    <TypeScriptCompile Include="Content\Samples\Layering\Game.ts" />
+    <Content Include="Content\Samples\Layering\Game.js">
       <DependentUpon>Game.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\Sprites\Game.js.map">
+    <TypeScriptCompile Include="Content\Samples\Layering\LayerController.ts" />
+    <Content Include="Content\Samples\Layering\LayerController.js">
+      <DependentUpon>LayerController.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Content\Samples\Layering\Main.ts" />
+    <Content Include="Content\Samples\Layering\Main.js">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Content\Samples\Layering\World.ts" />
+    <Content Include="Content\Samples\Layering\World.js">
+      <DependentUpon>World.ts</DependentUpon>
+    </Content>
+    <Content Include="Views\Samples\Layering.cshtml" />
+    <TypeScriptCompile Include="Content\Samples\KeyboardInput\CommandBinder.ts" />
+    <Content Include="Content\Samples\KeyboardInput\CommandBinder.js">
+      <DependentUpon>CommandBinder.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Content\Samples\KeyboardInput\CommandManager.ts" />
+    <Content Include="Content\Samples\KeyboardInput\CommandManager.js">
+      <DependentUpon>CommandManager.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Content\Samples\KeyboardInput\Game.ts" />
+    <Content Include="Content\Samples\KeyboardInput\Game.js">
       <DependentUpon>Game.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\Sprites\CustomSlider.js.map">
-      <DependentUpon>CustomSlider.ts</DependentUpon>
+    <TypeScriptCompile Include="Content\Samples\KeyboardInput\KeyboardStatusUpdater.ts" />
+    <Content Include="Content\Samples\KeyboardInput\KeyboardStatusUpdater.js">
+      <DependentUpon>KeyboardStatusUpdater.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\Camera\Game.js.map">
+    <TypeScriptCompile Include="Content\Samples\KeyboardInput\Main.ts" />
+    <Content Include="Content\Samples\KeyboardInput\Main.js">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <Content Include="Views\Samples\KeyboardInput.cshtml" />
+    <TypeScriptCompile Include="Content\Samples\InputControllers\Game.ts" />
+    <Content Include="Content\Samples\InputControllers\Game.js">
       <DependentUpon>Game.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\Camera\MovingDirection.js.map">
+    <TypeScriptCompile Include="Content\Samples\InputControllers\Main.ts" />
+    <Content Include="Content\Samples\InputControllers\Main.js">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <Content Include="Views\Samples\CollisionInspector.cshtml" />
+    <Content Include="Views\Samples\InputControllers.cshtml" />
+    <TypeScriptCompile Include="Content\Samples\CollisionInspector\CollidableShape.ts" />
+    <Content Include="Content\Samples\CollisionInspector\CollidableShape.js">
+      <DependentUpon>CollidableShape.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Content\Samples\CollisionInspector\Game.ts" />
+    <Content Include="Content\Samples\CollisionInspector\Game.js">
+      <DependentUpon>Game.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Content\Samples\CollisionInspector\Main.ts" />
+    <Content Include="Content\Samples\CollisionInspector\Main.js">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <Content Include="Views\Samples\CollisionDetection.cshtml" />
+    <TypeScriptCompile Include="Content\Samples\CollisionDetection\Game.ts" />
+    <Content Include="Content\Samples\CollisionDetection\Game.js">
+      <DependentUpon>Game.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Content\Samples\CollisionDetection\Main.ts" />
+    <Content Include="Content\Samples\CollisionDetection\Main.js">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Content\Samples\CollisionDetection\MovingShape.ts" />
+    <Content Include="Content\Samples\CollisionDetection\MovingShape.js">
+      <DependentUpon>MovingShape.ts</DependentUpon>
+    </Content>
+    <Content Include="Styles\common.css">
+      <DependentUpon>common.less</DependentUpon>
+    </Content>
+    <Content Include="Styles\common.min.css">
+      <DependentUpon>common.less</DependentUpon>
+    </Content>
+    <Content Include="Views\Samples\Camera.cshtml" />
+    <Content Include="Styles\common.less" />
+    <TypeScriptCompile Include="Content\Samples\Camera\Game.ts" />
+    <Content Include="Content\Samples\Camera\Game.js">
+      <DependentUpon>Game.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Content\Samples\Camera\Main.ts" />
+    <Content Include="Content\Samples\Camera\Main.js">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Content\Samples\Camera\MovingDirection.ts" />
+    <Content Include="Content\Samples\Camera\MovingDirection.js">
       <DependentUpon>MovingDirection.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\CollisionDetection\Game.js.map">
-      <DependentUpon>Game.ts</DependentUpon>
+    <TypeScriptCompile Include="Content\Samples\Camera\World.ts" />
+    <Content Include="Content\Samples\Camera\World.js">
+      <DependentUpon>World.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\CollisionInspector\Game.js.map">
-      <DependentUpon>Game.ts</DependentUpon>
+    <Content Include="Views\Samples\AudioHandling.cshtml" />
+    <TypeScriptCompile Include="Content\Samples\AudioHandling\Animation.ts" />
+    <Content Include="Content\Samples\AudioHandling\Animation.js">
+      <DependentUpon>Animation.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\InputControllers\Game.js.map">
-      <DependentUpon>Game.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\KeyboardInput\Game.js.map">
-      <DependentUpon>Game.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\Layering\Game.js.map">
-      <DependentUpon>Game.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\MouseInput\Game.js.map">
-      <DependentUpon>Game.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\MovementControllers\Game.js.map">
-      <DependentUpon>Game.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\RawRPG\Game.js.map">
-      <DependentUpon>Game.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\Shapes\Game.js.map">
-      <DependentUpon>Game.ts</DependentUpon>
-    </Content>
-    <Content Include="Samples\AudioHandling\BurningFlame.js.map">
+    <TypeScriptCompile Include="Content\Samples\AudioHandling\BurningFlame.ts" />
+    <Content Include="Content\Samples\AudioHandling\BurningFlame.js">
       <DependentUpon>BurningFlame.ts</DependentUpon>
     </Content>
-    <Content Include="Samples\AudioHandling\Game.js.map">
+    <TypeScriptCompile Include="Content\Samples\AudioHandling\Game.ts" />
+    <Content Include="Content\Samples\AudioHandling\Game.js">
       <DependentUpon>Game.ts</DependentUpon>
     </Content>
-    <None Include="Scripts\jquery-2.0.0.intellisense.js" />
-    <Content Include="Samples\AnimatedSprites\images\attribution.txt" />
-    <Content Include="Samples\AnimatedSprites\images\electric_pulse.png" />
-    <Content Include="Samples\AnimatedSprites\images\fire_explosion.png" />
-    <Content Include="Samples\AudioHandling\images\attribution.txt" />
-    <Content Include="Samples\AudioHandling\images\burning_flame.png" />
-    <Content Include="Samples\AudioHandling\images\smoke_poof.png" />
-    <Content Include="Samples\AudioHandling\sounds\attribution.txt" />
-    <Content Include="Samples\AudioHandling\sounds\fireburning.mp3" />
-    <Content Include="Samples\AudioHandling\sounds\smokepoof.mp3" />
-    <TypeScriptCompile Include="Samples\MapCreator\CameraDragController.ts" />
-    <TypeScriptCompile Include="Samples\MapCreator\CameraZoomController.ts" />
-    <TypeScriptCompile Include="Samples\MapCreator\GridEntry.ts" />
-    <TypeScriptCompile Include="Samples\MapCreator\Main.ts" />
-    <TypeScriptCompile Include="Samples\MapCreator\MapBuilder.ts" />
-    <TypeScriptCompile Include="Samples\MapCreator\SetupManager.ts" />
-    <TypeScriptCompile Include="Samples\MapCreator\SpriteSheetViewer.ts" />
-    <TypeScriptCompile Include="Samples\MapCreator\TileFiller.ts" />
-    <TypeScriptCompile Include="Samples\MapCreator\TileHighlighter.ts" />
-    <TypeScriptCompile Include="Samples\MapCreator\TileSelector.ts" />
-    <Content Include="Samples\RawRPG\images\attribution.txt" />
-    <Content Include="Samples\RawRPG\images\golden_knight.png" />
-    <Content Include="Samples\RawRPG\images\wood_tileset_3.png" />
-    <TypeScriptCompile Include="Samples\RawRPG\Knight.ts" />
-    <TypeScriptCompile Include="Samples\RawRPG\KnightAnimationHandler.ts" />
-    <TypeScriptCompile Include="Samples\RawRPG\Main.ts" />
-    <TypeScriptCompile Include="Samples\RawRPG\Player.ts" />
-    <Content Include="Samples\Sprites\html5-logo.png" />
-    <Content Include="Samples\Text\Default.aspx" />
+    <Content Include="Content\Samples\AudioHandling\images\attribution.txt" />
+    <Content Include="Content\Samples\AudioHandling\images\burning_flame.png" />
+    <Content Include="Content\Samples\AudioHandling\images\smoke_poof.png" />
+    <TypeScriptCompile Include="Content\Samples\AudioHandling\Main.ts" />
+    <Content Include="Content\Samples\AudioHandling\Main.js">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Content\Samples\AudioHandling\SmokePoof.ts" />
+    <Content Include="Content\Samples\AudioHandling\SmokePoof.js">
+      <DependentUpon>SmokePoof.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Content\Samples\AudioHandling\SmokePoofManager.ts" />
+    <Content Include="Content\Samples\AudioHandling\SmokePoofManager.js">
+      <DependentUpon>SmokePoofManager.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\AudioHandling\sounds\attribution.txt" />
+    <Content Include="Content\Samples\AudioHandling\sounds\fireburning.mp3" />
+    <Content Include="Content\Samples\AudioHandling\sounds\smokepoof.mp3" />
+    <Content Include="Global.asax" />
+    <TypeScriptCompile Include="Content\Samples\AnimatedSprites\Animation.ts" />
+    <Content Include="Content\Samples\AnimatedSprites\Animation.js">
+      <DependentUpon>Animation.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Content\Samples\AnimatedSprites\ElectricPulse.ts" />
+    <Content Include="Content\Samples\AnimatedSprites\ElectricPulse.js">
+      <DependentUpon>ElectricPulse.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Content\Samples\AnimatedSprites\ElectricPulseManager.ts" />
+    <Content Include="Content\Samples\AnimatedSprites\ElectricPulseManager.js">
+      <DependentUpon>ElectricPulseManager.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Content\Samples\AnimatedSprites\FireExplosion.ts" />
+    <Content Include="Content\Samples\AnimatedSprites\FireExplosion.js">
+      <DependentUpon>FireExplosion.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Content\Samples\AnimatedSprites\FireExplosionManager.ts" />
+    <Content Include="Content\Samples\AnimatedSprites\FireExplosionManager.js">
+      <DependentUpon>FireExplosionManager.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Content\Samples\AnimatedSprites\Game.ts" />
+    <Content Include="Content\Samples\AnimatedSprites\Game.js">
+      <DependentUpon>Game.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\AnimatedSprites\images\attribution.txt" />
+    <Content Include="Content\Samples\AnimatedSprites\images\electric_pulse.png" />
+    <Content Include="Content\Samples\AnimatedSprites\images\fire_explosion.png" />
+    <TypeScriptCompile Include="Content\Samples\AnimatedSprites\Main.ts" />
+    <Content Include="Content\Samples\AnimatedSprites\Main.js">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
     <Content Include="Scripts\endgate.d.ts" />
     <Content Include="Scripts\endgate.js" />
+    <Content Include="Content\Samples\AnimatedSprites\images\Thumbs.db" />
+    <Content Include="Content\Samples\AnimatedSprites\Animation.min.js.map">
+      <DependentUpon>Animation.js</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\AnimatedSprites\Animation.js.map">
+      <DependentUpon>Animation.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\AnimatedSprites\ElectricPulse.js.map">
+      <DependentUpon>ElectricPulse.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\AnimatedSprites\ElectricPulseManager.js.map">
+      <DependentUpon>ElectricPulseManager.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\AnimatedSprites\FireExplosion.js.map">
+      <DependentUpon>FireExplosion.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\AnimatedSprites\FireExplosionManager.js.map">
+      <DependentUpon>FireExplosionManager.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\AnimatedSprites\Game.js.map">
+      <DependentUpon>Game.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\AnimatedSprites\Main.js.map">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\AudioHandling\Animation.js.map">
+      <DependentUpon>Animation.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\AudioHandling\BurningFlame.js.map">
+      <DependentUpon>BurningFlame.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\AudioHandling\Game.js.map">
+      <DependentUpon>Game.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\AudioHandling\Main.js.map">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\AudioHandling\SmokePoof.js.map">
+      <DependentUpon>SmokePoof.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\AudioHandling\SmokePoofManager.js.map">
+      <DependentUpon>SmokePoofManager.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\AudioHandling\sounds\fireburning.ogg" />
+    <Content Include="Content\Samples\AudioHandling\sounds\smokepoof.ogg" />
+    <Content Include="Content\Samples\Camera\Game.js.map">
+      <DependentUpon>Game.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\Camera\Main.js.map">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\Camera\MovingDirection.js.map">
+      <DependentUpon>MovingDirection.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\Camera\World.js.map">
+      <DependentUpon>World.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\CollisionDetection\Game.js.map">
+      <DependentUpon>Game.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\CollisionDetection\Main.js.map">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\CollisionDetection\MovingShape.js.map">
+      <DependentUpon>MovingShape.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\CollisionInspector\CollidableShape.js.map">
+      <DependentUpon>CollidableShape.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\CollisionInspector\Game.js.map">
+      <DependentUpon>Game.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\CollisionInspector\Main.js.map">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\InputControllers\Game.js.map">
+      <DependentUpon>Game.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\InputControllers\Main.js.map">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\KeyboardInput\CommandBinder.js.map">
+      <DependentUpon>CommandBinder.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\KeyboardInput\CommandManager.js.map">
+      <DependentUpon>CommandManager.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\KeyboardInput\Game.js.map">
+      <DependentUpon>Game.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\KeyboardInput\KeyboardStatusUpdater.js.map">
+      <DependentUpon>KeyboardStatusUpdater.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\KeyboardInput\Main.js.map">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\Layering\Game.js.map">
+      <DependentUpon>Game.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\Layering\LayerController.js.map">
+      <DependentUpon>LayerController.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\Layering\Main.js.map">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\Layering\World.js.map">
+      <DependentUpon>World.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\MapCreator\CameraDragController.js.map">
+      <DependentUpon>CameraDragController.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\MapCreator\CameraZoomController.js.map">
+      <DependentUpon>CameraZoomController.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\MapCreator\GridEntry.js.map">
+      <DependentUpon>GridEntry.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\MapCreator\LayerManager.js.map">
+      <DependentUpon>LayerManager.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\MapCreator\Main.js.map">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\MapCreator\MapBuilder.js.map">
+      <DependentUpon>MapBuilder.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\MapCreator\OutputHandler.js.map">
+      <DependentUpon>OutputHandler.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\MapCreator\PersistenceManager.js.map">
+      <DependentUpon>PersistenceManager.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\MapCreator\SetupManager.min.js.map">
+      <DependentUpon>SetupManager.js</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\MapCreator\SetupManager.js.map">
+      <DependentUpon>SetupManager.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\MapCreator\SpriteSheetViewer.js.map">
+      <DependentUpon>SpriteSheetViewer.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\MapCreator\TileFiller.js.map">
+      <DependentUpon>TileFiller.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\MapCreator\TileHighlighter.js.map">
+      <DependentUpon>TileHighlighter.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\MapCreator\TileSelector.js.map">
+      <DependentUpon>TileSelector.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\MouseInput\Game.js.map">
+      <DependentUpon>Game.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\MouseInput\Main.js.map">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\MovementControllers\Game.js.map">
+      <DependentUpon>Game.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\MovementControllers\Main.js.map">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\RawRPG\Game.js.map">
+      <DependentUpon>Game.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\RawRPG\Knight.js.map">
+      <DependentUpon>Knight.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\RawRPG\KnightAnimationHandler.js.map">
+      <DependentUpon>KnightAnimationHandler.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\RawRPG\LoadMapHandler.js.map">
+      <DependentUpon>LoadMapHandler.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\RawRPG\Main.js.map">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\RawRPG\Player.js.map">
+      <DependentUpon>Player.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\Shapes\ColorPicker.js.map">
+      <DependentUpon>ColorPicker.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\Shapes\CustomSlider.js.map">
+      <DependentUpon>CustomSlider.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\Shapes\Game.js.map">
+      <DependentUpon>Game.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\Shapes\Main.js.map">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\Shapes\ShapeAnimator.js.map">
+      <DependentUpon>ShapeAnimator.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\Sprites\CustomSlider.js.map">
+      <DependentUpon>CustomSlider.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\Sprites\Game.js.map">
+      <DependentUpon>Game.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\Sprites\Main.js.map">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\Sprites\SpriteAnimator.js.map">
+      <DependentUpon>SpriteAnimator.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\Text\ColorPicker.js.map">
+      <DependentUpon>ColorPicker.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\Text\CustomSlider.js.map">
+      <DependentUpon>CustomSlider.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\Text\Game.js.map">
+      <DependentUpon>Game.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\Text\Main.js.map">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\Text\TextAnimator.js.map">
+      <DependentUpon>TextAnimator.ts</DependentUpon>
+    </Content>
+    <None Include="Scripts\jquery-2.0.0.intellisense.js" />
     <Content Include="Scripts\jquery-2.0.0.js" />
     <Content Include="Scripts\jquery-2.0.0.min.js" />
     <Content Include="Scripts\jquery-ui-1.10.2.js" />
     <Content Include="Scripts\jquery-ui-1.10.2.min.js" />
     <Content Include="Scripts\jquery.d.ts" />
-    <Content Include="Web.config">
+    <Content Include="Web.config" />
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Scripts\jquery-2.0.0.min.map" />
+    <Content Include="Views\Shared\_SamplesLayout.cshtml" />
+    <Content Include="Views\Samples\AnimatedSprites.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="EndGate.Core.JS.Samples.Master.cs">
-      <DependentUpon>EndGate.Core.JS.Samples.Master</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="EndGate.Core.JS.Samples.Master.designer.cs">
-      <DependentUpon>EndGate.Core.JS.Samples.Master</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Samples\AnimatedSprites\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Samples\AnimatedSprites\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Samples\AudioHandling\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Samples\AudioHandling\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Samples\Camera\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Samples\Camera\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Samples\CollisionDetection\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Samples\CollisionDetection\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Samples\CollisionInspector\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Samples\CollisionInspector\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Samples\InputControllers\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Samples\InputControllers\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Samples\KeyboardInput\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Samples\KeyboardInput\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Samples\Layering\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Samples\Layering\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Samples\MapCreator\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Samples\MapCreator\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Samples\MouseInput\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Samples\MouseInput\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Samples\MovementControllers\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Samples\MovementControllers\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Samples\RawRPG\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Samples\RawRPG\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Samples\Shapes\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Samples\Shapes\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Samples\Sprites\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Samples\Sprites\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Samples\Text\Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Samples\Text\Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
+    <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
-    <None Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_Layout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Samples\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -830,6 +793,9 @@
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets')" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
@@ -838,7 +804,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>0</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:11007/</IISUrl>
+          <IISUrl>http://localhost:11008/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

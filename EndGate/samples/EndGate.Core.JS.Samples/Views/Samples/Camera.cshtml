@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.SampleName = "Camera";
+    Layout = "~/Views/Shared/_SamplesLayout.cshtml";
+}
+
+@section styles {
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+}
+
+<div class="page-header">
+    <h2>@ViewBag.SampleName</h2>
+    <p>Demonstrates how to use the camera's movement and zooming capabilities.</p>
+</div>
+
+<p class="row">Move the camera with <em>w/a/s/d or up/left/right/down.</em></p>
+<p class="row">Zoom in/Out with <em>r/f</em></p>
+
+<p class="row text-center"><strong>Position: </strong><span id="cameraPosition"></span>| <strong>Distance: </strong><span id="cameraDistance"></span></p>
+<div class="row">
+    <div id="gameHolder" class="form-vertical well" style="height: 400px;">
+    </div>
+</div>
+
+@section scripts {
+    <script data-typescript="true" src="~/Content/Samples/Camera/World.js"></script>
+    <script data-typescript="true" src="~/Content/Samples/Camera/MovingDirection.js"></script>
+    <script data-typescript="true" src="~/Content/Samples/Camera/Game.js"></script>
+    <script data-typescript="true" src="~/Content/Samples/Camera/Main.js"></script>
+}

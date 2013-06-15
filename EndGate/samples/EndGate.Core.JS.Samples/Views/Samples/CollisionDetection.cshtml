@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.SampleName = "Collision Detection";
+    Layout = "~/Views/Shared/_SamplesLayout.cshtml";
+}
+
+<div class="page-header">
+    <h2>@ViewBag.SampleName</h2>
+    <p>Demonstrates how to use the client to detect collisions.</p>
+</div>
+
+<div class="row form-search well">
+    <input type="text" class="input-medium" placeholder="# of Rectangles" id="numOfRectangles"/>
+    <input type="text" class="input-medium" placeholder="# of Circles" id="numOfCircles"/>
+    <button class="btn" id="addItems">Add</button>
+    <button class="btn pull-right" id="clearItems">Clear</button>
+</div>
+
+<div class="row">        
+    <div id="gameHolder" class="form-vertical well" style="height:400px;">
+    </div>
+</div>
+    
+@section scripts {
+    <script data-typescript="true" src="~/Content/Samples/CollisionDetection/MovingShape.js"></script>
+    <script data-typescript="true" src="~/Content/Samples/CollisionDetection/Game.js"></script>
+    <script data-typescript="true" src="~/Content/Samples/CollisionDetection/Main.js"></script>
+}

@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "Samples - " + ViewBag.SampleName;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles {
+    @RenderSection("styles", required: false)
+}
+
+<ul class="breadcrumb">
+    <li><a href="@Url.RouteUrl(new { controller = "Samples", action = "Index" })">Samples</a> <span class="divider">/</span></li>
+    <li class="active">@ViewBag.SampleName</li>
+</ul>
+
+@RenderBody()
+
+@section scripts {
+    @RenderSection("scripts", required: false)
+    @Scripts.Render("~/bundles/codemirrorjs")
+}

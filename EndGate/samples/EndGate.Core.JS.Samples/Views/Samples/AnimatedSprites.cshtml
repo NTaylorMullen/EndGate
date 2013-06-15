@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.SampleName = "Animated Sprites";
+    Layout = "~/Views/Shared/_SamplesLayout.cshtml";
+}
+
+@section styles {
+    <style>
+        canvas {
+            background-color: black;
+        }
+    </style>
+}
+
+<div class="page-header">
+    <h2>@ViewBag.SampleName</h2>
+    <p>Demonstrates how to animate sprites with sprite sheets.</p>
+</div>
+
+<p class="row ">Move your mouse around in the black area and click to see animated images.  Sprite sheets: <a href="~/Content/Samples/AnimatedSprites/images/electric_pulse.png" target="_blank">Electricity</a>, <a href="~/Content/Samples/AnimatedSprites/images/fire_explosion.png" target="_blank">Fire</a></p>
+
+<div class="row">
+    <div id="gameHolder" class="form-vertical well" style="height: 400px;">
+    </div>
+</div>
+
+<p class="row">Image <a href="~/Content/Samples/AnimatedSprites/images/attribution.txt" target="_blank">attribution</a>.</p>
+
+@section scripts {
+    <script data-typescript="true" src="~/Content/Samples/AnimatedSprites/Animation.js"></script>
+    <script data-typescript="true" src="~/Content/Samples/AnimatedSprites/ElectricPulse.js"></script>
+    <script data-typescript="true" src="~/Content/Samples/AnimatedSprites/FireExplosion.js"></script>
+    <script data-typescript="true" src="~/Content/Samples/AnimatedSprites/ElectricPulseManager.js"></script>
+    <script data-typescript="true" src="~/Content/Samples/AnimatedSprites/FireExplosionManager.js"></script>
+    <script data-typescript="true" src="~/Content/Samples/AnimatedSprites/Game.js"></script>
+    <script data-typescript="true" src="~/Content/Samples/AnimatedSprites/Main.js"></script>
+}

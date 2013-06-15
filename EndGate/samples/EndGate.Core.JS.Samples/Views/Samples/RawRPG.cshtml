@@ -1,0 +1,39 @@
+﻿@{
+    ViewBag.SampleName = "Raw RPG";
+    Layout = "~/Views/Shared/_SamplesLayout.cshtml";
+}
+
+@section styles {
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+}
+
+<div class="page-header">
+    <h2>@ViewBag.SampleName</h2>
+    <p>Demonstrates a basic RPG setup with an environment, character, controllers etc.</p>
+</div>
+
+<div class="row">
+    <select id="savedMaps" style="margin-bottom: 0px;"></select>
+    <button class="btn disabled" id="loadMap">Load Map</button>
+    <em>Loads maps created (and saved) via the <a href="@Url.RouteUrl("Default", new { controller = "Samples", action = "MapCreator" })">Map Creator</a>.</em>
+</div>
+<br />
+<p class="row">Move the box with <em>w/a/s/d or up/left/right/down.</em></p>
+
+<div class="row">
+    <div id="gameHolder" class="form-vertical well" style="height: 400px;">
+    </div>
+</div>
+
+@section scripts {
+    <script data-typescript="true" src="~/Content/Samples/RawRPG/Knight.js"></script>
+    <script data-typescript="true" src="~/Content/Samples/RawRPG/KnightAnimationHandler.js"></script>
+    <script data-typescript="true" src="~/Content/Samples/RawRPG/Player.js"></script>
+    <script data-typescript="true" src="~/Content/Samples/RawRPG/LoadMapHandler.js"></script>
+    <script data-typescript="true" src="~/Content/Samples/RawRPG/Game.js"></script>
+    <script data-typescript="true" src="~/Content/Samples/RawRPG/Main.js"></script>
+}

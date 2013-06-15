@@ -1,0 +1,31 @@
+﻿@{
+    ViewBag.SampleName = "Input Controllers";
+    Layout = "~/Views/Shared/_SamplesLayout.cshtml";
+}
+
+@section styles{
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+}
+
+<div class="page-header">
+    <h2>@ViewBag.SampleName</h2>
+    <p>Demonstrates how to use input controllers to make moving controlling objects dead simple.</p>
+</div>
+
+<p class="row">Move the box with <em>w/a/s/d or up/left/right/down.</em></p>
+<p class="row">This show cases the DirectionalInputController.  More Input Controllers will be added in the future.</p>
+<p class="row"><strong>Note:</strong> Input controllers are not required, they just make basic controls easier to use.  This Sample is just a shorter sample of the Movement Controller sample</p>
+
+<div class="row">
+    <div id="gameHolder" class="form-vertical well" style="height: 400px;">
+    </div>
+</div>
+
+@section scripts {
+    <script data-typescript="true" src="~/Content/Samples/InputControllers/Game.js"></script>
+    <script data-typescript="true" src="~/Content/Samples/InputControllers/Main.js"></script>
+}

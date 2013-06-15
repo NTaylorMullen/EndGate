@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <title>EndGate - @ViewBag.Title</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    @Styles.Render("~/bundles/maincss")
+    @Styles.Render("~/bundles/codemirrorcss")
+    @RenderSection("styles", required: false)
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="brand" href="/">EndGate</a>
+                <div class="nav-collapse collapse">
+                    <ul class="nav">
+                        <li class="active"><a href="/">Samples</a></li>
+                        <li><a href="https://github.com/NTaylorMullen/EndGate" target="_blank">Source Code</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="sampleBody" class="container">       
+        @RenderBody()
+
+        <div id="codeArea">
+            <h3>Code</h3>
+            <div class="row" style="position: relative;">
+                <div id="_fileContent" style="margin-left: 0px; margin-bottom: 150px;">
+                </div>
+                <div class="well" style="position: absolute; top: 0; padding: 8px;">
+                    <ul class="nav nav-list" id="_fileList">
+                        <li class="nav-header">File List</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/mainjs")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

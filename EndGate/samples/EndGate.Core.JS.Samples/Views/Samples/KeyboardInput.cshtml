@@ -1,0 +1,52 @@
+﻿@{
+    ViewBag.SampleName = "Keyboard Input";
+    Layout = "~/Views/Shared/_SamplesLayout.cshtml";
+}
+
+@section styles {
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+
+        .keyboard-controller {
+            height: 35px;
+        }
+
+            .keyboard-controller button {
+                margin-top: -8px;
+            }
+    </style>
+}
+
+<div class="page-header">
+    <h2>@ViewBag.SampleName</h2>
+    <p>Demonstrates how to use a games keyboard input handler.</p>
+</div>
+
+<p class="row "><em>Start hitting keys and see the game handle the inputs.  Handles multiple special keys such as Up, Right, Down, Left, esc, tab, space, enter, backspace, insert, home, delete, end, f1-f12.  Also modifiers are placed in front of key command such as "shift+up" or "shift+alt+p"</em></p>
+<div class="row">
+    <div class="keyboard-controller">
+        <p class="pull-left">
+            Bind To:
+            <input type="text" placeholder="Binding command..." id="bindingCommandInput" />
+            Result:
+            <input type="text" placeholder="Text to show..." id="bindingResultInput" />
+            <button class="btn" id="bindButton">Bind</button>
+        </p>
+        <p class="pull-right">
+            <button class="btn" id="unbindButton">Unbind</button><select id="commandHolder"></select>
+        </p>
+    </div>
+
+    <div id="gameHolder" class="form-vertical well" style="height: 400px;">
+    </div>
+</div>
+
+@section scripts {
+    <script data-typescript="true" src="~/Content/Samples/KeyboardInput/KeyboardStatusUpdater.js"></script>
+    <script data-typescript="true" src="~/Content/Samples/KeyboardInput/CommandManager.js"></script>
+    <script data-typescript="true" src="~/Content/Samples/KeyboardInput/CommandBinder.js"></script>
+    <script data-typescript="true" src="~/Content/Samples/KeyboardInput/Game.js"></script>
+    <script data-typescript="true" src="~/Content/Samples/KeyboardInput/Main.js"></script>
+}

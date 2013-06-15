@@ -14,43 +14,49 @@
 
             return ele;
         },
+        editor;
+
+    if (fileContent[0]) {
         editor = CodeMirror(fileContent[0], {
             lineNumbers: true,
             matchBrackets: true,
+            lineWrapping: true,
             mode: "text/typescript",
-            readOnly: true,
-            theme: "solarized light"
+            readOnly: true
         });
 
-    $.each($("script[data-typescript='true']").get().reverse(), function (i, ele) {
-        var $ele = $(ele),
-            jsSrc = $ele.attr("src"),
-            tsSrc = jsSrc.substr(0, jsSrc.length - 2) + "ts",
-            split = tsSrc.split('.'),
-            fileName = split[split.length - 2],
-            fileNav = newFileListNav(fileName + ".ts");
+        $.each($("script[data-typescript='true']").get().reverse(), function (i, ele) {
+            var $ele = $(ele),
+                jsSrc = $ele.attr("src"),
+                tsSrc = jsSrc.substr(0, jsSrc.length - 2) + "ts",
+                split = tsSrc.split('.'),
+                fullFileName = split[split.length - 2],
+                splitPath = fullFileName.split('/'),
+                fileName = splitPath[splitPath.length - 1],
+                fileNav = newFileListNav(fileName + ".ts");
 
-        // Build TS cache
-        $.get(tsSrc, function (code) {
-            fileCache[fileName] = code;
+            // Build TS cache
+            $.get(tsSrc, function (code) {
+                fileCache[fileName] = code;
 
-            // Bind click after we've received the typescript cache
-            fileNav.click(function (e) {
-                editor.setOption("value", fileCache[fileName]);
-                $("li.fileNav").removeClass("active");
-                fileNav.addClass("active");
-                e.preventDefault();
-                return false;
+                // Bind click after we've received the typescript cache
+                fileNav.click(function (e) {
+                    editor.setOption("value", fileCache[fileName]);
+                    $("li.fileNav").removeClass("active");
+                    fileNav.addClass("active");
+                    e.preventDefault();
+                    return false;
+                });
+
+                if (i === 0) {
+                    fileNav.click();
+                }
             });
 
-            if (i === 0) {
-                fileNav.click();
-            }
-        });        
+            fileList.append(fileNav);
+        });
 
-        fileList.append(fileNav);
-    });
-
-    fileList.parent().css("left", fileContent.width() + 20);
+        fileList.parent().css("left", fileContent.width() + 20);
+    }
 
 })();

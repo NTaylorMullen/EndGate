@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.SampleName = "Collision Inspector";
+    Layout = "~/Views/Shared/_SamplesLayout.cshtml";
+}
+
+<div class="page-header">
+    <h2>@ViewBag.SampleName</h2>
+    <p>Allows the dragging and rotating of shapes to inspect collisions closely.</p>
+</div>
+
+<p class="row ">Drag the shapes around to see how they collide with each other.<br />
+    Dragging with left button moves the shape, clicking and holding with right button rotates shape.</p>
+
+<div class="row">
+    <div id="gameHolder" class="form-vertical well" style="height: 400px;">
+    </div>
+</div>
+
+@section scripts {
+    <script data-typescript="true" src="~/Content/Samples/CollisionInspector/CollidableShape.js"></script>
+    <script data-typescript="true" src="~/Content/Samples/CollisionInspector/Game.js"></script>
+    <script data-typescript="true" src="~/Content/Samples/CollisionInspector/Main.js"></script>
+}
