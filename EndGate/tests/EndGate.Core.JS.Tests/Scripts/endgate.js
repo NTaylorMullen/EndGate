@@ -2798,8 +2798,8 @@ var EndGate;
                     return this._State.GlobalAlpha(alpha);
                 };
                 Shape.prototype._StartDraw = function (context) {
-                    context.beginPath();
                     _super.prototype._StartDraw.call(this, context);
+                    context.beginPath();
                 };
                 Shape.prototype._EndDraw = function (context) {
                     if(this._fill) {
@@ -3204,11 +3204,16 @@ var EndGate;
     (function (Map) {
         var SquareTileMap = (function (_super) {
             __extends(SquareTileMap, _super);
-            function SquareTileMap(x, y, tileWidth, tileHeight, resources, mappings, drawGridLines) {
+            function SquareTileMap(x, y, tileWidth, tileHeight, resources, mappings, staticMap, drawGridLines) {
+                if (typeof staticMap === "undefined") { staticMap = true; }
                 if (typeof drawGridLines === "undefined") { drawGridLines = false; }
                         _super.call(this, x, y, resources);
                 this._grid = new EndGate.Graphics.Grid(0, 0, mappings.length, mappings[0].length, tileWidth, tileHeight, drawGridLines);
+                this._staticMap = staticMap;
                 this.FillGridWith(mappings);
+                if(this._staticMap) {
+                    this.BuildCache();
+                }
             }
             SquareTileMap.ExtractTiles = function ExtractTiles(imageSource, tileWidth, tileHeight) {
                 var resources = [], framesPerRow = Math.floor(imageSource.ClipSize.Width / tileWidth), rows = Math.floor(imageSource.ClipSize.Height / tileHeight);
@@ -3221,13 +3226,26 @@ var EndGate;
             };
             SquareTileMap.prototype.Draw = function (context) {
                 _super.prototype._StartDraw.call(this, context);
-                this._grid.Draw(context);
+                if(!this._staticMap) {
+                    this._grid.Draw(context);
+                } else {
+                    context.drawImage(this._mapCache, -this._mapCache.width / 2, -this._mapCache.height / 2);
+                }
                 _super.prototype._EndDraw.call(this, context);
             };
             SquareTileMap.prototype.GetDrawBounds = function () {
                 var bounds = this._grid.GetDrawBounds();
                 bounds.Position = this.Position;
                 return bounds;
+            };
+            SquareTileMap.prototype.BuildCache = function () {
+                var size = this._grid.Size(), originalPosition = this._grid.Position;
+                this._mapCache = document.createElement("canvas");
+                this._mapCache.width = size.Width;
+                this._mapCache.height = size.Height;
+                this._grid.Position = new EndGate.Vector2d(size.HalfWidth(), size.HalfHeight());
+                this._grid.Draw(this._mapCache.getContext("2d"));
+                this._grid.Position = originalPosition;
             };
             SquareTileMap.prototype.FillGridWith = function (mappings) {
                 var tiles = [];

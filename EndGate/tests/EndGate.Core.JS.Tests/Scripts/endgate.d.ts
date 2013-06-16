@@ -2997,6 +2997,8 @@ module EndGate.Map {
     */
     class SquareTileMap extends TileMap {
         private _grid;
+        private _staticMap;
+        private _mapCache;
         /**
         * Creates a new instance of the SquareTileMap object.
         * @param x Initial horizontal location of the tile map.
@@ -3015,9 +3017,21 @@ module EndGate.Map {
         * @param tileHeight The height of the tile map tiles (this cannot change after construction).
         * @param resources A one dimensional array of image resources that make up the tile map (this cannot change after construction).
         * @param mappings A two dimensional array numbers that map directly to the resources array to define the square tile map (this cannot change after construction).
+        * @param staticMap Whether or not image tiles will change throughout the SquareTileMap's lifetime, defaults to true and cannot change after construction.
+        */
+        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.Assets.ImageSource[], mappings: number[][], staticMap: bool);
+        /**
+        * Creates a new instance of the SquareTileMap object.
+        * @param x Initial horizontal location of the tile map.
+        * @param y Initial vertical location of the tile map.
+        * @param tileWidth The width of the tile map tiles (this cannot change after construction).
+        * @param tileHeight The height of the tile map tiles (this cannot change after construction).
+        * @param resources A one dimensional array of image resources that make up the tile map (this cannot change after construction).
+        * @param mappings A two dimensional array numbers that map directly to the resources array to define the square tile map (this cannot change after construction).
+        * @param staticMap Whether or not image tiles will change throughout the SquareTileMap's lifetime, defaults to true and cannot change after construction.
         * @param drawGridLines Whether or not to draw the tile maps grid lines. Useful when trying to pinpoint specific tiles (this cannot change after construction).
         */
-        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.Assets.ImageSource[], mappings: number[][], drawGridLines: bool);
+        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.Assets.ImageSource[], mappings: number[][], staticMap: bool, drawGridLines: bool);
         /**
         * Helper function used to take a SpriteSheet image and create a one dimensional resource tile array.
         * @param imageSource The sprite sheet to extract the tile resources from.
@@ -3034,6 +3048,7 @@ module EndGate.Map {
         * The bounding area that represents where the SquareTileMap will draw.
         */
         public GetDrawBounds(): Bounds.Abstractions.Bounds2d;
+        private BuildCache();
         private FillGridWith(mappings);
     }
 }

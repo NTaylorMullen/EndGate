@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Go" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildProjectDirectory)\EndGate.Versions.targets" />
+
+  <PropertyGroup>
+    <ProjectRoot>$(MSBuildProjectDirectory)\..</ProjectRoot>
+    <Configuration Condition="$(Configuration) == ''">Debug</Configuration>
+    <ArtifactsDir>$(ProjectRoot)\artifacts\$(Configuration)</ArtifactsDir>
+    <PackagesDir>$(ArtifactsDir)\packages</PackagesDir>
+    <ProjectArtifactsDir>$(ArtifactsDir)\projects</ProjectArtifactsDir>
+    <NuspecsDirectoryName>nuspecs</NuspecsDirectoryName>
+    <NuspecsSourceDir>$(ProjectRoot)\$(NuspecsDirectoryName)</NuspecsSourceDir>
+    <NuspecsArtifactsDir>$(ArtifactsDir)\$(NuspecsDirectoryName)</NuspecsArtifactsDir>
+    <QualityEnding Condition="$(BuildQuality) != ''">-$(VersionQuality)</QualityEnding>
+    <EndGateVersion>$(MajorVersion).$(MinorVersion).$(PatchVersion)$(QualityEnding)</EndGateVersion>
+    <MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)</MSBuildCommunityTasksPath>
+  </PropertyGroup>
+
+  <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.targets" />
+
+  <ItemGroup>
+    <Projects Include="$(ProjectRoot)\EndGate.Core.JS\EndGate.Core.JS.csproj"></Projects>
+  </ItemGroup>
+
+  <ItemDefinitionGroup>
+    <Projects>
+      <BuildTargets>Build</BuildTargets>
+      <BuildProperties>Configuration=$(Configuration);ArtifactsDir=$(ProjectArtifactsDir);SolutionDir=$(ProjectRoot)\;</BuildProperties>
+    </Projects>
+  </ItemDefinitionGroup>
+
+  <ItemGroup>
+    <NuspecsSource Include="$(NuspecsSourceDir)\*.nuspec"></NuspecsSource>
+  </ItemGroup>
+
+  <Target Name="BuildCmd" DependsOnTargets="BuildPackages">
+  </Target>
+
+  <Target Name="Build" DependsOnTargets="SetupArtifactsDir">
+    <MSBuild Projects="@(Projects)"
+             Targets="%(BuildTargets)"
+             Properties="%(BuildProperties)"/>
+  </Target>
+
+  <Target Name="SetupArtifactsDir">
+    <RemoveDir Directories="$(ArtifactsDir)" Condition="Exists('$(ArtifactsDir)')" ContinueOnError="true" />
+    <MakeDir Directories="$(ArtifactsDir)" Condition="!Exists('$(ArtifactsDir)')" />
+    <MakeDir Directories="$(PackagesDir)" Condition="!Exists('$(PackagesDir)')" />
+    <MakeDir Directories="$(NuspecsArtifactsDir)" Condition="!Exists('$(NuspecsArtifactsDir)')" />
+
+    <!-- Setup Nuspecs within artifacts directory -->
+    <Copy SourceFiles="@(NuspecsSource)" DestinationFiles="@(NuspecsSource->'$(NuspecsArtifactsDir)\%(RecursiveDir)%(Filename)%(Extension)')" />
+  </Target>
+
+  <Target Name="BuildPackages" DependsOnTargets="Build">
+    <!-- Update Nuspec artifact files -->
+    <FileUpdate Files="$(NuspecsArtifactsDir)\EndGate.nuspec" Regex="__ENDGATE_VERSION__" ReplacementText="$(EndGateVersion)" />
+    
+  </Target>
+
+</Project>

@@ -19,6 +19,7 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
+  <Import Project="..\common\EndGate.Common.targets" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <ProjectExtensions>
@@ -336,11 +337,16 @@
     <Content Include="Rendering\Scene2d.js">
       <DependentUpon>Scene2d.ts</DependentUpon>
     </Content>
-    <Content Include="Scripts\endgate.d.ts" />
+    <Content Include="Scripts\endgate.d.ts">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\endgate.js">
       <DependentUpon>endgate.ts</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\endgate.ts" />
+    <Content Include="Scripts\endgate.ts">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\_references.js" />
     <CodeAnalysisDictionary Include="Sound\AudioClip.ts" />
     <Content Include="Sound\AudioClip.js">
@@ -376,6 +382,7 @@
   <ItemGroup>
     <Content Include="Scripts\endgate.min.js.map">
       <DependentUpon>endgate.js</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets')" />
