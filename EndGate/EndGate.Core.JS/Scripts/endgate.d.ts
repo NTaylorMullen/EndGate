@@ -640,9 +640,13 @@ module EndGate.Rendering {
     */
     interface IRenderable {
         /**
-        * Gets or sets the ZIndex.  The ZIndex is used to control draw order.  Higher ZIndexes appear above lower ZIndexed renderables.
+        * Gets or sets the ZIndex property.  The ZIndex is used to control draw order.  Higher ZIndexes appear above lower ZIndexed renderables.
         */
         ZIndex: number;
+        /**
+        * Gets or sets the Visible property.  The Visible property determines whether the renderable will be drawn to the game screen.
+        */
+        Visible: bool;
         /**
         * Draws the renderable to the provided canvas context
         * @param context The canvas context to draw the renderable onto.
@@ -901,6 +905,10 @@ module EndGate.Graphics.Abstractions {
         */
         public ZIndex: number;
         /**
+        * Gets or sets the Visible property.  The Visible property determines whether the renderable will be drawn to the game screen.
+        */
+        public Visible: bool;
+        /**
         * Gets or sets the Position of the Graphic2d.  The Position determines where the graphic will be drawn on the screen.
         */
         public Position: Vector2d;
@@ -997,7 +1005,7 @@ module EndGate.Rendering {
         public OnRendererSizeChange: EventHandler;
         /**
         * Renders the provided renderables onto the renderOnto canvas.  Returns the canvas that was rendered onto.
-        * @param renderables Array of items that are to be rendered.
+        * @param renderables Array of items that are to be rendered, assumes Visible is set to true.
         */
         public Render(renderables: IRenderable[]): CanvasRenderingContext2D;
         /**
@@ -2989,6 +2997,8 @@ module EndGate.Map {
     */
     class SquareTileMap extends TileMap {
         private _grid;
+        private _staticMap;
+        private _mapCache;
         /**
         * Creates a new instance of the SquareTileMap object.
         * @param x Initial horizontal location of the tile map.
@@ -3007,9 +3017,21 @@ module EndGate.Map {
         * @param tileHeight The height of the tile map tiles (this cannot change after construction).
         * @param resources A one dimensional array of image resources that make up the tile map (this cannot change after construction).
         * @param mappings A two dimensional array numbers that map directly to the resources array to define the square tile map (this cannot change after construction).
+        * @param staticMap Whether or not image tiles will change throughout the SquareTileMap's lifetime, defaults to true and cannot change after construction.
+        */
+        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.Assets.ImageSource[], mappings: number[][], staticMap: bool);
+        /**
+        * Creates a new instance of the SquareTileMap object.
+        * @param x Initial horizontal location of the tile map.
+        * @param y Initial vertical location of the tile map.
+        * @param tileWidth The width of the tile map tiles (this cannot change after construction).
+        * @param tileHeight The height of the tile map tiles (this cannot change after construction).
+        * @param resources A one dimensional array of image resources that make up the tile map (this cannot change after construction).
+        * @param mappings A two dimensional array numbers that map directly to the resources array to define the square tile map (this cannot change after construction).
+        * @param staticMap Whether or not image tiles will change throughout the SquareTileMap's lifetime, defaults to true and cannot change after construction.
         * @param drawGridLines Whether or not to draw the tile maps grid lines. Useful when trying to pinpoint specific tiles (this cannot change after construction).
         */
-        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.Assets.ImageSource[], mappings: number[][], drawGridLines: bool);
+        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.Assets.ImageSource[], mappings: number[][], staticMap: bool, drawGridLines: bool);
         /**
         * Helper function used to take a SpriteSheet image and create a one dimensional resource tile array.
         * @param imageSource The sprite sheet to extract the tile resources from.
@@ -3026,6 +3048,7 @@ module EndGate.Map {
         * The bounding area that represents where the SquareTileMap will draw.
         */
         public GetDrawBounds(): Bounds.Abstractions.Bounds2d;
+        private BuildCache();
         private FillGridWith(mappings);
     }
 }

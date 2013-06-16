@@ -49,7 +49,7 @@ var EndGate;
                 // Scale camera size to our zoom level
                 this._camera.Scale(scale, scale);
                 for(var i = 0; i < allRenderables.length; i++) {
-                    if(this._camera.Intersects(allRenderables[i].GetDrawBounds())) {
+                    if(allRenderables[i].Visible && this._camera.Intersects(allRenderables[i].GetDrawBounds())) {
                         onscreen.push(allRenderables[i]);
                     }
                 }

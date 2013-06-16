@@ -66,8 +66,8 @@ var EndGate;
                     return this._State.GlobalAlpha(alpha);
                 };
                 Shape.prototype._StartDraw = function (context) {
-                    context.beginPath();
                     _super.prototype._StartDraw.call(this, context);
+                    context.beginPath();
                 };
                 Shape.prototype._EndDraw = function (context) {
                     if(this._fill) {

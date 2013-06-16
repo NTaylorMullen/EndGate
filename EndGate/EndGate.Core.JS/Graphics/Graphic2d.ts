@@ -18,6 +18,12 @@ module EndGate.Graphics.Abstractions {
         * Gets or sets the ZIndex of the Graphic2d.  The ZIndex is used to control draw order.  Higher ZIndexes appear above lower ZIndexed graphics.
         */
         public ZIndex: number;
+
+        /**
+        * Gets or sets the Visible property.  The Visible property determines whether the renderable will be drawn to the game screen.
+        */
+        public Visible: bool;
+
         /**
         * Gets or sets the Position of the Graphic2d.  The Position determines where the graphic will be drawn on the screen.
         */
@@ -37,6 +43,7 @@ module EndGate.Graphics.Abstractions {
             this.Position = position;
             this.Rotation = 0;
             this.ZIndex = 0;
+            this.Visible = true;
             this._State = new Assets._.Graphic2dState();
             this._children = [];
         }

@@ -640,9 +640,13 @@ module EndGate.Rendering {
     */
     interface IRenderable {
         /**
-        * Gets or sets the ZIndex.  The ZIndex is used to control draw order.  Higher ZIndexes appear above lower ZIndexed renderables.
+        * Gets or sets the ZIndex property.  The ZIndex is used to control draw order.  Higher ZIndexes appear above lower ZIndexed renderables.
         */
         ZIndex: number;
+        /**
+        * Gets or sets the Visible property.  The Visible property determines whether the renderable will be drawn to the game screen.
+        */
+        Visible: bool;
         /**
         * Draws the renderable to the provided canvas context
         * @param context The canvas context to draw the renderable onto.
@@ -901,6 +905,10 @@ module EndGate.Graphics.Abstractions {
         */
         public ZIndex: number;
         /**
+        * Gets or sets the Visible property.  The Visible property determines whether the renderable will be drawn to the game screen.
+        */
+        public Visible: bool;
+        /**
         * Gets or sets the Position of the Graphic2d.  The Position determines where the graphic will be drawn on the screen.
         */
         public Position: Vector2d;
@@ -997,7 +1005,7 @@ module EndGate.Rendering {
         public OnRendererSizeChange: EventHandler;
         /**
         * Renders the provided renderables onto the renderOnto canvas.  Returns the canvas that was rendered onto.
-        * @param renderables Array of items that are to be rendered.
+        * @param renderables Array of items that are to be rendered, assumes Visible is set to true.
         */
         public Render(renderables: IRenderable[]): CanvasRenderingContext2D;
         /**

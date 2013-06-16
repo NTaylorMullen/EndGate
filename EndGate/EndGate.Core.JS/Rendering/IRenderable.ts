@@ -7,9 +7,13 @@ declare module EndGate.Rendering {
     */
     export interface IRenderable {
         /**
-        * Gets or sets the ZIndex.  The ZIndex is used to control draw order.  Higher ZIndexes appear above lower ZIndexed renderables.
+        * Gets or sets the ZIndex property.  The ZIndex is used to control draw order.  Higher ZIndexes appear above lower ZIndexed renderables.
         */
         ZIndex: number;
+        /**
+        * Gets or sets the Visible property.  The Visible property determines whether the renderable will be drawn to the game screen.
+        */
+        Visible: bool;
         /**
         * Draws the renderable to the provided canvas context
         * @param context The canvas context to draw the renderable onto.

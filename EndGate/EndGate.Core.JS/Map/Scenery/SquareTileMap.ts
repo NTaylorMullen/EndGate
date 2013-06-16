@@ -11,6 +11,8 @@ module EndGate.Map {
     */
     export class SquareTileMap extends TileMap {
         private _grid: Graphics.Grid;
+        private _staticMap: bool;
+        private _mapCache: HTMLCanvasElement;
 
         /**
         * Creates a new instance of the SquareTileMap object.
@@ -30,15 +32,32 @@ module EndGate.Map {
         * @param tileHeight The height of the tile map tiles (this cannot change after construction).
         * @param resources A one dimensional array of image resources that make up the tile map (this cannot change after construction).
         * @param mappings A two dimensional array numbers that map directly to the resources array to define the square tile map (this cannot change after construction).
+        * @param staticMap Whether or not image tiles will change throughout the SquareTileMap's lifetime, defaults to true and cannot change after construction.
+        */
+        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.Assets.ImageSource[], mappings: number[][], staticMap: bool);
+        /**
+        * Creates a new instance of the SquareTileMap object.
+        * @param x Initial horizontal location of the tile map.
+        * @param y Initial vertical location of the tile map.
+        * @param tileWidth The width of the tile map tiles (this cannot change after construction).
+        * @param tileHeight The height of the tile map tiles (this cannot change after construction).
+        * @param resources A one dimensional array of image resources that make up the tile map (this cannot change after construction).
+        * @param mappings A two dimensional array numbers that map directly to the resources array to define the square tile map (this cannot change after construction).
+        * @param staticMap Whether or not image tiles will change throughout the SquareTileMap's lifetime, defaults to true and cannot change after construction.
         * @param drawGridLines Whether or not to draw the tile maps grid lines. Useful when trying to pinpoint specific tiles (this cannot change after construction).
         */
-        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.Assets.ImageSource[], mappings: number[][], drawGridLines: bool);
-        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.Assets.ImageSource[], mappings: number[][], drawGridLines: bool = false) {
+        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.Assets.ImageSource[], mappings: number[][], staticMap: bool, drawGridLines: bool);
+        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.Assets.ImageSource[], mappings: number[][], staticMap: bool = true, drawGridLines: bool = false) {
             super(x, y, resources);
 
             this._grid = new Graphics.Grid(0, 0, mappings.length, mappings[0].length, tileWidth, tileHeight,drawGridLines);
+            this._staticMap = staticMap;            
 
             this.FillGridWith(mappings);
+
+            if (this._staticMap) {
+                this.BuildCache();
+            }
         }
 
         /**
@@ -68,7 +87,12 @@ module EndGate.Map {
         public Draw(context: CanvasRenderingContext2D): void {
             super._StartDraw(context);
 
-            this._grid.Draw(context);
+            if (!this._staticMap) {
+                this._grid.Draw(context);
+            }
+            else {
+                context.drawImage(this._mapCache, -this._mapCache.width / 2, -this._mapCache.height / 2);
+            }
 
             super._EndDraw(context);
         }
@@ -82,6 +106,20 @@ module EndGate.Map {
             bounds.Position = this.Position;
 
             return bounds;
+        }
+
+        private BuildCache(): void {
+            var size: Size2d = this._grid.Size(),
+                originalPosition = this._grid.Position;
+
+            this._mapCache = <HTMLCanvasElement>document.createElement("canvas");
+            this._mapCache.width = size.Width;
+            this._mapCache.height = size.Height;
+
+            // Draw the grid onto the cached map
+            this._grid.Position = new Vector2d(size.HalfWidth(), size.HalfHeight());
+            this._grid.Draw(this._mapCache.getContext("2d"));
+            this._grid.Position = originalPosition;
         }
 
         private FillGridWith(mappings: number[][]): void {

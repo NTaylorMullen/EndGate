@@ -44,7 +44,7 @@ module EndGate.Rendering {
 
         /**
         * Renders the provided renderables onto the renderOnto canvas.  Returns the canvas that was rendered onto.
-        * @param renderables Array of items that are to be rendered. 
+        * @param renderables Array of items that are to be rendered, assumes Visible is set to true.
         */
         public Render(renderables: IRenderable[]): CanvasRenderingContext2D {
             // Check if our visible canvas has changed size

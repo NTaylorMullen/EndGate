@@ -46,17 +46,17 @@ module EndGate.Graphics.Abstractions {
             this._fill = true;
             return this._State.FillStyle(color);
         }
-        
+
         /**
         * Sets the current borders thickness and color.
         * @param thickness The new border thickness in pixels.
         * @param color The new border color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
         */
-        public Border(thickness: number, color: string): void{
+        public Border(thickness: number, color: string): void {
             this.BorderThickness(thickness);
             this.BorderColor(color);
         }
-        
+
         /**
         * Gets the current border thickness.
         */
@@ -69,7 +69,7 @@ module EndGate.Graphics.Abstractions {
         public BorderThickness(thickness?: number): number {
             return this._State.LineWidth(thickness);
         }
-        
+
         /**
         * Gets the current border color.
         */
@@ -179,16 +179,15 @@ module EndGate.Graphics.Abstractions {
         }
 
         public _StartDraw(context: CanvasRenderingContext2D): void {
-            context.beginPath();
-
             super._StartDraw(context);
+            context.beginPath();
         }
 
         public _EndDraw(context: CanvasRenderingContext2D): void {
             if (this._fill) {
                 context.fill();
             }
-            
+
             if (this._stroke) {
                 context.stroke();
             }

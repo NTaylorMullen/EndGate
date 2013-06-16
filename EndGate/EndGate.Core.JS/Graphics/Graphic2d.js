@@ -18,6 +18,7 @@ var EndGate;
                     this.Position = position;
                     this.Rotation = 0;
                     this.ZIndex = 0;
+                    this.Visible = true;
                     this._State = new Graphics.Assets._.Graphic2dState();
                     this._children = [];
                 }

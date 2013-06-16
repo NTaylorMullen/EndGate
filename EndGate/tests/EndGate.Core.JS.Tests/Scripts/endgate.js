@@ -789,6 +789,7 @@ var EndGate;
                     this.Position = position;
                     this.Rotation = 0;
                     this.ZIndex = 0;
+                    this.Visible = true;
                     this._State = new Graphics.Assets._.Graphic2dState();
                     this._children = [];
                 }
@@ -1224,7 +1225,7 @@ var EndGate;
                 var onscreen = [], scale = this._camera._GetDistanceScale(), unscale = 1 / scale;
                 this._camera.Scale(scale, scale);
                 for(var i = 0; i < allRenderables.length; i++) {
-                    if(this._camera.Intersects(allRenderables[i].GetDrawBounds())) {
+                    if(allRenderables[i].Visible && this._camera.Intersects(allRenderables[i].GetDrawBounds())) {
                         onscreen.push(allRenderables[i]);
                     }
                 }
