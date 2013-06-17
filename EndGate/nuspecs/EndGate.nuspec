@@ -2,21 +2,21 @@
 <package >
   <metadata>
     <id>EndGate</id>
-    <title>EndGate TypeScript powered game framework.</title>
+    <title>EndGate</title>
     <version>__ENDGATE_VERSION__</version>
     <authors>N. Taylor Mullen</authors>
     <owners>N. Taylor Mullen</owners>
     <licenseUrl>https://github.com/NTaylorMullen/EndGate/blob/master/LICENSE.md</licenseUrl>
     <projectUrl>http://endgate.net</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>TypeScript gaming framework.</description>
+    <description>A TypeScript powered gaming framework.</description>
     <copyright>Copyright EndGate 2013</copyright>
     <tags>EndGate EG Game TypeScript GameFramework End Gate</tags>
   </metadata>
 
   <files>
-    <file src="EndGate.Core.JS\Scripts\endgate-__ENDGATE_VERSION__.js" target="Scripts" />
-    <file src="EndGate.Core.JS\Scripts\endgate-__ENDGATE_VERSION__.min.js" target="Scripts" />
-    <file src="EndGate.Core.JS\Scripts\endgate-__ENDGATE_VERSION__.d.ts" target="Scripts" />
+    <file src="endgate-__ENDGATE_VERSION__.js" target="Scripts" />
+    <file src="endgate-__ENDGATE_VERSION__.min.js" target="Scripts" />
+    <file src="endgate-__ENDGATE_VERSION__.d.ts" target="Scripts" />
   </files>
 </package>

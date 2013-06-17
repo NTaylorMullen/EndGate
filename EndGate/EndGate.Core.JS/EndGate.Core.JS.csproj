@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\build\EndGate.Versions.targets" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <ProjectGuid>{BDAADAAA-4DD3-4FAA-891C-BD70C442B3BB}</ProjectGuid>
@@ -344,9 +345,7 @@
       <DependentUpon>endgate.ts</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\endgate.ts">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Scripts\endgate.ts" />
     <Content Include="Scripts\_references.js" />
     <CodeAnalysisDictionary Include="Sound\AudioClip.ts" />
     <Content Include="Sound\AudioClip.js">
@@ -378,12 +377,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="build.ps1" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Scripts\endgate.min.js.map">
-      <DependentUpon>endgate.js</DependentUpon>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets')" />
   <Target Name="BeforeBuild">

@@ -5,5 +5,8 @@
     <MinorVersion>1</MinorVersion>
     <PatchVersion>0</PatchVersion>
     <VersionQuality></VersionQuality>
+
+    <QualityEnding Condition="$(BuildQuality) != ''">-$(VersionQuality)</QualityEnding>
+    <EndGateVersion>$(MajorVersion).$(MinorVersion).$(PatchVersion)$(QualityEnding)</EndGateVersion>
   </PropertyGroup>
 </Project>

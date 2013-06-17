@@ -6,14 +6,17 @@
     <ProjectRoot>$(MSBuildProjectDirectory)\..</ProjectRoot>
     <Configuration Condition="$(Configuration) == ''">Debug</Configuration>
     <ArtifactsDir>$(ProjectRoot)\artifacts\$(Configuration)</ArtifactsDir>
-    <PackagesDir>$(ArtifactsDir)\packages</PackagesDir>
     <ProjectArtifactsDir>$(ArtifactsDir)\projects</ProjectArtifactsDir>
+    <PackagesArtifactsDir>$(ArtifactsDir)\packages</PackagesArtifactsDir>
+    <PackageSrcDir>$(ArtifactsDir)\package-src</PackageSrcDir>
     <NuspecsDirectoryName>nuspecs</NuspecsDirectoryName>
     <NuspecsSourceDir>$(ProjectRoot)\$(NuspecsDirectoryName)</NuspecsSourceDir>
     <NuspecsArtifactsDir>$(ArtifactsDir)\$(NuspecsDirectoryName)</NuspecsArtifactsDir>
-    <QualityEnding Condition="$(BuildQuality) != ''">-$(VersionQuality)</QualityEnding>
-    <EndGateVersion>$(MajorVersion).$(MinorVersion).$(PatchVersion)$(QualityEnding)</EndGateVersion>
     <MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)</MSBuildCommunityTasksPath>
+    <NuGetToolsPath>$(ProjectRoot)\.nuget</NuGetToolsPath>
+    <NuGetExePath>$(NuGetToolsPath)\nuget.exe</NuGetExePath>
+    <ToolsPath>$(ProjectRoot)\tools</ToolsPath>
+    <ClosureCompilerPath>$(ToolsPath)\closure-compiler\compiler.jar</ClosureCompilerPath>
   </PropertyGroup>
 
   <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.targets" />
@@ -29,33 +32,53 @@
     </Projects>
   </ItemDefinitionGroup>
 
-  <ItemGroup>
-    <NuspecsSource Include="$(NuspecsSourceDir)\*.nuspec"></NuspecsSource>
-  </ItemGroup>
-
-  <Target Name="BuildCmd" DependsOnTargets="BuildPackages">
+  <Target Name="BuildCmd" DependsOnTargets="Build">
   </Target>
 
-  <Target Name="Build" DependsOnTargets="SetupArtifactsDir">
+  <Target Name="Build" DependsOnTargets="CreateArtifactsDir">
     <MSBuild Projects="@(Projects)"
              Targets="%(BuildTargets)"
              Properties="%(BuildProperties)"/>
   </Target>
 
-  <Target Name="SetupArtifactsDir">
+  <Target Name="CreateArtifactsDir">
     <RemoveDir Directories="$(ArtifactsDir)" Condition="Exists('$(ArtifactsDir)')" ContinueOnError="true" />
     <MakeDir Directories="$(ArtifactsDir)" Condition="!Exists('$(ArtifactsDir)')" />
-    <MakeDir Directories="$(PackagesDir)" Condition="!Exists('$(PackagesDir)')" />
+    <MakeDir Directories="$(PackagesArtifactsDir)" Condition="!Exists('$(PackagesArtifactsDir)')" />
     <MakeDir Directories="$(NuspecsArtifactsDir)" Condition="!Exists('$(NuspecsArtifactsDir)')" />
-
-    <!-- Setup Nuspecs within artifacts directory -->
-    <Copy SourceFiles="@(NuspecsSource)" DestinationFiles="@(NuspecsSource->'$(NuspecsArtifactsDir)\%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>
 
-  <Target Name="BuildPackages" DependsOnTargets="Build">
+  <Target Name="BuildPackages" DependsOnTargets="Build; CopyArtifacts;">
+    <ItemGroup>
+      <NuspecsArtifacts Include="$(NuspecsArtifactsDir)\*.nuspec" ></NuspecsArtifacts>
+    </ItemGroup>
+
     <!-- Update Nuspec artifact files -->
-    <FileUpdate Files="$(NuspecsArtifactsDir)\EndGate.nuspec" Regex="__ENDGATE_VERSION__" ReplacementText="$(EndGateVersion)" />
+    <FileUpdate Files="@(NuspecsArtifacts)" Regex="__ENDGATE_VERSION__" ReplacementText="$(EndGateVersion)" />
+
+    <Exec Command="&quot;$(NuGetExePath)&quot; pack &quot;%(NuspecsArtifacts.Identity)&quot; -o &quot;$(PackagesArtifactsDir)&quot; -basePath &quot;$(PackageSrcDir)&quot;"
+                LogStandardErrorAsError="true" />
+  </Target>
+
+  <Target Name="CopyArtifacts" DependsOnTargets="Build">
+    <ItemGroup>
+      <Artifacts Include="$(NuspecsSourceDir)\*.nuspec">
+        <Destination>$(NuspecsArtifactsDir)</Destination>
+      </Artifacts>
+    </ItemGroup>
+
+    <Copy SourceFiles="$(ProjectArtifactsDir)\EndGate.Core.JS\Scripts\endgate.d.ts" DestinationFiles="$(PackageSrcDir)\endgate-$(EndGateVersion).d.ts" />
+    <Copy SourceFiles="$(ProjectArtifactsDir)\EndGate.Core.JS\Scripts\endgate.js" DestinationFiles="$(PackageSrcDir)\endgate-$(EndGateVersion).js" />
     
+    <Exec Command="java -jar &quot;$(ClosureCompilerPath)&quot; --js $(PackageSrcDir)\endgate-$(EndGateVersion).js --create_source_map $(PackageSrcDir)\endgate-$(EndGateVersion).min.js.map --source_map_format=V3 --js_output_file $(PackageSrcDir)\endgate-$(EndGateVersion).min.js" WorkingDirectory="$(ProjectRoot)" Condition=" '$(OS)' == 'Windows_NT'" />
+
+    <WriteLinesToFile
+            File="$(PackageSrcDir)\endgate-$(EndGateVersion).js"
+            Lines="//@ sourceMappingURL=endgate-$(EndGateVersion).min.js.map"
+            Overwrite="false"/>
+    
+    <!-- Setup Nuspecs within artifacts directory -->
+    <Copy SourceFiles="@(Artifacts)" DestinationFiles="@(Artifacts->'%(Destination)\%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>
 
 </Project>
