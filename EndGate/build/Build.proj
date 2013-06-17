@@ -72,6 +72,9 @@
     
     <Exec Command="java -jar &quot;$(ClosureCompilerPath)&quot; --js $(PackageSrcDir)\endgate-$(EndGateVersion).js --create_source_map $(PackageSrcDir)\endgate-$(EndGateVersion).min.js.map --source_map_format=V3 --js_output_file $(PackageSrcDir)\endgate-$(EndGateVersion).min.js" WorkingDirectory="$(ProjectRoot)" Condition=" '$(OS)' == 'Windows_NT'" />
 
+    <FileUpdate Files="$(PackageSrcDir)\endgate-$(EndGateVersion).min.js.map" Regex="&quot;file&quot;:&quot;((.|\r|\n)*?)&quot;," ReplacementText="&quot;file&quot;:&quot;endgate-$(EndGateVersion).min.js&quot;," />
+    <FileUpdate Files="$(PackageSrcDir)\endgate-$(EndGateVersion).min.js.map" Regex="&quot;sources&quot;:\[&quot;((.|\r|\n)*?)&quot;\]," ReplacementText="&quot;sources&quot;:[&quot;endgate-$(EndGateVersion).js&quot;]," />
+    
     <WriteLinesToFile
             File="$(PackageSrcDir)\endgate-$(EndGateVersion).js"
             Lines="//@ sourceMappingURL=endgate-$(EndGateVersion).min.js.map"

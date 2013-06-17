@@ -15,8 +15,9 @@
   </metadata>
 
   <files>
-    <file src="endgate-__ENDGATE_VERSION__.js" target="Scripts" />
-    <file src="endgate-__ENDGATE_VERSION__.min.js" target="Scripts" />
-    <file src="endgate-__ENDGATE_VERSION__.d.ts" target="Scripts" />
+    <file src="endgate-__ENDGATE_VERSION__.js" target="content/Scripts" />
+    <file src="endgate-__ENDGATE_VERSION__.min.js" target="content/Scripts" />
+    <file src="endgate-__ENDGATE_VERSION__.min.js.map" target="content/Scripts" />
+    <file src="endgate-__ENDGATE_VERSION__.d.ts" target="content/Scripts" />
   </files>
 </package>
