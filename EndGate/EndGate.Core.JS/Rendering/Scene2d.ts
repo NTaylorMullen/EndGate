@@ -109,11 +109,15 @@ module EndGate.Rendering {
         }
 
         private CreateDefaultDrawArea(): HTMLCanvasElement {
-            var drawArea = <HTMLCanvasElement>document.createElement("canvas");
+            var drawArea = <HTMLCanvasElement>document.createElement("canvas"),
+                body: HTMLElement = <HTMLElement>document.getElementsByTagName('body')[0];
+
             drawArea.width = window.innerWidth;
             drawArea.height = window.innerHeight;            
 
-            document.getElementsByTagName('body')[0].appendChild(drawArea);
+            body.appendChild(drawArea);
+            body.style.margin = "0px";
+            body.style.padding = "0px";
 
             return drawArea;
         }

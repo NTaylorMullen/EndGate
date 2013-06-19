@@ -1285,10 +1285,12 @@ var EndGate;
                 drawArea.parentElement.style.position = "relative";
             };
             Scene2d.prototype.CreateDefaultDrawArea = function () {
-                var drawArea = document.createElement("canvas");
+                var drawArea = document.createElement("canvas"), body = document.getElementsByTagName('body')[0];
                 drawArea.width = window.innerWidth;
                 drawArea.height = window.innerHeight;
-                document.getElementsByTagName('body')[0].appendChild(drawArea);
+                body.appendChild(drawArea);
+                body.style.margin = "0px";
+                body.style.padding = "0px";
                 return drawArea;
             };
             return Scene2d;
