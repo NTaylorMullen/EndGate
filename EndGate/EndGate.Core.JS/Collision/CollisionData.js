@@ -19,7 +19,7 @@ var EndGate;
                 }
                 return CollisionData;
             })();
-            Assets.CollisionData = CollisionData;            
+            Assets.CollisionData = CollisionData;
         })(Collision.Assets || (Collision.Assets = {}));
         var Assets = Collision.Assets;
     })(EndGate.Collision || (EndGate.Collision = {}));

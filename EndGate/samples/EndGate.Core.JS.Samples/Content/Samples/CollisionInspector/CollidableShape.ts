@@ -4,7 +4,7 @@
 // Wrap in module to keep code out of global scope
 module CollisionInspector {
 
-    export class CollidableShape implements eg.IUpdateable extends eg.Collision.Collidable {
+    export class CollidableShape extends eg.Collision.Collidable implements eg.IUpdateable {
         // Represents the text location within the shape
         public TextPosition: eg.Graphics.Text2d;
 

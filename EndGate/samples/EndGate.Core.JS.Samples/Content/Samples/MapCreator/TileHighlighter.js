@@ -11,13 +11,16 @@ var MapCreator;
         }
         TileHighlighter.prototype.HighlightTiles = function (tiles) {
             var tile, gridTile;
-            for(var i = 0; i < this.SelectedTiles.length; i++) {
+
+            for (var i = 0; i < this.SelectedTiles.length; i++) {
                 this._grid.RemoveChild(this.SelectedTiles[i]);
             }
+
             this.SelectedTiles = [];
-            for(var i = 0; i < tiles.length; i++) {
+
+            for (var i = 0; i < tiles.length; i++) {
                 gridTile = this._grid.Get(tiles[i].Row, tiles[i].Column);
-                if(gridTile) {
+                if (gridTile) {
                     tile = new eg.Graphics.Rectangle(gridTile.Position.X, gridTile.Position.Y, gridTile.Size.Width, gridTile.Size.Height);
                     tile.Border(2, "red");
                     this._grid.AddChild(tile);
@@ -25,20 +28,24 @@ var MapCreator;
                 }
             }
         };
+
         TileHighlighter.prototype.UnHighlightTiles = function (tiles) {
             var gridTile;
-            for(var i = 0; i < tiles.length; i++) {
+
+            for (var i = 0; i < tiles.length; i++) {
                 gridTile = this._grid.Get(tiles[i].Row, tiles[i].Column);
-                if(gridTile) {
-                    for(var j = 0; j < this.SelectedTiles.length; j++) {
-                        if(this.SelectedTiles[j].Position.Equivalent(gridTile.Position)) {
+
+                if (gridTile) {
+                    for (var j = 0; j < this.SelectedTiles.length; j++) {
+                        if (this.SelectedTiles[j].Position.Equivalent(gridTile.Position)) {
                             this._grid.RemoveChild(this.SelectedTiles[j]);
                             this.SelectedTiles.splice(j--, 1);
                             tiles.splice(i--, 1);
                             break;
                         }
                     }
-                    if(this.SelectedTiles.length === 0) {
+
+                    if (this.SelectedTiles.length === 0) {
                         break;
                     }
                 }
@@ -46,6 +53,6 @@ var MapCreator;
         };
         return TileHighlighter;
     })();
-    MapCreator.TileHighlighter = TileHighlighter;    
+    MapCreator.TileHighlighter = TileHighlighter;
 })(MapCreator || (MapCreator = {}));
 //@ sourceMappingURL=TileHighlighter.js.map

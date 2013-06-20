@@ -1,4 +1,5 @@
 var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
     d.prototype = new __();
@@ -11,11 +12,11 @@ var AudioHandling;
     var BurningFlame = (function (_super) {
         __extends(BurningFlame, _super);
         function BurningFlame(x, y) {
-                _super.call(this, "/Content/Samples/AudioHandling/images/burning_flame.png", x, y, 768, 128, 128, 128, 16, 6, function () {
-    });
+            _super.call(this, "/Content/Samples/AudioHandling/images/burning_flame.png", x, y, 768, 128, 128, 128, 16, 6, function () {
+            });
         }
         return BurningFlame;
     })(AudioHandling.Animation);
-    AudioHandling.BurningFlame = BurningFlame;    
+    AudioHandling.BurningFlame = BurningFlame;
 })(AudioHandling || (AudioHandling = {}));
 //@ sourceMappingURL=BurningFlame.js.map

@@ -18,46 +18,54 @@ var EndGate;
                 this._type = "CollisionManager";
                 this._collidables = [];
                 this._enabled = false;
+
                 this.OnCollision = new EndGate.EventHandler();
             }
-            CollisionManager.prototype.Monitor = /**
+            /**
             * Monitors the provided collidable and will trigger its Collided function and OnCollision event whenever a collision occurs with it and another Collidable.
             * If the provided collidable gets disposed it will automatically become unmonitored.
             * @param obj Collidable to monitor.
             */
-            function (obj) {
+            CollisionManager.prototype.Monitor = function (obj) {
                 var _this = this;
                 this._enabled = true;
+
                 obj.OnDisposed.Bind(function () {
                     _this.Unmonitor(obj);
                 });
+
                 this._collidables.push(obj);
             };
-            CollisionManager.prototype.Unmonitor = /**
+
+            /**
             * Unmonitors the provided collidable.  The Collided function and OnCollision event will no longer be triggered when an actual collision may have occured.
             * Disposing a monitored collidable will automatically be unmonitored
             * @param obj Collidable to unmonitor.
             */
-            function (obj) {
-                for(var i = 0; i < this._collidables.length; i++) {
-                    if(this._collidables[i]._id === obj._id) {
+            CollisionManager.prototype.Unmonitor = function (obj) {
+                for (var i = 0; i < this._collidables.length; i++) {
+                    if (this._collidables[i]._id === obj._id) {
                         this._collidables.splice(i, 1);
                         break;
                     }
                 }
             };
-            CollisionManager.prototype.Update = /**
+
+            /**
             * Checks for collisions within its monitored objects.  Games CollisionManager's automatically have their Update functions called at the beginning of each update loop.
             * @param gameTime The current game time object.
             */
-            function (gameTime) {
+            CollisionManager.prototype.Update = function (gameTime) {
                 var first, second;
-                if(this._enabled) {
-                    for(var i = 0; i < this._collidables.length; i++) {
+
+                if (this._enabled) {
+                    for (var i = 0; i < this._collidables.length; i++) {
                         first = this._collidables[i];
-                        for(var j = i + 1; j < this._collidables.length; j++) {
+
+                        for (var j = i + 1; j < this._collidables.length; j++) {
                             second = this._collidables[j];
-                            if(first.IsCollidingWith(second)) {
+
+                            if (first.IsCollidingWith(second)) {
                                 first.Collided(new Collision.Assets.CollisionData(first.Bounds.Position.Clone(), second));
                                 second.Collided(new Collision.Assets.CollisionData(second.Bounds.Position.Clone(), first));
                                 this.OnCollision.Trigger(first, second);
@@ -68,7 +76,7 @@ var EndGate;
             };
             return CollisionManager;
         })();
-        Collision.CollisionManager = CollisionManager;        
+        Collision.CollisionManager = CollisionManager;
     })(EndGate.Collision || (EndGate.Collision = {}));
     var Collision = EndGate.Collision;
 })(EndGate || (EndGate = {}));

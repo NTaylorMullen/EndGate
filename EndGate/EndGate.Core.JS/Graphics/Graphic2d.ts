@@ -35,7 +35,7 @@ module EndGate.Graphics.Abstractions {
 
         public _State: Assets._.Graphic2dState;
 
-        private static _zindexSort: (a: Graphic2d, b: Graphic2d) => number = (a: Graphic2d, b: Graphic2d) => { return a.ZIndex - b.ZIndex; };
+        public static _zindexSort: (a: Graphic2d, b: Graphic2d) => number = (a: Graphic2d, b: Graphic2d) => { return a.ZIndex - b.ZIndex; };
 
         private _children: Graphic2d[];
 

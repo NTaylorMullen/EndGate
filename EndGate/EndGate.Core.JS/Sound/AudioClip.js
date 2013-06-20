@@ -10,6 +10,7 @@ var EndGate;
             aac: 'audio/aac',
             m4a: 'audio/x-m4a'
         };
+
         /**
         * Defines a single audio clip that can be played, stopped or paused.
         */
@@ -20,33 +21,38 @@ var EndGate;
                 this._audio = document.createElement("audio");
                 this.SetAudioSource(source);
                 this.ApplySettings();
+
                 this.OnComplete = new EndGate.EventHandler();
             }
             AudioClip.prototype.Volume = function (percent) {
-                if(typeof percent !== "undefined") {
+                if (typeof percent !== "undefined") {
                     this._settings.Volume = percent;
                     this._audio.volume = Math.max(Math.min(percent / 100, 1), 0);
                 }
+
                 return this._settings.Volume;
             };
-            AudioClip.prototype.IsPlaying = /**
+
+            /**
             * Determines if the AudioClip is currently playing.
             */
-            function () {
+            AudioClip.prototype.IsPlaying = function () {
                 return !this._audio.paused;
             };
-            AudioClip.prototype.IsComplete = /**
+
+            /**
             * Determines if the AudioClip has completed.
             */
-            function () {
+            AudioClip.prototype.IsComplete = function () {
                 return this._audio.ended;
             };
-            AudioClip.prototype.Play = /**
+
+            /**
             * Plays the current audio clip.
             */
-            function () {
+            AudioClip.prototype.Play = function () {
                 var _this = this;
-                if(this._audio.readyState === 0) {
+                if (this._audio.readyState === 0) {
                     this._audio.addEventListener("canplay", function () {
                         _this._audio.play();
                     }, true);
@@ -54,19 +60,21 @@ var EndGate;
                     this._audio.play();
                 }
             };
-            AudioClip.prototype.Pause = /**
+
+            /**
             * Pauses the current audio clip.
             */
-            function () {
+            AudioClip.prototype.Pause = function () {
                 this._audio.pause();
             };
-            AudioClip.prototype.Seek = /**
+
+            /**
             * Seeks the audio clip to the provided time.
             * @param time The time to seek to.
             */
-            function (time) {
+            AudioClip.prototype.Seek = function (time) {
                 var _this = this;
-                if(this._audio.readyState === 0) {
+                if (this._audio.readyState === 0) {
                     this._audio.addEventListener("canplay", function () {
                         _this._audio.currentTime = time;
                     }, true);
@@ -74,44 +82,50 @@ var EndGate;
                     this._audio.currentTime = time;
                 }
             };
-            AudioClip.prototype.Stop = /**
+
+            /**
             * Stops the current audio clip and seeks back to time 0.
             */
-            function () {
+            AudioClip.prototype.Stop = function () {
                 this.Seek(0);
                 this._audio.pause();
             };
+
             AudioClip.prototype.SetAudioSource = function (source) {
                 var sourceHolder, sourceType;
-                // If we've passed in a list of sources
-                if(!(source instanceof Array)) {
-                    source = [
-                        source
-                    ];
+
+                if (!(source instanceof Array)) {
+                    source = [source];
                 }
-                for(var i = 0; i < source.length; i++) {
+
+                for (var i = 0; i < source.length; i++) {
                     sourceHolder = document.createElement("source");
                     sourceHolder.src = source[i];
+
                     sourceType = supportedAudioTypes[source[i].split('.').pop()];
-                    if(typeof sourceType !== "undefined") {
+
+                    if (typeof sourceType !== "undefined") {
                         sourceHolder.type = sourceType;
                     }
+
                     this._audio.appendChild(sourceHolder);
                 }
             };
+
             AudioClip.prototype.ApplySettings = function () {
                 var _this = this;
                 this._audio.loop = this._settings.Repeat;
                 this._audio.autoplay = this._settings.AutoPlay;
                 this._audio.preload = this._settings.Preload;
                 this.Volume(this._settings.Volume);
+
                 this._audio.addEventListener("ended", function (e) {
                     _this.OnComplete.Trigger(e);
                 }, true);
             };
             return AudioClip;
         })();
-        Sound.AudioClip = AudioClip;        
+        Sound.AudioClip = AudioClip;
     })(EndGate.Sound || (EndGate.Sound = {}));
     var Sound = EndGate.Sound;
 })(EndGate || (EndGate = {}));

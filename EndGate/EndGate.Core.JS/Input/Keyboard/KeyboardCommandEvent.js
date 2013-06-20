@@ -52,6 +52,7 @@ var EndGate;
             "122": "f11",
             "123": "f12"
         };
+
         /**
         * Defines a KeyboardCommandEvent object that represents when a command has been attempted.
         */
@@ -62,32 +63,37 @@ var EndGate;
             */
             function KeyboardCommandEvent(keyEvent) {
                 var code, character;
+
                 this.Modifiers = new Input.Assets.KeyboardModifiers(keyEvent.ctrlKey, keyEvent.altKey, keyEvent.shiftKey);
-                if(keyEvent.keyCode) {
+
+                if (keyEvent.keyCode) {
                     code = keyEvent.keyCode;
-                } else if(keyEvent.which) {
+                } else if (keyEvent.which) {
                     code = keyEvent.which;
                 }
-                if(!((character = String.fromCharCode(keyEvent.keyCode)) === keyEvent.key)) {
-                    if(!(character = specialKeys[code])) {
+
+                if (!((character = String.fromCharCode(keyEvent.keyCode)) === keyEvent.key)) {
+                    if (!(character = specialKeys[code])) {
                         character = String.fromCharCode(code).toLowerCase();
-                        if(this.Modifiers.Shift && shiftValues[character]) {
+
+                        if (this.Modifiers.Shift && shiftValues[character]) {
                             character = shiftValues[character];
                         }
                     }
                 }
+
                 this.Key = character;
             }
-            KeyboardCommandEvent.prototype.Matches = /**
+            /**
             * Determines if the KeyboardCommand matches the KeyboardCommandEvent
             * @param command The KeyboardCommand to check.
             */
-            function (command) {
+            KeyboardCommandEvent.prototype.Matches = function (command) {
                 return this.Key.toLowerCase() === command.Key.toLowerCase() && command.Modifiers.Equivalent(this.Modifiers);
             };
             return KeyboardCommandEvent;
         })();
-        Input.KeyboardCommandEvent = KeyboardCommandEvent;        
+        Input.KeyboardCommandEvent = KeyboardCommandEvent;
     })(EndGate.Input || (EndGate.Input = {}));
     var Input = EndGate.Input;
 })(EndGate || (EndGate = {}));

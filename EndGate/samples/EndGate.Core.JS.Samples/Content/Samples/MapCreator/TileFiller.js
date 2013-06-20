@@ -12,26 +12,32 @@ var MapCreator;
         TileFiller.prototype.ChangeGrid = function (grid) {
             this._grid = grid;
         };
+
         TileFiller.prototype.Fill = function (entries, sources) {
-            if(sources.length === 0) {
+            if (sources.length === 0) {
                 return;
             }
+
             var previousEntry, sourceIndex = 0;
-            for(var i = 0; i < entries.length; i++) {
+
+            for (var i = 0; i < entries.length; i++) {
                 previousEntry = this._grid.Get(entries[i].Row, entries[i].Column);
-                if(previousEntry) {
+
+                if (previousEntry) {
                     this._grid.Clear(entries[i].Row, entries[i].Column);
                 }
+
                 this._grid.Fill(entries[i].Row, entries[i].Column, new eg.Graphics.Sprite2d(0, 0, sources[sourceIndex++ % sources.length], this._tileWidth, this._tileHeight));
             }
         };
+
         TileFiller.prototype.Clear = function (entries) {
-            for(var i = 0; i < entries.length; i++) {
+            for (var i = 0; i < entries.length; i++) {
                 this._grid.Clear(entries[i].Row, entries[i].Column);
             }
         };
         return TileFiller;
     })();
-    MapCreator.TileFiller = TileFiller;    
+    MapCreator.TileFiller = TileFiller;
 })(MapCreator || (MapCreator = {}));
 //@ sourceMappingURL=TileFiller.js.map

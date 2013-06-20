@@ -4,7 +4,7 @@
 // Wrap in module to keep code out of global scope
 module AudioHandling {
 
-    export class BurningFlame implements eg.IUpdateable extends Animation {
+    export class BurningFlame extends Animation implements eg.IUpdateable {
         constructor(x: number, y: number) {
             super("/Content/Samples/AudioHandling/images/burning_flame.png", x, y, 768, 128, 128, 128, 16, 6, () => { });
         }

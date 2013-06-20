@@ -86,7 +86,7 @@ module EndGate._ {
             this._updateCallbacks[game._ID] = updateCallback;            
 
             return updateCallback;
-        };
+        }
 
         private CreateAndCacheDrawCallback(game: Game): Loopers.LooperCallback {
             var drawCallback = new Loopers.LooperCallback(() => {

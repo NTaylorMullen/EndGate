@@ -15,6 +15,6 @@ var RawRPG;
         }
         return Player;
     })();
-    RawRPG.Player = Player;    
+    RawRPG.Player = Player;
 })(RawRPG || (RawRPG = {}));
 //@ sourceMappingURL=Player.js.map

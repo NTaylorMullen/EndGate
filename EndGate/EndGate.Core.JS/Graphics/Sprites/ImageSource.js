@@ -16,51 +16,59 @@ var EndGate;
                     if (typeof clipHeight === "undefined") { clipHeight = height; }
                     var _this = this;
                     var setSize = typeof width !== "undefined";
+
                     this._loaded = false;
                     this.OnLoaded = new EndGate.EventHandler();
                     this.Source = new Image();
+
                     this.Source.onload = function () {
                         _this._loaded = true;
-                        if(!setSize) {
+
+                        if (!setSize) {
                             _this._size = new EndGate.Size2d(_this.Source.width, _this.Source.height);
                             _this.ClipLocation = EndGate.Vector2d.Zero();
                             _this.ClipSize = _this._size.Clone();
                         }
+
                         _this.OnLoaded.Trigger(_this);
                     };
+
                     this.Source.src = imageLocation;
                     this._imageLocation = imageLocation;
-                    if(setSize) {
+
+                    if (setSize) {
                         this._size = new EndGate.Size2d(width, height);
                         this.ClipLocation = new EndGate.Vector2d(clipX, clipY);
                         this.ClipSize = new EndGate.Size2d(clipWidth, clipHeight);
                     }
                 }
-                ImageSource.prototype.Size = /**
+                /**
                 * Returns the base Size of the image source.
                 */
-                function () {
+                ImageSource.prototype.Size = function () {
                     return this._size.Clone();
                 };
-                ImageSource.prototype.Loaded = /**
+
+                /**
                 * Determines if the ImageSource has been loaded.
                 */
-                function () {
+                ImageSource.prototype.Loaded = function () {
                     return this._loaded;
                 };
-                ImageSource.prototype.Extract = /**
+
+                /**
                 * Returns an ImageSource that is extracted from the current ImageSource based on the provided clip location and clip size.
                 * @param clipX The horizontal location of the clip.
                 * @param clipY The vertical location of the clip.
                 * @param clipWidth The width of the clip.
                 * @param clipHeight The height of the clip.
                 */
-                function (clipX, clipY, clipWidth, clipHeight) {
+                ImageSource.prototype.Extract = function (clipX, clipY, clipWidth, clipHeight) {
                     return new ImageSource(this._imageLocation, this._size.Width, this._size.Height, clipX, clipY, clipWidth, clipHeight);
                 };
                 return ImageSource;
             })();
-            Assets.ImageSource = ImageSource;            
+            Assets.ImageSource = ImageSource;
         })(Graphics.Assets || (Graphics.Assets = {}));
         var Assets = Graphics.Assets;
     })(EndGate.Graphics || (EndGate.Graphics = {}));

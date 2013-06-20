@@ -3,7 +3,7 @@
 
 module EndGate._.Loopers {
 
-    export class TimedCallback implements ITyped extends LooperCallback {
+    export class TimedCallback extends LooperCallback implements ITyped {
         public _type: string = "TimedCallback";
 
         constructor(fps: number, callback: Function) {

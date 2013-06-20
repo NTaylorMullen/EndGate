@@ -1,4 +1,5 @@
 var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
     d.prototype = new __();
@@ -12,14 +13,16 @@ var Texts;
     var Game = (function (_super) {
         __extends(Game, _super);
         function Game(_canvas, targetAnimators, defaultPosition, defaultRotation, defaultOpacity, _syncSliders) {
-                _super.call(this, _canvas);
+            _super.call(this, _canvas);
             this._canvas = _canvas;
             this._syncSliders = _syncSliders;
             var that = this;
+
             this.Text = new eg.Graphics.Text2d(defaultPosition.X, defaultPosition.Y, "Hello World!");
             this.Text.FontSettings().FontSize(20);
             this.Text.FontSettings().FontFamily(eg.Graphics.Assets.FontFamily.TimesNewRoman);
             this.Scene.Add(this.Text);
+
             this._textAnimator = new Texts.TextAnimator(targetAnimators, defaultPosition, defaultRotation, defaultOpacity, this._syncSliders);
         }
         Game.prototype.Update = function (gameTime) {
@@ -27,6 +30,13 @@ var Texts;
         };
         return Game;
     })(eg.Game);
-    Texts.Game = Game;    
+    Texts.Game = Game;
 })(Texts || (Texts = {}));
+
+var Baz = Foo;
+
+var d;
+var b;
+var a = new Baz.Bar();
+var c = new Baz.Bar();
 //@ sourceMappingURL=Game.js.map

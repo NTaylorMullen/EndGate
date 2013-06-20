@@ -79,7 +79,7 @@ module EndGate.Graphics {
         * @param repeat Whether to play the animation on repeat.
         */
         public Play(repeat: bool): void;
-        public Play(repeat?: bool = false): void {
+        public Play(repeat: bool = false): void {
             this._lastStepAt = new Date().getTime();
             this._repeating = repeat;
             this._playing = true;

@@ -4,7 +4,7 @@
 // Wrap in module to keep code out of global scope
 module RawRPG {
 
-    export class Knight implements eg.IUpdateable extends eg.Collision.Collidable {
+    export class Knight extends eg.Collision.Collidable implements eg.IUpdateable {
         // Even though our knight is drawn as a rectangle we have a hit box of a circle
         public static HitboxRadius: number = 64;
         // How fast our knight will move

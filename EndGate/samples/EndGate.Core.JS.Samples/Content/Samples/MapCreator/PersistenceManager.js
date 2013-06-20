@@ -6,11 +6,12 @@ var MapCreator;
 (function (MapCreator) {
     var PersistenceManager = (function () {
         function PersistenceManager(utilities, _getLayers, _spriteSheetUrl, _buildResourceMap) {
+            var _this = this;
             this._getLayers = _getLayers;
             this._spriteSheetUrl = _spriteSheetUrl;
             this._buildResourceMap = _buildResourceMap;
-            var _this = this;
             var saveButton = $("#save"), saveName = $("#saveName"), saveDialog = $("#saveDialog"), layerMaps = [], that = this;
+
             saveButton.click(function () {
                 _this.SaveMap(saveName.val());
                 saveDialog.html("Last saved at: " + new Date().toTimeString());
@@ -18,17 +19,21 @@ var MapCreator;
         }
         PersistenceManager.prototype.BuildResourceMaps = function () {
             var layerMaps = [], layers = this._getLayers();
-            for(var i = 0; i < layers.length; i++) {
+
+            for (var i = 0; i < layers.length; i++) {
                 layerMaps.push({
                     Layer: this._buildResourceMap(layers[i].Layer),
                     Name: layers[i].Name
                 });
             }
+
             return layerMaps;
         };
+
         PersistenceManager.prototype.SaveMap = function (saveName, namespace) {
             if (typeof namespace === "undefined") { namespace = "mapBuilder"; }
             var layerMaps = this.BuildResourceMaps(), layers = this._getLayers();
+
             var settings = {
                 Rows: layers[0].Layer.Rows(),
                 Columns: layers[0].Layer.Columns(),
@@ -36,22 +41,26 @@ var MapCreator;
                 SpriteSheetUrl: this._spriteSheetUrl,
                 Layers: layerMaps
             }, maps = localStorage.getItem(namespace);
-            if(!maps) {
-                maps = {
-                };
+
+            if (!maps) {
+                maps = {};
             } else {
                 maps = JSON.parse(maps);
             }
+
             maps[saveName] = settings;
+
             localStorage.setItem(namespace, JSON.stringify(maps));
         };
-        PersistenceManager.GetSavedMaps = function GetSavedMaps(namespace) {
+
+        PersistenceManager.GetSavedMaps = function (namespace) {
             if (typeof namespace === "undefined") { namespace = "mapBuilder"; }
             var strMaps = localStorage.getItem(namespace), maps = JSON.parse(strMaps);
+
             return maps;
         };
         return PersistenceManager;
     })();
-    MapCreator.PersistenceManager = PersistenceManager;    
+    MapCreator.PersistenceManager = PersistenceManager;
 })(MapCreator || (MapCreator = {}));
 //@ sourceMappingURL=PersistenceManager.js.map

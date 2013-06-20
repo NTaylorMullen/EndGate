@@ -8,7 +8,7 @@ var EndGate;
             }
             return MinMax;
         })();
-        _.MinMax = MinMax;        
+        _.MinMax = MinMax;
     })(EndGate._ || (EndGate._ = {}));
     var _ = EndGate._;
 })(EndGate || (EndGate = {}));

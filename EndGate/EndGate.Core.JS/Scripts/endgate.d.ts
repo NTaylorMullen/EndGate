@@ -1,4 +1,4 @@
-module EndGate {
+declare module EndGate {
     /**
     * Represents a Disposable object with a Dispose method.
     */
@@ -9,16 +9,16 @@ module EndGate {
         Dispose(): void;
     }
 }
-module EndGate._ {
+declare module EndGate._ {
     interface ITyped {
         _type: string;
     }
 }
-module EndGate {
+declare module EndGate {
     /**
     * Defines a game time class that is used to manage update timing execution as well as total game time.
     */
-    class GameTime implements _.ITyped {
+    class GameTime implements EndGate._.ITyped {
         public _type: string;
         /**
         * The current date time at the start of the Update.
@@ -47,7 +47,7 @@ module EndGate {
         public Update(): void;
     }
 }
-module EndGate {
+declare module EndGate {
     /**
     * Represents an object that can be updated.
     */
@@ -56,17 +56,17 @@ module EndGate {
         * Updates the object.
         * @param gameTime The current game time object.
         */
-        Update(gameTime: GameTime): void;
+        Update(gameTime: EndGate.GameTime): void;
     }
 }
 interface Math {
     roundTo(val?: number, decimals?: number): number;
 }
-module EndGate {
+declare module EndGate {
     /**
     * Defines a two dimensional vector object which specifies an X and Y.
     */
-    class Vector2d implements _.ITyped {
+    class Vector2d implements EndGate._.ITyped {
         public _type: string;
         /**
         * Gets or sets the X component of the vector.
@@ -169,7 +169,7 @@ module EndGate {
         * Returns a Vector2d that is the result of adding the X and Y of this Vector2d to the Width and Height of the provided Size2d.
         * @param val The Vector2d to add.
         */
-        public Add(val: Size2d): Vector2d;
+        public Add(val: EndGate.Size2d): Vector2d;
         /**
         * Returns a Vector2d that is the result of adding the X and Y of this Vector2d to the provided number.
         * @param val The number to add.
@@ -184,7 +184,7 @@ module EndGate {
         * Returns a Vector2d that is the result of multiplying the X and Y of this Vector2d by the Width and Height of the provided Size2d.
         * @param val The Vector2d to multiply.
         */
-        public Multiply(val: Size2d): Vector2d;
+        public Multiply(val: EndGate.Size2d): Vector2d;
         /**
         * Returns a Vector2d that is the result of multiplying the X and Y of this Vector2d by the provided number.
         * @param val The number to multiply.
@@ -199,7 +199,7 @@ module EndGate {
         * Returns a Vector2d that is the result of subtracting the X and Y of this Vector2d by the Width and Height of the provided Size2d.
         * @param val The Vector2d to subtract.
         */
-        public Subtract(val: Size2d): Vector2d;
+        public Subtract(val: EndGate.Size2d): Vector2d;
         /**
         * Returns a Vector2d that is the result of subtracting the X and Y of this Vector2d by the provided number.
         * @param val The number to subtract.
@@ -214,7 +214,7 @@ module EndGate {
         * Returns a Vector2d that is the result of subtracting the X and Y of this Vector2d from the Width and Height of the provided Size2d.
         * @param val The Vector2d to subtract from.
         */
-        public SubtractFrom(val: Size2d): Vector2d;
+        public SubtractFrom(val: EndGate.Size2d): Vector2d;
         /**
         * Returns a Vector2d that is the result of subtracting the X and Y of this Vector2d from the provided number.
         * @param val The number to subtract from.
@@ -229,7 +229,7 @@ module EndGate {
         * Returns a Vector2d that is the result of dividing the X and Y of this Vector2d by the Width and Height of the provided Size2d.
         * @param val The Vector2d to divide.
         */
-        public Divide(val: Size2d): Vector2d;
+        public Divide(val: EndGate.Size2d): Vector2d;
         /**
         * Returns a Vector2d that is the result of dividing the X and Y of this Vector2d by the provided number.
         * @param val The number to divide.
@@ -244,7 +244,7 @@ module EndGate {
         * Returns a Vector2d that is the result of dividing the X and Y of this Vector2d from the Width and Height of the provided Size2d.
         * @param val The Vector2d to divide from.
         */
-        public DivideFrom(val: Size2d): Vector2d;
+        public DivideFrom(val: EndGate.Size2d): Vector2d;
         /**
         * Returns a Vector2d that is the result of dividing the X and Y of this Vector2d from the provided number.
         * @param val The number to divide from.
@@ -253,7 +253,7 @@ module EndGate {
         /**
         * Determines whether this Vector2d's X and Y components are zero.
         */
-        public IsZero(): bool;
+        public IsZero(): boolean;
         /**
         * Returns a Vector2d that is the negated version of this Vector2d.
         */
@@ -262,7 +262,7 @@ module EndGate {
         * Determines whether this Vector2d has the same X and Y of the provided Vector2d.
         * @param vector The Vector2d to compare the current Vector2d to.
         */
-        public Equivalent(vector: Vector2d): bool;
+        public Equivalent(vector: Vector2d): boolean;
         /**
         * Returns a Vector2d that has an identical X and Y component as the current Vector2d.
         */
@@ -273,11 +273,11 @@ module EndGate {
         public toString(): string;
     }
 }
-module EndGate {
+declare module EndGate {
     /**
     * Defines a two dimensional size object which specifies a Width and Height.
     */
-    class Size2d implements _.ITyped {
+    class Size2d implements EndGate._.ITyped {
         public _type: string;
         /**
         * Gets or sets the horizontal component of this Size structure.
@@ -337,7 +337,7 @@ module EndGate {
         * Returns a Size2d that is the result of adding the Width and Height of this Size2d to the X and Y of a Vector2d.
         * @param val The Vector2d to add.
         */
-        public Add(val: Vector2d): Size2d;
+        public Add(val: EndGate.Vector2d): Size2d;
         /**
         * Returns a Size2d that is the result of adding the Width and Height of this Size2d to a number.
         * @param val The number to add.
@@ -352,7 +352,7 @@ module EndGate {
         * Returns a Size2d that is the result of multiplying the Width and Height of this Size2d by the X and Y of a Vector2d.
         * @param val The Vector2d to multiply.
         */
-        public Multiply(val: Vector2d): Size2d;
+        public Multiply(val: EndGate.Vector2d): Size2d;
         /**
         * Returns a Size2d that is the result of multiplying the Width and Height of this Size2d by a number.
         * @param val The number to multiply.
@@ -367,7 +367,7 @@ module EndGate {
         * Returns a Size2d that is the result of subtracting the Width and Height of this Size2d by the X and Y of a Vector2d.
         * @param val The Vector2d to subtract.
         */
-        public Subtract(val: Vector2d): Size2d;
+        public Subtract(val: EndGate.Vector2d): Size2d;
         /**
         * Returns a Size2d that is the result of subtracting the Width and Height of this Size2d by a number.
         * @param val The number to subtract.
@@ -382,7 +382,7 @@ module EndGate {
         * Returns a Size2d that is the result of subtracting the Width and Height of this Size2d from the X and Y of a Vector2d.
         * @param val The Vector2d to subtract from.
         */
-        public SubtractFrom(val: Vector2d): Size2d;
+        public SubtractFrom(val: EndGate.Vector2d): Size2d;
         /**
         * Returns a Size2d that is the result of subtracting the Width and Height of this Size2d from a number.
         * @param val The number to subtract from.
@@ -397,7 +397,7 @@ module EndGate {
         * Returns a Size2d that is the result of dividing the Width and Height of this Size2d by the X and Y of a Vector2d.
         * @param val The Vector2d to divide.
         */
-        public Divide(val: Vector2d): Size2d;
+        public Divide(val: EndGate.Vector2d): Size2d;
         /**
         * Returns a Size2d that is the result of dividing the Width and Height of this Size2d by a number.
         * @param val The number to divide.
@@ -412,7 +412,7 @@ module EndGate {
         * Returns a Size2d that is the result of dividing the Width and Height of this Size2d from the X and Y of a Vector2d.
         * @param val The Vector2d to divide from.
         */
-        public DivideFrom(val: Vector2d): Size2d;
+        public DivideFrom(val: EndGate.Vector2d): Size2d;
         /**
         * Returns a Size2d that is the result of dividing the Width and Height of this Size2d from a number.
         * @param val The number to divide from.
@@ -426,7 +426,7 @@ module EndGate {
         * Determines whether this Size2d has the same Width and Height of another Size2d.
         * @param size The Size2d to compare the current Size2d to.
         */
-        public Equivalent(size: Size2d): bool;
+        public Equivalent(size: Size2d): boolean;
         /**
         * Returns a Size2d that has identical Width's and Height's as the current Size2d.
         */
@@ -437,7 +437,7 @@ module EndGate {
         public toString(): string;
     }
 }
-module EndGate {
+declare module EndGate {
     /**
     * Represents an object that has a position and rotation.
     */
@@ -445,30 +445,30 @@ module EndGate {
         /**
         * Gets or sets the location of the moveable object.
         */
-        Position: Vector2d;
+        Position: EndGate.Vector2d;
         /**
         * Gets or sets the rotation of the moveable object.
         */
         Rotation: number;
     }
 }
-module EndGate._ {
+declare module EndGate._ {
     class MinMax {
         public Min: number;
         public Max: number;
         constructor(min: number, max: number);
     }
 }
-module EndGate._ {
+declare module EndGate._ {
     class Vector2dHelpers {
-        static GetMinMaxProjections(axis: Vector2d, vertices: Vector2d[]): MinMax;
+        static GetMinMaxProjections(axis: EndGate.Vector2d, vertices: EndGate.Vector2d[]): _.MinMax;
     }
 }
-module EndGate.Bounds {
+declare module EndGate.Bounds {
     /**
     * Defines a circle that can be used to detect intersections.
     */
-    class BoundingCircle extends Abstractions.Bounds2d implements _.ITyped {
+    class BoundingCircle extends Bounds.Abstractions.Bounds2d implements EndGate._.ITyped {
         public _type: string;
         public _boundsType: string;
         /**
@@ -480,7 +480,7 @@ module EndGate.Bounds {
         * @param position Initial Position of the BoundingCircle.
         * @param radius Initial Radius of the BoundingCircle.
         */
-        constructor(position: Vector2d, radius: number);
+        constructor(position: EndGate.Vector2d, radius: number);
         /**
         * Scales the radius of the BoundingCircle.
         * @param scale Value to multiply the radius by.
@@ -498,36 +498,36 @@ module EndGate.Bounds {
         * Determines if the current BoundingCircle is intersecting the provided BoundingCircle.
         * @param circle BoundingCircle to check intersection with.
         */
-        public IntersectsCircle(circle: BoundingCircle): bool;
+        public IntersectsCircle(circle: BoundingCircle): boolean;
         /**
         * Determines if the current BoundingCircle is intersecting the provided BoundingRectangle.
         * @param rectangle BoundingRectangle to check intersection with.
         */
-        public IntersectsRectangle(rectangle: BoundingRectangle): bool;
+        public IntersectsRectangle(rectangle: Bounds.BoundingRectangle): boolean;
         /**
         * Determines if the current BoundingCircle contains the provided Vector2d.
         * @param point A point.
         */
-        public ContainsPoint(point: Vector2d): bool;
+        public ContainsPoint(point: EndGate.Vector2d): boolean;
     }
 }
-module EndGate.Bounds {
+declare module EndGate.Bounds {
     /**
     * Defines a rectangle that can be used to detect intersections.
     */
-    class BoundingRectangle extends Abstractions.Bounds2d implements _.ITyped {
+    class BoundingRectangle extends Bounds.Abstractions.Bounds2d implements EndGate._.ITyped {
         public _type: string;
         public _boundsType: string;
         /**
         * Gets or sets the Size of the rectangle.
         */
-        public Size: Size2d;
+        public Size: EndGate.Size2d;
         /**
         * Creates a new instance of BoundingRectangle.
         * @param position Initial Position of the BoundingRectangle.
         * @param size Initial Size of the BoundingRectangle.
         */
-        constructor(position: Vector2d, size: Size2d);
+        constructor(position: EndGate.Vector2d, size: EndGate.Size2d);
         /**
         * Scales the width and height of the BoundingRectangle.
         * @param x Value to multiply the width by.
@@ -537,50 +537,50 @@ module EndGate.Bounds {
         /**
         * Returns a list of vertices that are the locations of each corner of the BoundingRectangle. Format: [TopLeft, TopRight, BotLeft, BotRight].
         */
-        public Corners(): Vector2d[];
+        public Corners(): EndGate.Vector2d[];
         /**
         * Calculates the top left corner of the BoundingRectangle.
         */
-        public TopLeft(): Vector2d;
+        public TopLeft(): EndGate.Vector2d;
         /**
         * Calculates the top right corner of the BoundingRectangle.
         */
-        public TopRight(): Vector2d;
+        public TopRight(): EndGate.Vector2d;
         /**
         * Calculates the bottom left corner of the BoundingRectangle.
         */
-        public BotLeft(): Vector2d;
+        public BotLeft(): EndGate.Vector2d;
         /**
         * Calculates the bottom right corner of the BoundingRectangle.
         */
-        public BotRight(): Vector2d;
+        public BotRight(): EndGate.Vector2d;
         /**
         * Determines if the current BoundingRectangle is intersecting the provided BoundingCircle.
         * @param circle BoundingCircle to check intersection with.
         */
-        public IntersectsCircle(circle: BoundingCircle): bool;
+        public IntersectsCircle(circle: Bounds.BoundingCircle): boolean;
         /**
         * Determines if the current BoundingRectangle is intersecting the provided BoundingRectangle.
         * @param rectangle BoundingRectangle to check intersection with.
         */
-        public IntersectsRectangle(rectangle: BoundingRectangle): bool;
+        public IntersectsRectangle(rectangle: BoundingRectangle): boolean;
         /**
         * Determines if the current BoundingRectangle contains the provided Vector2d.
         * @param point A point.
         */
-        public ContainsPoint(point: Vector2d): bool;
+        public ContainsPoint(point: EndGate.Vector2d): boolean;
     }
 }
-module EndGate.Bounds.Abstractions {
+declare module EndGate.Bounds.Abstractions {
     /**
     * Abstract bounds type that is used to detect intersections.
     */
-    class Bounds2d implements IMoveable {
+    class Bounds2d implements EndGate.IMoveable {
         public _boundsType: string;
         /**
         * Gets or sets the Position of the bounds.
         */
-        public Position: Vector2d;
+        public Position: EndGate.Vector2d;
         /**
         * Gets or sets the Rotation of the bounds.
         */
@@ -589,13 +589,13 @@ module EndGate.Bounds.Abstractions {
         * Should only ever be called by derived classes.
         * @param position Initial Position of the current bounded object.
         */
-        constructor(position: Vector2d);
+        constructor(position: EndGate.Vector2d);
         /**
         * Should only ever be called by derived classes.
         * @param position Initial Position of the current bounded object.
         * @param rotation Initial Rotation of the current bounded object.
         */
-        constructor(position: Vector2d, rotation: number);
+        constructor(position: EndGate.Vector2d, rotation: number);
         /**
         * Abstract: Scales the size of the bounded object.
         * @param x Value to multiply the horizontal component by.
@@ -606,35 +606,35 @@ module EndGate.Bounds.Abstractions {
         * Abstract: Determines if the current bounded object contains the provided Vector2d.
         * @param point A point.
         */
-        public ContainsPoint(point: Vector2d): bool;
+        public ContainsPoint(point: EndGate.Vector2d): boolean;
         /**
         * Determines if the current bounded object intersects another bounded object.
         * @param obj Bounding object to check collision with.
         */
-        public Intersects(obj: Bounds2d): bool;
+        public Intersects(obj: Bounds2d): boolean;
         /**
         * Determines if the current bounded object is intersecting the provided BoundingCircle.
         * @param circle BoundingCircle to check intersection with.
         */
-        public Intersects(circle: BoundingCircle): bool;
+        public Intersects(circle: Bounds.BoundingCircle): boolean;
         /**
         * Determines if the current bounded object is intersecting the provided BoundingRectangle.
         * @param rectangle BoundingRectangle to check intersection with.
         */
-        public Intersects(rectangle: BoundingRectangle): bool;
+        public Intersects(rectangle: Bounds.BoundingRectangle): boolean;
         /**
         * Abstract: Determines if the current bounded object is intersecting the provided BoundingCircle.
         * @param circle BoundingCircle to check intersection with.
         */
-        public IntersectsCircle(circle: BoundingCircle): bool;
+        public IntersectsCircle(circle: Bounds.BoundingCircle): boolean;
         /**
         * Abstract: Determines if the current bounded object is intersecting the provided BoundingRectangle.
         * @param rectangle BoundingRectangle to check intersection with.
         */
-        public IntersectsRectangle(rectangle: BoundingRectangle): bool;
+        public IntersectsRectangle(rectangle: Bounds.BoundingRectangle): boolean;
     }
 }
-module EndGate.Rendering {
+declare module EndGate.Rendering {
     /**
     * Represents a renderable object that can be drawn to a canvas.
     */
@@ -646,7 +646,7 @@ module EndGate.Rendering {
         /**
         * Gets or sets the Visible property.  The Visible property determines whether the renderable will be drawn to the game screen.
         */
-        Visible: bool;
+        Visible: boolean;
         /**
         * Draws the renderable to the provided canvas context
         * @param context The canvas context to draw the renderable onto.
@@ -655,11 +655,11 @@ module EndGate.Rendering {
         /**
         * Returns the bounding area that represents where the renderable will draw.
         */
-        GetDrawBounds(): Bounds.Abstractions.Bounds2d;
+        GetDrawBounds(): EndGate.Bounds.Abstractions.Bounds2d;
     }
 }
-module EndGate._.Loopers {
-    class LooperCallback implements ITyped {
+declare module EndGate._.Loopers {
+    class LooperCallback implements _.ITyped {
         public _type: string;
         private static _ids;
         constructor(callback: Function);
@@ -667,30 +667,30 @@ module EndGate._.Loopers {
         public ID: number;
     }
 }
-module EndGate._.Loopers {
-    interface ILooper extends IDisposable, ITyped {
+declare module EndGate._.Loopers {
+    interface ILooper extends EndGate.IDisposable, _.ITyped {
         Start(): void;
-        AddCallback(callback: LooperCallback): void;
-        RemoveCallback(callback: LooperCallback): void;
+        AddCallback(callback: Loopers.LooperCallback): void;
+        RemoveCallback(callback: Loopers.LooperCallback): void;
     }
 }
-module EndGate._.Loopers {
-    class TimedCallback extends LooperCallback implements ITyped {
+declare module EndGate._.Loopers {
+    class TimedCallback extends Loopers.LooperCallback implements _.ITyped {
         public _type: string;
         constructor(fps: number, callback: Function);
         public Fps: number;
         public TimeoutID: number;
-        public Active: bool;
+        public Active: boolean;
     }
 }
-module EndGate._.Loopers {
-    class Looper implements ILooper {
+declare module EndGate._.Loopers {
+    class Looper implements Loopers.ILooper {
         public _type: string;
         private _running;
         private _callbacks;
         constructor();
-        public AddCallback(timedCallback: TimedCallback): void;
-        public RemoveCallback(timedCallback: TimedCallback): void;
+        public AddCallback(timedCallback: Loopers.TimedCallback): void;
+        public RemoveCallback(timedCallback: Loopers.TimedCallback): void;
         public Start(): void;
         private Run();
         private Loop(timedCallback);
@@ -700,8 +700,8 @@ module EndGate._.Loopers {
 interface Window {
     OnRepaintCompleted(callback: Function): void;
 }
-module EndGate._.Loopers {
-    class RepaintLooper implements ILooper {
+declare module EndGate._.Loopers {
+    class RepaintLooper implements Loopers.ILooper {
         public _type: string;
         private _running;
         private _callbacksModified;
@@ -709,12 +709,12 @@ module EndGate._.Loopers {
         constructor();
         public Start(): void;
         private Run();
-        public AddCallback(looperCallback: LooperCallback): void;
-        public RemoveCallback(looperCallback: LooperCallback): void;
+        public AddCallback(looperCallback: Loopers.LooperCallback): void;
+        public RemoveCallback(looperCallback: Loopers.LooperCallback): void;
         public Dispose(): void;
     }
 }
-module EndGate {
+declare module EndGate {
     /**
     * Defines a GameConfiguration object that is used to represent the current state of a Game object.
     */
@@ -738,11 +738,11 @@ module EndGate {
         public UpdateRate(updateRate: number): number;
     }
 }
-module EndGate {
+declare module EndGate {
     /**
     * Defines an event handler object that can maintain bound functions and trigger them on demand.
     */
-    class EventHandler implements _.ITyped {
+    class EventHandler implements EndGate._.ITyped {
         public _type: string;
         private _actions;
         private _hasBindings;
@@ -763,7 +763,7 @@ module EndGate {
         /**
         * Determines if the EventHandler has active bindings.
         */
-        public HasBindings(): bool;
+        public HasBindings(): boolean;
         /**
         * Executes all bound functions and passes the provided args to each.
         * @param args Arguments to pass to each bound function.
@@ -771,7 +771,7 @@ module EndGate {
         public Trigger(...args: any[]): void;
     }
 }
-module EndGate.Collision.Assets {
+declare module EndGate.Collision.Assets {
     /**
     * Defines a data object that is used to describe a collision event.
     */
@@ -779,67 +779,67 @@ module EndGate.Collision.Assets {
         /**
         * Where the collision occurred.
         */
-        public At: Vector2d;
+        public At: EndGate.Vector2d;
         /**
         * Who collided with you.
         */
-        public With: Collidable;
+        public With: Collision.Collidable;
         /**
         * Creates a new instance of the CollisionData object.
         * @param at Initial value of the At component of CollisionData.
         * @param w Initial value of the With component of CollisionData.
         */
-        constructor(at: Vector2d, w: Collidable);
+        constructor(at: EndGate.Vector2d, w: Collision.Collidable);
     }
 }
-module EndGate.Collision {
+declare module EndGate.Collision {
     /**
     * Defines a collidable object that can be used to detect collisions with other objects.
     */
-    class Collidable implements IDisposable, _.ITyped {
+    class Collidable implements EndGate.IDisposable, EndGate._.ITyped {
         public _type: string;
         public _id: number;
         /**
         * Gets or sets the Bounds of the collidable.
         */
-        public Bounds: Bounds.Abstractions.Bounds2d;
+        public Bounds: EndGate.Bounds.Abstractions.Bounds2d;
         private static _collidableIDs;
         private _disposed;
         /**
         * Creates a new instance of Collidable.
         * @param bounds Initial bounds for the Collidable.
         */
-        constructor(bounds: Bounds.Abstractions.Bounds2d);
+        constructor(bounds: EndGate.Bounds.Abstractions.Bounds2d);
         /**
         * Event: Triggered when a collision happens.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes a CollisionData object to bound functions.
         */
-        public OnCollision: EventHandler;
+        public OnCollision: EndGate.EventHandler;
         /**
         * Event: Triggered when a Collidable has been disposed.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
-        public OnDisposed: EventHandler;
+        public OnDisposed: EndGate.EventHandler;
         /**
         * Determines if the provided collidable is colliding with this Collidable.
         * @param other Collidable to check collision with.
         */
-        public IsCollidingWith(other: Collidable): bool;
+        public IsCollidingWith(other: Collidable): boolean;
         /**
         * Triggers the OnCollision event.  Can also be overridden from derived classes to be called when a collision occurs if the collidable is being used with a CollisionManager
         * @param data Collision information related to the collision.
         */
-        public Collided(data: Assets.CollisionData): void;
+        public Collided(data: Collision.Assets.CollisionData): void;
         /**
         * Triggers the OnDisposed event.  If this Collidable is used with a CollisionManager it will be unmonitored when disposed.
         */
         public Dispose(): void;
     }
 }
-module EndGate.Collision {
+declare module EndGate.Collision {
     /**
     * Defines a manager that will check for collisions between objects that it is monitoring.
     */
-    class CollisionManager implements IUpdateable, _.ITyped {
+    class CollisionManager implements EndGate.IUpdateable, EndGate._.ITyped {
         public _type: string;
         private _collidables;
         private _enabled;
@@ -851,27 +851,27 @@ module EndGate.Collision {
         * Event: Triggered when a collision happens among two of the monitored objects.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes two CollisionData objects to bound functions.
         */
-        public OnCollision: EventHandler;
+        public OnCollision: EndGate.EventHandler;
         /**
         * Monitors the provided collidable and will trigger its Collided function and OnCollision event whenever a collision occurs with it and another Collidable.
         * If the provided collidable gets disposed it will automatically become unmonitored.
         * @param obj Collidable to monitor.
         */
-        public Monitor(obj: Collidable): void;
+        public Monitor(obj: Collision.Collidable): void;
         /**
         * Unmonitors the provided collidable.  The Collided function and OnCollision event will no longer be triggered when an actual collision may have occured.
         * Disposing a monitored collidable will automatically be unmonitored
         * @param obj Collidable to unmonitor.
         */
-        public Unmonitor(obj: Collidable): void;
+        public Unmonitor(obj: Collision.Collidable): void;
         /**
         * Checks for collisions within its monitored objects.  Games CollisionManager's automatically have their Update functions called at the beginning of each update loop.
         * @param gameTime The current game time object.
         */
-        public Update(gameTime: GameTime): void;
+        public Update(gameTime: EndGate.GameTime): void;
     }
 }
-module EndGate.Graphics.Assets._ {
+declare module EndGate.Graphics.Assets._ {
     class Graphic2dState {
         private _cachedState;
         constructor();
@@ -894,11 +894,11 @@ module EndGate.Graphics.Assets._ {
         private GetOrSetCache(property, value);
     }
 }
-module EndGate.Graphics.Abstractions {
+declare module EndGate.Graphics.Abstractions {
     /**
     * Abstract drawable graphic type that is used create the base for graphics.
     */
-    class Graphic2d implements _.ITyped, Rendering.IRenderable, IMoveable {
+    class Graphic2d implements EndGate._.ITyped, EndGate.Rendering.IRenderable, EndGate.IMoveable {
         public _type: string;
         /**
         * Gets or sets the ZIndex of the Graphic2d.  The ZIndex is used to control draw order.  Higher ZIndexes appear above lower ZIndexed graphics.
@@ -907,19 +907,19 @@ module EndGate.Graphics.Abstractions {
         /**
         * Gets or sets the Visible property.  The Visible property determines whether the renderable will be drawn to the game screen.
         */
-        public Visible: bool;
+        public Visible: boolean;
         /**
         * Gets or sets the Position of the Graphic2d.  The Position determines where the graphic will be drawn on the screen.
         */
-        public Position: Vector2d;
+        public Position: EndGate.Vector2d;
         /**
         * Gets or sets the Rotation of the Graphic2d..
         */
         public Rotation: number;
-        public _State: Assets._.Graphic2dState;
-        private static _zindexSort;
+        public _State: Graphics.Assets._.Graphic2dState;
+        static _zindexSort: (a: Graphic2d, b: Graphic2d) => number;
         private _children;
-        constructor(position: Vector2d);
+        constructor(position: EndGate.Vector2d);
         /**
         * Adds a child to the Graphic2d.  Children are drawn with relative positions to the parent Graphic2d.  Children
         * of a Graphic2d should not be added to the Scene, parent Graphic2d's are responsible for drawing their children.
@@ -930,7 +930,7 @@ module EndGate.Graphics.Abstractions {
         * Removes a child from the Graphic2d.  Returns a Boolean value indicating whether or not the child was able to be removed.
         * @param graphic Child to remove.
         */
-        public RemoveChild(graphic: Graphic2d): bool;
+        public RemoveChild(graphic: Graphic2d): boolean;
         /**
         * Returns the list of children for the current Graphic2d.
         */
@@ -945,14 +945,14 @@ module EndGate.Graphics.Abstractions {
         /**
         * Abstract: Should be overridden to return the bounding area that represents where the graphic will draw.
         */
-        public GetDrawBounds(): Bounds.Abstractions.Bounds2d;
+        public GetDrawBounds(): EndGate.Bounds.Abstractions.Bounds2d;
     }
 }
-module EndGate.Rendering {
+declare module EndGate.Rendering {
     /**
     * Defines a camera that is used to define a viewport.  Should be used in conjunction with a Camera2dRenderer to render graphics as if being viewed through a camera.
     */
-    class Camera2d extends Bounds.BoundingRectangle {
+    class Camera2d extends EndGate.Bounds.BoundingRectangle {
         /**
         *  The distance in which the Camera2d will default to and the distance that defines the 100% scale value.
         */
@@ -967,27 +967,27 @@ module EndGate.Rendering {
         * @param position Initial position of the camera.
         * @param size Initial size of the camera.
         */
-        constructor(position: Vector2d, size: Size2d);
+        constructor(position: EndGate.Vector2d, size: EndGate.Size2d);
         /**
         * Converts an absolute position (0 to cameras Size) to a camera relative position.  Most useful when used to convert mouse click coordinates to scene coordinates.
         * @param position The absolute position to convert.  0 position represents the top or left hand side of the camera.
         */
-        public ToCameraRelative(position: Vector2d): Vector2d;
+        public ToCameraRelative(position: EndGate.Vector2d): EndGate.Vector2d;
         public _GetInverseDistanceScale(): number;
         public _GetDistanceScale(): number;
     }
 }
-module EndGate.Rendering._ {
-    interface IRenderer extends IDisposable {
-        Render(renderables: IRenderable[]): CanvasRenderingContext2D;
+declare module EndGate.Rendering._ {
+    interface IRenderer extends EndGate.IDisposable {
+        Render(renderables: Rendering.IRenderable[]): CanvasRenderingContext2D;
     }
 }
-module EndGate.Rendering {
+declare module EndGate.Rendering {
     /**
     * Defines a 2d renderer that uses a double buffer to draw graphics.
     */
-    class Renderer2d implements _.IRenderer {
-        static _zindexSort: (a: IRenderable, b: IRenderable) => number;
+    class Renderer2d implements Rendering._.IRenderer {
+        static _zindexSort: (a: Rendering.IRenderable, b: Rendering.IRenderable) => number;
         public _BufferCanvas: HTMLCanvasElement;
         public _BufferContext: CanvasRenderingContext2D;
         private _visibleCanvas;
@@ -1002,12 +1002,12 @@ module EndGate.Rendering {
         * Event: Triggered when the renderOnto canvas changes size.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes the new size as a Size2d.
         */
-        public OnRendererSizeChange: EventHandler;
+        public OnRendererSizeChange: EndGate.EventHandler;
         /**
         * Renders the provided renderables onto the renderOnto canvas.  Returns the canvas that was rendered onto.
         * @param renderables Array of items that are to be rendered, assumes Visible is set to true.
         */
-        public Render(renderables: IRenderable[]): CanvasRenderingContext2D;
+        public Render(renderables: Rendering.IRenderable[]): CanvasRenderingContext2D;
         /**
         * Destroys the visible canvas.
         */
@@ -1016,7 +1016,7 @@ module EndGate.Rendering {
         private UpdateBufferSize();
     }
 }
-module EndGate.Rendering._ {
+declare module EndGate.Rendering._ {
     /**
     * Defines a builder that is used to build a camera sensitive CanvasRenderingContext2d so that anything drawn to it becomes relative to the Camera2d.
     */
@@ -1029,21 +1029,21 @@ module EndGate.Rendering._ {
         * Creates a new instance of the Camera2dCanvasContextBuilder object.
         * @param camera Camera to link to built CanvasRenderingContext2d's (Cannot change after construction).
         */
-        constructor(camera: Camera2d);
+        constructor(camera: Rendering.Camera2d);
         /**
         * Builds a new CanvasRenderingContext2d around the provided context that is linked to the camera.  Anything drawn to the context becomes relative to the camera.
         * @param context The context to build the camera linked context around.
         */
         public Build(context: CanvasRenderingContext2D): CanvasRenderingContext2D;
-        public _UpdateCanvasCenter(newSize: Size2d): void;
+        public _UpdateCanvasCenter(newSize: EndGate.Size2d): void;
         private BuildPositionReplacer(replacee, positionArgOffset?, argCount?);
     }
 }
-module EndGate.Rendering {
+declare module EndGate.Rendering {
     /**
     * Defines a camera rendering object that when used in conjunction with a Camera2d draws all objects in a camera relative position.
     */
-    class Camera2dRenderer extends Renderer2d {
+    class Camera2dRenderer extends Rendering.Renderer2d {
         private _camera;
         private _contextBuilder;
         /**
@@ -1051,21 +1051,21 @@ module EndGate.Rendering {
         * @param renderOnto The canvas to render onto.
         * @param camera The camera that ultimately decides what is drawn to the renderOnto canvas.
         */
-        constructor(renderOnto: HTMLCanvasElement, camera: Camera2d);
+        constructor(renderOnto: HTMLCanvasElement, camera: Rendering.Camera2d);
         /**
         * Renders the provided renderables onto the renderOnto canvas.  Returns the canvas that was rendered onto.
         * @param renderables Array of items that are to be rendered.
         */
-        public Render(renderables: IRenderable[]): CanvasRenderingContext2D;
+        public Render(renderables: Rendering.IRenderable[]): CanvasRenderingContext2D;
         public _ClearBuffer(): void;
         private GetOnScreenRenderables(allRenderables);
     }
 }
-module EndGate.Rendering {
+declare module EndGate.Rendering {
     /**
     * Defines a scene object that is used to maintain a list of renderable objects that are rendered onto a joint game area.
     */
-    class Scene2d implements IDisposable {
+    class Scene2d implements EndGate.IDisposable {
         /**
         * The canvas that the Scene2d uses as its game area.
         */
@@ -1073,7 +1073,7 @@ module EndGate.Rendering {
         /**
         * The game camera.
         */
-        public Camera: Camera2d;
+        public Camera: Rendering.Camera2d;
         private _actors;
         private _renderer;
         private _onDraw;
@@ -1097,12 +1097,12 @@ module EndGate.Rendering {
         * Adds an actor to the scene.  All actors added to the scene have their Draw function called automatically.
         * @param actor The graphic to add to the scene.
         */
-        public Add(actor: Graphics.Abstractions.Graphic2d): void;
+        public Add(actor: EndGate.Graphics.Abstractions.Graphic2d): void;
         /**
         * Removes an actor from the scene.  The actor will no longer have its Draw called.
         * @param actor The graphic to remove from the scene.
         */
-        public Remove(actor: Graphics.Abstractions.Graphic2d): void;
+        public Remove(actor: EndGate.Graphics.Abstractions.Graphic2d): void;
         /**
         * Draws all actors within the Scene and triggers the Scene2d's onDraw callback.
         */
@@ -1115,14 +1115,14 @@ module EndGate.Rendering {
         private CreateDefaultDrawArea();
     }
 }
-module EndGate.Input._ {
+declare module EndGate.Input._ {
     class MouseButton {
         static Left: string;
         static Middle: string;
         static Right: string;
     }
 }
-module EndGate.Input {
+declare module EndGate.Input {
     /**
     * Represents a mouse event being triggered on the Game area.
     */
@@ -1130,32 +1130,32 @@ module EndGate.Input {
         /**
         * The location of the mouse relative to the game area.
         */
-        Position: Vector2d;
+        Position: EndGate.Vector2d;
     }
 }
-module EndGate.Input {
+declare module EndGate.Input {
     /**
     * Represents a mouse click event being triggered on the Game area.
     */
-    interface IMouseClickEvent extends IMouseEvent {
+    interface IMouseClickEvent extends Input.IMouseEvent {
         /**
         * The mouse button that was clicked. Values can be "Left", "Right", or "Middle".
         */
         Button: string;
     }
 }
-module EndGate.Input {
+declare module EndGate.Input {
     /**
     * Represents a mouse scroll event being triggered on the Game area.
     */
-    interface IMouseScrollEvent extends IMouseEvent {
+    interface IMouseScrollEvent extends Input.IMouseEvent {
         /**
         * The scroll direction. The Vector2d will contain 1, -1, or 0 values depending on the mouse scroll.
         */
-        Direction: Vector2d;
+        Direction: EndGate.Vector2d;
     }
 }
-module EndGate.Input {
+declare module EndGate.Input {
     /**
     * Defines a handler that will monitor mouse events over a specified area and will execute appropriate functions based on the events.
     */
@@ -1163,19 +1163,19 @@ module EndGate.Input {
         /**
         * Indicates if the left mouse button is down
         */
-        public LeftIsDown: bool;
+        public LeftIsDown: boolean;
         /**
         * Indicates if the middle mouse button is down
         */
-        public MiddleIsDown: bool;
+        public MiddleIsDown: boolean;
         /**
         * Indicates if the right mouse button is down
         */
-        public RightIsDown: bool;
+        public RightIsDown: boolean;
         /**
         * Indicates if any mouse button is down.
         */
-        public IsDown: bool;
+        public IsDown: boolean;
         private static MouseButtonArray;
         private _target;
         /**
@@ -1187,32 +1187,32 @@ module EndGate.Input {
         * Event: Triggered when a mouse click occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes an IMouseClickEvent event object to bound functions.
         */
-        public OnClick: EventHandler;
+        public OnClick: EndGate.EventHandler;
         /**
         * Event: Triggered when a mouse double click occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes an IMouseClickEvent event object to bound functions.
         */
-        public OnDoubleClick: EventHandler;
+        public OnDoubleClick: EndGate.EventHandler;
         /**
         * Event: Triggered when a mouse down event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes an IMouseClickEvent event object to bound functions.
         */
-        public OnDown: EventHandler;
+        public OnDown: EndGate.EventHandler;
         /**
         * Event: Triggered when a mouse up event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes an IMouseClickEvent event object to bound functions.
         */
-        public OnUp: EventHandler;
+        public OnUp: EndGate.EventHandler;
         /**
         * Event: Triggered when a mouse move event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes an IMouseEvent event object to bound functions.
         */
-        public OnMove: EventHandler;
+        public OnMove: EndGate.EventHandler;
         /**
         * Event: Triggered when a mouse scroll event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes an IMouseScrollEvent event object to bound functions.
         */
-        public OnScroll: EventHandler;
+        public OnScroll: EndGate.EventHandler;
         private Wire();
         private BuildEvent(eventHandler, mouseEventBuilder, returnValue?);
         private BuildMouseScrollEvent(event);
@@ -1223,19 +1223,19 @@ module EndGate.Input {
         private GetMouseScrollDierction(event);
     }
 }
-module EndGate._.Utilities {
+declare module EndGate._.Utilities {
     class NoopTripInvoker {
         private static _noop;
         private _invoker;
         private _action;
-        constructor(action: Function, tripped?: bool);
+        constructor(action: Function, tripped?: boolean);
         public Invoke(...args: any[]): void;
         public InvokeOnce(...args: any[]): void;
         public Trip(): void;
         public Reset(): void;
     }
 }
-module EndGate.Input.Assets {
+declare module EndGate.Input.Assets {
     /**
     * Defines an object that is used to represent a keyboard modifier state to determine if Ctrl, Alt, or Shift is being pressed.
     */
@@ -1243,27 +1243,27 @@ module EndGate.Input.Assets {
         /**
         * Gets or sets the Ctrl component.  Represents if a Ctrl key is down.
         */
-        public Ctrl: bool;
+        public Ctrl: boolean;
         /**
         * Gets or sets the Alt component.  Represents if an Alt key is down.
         */
-        public Alt: bool;
+        public Alt: boolean;
         /**
         * Gets or sets the Shift component.  Represents if a Shift key is down.
         */
-        public Shift: bool;
+        public Shift: boolean;
         /**
         * Creates a new instance of the KeyboardModifiers object.
         * @param ctrl The initial value of the Ctrl component.
         * @param alt The initial value of the Alt component.
         * @param shift The initial value of the Shift component.
         */
-        constructor(ctrl: bool, alt: bool, shift: bool);
+        constructor(ctrl: boolean, alt: boolean, shift: boolean);
         /**
         * Determines whether this KeyboardModifiers object has the same ctrl, alt, and shift states as the provided KeyboardModifiers.
         * @param modifier The KeyboardModifiers to compare the current modifiers to.
         */
-        public Equivalent(modifier: KeyboardModifiers): bool;
+        public Equivalent(modifier: KeyboardModifiers): boolean;
         /**
         * Builds a KeyboardModifiers object to represent the state of an expected keyCommand
         * @param keyCommand The command to analyze.
@@ -1271,7 +1271,7 @@ module EndGate.Input.Assets {
         static BuildFromCommandString(keyCommand: string): KeyboardModifiers;
     }
 }
-module EndGate.Input {
+declare module EndGate.Input {
     /**
     * Defines a KeyboardCommandEvent object that represents when a command has been attempted.
     */
@@ -1283,7 +1283,7 @@ module EndGate.Input {
         /**
         * The modifier status.
         */
-        public Modifiers: Assets.KeyboardModifiers;
+        public Modifiers: Input.Assets.KeyboardModifiers;
         /**
         * Creates a new instance of the KeyboardCommandEvent object.
         * @param keyEvent The raw key event from the DOM.
@@ -1293,19 +1293,19 @@ module EndGate.Input {
         * Determines if the KeyboardCommand matches the KeyboardCommandEvent
         * @param command The KeyboardCommand to check.
         */
-        public Matches(command: Assets.KeyboardCommand): bool;
+        public Matches(command: Input.Assets.KeyboardCommand): boolean;
     }
 }
-module EndGate.Input._ {
+declare module EndGate.Input._ {
     class KeyboardCommandHelper {
         static ParseKey(command: string): string;
     }
 }
-module EndGate.Input.Assets {
+declare module EndGate.Input.Assets {
     /**
     * Defines a class that is used to represent a keyboard command.
     */
-    class KeyboardCommand implements IDisposable {
+    class KeyboardCommand implements EndGate.IDisposable {
         /**
         * Gets or sets the Key that is required to trigger the Action.
         */
@@ -1317,7 +1317,7 @@ module EndGate.Input.Assets {
         /**
         * Gets or sets the Modifiers that are required to trigger the Action.
         */
-        public Modifiers: KeyboardModifiers;
+        public Modifiers: Assets.KeyboardModifiers;
         private _onDisposeInvoker;
         /**
         * Creates a new instance of the KeyboardCommand object.
@@ -1328,14 +1328,14 @@ module EndGate.Input.Assets {
         /**
         * Event: Triggered when a KeyboardCommand has been disposed.  If this KeyboardCommand is used with a KeyboardHandler it will no longer trigger the Action function.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
-        public OnDispose: EventHandler;
+        public OnDispose: EndGate.EventHandler;
         /**
         * Triggers the OnDisposed event.  If this KeyboardCommand is used with a KeyboardHandler it will no longer trigger the Action function.
         */
         public Dispose(): void;
     }
 }
-module EndGate.Input {
+declare module EndGate.Input {
     /**
     * Defines a handler that will check for keyboard commands and execute appropriate functions.
     */
@@ -1353,42 +1353,42 @@ module EndGate.Input {
         * Event: Triggered when any key press occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes a KeyboardCommandEvent object to bound functions.
         */
-        public OnKeyPress: EventHandler;
+        public OnKeyPress: EndGate.EventHandler;
         /**
         * Event: Triggered when any key goes down.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes a KeyboardCommandEvent object to bound functions.
         */
-        public OnKeyDown: EventHandler;
+        public OnKeyDown: EndGate.EventHandler;
         /**
         * Event: Triggered when any key comes up.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes a KeyboardCommandEvent object to bound functions.
         */
-        public OnKeyUp: EventHandler;
+        public OnKeyUp: EndGate.EventHandler;
         /**
         * Binds function to be called when the keyCommand is pressed.  To unbind the function, dispose of the returned KeyboardCommand.
         * @param keyCommand The command string required to execute the action.
         * @param action The action to execute when the keyCommand has been pressed.
         */
-        public OnCommandPress(keyCommand: string, action: Function): Assets.KeyboardCommand;
+        public OnCommandPress(keyCommand: string, action: Function): Input.Assets.KeyboardCommand;
         /**
         * Binds function to be called when the keyCommand goes down.  To unbind the function, dispose of the returned KeyboardCommand.
         * @param keyCommand The command string required to execute the action.
         * @param action The action to execute when the keyCommand has is down.
         */
-        public OnCommandDown(keyCommand: string, action: Function): Assets.KeyboardCommand;
+        public OnCommandDown(keyCommand: string, action: Function): Input.Assets.KeyboardCommand;
         /**
         * Binds function to be called when the keyCommand comes up.  To unbind the function, dispose of the returned KeyboardCommand.
         * @param keyCommand The command string required to execute the action.
         * @param action The action to execute when the keyCommand comes up.
         */
-        public OnCommandUp(keyCommand: string, action: Function): Assets.KeyboardCommand;
+        public OnCommandUp(keyCommand: string, action: Function): Input.Assets.KeyboardCommand;
         private UpdateCache(keyCommand, action, store);
         private Wire();
         private FocusingTextArea(ke);
         private BuildKeyEvent(store, eventHandler);
     }
 }
-module EndGate.Input {
+declare module EndGate.Input {
     /**
     * Defines an all around Input handler which manages mouse and keyboard events.
     */
@@ -1396,11 +1396,11 @@ module EndGate.Input {
         /**
         * Used to bind functions to mouse related events.
         */
-        public Mouse: MouseHandler;
+        public Mouse: Input.MouseHandler;
         /**
         * Used to bind functions to keyboard related events.
         */
-        public Keyboard: KeyboardHandler;
+        public Keyboard: Input.KeyboardHandler;
         /**
         * Creates a new instance of the InputManager object.
         * @param target The object through which mouse events will be monitored on.
@@ -1408,7 +1408,7 @@ module EndGate.Input {
         constructor(target: HTMLElement);
     }
 }
-module EndGate.Sound {
+declare module EndGate.Sound {
     /**
     * Defines a set of settings that are used to play AudioClip's a custom way.
     */
@@ -1420,7 +1420,7 @@ module EndGate.Sound {
         /**
         * Gets or sets the repeat function of the AudioClip.
         */
-        public Repeat: bool;
+        public Repeat: boolean;
         /**
         * Gets or sets the volume level of the AudioClip. Value between 0-100.
         */
@@ -1428,7 +1428,7 @@ module EndGate.Sound {
         /**
         * Gets or sets the auto play functionality of the AudioClip.
         */
-        public AutoPlay: bool;
+        public AutoPlay: boolean;
         /**
         * Gets or sets the preload functionality of the AudioClip.  Values can be "auto", "metadata", or "none".
         */
@@ -1441,20 +1441,20 @@ module EndGate.Sound {
         * Creates a new instance of the AudioSettings object.
         * @param repeat Initial value of the repeat component.
         */
-        constructor(repeat: bool);
+        constructor(repeat: boolean);
         /**
         * Creates a new instance of the AudioSettings object.
         * @param repeat Initial value of the repeat component.
         * @param volume Initial value of the volume component. Value between 0-100.
         */
-        constructor(repeat: bool, volume: number);
+        constructor(repeat: boolean, volume: number);
         /**
         * Creates a new instance of the AudioSettings object.
         * @param repeat Initial value of the repeat component.
         * @param volume Initial value of the volume component. Value between 0-100.
         * @param autoplay Initial value of the auto play component.
         */
-        constructor(repeat: bool, volume: number, autoplay: bool);
+        constructor(repeat: boolean, volume: number, autoplay: boolean);
         /**
         * Creates a new instance of the AudioSettings object.
         * @param repeat Initial value of the repeat component.
@@ -1462,10 +1462,10 @@ module EndGate.Sound {
         * @param autoplay Initial value of the auto play component.
         * @param preload Initial value of the preload component.  Values can be "auto", "metadata", or "none".
         */
-        constructor(repeat: bool, volume: number, autoplay: bool, preload: string);
+        constructor(repeat: boolean, volume: number, autoplay: boolean, preload: string);
     }
 }
-module EndGate.Sound {
+declare module EndGate.Sound {
     /**
     * Defines a single audio clip that can be played, stopped or paused.
     */
@@ -1487,27 +1487,27 @@ module EndGate.Sound {
         * @param source Source path to an audio clip.
         * @param settings Audio clip settings.
         */
-        constructor(source: string, settings?: AudioSettings);
+        constructor(source: string, settings?: Sound.AudioSettings);
         /**
         * Creates a new instance of the AudioClip object.
         * @param source An array of source paths to audio clips.  Pass in multiple audio types of the same clip to ensure cross browser compatibility.
         * @param settings Audio clip settings.
         */
-        constructor(source: string[], settings?: AudioSettings);
+        constructor(source: string[], settings?: Sound.AudioSettings);
         /**
         * Event: Triggered when the audio clip has completed, will not trigger if the audio clip is repeating.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes the DOM's ended event to bound functions.
         */
-        public OnComplete: EventHandler;
+        public OnComplete: EndGate.EventHandler;
         public Volume(percent?: number): number;
         /**
         * Determines if the AudioClip is currently playing.
         */
-        public IsPlaying(): bool;
+        public IsPlaying(): boolean;
         /**
         * Determines if the AudioClip has completed.
         */
-        public IsComplete(): bool;
+        public IsComplete(): boolean;
         /**
         * Plays the current audio clip.
         */
@@ -1529,7 +1529,7 @@ module EndGate.Sound {
         private ApplySettings();
     }
 }
-module EndGate.Sound {
+declare module EndGate.Sound {
     /**
     * Defines an AudioPlayer that is mapped to a specific source.  Ultimately used to play the same sound simultaneously.
     */
@@ -1548,15 +1548,15 @@ module EndGate.Sound {
         /**
         * Builds an AudioClip and plays it with the default settings.  Returns the built audio clip.
         */
-        public Play(): AudioClip;
+        public Play(): Sound.AudioClip;
         /**
         * Builds an AudioClip and plays it with the provided settings.  Returns the built audio clip.
         * @param settings Audio settings to play the AudioClip with.
         */
-        public Play(settings: AudioSettings): AudioClip;
+        public Play(settings: Sound.AudioSettings): Sound.AudioClip;
     }
 }
-module EndGate.Sound {
+declare module EndGate.Sound {
     /**
     * Defines an audio manager that is used to preload AudioClip's that can be played at any time.
     */
@@ -1571,37 +1571,37 @@ module EndGate.Sound {
         * @param name The mapped name for the AudioPlayer.
         * @param src Source path to an audio clip.
         */
-        public Load(name: string, src: string): AudioPlayer;
+        public Load(name: string, src: string): Sound.AudioPlayer;
         /**
         * Loads an audio player, returns the AudioPlayer for easy access.
         * @param name The mapped name for the AudioPlayer.
         * @param src An array of source paths to audio clips.  Pass in multiple audio types of the same clip to ensure cross browser compatibility.
         */
-        public Load(name: string, src: string[]): AudioPlayer;
+        public Load(name: string, src: string[]): Sound.AudioPlayer;
         /**
         * Unload player that is mapped to the provided name.
         * @param name The mapped name of the AudioPlayer to unload.
         */
-        public Unload(name: string): AudioPlayer;
+        public Unload(name: string): Sound.AudioPlayer;
         /**
         * Plays a new audio clip that's mapped to the provided name with the default audio settings.
         * @param name The mapped name of the AudioPlayer to Play.
         */
-        public Play(name: string): AudioClip;
+        public Play(name: string): Sound.AudioClip;
         /**
         * Plays a new audio clip that's mapped to the provided name.
         * @param name The mapped name of the AudioPlayer to Play.
         * @param settings The audio settings to play the clip with.
         */
-        public Play(name: string, settings?: AudioSettings): AudioClip;
+        public Play(name: string, settings?: Sound.AudioSettings): Sound.AudioClip;
         /**
         * Retrieves a loaded audio player under the provided name.
         * @param name The mapped name of the AudioPlayer to retrieve.
         */
-        public GetAudioPlayer(name: string): AudioPlayer;
+        public GetAudioPlayer(name: string): Sound.AudioPlayer;
     }
 }
-module EndGate.Map {
+declare module EndGate.Map {
     /**
     * Defines a SceneryHandler which specializes in drawing large background type layers to depict scenery.
     */
@@ -1614,17 +1614,17 @@ module EndGate.Map {
         * Creates a new instance of the SceneryHandler object.
         * @param scene The primary scene that this SceneryHandler will play behind.
         */
-        constructor(scene: Rendering.Scene2d);
+        constructor(scene: EndGate.Rendering.Scene2d);
         /**
         * Adds a layer to the scenery.
         * @param layer The layer to add.
         */
-        public AddLayer(layer: Graphics.Abstractions.Graphic2d): void;
+        public AddLayer(layer: EndGate.Graphics.Abstractions.Graphic2d): void;
         /**
         * Removes a layer from the scenery.
         * @param layer The layer to remove.
         */
-        public RemoveLayer(layer: Graphics.Abstractions.Graphic2d): void;
+        public RemoveLayer(layer: EndGate.Graphics.Abstractions.Graphic2d): void;
         /**
         * Draws all layers onto the given context.  If this is used via a MapManager object, Draw will automatically be called.
         */
@@ -1632,7 +1632,7 @@ module EndGate.Map {
         private BuildSceneryCanvas(foreground);
     }
 }
-module EndGate.Map {
+declare module EndGate.Map {
     /**
     * Defines a map manager that is used to manage Scenery.  Will eventually be expanded to handle obstacles.
     */
@@ -1640,44 +1640,44 @@ module EndGate.Map {
         /**
         * Used to draw larger images that are used to depict backgrounds or other scenery.
         */
-        public Scenery: SceneryHandler;
+        public Scenery: Map.SceneryHandler;
         /**
         * Creates a new instance of the MapManager object.
         * @param scene The Scene2d that is used to draw smaller objects within the game (the foreground scene).
         */
-        constructor(scene: Rendering.Scene2d);
+        constructor(scene: EndGate.Rendering.Scene2d);
     }
 }
-module EndGate {
+declare module EndGate {
     /**
     * Defines a virtual Game object that is meant to be derived from.  Games contain a multitude of management objects to control every aspect of the game.
     */
-    class Game implements _.ITyped, IUpdateable, IDisposable {
+    class Game implements EndGate._.ITyped, EndGate.IUpdateable, EndGate.IDisposable {
         public _type: string;
         /**
         * The games configuration.  Used to modify settings such as the game update rate.
         */
-        public Configuration: GameConfiguration;
+        public Configuration: EndGate.GameConfiguration;
         /**
         * A collision manager which is used to actively detect collisions between monitored Collidable's.
         */
-        public CollisionManager: Collision.CollisionManager;
+        public CollisionManager: EndGate.Collision.CollisionManager;
         /**
         * A scene manager which is used to draw Graphic2d's onto the game screen.
         */
-        public Scene: Rendering.Scene2d;
+        public Scene: EndGate.Rendering.Scene2d;
         /**
         * An input manager which is used to monitor mouse and keyboard events.
         */
-        public Input: Input.InputManager;
+        public Input: EndGate.Input.InputManager;
         /**
         * An audio manager which is used to load, manage and play audio clips.
         */
-        public Audio: Sound.AudioManager;
+        public Audio: EndGate.Sound.AudioManager;
         /**
         * A map manager that is used to draw large Graphic2d's (Layer's) to the background.
         */
-        public Map: Map.MapManager;
+        public Map: EndGate.Map.MapManager;
         public _ID: number;
         private static _gameIds;
         private _gameTime;
@@ -1695,7 +1695,7 @@ module EndGate {
         * Triggered on a regular interval defined by the GameConfiguration.
         * @param gameTime The global game time object.  Used to represent total time running and used to track update interval elapsed speeds.
         */
-        public Update(gameTime: GameTime): void;
+        public Update(gameTime: EndGate.GameTime): void;
         public _PrepareDraw(): void;
         /**
         * Triggered as fast as possible.  Determined by the current browsers repaint rate.
@@ -1707,8 +1707,8 @@ module EndGate {
         public Dispose(): void;
     }
 }
-module EndGate._ {
-    class GameRunner implements ITyped {
+declare module EndGate._ {
+    class GameRunner implements _.ITyped {
         public _type: string;
         private _updateCallbacks;
         private _drawCallbacks;
@@ -1716,8 +1716,8 @@ module EndGate._ {
         private _drawLoop;
         private _callbackCount;
         constructor();
-        public Register(game: Game): (updateRate: number) => void;
-        public Unregister(game: Game): void;
+        public Register(game: EndGate.Game): (updateRate: number) => void;
+        public Unregister(game: EndGate.Game): void;
         private TryLoopStart();
         private TryLoopStop();
         private CreateAndCacheUpdateCallback(game);
@@ -1725,8 +1725,8 @@ module EndGate._ {
         private CreateUpdateRateSetter(callback);
     }
 }
-var GameRunnerInstance: EndGate._.GameRunner;
-module EndGate.MovementControllers.Assets {
+declare var GameRunnerInstance: EndGate._.GameRunner;
+declare module EndGate.MovementControllers.Assets {
     /**
     * Defines a direction management object that represents directional state.
     */
@@ -1734,26 +1734,26 @@ module EndGate.MovementControllers.Assets {
         /**
         * Indicates whether the object is moving left.
         */
-        public Left: bool;
+        public Left: boolean;
         /**
         * Indicates whether the object is moving right.
         */
-        public Right: bool;
+        public Right: boolean;
         /**
         * Indicates whether the object is moving up.
         */
-        public Up: bool;
+        public Up: boolean;
         /**
         * Indicates whether the object is moving down.
         */
-        public Down: bool;
+        public Down: boolean;
         /**
         * Creates a new instance of the LinearDirection object with all directions= indicators initially set to false.
         */
         constructor();
     }
 }
-module EndGate.MovementControllers {
+declare module EndGate.MovementControllers {
     /**
     * Represents a move event object that is used to depict a movement, specifically a direction and whether or not the move started or stopped.
     */
@@ -1765,33 +1765,33 @@ module EndGate.MovementControllers {
         /**
         * Whether or not the move started or stopped.
         */
-        StartMoving: bool;
+        StartMoving: boolean;
     }
 }
-module EndGate.MovementControllers.Abstractions {
+declare module EndGate.MovementControllers.Abstractions {
     /**
     * Abstract class that holds moveable objects and synchronizes positions across them.
     */
-    class MovementController implements IMoveable, IUpdateable {
+    class MovementController implements EndGate.IMoveable, EndGate.IUpdateable {
         /**
         * Gets or sets the position of the MovementController
         */
-        public Position: Vector2d;
+        public Position: EndGate.Vector2d;
         /**
         * Gets or sets the velocity of the MovementController.
         */
-        public Velocity: Vector2d;
+        public Velocity: EndGate.Vector2d;
         /**
         * Gets or sets the rotation of the MovementController
         */
         public Rotation: number;
-        public _frozen: bool;
+        public _frozen: boolean;
         private _moveables;
         /**
         * Should only ever be called by derived classes.
         * @param moveables Moveable objects to synchronize.
         */
-        constructor(moveables: IMoveable[]);
+        constructor(moveables: EndGate.IMoveable[]);
         /**
         * Prevents the MovementController from updating object locations.
         */
@@ -1803,19 +1803,19 @@ module EndGate.MovementControllers.Abstractions {
         /**
         * Determines if the MovementController is moving.  Frozen MovementControllers are not considered moving.
         */
-        public IsMoving(): bool;
+        public IsMoving(): boolean;
         /**
         * Synchronizes the current position with all tracked moveable objects.  MovementController's must be updated in order to move.
         * @param gameTime The current game time object.
         */
-        public Update(gameTime: GameTime): void;
+        public Update(gameTime: EndGate.GameTime): void;
     }
 }
-module EndGate.MovementControllers {
+declare module EndGate.MovementControllers {
     /**
     * Defines a LinearMovementController that can move objects Up, Right, Left, Down or a combination.
     */
-    class LinearMovementController extends Abstractions.MovementController {
+    class LinearMovementController extends MovementControllers.Abstractions.MovementController {
         private _moveSpeed;
         private _moving;
         private _rotationUpdater;
@@ -1825,14 +1825,14 @@ module EndGate.MovementControllers {
         * @param moveables Array of moveable objects that will be moved when the movement controller moves (this cannot change after construction).
         * @param moveSpeed How fast the movement controller will move.
         */
-        constructor(moveables: IMoveable[], moveSpeed: number);
+        constructor(moveables: EndGate.IMoveable[], moveSpeed: number);
         /**
         * Creates a new instance of the LinearMovementController object which can move diagonally.
         * @param moveables Array of moveable objects that will be moved when the movement controller moves (this cannot change after construction).
         * @param moveSpeed How fast the movement controller will move.
         * @param rotateWithMovements Whether the moveables should rotate to face their moving direction, default is true (this cannot change after construction).
         */
-        constructor(moveables: IMoveable[], moveSpeed: number, rotateWithMovements: bool);
+        constructor(moveables: EndGate.IMoveable[], moveSpeed: number, rotateWithMovements: boolean);
         /**
         * Creates a new instance of the LinearMovementController object..
         * @param moveables Array of moveable objects that will be moved when the movement controller moves (this cannot change after construction).
@@ -1840,17 +1840,17 @@ module EndGate.MovementControllers {
         * @param rotateWithMovements Whether the moveables should rotate to face their moving direction.  Default is true (this cannot change after construction).
         * @param multiDirectional Whether multiple movements can occur simultaneously, resulting in diagonal movements. Default is true (this cannot change after construction).
         */
-        constructor(moveables: IMoveable[], moveSpeed: number, rotateWithMovements: bool, multiDirectional: bool);
+        constructor(moveables: EndGate.IMoveable[], moveSpeed: number, rotateWithMovements: boolean, multiDirectional: boolean);
         /**
         * Event: Triggered when a the movement controller starts or stops a movement.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes an IMoveEvent to bound functions.
         */
-        public OnMove: EventHandler;
+        public OnMove: EndGate.EventHandler;
         /**
         * Determines if the movement controller is moving in the provided direction.
         * @param direction The direction to check.
         */
-        public IsMovingInDirection(direction: string): bool;
+        public IsMovingInDirection(direction: string): boolean;
         /**
         * Starts moving the movement controller in the specified direction.
         * @param direction The direction to start moving.
@@ -1874,19 +1874,19 @@ module EndGate.MovementControllers {
         * Moves the LinearMovementController in the currently active directions.  MovementController's must be updated in order to move.
         * @param gameTime The current game time object.
         */
-        public Update(gameTime: GameTime): void;
+        public Update(gameTime: EndGate.GameTime): void;
         /**
         * Triggers a move event on the MovementController.
         * @param direction The direction to start or stop moving.
         * @param startMoving Whether the movement is starting or stopping.
         */
-        public Move(direction: string, startMoving: bool): void;
+        public Move(direction: string, startMoving: boolean): void;
         private UpdateVelocityNoMultiDirection();
         private UpdateVelocityWithMultiDirection();
         private UpdateRotation();
     }
 }
-module EndGate.InputControllers {
+declare module EndGate.InputControllers {
     /**
     * Defines a DirectionalInputController that will monitor Up, Right, Left, and Down movement attempts.
     */
@@ -1899,7 +1899,7 @@ module EndGate.InputControllers {
         * @param keyboard A keyboard handler in order to bind directional events.
         * @param onMove The function to trigger when the user attempts to perform a move.  Passes the direction ("Left", "Right", "Up", "Down") and whether the movement was started or stopped.
         */
-        constructor(keyboard: Input.KeyboardHandler, onMove: (direction: string, startMoving: bool) => void);
+        constructor(keyboard: EndGate.Input.KeyboardHandler, onMove: (direction: string, startMoving: boolean) => void);
         /**
         * Creates a new instance of the DirectionalInputController object with custom key controls.
         * @param keyboard A keyboard handler in order to bind directional events.
@@ -1909,11 +1909,11 @@ module EndGate.InputControllers {
         * @param downKeys Array of keys to trigger a "Down" movement.  Default is ["s", "Down"].
         * @param leftKeys Array of keys to trigger a "Left" movement.  Default is ["a", "Left"].
         */
-        constructor(keyboard: Input.KeyboardHandler, onMove: (direction: string, startMoving: bool) => void, upKeys: string[], rightKeys: string[], downKeys: string[], leftKeys: string[]);
+        constructor(keyboard: EndGate.Input.KeyboardHandler, onMove: (direction: string, startMoving: boolean) => void, upKeys: string[], rightKeys: string[], downKeys: string[], leftKeys: string[]);
         private BindKeys(keyList, bindingAction, direction, startMoving);
     }
 }
-module EndGate.Graphics.Assets {
+declare module EndGate.Graphics.Assets {
     /**
     * Defines valid FontMeasurements that can be used to increase or decrease font sizes of Text2d's.
     */
@@ -1924,14 +1924,14 @@ module EndGate.Graphics.Assets {
         Percent,
     }
 }
-module EndGate.Graphics.Assets._ {
+declare module EndGate.Graphics.Assets._ {
     class FontMeasurementHelper {
         static _measurements: string[];
         static _Initialize(): void;
-        static Get(measurement: FontMeasurement): string;
+        static Get(measurement: Assets.FontMeasurement): string;
     }
 }
-module EndGate.Graphics.Assets {
+declare module EndGate.Graphics.Assets {
     /**
     * Defines valid FontFamilies that can be used to display Text2d's differently.
     */
@@ -1961,16 +1961,16 @@ module EndGate.Graphics.Assets {
         Verdana,
     }
 }
-module EndGate.Graphics.Assets._ {
+declare module EndGate.Graphics.Assets._ {
     class FontFamilyHelper {
         static _families: {
             [family: number]: string;
         };
         static _Initialize(): void;
-        static Get(family: FontFamily): string;
+        static Get(family: Assets.FontFamily): string;
     }
 }
-module EndGate.Graphics.Assets {
+declare module EndGate.Graphics.Assets {
     /**
     * Defines valid FontVariant's that can be used to change the appearance of Text2d's.
     */
@@ -1979,16 +1979,16 @@ module EndGate.Graphics.Assets {
         SmallCaps,
     }
 }
-module EndGate.Graphics.Assets._ {
+declare module EndGate.Graphics.Assets._ {
     class FontVariantHelper {
         static _variants: {
             [variant: number]: string;
         };
         static _Initialize(): void;
-        static Get(variant: FontVariant): string;
+        static Get(variant: Assets.FontVariant): string;
     }
 }
-module EndGate.Graphics.Assets {
+declare module EndGate.Graphics.Assets {
     /**
     * Defines valid FontStyles that can be used to modify the font's style for Text2d's.
     */
@@ -1998,16 +1998,16 @@ module EndGate.Graphics.Assets {
         Oblique,
     }
 }
-module EndGate.Graphics.Assets._ {
+declare module EndGate.Graphics.Assets._ {
     class FontStyleHelper {
         static _styles: {
             [family: number]: string;
         };
         static _Initialize(): void;
-        static Get(style: FontStyle): string;
+        static Get(style: Assets.FontStyle): string;
     }
 }
-module EndGate.Graphics.Assets {
+declare module EndGate.Graphics.Assets {
     /**
     * Defines a set of font settings that are used to modify the appearance of text that is drawn via Text2d's.
     */
@@ -2035,7 +2035,7 @@ module EndGate.Graphics.Assets {
         * @param size The new font size.
         * @param measurement The new font sizes measurement type.
         */
-        public FontSize(size: number, measurement: FontMeasurement): string;
+        public FontSize(size: number, measurement: Assets.FontMeasurement): string;
         /**
         * Gets the current font family.
         */
@@ -2044,7 +2044,7 @@ module EndGate.Graphics.Assets {
         * Sets and gets the current font family.
         * @param family The new font family.
         */
-        public FontFamily(family: FontFamily): string;
+        public FontFamily(family: Assets.FontFamily): string;
         /**
         * Gets the current font variant.
         */
@@ -2053,7 +2053,7 @@ module EndGate.Graphics.Assets {
         * Sets and gets the current font variant.
         * @param variant The new font variant.
         */
-        public FontVariant(variant: FontVariant): string;
+        public FontVariant(variant: Assets.FontVariant): string;
         /**
         * Gets the current font weight.
         */
@@ -2071,16 +2071,16 @@ module EndGate.Graphics.Assets {
         * Sets and gets the current font style.
         * @param style The new font style.
         */
-        public FontStyle(style: FontStyle): string;
+        public FontStyle(style: Assets.FontStyle): string;
         public _BuildFont(): string;
         private GetOrSetCache(property, value);
     }
 }
-module EndGate.Graphics {
+declare module EndGate.Graphics {
     /**
     * Defines a drawable text element.
     */
-    class Text2d extends Abstractions.Graphic2d {
+    class Text2d extends Graphics.Abstractions.Graphic2d {
         public _type: string;
         private _fontSettings;
         private _text;
@@ -2198,7 +2198,7 @@ module EndGate.Graphics {
         /**
         * Gets the Text2d's FontSetting's.
         */
-        public FontSettings(): Assets.FontSettings;
+        public FontSettings(): Graphics.Assets.FontSettings;
         /**
         * Gets the current Text2d's text.
         */
@@ -2240,10 +2240,10 @@ module EndGate.Graphics {
         /**
         * The bounding area that represents where the Text2d will draw.
         */
-        public GetDrawBounds(): Bounds.Abstractions.Bounds2d;
+        public GetDrawBounds(): EndGate.Bounds.Abstractions.Bounds2d;
     }
 }
-module EndGate.Graphics.Assets {
+declare module EndGate.Graphics.Assets {
     /**
     * Defines an image resource that can be used within Sprite's, SpriteAnimation's and other drawable graphics.
     */
@@ -2251,11 +2251,11 @@ module EndGate.Graphics.Assets {
         /**
         * Gets or sets the ClipLocation.  Represents where the image clip is within the base image.
         */
-        public ClipLocation: Vector2d;
+        public ClipLocation: EndGate.Vector2d;
         /**
         * Gets or sets the ClipSize.  Represents how large the image clip is within the base image.
         */
-        public ClipSize: Size2d;
+        public ClipSize: EndGate.Size2d;
         /**
         * Gets the base image source.  Should not be modified once the ImageSource has been constructed
         */
@@ -2290,15 +2290,15 @@ module EndGate.Graphics.Assets {
         * Event: Triggered when the base image is finished loading.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes the ImageSource to the bound functions.
         */
-        public OnLoaded: EventHandler;
+        public OnLoaded: EndGate.EventHandler;
         /**
         * Returns the base Size of the image source.
         */
-        public Size(): Size2d;
+        public Size(): EndGate.Size2d;
         /**
         * Determines if the ImageSource has been loaded.
         */
-        public Loaded(): bool;
+        public Loaded(): boolean;
         /**
         * Returns an ImageSource that is extracted from the current ImageSource based on the provided clip location and clip size.
         * @param clipX The horizontal location of the clip.
@@ -2309,27 +2309,27 @@ module EndGate.Graphics.Assets {
         public Extract(clipX: number, clipY: number, clipWidth: number, clipHeight: number): ImageSource;
     }
 }
-module EndGate.Graphics {
+declare module EndGate.Graphics {
     /**
     * Defines a drawable sprite.  Sprites are used to draw images to the game screen.
     */
-    class Sprite2d extends Abstractions.Graphic2d {
+    class Sprite2d extends Graphics.Abstractions.Graphic2d {
         public _type: string;
         /**
         * Gets or sets the Image that is drawn to the game screen.
         */
-        public Image: Assets.ImageSource;
+        public Image: Graphics.Assets.ImageSource;
         /**
         * Gets or sets the size of the Sprite2d.  If the Size is not equal to the image's ClipSize the Sprite2d will appear stretched.
         */
-        public Size: Size2d;
+        public Size: EndGate.Size2d;
         /**
         * Creates a new instance of the Sprite2d object with an initial size matching the image's clip size.
         * @param x Initial horizontal location of the Sprite2d.
         * @param y Initial vertical location of the Sprite2d.
         * @param image Initial ImageSource of the Sprite2d.
         */
-        constructor(x: number, y: number, image: Assets.ImageSource);
+        constructor(x: number, y: number, image: Graphics.Assets.ImageSource);
         /**
         * Creates a new instance of the Sprite2d object.
         * @param x Initial horizontal location of the Sprite2d.
@@ -2338,7 +2338,7 @@ module EndGate.Graphics {
         * @param width Initial width of the Sprite2d.  If the width does not equal the width of the image's clip width the Sprite2d will appear stretched.
         * @param height Initial height of the Sprite2d.  If the height does not equal the height of the image's clip height the Sprite2d will appear stretched.
         */
-        constructor(x: number, y: number, image: Assets.ImageSource, width: number, height: number);
+        constructor(x: number, y: number, image: Graphics.Assets.ImageSource, width: number, height: number);
         /**
         * Gets the current opacity.  Value is between 0 and 1.
         */
@@ -2356,10 +2356,10 @@ module EndGate.Graphics {
         /**
         * The bounding area that represents where the Sprite2d will draw.
         */
-        public GetDrawBounds(): Bounds.Abstractions.Bounds2d;
+        public GetDrawBounds(): EndGate.Bounds.Abstractions.Bounds2d;
     }
 }
-module EndGate.Graphics {
+declare module EndGate.Graphics {
     /**
     * Defines an animation that can be drawn to the screen.
     */
@@ -2382,7 +2382,7 @@ module EndGate.Graphics {
         * @param frameSize How large each animation frame is within the imageSource sprite sheet.
         * @param frameCount How many frames to play for the animation.
         */
-        constructor(imageSource: Assets.ImageSource, fps: number, frameSize: Size2d, frameCount: number);
+        constructor(imageSource: Graphics.Assets.ImageSource, fps: number, frameSize: EndGate.Size2d, frameCount: number);
         /**
         * Creates a new instance of the SpriteAnimation object.
         * @param imageSource The Sprite sheet that contains the image frames used to display the animation.
@@ -2391,15 +2391,15 @@ module EndGate.Graphics {
         * @param frameCount How many frames to play for the animation.
         * @param startOffset The positional offset within the imageSource on where the set of animation frames begin.
         */
-        constructor(imageSource: Assets.ImageSource, fps: number, frameSize: Size2d, frameCount: number, startOffset?: Vector2d);
+        constructor(imageSource: Graphics.Assets.ImageSource, fps: number, frameSize: EndGate.Size2d, frameCount: number, startOffset?: EndGate.Vector2d);
         /**
         * Event: Triggered when the animation has completed, will not trigger if the animation is repeating.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
-        public OnComplete: EventHandler;
+        public OnComplete: EndGate.EventHandler;
         /**
         * Determines if the animation is currently playing.
         */
-        public IsPlaying(): bool;
+        public IsPlaying(): boolean;
         /**
         * Plays the animation.
         */
@@ -2408,7 +2408,7 @@ module EndGate.Graphics {
         * Plays the animation.
         * @param repeat Whether to play the animation on repeat.
         */
-        public Play(repeat: bool): void;
+        public Play(repeat: boolean): void;
         /**
         * Pauses the animation.
         */
@@ -2430,7 +2430,7 @@ module EndGate.Graphics {
         * Stops the animation.
         * @param resetFrame Whether to reset the current animation frame to 0.
         */
-        public Stop(resetFrame: bool): void;
+        public Stop(resetFrame: boolean): void;
         /**
         * Resets the current animation frame to 0.
         */
@@ -2447,17 +2447,17 @@ module EndGate.Graphics {
         * Updates the animations current frame.  Needs to be updated in order to play the animation.
         * @param gameTime The current game time object.
         */
-        public Update(gameTime: GameTime): void;
+        public Update(gameTime: EndGate.GameTime): void;
         private UpdateImageSource();
         private GetFrameRow();
         private GetFrameColumn();
     }
 }
-module EndGate.Graphics.Abstractions {
+declare module EndGate.Graphics.Abstractions {
     /**
     * Abstract drawable shape type that is used create customizable drawable graphics.
     */
-    class Shape extends Graphic2d {
+    class Shape extends Abstractions.Graphic2d {
         public _type: string;
         private _fill;
         private _stroke;
@@ -2465,13 +2465,13 @@ module EndGate.Graphics.Abstractions {
         * Should only ever be called by derived classes.
         * @param position Initial Position of the current shape object.
         */
-        constructor(position: Vector2d);
+        constructor(position: EndGate.Vector2d);
         /**
         * Should only ever be called by derived classes.
         * @param position Initial Position of the current shape object.
         * @param color Initial Color of the current shape object.
         */
-        constructor(position: Vector2d, color: string);
+        constructor(position: EndGate.Vector2d, color: string);
         /**
         * Gets the current shape color.
         */
@@ -2581,11 +2581,11 @@ module EndGate.Graphics.Abstractions {
         public Draw(context: CanvasRenderingContext2D): void;
     }
 }
-module EndGate.Graphics {
+declare module EndGate.Graphics {
     /**
     * Defines a drawable circle.
     */
-    class Circle extends Abstractions.Shape {
+    class Circle extends Graphics.Abstractions.Shape {
         public _type: string;
         /**
         * Gets or sets the Radius of the Circle.
@@ -2609,20 +2609,20 @@ module EndGate.Graphics {
         /**
         * The bounding area that represents where the Circle will draw.
         */
-        public GetDrawBounds(): Bounds.Abstractions.Bounds2d;
+        public GetDrawBounds(): EndGate.Bounds.Abstractions.Bounds2d;
         public _BuildPath(context: CanvasRenderingContext2D): void;
     }
 }
-module EndGate.Graphics {
+declare module EndGate.Graphics {
     /**
     * Defines a drawable rectangle.
     */
-    class Rectangle extends Abstractions.Shape {
+    class Rectangle extends Graphics.Abstractions.Shape {
         public _type: string;
         /**
         * Gets or sets the Size of the Rectangle.
         */
-        public Size: Size2d;
+        public Size: EndGate.Size2d;
         /**
         * Creates a new instance of the Rectangle object.
         * @param x Initial horizontal location of the Rectangle.
@@ -2643,12 +2643,12 @@ module EndGate.Graphics {
         /**
         * The bounding area that represents where the Rectangle will draw.
         */
-        public GetDrawBounds(): Bounds.Abstractions.Bounds2d;
+        public GetDrawBounds(): EndGate.Bounds.Abstractions.Bounds2d;
         public _BuildPath(context: CanvasRenderingContext2D): void;
     }
 }
-module EndGate.Graphics {
-    class Line2d extends Abstractions.Graphic2d {
+declare module EndGate.Graphics {
+    class Line2d extends Graphics.Abstractions.Graphic2d {
         public _type: string;
         private _from;
         private _to;
@@ -2685,21 +2685,21 @@ module EndGate.Graphics {
         /**
         * Gets the From location of the Line2d.
         */
-        public From(): Vector2d;
+        public From(): EndGate.Vector2d;
         /**
         * Sets and gets the new From location of the Line2d.
         * @param newPosition New From location.
         */
-        public From(newPosition: Vector2d): Vector2d;
+        public From(newPosition: EndGate.Vector2d): EndGate.Vector2d;
         /**
         * Gets the To location of the Line2d.
         */
-        public To(): Vector2d;
+        public To(): EndGate.Vector2d;
         /**
         * Sets and gets the new To location of the Line2d.
         * @param newPosition New To location.
         */
-        public To(newPosition: Vector2d): Vector2d;
+        public To(newPosition: EndGate.Vector2d): EndGate.Vector2d;
         /**
         * Gets the current line color.
         */
@@ -2735,22 +2735,22 @@ module EndGate.Graphics {
         /**
         * The bounding area that represents where the Line2d will draw.
         */
-        public GetDrawBounds(): Bounds.Abstractions.Bounds2d;
+        public GetDrawBounds(): EndGate.Bounds.Abstractions.Bounds2d;
         private UpdatePosition();
         private RefreshCache();
         private GetOrSetLinePoint(name, newPosition?);
     }
 }
-module EndGate.Graphics {
+declare module EndGate.Graphics {
     /**
     * Defines a drawable grid that can be used to store other graphics in a grid like structure.
     */
-    class Grid extends Abstractions.Graphic2d {
+    class Grid extends Graphics.Abstractions.Graphic2d {
         public _type: string;
         /**
         * Gets or sets the DrawGridLines property.  Indicates whether the grids column and row lines will be drawn.
         */
-        public DrawGridLines: bool;
+        public DrawGridLines: boolean;
         private _size;
         private _tileSize;
         private _grid;
@@ -2779,7 +2779,7 @@ module EndGate.Graphics {
         * @param tileHeight The height of the grid tiles (this cannot change after construction).
         * @param drawGridLines Initial value for DrawGridLines.
         */
-        constructor(x: number, y: number, rows: number, columns: number, tileWidth: number, tileHeight: number, drawGridLines: bool);
+        constructor(x: number, y: number, rows: number, columns: number, tileWidth: number, tileHeight: number, drawGridLines: boolean);
         /**
         * Creates a new instance of the Grid object.
         * @param x Initial horizontal location of the grid.
@@ -2791,7 +2791,7 @@ module EndGate.Graphics {
         * @param drawGridLines Initial value for DrawGridLines.
         * @param gridLineColor Initial grid line color (only useful if drawGridLines is true);
         */
-        constructor(x: number, y: number, rows: number, columns: number, tileWidth: number, tileHeight: number, drawGridLines: bool, gridLineColor: string);
+        constructor(x: number, y: number, rows: number, columns: number, tileWidth: number, tileHeight: number, drawGridLines: boolean, gridLineColor: string);
         /**
         * Gets the current grid line color.  Grid lines are only drawn of DrawGridLines is set to true.
         */
@@ -2804,11 +2804,11 @@ module EndGate.Graphics {
         /**
         * Gets the size of the grid.
         */
-        public Size(): Size2d;
+        public Size(): EndGate.Size2d;
         /**
         * Gets the size of the tiles.
         */
-        public TileSize(): Size2d;
+        public TileSize(): EndGate.Size2d;
         /**
         * Gets the number of rows
         */
@@ -2832,68 +2832,68 @@ module EndGate.Graphics {
         * @param column The column.
         * @param graphic The graphic to fill the tile with.
         */
-        public Fill(row: number, column: number, graphic: Abstractions.Graphic2d): void;
+        public Fill(row: number, column: number, graphic: Graphics.Abstractions.Graphic2d): void;
         /**
         * Fills a row with the provided graphics
         * @param row The row to fill.
         * @param graphicList The list of graphics to fill the row with.  The row will be filled with as many elements that are contained within the graphicList.
         */
-        public FillRow(row: number, graphicList: Abstractions.Graphic2d[]): void;
+        public FillRow(row: number, graphicList: Graphics.Abstractions.Graphic2d[]): void;
         /**
         * Fills a row with the provided graphics starting at the provided column
         * @param row The row to fill.
         * @param graphicList The list of graphics to fill the row with.  The row will be filled with as many elements that are contained within the graphicList.
         * @param columnOffset The column to start filling at.
         */
-        public FillRow(row: number, graphicList: Abstractions.Graphic2d[], columnOffset: number): void;
+        public FillRow(row: number, graphicList: Graphics.Abstractions.Graphic2d[], columnOffset: number): void;
         /**
         * Fills a column with the provided graphics
         * @param column The column to fill.
         * @param graphicList The list of graphics to fill the column with.  The column will be filled with as many elements that are contained within the graphicList.
         */
-        public FillColumn(column: number, graphicList: Abstractions.Graphic2d[]): void;
+        public FillColumn(column: number, graphicList: Graphics.Abstractions.Graphic2d[]): void;
         /**
         * Fills a column with the provided graphics starting at the provided row.
         * @param column The column to fill.
         * @param graphicList The list of graphics to fill the column with.  The column will be filled with as many elements that are contained within the graphicList.
         * @param rowOffset The row to start filling at.
         */
-        public FillColumn(column: number, graphicList: Abstractions.Graphic2d[], rowOffset: number): void;
+        public FillColumn(column: number, graphicList: Graphics.Abstractions.Graphic2d[], rowOffset: number): void;
         /**
         * Fills a tile with the provided graphic.
         * @param row The row to start filling at.
         * @param column The column to start filling at.
         * @param graphicList The list of graphics to fill the space with.  The space will be filled with as many elements that are contained within the multi-dimensional graphicList.
         */
-        public FillSpace(row: number, column: number, graphicList: Abstractions.Graphic2d[][]): void;
+        public FillSpace(row: number, column: number, graphicList: Graphics.Abstractions.Graphic2d[][]): void;
         /**
         * Gets a graphic within the grid.
         * @param row The row.
         * @param column The column.
         */
-        public Get(row: number, column: number): Abstractions.Graphic2d;
+        public Get(row: number, column: number): Graphics.Abstractions.Graphic2d;
         /**
         * Retrieves graphics within the provided row.
         * @param row The row to retrieve.
         */
-        public GetRow(row: number): Abstractions.Graphic2d[];
+        public GetRow(row: number): Graphics.Abstractions.Graphic2d[];
         /**
         * Retrieves graphics within the row starting at the provided column offset.
         * @param row The row to retrieve.
         * @param columnOffset The column to start retrieving the row at.
         */
-        public GetRow(row: number, columnOffset: number): Abstractions.Graphic2d[];
+        public GetRow(row: number, columnOffset: number): Graphics.Abstractions.Graphic2d[];
         /**
         * Retrieves graphics within the provided column.
         * @param column The column to retrieve.
         */
-        public GetColumn(column: number): Abstractions.Graphic2d[];
+        public GetColumn(column: number): Graphics.Abstractions.Graphic2d[];
         /**
         * Retrieves graphics within the column starting at the provided row offset.
         * @param column The column to retrieve.
         * @param rowOffset The row to start retrieving the column at.
         */
-        public GetColumn(column: number, rowOffset: number): Abstractions.Graphic2d[];
+        public GetColumn(column: number, rowOffset: number): Graphics.Abstractions.Graphic2d[];
         /**
         * Retrieves graphics within row column cross section.
         * @param rowStart The row to start pulling graphics from.
@@ -2901,35 +2901,35 @@ module EndGate.Graphics {
         * @param rowEnd The row to stop pulling graphics from.
         * @param columnEnd The column to stop pulling graphics from.
         */
-        public GetSpace(rowStart: number, columnStart: number, rowEnd: number, columnEnd: number): Abstractions.Graphic2d[];
+        public GetSpace(rowStart: number, columnStart: number, rowEnd: number, columnEnd: number): Graphics.Abstractions.Graphic2d[];
         /**
         * Clear a grid tile.
         * @param row The row.
         * @param column The column.
         */
-        public Clear(row: number, column: number): Abstractions.Graphic2d;
+        public Clear(row: number, column: number): Graphics.Abstractions.Graphic2d;
         /**
         * Clears graphics within the provided row.
         * @param row The row to clear.
         */
-        public ClearRow(row: number): Abstractions.Graphic2d[];
+        public ClearRow(row: number): Graphics.Abstractions.Graphic2d[];
         /**
         * Clears graphics within the row starting at the provided column offset.
         * @param row The row to clear.
         * @param columnOffset The column to start clearing the row at.
         */
-        public ClearRow(row: number, columnOffset: number): Abstractions.Graphic2d[];
+        public ClearRow(row: number, columnOffset: number): Graphics.Abstractions.Graphic2d[];
         /**
         * Clears graphics within the provided column.
         * @param column The column to clear.
         */
-        public ClearColumn(column: number): Abstractions.Graphic2d[];
+        public ClearColumn(column: number): Graphics.Abstractions.Graphic2d[];
         /**
         * Clears graphics within the column starting at the provided column offset.
         * @param column The column to clear.
         * @param rowOffset The row to start clearing the column at.
         */
-        public ClearColumn(column: number, rowOffset: number): Abstractions.Graphic2d[];
+        public ClearColumn(column: number, rowOffset: number): Graphics.Abstractions.Graphic2d[];
         /**
         * Clears graphics within row column cross section.
         * @param rowStart The row to start clearing graphics from.
@@ -2937,7 +2937,7 @@ module EndGate.Graphics {
         * @param rowEnd The row to stop clearing graphics from.
         * @param columnEnd The column to stop clearing graphics from.
         */
-        public ClearSpace(rowStart: number, columnStart: number, rowEnd: number, columnEnd: number): Abstractions.Graphic2d[];
+        public ClearSpace(rowStart: number, columnStart: number, rowEnd: number, columnEnd: number): Graphics.Abstractions.Graphic2d[];
         /**
         * Draws the grid onto the given context.  If this grid is part of a scene the Draw function will be called automatically.
         * @param context The canvas context to draw the grid onto.
@@ -2946,7 +2946,7 @@ module EndGate.Graphics {
         /**
         * The bounding area that represents where the grid will draw.
         */
-        public GetDrawBounds(): Bounds.Abstractions.Bounds2d;
+        public GetDrawBounds(): EndGate.Bounds.Abstractions.Bounds2d;
         /**
         * Converts the provided vertical coordinate to a row number that is based on the current grid.
         * @param y The vertical coordinate to convert to a row.
@@ -2962,101 +2962,11 @@ module EndGate.Graphics {
         private ValidColumn(column);
     }
 }
-module EndGate.Map {
-    /**
-    * Defines an abstract class TileMap that takes an array of resources to be mapped to tiles.
-    */
-    class TileMap extends Graphics.Abstractions.Graphic2d {
-        public _Resources: Graphics.Assets.ImageSource[];
-        /**
-        * Creates a new instance of the TileMap object.
-        * @param x Initial horizontal location of the tile map.
-        * @param y Initial vertical location of the tile map.
-        * @param resources A one dimensional array of image resources that make up the tile map (this cannot change after construction).
-        */
-        constructor(x: number, y: number, resources: Graphics.Assets.ImageSource[]);
-    }
-}
-module EndGate.Map {
-    /**
-    * Defines a SquareTile that is used by the SquareTileMap.  Represents one tile within the tile map.
-    */
-    class SquareTile extends Graphics.Sprite2d {
-        /**
-        * Creates a new instance of the SquareTile object.
-        * @param image The image that is within the tile.
-        * @param width The width of the tile.
-        * @param height The height of the tile.
-        */
-        constructor(image: Graphics.Assets.ImageSource, width: number, height: number);
-    }
-}
-module EndGate.Map {
-    /**
-    * Defines a structure that is proficient at creating diverse tile maps based off of a resource image.  Best drawn via a SceneryHandler.
-    */
-    class SquareTileMap extends TileMap {
-        private _grid;
-        private _staticMap;
-        private _mapCache;
-        /**
-        * Creates a new instance of the SquareTileMap object.
-        * @param x Initial horizontal location of the tile map.
-        * @param y Initial vertical location of the tile map.
-        * @param tileWidth The width of the tile map tiles (this cannot change after construction).
-        * @param tileHeight The height of the tile map tiles (this cannot change after construction).
-        * @param resources A one dimensional array of image resources that make up the tile map (this cannot change after construction).
-        * @param mappings A two dimensional array numbers that map directly to the resources array to define the square tile map (this cannot change after construction).
-        */
-        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.Assets.ImageSource[], mappings: number[][]);
-        /**
-        * Creates a new instance of the SquareTileMap object.
-        * @param x Initial horizontal location of the tile map.
-        * @param y Initial vertical location of the tile map.
-        * @param tileWidth The width of the tile map tiles (this cannot change after construction).
-        * @param tileHeight The height of the tile map tiles (this cannot change after construction).
-        * @param resources A one dimensional array of image resources that make up the tile map (this cannot change after construction).
-        * @param mappings A two dimensional array numbers that map directly to the resources array to define the square tile map (this cannot change after construction).
-        * @param staticMap Whether or not image tiles will change throughout the SquareTileMap's lifetime, defaults to true and cannot change after construction.
-        */
-        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.Assets.ImageSource[], mappings: number[][], staticMap: bool);
-        /**
-        * Creates a new instance of the SquareTileMap object.
-        * @param x Initial horizontal location of the tile map.
-        * @param y Initial vertical location of the tile map.
-        * @param tileWidth The width of the tile map tiles (this cannot change after construction).
-        * @param tileHeight The height of the tile map tiles (this cannot change after construction).
-        * @param resources A one dimensional array of image resources that make up the tile map (this cannot change after construction).
-        * @param mappings A two dimensional array numbers that map directly to the resources array to define the square tile map (this cannot change after construction).
-        * @param staticMap Whether or not image tiles will change throughout the SquareTileMap's lifetime, defaults to true and cannot change after construction.
-        * @param drawGridLines Whether or not to draw the tile maps grid lines. Useful when trying to pinpoint specific tiles (this cannot change after construction).
-        */
-        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.Assets.ImageSource[], mappings: number[][], staticMap: bool, drawGridLines: bool);
-        /**
-        * Helper function used to take a SpriteSheet image and create a one dimensional resource tile array.
-        * @param imageSource The sprite sheet to extract the tile resources from.
-        * @param tileWidth The width of the sprite sheet tiles.
-        * @param tileHeight The height of the sprite sheet tiles.
-        */
-        static ExtractTiles(imageSource: Graphics.Assets.ImageSource, tileWidth: number, tileHeight: number): Graphics.Assets.ImageSource[];
-        /**
-        * Draws the SquareTileMap onto the given context.  If the SquareTileMap is part of a Scene2d or SceneryHandler the Draw function will be called automatically.
-        * @param context The canvas context to draw the SquareTileMap onto.
-        */
-        public Draw(context: CanvasRenderingContext2D): void;
-        /**
-        * The bounding area that represents where the SquareTileMap will draw.
-        */
-        public GetDrawBounds(): Bounds.Abstractions.Bounds2d;
-        private BuildCache();
-        private FillGridWith(mappings);
-    }
-}
-module EndGate {
+declare module EndGate {
     /**
     * Defines a matrix with 2 columns and 2 rows (2x2).
     */
-    class Matrix2x2 implements _.ITyped {
+    class Matrix2x2 implements EndGate._.ITyped {
         public _type: string;
         /**
         * Gets or sets the matrix values.  Represents the current Matrix2x2 as a multi-dimensional array.
@@ -3148,7 +3058,7 @@ module EndGate {
         * Returns a Vector2d that has been transformed by the current Matrix2x2.
         * @param vector The vector to transform.
         */
-        public Transform(vector: Vector2d): Vector2d;
+        public Transform(vector: EndGate.Vector2d): EndGate.Vector2d;
         /**
         * Returns the transpose of the current Matrix2x2.
         */
@@ -3169,7 +3079,7 @@ module EndGate {
         * Determines whether this Matrix2x2 has the same row and column values as the provided Matrix2x2.
         * @param matrix The Matrix2x2 to compare the current Matrix2x2 to.
         */
-        public Equivalent(matrix: Matrix2x2): bool;
+        public Equivalent(matrix: Matrix2x2): boolean;
         /**
         * Overridden toString method to display Matrix2x2 in easy to read format: "[topLeft, topRight] [botLeft, botRight]"
         */
@@ -3178,7 +3088,7 @@ module EndGate {
         * Creates a scaling matrix based off the provided Vector2d.
         * @param vector The vector used to determine the X and Y scaling values.
         */
-        static Scale(vector: Vector2d): Matrix2x2;
+        static Scale(vector: EndGate.Vector2d): Matrix2x2;
         /**
         * Creates a Matrix2x2 with all its rows and columns initialized to 0.
         */
@@ -3187,6 +3097,96 @@ module EndGate {
         * Returns the identity matrix for a 2x2.
         */
         static Identity(): Matrix2x2;
+    }
+}
+declare module EndGate.Map {
+    /**
+    * Defines an abstract class TileMap that takes an array of resources to be mapped to tiles.
+    */
+    class TileMap extends EndGate.Graphics.Abstractions.Graphic2d {
+        public _Resources: EndGate.Graphics.Assets.ImageSource[];
+        /**
+        * Creates a new instance of the TileMap object.
+        * @param x Initial horizontal location of the tile map.
+        * @param y Initial vertical location of the tile map.
+        * @param resources A one dimensional array of image resources that make up the tile map (this cannot change after construction).
+        */
+        constructor(x: number, y: number, resources: EndGate.Graphics.Assets.ImageSource[]);
+    }
+}
+declare module EndGate.Map {
+    /**
+    * Defines a SquareTile that is used by the SquareTileMap.  Represents one tile within the tile map.
+    */
+    class SquareTile extends EndGate.Graphics.Sprite2d {
+        /**
+        * Creates a new instance of the SquareTile object.
+        * @param image The image that is within the tile.
+        * @param width The width of the tile.
+        * @param height The height of the tile.
+        */
+        constructor(image: EndGate.Graphics.Assets.ImageSource, width: number, height: number);
+    }
+}
+declare module EndGate.Map {
+    /**
+    * Defines a structure that is proficient at creating diverse tile maps based off of a resource image.  Best drawn via a SceneryHandler.
+    */
+    class SquareTileMap extends Map.TileMap {
+        private _grid;
+        private _staticMap;
+        private _mapCache;
+        /**
+        * Creates a new instance of the SquareTileMap object.
+        * @param x Initial horizontal location of the tile map.
+        * @param y Initial vertical location of the tile map.
+        * @param tileWidth The width of the tile map tiles (this cannot change after construction).
+        * @param tileHeight The height of the tile map tiles (this cannot change after construction).
+        * @param resources A one dimensional array of image resources that make up the tile map (this cannot change after construction).
+        * @param mappings A two dimensional array numbers that map directly to the resources array to define the square tile map (this cannot change after construction).
+        */
+        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: EndGate.Graphics.Assets.ImageSource[], mappings: number[][]);
+        /**
+        * Creates a new instance of the SquareTileMap object.
+        * @param x Initial horizontal location of the tile map.
+        * @param y Initial vertical location of the tile map.
+        * @param tileWidth The width of the tile map tiles (this cannot change after construction).
+        * @param tileHeight The height of the tile map tiles (this cannot change after construction).
+        * @param resources A one dimensional array of image resources that make up the tile map (this cannot change after construction).
+        * @param mappings A two dimensional array numbers that map directly to the resources array to define the square tile map (this cannot change after construction).
+        * @param staticMap Whether or not image tiles will change throughout the SquareTileMap's lifetime, defaults to true and cannot change after construction.
+        */
+        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: EndGate.Graphics.Assets.ImageSource[], mappings: number[][], staticMap: boolean);
+        /**
+        * Creates a new instance of the SquareTileMap object.
+        * @param x Initial horizontal location of the tile map.
+        * @param y Initial vertical location of the tile map.
+        * @param tileWidth The width of the tile map tiles (this cannot change after construction).
+        * @param tileHeight The height of the tile map tiles (this cannot change after construction).
+        * @param resources A one dimensional array of image resources that make up the tile map (this cannot change after construction).
+        * @param mappings A two dimensional array numbers that map directly to the resources array to define the square tile map (this cannot change after construction).
+        * @param staticMap Whether or not image tiles will change throughout the SquareTileMap's lifetime, defaults to true and cannot change after construction.
+        * @param drawGridLines Whether or not to draw the tile maps grid lines. Useful when trying to pinpoint specific tiles (this cannot change after construction).
+        */
+        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: EndGate.Graphics.Assets.ImageSource[], mappings: number[][], staticMap: boolean, drawGridLines: boolean);
+        /**
+        * Helper function used to take a SpriteSheet image and create a one dimensional resource tile array.
+        * @param imageSource The sprite sheet to extract the tile resources from.
+        * @param tileWidth The width of the sprite sheet tiles.
+        * @param tileHeight The height of the sprite sheet tiles.
+        */
+        static ExtractTiles(imageSource: EndGate.Graphics.Assets.ImageSource, tileWidth: number, tileHeight: number): EndGate.Graphics.Assets.ImageSource[];
+        /**
+        * Draws the SquareTileMap onto the given context.  If the SquareTileMap is part of a Scene2d or SceneryHandler the Draw function will be called automatically.
+        * @param context The canvas context to draw the SquareTileMap onto.
+        */
+        public Draw(context: CanvasRenderingContext2D): void;
+        /**
+        * The bounding area that represents where the SquareTileMap will draw.
+        */
+        public GetDrawBounds(): EndGate.Bounds.Abstractions.Bounds2d;
+        private BuildCache();
+        private FillGridWith(mappings);
     }
 }
 import eg = EndGate;

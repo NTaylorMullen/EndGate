@@ -28,3 +28,15 @@ module Texts {
     }
 
 }
+
+declare module Foo {
+    export class Bar {
+    }
+}
+
+import Baz = Foo;
+
+var d: eg.Vector2d;
+var b: Baz.Bar;
+var a = new Baz.Bar();
+var c: Baz.Bar = new Baz.Bar();

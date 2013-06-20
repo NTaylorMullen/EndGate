@@ -3,7 +3,7 @@
 // Wrap in module to keep code out of global scope
 module CollisionDetection {
 
-    export class MovingShape implements eg.IUpdateable extends eg.Collision.Collidable {
+    export class MovingShape extends eg.Collision.Collidable implements eg.IUpdateable {
         // Rotate 180 degrees every second
         private static RotationSpeed: number = Math.PI;
 

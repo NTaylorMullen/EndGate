@@ -18,7 +18,7 @@ var EndGate;
             AudioSettings.Default = new AudioSettings();
             return AudioSettings;
         })();
-        Sound.AudioSettings = AudioSettings;        
+        Sound.AudioSettings = AudioSettings;
     })(EndGate.Sound || (EndGate.Sound = {}));
     var Sound = EndGate.Sound;
 })(EndGate || (EndGate = {}));

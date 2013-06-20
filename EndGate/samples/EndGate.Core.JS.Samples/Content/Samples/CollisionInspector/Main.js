@@ -4,13 +4,16 @@
 (function ($, window) {
     // Create a game canvas to use.  If we create a game without providing a canvas it will create a
     // canvas that fills the entire viewport.
-        var canvas = document.createElement("canvas"), holder = $("#gameHolder"), game = null;
+    var canvas = document.createElement("canvas"), holder = $("#gameHolder"), game = null;
+
     // Setup the game canvas DOM
     canvas.width = holder.width();
     canvas.height = holder.height();
     holder.append(canvas);
+
     // Create our game
     game = new CollisionInspector.Game(canvas);
+
     // Add objects that we'll be checking collisions for
     game.Add(new CollisionInspector.CollidableShape(new eg.Graphics.Circle(70, canvas.height / 2, 50, "red")));
     game.Add(new CollisionInspector.CollidableShape(new eg.Graphics.Circle(550, canvas.height / 2, 70, "blue")));

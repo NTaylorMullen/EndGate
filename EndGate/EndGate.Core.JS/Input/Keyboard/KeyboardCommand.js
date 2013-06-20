@@ -21,20 +21,21 @@ var EndGate;
                     this.Action = action;
                     this.Modifiers = Input.Assets.KeyboardModifiers.BuildFromCommandString(command);
                     this.Key = Input._.KeyboardCommandHelper.ParseKey(command);
+
                     this.OnDispose = new EndGate.EventHandler();
                     this._onDisposeInvoker = new EndGate._.Utilities.NoopTripInvoker(function () {
                         _this.OnDispose.Trigger();
                     }, true);
                 }
-                KeyboardCommand.prototype.Dispose = /**
+                /**
                 * Triggers the OnDisposed event.  If this KeyboardCommand is used with a KeyboardHandler it will no longer trigger the Action function.
                 */
-                function () {
+                KeyboardCommand.prototype.Dispose = function () {
                     this._onDisposeInvoker.InvokeOnce();
                 };
                 return KeyboardCommand;
             })();
-            Assets.KeyboardCommand = KeyboardCommand;            
+            Assets.KeyboardCommand = KeyboardCommand;
         })(Input.Assets || (Input.Assets = {}));
         var Assets = Input.Assets;
     })(EndGate.Input || (EndGate.Input = {}));

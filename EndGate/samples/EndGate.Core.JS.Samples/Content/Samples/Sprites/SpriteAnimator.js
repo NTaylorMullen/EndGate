@@ -19,7 +19,8 @@ var Sprites;
             };
             var that = this, animatorClicked = function () {
                 var $this = $(this), animation = $this.attr("animation");
-                if($this.hasClass("btn-success")) {
+
+                if ($this.hasClass("btn-success")) {
                     that.CurrentAnimations[animation] = false;
                     $this.removeClass("btn-success");
                 } else {
@@ -27,50 +28,63 @@ var Sprites;
                     $this.addClass("btn-success");
                 }
             };
+
             $.each(spriteAnimators, function (i, btn) {
                 $(this).click(animatorClicked);
             });
+
             this._lastChanged = new Date().getTime();
         }
-        SpriteAnimator.AnimationSpeed = 50;
-        SpriteAnimator.RotationSpeed = Math.PI / 4;
-        SpriteAnimator.ChangeDirectionEvery = 3000;
         SpriteAnimator.prototype.ApplyAnimation = function (sprite, gameTime) {
-            if(gameTime.Now.getTime() - this._lastChanged > SpriteAnimator.ChangeDirectionEvery) {
+            if (gameTime.Now.getTime() - this._lastChanged > SpriteAnimator.ChangeDirectionEvery) {
                 this.Direction *= -1;
                 this._lastChanged = gameTime.Now.getTime();
             }
-            for(var key in this.CurrentAnimations) {
-                if(this.CurrentAnimations[key]) {
+
+            for (var key in this.CurrentAnimations) {
+                if (this.CurrentAnimations[key]) {
                     this[key](sprite, gameTime);
                     this._syncSliders(key);
                 }
             }
         };
+
         SpriteAnimator.prototype.Position = function (sprite, gameTime) {
             var incrementor = SpriteAnimator.AnimationSpeed * gameTime.ElapsedSecond, direction = sprite.Position.Subtract(this._defaultPosition).Abs().Sign();
-            if(direction.Magnitude() === 0) {
+
+            if (direction.Magnitude() === 0) {
                 direction = eg.Vector2d.One();
             }
+
             sprite.Position = sprite.Position.Add(direction.Multiply(this.Direction).Multiply(incrementor));
         };
+
         SpriteAnimator.prototype.Size = function (sprite, gameTime) {
             var incrementor = SpriteAnimator.AnimationSpeed * gameTime.ElapsedSecond;
+
             sprite.Size = sprite.Size.Add(this.Direction * incrementor);
         };
+
         SpriteAnimator.prototype.Rotation = function (sprite, gameTime) {
             var incrementor = SpriteAnimator.RotationSpeed * gameTime.ElapsedSecond, direction = 1;
+
             sprite.Rotation += direction * this.Direction * incrementor;
         };
+
         SpriteAnimator.prototype.Opacity = function (sprite, gameTime) {
             var incrementor = .33 * gameTime.ElapsedSecond;
+
             sprite.Opacity(sprite.Opacity() + incrementor * this.Direction);
-            if(sprite.Opacity() > 1) {
+
+            if (sprite.Opacity() > 1) {
                 sprite.Opacity(1);
             }
         };
+        SpriteAnimator.AnimationSpeed = 50;
+        SpriteAnimator.RotationSpeed = Math.PI / 4;
+        SpriteAnimator.ChangeDirectionEvery = 3000;
         return SpriteAnimator;
     })();
-    Sprites.SpriteAnimator = SpriteAnimator;    
+    Sprites.SpriteAnimator = SpriteAnimator;
 })(Sprites || (Sprites = {}));
 //@ sourceMappingURL=SpriteAnimator.js.map

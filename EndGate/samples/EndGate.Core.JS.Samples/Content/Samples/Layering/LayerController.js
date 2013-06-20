@@ -6,6 +6,7 @@ var Layering;
 (function (Layering) {
     var LayerController = (function () {
         function LayerController(world) {
+            var _this = this;
             // Helper function to bind our + and our - to control the ZIndex of the graphics
             var bindControls = function (controlHolderID, model) {
                 $("#" + controlHolderID + " .addZIndex, #" + controlHolderID + " .subtractZIndex").click(function () {
@@ -14,12 +15,13 @@ var Layering;
                     $("#" + controlHolderID + " .zindex").html(model.ZIndex.toString());
                 });
             };
+
             bindControls("redRectController", world.RedRectangle);
             bindControls("greenRectController", world.GreenRectangle);
             bindControls("blueCircleController", world.BlueCircle);
         }
         return LayerController;
     })();
-    Layering.LayerController = LayerController;    
+    Layering.LayerController = LayerController;
 })(Layering || (Layering = {}));
 //@ sourceMappingURL=LayerController.js.map

@@ -18,24 +18,26 @@ var EndGate;
                     this.Alt = alt;
                     this.Shift = shift;
                 }
-                KeyboardModifiers.prototype.Equivalent = /**
+                /**
                 * Determines whether this KeyboardModifiers object has the same ctrl, alt, and shift states as the provided KeyboardModifiers.
                 * @param modifier The KeyboardModifiers to compare the current modifiers to.
                 */
-                function (modifier) {
+                KeyboardModifiers.prototype.Equivalent = function (modifier) {
                     return this.Ctrl === modifier.Ctrl && this.Alt === modifier.Alt && this.Shift === modifier.Shift;
                 };
+
                 KeyboardModifiers.BuildFromCommandString = /**
                 * Builds a KeyboardModifiers object to represent the state of an expected keyCommand
                 * @param keyCommand The command to analyze.
                 */
-                function BuildFromCommandString(keyCommand) {
+                function (keyCommand) {
                     var ctrl = (keyCommand.toLowerCase().indexOf("ctrl+") >= 0) ? true : false, alt = (keyCommand.toLowerCase().indexOf("alt+") >= 0) ? true : false, shift = (keyCommand.toLowerCase().indexOf("shift+") >= 0) ? true : false;
+
                     return new KeyboardModifiers(ctrl, alt, shift);
                 };
                 return KeyboardModifiers;
             })();
-            Assets.KeyboardModifiers = KeyboardModifiers;            
+            Assets.KeyboardModifiers = KeyboardModifiers;
         })(Input.Assets || (Input.Assets = {}));
         var Assets = Input.Assets;
     })(EndGate.Input || (EndGate.Input = {}));

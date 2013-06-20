@@ -5,17 +5,20 @@ var EndGate;
         /// <reference path="KeyboardCommandEvent.ts" />
         (function (_) {
             var KeyboardCommandHelper = (function () {
-                function KeyboardCommandHelper() { }
-                KeyboardCommandHelper.ParseKey = function ParseKey(command) {
+                function KeyboardCommandHelper() {
+                }
+                KeyboardCommandHelper.ParseKey = function (command) {
                     var arr = command.split("+");
-                    if(arr.length > 1) {
+
+                    if (arr.length > 1) {
                         return arr[arr.length - 1];
                     }
+
                     return arr[0];
                 };
                 return KeyboardCommandHelper;
             })();
-            _.KeyboardCommandHelper = KeyboardCommandHelper;            
+            _.KeyboardCommandHelper = KeyboardCommandHelper;
         })(Input._ || (Input._ = {}));
         var _ = Input._;
     })(EndGate.Input || (EndGate.Input = {}));

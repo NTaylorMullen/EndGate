@@ -17,7 +17,7 @@ var EndGate;
             }
             return InputManager;
         })();
-        Input.InputManager = InputManager;        
+        Input.InputManager = InputManager;
     })(EndGate.Input || (EndGate.Input = {}));
     var Input = EndGate.Input;
 })(EndGate || (EndGate = {}));

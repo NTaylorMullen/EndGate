@@ -1,4 +1,5 @@
 var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
     d.prototype = new __();
@@ -13,41 +14,27 @@ var Camera;
     var Game = (function (_super) {
         __extends(Game, _super);
         function Game(canvas, cameraPositionHolder, cameraDistanceHolder) {
-                _super.call(this, canvas);
+            _super.call(this, canvas);
             this._cameraMoveSpeed = 100;
             this._cameraZoomSpeed = 100;
-            this._upKeys = [
-                "w", 
-                "up"
-            ];
-            this._rightKeys = [
-                "d", 
-                "right"
-            ];
-            this._downKeys = [
-                "s", 
-                "down"
-            ];
-            this._leftKeys = [
-                "a", 
-                "left"
-            ];
-            this._zoomInKeys = [
-                "r", 
-                "'"
-            ];
-            this._zoomOutKeys = [
-                "f", 
-                "/"
-            ];
+            this._upKeys = ["w", "up"];
+            this._rightKeys = ["d", "right"];
+            this._downKeys = ["s", "down"];
+            this._leftKeys = ["a", "left"];
+            this._zoomInKeys = ["r", "'"];
+            this._zoomOutKeys = ["f", "/"];
+
             // These are the div elements on the page that display the camera position and distance
             this._cameraPositionHolder = cameraPositionHolder;
             this._cameraDistanceHolder = cameraDistanceHolder;
+
             // Builds all the shapes within the game that we can then maneuver around with the camera
             this._world = new Camera.World(this.Scene);
+
             // A black circle that represents the center of the camera
             this._cameraLocation = new eg.Graphics.Circle(this.Scene.Camera.Position.X, this.Scene.Camera.Position.Y, 5, "black");
             this.Scene.Add(this._cameraLocation);
+
             // Need to monitor moving directions so we know which way to move based on flags
             this._movingDirection = new Camera.MovingDirection();
             this.BindKeys(this._upKeys, "OnCommandDown", "Up", true);
@@ -64,43 +51,43 @@ var Camera;
             this.BindKeys(this._zoomOutKeys, "OnCommandUp", "ZoomingOut", false);
         }
         Game.prototype.Update = function (gameTime) {
-            var cameraPosition, movementIncrementor = // Calculate how far we can zoom or move
-            // ElapsedSecond represents the fraction of the second that has surpassed since the last Update.
-            // By multiplying the move speed by the elapsed second we can ensure that over a time span of 1
-            // second that we move this._cameraMoveSpeed in distance.
-            gameTime.ElapsedSecond * this._cameraMoveSpeed, zoomIncrementor = gameTime.ElapsedSecond * this._cameraZoomSpeed;
-            // Handle movement directions, these flags are controlled by the user based on what keys they press
-            if(this._movingDirection.Up) {
+            var cameraPosition, movementIncrementor = gameTime.ElapsedSecond * this._cameraMoveSpeed, zoomIncrementor = gameTime.ElapsedSecond * this._cameraZoomSpeed;
+
+            if (this._movingDirection.Up) {
                 this.Scene.Camera.Position.Y -= movementIncrementor;
             }
-            if(this._movingDirection.Down) {
+            if (this._movingDirection.Down) {
                 this.Scene.Camera.Position.Y += movementIncrementor;
             }
-            if(this._movingDirection.Left) {
+            if (this._movingDirection.Left) {
                 this.Scene.Camera.Position.X -= movementIncrementor;
             }
-            if(this._movingDirection.Right) {
+            if (this._movingDirection.Right) {
                 this.Scene.Camera.Position.X += movementIncrementor;
             }
-            // Handle zooming in, these flags are controlled by the user based on what keys they press
-            if(this._movingDirection.ZoomingIn) {
+
+            if (this._movingDirection.ZoomingIn) {
                 this.Scene.Camera.Distance -= zoomIncrementor;
-            } else if(this._movingDirection.ZoomingOut) {
+            } else if (this._movingDirection.ZoomingOut) {
                 this.Scene.Camera.Distance += zoomIncrementor;
             }
+
             // Set the camera location (black circle) to the camera position so it's displayed in the center of the camera
             this._cameraLocation.Position = this.Scene.Camera.Position;
+
             // Clone the Camera position and then round it so it's not a large float value that is displayed to the user
             cameraPosition = this.Scene.Camera.Position.Clone();
             cameraPosition.Apply(Math.round);
+
             // Update the HTML elements on the screen to show the camera position and the camera distance
             this._cameraPositionHolder.html(cameraPosition.toString());
             this._cameraDistanceHolder.html(Math.round(this.Scene.Camera.Distance).toString());
         };
-        Game.prototype.BindKeys = // Helper function to bind keys to the moving direction flags
-        function (keyList, bindingAction, direction, directionValue) {
+
+        // Helper function to bind keys to the moving direction flags
+        Game.prototype.BindKeys = function (keyList, bindingAction, direction, directionValue) {
             var _this = this;
-            for(var i = 0; i < keyList.length; i++) {
+            for (var i = 0; i < keyList.length; i++) {
                 this.Input.Keyboard[bindingAction](keyList[i], function () {
                     _this._movingDirection[direction] = directionValue;
                 });
@@ -108,6 +95,6 @@ var Camera;
         };
         return Game;
     })(eg.Game);
-    Camera.Game = Game;    
+    Camera.Game = Game;
 })(Camera || (Camera = {}));
 //@ sourceMappingURL=Game.js.map

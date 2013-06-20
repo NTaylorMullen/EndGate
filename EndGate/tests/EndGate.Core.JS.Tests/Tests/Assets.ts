@@ -1,6 +1,6 @@
 /// <reference path="../Scripts/endgate.d.ts" />
 
-class UpdateTester extends EndGate.Game {
+class UpdateTester extends eg.Game {
 
     public UpdateCount: number;
 
@@ -17,7 +17,7 @@ class UpdateTester extends EndGate.Game {
         this._updateLimit = updateLimit;
     }
 
-    public Update(gameTime: EndGate.GameTime) {
+    public Update(gameTime: eg.GameTime) {
         this.UpdateCount++;
         if (this.UpdateCount === this._updateLimit) {
             this._onUpdateLimit();
@@ -47,12 +47,12 @@ class DrawTester extends EndGate.Game {
     }
 }
 
-class CollisionManagerGame extends EndGate.Game
+class CollisionManagerGame extends eg.Game
 {
     constructor() {
         super();
     }
-    public MonitorCollision(obj: EndGate.Collision.Collidable): void
+    public MonitorCollision(obj: eg.Collision.Collidable): void
     {
         this.CollisionManager.Monitor(obj);
     }

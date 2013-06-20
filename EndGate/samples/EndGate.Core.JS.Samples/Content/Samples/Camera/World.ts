@@ -29,10 +29,10 @@ module Camera {
         }
 
         private CreateRotatedText(x: number, y: number, text: string, rotation: number): eg.Graphics.Text2d {
-            var text = new eg.Graphics.Text2d(x, y, text);
-            text.FontSettings().FontSize(16);
-            text.Rotation = rotation;
-            return text;
+            var t: eg.Graphics.Text2d = new eg.Graphics.Text2d(x, y, text);
+            t.FontSettings().FontSize(16);
+            t.Rotation = rotation;
+            return t;
         }
     }
 

@@ -46,7 +46,7 @@ module MapCreator {
             return layerMaps;
         }
 
-        public SaveMap(saveName: string, namespace?: string = "mapBuilder"): void {
+        public SaveMap(saveName: string, namespace: string = "mapBuilder"): void {
             var layerMaps: ILayerMap[] = this.BuildResourceMaps(),
                 layers = this._getLayers();
 
@@ -71,7 +71,7 @@ module MapCreator {
             localStorage.setItem(namespace, JSON.stringify(maps));
         }
 
-        public static GetSavedMaps(namespace?: string = "mapBuilder"): { [name: string]: ISettings; } {
+        public static GetSavedMaps(namespace: string = "mapBuilder"): { [name: string]: ISettings; } {
             var strMaps = localStorage.getItem(namespace),
                 maps: { [name: string]: ISettings; } = JSON.parse(strMaps);
 

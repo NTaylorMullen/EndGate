@@ -1,4 +1,5 @@
 var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
     d.prototype = new __();
@@ -20,12 +21,11 @@ var EndGate;
             * @param height The height of the tile.
             */
             function SquareTile(image, width, height) {
-                        _super.call(this, 0, 0, image, width, height)// Set position to 0 because the tile gets updated when it gets added to the tile map
-                ;
+                _super.call(this, 0, 0, image, width, height);
             }
             return SquareTile;
         })(EndGate.Graphics.Sprite2d);
-        Map.SquareTile = SquareTile;        
+        Map.SquareTile = SquareTile;
     })(EndGate.Map || (EndGate.Map = {}));
     var Map = EndGate.Map;
 })(EndGate || (EndGate = {}));

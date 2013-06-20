@@ -22,66 +22,77 @@ var EndGate;
                     this._State = new Graphics.Assets._.Graphic2dState();
                     this._children = [];
                 }
-                Graphic2d._zindexSort = function (a, b) {
-                    return a.ZIndex - b.ZIndex;
-                };
-                Graphic2d.prototype.AddChild = /**
+                /**
                 * Adds a child to the Graphic2d.  Children are drawn with relative positions to the parent Graphic2d.  Children
                 * of a Graphic2d should not be added to the Scene, parent Graphic2d's are responsible for drawing their children.
                 * @param graphic Child to add.
                 */
-                function (graphic) {
+                Graphic2d.prototype.AddChild = function (graphic) {
                     this._children.push(graphic);
                     this._children.sort(Graphic2d._zindexSort);
                 };
-                Graphic2d.prototype.RemoveChild = /**
+
+                /**
                 * Removes a child from the Graphic2d.  Returns a Boolean value indicating whether or not the child was able to be removed.
                 * @param graphic Child to remove.
                 */
-                function (graphic) {
+                Graphic2d.prototype.RemoveChild = function (graphic) {
                     var index = this._children.indexOf(graphic);
-                    if(index >= 0) {
+
+                    if (index >= 0) {
                         this._children.splice(index, 1);
                         return true;
                     }
+
                     return false;
                 };
-                Graphic2d.prototype.Children = /**
+
+                /**
                 * Returns the list of children for the current Graphic2d.
                 */
-                function () {
+                Graphic2d.prototype.Children = function () {
                     return this._children;
                 };
+
                 Graphic2d.prototype._StartDraw = function (context) {
                     context.save();
                     this._State.SetContextState(context);
+
                     context.translate(this.Position.X, this.Position.Y);
-                    if(this.Rotation !== 0) {
+
+                    if (this.Rotation !== 0) {
                         context.rotate(this.Rotation);
                     }
                 };
+
                 Graphic2d.prototype._EndDraw = function (context) {
-                    for(var i = 0; i < this._children.length; i++) {
+                    for (var i = 0; i < this._children.length; i++) {
                         this._children[i].Draw(context);
                     }
+
                     context.restore();
                 };
-                Graphic2d.prototype.Draw = /**
+
+                /**
                 * Abstract: Should be overridden to draw the derived class onto the context.  If this graphic is part of a scene the Draw function will be called automatically.
                 * @param context The canvas context to draw the graphic onto.
                 */
-                function (context) {
+                Graphic2d.prototype.Draw = function (context) {
                     throw new Error("The Draw method is abstract on Graphic2d and should not be called.");
                 };
-                Graphic2d.prototype.GetDrawBounds = /**
+
+                /**
                 * Abstract: Should be overridden to return the bounding area that represents where the graphic will draw.
                 */
-                function () {
+                Graphic2d.prototype.GetDrawBounds = function () {
                     throw new Error("GetDrawBounds is abstract, it must be implemented.");
+                };
+                Graphic2d._zindexSort = function (a, b) {
+                    return a.ZIndex - b.ZIndex;
                 };
                 return Graphic2d;
             })();
-            Abstractions.Graphic2d = Graphic2d;            
+            Abstractions.Graphic2d = Graphic2d;
         })(Graphics.Abstractions || (Graphics.Abstractions = {}));
         var Abstractions = Graphics.Abstractions;
     })(EndGate.Graphics || (EndGate.Graphics = {}));

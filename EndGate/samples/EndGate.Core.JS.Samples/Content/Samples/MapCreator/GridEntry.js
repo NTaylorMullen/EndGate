@@ -10,6 +10,6 @@ var MapCreator;
         }
         return GridEntry;
     })();
-    MapCreator.GridEntry = GridEntry;    
+    MapCreator.GridEntry = GridEntry;
 })(MapCreator || (MapCreator = {}));
 //@ sourceMappingURL=GridEntry.js.map

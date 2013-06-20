@@ -13,6 +13,6 @@ var MapCreator;
         CameraZoomController._cameraZoomSpeed = 30;
         return CameraZoomController;
     })();
-    MapCreator.CameraZoomController = CameraZoomController;    
+    MapCreator.CameraZoomController = CameraZoomController;
 })(MapCreator || (MapCreator = {}));
 //@ sourceMappingURL=CameraZoomController.js.map

@@ -1,4 +1,5 @@
 var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
     d.prototype = new __();
@@ -12,7 +13,8 @@ var AnimatedSprites;
     var Game = (function (_super) {
         __extends(Game, _super);
         function Game(canvas) {
-                _super.call(this, canvas);
+            _super.call(this, canvas);
+
             this._fireExplosionManager = new AnimatedSprites.FireExplosionManager(this.Input.Mouse, this.Scene);
             this._electricPulseManager = new AnimatedSprites.ElectricPulseManager(this.Input.Mouse, this.Scene);
         }
@@ -22,6 +24,6 @@ var AnimatedSprites;
         };
         return Game;
     })(eg.Game);
-    AnimatedSprites.Game = Game;    
+    AnimatedSprites.Game = Game;
 })(AnimatedSprites || (AnimatedSprites = {}));
 //@ sourceMappingURL=Game.js.map

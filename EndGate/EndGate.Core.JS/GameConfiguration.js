@@ -14,7 +14,7 @@ var EndGate;
             this.UpdateRate(this._defaultUpdateRate);
         }
         GameConfiguration.prototype.UpdateRate = function (updateRate) {
-            if(typeof updateRate !== "undefined") {
+            if (typeof updateRate !== "undefined") {
                 this._updateRate = updateRate;
                 this._updateRateSetter(this._updateRate);
             } else {
@@ -23,5 +23,5 @@ var EndGate;
         };
         return GameConfiguration;
     })();
-    EndGate.GameConfiguration = GameConfiguration;    
+    EndGate.GameConfiguration = GameConfiguration;
 })(EndGate || (EndGate = {}));

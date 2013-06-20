@@ -32,7 +32,7 @@ module EndGate.Sound {
         * @param settings Audio settings to play the AudioClip with.
         */
         public Play(settings: AudioSettings): AudioClip;
-        public Play(settings?: AudioSettings = AudioSettings.Default): AudioClip {
+        public Play(settings: AudioSettings = AudioSettings.Default): AudioClip {
             var clip = new AudioClip(this._source, settings);
 
             clip.Play();

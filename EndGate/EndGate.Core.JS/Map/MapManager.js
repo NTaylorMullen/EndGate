@@ -17,7 +17,7 @@ var EndGate;
             }
             return MapManager;
         })();
-        Map.MapManager = MapManager;        
+        Map.MapManager = MapManager;
     })(EndGate.Map || (EndGate.Map = {}));
     var Map = EndGate.Map;
 })(EndGate || (EndGate = {}));

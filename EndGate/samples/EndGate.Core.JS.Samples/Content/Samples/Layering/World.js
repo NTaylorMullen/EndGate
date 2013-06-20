@@ -12,6 +12,7 @@ var Layering;
             this.GreenRectangle = new eg.Graphics.Rectangle(canvasCenter.X + this._rectangleSize.Width / 3, canvasCenter.Y, this._rectangleSize.Width, this._rectangleSize.Height, "green");
             this.GreenRectangle.Rotation = -Math.PI / 4;
             this.BlueCircle = new eg.Graphics.Circle(canvasCenter.X, canvasCenter.Y, this._circleRadius, "blue");
+
             // Add them to the scene so they're drawn
             gameScene.Add(this.RedRectangle);
             gameScene.Add(this.GreenRectangle);
@@ -19,6 +20,6 @@ var Layering;
         }
         return World;
     })();
-    Layering.World = World;    
+    Layering.World = World;
 })(Layering || (Layering = {}));
 //@ sourceMappingURL=World.js.map

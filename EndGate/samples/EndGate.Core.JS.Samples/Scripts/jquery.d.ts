@@ -4,7 +4,7 @@ Licensed under the Apache License, Version 2.0 (the "License"); you may not use
 this file except in compliance with the License. You may obtain a copy of the
 License at http://www.apache.org/licenses/LICENSE-2.0  
  
-THIS CODE IS PROVIDED *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
 KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
 WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE, 
 MERCHANTABLITY OR NON-INFRINGEMENT. 
@@ -20,33 +20,33 @@ and limitations under the License.
 */
 interface JQueryAjaxSettings {
     accepts?: any;
-    async?: bool;
+    async?: boolean;
     beforeSend? (jqXHR: JQueryXHR, settings: JQueryAjaxSettings);
-    cache?: bool;
+    cache?: boolean;
     complete? (jqXHR: JQueryXHR, textStatus: string);
     contents?: { [key: string]: any; };
-    contentType?: string;
+    contentType?: any;
     context?: any;
     converters?: { [key: string]: any; };
-    crossDomain?: bool;
+    crossDomain?: boolean;
     data?: any;
     dataFilter? (data: any, ty: any): any;
     dataType?: string;
     error? (jqXHR: JQueryXHR, textStatus: string, errorThrow: string): any;
-    global?: bool;
+    global?: boolean;
     headers?: { [key: string]: any; };
-    ifModified?: bool;
-    isLocal?: bool;
+    ifModified?: boolean;
+    isLocal?: boolean;
     jsonp?: string;
     jsonpCallback?: any;
     mimeType?: string;
     password?: string;
-    processData?: bool;
+    processData?: boolean;
     scriptCharset?: string;
     statusCode?: { [key: string]: any; };
     success? (data: any, textStatus: string, jqXHR: JQueryXHR);
     timeout?: number;
-    traditional?: bool;
+    traditional?: boolean;
     type?: string;
     url?: string;
     username?: string;
@@ -69,11 +69,11 @@ interface JQueryCallback {
     disable(): any;
     empty(): any;
     fire(...arguments: any[]): any;
-    fired(): bool;
+    fired(): boolean;
     fireWith(context: any, ...args: any[]): any;
-    has(callback: any): bool;
+    has(callback: any): boolean;
     lock(): any;
-    locked(): bool;
+    locked(): boolean;
     removed(...callbacks: any[]): any;
 }
 
@@ -102,7 +102,7 @@ interface JQueryDeferred extends JQueryPromise {
     resolve(...args: any[]): JQueryDeferred;
     resolveWith(context: any, ...args: any[]): JQueryDeferred;
     state(): string;
-    then(doneCallbacks: any, failCallbacks: any, progressCallbacks?: any): JQueryDeferred;
+    then(doneCallbacks: any, failCallbacks?: any, progressCallbacks?: any): JQueryDeferred;
 }
 
 /*
@@ -111,9 +111,9 @@ interface JQueryDeferred extends JQueryPromise {
 interface JQueryEventObject extends Event {
     data: any;
     delegateTarget: Element;
-    isDefaultPrevented(): bool;
-    isImmediatePropogationStopped(): bool;
-    isPropogationStopped(): bool;
+    isDefaultPrevented(): boolean;
+    isImmediatePropogationStopped(): boolean;
+    isPropogationStopped(): boolean;
     namespace: string;
     preventDefault(): any;
     relatedTarget: Element;
@@ -130,33 +130,33 @@ interface JQueryEventObject extends Event {
     Collection of properties of the current browser
 */
 interface JQueryBrowserInfo {
-    safari: bool;
-    opera: bool;
-    msie: bool;
-    mozilla: bool;
+    safari: boolean;
+    opera: boolean;
+    msie: boolean;
+    mozilla: boolean;
     version: string;
 }
 
 interface JQuerySupport {
-    ajax?: bool;
-    boxModel?: bool;
-    changeBubbles?: bool;
-    checkClone?: bool;
-    checkOn?: bool;
-    cors?: bool;
-    cssFloat?: bool;
-    hrefNormalized?: bool;
-    htmlSerialize?: bool;
-    leadingWhitespace?: bool;
-    noCloneChecked?: bool;
-    noCloneEvent?: bool;
-    opacity?: bool;
-    optDisabled?: bool;
-    optSelected?: bool;
-    scriptEval? (): bool;
-    style?: bool;
-    submitBubbles?: bool;
-    tbody?: bool;
+    ajax?: boolean;
+    boxModel?: boolean;
+    changeBubbles?: boolean;
+    checkClone?: boolean;
+    checkOn?: boolean;
+    cors?: boolean;
+    cssFloat?: boolean;
+    hrefNormalized?: boolean;
+    htmlSerialize?: boolean;
+    leadingWhitespace?: boolean;
+    noCloneChecked?: boolean;
+    noCloneEvent?: boolean;
+    opacity?: boolean;
+    optDisabled?: boolean;
+    optSelected?: boolean;
+    scriptEval? (): boolean;
+    style?: boolean;
+    submitBubbles?: boolean;
+    tbody?: boolean;
 }
 
 /*
@@ -164,9 +164,8 @@ interface JQuerySupport {
 */
 interface JQueryStatic {
 
-    /****
-     AJAX
-    *****/
+    // AJAX
+    ajax(settings: JQueryAjaxSettings);
     ajax(url: string, settings: JQueryAjaxSettings);
 
     ajaxPrefilter(dataTypes: string, handler: (opts: any, originalOpts: any, jqXHR: JQueryXHR) => any): any;
@@ -174,24 +173,20 @@ interface JQueryStatic {
 
     ajaxSetup(options: any);
 
-    get (url: string, data?: any, success?: any, dataType?: any): JQueryXHR;
+    get(url: string, data?: any, success?: any, dataType?: any): JQueryXHR;
     getJSON(url: string, data?: any, success?: any): JQueryXHR;
     getScript(url: string, success?: any): JQueryXHR;
 
     param(obj: any): string;
-    param(obj: any, traditional: bool): string;
+    param(obj: any, traditional: boolean): string;
 
     post(url: string, data?: any, success?: any, dataType?: any): JQueryXHR;
 
-    /*********
-     CALLBACKS
-    **********/
+    // Callbacks
     Callbacks(flags: any): JQueryCallback;
 
-    /****
-     CORE
-    *****/
-    holdReady(hold: bool): any;
+    // Core
+    holdReady(hold: boolean): any;
 
     (selector: string, context?: any): JQuery;
     (element: Element): JQuery;
@@ -201,86 +196,74 @@ interface JQueryStatic {
     (func: Function): JQuery;
     (): JQuery;
 
-    noConflict(removeAll?: bool): Object;
+    noConflict(removeAll?: boolean): Object;
 
     when(...deferreds: any[]): JQueryPromise;
 
-    /***
-     CSS
-    ****/
+    // CSS
     css(e: any, propertyName: string, value?: any);
     css(e: any, propertyName: any, value?: any);
     cssHooks: { [key: string]: any; };
 
-    /****
-     DATA
-    *****/
+    // Data
     data(element: Element, key: string, value: any): Object;
 
     dequeue(element: Element, queueName?: string): any;
 
-    hasData(element: Element): bool;
+    hasData(element: Element): boolean;
 
     queue(element: Element, queueName?: string): any[];
     queue(element: Element, queueName: string, newQueueOrCallback: any): JQuery;
 
     removeData(element: Element, name?: string): JQuery;
 
-    /*******
-     EFFECTS
-    ********/
-    fx: { tick: () => void; interval: number; stop: () => void; speeds: { slow: number; fast: number; }; off: bool; step: any; };
+    // Deferred
+    Deferred(beforeStart?: (deferred: JQueryDeferred) => any): JQueryDeferred;
 
-    /******
-     EVENTS
-    *******/
-    proxy(context: any, name: any): any;
+    // Effects
+    fx: { tick: () => void; interval: number; stop: () => void; speeds: { slow: number; fast: number; }; off: boolean; step: any; };
 
-    /*********
-     INTERNALS
-    **********/
+    // Events
+    proxy(func: Function, context: any): any;
+    proxy(context: any, name: string): any;
+
+    // Internals
     error(message: any);
 
-    /*************
-     MISCELLANEOUS
-    **************/
+    // Miscellaneous
     expr: any;
     fn: any;  //TODO: Decide how we want to type this
-    isReady: bool;
+    isReady: boolean;
 
-    /**********
-     PROPERTIES
-    ***********/
+    // Properties
     browser: JQueryBrowserInfo;
     support: JQuerySupport;
 
-    /*********
-     UTILITIES
-    **********/
-    contains(container: Element, contained: Element): bool;
+    // Utilities
+    contains(container: Element, contained: Element): boolean;
 
     each(collection: any, callback: (indexInArray: any, valueOfElement: any) => any): any;
 
     extend(target: any, ...objs: any[]): Object;
-    extend(deep: bool, target: any, ...objs: any[]): Object;
+    extend(deep: boolean, target: any, ...objs: any[]): Object;
 
     globalEval(code: string): any;
 
-    grep(array: any[], func: any, invert: bool): any[];
+    grep(array: any[], func: any, invert: boolean): any[];
 
     inArray(value: any, array: any[], fromIndex?: number): number;
 
-    isArray(obj: any): bool;
-    isEmptyObject(obj: any): bool;
-    isFunction(obj: any): bool;
-    isNumeric(value: any): bool;
-    isPlainObject(obj: any): bool;
-    isWindow(obj: any): bool;
-    isXMLDoc(node: Node): bool;
+    isArray(obj: any): boolean;
+    isEmptyObject(obj: any): boolean;
+    isFunction(obj: any): boolean;
+    isNumeric(value: any): boolean;
+    isPlainObject(obj: any): boolean;
+    isWindow(obj: any): boolean;
+    isXMLDoc(node: Node): boolean;
 
     makeArray(obj: any): any[];
 
-    map(array: any[], callback: (elementOfArray: any, indexInArray: any) => any): JQuery;
+    map(array: any[], callback: (elementOfArray: any, indexInArray: any) => any): any[];
 
     merge(first: any[], second: any[]): any[];
 
@@ -288,7 +271,7 @@ interface JQueryStatic {
 
     now(): number;
 
-    parseJSON(json: string): Object;
+    parseJSON(json: string): any;
 
     //FIXME: This should return an XMLDocument
     parseXML(data: string): any;
@@ -306,9 +289,7 @@ interface JQueryStatic {
     The jQuery instance members
 */
 interface JQuery {
-    /****
-     AJAX
-    *****/
+    // AJAX
     ajaxComplete(handler: any): JQuery;
     ajaxError(handler: (evt: any, xhr: any, opts: any) => any): JQuery;
     ajaxSend(handler: (evt: any, xhr: any, opts: any) => any): JQuery;
@@ -321,9 +302,7 @@ interface JQuery {
     serialize(): string;
     serializeArray(): any[];
 
-    /**********
-     ATTRIBUTES
-    ***********/
+    // Attributes
     addClass(classNames: string): JQuery;
     addClass(func: (index: any, currentClass: any) => JQuery);
 
@@ -332,7 +311,7 @@ interface JQuery {
     attr(map: { [key: string]: any; }): JQuery;
     attr(attributeName: string, func: (index: any, attr: any) => any): JQuery;
 
-    hasClass(className: string): bool;
+    hasClass(className: string): boolean;
 
     html(htmlString: string): JQuery;
     html(): string;
@@ -349,8 +328,8 @@ interface JQuery {
 
     removeProp(propertyName: any): JQuery;
 
-    toggleClass(className: any, swtch?: bool): JQuery;
-    toggleClass(swtch?: bool): JQuery;
+    toggleClass(className: any, swtch?: boolean): JQuery;
+    toggleClass(swtch?: boolean): JQuery;
     toggleClass(func: (index: any, cls: any, swtch: any) => any): JQuery;
 
     val(): any;
@@ -358,9 +337,7 @@ interface JQuery {
     val(value: string): JQuery;
     val(func: (index: any, value: any) => any): JQuery;
 
-    /***
-     CSS
-    ****/
+    // CSS
     css(propertyName: string, value?: any);
     css(propertyName: any, value?: any);
 
@@ -371,12 +348,12 @@ interface JQuery {
     innerHeight(): number;
     innerWidth(): number;
 
-    offset(): Object;
+    offset(): { top: number; left: number; };
     offset(coordinates: any): JQuery;
     offset(func: (index: any, coords: any) => any): JQuery;
 
-    outerHeight(includeMargin?: bool): number;
-    outerWidth(includeMargin?: bool): number;
+    outerHeight(includeMargin?: boolean): number;
+    outerWidth(includeMargin?: boolean): number;
 
     position(): { top: number; left: number; };
 
@@ -390,9 +367,7 @@ interface JQuery {
     width(value: number): JQuery;
     width(func: (index: any, height: any) => any): JQuery;
 
-    /****
-     DATA
-    *****/
+    // Data
     clearQueue(queueName?: string): JQuery;
 
     data(key: string, value: any): JQuery;
@@ -403,16 +378,12 @@ interface JQuery {
 
     removeData(nameOrList?: any): JQuery;
 
-    /********
-     DEFERRED
-    *********/
+    // Deferred
     promise(type?: any, target?: any): JQueryPromise;
 
-    /*******
-     EFFECTS
-    ********/
+    // Effects
     animate(properties: any, duration?: any, easing?: string, complete?: Function): JQuery;
-    animate(properties: any, options: { duration?: any; easing?: string; complete?: Function; step?: Function; queue?: bool; specialEasing?: any; });
+    animate(properties: any, options: { duration?: any; easing?: string; complete?: Function; step?: Function; queue?: boolean; specialEasing?: any; });
 
     delay(duration: number, queueName?: string): JQuery;
 
@@ -442,19 +413,17 @@ interface JQuery {
     slideUp(duration?: any, callback?: any): JQuery;
     slideUp(duration?: any, easing?: string, callback?: any): JQuery;
 
-    stop(clearQueue?: bool, jumpToEnd?: bool): JQuery;
-    stop(queue?: any, clearQueue?: bool, jumpToEnd?: bool): JQuery;
+    stop(clearQueue?: boolean, jumpToEnd?: boolean): JQuery;
+    stop(queue?: any, clearQueue?: boolean, jumpToEnd?: boolean): JQuery;
 
     toggle(duration?: any, callback?: any): JQuery;
     toggle(duration?: any, easing?: string, callback?: any): JQuery;
-    toggle(showOrHide: bool): JQuery;
+    toggle(showOrHide: boolean): JQuery;
 
-    /******
-     EVENTS
-    *******/
+    // Events
     bind(eventType: string, eventData?: any, handler?: (eventObject: JQueryEventObject) => any): JQuery;
-    bind(eventType: string, eventData: any, preventBubble: bool): JQuery;
-    bind(eventType: string, preventBubble: bool): JQuery;
+    bind(eventType: string, eventData: any, preventBubble: boolean): JQuery;
+    bind(eventType: string, preventBubble: boolean): JQuery;
     bind(...events: any[]);
 
     blur(eventData?: any, handler?: (eventObject: JQueryEventObject) => any): JQuery;
@@ -470,7 +439,6 @@ interface JQuery {
     dblclick(handler: (eventObject: JQueryEventObject) => any): JQuery;
 
     delegate(selector: any, eventType: string, handler: (eventObject: JQueryEventObject) => any): JQuery;
-
 
     focus(eventData?: any, handler?: (eventObject: JQueryEventObject) => any): JQuery;
     focus(handler: (eventObject: JQueryEventObject) => any): JQuery;
@@ -498,6 +466,9 @@ interface JQuery {
 
     mouseevent(eventData: any, handler: (eventObject: JQueryEventObject) => any): JQuery;
     mouseevent(handler: (eventObject: JQueryEventObject) => any): JQuery;
+
+    mouseenter(eventData: any, handler: (eventObject: JQueryEventObject) => any): JQuery;
+    mouseenter(handler: (eventObject: JQueryEventObject) => any): JQuery;
 
     mouseleave(eventData: any, handler: (eventObject: JQueryEventObject) => any): JQuery;
     mouseleave(handler: (eventObject: JQueryEventObject) => any): JQuery;
@@ -543,7 +514,7 @@ interface JQuery {
     triggerHandler(eventType: string, ...extraParameters: any[]): Object;
 
     unbind(eventType?: string, handler?: (eventObject: JQueryEventObject) => any): JQuery;
-    unbind(eventType: string, fls: bool): JQuery;
+    unbind(eventType: string, fls: boolean): JQuery;
     unbind(evt: any): JQuery;
 
     undelegate(): JQuery;
@@ -551,18 +522,13 @@ interface JQuery {
     undelegate(selector: any, events: any): JQuery;
     undelegate(namespace: string): JQuery;
 
-    /*********
-     INTERNALS
-    **********/
-
+    // Internals
     context: Element;
     jquery: string;
     pushStack(elements: any[]): JQuery;
     pushStack(elements: any[], name: any, arguments: any): JQuery;
 
-    /************
-     MANIPULATION
-    *************/
+    // Manipulation
     after(...content: any[]): JQuery;
     after(func: (index: any) => any);
 
@@ -574,7 +540,7 @@ interface JQuery {
     before(...content: any[]): JQuery;
     before(func: (index: any) => any);
 
-    clone(withDataAndEvents?: bool, deepWithDataAndEvents?: bool): JQuery;
+    clone(withDataAndEvents?: boolean, deepWithDataAndEvents?: boolean): JQuery;
 
     detach(selector?: any): JQuery;
 
@@ -609,25 +575,18 @@ interface JQuery {
     wrapInner(wrappingElement: any): JQuery;
     wrapInner(func: (index: any) => any): JQuery;
 
-    /*************
-     MISCELLANEOUS
-    **************/
-    each(func: (index: any, elem: Element) => JQuery);
+    // Miscellaneous
+    each(func: (index: any, elem: Element) => any): JQuery;
 
-    get (index?: number): any;
+    get(index?: number): any;
 
     index(selectorOrElement?: any): number;
 
-    /**********
-     PROPERTIES
-    ***********/
+    // Properties
     length: number;
-    [x: string]: HTMLElement;
     [x: number]: HTMLElement;
 
-    /**********
-     TRAVERSING
-    ***********/
+    // Traversing
     add(selector: string, context?: any): JQuery;
     add(...elements: any[]): JQuery;
     add(html: string): JQuery;
@@ -663,10 +622,10 @@ interface JQuery {
     has(selector: string): JQuery;
     has(contained: Element): JQuery;
 
-    is(selector: string): JQuery;
-    is(func: (index: any) => any): JQuery;
-    is(element: any): JQuery;
-    is(obj: JQuery): JQuery;
+    is(selector: string): boolean;
+    is(func: (index: any) => any): boolean;
+    is(element: any): boolean;
+    is(obj: JQuery): boolean;
 
     last(): JQuery;
 
@@ -704,10 +663,7 @@ interface JQuery {
 
     slice(start: number, end?: number): JQuery;
 
-    /*********
-     UTILITIES
-    **********/
-
+    // Utilities
     queue(queueName?: string): any[];
     queue(queueName: string, newQueueOrCallback: any): JQuery;
     queue(newQueueOrCallback: any): JQuery;

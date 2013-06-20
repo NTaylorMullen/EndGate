@@ -24,6 +24,7 @@
 /// <reference path="Sound/AudioSettings.ts" />
 /// <reference path="Assets/Sizes/Size2d.ts" />
 /// <reference path="Assets/Vectors/Vector2d.ts" />
+/// <reference path="Assets/Matrixes/Matrix2x2.ts" />
 /// <reference path="Map/MapManager.ts" />
 /// <reference path="Map/Scenery/SceneryHandler.ts" />
 /// <reference path="Map/Scenery/SquareTileMap.ts" />
@@ -31,4 +32,7 @@
 
 // When this file is compiled into a declaration file it does not include this line,
 // therefore in the build.ps1 we have to append this aliasing module.
-import eg = EndGate;
+
+
+// NOTE: Should re-alias all methods once the TypeScript .9 bug has been fixed: https://typescript.codeplex.com/workitem/1182
+//import eg = EndGate;

@@ -12,7 +12,7 @@ var EndGate;
                 LooperCallback._ids = 0;
                 return LooperCallback;
             })();
-            Loopers.LooperCallback = LooperCallback;            
+            Loopers.LooperCallback = LooperCallback;
         })(_.Loopers || (_.Loopers = {}));
         var Loopers = _.Loopers;
     })(EndGate._ || (EndGate._ = {}));

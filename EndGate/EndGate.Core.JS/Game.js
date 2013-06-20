@@ -20,45 +20,51 @@ var EndGate;
             this._type = "Game";
             this._gameTime = new EndGate.GameTime();
             this._ID = Game._gameIds++;
+
             this.Scene = new EndGate.Rendering.Scene2d(function (context) {
                 _this.Draw(context);
             }, gameCanvas);
+
             this.Input = new EndGate.Input.InputManager(this.Scene.DrawArea);
             this.Audio = new EndGate.Sound.AudioManager();
             this.CollisionManager = new EndGate.Collision.CollisionManager();
             this.Configuration = new EndGate.GameConfiguration(GameRunnerInstance.Register(this));
             this.Map = new EndGate.Map.MapManager(this.Scene);
         }
-        Game._gameIds = 0;
         Game.prototype._PrepareUpdate = function () {
             this._gameTime.Update();
+
             this.CollisionManager.Update(this._gameTime);
             this.Update(this._gameTime);
         };
-        Game.prototype.Update = /**
+
+        /**
         * Triggered on a regular interval defined by the GameConfiguration.
         * @param gameTime The global game time object.  Used to represent total time running and used to track update interval elapsed speeds.
         */
-        function (gameTime) {
+        Game.prototype.Update = function (gameTime) {
         };
+
         Game.prototype._PrepareDraw = function () {
             this.Map.Scenery.Draw();
             this.Scene.Draw();
         };
-        Game.prototype.Draw = /**
+
+        /**
         * Triggered as fast as possible.  Determined by the current browsers repaint rate.
         */
-        function (context) {
-            // This is called by the scene
-                    };
-        Game.prototype.Dispose = /**
+        Game.prototype.Draw = function (context) {
+        };
+
+        /**
         * Removes game canvas and disposes all tracked objects.
         */
-        function () {
+        Game.prototype.Dispose = function () {
             this.Scene.Dispose();
             GameRunnerInstance.Unregister(this);
         };
+        Game._gameIds = 0;
         return Game;
     })();
-    EndGate.Game = Game;    
+    EndGate.Game = Game;
 })(EndGate || (EndGate = {}));

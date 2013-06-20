@@ -12,26 +12,31 @@ var KeyboardInput;
             this._bindingTextViewer.FontSettings().FontSize(this._fontSize);
             this._bindingTextViewer.FontSettings().FontWeight(this._fontWeight);
             gameScene.Add(this._bindingTextViewer);
+
             this._commandManager = new KeyboardInput.CommandManager(keyboard, commandHolder);
             this.Wire(bindButton, unbindButton, bindingCommandInput, bindingResultInput);
         }
         CommandBinder.prototype.Wire = function (bindButton, unbindButton, bindingCommandInput, bindingResultInput) {
             var _this = this;
             var that = this;
+
             bindButton.click(function () {
                 var commandResult = bindingResultInput.val();
+
                 _this._commandManager.Add(bindingCommandInput.val(), commandResult, function () {
                     that._bindingTextViewer.Text(commandResult);
                 });
+
                 bindingCommandInput.val("");
                 bindingResultInput.val("");
             });
+
             unbindButton.click(function () {
                 that._commandManager.RemoveSelected();
             });
         };
         return CommandBinder;
     })();
-    KeyboardInput.CommandBinder = CommandBinder;    
+    KeyboardInput.CommandBinder = CommandBinder;
 })(KeyboardInput || (KeyboardInput = {}));
 //@ sourceMappingURL=CommandBinder.js.map

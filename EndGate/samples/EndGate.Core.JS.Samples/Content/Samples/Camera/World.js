@@ -5,6 +5,7 @@ var Camera;
     var World = (function () {
         function World(scene) {
             var camSize = scene.Camera.Size;
+
             // Add shapes and text to the Scene to represent the game world
             scene.Add(new eg.Graphics.Circle(350, 600, 25, "green"));
             scene.Add(new eg.Graphics.Rectangle(camSize.Width, camSize.Height + 125, 125, 125, "red"));
@@ -17,20 +18,21 @@ var Camera;
             scene.Add(this.CreateRotatedText(camSize.Width, camSize.HalfHeight(), "RIGHT SIDE", Math.PI / 2));
             scene.Add(this.CreateRotatedText(camSize.HalfWidth(), camSize.Height, "BOTTOM SIDE", Math.PI));
         }
-        World.prototype.CreateRotatedRect = // These two functions are just helper functions to make the above code look nicer
-        function (x, y, width, height, color, rotation) {
+        // These two functions are just helper functions to make the above code look nicer
+        World.prototype.CreateRotatedRect = function (x, y, width, height, color, rotation) {
             var rect = new eg.Graphics.Rectangle(x, y, width, height, color);
             rect.Rotation = rotation;
             return rect;
         };
+
         World.prototype.CreateRotatedText = function (x, y, text, rotation) {
-            var text = new eg.Graphics.Text2d(x, y, text);
-            text.FontSettings().FontSize(16);
-            text.Rotation = rotation;
-            return text;
+            var t = new eg.Graphics.Text2d(x, y, text);
+            t.FontSettings().FontSize(16);
+            t.Rotation = rotation;
+            return t;
         };
         return World;
     })();
-    Camera.World = World;    
+    Camera.World = World;
 })(Camera || (Camera = {}));
 //@ sourceMappingURL=World.js.map

@@ -18,46 +18,53 @@ var EndGate;
                 if (typeof onDraw === "undefined") { onDraw = function (_) {
                 }; }
                 this._actors = [];
-                if(typeof drawArea === "undefined") {
+
+                if (typeof drawArea === "undefined") {
                     drawArea = this.CreateDefaultDrawArea();
                 }
+
                 this._onDraw = onDraw;
+
                 this.ApplyStyles(drawArea);
+
                 this.DrawArea = drawArea;
                 this.Camera = new Rendering.Camera2d(new EndGate.Vector2d(this.DrawArea.width / 2, this.DrawArea.height / 2), new EndGate.Size2d(this.DrawArea.width, this.DrawArea.height));
                 this._renderer = new Rendering.Camera2dRenderer(this.DrawArea, this.Camera);
                 this._disposed = false;
             }
-            Scene2d.prototype.Add = /**
+            /**
             * Adds an actor to the scene.  All actors added to the scene have their Draw function called automatically.
             * @param actor The graphic to add to the scene.
             */
-            function (actor) {
+            Scene2d.prototype.Add = function (actor) {
                 this._actors.push(actor);
             };
-            Scene2d.prototype.Remove = /**
+
+            /**
             * Removes an actor from the scene.  The actor will no longer have its Draw called.
             * @param actor The graphic to remove from the scene.
             */
-            function (actor) {
-                for(var i = 0; i < this._actors.length; i++) {
-                    if(this._actors[i] === actor) {
+            Scene2d.prototype.Remove = function (actor) {
+                for (var i = 0; i < this._actors.length; i++) {
+                    if (this._actors[i] === actor) {
                         this._actors.splice(i, 1);
                         return;
                     }
                 }
             };
-            Scene2d.prototype.Draw = /**
+
+            /**
             * Draws all actors within the Scene and triggers the Scene2d's onDraw callback.
             */
-            function () {
+            Scene2d.prototype.Draw = function () {
                 this._onDraw(this._renderer.Render(this._actors));
             };
-            Scene2d.prototype.Dispose = /**
+
+            /**
             * Destroys the game canvas and clears the Scene2d's actors.
             */
-            function () {
-                if(!this._disposed) {
+            Scene2d.prototype.Dispose = function () {
+                if (!this._disposed) {
                     this._disposed = true;
                     this._actors = [];
                     this._renderer.Dispose();
@@ -65,23 +72,28 @@ var EndGate;
                     throw new Error("Scene2d cannot be disposed more than once");
                 }
             };
+
             Scene2d.prototype.ApplyStyles = function (drawArea) {
                 drawArea.style.position = "absolute";
                 drawArea.style.zIndex = "2";
                 drawArea.parentElement.style.position = "relative";
             };
+
             Scene2d.prototype.CreateDefaultDrawArea = function () {
                 var drawArea = document.createElement("canvas"), body = document.getElementsByTagName('body')[0];
+
                 drawArea.width = window.innerWidth;
                 drawArea.height = window.innerHeight;
+
                 body.appendChild(drawArea);
                 body.style.margin = "0px";
                 body.style.padding = "0px";
+
                 return drawArea;
             };
             return Scene2d;
         })();
-        Rendering.Scene2d = Scene2d;        
+        Rendering.Scene2d = Scene2d;
     })(EndGate.Rendering || (EndGate.Rendering = {}));
     var Rendering = EndGate.Rendering;
 })(EndGate || (EndGate = {}));
