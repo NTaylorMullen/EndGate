@@ -3,7 +3,7 @@
     QUnit.module("Event Handler Facts");
 
     QUnit.test("Events can be bound and triggered.", function () {
-        var e = new EndGate.EventHandler(),
+        var e = new eg.EventHandler(),
             firstTriggered = false,
             secondTriggered = false,
             first = function () {
@@ -25,7 +25,7 @@
     });
 
     QUnit.test("Events can be bound, triggered, and then unbound and not triggered.", function () {
-        var e = new EndGate.EventHandler(),
+        var e = new eg.EventHandler(),
             firstTriggered = false,
             secondTriggered = false,
             first = function () {
@@ -56,7 +56,7 @@
     });
 
     QUnit.test("Events can be bound with args, triggered, and then unbound and not triggered.", function () {
-        var e = new EndGate.EventHandler(),
+        var e = new eg.EventHandler(),
             resultA = 0,
             resultB = 1,
             add = function (a, b) {

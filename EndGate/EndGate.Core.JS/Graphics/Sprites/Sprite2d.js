@@ -4,8 +4,8 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     /// <reference path="../../Assets/Vectors/Vector2d.ts" />
     /// <reference path="../../Assets/Sizes/Size2d.ts" />
     /// <reference path="../Graphic2d.ts" />
@@ -19,11 +19,11 @@ var EndGate;
             function Sprite2d(x, y, image, width, height) {
                 if (typeof width === "undefined") { width = image.ClipSize.Width; }
                 if (typeof height === "undefined") { height = image.ClipSize.Height; }
-                _super.call(this, new EndGate.Vector2d(x, y));
+                _super.call(this, new eg.Vector2d(x, y));
                 this._type = "Sprite2d";
 
                 this.Image = image;
-                this.Size = new EndGate.Size2d(width, height);
+                this.Size = new eg.Size2d(width, height);
             }
             Sprite2d.prototype.Opacity = function (alpha) {
                 return this._State.GlobalAlpha(alpha);
@@ -45,7 +45,7 @@ var EndGate;
             * The bounding area that represents where the Sprite2d will draw.
             */
             Sprite2d.prototype.GetDrawBounds = function () {
-                var bounds = new EndGate.Bounds.BoundingRectangle(this.Position, this.Size);
+                var bounds = new eg.Bounds.BoundingRectangle(this.Position, this.Size);
 
                 bounds.Rotation = this.Rotation;
 
@@ -54,6 +54,6 @@ var EndGate;
             return Sprite2d;
         })(Graphics.Abstractions.Graphic2d);
         Graphics.Sprite2d = Sprite2d;
-    })(EndGate.Graphics || (EndGate.Graphics = {}));
-    var Graphics = EndGate.Graphics;
-})(EndGate || (EndGate = {}));
+    })(eg.Graphics || (eg.Graphics = {}));
+    var Graphics = eg.Graphics;
+})(eg || (eg = {}));

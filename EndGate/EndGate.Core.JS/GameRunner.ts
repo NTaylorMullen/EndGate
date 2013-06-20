@@ -4,7 +4,7 @@
 /// <reference path="Loopers/TimedCallback.ts" />
 /// <reference path="Game.ts" />
 
-module EndGate._ {    
+module eg._ {    
 
     export class GameRunner implements ITyped {
         public _type: string = "GameRunner";
@@ -106,4 +106,4 @@ module EndGate._ {
     }
 }
 
-var GameRunnerInstance: EndGate._.GameRunner = new EndGate._.GameRunner();
+var GameRunnerInstance: eg._.GameRunner = new eg._.GameRunner();

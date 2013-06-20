@@ -1,7 +1,7 @@
 /// <reference path="../Interfaces/IDisposable.ts" />
 /// <reference path="../Interfaces/ITyped.ts" />
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     /**
     * Defines an event handler object that can maintain bound functions and trigger them on demand.
     */
@@ -60,5 +60,5 @@ var EndGate;
         };
         return EventHandler;
     })();
-    EndGate.EventHandler = EventHandler;
-})(EndGate || (EndGate = {}));
+    eg.EventHandler = EventHandler;
+})(eg || (eg = {}));

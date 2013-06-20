@@ -1,4 +1,4 @@
-module EndGate.Graphics.Assets {
+module eg.Graphics.Assets {
 
     /**
     * Defines valid FontMeasurements that can be used to increase or decrease font sizes of Text2d's.
@@ -11,7 +11,7 @@ module EndGate.Graphics.Assets {
     };    
 }
 
-module EndGate.Graphics.Assets._ {
+module eg.Graphics.Assets._ {
     export class FontMeasurementHelper {
         public static _measurements: string[];
 

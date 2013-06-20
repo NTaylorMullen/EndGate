@@ -1,7 +1,7 @@
 /// <reference path="../Interfaces/IDisposable.ts" />
 /// <reference path="../Interfaces/ITyped.ts" />
 
-module EndGate {
+module eg {
 
     /**
     * Defines an event handler object that can maintain bound functions and trigger them on demand.

@@ -1,5 +1,5 @@
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Bounds) {
         /// <reference path="../Interfaces/IMoveable.ts" />
         /// <reference path="../Assets/Vectors/Vector2d.ts" />
@@ -62,6 +62,6 @@ var EndGate;
             Abstractions.Bounds2d = Bounds2d;
         })(Bounds.Abstractions || (Bounds.Abstractions = {}));
         var Abstractions = Bounds.Abstractions;
-    })(EndGate.Bounds || (EndGate.Bounds = {}));
-    var Bounds = EndGate.Bounds;
-})(EndGate || (EndGate = {}));
+    })(eg.Bounds || (eg.Bounds = {}));
+    var Bounds = eg.Bounds;
+})(eg || (eg = {}));

@@ -9,10 +9,11 @@
     var canvas = document.createElement("canvas"), holder = $("#gameHolder"), game, textColorPicker, borderColorPicker, borderThicknessSlider, rotationSlider, xPositionSlider, yPositionSlider, fontSizeSlider, opacitySlider, shadowXSlider, shadowYSlider, shadowColorPicker, shadowBlurSlider, fontFamilySelect = $("#fontFamilySelect"), fontFamilyTypeSelect = $("#fontFamilyTypeSelect"), fontWeightSelect = $("#fontWeightSelect"), fontStyleSelect = $("#fontStyleSelect"), ensureValue = function (val, min, max) {
         return Math.min(Math.max(val, min), max);
     }, fillSelect = function (select, optionList, onchange) {
-        for (var property in optionList) {
-            if (property !== "_map") {
-                select.append("<option value=\"" + property + "\">" + property + "</option>");
-            }
+        var i = 0;
+
+        while (optionList[i]) {
+            select.append("<option value=\"" + optionList[i] + "\">" + optionList[i] + "</option>");
+            i++;
         }
 
         select.change(onchange);

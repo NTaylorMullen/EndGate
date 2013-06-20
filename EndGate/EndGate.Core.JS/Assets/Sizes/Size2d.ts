@@ -1,7 +1,7 @@
 /// <reference path="../Vectors/Vector2d.ts" />
 /// <reference path="../../Interfaces/ITyped.ts" />
 
-module EndGate {
+module eg {
 
     /**
     * Defines a two dimensional size object which specifies a Width and Height.

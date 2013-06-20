@@ -5,7 +5,7 @@
 /// <reference path="../../../GameTime.ts" />
 /// <reference path="../ImageSource.ts" />
 
-module EndGate.Graphics {
+module eg.Graphics {
 
     /**
     * Defines an animation that can be drawn to the screen.

@@ -9,8 +9,8 @@
 /// <reference path="Input/InputManager.ts" />
 /// <reference path="Sound/AudioManager.ts" />
 /// <reference path="Map/MapManager.ts" />
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     /**
     * Defines a virtual Game object that is meant to be derived from.  Games contain a multitude of management objects to control every aspect of the game.
     */
@@ -18,18 +18,18 @@ var EndGate;
         function Game(gameCanvas) {
             var _this = this;
             this._type = "Game";
-            this._gameTime = new EndGate.GameTime();
+            this._gameTime = new eg.GameTime();
             this._ID = Game._gameIds++;
 
-            this.Scene = new EndGate.Rendering.Scene2d(function (context) {
+            this.Scene = new eg.Rendering.Scene2d(function (context) {
                 _this.Draw(context);
             }, gameCanvas);
 
-            this.Input = new EndGate.Input.InputManager(this.Scene.DrawArea);
-            this.Audio = new EndGate.Sound.AudioManager();
-            this.CollisionManager = new EndGate.Collision.CollisionManager();
-            this.Configuration = new EndGate.GameConfiguration(GameRunnerInstance.Register(this));
-            this.Map = new EndGate.Map.MapManager(this.Scene);
+            this.Input = new eg.Input.InputManager(this.Scene.DrawArea);
+            this.Audio = new eg.Sound.AudioManager();
+            this.CollisionManager = new eg.Collision.CollisionManager();
+            this.Configuration = new eg.GameConfiguration(GameRunnerInstance.Register(this));
+            this.Map = new eg.Map.MapManager(this.Scene);
         }
         Game.prototype._PrepareUpdate = function () {
             this._gameTime.Update();
@@ -66,5 +66,5 @@ var EndGate;
         Game._gameIds = 0;
         return Game;
     })();
-    EndGate.Game = Game;
-})(EndGate || (EndGate = {}));
+    eg.Game = Game;
+})(eg || (eg = {}));

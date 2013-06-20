@@ -8,7 +8,7 @@
 /// <reference path="IMoveEvent.ts" />
 /// <reference path="MovementController.ts" />
 
-module EndGate.MovementControllers {
+module eg.MovementControllers {
 
     /**
     * Defines a LinearMovementController that can move objects Up, Right, Left, Down or a combination.
@@ -16,7 +16,7 @@ module EndGate.MovementControllers {
     export class LinearMovementController extends Abstractions.MovementController {
         private _moveSpeed: number;
         private _moving: Assets.LinearDirections;
-        private _rotationUpdater: EndGate._.Utilities.NoopTripInvoker;
+        private _rotationUpdater: eg._.Utilities.NoopTripInvoker;
         private _velocityUpdater: Function;
 
         /**
@@ -46,7 +46,7 @@ module EndGate.MovementControllers {
             this._moveSpeed = moveSpeed;
             this._moving = new Assets.LinearDirections();
             this.OnMove = new EventHandler();
-            this._rotationUpdater = new EndGate._.Utilities.NoopTripInvoker(() => {
+            this._rotationUpdater = new eg._.Utilities.NoopTripInvoker(() => {
                 this.UpdateRotation();
             }, rotateWithMovements);
 

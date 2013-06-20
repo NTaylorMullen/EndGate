@@ -1,8 +1,8 @@
 /// <reference path="../../Interfaces/ITyped.ts" />
 /// <reference path="../Vectors/Vector2d.ts" />
 /// <reference path="../../Extensions/MathExtensions.ts" />
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     /**
     * Defines a matrix with 2 columns and 2 rows (2x2).
     */
@@ -93,7 +93,7 @@ var EndGate;
         * @param vector The vector to transform.
         */
         Matrix2x2.prototype.Transform = function (vector) {
-            return new EndGate.Vector2d(this.Values[0][0] * vector.X + this.Values[0][1] * vector.Y, this.Values[1][0] * vector.X + this.Values[1][1] * vector.Y);
+            return new eg.Vector2d(this.Values[0][0] * vector.X + this.Values[0][1] * vector.Y, this.Values[1][0] * vector.X + this.Values[1][1] * vector.Y);
         };
 
         /**
@@ -162,5 +162,5 @@ var EndGate;
         };
         return Matrix2x2;
     })();
-    EndGate.Matrix2x2 = Matrix2x2;
-})(EndGate || (EndGate = {}));
+    eg.Matrix2x2 = Matrix2x2;
+})(eg || (eg = {}));

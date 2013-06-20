@@ -6,7 +6,7 @@
 /// <reference path="../Bounds/Bounds2d.ts" />
 /// <reference path="Graphic2dState.ts" />
 
-module EndGate.Graphics.Abstractions {
+module eg.Graphics.Abstractions {
 
     /**
     * Abstract drawable graphic type that is used create the base for graphics.

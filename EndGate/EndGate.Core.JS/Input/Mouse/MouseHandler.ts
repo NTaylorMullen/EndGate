@@ -5,7 +5,7 @@
 /// <reference path="IMouseClickEvent.ts" />
 /// <reference path="IMouseScrollEvent.ts" />
 
-module EndGate.Input {
+module eg.Input {
 
     /**
     * Defines a handler that will monitor mouse events over a specified area and will execute appropriate functions based on the events.

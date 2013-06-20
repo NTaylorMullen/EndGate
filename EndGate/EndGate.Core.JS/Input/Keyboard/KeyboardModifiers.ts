@@ -1,6 +1,6 @@
 /// <reference path="KeyboardCommand.ts" />
 
-module EndGate.Input.Assets {
+module eg.Input.Assets {
 
     /**
     * Defines an object that is used to represent a keyboard modifier state to determine if Ctrl, Alt, or Shift is being pressed.

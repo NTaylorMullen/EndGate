@@ -3,7 +3,7 @@
 /// <reference path="../Bounds/BoundingRectangle.ts" />
 /// <reference path="Graphic2d.ts" />
 
-module EndGate.Graphics {
+module eg.Graphics {
 
     export class Line2d extends Abstractions.Graphic2d {
         public _type: string = "Line2d";

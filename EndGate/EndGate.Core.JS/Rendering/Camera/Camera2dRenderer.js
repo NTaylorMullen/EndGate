@@ -4,8 +4,8 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     /// <reference path="Camera2d.ts" />
     /// <reference path="../Renderer2d.ts" />
     /// <reference path="../../Assets/Sizes/Size2d.ts" />
@@ -28,7 +28,7 @@ var EndGate;
                 this._contextBuilder = new Rendering._.Camera2dCanvasContextBuilder(this._camera);
 
                 this.OnRendererSizeChange.Bind(this._contextBuilder._UpdateCanvasCenter);
-                this._contextBuilder._UpdateCanvasCenter(new EndGate.Size2d(renderOnto.width, renderOnto.height));
+                this._contextBuilder._UpdateCanvasCenter(new eg.Size2d(renderOnto.width, renderOnto.height));
                 this._BufferContext = this._contextBuilder.Build(this._BufferContext);
             }
             /**
@@ -72,6 +72,6 @@ var EndGate;
             return Camera2dRenderer;
         })(Rendering.Renderer2d);
         Rendering.Camera2dRenderer = Camera2dRenderer;
-    })(EndGate.Rendering || (EndGate.Rendering = {}));
-    var Rendering = EndGate.Rendering;
-})(EndGate || (EndGate = {}));
+    })(eg.Rendering || (eg.Rendering = {}));
+    var Rendering = eg.Rendering;
+})(eg || (eg = {}));

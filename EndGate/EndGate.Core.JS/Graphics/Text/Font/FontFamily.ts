@@ -1,4 +1,4 @@
-module EndGate.Graphics.Assets {
+module eg.Graphics.Assets {
 
     /**
     * Defines valid FontFamilies that can be used to display Text2d's differently.
@@ -31,7 +31,7 @@ module EndGate.Graphics.Assets {
 
 }
 
-module EndGate.Graphics.Assets._ {
+module eg.Graphics.Assets._ {
     export class FontFamilyHelper {
         public static _families: { [family: number]: string; };
 

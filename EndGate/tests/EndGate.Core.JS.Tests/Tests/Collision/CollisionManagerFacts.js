@@ -5,9 +5,9 @@
     QUnit.module("Collision Manager Facts");
 
     QUnit.test("Collision manager detects collisions.", function () {
-        var cm = new EndGate.Collision.CollisionManager(),
-            rect = new EndGate.Collision.Collidable(new EndGate.Bounds.BoundingRectangle(EndGate.Vector2d.Zero(), new EndGate.Size2d(30, 50))),
-            circle = new EndGate.Collision.Collidable(new EndGate.Bounds.BoundingCircle(EndGate.Vector2d.Zero(), 10)),
+        var cm = new eg.Collision.CollisionManager(),
+            rect = new eg.Collision.Collidable(new eg.Bounds.BoundingRectangle(eg.Vector2d.Zero(), new eg.Size2d(30, 50))),
+            circle = new eg.Collision.Collidable(new eg.Bounds.BoundingCircle(eg.Vector2d.Zero(), 10)),
             rectCollisionTriggered = false,
             circleCollisionTriggered = false,
             managerCollisionTriggered = false;
@@ -73,8 +73,8 @@
     });
 
     QUnit.asyncTimeoutTest("Collision manager works within game.", 10000, function (end, assert, testName) {
-        var rect = new EndGate.Collision.Collidable(new EndGate.Bounds.BoundingRectangle(EndGate.Vector2d.Zero(), new EndGate.Size2d(30, 50))),
-            circle = new EndGate.Collision.Collidable(new EndGate.Bounds.BoundingCircle(EndGate.Vector2d.Zero(), 10)),
+        var rect = new eg.Collision.Collidable(new eg.Bounds.BoundingRectangle(eg.Vector2d.Zero(), new eg.Size2d(30, 50))),
+            circle = new eg.Collision.Collidable(new eg.Bounds.BoundingCircle(eg.Vector2d.Zero(), 10)),
             game = new CollisionManagerGame(),
             rectCollisionTriggered = 0,
             circleCollisionTriggered = 0,

@@ -5,7 +5,7 @@
 /// <reference path="../Assets/Vectors/Vector2d.ts" />
 /// <reference path="CollisionData.ts" />
 
-module EndGate.Collision {
+module eg.Collision {
 
     /**
     * Defines a collidable object that can be used to detect collisions with other objects.

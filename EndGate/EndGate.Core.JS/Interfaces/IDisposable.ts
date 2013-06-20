@@ -1,4 +1,4 @@
-declare module EndGate {
+declare module eg {
 
     /**
     * Represents a Disposable object with a Dispose method.

@@ -1,5 +1,5 @@
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Graphics) {
         (function (Assets) {
             /// <reference path="../Interfaces/ITyped.ts" />
@@ -88,6 +88,6 @@ var EndGate;
             var _ = Assets._;
         })(Graphics.Assets || (Graphics.Assets = {}));
         var Assets = Graphics.Assets;
-    })(EndGate.Graphics || (EndGate.Graphics = {}));
-    var Graphics = EndGate.Graphics;
-})(EndGate || (EndGate = {}));
+    })(eg.Graphics || (eg.Graphics = {}));
+    var Graphics = eg.Graphics;
+})(eg || (eg = {}));

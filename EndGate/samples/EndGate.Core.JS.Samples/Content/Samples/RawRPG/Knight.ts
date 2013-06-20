@@ -28,7 +28,7 @@ module RawRPG {
             // : since we set it to false that means we're going to depict rotation via the animation, not the actual graphic rotating
             // multiDirectional means we can combine movement directions together aka up & left
             // : since we set it to false that means we can only go up, down left or right, no diagonals.
-            this.MovementController = new eg.MovementControllers.LinearMovementController([this.Bounds, this.Graphic], Knight.MoveSpeed, /*rotateWithMovements*/ false, /*multiDirectional*/ false);
+            this.MovementController = new eg.MovementControllers.LinearMovementController(<eg.IMoveable[]>[this.Bounds, this.Graphic], Knight.MoveSpeed, /*rotateWithMovements*/ false, /*multiDirectional*/ false);
             this.MovementController.Position = startPosition;
             this.AnimationHandler = new KnightAnimationHandler(this);
         }

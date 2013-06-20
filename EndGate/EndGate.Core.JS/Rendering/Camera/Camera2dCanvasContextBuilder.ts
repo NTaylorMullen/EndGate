@@ -2,7 +2,7 @@
 /// <reference path="../../Assets/Sizes/Size2d.ts" />
 /// <reference path="Camera2d.ts" />
 
-module EndGate.Rendering._ {
+module eg.Rendering._ {
 
     /**
     * Defines a builder that is used to build a camera sensitive CanvasRenderingContext2d so that anything drawn to it becomes relative to the Camera2d.

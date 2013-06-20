@@ -33,11 +33,12 @@
         },
         // These functions are used to sync the shapes positions with the sliders
         fillSelect = function (select: JQuery, optionList: any, onchange: Function) {
-            for (var property in optionList) {
-                if (property !== "_map") {
-                    select.append("<option value=\"" + property + "\">" + property + "</option>");
-                }
-            }
+            var i = 0;
+            
+            while (optionList[i]) {
+                select.append("<option value=\"" + optionList[i] + "\">" + optionList[i] + "</option>");
+                i++;
+            }            
 
             select.change(onchange);
         },
@@ -109,11 +110,11 @@
 
     // Wire up text selections
     fillSelect(fontFamilySelect, eg.Graphics.Assets.FontFamily, function () {
-        game.Text.FontSettings().FontFamily(eg.Graphics.Assets.FontFamily[$(this).val()]);
+        game.Text.FontSettings().FontFamily(eg.Graphics.Assets.FontFamily[<string>$(this).val()]);
     });
 
     fillSelect(fontStyleSelect, eg.Graphics.Assets.FontStyle, function () {
-        game.Text.FontSettings().FontStyle(eg.Graphics.Assets.FontStyle[$(this).val()]);
+        game.Text.FontSettings().FontStyle(eg.Graphics.Assets.FontStyle[<string>$(this).val()]);
     });
 
     fontWeightSelect.change(function () {

@@ -8,7 +8,7 @@
 /// <reference path="IRenderer.ts" />
 /// <reference path="Camera/Camera2dRenderer.ts" />
 
-module EndGate.Rendering {
+module eg.Rendering {
 
     /**
     * Defines a scene object that is used to maintain a list of renderable objects that are rendered onto a joint game area.

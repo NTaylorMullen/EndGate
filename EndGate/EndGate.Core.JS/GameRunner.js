@@ -1,5 +1,5 @@
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     /// <reference path="Interfaces/ITyped.ts" />
     /// <reference path="Loopers/Looper.ts" />
     /// <reference path="Loopers/RepaintLooper.ts" />
@@ -97,8 +97,8 @@ var EndGate;
             return GameRunner;
         })();
         _.GameRunner = GameRunner;
-    })(EndGate._ || (EndGate._ = {}));
-    var _ = EndGate._;
-})(EndGate || (EndGate = {}));
+    })(eg._ || (eg._ = {}));
+    var _ = eg._;
+})(eg || (eg = {}));
 
-var GameRunnerInstance = new EndGate._.GameRunner();
+var GameRunnerInstance = new eg._.GameRunner();

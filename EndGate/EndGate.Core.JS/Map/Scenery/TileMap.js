@@ -1,10 +1,11 @@
 var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     /// <reference path="../../Assets/Vectors/Vector2d.ts" />
     /// <reference path="../../Graphics/Graphic2d.ts" />
     /// <reference path="../../Graphics/Sprites/ImageSource.ts" />
@@ -21,12 +22,13 @@ var EndGate;
             * @param resources A one dimensional array of image resources that make up the tile map (this cannot change after construction).
             */
             function TileMap(x, y, resources) {
-                        _super.call(this, new EndGate.Vector2d(x, y));
+                _super.call(this, new eg.Vector2d(x, y));
+
                 this._Resources = resources;
             }
             return TileMap;
-        })(EndGate.Graphics.Abstractions.Graphic2d);
-        Map.TileMap = TileMap;        
-    })(EndGate.Map || (EndGate.Map = {}));
-    var Map = EndGate.Map;
-})(EndGate || (EndGate = {}));
+        })(eg.Graphics.Abstractions.Graphic2d);
+        Map.TileMap = TileMap;
+    })(eg.Map || (eg.Map = {}));
+    var Map = eg.Map;
+})(eg || (eg = {}));

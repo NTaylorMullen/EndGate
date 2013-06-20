@@ -4,8 +4,8 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     /// <reference path="../Assets/Vectors/Vector2d.ts" />
     /// <reference path="BoundingRectangle.ts" />
     /// <reference path="Bounds2d.ts" />
@@ -97,6 +97,6 @@ var EndGate;
             return BoundingCircle;
         })(Bounds.Abstractions.Bounds2d);
         Bounds.BoundingCircle = BoundingCircle;
-    })(EndGate.Bounds || (EndGate.Bounds = {}));
-    var Bounds = EndGate.Bounds;
-})(EndGate || (EndGate = {}));
+    })(eg.Bounds || (eg.Bounds = {}));
+    var Bounds = eg.Bounds;
+})(eg || (eg = {}));

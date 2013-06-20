@@ -1,5 +1,5 @@
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     /// <reference path="IRenderer.ts" />
     /// <reference path="IRenderable.ts" />
     /// <reference path="../Utilities/EventHandler.ts" />
@@ -20,7 +20,7 @@ var EndGate;
                 // Create an equally sized canvas for a buffer
                 this._BufferCanvas = document.createElement("canvas");
                 this._BufferContext = this._BufferCanvas.getContext("2d");
-                this.OnRendererSizeChange = new EndGate.EventHandler();
+                this.OnRendererSizeChange = new eg.EventHandler();
                 this.UpdateBufferSize();
 
                 this._disposed = false;
@@ -69,7 +69,7 @@ var EndGate;
             Renderer2d.prototype.UpdateBufferSize = function () {
                 this._BufferCanvas.width = this._visibleCanvas.width;
                 this._BufferCanvas.height = this._visibleCanvas.height;
-                this.OnRendererSizeChange.Trigger(new EndGate.Size2d(this._visibleCanvas.width, this._visibleCanvas.height));
+                this.OnRendererSizeChange.Trigger(new eg.Size2d(this._visibleCanvas.width, this._visibleCanvas.height));
             };
             Renderer2d._zindexSort = function (a, b) {
                 return a.ZIndex - b.ZIndex;
@@ -77,6 +77,6 @@ var EndGate;
             return Renderer2d;
         })();
         Rendering.Renderer2d = Renderer2d;
-    })(EndGate.Rendering || (EndGate.Rendering = {}));
-    var Rendering = EndGate.Rendering;
-})(EndGate || (EndGate = {}));
+    })(eg.Rendering || (eg.Rendering = {}));
+    var Rendering = eg.Rendering;
+})(eg || (eg = {}));

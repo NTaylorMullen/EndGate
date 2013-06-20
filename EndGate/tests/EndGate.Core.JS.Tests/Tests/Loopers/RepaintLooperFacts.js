@@ -5,12 +5,12 @@
     QUnit.asyncTimeoutTest("Repaint Looper single callback works.", 10000, function (end, assert, testName) {
         var updates = 0,
             triggered = false,
-            gameLoop = new EndGate._.Loopers.RepaintLooper(),
+            gameLoop = new eg._.Loopers.RepaintLooper(),
             onComplete = function () {
                 assert.equal(updates, 20, "Updates have hit 20!");
                 end();
             },
-            looperCallback = new EndGate._.Loopers.LooperCallback(function () {
+            looperCallback = new eg._.Loopers.LooperCallback(function () {
                 updates++;
                 if (updates >= 20) {
                     triggered = true;
@@ -37,15 +37,15 @@
     QUnit.asyncTimeoutTest("Repaint Looper multiple callback works.", 10000, function (end, assert, testName) {
         var updates1 = 0,
             updates2 = 0,
-            gameLoop = new EndGate._.Loopers.Looper(),
+            gameLoop = new eg._.Loopers.Looper(),
             onComplete = function () {
                 assert.eqokual(updates, -30, "Updates have hit -30!");
                 end();
             },
-            looperCallback1 = new EndGate._.Loopers.LooperCallback(function () {
+            looperCallback1 = new eg._.Loopers.LooperCallback(function () {
                 updates1++;
             }),
-            looperCallback2 = new EndGate._.Loopers.LooperCallback(function () {
+            looperCallback2 = new eg._.Loopers.LooperCallback(function () {
                 updates2--;
             });
 

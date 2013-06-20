@@ -5,12 +5,12 @@
     QUnit.asyncTimeoutTest("Looper single callback works.", 10000, function (end, assert, testName) {
         var updates = 0,
             triggered = false,
-            gameLoop = new EndGate._.Loopers.Looper(),
+            gameLoop = new eg._.Loopers.Looper(),
             onComplete = function () {
                 assert.equal(updates, 30, "Updates have hit 30!");
                 end();
             },
-            timedCallback = new EndGate._.Loopers.TimedCallback(30, function () {
+            timedCallback = new eg._.Loopers.TimedCallback(30, function () {
                 updates++;
                 if (updates >= 30) {
                     triggered = true;
@@ -37,15 +37,15 @@
     QUnit.asyncTimeoutTest("Looper multiple callback works.", 10000, function (end, assert, testName) {
         var updates = 0,
             triggered = false,
-            gameLoop = new EndGate._.Loopers.Looper(),
+            gameLoop = new eg._.Loopers.Looper(),
             onComplete = function () {
                 assert.equal(updates, -30, "Updates have hit -30!");
                 end();
             },
-            timedCallback1 = new EndGate._.Loopers.TimedCallback(30, function () {
+            timedCallback1 = new eg._.Loopers.TimedCallback(30, function () {
                 updates++;                
             }),
-            timedCallback2 = new EndGate._.Loopers.TimedCallback(60, function () {
+            timedCallback2 = new eg._.Loopers.TimedCallback(60, function () {
                 updates--;
 
                 if (updates <= -30) {

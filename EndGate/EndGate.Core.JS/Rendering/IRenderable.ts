@@ -1,6 +1,6 @@
 /// <reference path="../Bounds/Bounds2d.ts" />
 
-declare module EndGate.Rendering {
+declare module eg.Rendering {
 
     /**
     * Represents a renderable object that can be drawn to a canvas.

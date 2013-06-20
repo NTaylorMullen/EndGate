@@ -3,7 +3,7 @@
 /// <reference path="BoundingCircle.ts" />
 /// <reference path="Bounds2d.ts" />
 
-module EndGate.Bounds {
+module eg.Bounds {
 
     /**
     * Defines a rectangle that can be used to detect intersections.
@@ -120,8 +120,8 @@ module EndGate.Bounds {
 
                 for (var i: number = 0; i < axisList.length; i++) {
                     var axi = axisList[i];
-                    var myProjections = EndGate._.Vector2dHelpers.GetMinMaxProjections(axi, myVertices);
-                    var theirProjections = EndGate._.Vector2dHelpers.GetMinMaxProjections(axi, theirVertices);
+                    var myProjections = eg._.Vector2dHelpers.GetMinMaxProjections(axi, myVertices);
+                    var theirProjections = eg._.Vector2dHelpers.GetMinMaxProjections(axi, theirVertices);
 
                     // No collision
                     if (theirProjections.Max < myProjections.Min || myProjections.Max < theirProjections.Min) {

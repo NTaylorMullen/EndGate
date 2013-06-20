@@ -3,7 +3,7 @@
 /// <reference path="../Graphic2d.ts" />
 /// <reference path="../Line2d.ts" />
 
-module EndGate.Graphics {
+module eg.Graphics {
 
     /**
     * Defines a drawable grid that can be used to store other graphics in a grid like structure.

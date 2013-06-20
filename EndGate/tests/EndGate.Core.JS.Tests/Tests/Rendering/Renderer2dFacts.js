@@ -5,7 +5,7 @@
     QUnit.test("Renderer draws all items passed to render.", function () {
         var holder = document.createElement("div"),
             drawArea = document.createElement("canvas"),
-            renderer2d = new EndGate.Rendering.Renderer2d(drawArea),
+            renderer2d = new eg.Rendering.Renderer2d(drawArea),
             draws1 = 0,
             draws2 = 0,
             renderable1 = {
@@ -61,10 +61,10 @@
         drawArea.width = 100;
         drawArea.height = 125;
 
-        renderer2d = new EndGate.Rendering.Renderer2d(drawArea)
+        renderer2d = new eg.Rendering.Renderer2d(drawArea)
 
-        QUnit.equal(renderer2d._bufferCanvas.width, drawArea.width);
-        QUnit.equal(renderer2d._bufferCanvas.height, drawArea.height);
+        QUnit.equal(renderer2d._BufferCanvas.width, drawArea.width);
+        QUnit.equal(renderer2d._BufferCanvas.height, drawArea.height);
 
         holder.appendChild(drawArea);
 
@@ -77,13 +77,13 @@
         drawArea.width = 400;
         drawArea.height = 500;
 
-        QUnit.notEqual(renderer2d._bufferCanvas.width, drawArea.width);
-        QUnit.notEqual(renderer2d._bufferCanvas.height, drawArea.height);
+        QUnit.notEqual(renderer2d._BufferCanvas.width, drawArea.width);
+        QUnit.notEqual(renderer2d._BufferCanvas.height, drawArea.height);
 
         renderer2d.Render(renderables);
 
-        QUnit.equal(renderer2d._bufferCanvas.width, drawArea.width);
-        QUnit.equal(renderer2d._bufferCanvas.height, drawArea.height);
+        QUnit.equal(renderer2d._BufferCanvas.width, drawArea.width);
+        QUnit.equal(renderer2d._BufferCanvas.height, drawArea.height);
 
         renderer2d.Dispose();
 
@@ -93,7 +93,7 @@
     QUnit.test("Renderer draws items in the order of their ZIndexes.", function () {
         var holder = document.createElement("div"),
             drawArea = document.createElement("canvas"),
-            renderer2d = new EndGate.Rendering.Renderer2d(drawArea),
+            renderer2d = new eg.Rendering.Renderer2d(drawArea),
             draws1At = null,
             draws2At = null,
             renderable1 = {

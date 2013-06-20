@@ -29,7 +29,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>18130</DevelopmentServerPort>
+          <DevelopmentServerPort>6142</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>
@@ -58,7 +58,7 @@
     <TypeScriptCompile Include="Game.ts" />
   </ItemGroup>
   <ItemGroup>
-    <CodeAnalysisDictionary Include="EndGateAPI.ts" />
+    <TypeScriptCompile Include="EndGateAPI.ts" />
     <CodeAnalysisDictionary Include="Assets\Sizes\Size2d.ts" />
     <TypeScriptCompile Include="Assets\Matrixes\Matrix2x2.ts" />
     <Content Include="Assets\Matrixes\Matrix2x2.js">

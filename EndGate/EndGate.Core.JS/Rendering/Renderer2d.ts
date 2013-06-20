@@ -3,7 +3,7 @@
 /// <reference path="../Utilities/EventHandler.ts" />
 /// <reference path="../Assets/Sizes/Size2d.ts" />
 
-module EndGate.Rendering {
+module eg.Rendering {
 
     /**
     * Defines a 2d renderer that uses a double buffer to draw graphics.

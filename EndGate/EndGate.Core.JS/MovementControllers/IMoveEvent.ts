@@ -1,4 +1,4 @@
-declare module EndGate.MovementControllers {
+declare module eg.MovementControllers {
 
     /**
     * Represents a move event object that is used to depict a movement, specifically a direction and whether or not the move started or stopped.

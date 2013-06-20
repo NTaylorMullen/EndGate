@@ -1,7 +1,7 @@
 /// <reference path="Mouse/MouseHandler.ts" />
 /// <reference path="Keyboard/KeyboardHandler.ts" />
 
-module EndGate.Input {
+module eg.Input {
 
     /**
     * Defines an all around Input handler which manages mouse and keyboard events.

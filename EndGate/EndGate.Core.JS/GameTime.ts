@@ -1,6 +1,6 @@
 /// <reference path="Interfaces/ITyped.ts" />
 
-module EndGate {
+module eg {
 
     /**
     * Defines a game time class that is used to manage update timing execution as well as total game time.

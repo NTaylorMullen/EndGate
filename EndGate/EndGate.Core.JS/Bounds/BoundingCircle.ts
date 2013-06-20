@@ -2,7 +2,7 @@
 /// <reference path="BoundingRectangle.ts" />
 /// <reference path="Bounds2d.ts" />
 
-module EndGate.Bounds {
+module eg.Bounds {
 
     /**
     * Defines a circle that can be used to detect intersections.

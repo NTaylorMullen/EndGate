@@ -3,7 +3,7 @@
     QUnit.module("Scene2d Facts");
 
     QUnit.test("Renderables added have draw triggered.", function () {
-        var scene = new EndGate.Rendering.Scene2d(),
+        var scene = new eg.Rendering.Scene2d(),
             draws1 = 0,
             draws2 = 0,
             renderable1 = {
@@ -11,16 +11,18 @@
                     draws1++;
                 },
                 GetDrawBounds: function () {
-                    return new EndGate.Bounds.BoundingCircle(EndGate.Vector2d.Zero(), 5);
-                }
+                    return new eg.Bounds.BoundingCircle(eg.Vector2d.Zero(), 5);
+                },
+                Visible: true
             },
             renderable2 = {
                 Draw: function (context) {
                     draws2++;
                 },
                 GetDrawBounds: function () {
-                    return new EndGate.Bounds.BoundingCircle(EndGate.Vector2d.Zero(), 5);
-                }
+                    return new eg.Bounds.BoundingCircle(eg.Vector2d.Zero(), 5);
+                },
+                Visible: true
             };
 
         scene.Add(renderable1);
@@ -52,7 +54,7 @@
     });
 
     QUnit.test("Dispose removes all actors.", function () {
-        var scene = new EndGate.Rendering.Scene2d(),
+        var scene = new eg.Rendering.Scene2d(),
             draws1 = 0,
             draws2 = 0,
             renderable1 = {
@@ -60,16 +62,18 @@
                     draws1++;
                 },
                 GetDrawBounds: function () {
-                    return new EndGate.Bounds.BoundingCircle(EndGate.Vector2d.Zero(), 5);
-                }
+                    return new eg.Bounds.BoundingCircle(eg.Vector2d.Zero(), 5);
+                },
+                Visible: true
             },
             renderable2 = {
                 Draw: function (context) {
                     draws2++;
                 },
                 GetDrawBounds: function () {
-                    return new EndGate.Bounds.BoundingCircle(EndGate.Vector2d.Zero(), 5);
-                }
+                    return new eg.Bounds.BoundingCircle(eg.Vector2d.Zero(), 5);
+                },
+                Visible: true
             };
 
         scene.Add(renderable1);

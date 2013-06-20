@@ -1,7 +1,7 @@
 /// <reference path="../../Assets/Vectors/Vector2d.ts" />
 /// <reference path="IMouseEvent.ts" />
 
-declare module EndGate.Input {
+declare module eg.Input {
 
     /**
     * Represents a mouse scroll event being triggered on the Game area.

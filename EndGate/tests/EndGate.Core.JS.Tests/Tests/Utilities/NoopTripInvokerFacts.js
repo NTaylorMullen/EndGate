@@ -4,7 +4,7 @@
 
     QUnit.test("Actions are not triggered prior to trip.", function () {
         var triggered = false,
-            tripInvoker = new EndGate._.Utilities.NoopTripInvoker(function () {
+            tripInvoker = new eg._.Utilities.NoopTripInvoker(function () {
                 triggered = true;
             });
 
@@ -19,7 +19,7 @@
 
     QUnit.test("Actions are not instantly triggered after trip.", function () {
         var triggered = false,
-            tripInvoker = new EndGate._.Utilities.NoopTripInvoker(function () {
+            tripInvoker = new eg._.Utilities.NoopTripInvoker(function () {
                 triggered = true;
             });
 
@@ -36,7 +36,7 @@
 
     QUnit.test("Actions are triggered once tripped and Invoke is called.", function () {
         var triggered = false,
-            tripInvoker = new EndGate._.Utilities.NoopTripInvoker(function () {
+            tripInvoker = new eg._.Utilities.NoopTripInvoker(function () {
                 triggered = true;
             });
 
@@ -63,7 +63,7 @@
 
     QUnit.test("Actions are still triggered if trip is called more than once.", function () {
         var triggered = false,
-            tripInvoker = new EndGate._.Utilities.NoopTripInvoker(function () {
+            tripInvoker = new eg._.Utilities.NoopTripInvoker(function () {
                 triggered = true;
             });
 
@@ -96,7 +96,7 @@
 
     QUnit.test("Invoke Once doesn't allow multiple invokes", function () {
         var triggered = 0,
-            tripInvoker = new EndGate._.Utilities.NoopTripInvoker(function () {
+            tripInvoker = new eg._.Utilities.NoopTripInvoker(function () {
                 triggered++;
             });
 
@@ -123,7 +123,7 @@
 
     QUnit.test("Constructor trip argument causes object to already be tripped.", function () {
         var triggered = 0,
-            tripInvoker = new EndGate._.Utilities.NoopTripInvoker(function () {
+            tripInvoker = new eg._.Utilities.NoopTripInvoker(function () {
                 triggered++;
             }, true);
 
@@ -148,7 +148,7 @@
 
     QUnit.test("Constructor trip argument causes object to already be tripped.", function () {
         var triggered = 0,
-            tripInvoker = new EndGate._.Utilities.NoopTripInvoker(function () {
+            tripInvoker = new eg._.Utilities.NoopTripInvoker(function () {
                 triggered++;
             }, true);
 

@@ -1,7 +1,7 @@
 /// <reference path="AudioPlayer.ts" />
 /// <reference path="AudioSettings.ts" />
 
-module EndGate.Sound {
+module eg.Sound {
 
     /**
     * Defines an audio manager that is used to preload AudioClip's that can be played at any time.

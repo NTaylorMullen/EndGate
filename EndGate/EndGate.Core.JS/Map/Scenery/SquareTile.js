@@ -4,8 +4,8 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     /// <reference path="../../Graphics/Sprites/ImageSource.ts" />
     /// <reference path="../../Graphics/Sprites/Sprite2d.ts" />
     (function (Map) {
@@ -24,8 +24,8 @@ var EndGate;
                 _super.call(this, 0, 0, image, width, height);
             }
             return SquareTile;
-        })(EndGate.Graphics.Sprite2d);
+        })(eg.Graphics.Sprite2d);
         Map.SquareTile = SquareTile;
-    })(EndGate.Map || (EndGate.Map = {}));
-    var Map = EndGate.Map;
-})(EndGate || (EndGate = {}));
+    })(eg.Map || (eg.Map = {}));
+    var Map = eg.Map;
+})(eg || (eg = {}));

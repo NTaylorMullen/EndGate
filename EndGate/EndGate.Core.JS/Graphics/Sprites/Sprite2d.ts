@@ -3,7 +3,7 @@
 /// <reference path="../Graphic2d.ts" />
 /// <reference path="ImageSource.ts" />
 
-module EndGate.Graphics {
+module eg.Graphics {
 
     /**
     * Defines a drawable sprite.  Sprites are used to draw images to the game screen.

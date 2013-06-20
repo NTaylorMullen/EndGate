@@ -25,7 +25,7 @@ class UpdateTester extends eg.Game {
     }
 }
 
-class DrawTester extends EndGate.Game {
+class DrawTester extends eg.Game {
     public DrawCount: number;
 
     private _onDrawLimit: Function;

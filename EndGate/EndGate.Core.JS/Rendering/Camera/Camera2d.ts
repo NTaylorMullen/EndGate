@@ -2,7 +2,7 @@
 /// <reference path="../../Assets/Vectors/Vector2d.ts" />
 /// <reference path="../../Bounds/BoundingRectangle.ts" />
 
-module EndGate.Rendering {
+module eg.Rendering {
 
     /**
     * Defines a camera that is used to define a viewport.  Should be used in conjunction with a Camera2dRenderer to render graphics as if being viewed through a camera.

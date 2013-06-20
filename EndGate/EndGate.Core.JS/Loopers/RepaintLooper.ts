@@ -2,7 +2,7 @@
 /// <reference path="../Extensions/WindowExtensions.ts" />
 /// <reference path="LooperCallback.ts" />
 
-module EndGate._.Loopers {
+module eg._.Loopers {
 
     // This looper uses the request animation frame to run its internal loop
     // The method has been aliased as "OnRepaintCompleted" via the WindowExtensions

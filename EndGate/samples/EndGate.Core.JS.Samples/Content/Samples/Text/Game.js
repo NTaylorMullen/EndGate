@@ -32,11 +32,4 @@ var Texts;
     })(eg.Game);
     Texts.Game = Game;
 })(Texts || (Texts = {}));
-
-var Baz = Foo;
-
-var d;
-var b;
-var a = new Baz.Bar();
-var c = new Baz.Bar();
 //@ sourceMappingURL=Game.js.map

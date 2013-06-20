@@ -4,7 +4,7 @@
 /// <reference path="TileMap.ts" />
 /// <reference path="SquareTile.ts" />
 
-module EndGate.Map {
+module eg.Map {
 
     /**
     * Defines a structure that is proficient at creating diverse tile maps based off of a resource image.  Best drawn via a SceneryHandler.

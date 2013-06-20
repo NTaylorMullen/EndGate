@@ -1,5 +1,5 @@
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     /// <reference path="../Interfaces/IDisposable.ts" />
     /// <reference path="../Interfaces/ITyped.ts" />
     /// <reference path="../GameTime.ts" />
@@ -28,7 +28,7 @@ var EndGate;
                 this.ApplyStyles(drawArea);
 
                 this.DrawArea = drawArea;
-                this.Camera = new Rendering.Camera2d(new EndGate.Vector2d(this.DrawArea.width / 2, this.DrawArea.height / 2), new EndGate.Size2d(this.DrawArea.width, this.DrawArea.height));
+                this.Camera = new Rendering.Camera2d(new eg.Vector2d(this.DrawArea.width / 2, this.DrawArea.height / 2), new eg.Size2d(this.DrawArea.width, this.DrawArea.height));
                 this._renderer = new Rendering.Camera2dRenderer(this.DrawArea, this.Camera);
                 this._disposed = false;
             }
@@ -94,6 +94,6 @@ var EndGate;
             return Scene2d;
         })();
         Rendering.Scene2d = Scene2d;
-    })(EndGate.Rendering || (EndGate.Rendering = {}));
-    var Rendering = EndGate.Rendering;
-})(EndGate || (EndGate = {}));
+    })(eg.Rendering || (eg.Rendering = {}));
+    var Rendering = eg.Rendering;
+})(eg || (eg = {}));

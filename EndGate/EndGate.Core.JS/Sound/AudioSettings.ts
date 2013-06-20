@@ -1,4 +1,4 @@
-module EndGate.Sound {
+module eg.Sound {
 
     /**
     * Defines a set of settings that are used to play AudioClip's a custom way.

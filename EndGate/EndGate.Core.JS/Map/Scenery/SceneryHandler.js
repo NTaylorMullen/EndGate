@@ -1,5 +1,5 @@
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     /// <reference path="../../Rendering/Camera/Camera2d.ts" />
     /// <reference path="../../Rendering/Scene2d.ts" />
     /// <reference path="../../Rendering/Camera/Camera2dRenderer.ts" />
@@ -18,7 +18,7 @@ var EndGate;
                 this._camera = scene.Camera;
                 this._layers = [];
                 this._sceneryCanvas = this.BuildSceneryCanvas(scene.DrawArea);
-                this._renderer = new EndGate.Rendering.Camera2dRenderer(this._sceneryCanvas, this._camera);
+                this._renderer = new eg.Rendering.Camera2dRenderer(this._sceneryCanvas, this._camera);
             }
             /**
             * Adds a layer to the scenery.
@@ -40,7 +40,7 @@ var EndGate;
             * Draws all layers onto the given context.  If this is used via a MapManager object, Draw will automatically be called.
             */
             SceneryHandler.prototype.Draw = function () {
-                this._layers.sort(EndGate.Graphics.Abstractions.Graphic2d._zindexSort);
+                this._layers.sort(eg.Graphics.Abstractions.Graphic2d._zindexSort);
 
                 this._renderer.Render(this._layers);
             };
@@ -60,6 +60,6 @@ var EndGate;
             return SceneryHandler;
         })();
         Map.SceneryHandler = SceneryHandler;
-    })(EndGate.Map || (EndGate.Map = {}));
-    var Map = EndGate.Map;
-})(EndGate || (EndGate = {}));
+    })(eg.Map || (eg.Map = {}));
+    var Map = eg.Map;
+})(eg || (eg = {}));

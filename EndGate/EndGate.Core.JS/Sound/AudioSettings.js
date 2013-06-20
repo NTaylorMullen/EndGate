@@ -1,5 +1,5 @@
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Sound) {
         /**
         * Defines a set of settings that are used to play AudioClip's a custom way.
@@ -19,6 +19,6 @@ var EndGate;
             return AudioSettings;
         })();
         Sound.AudioSettings = AudioSettings;
-    })(EndGate.Sound || (EndGate.Sound = {}));
-    var Sound = EndGate.Sound;
-})(EndGate || (EndGate = {}));
+    })(eg.Sound || (eg.Sound = {}));
+    var Sound = eg.Sound;
+})(eg || (eg = {}));

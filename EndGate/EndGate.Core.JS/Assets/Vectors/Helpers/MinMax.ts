@@ -1,4 +1,4 @@
-module EndGate._ {
+module eg._ {
 
     export class MinMax {
         public Min: number;

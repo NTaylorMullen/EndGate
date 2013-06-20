@@ -1,4 +1,4 @@
-module EndGate.Graphics.Assets {
+module eg.Graphics.Assets {
 
     /**
     * Defines valid FontStyles that can be used to modify the font's style for Text2d's.
@@ -11,7 +11,7 @@ module EndGate.Graphics.Assets {
 
 }
 
-module EndGate.Graphics.Assets._ {
+module eg.Graphics.Assets._ {
     export class FontStyleHelper {
         public static _styles: { [family: number]: string; };
 

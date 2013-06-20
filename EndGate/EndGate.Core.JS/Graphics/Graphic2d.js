@@ -1,5 +1,5 @@
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Graphics) {
         /// <reference path="../Interfaces/ITyped.ts" />
         /// <reference path="../Interfaces/IMoveable.ts" />
@@ -95,6 +95,6 @@ var EndGate;
             Abstractions.Graphic2d = Graphic2d;
         })(Graphics.Abstractions || (Graphics.Abstractions = {}));
         var Abstractions = Graphics.Abstractions;
-    })(EndGate.Graphics || (EndGate.Graphics = {}));
-    var Graphics = EndGate.Graphics;
-})(EndGate || (EndGate = {}));
+    })(eg.Graphics || (eg.Graphics = {}));
+    var Graphics = eg.Graphics;
+})(eg || (eg = {}));

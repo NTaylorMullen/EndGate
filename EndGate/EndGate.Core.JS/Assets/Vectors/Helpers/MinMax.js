@@ -1,5 +1,5 @@
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (_) {
         var MinMax = (function () {
             function MinMax(min, max) {
@@ -9,6 +9,6 @@ var EndGate;
             return MinMax;
         })();
         _.MinMax = MinMax;
-    })(EndGate._ || (EndGate._ = {}));
-    var _ = EndGate._;
-})(EndGate || (EndGate = {}));
+    })(eg._ || (eg._ = {}));
+    var _ = eg._;
+})(eg || (eg = {}));

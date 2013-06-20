@@ -40,7 +40,7 @@ var DrawTester = (function (_super) {
         }
     };
     return DrawTester;
-})(EndGate.Game);
+})(eg.Game);
 
 var CollisionManagerGame = (function (_super) {
     __extends(CollisionManagerGame, _super);

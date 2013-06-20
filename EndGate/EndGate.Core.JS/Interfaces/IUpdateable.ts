@@ -1,6 +1,6 @@
 /// <reference path="../GameTime.ts" />
 
-declare module EndGate {
+declare module eg {
 
     /**
     * Represents an object that can be updated.
@@ -10,7 +10,7 @@ declare module EndGate {
         * Updates the object.
         * @param gameTime The current game time object.
         */
-        Update(gameTime: EndGate.GameTime): void;
+        Update(gameTime: eg.GameTime): void;
     }
 
 }

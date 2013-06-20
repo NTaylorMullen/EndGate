@@ -1,6 +1,6 @@
 /// <reference path="../Interfaces/ITyped.ts" />
 
-module EndGate.Graphics.Assets._ {
+module eg.Graphics.Assets._ {
 
     export class Graphic2dState {
         private _cachedState: { [property: string]: any; };

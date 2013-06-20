@@ -1,5 +1,5 @@
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     /// <reference path="../Interfaces/IUpdateable.ts" />
     /// <reference path="../Interfaces/ITyped.ts" />
     /// <reference path="Collidable.ts" />
@@ -19,7 +19,7 @@ var EndGate;
                 this._collidables = [];
                 this._enabled = false;
 
-                this.OnCollision = new EndGate.EventHandler();
+                this.OnCollision = new eg.EventHandler();
             }
             /**
             * Monitors the provided collidable and will trigger its Collided function and OnCollision event whenever a collision occurs with it and another Collidable.
@@ -77,6 +77,6 @@ var EndGate;
             return CollisionManager;
         })();
         Collision.CollisionManager = CollisionManager;
-    })(EndGate.Collision || (EndGate.Collision = {}));
-    var Collision = EndGate.Collision;
-})(EndGate || (EndGate = {}));
+    })(eg.Collision || (eg.Collision = {}));
+    var Collision = eg.Collision;
+})(eg || (eg = {}));

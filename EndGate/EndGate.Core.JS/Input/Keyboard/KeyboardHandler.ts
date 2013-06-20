@@ -2,7 +2,7 @@
 /// <reference path="KeyboardCommandEvent.ts" />
 /// <reference path="../../Utilities/EventHandler.ts" />
 
-module EndGate.Input {
+module eg.Input {
 
     /**
     * Defines a handler that will check for keyboard commands and execute appropriate functions.

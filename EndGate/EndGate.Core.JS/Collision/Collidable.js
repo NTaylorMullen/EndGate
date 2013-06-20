@@ -1,5 +1,5 @@
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     /// <reference path="../Interfaces/IDisposable.ts" />
     /// <reference path="../Interfaces/ITyped.ts" />
     /// <reference path="../Bounds/Bounds2d.ts" />
@@ -21,8 +21,8 @@ var EndGate;
                 this.Bounds = bounds;
                 this._id = Collidable._collidableIDs++;
 
-                this.OnCollision = new EndGate.EventHandler();
-                this.OnDisposed = new EndGate.EventHandler();
+                this.OnCollision = new eg.EventHandler();
+                this.OnDisposed = new eg.EventHandler();
             }
             /**
             * Determines if the provided collidable is colliding with this Collidable.
@@ -55,6 +55,6 @@ var EndGate;
             return Collidable;
         })();
         Collision.Collidable = Collidable;
-    })(EndGate.Collision || (EndGate.Collision = {}));
-    var Collision = EndGate.Collision;
-})(EndGate || (EndGate = {}));
+    })(eg.Collision || (eg.Collision = {}));
+    var Collision = eg.Collision;
+})(eg || (eg = {}));

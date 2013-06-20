@@ -1,7 +1,7 @@
 /// <reference path="IMouseEvent.ts" />
 /// <reference path="MouseButton.ts" />
 
-declare module EndGate.Input {
+declare module eg.Input {
 
     /**
     * Represents a mouse click event being triggered on the Game area.

@@ -1,6 +1,6 @@
 /// <reference path="Interfaces/ITyped.ts" />
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     /**
     * Defines a game time class that is used to manage update timing execution as well as total game time.
     */
@@ -26,5 +26,5 @@ var EndGate;
         };
         return GameTime;
     })();
-    EndGate.GameTime = GameTime;
-})(EndGate || (EndGate = {}));
+    eg.GameTime = GameTime;
+})(eg || (eg = {}));

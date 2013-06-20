@@ -1,6 +1,6 @@
 /// <reference path="../Interfaces/ITyped.ts" />
 
-module EndGate._.Loopers {
+module eg._.Loopers {
 
     export class LooperCallback implements ITyped {
         public _type: string = "LooperCallback";

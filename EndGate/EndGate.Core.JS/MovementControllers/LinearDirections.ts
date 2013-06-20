@@ -1,4 +1,4 @@
-module EndGate.MovementControllers.Assets {
+module eg.MovementControllers.Assets {
 
     /**
     * Defines a direction management object that represents directional state.

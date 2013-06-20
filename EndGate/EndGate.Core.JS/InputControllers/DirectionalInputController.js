@@ -1,5 +1,5 @@
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     /// <reference path="../Input/Keyboard/KeyboardHandler.ts" />
     /// <reference path="../MovementControllers/LinearDirections.ts" />
     (function (InputControllers) {
@@ -8,25 +8,14 @@ var EndGate;
         */
         var DirectionalInputController = (function () {
             function DirectionalInputController(keyboard, onMove, upKeys, rightKeys, downKeys, leftKeys) {
-                if (typeof upKeys === "undefined") { upKeys = [
-                    "w", 
-                    "Up"
-                ]; }
-                if (typeof rightKeys === "undefined") { rightKeys = [
-                    "d", 
-                    "Right"
-                ]; }
-                if (typeof downKeys === "undefined") { downKeys = [
-                    "s", 
-                    "Down"
-                ]; }
-                if (typeof leftKeys === "undefined") { leftKeys = [
-                    "a", 
-                    "Left"
-                ]; }
+                if (typeof upKeys === "undefined") { upKeys = ["w", "Up"]; }
+                if (typeof rightKeys === "undefined") { rightKeys = ["d", "Right"]; }
+                if (typeof downKeys === "undefined") { downKeys = ["s", "Down"]; }
+                if (typeof leftKeys === "undefined") { leftKeys = ["a", "Left"]; }
                 this._keyboard = keyboard;
                 this._onMove = onMove;
-                this._directions = new EndGate.MovementControllers.Assets.LinearDirections();
+                this._directions = new eg.MovementControllers.Assets.LinearDirections();
+
                 this.BindKeys(upKeys, "OnCommandDown", "Up", true);
                 this.BindKeys(rightKeys, "OnCommandDown", "Right", true);
                 this.BindKeys(downKeys, "OnCommandDown", "Down", true);
@@ -38,9 +27,9 @@ var EndGate;
             }
             DirectionalInputController.prototype.BindKeys = function (keyList, bindingAction, direction, startMoving) {
                 var _this = this;
-                for(var i = 0; i < keyList.length; i++) {
+                for (var i = 0; i < keyList.length; i++) {
                     this._keyboard[bindingAction](keyList[i], function () {
-                        if(_this._directions[direction] != startMoving) {
+                        if (_this._directions[direction] != startMoving) {
                             _this._directions[direction] = startMoving;
                             _this._onMove(direction, startMoving);
                         }
@@ -49,7 +38,7 @@ var EndGate;
             };
             return DirectionalInputController;
         })();
-        InputControllers.DirectionalInputController = DirectionalInputController;        
-    })(EndGate.InputControllers || (EndGate.InputControllers = {}));
-    var InputControllers = EndGate.InputControllers;
-})(EndGate || (EndGate = {}));
+        InputControllers.DirectionalInputController = DirectionalInputController;
+    })(eg.InputControllers || (eg.InputControllers = {}));
+    var InputControllers = eg.InputControllers;
+})(eg || (eg = {}));

@@ -1,5 +1,5 @@
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     /// <reference path="../Utilities/EventHandler.ts" />
     /// <reference path="AudioSettings.ts" />
     (function (Sound) {
@@ -22,7 +22,7 @@ var EndGate;
                 this.SetAudioSource(source);
                 this.ApplySettings();
 
-                this.OnComplete = new EndGate.EventHandler();
+                this.OnComplete = new eg.EventHandler();
             }
             AudioClip.prototype.Volume = function (percent) {
                 if (typeof percent !== "undefined") {
@@ -126,6 +126,6 @@ var EndGate;
             return AudioClip;
         })();
         Sound.AudioClip = AudioClip;
-    })(EndGate.Sound || (EndGate.Sound = {}));
-    var Sound = EndGate.Sound;
-})(EndGate || (EndGate = {}));
+    })(eg.Sound || (eg.Sound = {}));
+    var Sound = eg.Sound;
+})(eg || (eg = {}));

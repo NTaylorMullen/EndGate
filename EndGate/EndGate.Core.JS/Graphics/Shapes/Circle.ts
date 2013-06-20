@@ -3,7 +3,7 @@
 /// <reference path="../../Bounds/BoundingCircle.ts" />
 /// <reference path="Shape.ts" />
 
-module EndGate.Graphics {
+module eg.Graphics {
 
     /**
     * Defines a drawable circle.

@@ -4,8 +4,8 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     var GameTime = (function () {
         function GameTime() {
             this._type = "GameTime";
@@ -22,11 +22,11 @@ var EndGate;
         };
         return GameTime;
     })();
-    EndGate.GameTime = GameTime;
-})(EndGate || (EndGate = {}));
+    eg.GameTime = GameTime;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     var Size2d = (function () {
         function Size2d(first, second) {
             this._type = "Size2d";
@@ -140,8 +140,8 @@ var EndGate;
         };
         return Size2d;
     })();
-    EndGate.Size2d = Size2d;
-})(EndGate || (EndGate = {}));
+    eg.Size2d = Size2d;
+})(eg || (eg = {}));
 
 Math.roundTo = function (val, decimals) {
     var multiplier = Math.pow(10, decimals);
@@ -151,8 +151,8 @@ Math.roundTo = function (val, decimals) {
 
 (Math).twoPI = Math.PI * 2;
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     var Vector2d = (function () {
         function Vector2d(x, y) {
             this._type = "Vector2d";
@@ -311,11 +311,11 @@ var EndGate;
         };
         return Vector2d;
     })();
-    EndGate.Vector2d = Vector2d;
-})(EndGate || (EndGate = {}));
+    eg.Vector2d = Vector2d;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Bounds) {
         (function (Abstractions) {
             var Bounds2d = (function () {
@@ -354,12 +354,12 @@ var EndGate;
             Abstractions.Bounds2d = Bounds2d;
         })(Bounds.Abstractions || (Bounds.Abstractions = {}));
         var Abstractions = Bounds.Abstractions;
-    })(EndGate.Bounds || (EndGate.Bounds = {}));
-    var Bounds = EndGate.Bounds;
-})(EndGate || (EndGate = {}));
+    })(eg.Bounds || (eg.Bounds = {}));
+    var Bounds = eg.Bounds;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (_) {
         (function (Loopers) {
             var LooperCallback = (function () {
@@ -374,12 +374,12 @@ var EndGate;
             Loopers.LooperCallback = LooperCallback;
         })(_.Loopers || (_.Loopers = {}));
         var Loopers = _.Loopers;
-    })(EndGate._ || (EndGate._ = {}));
-    var _ = EndGate._;
-})(EndGate || (EndGate = {}));
+    })(eg._ || (eg._ = {}));
+    var _ = eg._;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (_) {
         (function (Loopers) {
             var TimedCallback = (function (_super) {
@@ -397,12 +397,12 @@ var EndGate;
             Loopers.TimedCallback = TimedCallback;
         })(_.Loopers || (_.Loopers = {}));
         var Loopers = _.Loopers;
-    })(EndGate._ || (EndGate._ = {}));
-    var _ = EndGate._;
-})(EndGate || (EndGate = {}));
+    })(eg._ || (eg._ = {}));
+    var _ = eg._;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (_) {
         (function (Loopers) {
             var Looper = (function () {
@@ -476,9 +476,9 @@ var EndGate;
             Loopers.Looper = Looper;
         })(_.Loopers || (_.Loopers = {}));
         var Loopers = _.Loopers;
-    })(EndGate._ || (EndGate._ = {}));
-    var _ = EndGate._;
-})(EndGate || (EndGate = {}));
+    })(eg._ || (eg._ = {}));
+    var _ = eg._;
+})(eg || (eg = {}));
 
 window.OnRepaintCompleted = (function () {
     return (window.requestAnimationFrame || (window).webkitRequestAnimationFrame || (window).mozRequestAnimationFrame || (window).oRequestAnimationFrame || (window).msRequestAnimationFrame || function (callback) {
@@ -486,8 +486,8 @@ window.OnRepaintCompleted = (function () {
     });
 })();
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (_) {
         (function (Loopers) {
             var RepaintLooper = (function () {
@@ -547,12 +547,12 @@ var EndGate;
             Loopers.RepaintLooper = RepaintLooper;
         })(_.Loopers || (_.Loopers = {}));
         var Loopers = _.Loopers;
-    })(EndGate._ || (EndGate._ = {}));
-    var _ = EndGate._;
-})(EndGate || (EndGate = {}));
+    })(eg._ || (eg._ = {}));
+    var _ = eg._;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (_) {
         var GameRunner = (function () {
             function GameRunner() {
@@ -641,14 +641,14 @@ var EndGate;
             return GameRunner;
         })();
         _.GameRunner = GameRunner;
-    })(EndGate._ || (EndGate._ = {}));
-    var _ = EndGate._;
-})(EndGate || (EndGate = {}));
+    })(eg._ || (eg._ = {}));
+    var _ = eg._;
+})(eg || (eg = {}));
 
-var GameRunnerInstance = new EndGate._.GameRunner();
+var GameRunnerInstance = new eg._.GameRunner();
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     var GameConfiguration = (function () {
         function GameConfiguration(updateRateSetter) {
             this._defaultUpdateRate = 40;
@@ -665,11 +665,11 @@ var EndGate;
         };
         return GameConfiguration;
     })();
-    EndGate.GameConfiguration = GameConfiguration;
-})(EndGate || (EndGate = {}));
+    eg.GameConfiguration = GameConfiguration;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     var EventHandler = (function () {
         function EventHandler() {
             this._type = "Event";
@@ -707,11 +707,11 @@ var EndGate;
         };
         return EventHandler;
     })();
-    EndGate.EventHandler = EventHandler;
-})(EndGate || (EndGate = {}));
+    eg.EventHandler = EventHandler;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Collision) {
         (function (Assets) {
             var CollisionData = (function () {
@@ -724,12 +724,12 @@ var EndGate;
             Assets.CollisionData = CollisionData;
         })(Collision.Assets || (Collision.Assets = {}));
         var Assets = Collision.Assets;
-    })(EndGate.Collision || (EndGate.Collision = {}));
-    var Collision = EndGate.Collision;
-})(EndGate || (EndGate = {}));
+    })(eg.Collision || (eg.Collision = {}));
+    var Collision = eg.Collision;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Collision) {
         var Collidable = (function () {
             function Collidable(bounds) {
@@ -738,8 +738,8 @@ var EndGate;
                 this.Bounds = bounds;
                 this._id = Collidable._collidableIDs++;
 
-                this.OnCollision = new EndGate.EventHandler();
-                this.OnDisposed = new EndGate.EventHandler();
+                this.OnCollision = new eg.EventHandler();
+                this.OnDisposed = new eg.EventHandler();
             }
             Collidable.prototype.IsCollidingWith = function (other) {
                 return this.Bounds.Intersects(other.Bounds);
@@ -761,12 +761,12 @@ var EndGate;
             return Collidable;
         })();
         Collision.Collidable = Collidable;
-    })(EndGate.Collision || (EndGate.Collision = {}));
-    var Collision = EndGate.Collision;
-})(EndGate || (EndGate = {}));
+    })(eg.Collision || (eg.Collision = {}));
+    var Collision = eg.Collision;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Collision) {
         var CollisionManager = (function () {
             function CollisionManager() {
@@ -774,7 +774,7 @@ var EndGate;
                 this._collidables = [];
                 this._enabled = false;
 
-                this.OnCollision = new EndGate.EventHandler();
+                this.OnCollision = new eg.EventHandler();
             }
             CollisionManager.prototype.Monitor = function (obj) {
                 var _this = this;
@@ -818,12 +818,12 @@ var EndGate;
             return CollisionManager;
         })();
         Collision.CollisionManager = CollisionManager;
-    })(EndGate.Collision || (EndGate.Collision = {}));
-    var Collision = EndGate.Collision;
-})(EndGate || (EndGate = {}));
+    })(eg.Collision || (eg.Collision = {}));
+    var Collision = eg.Collision;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Graphics) {
         (function (Assets) {
             (function (_) {
@@ -911,12 +911,12 @@ var EndGate;
             var _ = Assets._;
         })(Graphics.Assets || (Graphics.Assets = {}));
         var Assets = Graphics.Assets;
-    })(EndGate.Graphics || (EndGate.Graphics = {}));
-    var Graphics = EndGate.Graphics;
-})(EndGate || (EndGate = {}));
+    })(eg.Graphics || (eg.Graphics = {}));
+    var Graphics = eg.Graphics;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Graphics) {
         (function (Abstractions) {
             var Graphic2d = (function () {
@@ -983,12 +983,12 @@ var EndGate;
             Abstractions.Graphic2d = Graphic2d;
         })(Graphics.Abstractions || (Graphics.Abstractions = {}));
         var Abstractions = Graphics.Abstractions;
-    })(EndGate.Graphics || (EndGate.Graphics = {}));
-    var Graphics = EndGate.Graphics;
-})(EndGate || (EndGate = {}));
+    })(eg.Graphics || (eg.Graphics = {}));
+    var Graphics = eg.Graphics;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (_) {
         var MinMax = (function () {
             function MinMax(min, max) {
@@ -998,12 +998,12 @@ var EndGate;
             return MinMax;
         })();
         _.MinMax = MinMax;
-    })(EndGate._ || (EndGate._ = {}));
-    var _ = EndGate._;
-})(EndGate || (EndGate = {}));
+    })(eg._ || (eg._ = {}));
+    var _ = eg._;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (_) {
         var Vector2dHelpers = (function () {
             function Vector2dHelpers() {
@@ -1028,12 +1028,12 @@ var EndGate;
             return Vector2dHelpers;
         })();
         _.Vector2dHelpers = Vector2dHelpers;
-    })(EndGate._ || (EndGate._ = {}));
-    var _ = EndGate._;
-})(EndGate || (EndGate = {}));
+    })(eg._ || (eg._ = {}));
+    var _ = eg._;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Bounds) {
         var BoundingCircle = (function (_super) {
             __extends(BoundingCircle, _super);
@@ -1090,12 +1090,12 @@ var EndGate;
             return BoundingCircle;
         })(Bounds.Abstractions.Bounds2d);
         Bounds.BoundingCircle = BoundingCircle;
-    })(EndGate.Bounds || (EndGate.Bounds = {}));
-    var Bounds = EndGate.Bounds;
-})(EndGate || (EndGate = {}));
+    })(eg.Bounds || (eg.Bounds = {}));
+    var Bounds = eg.Bounds;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Bounds) {
         var BoundingRectangle = (function (_super) {
             __extends(BoundingRectangle, _super);
@@ -1115,7 +1115,7 @@ var EndGate;
             };
 
             BoundingRectangle.prototype.TopLeft = function () {
-                var v = new EndGate.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
+                var v = new eg.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
                 if (this.Rotation === 0) {
                     return v;
                 }
@@ -1124,7 +1124,7 @@ var EndGate;
             };
 
             BoundingRectangle.prototype.TopRight = function () {
-                var v = new EndGate.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
+                var v = new eg.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
                 if (this.Rotation === 0) {
                     return v;
                 }
@@ -1133,7 +1133,7 @@ var EndGate;
             };
 
             BoundingRectangle.prototype.BotLeft = function () {
-                var v = new EndGate.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
+                var v = new eg.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
                 if (this.Rotation === 0) {
                     return v;
                 }
@@ -1142,7 +1142,7 @@ var EndGate;
             };
 
             BoundingRectangle.prototype.BotRight = function () {
-                var v = new EndGate.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
+                var v = new eg.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
                 if (this.Rotation === 0) {
                     return v;
                 }
@@ -1166,8 +1166,8 @@ var EndGate;
 
                     for (var i = 0; i < axisList.length; i++) {
                         var axi = axisList[i];
-                        var myProjections = EndGate._.Vector2dHelpers.GetMinMaxProjections(axi, myVertices);
-                        var theirProjections = EndGate._.Vector2dHelpers.GetMinMaxProjections(axi, theirVertices);
+                        var myProjections = eg._.Vector2dHelpers.GetMinMaxProjections(axi, myVertices);
+                        var theirProjections = eg._.Vector2dHelpers.GetMinMaxProjections(axi, theirVertices);
 
                         if (theirProjections.Max < myProjections.Min || myProjections.Max < theirProjections.Min) {
                             return false;
@@ -1197,12 +1197,12 @@ var EndGate;
             return BoundingRectangle;
         })(Bounds.Abstractions.Bounds2d);
         Bounds.BoundingRectangle = BoundingRectangle;
-    })(EndGate.Bounds || (EndGate.Bounds = {}));
-    var Bounds = EndGate.Bounds;
-})(EndGate || (EndGate = {}));
+    })(eg.Bounds || (eg.Bounds = {}));
+    var Bounds = eg.Bounds;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Rendering) {
         var Camera2d = (function (_super) {
             __extends(Camera2d, _super);
@@ -1226,14 +1226,14 @@ var EndGate;
             };
             Camera2d.DefaultDistance = 1000;
             return Camera2d;
-        })(EndGate.Bounds.BoundingRectangle);
+        })(eg.Bounds.BoundingRectangle);
         Rendering.Camera2d = Camera2d;
-    })(EndGate.Rendering || (EndGate.Rendering = {}));
-    var Rendering = EndGate.Rendering;
-})(EndGate || (EndGate = {}));
+    })(eg.Rendering || (eg.Rendering = {}));
+    var Rendering = eg.Rendering;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Rendering) {
         var Renderer2d = (function () {
             function Renderer2d(renderOnto) {
@@ -1242,7 +1242,7 @@ var EndGate;
 
                 this._BufferCanvas = document.createElement("canvas");
                 this._BufferContext = this._BufferCanvas.getContext("2d");
-                this.OnRendererSizeChange = new EndGate.EventHandler();
+                this.OnRendererSizeChange = new eg.EventHandler();
                 this.UpdateBufferSize();
 
                 this._disposed = false;
@@ -1281,7 +1281,7 @@ var EndGate;
             Renderer2d.prototype.UpdateBufferSize = function () {
                 this._BufferCanvas.width = this._visibleCanvas.width;
                 this._BufferCanvas.height = this._visibleCanvas.height;
-                this.OnRendererSizeChange.Trigger(new EndGate.Size2d(this._visibleCanvas.width, this._visibleCanvas.height));
+                this.OnRendererSizeChange.Trigger(new eg.Size2d(this._visibleCanvas.width, this._visibleCanvas.height));
             };
             Renderer2d._zindexSort = function (a, b) {
                 return a.ZIndex - b.ZIndex;
@@ -1289,12 +1289,12 @@ var EndGate;
             return Renderer2d;
         })();
         Rendering.Renderer2d = Renderer2d;
-    })(EndGate.Rendering || (EndGate.Rendering = {}));
-    var Rendering = EndGate.Rendering;
-})(EndGate || (EndGate = {}));
+    })(eg.Rendering || (eg.Rendering = {}));
+    var Rendering = eg.Rendering;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Rendering) {
         (function (_) {
             var Camera2dCanvasContextBuilder = (function () {
@@ -1402,12 +1402,12 @@ var EndGate;
             _.Camera2dCanvasContextBuilder = Camera2dCanvasContextBuilder;
         })(Rendering._ || (Rendering._ = {}));
         var _ = Rendering._;
-    })(EndGate.Rendering || (EndGate.Rendering = {}));
-    var Rendering = EndGate.Rendering;
-})(EndGate || (EndGate = {}));
+    })(eg.Rendering || (eg.Rendering = {}));
+    var Rendering = eg.Rendering;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Rendering) {
         var Camera2dRenderer = (function (_super) {
             __extends(Camera2dRenderer, _super);
@@ -1418,7 +1418,7 @@ var EndGate;
                 this._contextBuilder = new Rendering._.Camera2dCanvasContextBuilder(this._camera);
 
                 this.OnRendererSizeChange.Bind(this._contextBuilder._UpdateCanvasCenter);
-                this._contextBuilder._UpdateCanvasCenter(new EndGate.Size2d(renderOnto.width, renderOnto.height));
+                this._contextBuilder._UpdateCanvasCenter(new eg.Size2d(renderOnto.width, renderOnto.height));
                 this._BufferContext = this._contextBuilder.Build(this._BufferContext);
             }
             Camera2dRenderer.prototype.Render = function (renderables) {
@@ -1457,12 +1457,12 @@ var EndGate;
             return Camera2dRenderer;
         })(Rendering.Renderer2d);
         Rendering.Camera2dRenderer = Camera2dRenderer;
-    })(EndGate.Rendering || (EndGate.Rendering = {}));
-    var Rendering = EndGate.Rendering;
-})(EndGate || (EndGate = {}));
+    })(eg.Rendering || (eg.Rendering = {}));
+    var Rendering = eg.Rendering;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Rendering) {
         var Scene2d = (function () {
             function Scene2d(onDraw, drawArea) {
@@ -1479,7 +1479,7 @@ var EndGate;
                 this.ApplyStyles(drawArea);
 
                 this.DrawArea = drawArea;
-                this.Camera = new Rendering.Camera2d(new EndGate.Vector2d(this.DrawArea.width / 2, this.DrawArea.height / 2), new EndGate.Size2d(this.DrawArea.width, this.DrawArea.height));
+                this.Camera = new Rendering.Camera2d(new eg.Vector2d(this.DrawArea.width / 2, this.DrawArea.height / 2), new eg.Size2d(this.DrawArea.width, this.DrawArea.height));
                 this._renderer = new Rendering.Camera2dRenderer(this.DrawArea, this.Camera);
                 this._disposed = false;
             }
@@ -1531,12 +1531,12 @@ var EndGate;
             return Scene2d;
         })();
         Rendering.Scene2d = Scene2d;
-    })(EndGate.Rendering || (EndGate.Rendering = {}));
-    var Rendering = EndGate.Rendering;
-})(EndGate || (EndGate = {}));
+    })(eg.Rendering || (eg.Rendering = {}));
+    var Rendering = eg.Rendering;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Input) {
         (function (_) {
             var MouseButton = (function () {
@@ -1550,24 +1550,24 @@ var EndGate;
             _.MouseButton = MouseButton;
         })(Input._ || (Input._ = {}));
         var _ = Input._;
-    })(EndGate.Input || (EndGate.Input = {}));
-    var Input = EndGate.Input;
-})(EndGate || (EndGate = {}));
+    })(eg.Input || (eg.Input = {}));
+    var Input = eg.Input;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Input) {
         var MouseHandler = (function () {
             function MouseHandler(target) {
                 var _this = this;
                 this._target = target;
 
-                this.OnClick = new EndGate.EventHandler();
-                this.OnDoubleClick = new EndGate.EventHandler();
-                this.OnDown = new EndGate.EventHandler();
-                this.OnUp = new EndGate.EventHandler();
-                this.OnMove = new EndGate.EventHandler();
-                this.OnScroll = new EndGate.EventHandler();
+                this.OnClick = new eg.EventHandler();
+                this.OnDoubleClick = new eg.EventHandler();
+                this.OnDown = new eg.EventHandler();
+                this.OnUp = new eg.EventHandler();
+                this.OnMove = new eg.EventHandler();
+                this.OnScroll = new eg.EventHandler();
 
                 this.LeftIsDown = false;
                 this.MiddleIsDown = false;
@@ -1644,7 +1644,7 @@ var EndGate;
             };
 
             MouseHandler.prototype.GetMousePosition = function (event) {
-                return new EndGate.Vector2d(event.offsetX ? (event.offsetX) : event.pageX - this._target.offsetLeft, event.offsetY ? (event.offsetY) : event.pageY - this._target.offsetTop);
+                return new eg.Vector2d(event.offsetX ? (event.offsetX) : event.pageX - this._target.offsetLeft, event.offsetY ? (event.offsetY) : event.pageY - this._target.offsetTop);
             };
 
             MouseHandler.prototype.GetMouseButton = function (event) {
@@ -1656,18 +1656,18 @@ var EndGate;
             };
 
             MouseHandler.prototype.GetMouseScrollDierction = function (event) {
-                return new EndGate.Vector2d(-Math.max(-1, Math.min(1, event.wheelDeltaX)), -Math.max(-1, Math.min(1, event.wheelDeltaY)));
+                return new eg.Vector2d(-Math.max(-1, Math.min(1, event.wheelDeltaX)), -Math.max(-1, Math.min(1, event.wheelDeltaY)));
             };
             MouseHandler.MouseButtonArray = [null, Input._.MouseButton.Left, Input._.MouseButton.Middle, Input._.MouseButton.Right];
             return MouseHandler;
         })();
         Input.MouseHandler = MouseHandler;
-    })(EndGate.Input || (EndGate.Input = {}));
-    var Input = EndGate.Input;
-})(EndGate || (EndGate = {}));
+    })(eg.Input || (eg.Input = {}));
+    var Input = eg.Input;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (_) {
         (function (Utilities) {
             var NoopTripInvoker = (function () {
@@ -1711,12 +1711,12 @@ var EndGate;
             Utilities.NoopTripInvoker = NoopTripInvoker;
         })(_.Utilities || (_.Utilities = {}));
         var Utilities = _.Utilities;
-    })(EndGate._ || (EndGate._ = {}));
-    var _ = EndGate._;
-})(EndGate || (EndGate = {}));
+    })(eg._ || (eg._ = {}));
+    var _ = eg._;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Input) {
         (function (Assets) {
             var KeyboardModifiers = (function () {
@@ -1739,12 +1739,12 @@ var EndGate;
             Assets.KeyboardModifiers = KeyboardModifiers;
         })(Input.Assets || (Input.Assets = {}));
         var Assets = Input.Assets;
-    })(EndGate.Input || (EndGate.Input = {}));
-    var Input = EndGate.Input;
-})(EndGate || (EndGate = {}));
+    })(eg.Input || (eg.Input = {}));
+    var Input = eg.Input;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Input) {
         var shiftValues = {
             "~": "`",
@@ -1826,12 +1826,12 @@ var EndGate;
             return KeyboardCommandEvent;
         })();
         Input.KeyboardCommandEvent = KeyboardCommandEvent;
-    })(EndGate.Input || (EndGate.Input = {}));
-    var Input = EndGate.Input;
-})(EndGate || (EndGate = {}));
+    })(eg.Input || (eg.Input = {}));
+    var Input = eg.Input;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Input) {
         (function (_) {
             var KeyboardCommandHelper = (function () {
@@ -1851,12 +1851,12 @@ var EndGate;
             _.KeyboardCommandHelper = KeyboardCommandHelper;
         })(Input._ || (Input._ = {}));
         var _ = Input._;
-    })(EndGate.Input || (EndGate.Input = {}));
-    var Input = EndGate.Input;
-})(EndGate || (EndGate = {}));
+    })(eg.Input || (eg.Input = {}));
+    var Input = eg.Input;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Input) {
         (function (Assets) {
             var KeyboardCommand = (function () {
@@ -1866,8 +1866,8 @@ var EndGate;
                     this.Modifiers = Input.Assets.KeyboardModifiers.BuildFromCommandString(command);
                     this.Key = Input._.KeyboardCommandHelper.ParseKey(command);
 
-                    this.OnDispose = new EndGate.EventHandler();
-                    this._onDisposeInvoker = new EndGate._.Utilities.NoopTripInvoker(function () {
+                    this.OnDispose = new eg.EventHandler();
+                    this._onDisposeInvoker = new eg._.Utilities.NoopTripInvoker(function () {
                         _this.OnDispose.Trigger();
                     }, true);
                 }
@@ -1879,12 +1879,12 @@ var EndGate;
             Assets.KeyboardCommand = KeyboardCommand;
         })(Input.Assets || (Input.Assets = {}));
         var Assets = Input.Assets;
-    })(EndGate.Input || (EndGate.Input = {}));
-    var Input = EndGate.Input;
-})(EndGate || (EndGate = {}));
+    })(eg.Input || (eg.Input = {}));
+    var Input = eg.Input;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Input) {
         var KeyboardHandler = (function () {
             function KeyboardHandler() {
@@ -1892,9 +1892,9 @@ var EndGate;
                 this._onDownCommands = ({});
                 this._onUpCommands = ({});
 
-                this.OnKeyPress = new EndGate.EventHandler();
-                this.OnKeyDown = new EndGate.EventHandler();
-                this.OnKeyUp = new EndGate.EventHandler();
+                this.OnKeyPress = new eg.EventHandler();
+                this.OnKeyDown = new eg.EventHandler();
+                this.OnKeyUp = new eg.EventHandler();
 
                 this.Wire();
             }
@@ -1978,12 +1978,12 @@ var EndGate;
             return KeyboardHandler;
         })();
         Input.KeyboardHandler = KeyboardHandler;
-    })(EndGate.Input || (EndGate.Input = {}));
-    var Input = EndGate.Input;
-})(EndGate || (EndGate = {}));
+    })(eg.Input || (eg.Input = {}));
+    var Input = eg.Input;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Input) {
         var InputManager = (function () {
             function InputManager(target) {
@@ -1993,12 +1993,12 @@ var EndGate;
             return InputManager;
         })();
         Input.InputManager = InputManager;
-    })(EndGate.Input || (EndGate.Input = {}));
-    var Input = EndGate.Input;
-})(EndGate || (EndGate = {}));
+    })(eg.Input || (eg.Input = {}));
+    var Input = eg.Input;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Sound) {
         var AudioSettings = (function () {
             function AudioSettings(repeat, volume, autoplay, preload) {
@@ -2015,12 +2015,12 @@ var EndGate;
             return AudioSettings;
         })();
         Sound.AudioSettings = AudioSettings;
-    })(EndGate.Sound || (EndGate.Sound = {}));
-    var Sound = EndGate.Sound;
-})(EndGate || (EndGate = {}));
+    })(eg.Sound || (eg.Sound = {}));
+    var Sound = eg.Sound;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Sound) {
         var supportedAudioTypes = {
             mp3: 'audio/mpeg',
@@ -2038,7 +2038,7 @@ var EndGate;
                 this.SetAudioSource(source);
                 this.ApplySettings();
 
-                this.OnComplete = new EndGate.EventHandler();
+                this.OnComplete = new eg.EventHandler();
             }
             AudioClip.prototype.Volume = function (percent) {
                 if (typeof percent !== "undefined") {
@@ -2123,12 +2123,12 @@ var EndGate;
             return AudioClip;
         })();
         Sound.AudioClip = AudioClip;
-    })(EndGate.Sound || (EndGate.Sound = {}));
-    var Sound = EndGate.Sound;
-})(EndGate || (EndGate = {}));
+    })(eg.Sound || (eg.Sound = {}));
+    var Sound = eg.Sound;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Sound) {
         var AudioPlayer = (function () {
             function AudioPlayer(source) {
@@ -2145,12 +2145,12 @@ var EndGate;
             return AudioPlayer;
         })();
         Sound.AudioPlayer = AudioPlayer;
-    })(EndGate.Sound || (EndGate.Sound = {}));
-    var Sound = EndGate.Sound;
-})(EndGate || (EndGate = {}));
+    })(eg.Sound || (eg.Sound = {}));
+    var Sound = eg.Sound;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Sound) {
         var AudioManager = (function () {
             function AudioManager() {
@@ -2181,19 +2181,19 @@ var EndGate;
             return AudioManager;
         })();
         Sound.AudioManager = AudioManager;
-    })(EndGate.Sound || (EndGate.Sound = {}));
-    var Sound = EndGate.Sound;
-})(EndGate || (EndGate = {}));
+    })(eg.Sound || (eg.Sound = {}));
+    var Sound = eg.Sound;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Map) {
         var SceneryHandler = (function () {
             function SceneryHandler(scene) {
                 this._camera = scene.Camera;
                 this._layers = [];
                 this._sceneryCanvas = this.BuildSceneryCanvas(scene.DrawArea);
-                this._renderer = new EndGate.Rendering.Camera2dRenderer(this._sceneryCanvas, this._camera);
+                this._renderer = new eg.Rendering.Camera2dRenderer(this._sceneryCanvas, this._camera);
             }
             SceneryHandler.prototype.AddLayer = function (layer) {
                 this._layers.push(layer);
@@ -2204,7 +2204,7 @@ var EndGate;
             };
 
             SceneryHandler.prototype.Draw = function () {
-                this._layers.sort(EndGate.Graphics.Abstractions.Graphic2d._zindexSort);
+                this._layers.sort(eg.Graphics.Abstractions.Graphic2d._zindexSort);
 
                 this._renderer.Render(this._layers);
             };
@@ -2224,12 +2224,12 @@ var EndGate;
             return SceneryHandler;
         })();
         Map.SceneryHandler = SceneryHandler;
-    })(EndGate.Map || (EndGate.Map = {}));
-    var Map = EndGate.Map;
-})(EndGate || (EndGate = {}));
+    })(eg.Map || (eg.Map = {}));
+    var Map = eg.Map;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Map) {
         var MapManager = (function () {
             function MapManager(scene) {
@@ -2238,28 +2238,28 @@ var EndGate;
             return MapManager;
         })();
         Map.MapManager = MapManager;
-    })(EndGate.Map || (EndGate.Map = {}));
-    var Map = EndGate.Map;
-})(EndGate || (EndGate = {}));
+    })(eg.Map || (eg.Map = {}));
+    var Map = eg.Map;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     var Game = (function () {
         function Game(gameCanvas) {
             var _this = this;
             this._type = "Game";
-            this._gameTime = new EndGate.GameTime();
+            this._gameTime = new eg.GameTime();
             this._ID = Game._gameIds++;
 
-            this.Scene = new EndGate.Rendering.Scene2d(function (context) {
+            this.Scene = new eg.Rendering.Scene2d(function (context) {
                 _this.Draw(context);
             }, gameCanvas);
 
-            this.Input = new EndGate.Input.InputManager(this.Scene.DrawArea);
-            this.Audio = new EndGate.Sound.AudioManager();
-            this.CollisionManager = new EndGate.Collision.CollisionManager();
-            this.Configuration = new EndGate.GameConfiguration(GameRunnerInstance.Register(this));
-            this.Map = new EndGate.Map.MapManager(this.Scene);
+            this.Input = new eg.Input.InputManager(this.Scene.DrawArea);
+            this.Audio = new eg.Sound.AudioManager();
+            this.CollisionManager = new eg.Collision.CollisionManager();
+            this.Configuration = new eg.GameConfiguration(GameRunnerInstance.Register(this));
+            this.Map = new eg.Map.MapManager(this.Scene);
         }
         Game.prototype._PrepareUpdate = function () {
             this._gameTime.Update();
@@ -2286,11 +2286,11 @@ var EndGate;
         Game._gameIds = 0;
         return Game;
     })();
-    EndGate.Game = Game;
-})(EndGate || (EndGate = {}));
+    eg.Game = Game;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (MovementControllers) {
         (function (Assets) {
             var LinearDirections = (function () {
@@ -2305,18 +2305,18 @@ var EndGate;
             Assets.LinearDirections = LinearDirections;
         })(MovementControllers.Assets || (MovementControllers.Assets = {}));
         var Assets = MovementControllers.Assets;
-    })(EndGate.MovementControllers || (EndGate.MovementControllers = {}));
-    var MovementControllers = EndGate.MovementControllers;
-})(EndGate || (EndGate = {}));
+    })(eg.MovementControllers || (eg.MovementControllers = {}));
+    var MovementControllers = eg.MovementControllers;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (MovementControllers) {
         (function (Abstractions) {
             var MovementController = (function () {
                 function MovementController(moveables) {
-                    this.Position = EndGate.Vector2d.Zero();
-                    this.Velocity = EndGate.Vector2d.Zero();
+                    this.Position = eg.Vector2d.Zero();
+                    this.Velocity = eg.Vector2d.Zero();
                     this.Rotation = 0;
                     this._frozen = false;
 
@@ -2345,12 +2345,12 @@ var EndGate;
             Abstractions.MovementController = MovementController;
         })(MovementControllers.Abstractions || (MovementControllers.Abstractions = {}));
         var Abstractions = MovementControllers.Abstractions;
-    })(EndGate.MovementControllers || (EndGate.MovementControllers = {}));
-    var MovementControllers = EndGate.MovementControllers;
-})(EndGate || (EndGate = {}));
+    })(eg.MovementControllers || (eg.MovementControllers = {}));
+    var MovementControllers = eg.MovementControllers;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (MovementControllers) {
         var LinearMovementController = (function (_super) {
             __extends(LinearMovementController, _super);
@@ -2362,8 +2362,8 @@ var EndGate;
 
                 this._moveSpeed = moveSpeed;
                 this._moving = new MovementControllers.Assets.LinearDirections();
-                this.OnMove = new EndGate.EventHandler();
-                this._rotationUpdater = new EndGate._.Utilities.NoopTripInvoker(function () {
+                this.OnMove = new eg.EventHandler();
+                this._rotationUpdater = new eg._.Utilities.NoopTripInvoker(function () {
                     _this.UpdateRotation();
                 }, rotateWithMovements);
 
@@ -2417,7 +2417,7 @@ var EndGate;
             };
 
             LinearMovementController.prototype.UpdateVelocityNoMultiDirection = function () {
-                var velocity = EndGate.Vector2d.Zero();
+                var velocity = eg.Vector2d.Zero();
 
                 if (velocity.IsZero()) {
                     if (this._moving.Up) {
@@ -2441,7 +2441,7 @@ var EndGate;
             };
 
             LinearMovementController.prototype.UpdateVelocityWithMultiDirection = function () {
-                var velocity = EndGate.Vector2d.Zero();
+                var velocity = eg.Vector2d.Zero();
 
                 if (this._moving.Up) {
                     velocity.Y -= this._moveSpeed;
@@ -2467,12 +2467,12 @@ var EndGate;
             return LinearMovementController;
         })(MovementControllers.Abstractions.MovementController);
         MovementControllers.LinearMovementController = LinearMovementController;
-    })(EndGate.MovementControllers || (EndGate.MovementControllers = {}));
-    var MovementControllers = EndGate.MovementControllers;
-})(EndGate || (EndGate = {}));
+    })(eg.MovementControllers || (eg.MovementControllers = {}));
+    var MovementControllers = eg.MovementControllers;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (InputControllers) {
         var DirectionalInputController = (function () {
             function DirectionalInputController(keyboard, onMove, upKeys, rightKeys, downKeys, leftKeys) {
@@ -2482,7 +2482,7 @@ var EndGate;
                 if (typeof leftKeys === "undefined") { leftKeys = ["a", "Left"]; }
                 this._keyboard = keyboard;
                 this._onMove = onMove;
-                this._directions = new EndGate.MovementControllers.Assets.LinearDirections();
+                this._directions = new eg.MovementControllers.Assets.LinearDirections();
 
                 this.BindKeys(upKeys, "OnCommandDown", "Up", true);
                 this.BindKeys(rightKeys, "OnCommandDown", "Right", true);
@@ -2507,12 +2507,12 @@ var EndGate;
             return DirectionalInputController;
         })();
         InputControllers.DirectionalInputController = DirectionalInputController;
-    })(EndGate.InputControllers || (EndGate.InputControllers = {}));
-    var InputControllers = EndGate.InputControllers;
-})(EndGate || (EndGate = {}));
+    })(eg.InputControllers || (eg.InputControllers = {}));
+    var InputControllers = eg.InputControllers;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Graphics) {
         (function (Assets) {
             (function (FontMeasurement) {
@@ -2526,12 +2526,12 @@ var EndGate;
             ;
         })(Graphics.Assets || (Graphics.Assets = {}));
         var Assets = Graphics.Assets;
-    })(EndGate.Graphics || (EndGate.Graphics = {}));
-    var Graphics = EndGate.Graphics;
-})(EndGate || (EndGate = {}));
+    })(eg.Graphics || (eg.Graphics = {}));
+    var Graphics = eg.Graphics;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Graphics) {
         (function (Assets) {
             (function (_) {
@@ -2554,12 +2554,12 @@ var EndGate;
             var _ = Assets._;
         })(Graphics.Assets || (Graphics.Assets = {}));
         var Assets = Graphics.Assets;
-    })(EndGate.Graphics || (EndGate.Graphics = {}));
-    var Graphics = EndGate.Graphics;
-})(EndGate || (EndGate = {}));
+    })(eg.Graphics || (eg.Graphics = {}));
+    var Graphics = eg.Graphics;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Graphics) {
         (function (Assets) {
             (function (FontFamily) {
@@ -2592,12 +2592,12 @@ var EndGate;
             ;
         })(Graphics.Assets || (Graphics.Assets = {}));
         var Assets = Graphics.Assets;
-    })(EndGate.Graphics || (EndGate.Graphics = {}));
-    var Graphics = EndGate.Graphics;
-})(EndGate || (EndGate = {}));
+    })(eg.Graphics || (eg.Graphics = {}));
+    var Graphics = eg.Graphics;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Graphics) {
         (function (Assets) {
             (function (_) {
@@ -2628,12 +2628,12 @@ var EndGate;
             var _ = Assets._;
         })(Graphics.Assets || (Graphics.Assets = {}));
         var Assets = Graphics.Assets;
-    })(EndGate.Graphics || (EndGate.Graphics = {}));
-    var Graphics = EndGate.Graphics;
-})(EndGate || (EndGate = {}));
+    })(eg.Graphics || (eg.Graphics = {}));
+    var Graphics = eg.Graphics;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Graphics) {
         (function (Assets) {
             (function (FontVariant) {
@@ -2645,12 +2645,12 @@ var EndGate;
             ;
         })(Graphics.Assets || (Graphics.Assets = {}));
         var Assets = Graphics.Assets;
-    })(EndGate.Graphics || (EndGate.Graphics = {}));
-    var Graphics = EndGate.Graphics;
-})(EndGate || (EndGate = {}));
+    })(eg.Graphics || (eg.Graphics = {}));
+    var Graphics = eg.Graphics;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Graphics) {
         (function (Assets) {
             (function (_) {
@@ -2681,12 +2681,12 @@ var EndGate;
             var _ = Assets._;
         })(Graphics.Assets || (Graphics.Assets = {}));
         var Assets = Graphics.Assets;
-    })(EndGate.Graphics || (EndGate.Graphics = {}));
-    var Graphics = EndGate.Graphics;
-})(EndGate || (EndGate = {}));
+    })(eg.Graphics || (eg.Graphics = {}));
+    var Graphics = eg.Graphics;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Graphics) {
         (function (Assets) {
             (function (FontStyle) {
@@ -2698,12 +2698,12 @@ var EndGate;
             var FontStyle = Assets.FontStyle;
         })(Graphics.Assets || (Graphics.Assets = {}));
         var Assets = Graphics.Assets;
-    })(EndGate.Graphics || (EndGate.Graphics = {}));
-    var Graphics = EndGate.Graphics;
-})(EndGate || (EndGate = {}));
+    })(eg.Graphics || (eg.Graphics = {}));
+    var Graphics = eg.Graphics;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Graphics) {
         (function (Assets) {
             (function (_) {
@@ -2732,12 +2732,12 @@ var EndGate;
             var _ = Assets._;
         })(Graphics.Assets || (Graphics.Assets = {}));
         var Assets = Graphics.Assets;
-    })(EndGate.Graphics || (EndGate.Graphics = {}));
-    var Graphics = EndGate.Graphics;
-})(EndGate || (EndGate = {}));
+    })(eg.Graphics || (eg.Graphics = {}));
+    var Graphics = eg.Graphics;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Graphics) {
         (function (Assets) {
             var FontSettings = (function () {
@@ -2814,27 +2814,27 @@ var EndGate;
             Assets.FontSettings = FontSettings;
         })(Graphics.Assets || (Graphics.Assets = {}));
         var Assets = Graphics.Assets;
-    })(EndGate.Graphics || (EndGate.Graphics = {}));
-    var Graphics = EndGate.Graphics;
-})(EndGate || (EndGate = {}));
+    })(eg.Graphics || (eg.Graphics = {}));
+    var Graphics = eg.Graphics;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Graphics) {
         var Text2d = (function (_super) {
             __extends(Text2d, _super);
             function Text2d(x, y, text, color) {
                 if (typeof color === "undefined") { color = "black"; }
                 var _this = this;
-                _super.call(this, new EndGate.Vector2d(x, y));
+                _super.call(this, new eg.Vector2d(x, y));
                 this._type = "Text2d";
 
                 this._text = text;
-                this._stroker = new EndGate._.Utilities.NoopTripInvoker(function (context) {
+                this._stroker = new eg._.Utilities.NoopTripInvoker(function (context) {
                     context.strokeText(_this._text, 0, 0);
                 });
 
-                this._drawBounds = new EndGate.Bounds.BoundingRectangle(this.Position, EndGate.Size2d.One());
+                this._drawBounds = new eg.Bounds.BoundingRectangle(this.Position, eg.Size2d.One());
                 this._recalculateBoundsSize = true;
 
                 this._fontSettings = new Graphics.Assets.FontSettings();
@@ -2945,12 +2945,12 @@ var EndGate;
             return Text2d;
         })(Graphics.Abstractions.Graphic2d);
         Graphics.Text2d = Text2d;
-    })(EndGate.Graphics || (EndGate.Graphics = {}));
-    var Graphics = EndGate.Graphics;
-})(EndGate || (EndGate = {}));
+    })(eg.Graphics || (eg.Graphics = {}));
+    var Graphics = eg.Graphics;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Graphics) {
         (function (Assets) {
             var ImageSource = (function () {
@@ -2963,15 +2963,15 @@ var EndGate;
                     var setSize = typeof width !== "undefined";
 
                     this._loaded = false;
-                    this.OnLoaded = new EndGate.EventHandler();
+                    this.OnLoaded = new eg.EventHandler();
                     this.Source = new Image();
 
                     this.Source.onload = function () {
                         _this._loaded = true;
 
                         if (!setSize) {
-                            _this._size = new EndGate.Size2d(_this.Source.width, _this.Source.height);
-                            _this.ClipLocation = EndGate.Vector2d.Zero();
+                            _this._size = new eg.Size2d(_this.Source.width, _this.Source.height);
+                            _this.ClipLocation = eg.Vector2d.Zero();
                             _this.ClipSize = _this._size.Clone();
                         }
 
@@ -2982,9 +2982,9 @@ var EndGate;
                     this._imageLocation = imageLocation;
 
                     if (setSize) {
-                        this._size = new EndGate.Size2d(width, height);
-                        this.ClipLocation = new EndGate.Vector2d(clipX, clipY);
-                        this.ClipSize = new EndGate.Size2d(clipWidth, clipHeight);
+                        this._size = new eg.Size2d(width, height);
+                        this.ClipLocation = new eg.Vector2d(clipX, clipY);
+                        this.ClipSize = new eg.Size2d(clipWidth, clipHeight);
                     }
                 }
                 ImageSource.prototype.Size = function () {
@@ -3003,23 +3003,23 @@ var EndGate;
             Assets.ImageSource = ImageSource;
         })(Graphics.Assets || (Graphics.Assets = {}));
         var Assets = Graphics.Assets;
-    })(EndGate.Graphics || (EndGate.Graphics = {}));
-    var Graphics = EndGate.Graphics;
-})(EndGate || (EndGate = {}));
+    })(eg.Graphics || (eg.Graphics = {}));
+    var Graphics = eg.Graphics;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Graphics) {
         var Sprite2d = (function (_super) {
             __extends(Sprite2d, _super);
             function Sprite2d(x, y, image, width, height) {
                 if (typeof width === "undefined") { width = image.ClipSize.Width; }
                 if (typeof height === "undefined") { height = image.ClipSize.Height; }
-                _super.call(this, new EndGate.Vector2d(x, y));
+                _super.call(this, new eg.Vector2d(x, y));
                 this._type = "Sprite2d";
 
                 this.Image = image;
-                this.Size = new EndGate.Size2d(width, height);
+                this.Size = new eg.Size2d(width, height);
             }
             Sprite2d.prototype.Opacity = function (alpha) {
                 return this._State.GlobalAlpha(alpha);
@@ -3034,7 +3034,7 @@ var EndGate;
             };
 
             Sprite2d.prototype.GetDrawBounds = function () {
-                var bounds = new EndGate.Bounds.BoundingRectangle(this.Position, this.Size);
+                var bounds = new eg.Bounds.BoundingRectangle(this.Position, this.Size);
 
                 bounds.Rotation = this.Rotation;
 
@@ -3043,16 +3043,16 @@ var EndGate;
             return Sprite2d;
         })(Graphics.Abstractions.Graphic2d);
         Graphics.Sprite2d = Sprite2d;
-    })(EndGate.Graphics || (EndGate.Graphics = {}));
-    var Graphics = EndGate.Graphics;
-})(EndGate || (EndGate = {}));
+    })(eg.Graphics || (eg.Graphics = {}));
+    var Graphics = eg.Graphics;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Graphics) {
         var SpriteAnimation = (function () {
             function SpriteAnimation(imageSource, fps, frameSize, frameCount, startOffset) {
-                if (typeof startOffset === "undefined") { startOffset = EndGate.Vector2d.Zero(); }
+                if (typeof startOffset === "undefined") { startOffset = eg.Vector2d.Zero(); }
                 this._imageSource = imageSource;
                 this._frameSize = frameSize;
                 this._frameCount = frameCount;
@@ -3063,7 +3063,7 @@ var EndGate;
                 this._framesPerRow = Math.min(Math.floor((imageSource.ClipSize.Width - startOffset.X) / frameSize.Width), frameCount);
                 this._lastStepAt = 0;
 
-                this.OnComplete = new EndGate.EventHandler();
+                this.OnComplete = new eg.EventHandler();
 
                 this.Fps(fps);
             }
@@ -3154,12 +3154,12 @@ var EndGate;
             return SpriteAnimation;
         })();
         Graphics.SpriteAnimation = SpriteAnimation;
-    })(EndGate.Graphics || (EndGate.Graphics = {}));
-    var Graphics = EndGate.Graphics;
-})(EndGate || (EndGate = {}));
+    })(eg.Graphics || (eg.Graphics = {}));
+    var Graphics = eg.Graphics;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Graphics) {
         (function (Abstractions) {
             var Shape = (function (_super) {
@@ -3254,23 +3254,23 @@ var EndGate;
             Abstractions.Shape = Shape;
         })(Graphics.Abstractions || (Graphics.Abstractions = {}));
         var Abstractions = Graphics.Abstractions;
-    })(EndGate.Graphics || (EndGate.Graphics = {}));
-    var Graphics = EndGate.Graphics;
-})(EndGate || (EndGate = {}));
+    })(eg.Graphics || (eg.Graphics = {}));
+    var Graphics = eg.Graphics;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Graphics) {
         var Circle = (function (_super) {
             __extends(Circle, _super);
             function Circle(x, y, radius, color) {
-                _super.call(this, new EndGate.Vector2d(x, y), color);
+                _super.call(this, new eg.Vector2d(x, y), color);
                 this._type = "Circle";
 
                 this.Radius = radius;
             }
             Circle.prototype.GetDrawBounds = function () {
-                var bounds = new EndGate.Bounds.BoundingCircle(this.Position, this.Radius);
+                var bounds = new eg.Bounds.BoundingCircle(this.Position, this.Radius);
 
                 bounds.Rotation = this.Rotation;
 
@@ -3283,23 +3283,23 @@ var EndGate;
             return Circle;
         })(Graphics.Abstractions.Shape);
         Graphics.Circle = Circle;
-    })(EndGate.Graphics || (EndGate.Graphics = {}));
-    var Graphics = EndGate.Graphics;
-})(EndGate || (EndGate = {}));
+    })(eg.Graphics || (eg.Graphics = {}));
+    var Graphics = eg.Graphics;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Graphics) {
         var Rectangle = (function (_super) {
             __extends(Rectangle, _super);
             function Rectangle(x, y, width, height, color) {
-                _super.call(this, new EndGate.Vector2d(x, y), color);
+                _super.call(this, new eg.Vector2d(x, y), color);
                 this._type = "Rectangle";
 
-                this.Size = new EndGate.Size2d(width, height);
+                this.Size = new eg.Size2d(width, height);
             }
             Rectangle.prototype.GetDrawBounds = function () {
-                var bounds = new EndGate.Bounds.BoundingRectangle(this.Position, this.Size);
+                var bounds = new eg.Bounds.BoundingRectangle(this.Position, this.Size);
 
                 bounds.Rotation = this.Rotation;
 
@@ -3312,22 +3312,22 @@ var EndGate;
             return Rectangle;
         })(Graphics.Abstractions.Shape);
         Graphics.Rectangle = Rectangle;
-    })(EndGate.Graphics || (EndGate.Graphics = {}));
-    var Graphics = EndGate.Graphics;
-})(EndGate || (EndGate = {}));
+    })(eg.Graphics || (eg.Graphics = {}));
+    var Graphics = eg.Graphics;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Graphics) {
         var Line2d = (function (_super) {
             __extends(Line2d, _super);
             function Line2d(fromX, fromY, toX, toY, lineWidth, color) {
                 if (typeof lineWidth === "undefined") { lineWidth = 1; }
-                _super.call(this, EndGate.Vector2d.Zero());
+                _super.call(this, eg.Vector2d.Zero());
                 this._type = "Line2d";
 
-                this._from = new EndGate.Vector2d(fromX, fromY);
-                this._to = new EndGate.Vector2d(toX, toY);
+                this._from = new eg.Vector2d(fromX, fromY);
+                this._to = new eg.Vector2d(toX, toY);
                 this.LineWidth(lineWidth);
                 this.UpdatePosition();
 
@@ -3371,7 +3371,7 @@ var EndGate;
             };
 
             Line2d.prototype.GetDrawBounds = function () {
-                var bounds = new EndGate.Bounds.BoundingRectangle(this.Position, new EndGate.Size2d(this._boundsWidth, this.LineWidth()));
+                var bounds = new eg.Bounds.BoundingRectangle(this.Position, new eg.Size2d(this._boundsWidth, this.LineWidth()));
 
                 bounds.Rotation = Math.atan2(this._difference.Y, this._difference.X) + this.Rotation;
 
@@ -3405,24 +3405,24 @@ var EndGate;
             return Line2d;
         })(Graphics.Abstractions.Graphic2d);
         Graphics.Line2d = Line2d;
-    })(EndGate.Graphics || (EndGate.Graphics = {}));
-    var Graphics = EndGate.Graphics;
-})(EndGate || (EndGate = {}));
+    })(eg.Graphics || (eg.Graphics = {}));
+    var Graphics = eg.Graphics;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Graphics) {
         var Grid = (function (_super) {
             __extends(Grid, _super);
             function Grid(x, y, rows, columns, tileWidth, tileHeight, drawGridLines, gridLineColor) {
                 if (typeof drawGridLines === "undefined") { drawGridLines = false; }
                 if (typeof gridLineColor === "undefined") { gridLineColor = "gray"; }
-                _super.call(this, new EndGate.Vector2d(x, y));
+                _super.call(this, new eg.Vector2d(x, y));
                 this._type = "Grid";
                 var halfSize, topLeft, bottomRight;
 
-                this._size = new EndGate.Size2d(tileWidth * columns, tileHeight * rows);
-                this._tileSize = new EndGate.Size2d(tileWidth, tileHeight);
+                this._size = new eg.Size2d(tileWidth * columns, tileHeight * rows);
+                this._tileSize = new eg.Size2d(tileWidth, tileHeight);
                 this._grid = [];
                 this._rows = rows;
                 this._columns = columns;
@@ -3430,8 +3430,8 @@ var EndGate;
                 this._gridLines = [];
 
                 halfSize = this._size.Multiply(.5);
-                topLeft = new EndGate.Vector2d(-halfSize.Width, -halfSize.Height);
-                bottomRight = new EndGate.Vector2d(halfSize.Width, halfSize.Height);
+                topLeft = new eg.Vector2d(-halfSize.Width, -halfSize.Height);
+                bottomRight = new eg.Vector2d(halfSize.Width, halfSize.Height);
 
                 for (var i = 0; i < rows; i++) {
                     this._grid[i] = [];
@@ -3662,7 +3662,7 @@ var EndGate;
             };
 
             Grid.prototype.GetDrawBounds = function () {
-                var bounds = new EndGate.Bounds.BoundingRectangle(this.Position, this._size);
+                var bounds = new eg.Bounds.BoundingRectangle(this.Position, this._size);
 
                 bounds.Rotation = this.Rotation;
 
@@ -3678,7 +3678,7 @@ var EndGate;
             };
 
             Grid.prototype.GetInsideGridPosition = function (row, column) {
-                return new EndGate.Vector2d(column * this._tileSize.Width - this._size.HalfWidth() + this._tileSize.HalfWidth(), row * this._tileSize.Height - this._size.HalfHeight() + this._tileSize.HalfHeight());
+                return new eg.Vector2d(column * this._tileSize.Width - this._size.HalfWidth() + this._tileSize.HalfWidth(), row * this._tileSize.Height - this._size.HalfHeight() + this._tileSize.HalfHeight());
             };
 
             Grid.prototype.ValidRow = function (row) {
@@ -3691,12 +3691,12 @@ var EndGate;
             return Grid;
         })(Graphics.Abstractions.Graphic2d);
         Graphics.Grid = Grid;
-    })(EndGate.Graphics || (EndGate.Graphics = {}));
-    var Graphics = EndGate.Graphics;
-})(EndGate || (EndGate = {}));
+    })(eg.Graphics || (eg.Graphics = {}));
+    var Graphics = eg.Graphics;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     var Matrix2x2 = (function () {
         function Matrix2x2(topLeft, topRight, botLeft, botRight) {
             if (typeof topLeft === "undefined") { topLeft = 0; }
@@ -3772,7 +3772,7 @@ var EndGate;
         };
 
         Matrix2x2.prototype.Transform = function (vector) {
-            return new EndGate.Vector2d(this.Values[0][0] * vector.X + this.Values[0][1] * vector.Y, this.Values[1][0] * vector.X + this.Values[1][1] * vector.Y);
+            return new eg.Vector2d(this.Values[0][0] * vector.X + this.Values[0][1] * vector.Y, this.Values[1][0] * vector.X + this.Values[1][1] * vector.Y);
         };
 
         Matrix2x2.prototype.Transpose = function () {
@@ -3812,28 +3812,28 @@ var EndGate;
         };
         return Matrix2x2;
     })();
-    EndGate.Matrix2x2 = Matrix2x2;
-})(EndGate || (EndGate = {}));
+    eg.Matrix2x2 = Matrix2x2;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Map) {
         var TileMap = (function (_super) {
             __extends(TileMap, _super);
             function TileMap(x, y, resources) {
-                _super.call(this, new EndGate.Vector2d(x, y));
+                _super.call(this, new eg.Vector2d(x, y));
 
                 this._Resources = resources;
             }
             return TileMap;
-        })(EndGate.Graphics.Abstractions.Graphic2d);
+        })(eg.Graphics.Abstractions.Graphic2d);
         Map.TileMap = TileMap;
-    })(EndGate.Map || (EndGate.Map = {}));
-    var Map = EndGate.Map;
-})(EndGate || (EndGate = {}));
+    })(eg.Map || (eg.Map = {}));
+    var Map = eg.Map;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Map) {
         var SquareTile = (function (_super) {
             __extends(SquareTile, _super);
@@ -3841,14 +3841,14 @@ var EndGate;
                 _super.call(this, 0, 0, image, width, height);
             }
             return SquareTile;
-        })(EndGate.Graphics.Sprite2d);
+        })(eg.Graphics.Sprite2d);
         Map.SquareTile = SquareTile;
-    })(EndGate.Map || (EndGate.Map = {}));
-    var Map = EndGate.Map;
-})(EndGate || (EndGate = {}));
+    })(eg.Map || (eg.Map = {}));
+    var Map = eg.Map;
+})(eg || (eg = {}));
 
-var EndGate;
-(function (EndGate) {
+var eg;
+(function (eg) {
     (function (Map) {
         var SquareTileMap = (function (_super) {
             __extends(SquareTileMap, _super);
@@ -3857,7 +3857,7 @@ var EndGate;
                 if (typeof drawGridLines === "undefined") { drawGridLines = false; }
                 _super.call(this, x, y, resources);
 
-                this._grid = new EndGate.Graphics.Grid(0, 0, mappings.length, mappings[0].length, tileWidth, tileHeight, drawGridLines);
+                this._grid = new eg.Graphics.Grid(0, 0, mappings.length, mappings[0].length, tileWidth, tileHeight, drawGridLines);
                 this._staticMap = staticMap;
 
                 this.FillGridWith(mappings);
@@ -3905,7 +3905,7 @@ var EndGate;
                 this._mapCache.width = size.Width;
                 this._mapCache.height = size.Height;
 
-                this._grid.Position = new EndGate.Vector2d(size.HalfWidth(), size.HalfHeight());
+                this._grid.Position = new eg.Vector2d(size.HalfWidth(), size.HalfHeight());
                 this._grid.Draw(this._mapCache.getContext("2d"));
                 this._grid.Position = originalPosition;
             };
@@ -3929,8 +3929,6 @@ var EndGate;
             return SquareTileMap;
         })(Map.TileMap);
         Map.SquareTileMap = SquareTileMap;
-    })(EndGate.Map || (EndGate.Map = {}));
-    var Map = EndGate.Map;
-})(EndGate || (EndGate = {}));
-
-var eg = EndGate;
+    })(eg.Map || (eg.Map = {}));
+    var Map = eg.Map;
+})(eg || (eg = {}));

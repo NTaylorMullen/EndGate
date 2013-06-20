@@ -1,4 +1,4 @@
-module EndGate.Graphics.Assets {
+module eg.Graphics.Assets {
 
     /**
     * Defines valid FontVariant's that can be used to change the appearance of Text2d's.
@@ -10,7 +10,7 @@ module EndGate.Graphics.Assets {
 
 }
 
-module EndGate.Graphics.Assets._ {
+module eg.Graphics.Assets._ {
     export class FontVariantHelper {
         public static _variants: { [variant: number]: string; };
 
