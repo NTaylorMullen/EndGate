@@ -11,7 +11,7 @@ var eg;
     /// <reference path="../Utilities/NoopTripInvoker.ts" />
     /// <reference path="../Extensions/MathExtensions.ts" />
     /// <reference path="../GameTime.ts" />
-    /// <reference path="../Utilities/EventHandler.ts" />
+    /// <reference path="../Utilities/EventHandler1.ts" />
     /// <reference path="LinearDirections.ts" />
     /// <reference path="IMoveEvent.ts" />
     /// <reference path="MovementController.ts" />
@@ -29,7 +29,7 @@ var eg;
 
                 this._moveSpeed = moveSpeed;
                 this._moving = new MovementControllers.Assets.LinearDirections();
-                this.OnMove = new eg.EventHandler();
+                this.OnMove = new eg.EventHandler1();
                 this._rotationUpdater = new eg._.Utilities.NoopTripInvoker(function () {
                     _this.UpdateRotation();
                 }, rotateWithMovements);

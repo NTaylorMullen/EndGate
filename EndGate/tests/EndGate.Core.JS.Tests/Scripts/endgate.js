@@ -670,18 +670,18 @@ var eg;
 
 var eg;
 (function (eg) {
-    var EventHandler = (function () {
-        function EventHandler() {
+    var EventHandler1 = (function () {
+        function EventHandler1() {
             this._type = "Event";
             this._actions = [];
             this._hasBindings = false;
         }
-        EventHandler.prototype.Bind = function (action) {
+        EventHandler1.prototype.Bind = function (action) {
             this._actions.push(action);
             this._hasBindings = true;
         };
 
-        EventHandler.prototype.Unbind = function (action) {
+        EventHandler1.prototype.Unbind = function (action) {
             for (var i = 0; i < this._actions.length; i++) {
                 if (this._actions[i] === action) {
                     this._actions.splice(i, 1);
@@ -692,22 +692,18 @@ var eg;
             }
         };
 
-        EventHandler.prototype.HasBindings = function () {
+        EventHandler1.prototype.HasBindings = function () {
             return this._hasBindings;
         };
 
-        EventHandler.prototype.Trigger = function () {
-            var args = [];
-            for (var _i = 0; _i < (arguments.length - 0); _i++) {
-                args[_i] = arguments[_i + 0];
-            }
+        EventHandler1.prototype.Trigger = function (val) {
             for (var i = 0; i < this._actions.length; i++) {
-                this._actions[i].apply(this, args);
+                this._actions[i](val);
             }
         };
-        return EventHandler;
+        return EventHandler1;
     })();
-    eg.EventHandler = EventHandler;
+    eg.EventHandler1 = EventHandler1;
 })(eg || (eg = {}));
 
 var eg;
@@ -738,8 +734,8 @@ var eg;
                 this.Bounds = bounds;
                 this._id = Collidable._collidableIDs++;
 
-                this.OnCollision = new eg.EventHandler();
-                this.OnDisposed = new eg.EventHandler();
+                this.OnCollision = new eg.EventHandler1();
+                this.OnDisposed = new eg.EventHandler1();
             }
             Collidable.prototype.IsCollidingWith = function (other) {
                 return this.Bounds.Intersects(other.Bounds);
@@ -767,6 +763,44 @@ var eg;
 
 var eg;
 (function (eg) {
+    var EventHandler2 = (function () {
+        function EventHandler2() {
+            this._type = "Event";
+            this._actions = [];
+            this._hasBindings = false;
+        }
+        EventHandler2.prototype.Bind = function (action) {
+            this._actions.push(action);
+            this._hasBindings = true;
+        };
+
+        EventHandler2.prototype.Unbind = function (action) {
+            for (var i = 0; i < this._actions.length; i++) {
+                if (this._actions[i] === action) {
+                    this._actions.splice(i, 1);
+
+                    this._hasBindings = this._actions.length > 0;
+                    return;
+                }
+            }
+        };
+
+        EventHandler2.prototype.HasBindings = function () {
+            return this._hasBindings;
+        };
+
+        EventHandler2.prototype.Trigger = function (val1, val2) {
+            for (var i = 0; i < this._actions.length; i++) {
+                this._actions[i](val1, val2);
+            }
+        };
+        return EventHandler2;
+    })();
+    eg.EventHandler2 = EventHandler2;
+})(eg || (eg = {}));
+
+var eg;
+(function (eg) {
     (function (Collision) {
         var CollisionManager = (function () {
             function CollisionManager() {
@@ -774,7 +808,7 @@ var eg;
                 this._collidables = [];
                 this._enabled = false;
 
-                this.OnCollision = new eg.EventHandler();
+                this.OnCollision = new eg.EventHandler2();
             }
             CollisionManager.prototype.Monitor = function (obj) {
                 var _this = this;
@@ -1242,7 +1276,7 @@ var eg;
 
                 this._BufferCanvas = document.createElement("canvas");
                 this._BufferContext = this._BufferCanvas.getContext("2d");
-                this.OnRendererSizeChange = new eg.EventHandler();
+                this.OnRendererSizeChange = new eg.EventHandler1();
                 this.UpdateBufferSize();
 
                 this._disposed = false;
@@ -1562,12 +1596,12 @@ var eg;
                 var _this = this;
                 this._target = target;
 
-                this.OnClick = new eg.EventHandler();
-                this.OnDoubleClick = new eg.EventHandler();
-                this.OnDown = new eg.EventHandler();
-                this.OnUp = new eg.EventHandler();
-                this.OnMove = new eg.EventHandler();
-                this.OnScroll = new eg.EventHandler();
+                this.OnClick = new eg.EventHandler1();
+                this.OnDoubleClick = new eg.EventHandler1();
+                this.OnDown = new eg.EventHandler1();
+                this.OnUp = new eg.EventHandler1();
+                this.OnMove = new eg.EventHandler1();
+                this.OnScroll = new eg.EventHandler1();
 
                 this.LeftIsDown = false;
                 this.MiddleIsDown = false;
@@ -1664,6 +1698,46 @@ var eg;
         Input.MouseHandler = MouseHandler;
     })(eg.Input || (eg.Input = {}));
     var Input = eg.Input;
+})(eg || (eg = {}));
+
+var eg;
+(function (eg) {
+    var EventHandler = (function () {
+        function EventHandler() {
+            this._type = "Event";
+            this._actions = [];
+            this._hasBindings = false;
+        }
+        EventHandler.prototype.Bind = function (action) {
+            this._actions.push(action);
+            this._hasBindings = true;
+        };
+
+        EventHandler.prototype.Unbind = function (action) {
+            var foo = this._actions[i];
+
+            for (var i = 0; i < this._actions.length; i++) {
+                if (this._actions[i] === action) {
+                    this._actions.splice(i, 1);
+
+                    this._hasBindings = this._actions.length > 0;
+                    return;
+                }
+            }
+        };
+
+        EventHandler.prototype.HasBindings = function () {
+            return this._hasBindings;
+        };
+
+        EventHandler.prototype.Trigger = function () {
+            for (var i = 0; i < this._actions.length; i++) {
+                this._actions[i]();
+            }
+        };
+        return EventHandler;
+    })();
+    eg.EventHandler = EventHandler;
 })(eg || (eg = {}));
 
 var eg;
@@ -1892,9 +1966,9 @@ var eg;
                 this._onDownCommands = ({});
                 this._onUpCommands = ({});
 
-                this.OnKeyPress = new eg.EventHandler();
-                this.OnKeyDown = new eg.EventHandler();
-                this.OnKeyUp = new eg.EventHandler();
+                this.OnKeyPress = new eg.EventHandler1();
+                this.OnKeyDown = new eg.EventHandler1();
+                this.OnKeyUp = new eg.EventHandler1();
 
                 this.Wire();
             }
@@ -2038,7 +2112,7 @@ var eg;
                 this.SetAudioSource(source);
                 this.ApplySettings();
 
-                this.OnComplete = new eg.EventHandler();
+                this.OnComplete = new eg.EventHandler1();
             }
             AudioClip.prototype.Volume = function (percent) {
                 if (typeof percent !== "undefined") {
@@ -2362,7 +2436,7 @@ var eg;
 
                 this._moveSpeed = moveSpeed;
                 this._moving = new MovementControllers.Assets.LinearDirections();
-                this.OnMove = new eg.EventHandler();
+                this.OnMove = new eg.EventHandler1();
                 this._rotationUpdater = new eg._.Utilities.NoopTripInvoker(function () {
                     _this.UpdateRotation();
                 }, rotateWithMovements);
@@ -2963,7 +3037,7 @@ var eg;
                     var setSize = typeof width !== "undefined";
 
                     this._loaded = false;
-                    this.OnLoaded = new eg.EventHandler();
+                    this.OnLoaded = new eg.EventHandler1();
                     this.Source = new Image();
 
                     this.Source.onload = function () {

@@ -1,6 +1,6 @@
 /// <reference path="IRenderer.ts" />
 /// <reference path="IRenderable.ts" />
-/// <reference path="../Utilities/EventHandler.ts" />
+/// <reference path="../Utilities/EventHandler1.ts" />
 /// <reference path="../Assets/Sizes/Size2d.ts" />
 
 module eg.Rendering {
@@ -30,7 +30,7 @@ module eg.Rendering {
             // Create an equally sized canvas for a buffer
             this._BufferCanvas = <HTMLCanvasElement>document.createElement("canvas");
             this._BufferContext = this._BufferCanvas.getContext("2d");
-            this.OnRendererSizeChange = new EventHandler();
+            this.OnRendererSizeChange = new EventHandler1<Size2d>();
             this.UpdateBufferSize();
 
             this._disposed = false;
@@ -40,7 +40,7 @@ module eg.Rendering {
         * Event: Triggered when the renderOnto canvas changes size.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes the new size as a Size2d.
         */
-        public OnRendererSizeChange: EventHandler;
+        public OnRendererSizeChange: EventHandler1<Size2d>;
 
         /**
         * Renders the provided renderables onto the renderOnto canvas.  Returns the canvas that was rendered onto.

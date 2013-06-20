@@ -57,7 +57,7 @@ class CollisionManagerGame extends eg.Game
         this.CollisionManager.Monitor(obj);
     }
 
-    public RegisterCollisionEvent(e: Function): void
+    public RegisterCollisionEvent(e: (first: eg.Collision.Collidable, second: eg.Collision.Collidable) => void): void
     {
         this.CollisionManager.OnCollision.Bind(e);
     }

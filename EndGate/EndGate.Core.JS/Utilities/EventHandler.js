@@ -28,6 +28,8 @@ var eg;
         * @param action Function to unbind.  The action will no longer be executed when the EventHandler gets Triggered.
         */
         EventHandler.prototype.Unbind = function (action) {
+            var foo = this._actions[i];
+
             for (var i = 0; i < this._actions.length; i++) {
                 if (this._actions[i] === action) {
                     this._actions.splice(i, 1);
@@ -47,15 +49,10 @@ var eg;
 
         /**
         * Executes all bound functions and passes the provided args to each.
-        * @param args Arguments to pass to each bound function.
         */
         EventHandler.prototype.Trigger = function () {
-            var args = [];
-            for (var _i = 0; _i < (arguments.length - 0); _i++) {
-                args[_i] = arguments[_i + 0];
-            }
             for (var i = 0; i < this._actions.length; i++) {
-                this._actions[i].apply(this, args);
+                this._actions[i]();
             }
         };
         return EventHandler;

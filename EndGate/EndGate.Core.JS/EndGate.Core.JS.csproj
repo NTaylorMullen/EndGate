@@ -58,6 +58,10 @@
     <TypeScriptCompile Include="Game.ts" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Utilities\EventHandler1.ts" />
+    <Content Include="Utilities\EventHandler1.js">
+      <DependentUpon>EventHandler1.ts</DependentUpon>
+    </Content>
     <TypeScriptCompile Include="EndGateAPI.ts" />
     <CodeAnalysisDictionary Include="Assets\Sizes\Size2d.ts" />
     <TypeScriptCompile Include="Assets\Matrixes\Matrix2x2.ts" />
@@ -368,6 +372,10 @@
       <DependentUpon>EventHandler.ts</DependentUpon>
     </Content>
     <CodeAnalysisDictionary Include="Utilities\NoopTripInvoker.ts" />
+    <TypeScriptCompile Include="Utilities\EventHandler2.ts" />
+    <Content Include="Utilities\EventHandler2.js">
+      <DependentUpon>EventHandler2.ts</DependentUpon>
+    </Content>
     <Content Include="Utilities\NoopTripInvoker.js">
       <DependentUpon>NoopTripInvoker.ts</DependentUpon>
     </Content>

@@ -2,7 +2,7 @@ var eg;
 (function (eg) {
     /// <reference path="IRenderer.ts" />
     /// <reference path="IRenderable.ts" />
-    /// <reference path="../Utilities/EventHandler.ts" />
+    /// <reference path="../Utilities/EventHandler1.ts" />
     /// <reference path="../Assets/Sizes/Size2d.ts" />
     (function (Rendering) {
         /**
@@ -20,7 +20,7 @@ var eg;
                 // Create an equally sized canvas for a buffer
                 this._BufferCanvas = document.createElement("canvas");
                 this._BufferContext = this._BufferCanvas.getContext("2d");
-                this.OnRendererSizeChange = new eg.EventHandler();
+                this.OnRendererSizeChange = new eg.EventHandler1();
                 this.UpdateBufferSize();
 
                 this._disposed = false;

@@ -3,7 +3,7 @@ var eg;
     /// <reference path="../Interfaces/IDisposable.ts" />
     /// <reference path="../Interfaces/ITyped.ts" />
     /// <reference path="../Bounds/Bounds2d.ts" />
-    /// <reference path="../Utilities/EventHandler.ts" />
+    /// <reference path="../Utilities/EventHandler1.ts" />
     /// <reference path="../Assets/Vectors/Vector2d.ts" />
     /// <reference path="CollisionData.ts" />
     (function (Collision) {
@@ -21,8 +21,8 @@ var eg;
                 this.Bounds = bounds;
                 this._id = Collidable._collidableIDs++;
 
-                this.OnCollision = new eg.EventHandler();
-                this.OnDisposed = new eg.EventHandler();
+                this.OnCollision = new eg.EventHandler1();
+                this.OnDisposed = new eg.EventHandler1();
             }
             /**
             * Determines if the provided collidable is colliding with this Collidable.

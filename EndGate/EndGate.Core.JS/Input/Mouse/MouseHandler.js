@@ -1,7 +1,7 @@
 var eg;
 (function (eg) {
     /// <reference path="../../Assets/Vectors/Vector2d.ts" />
-    /// <reference path="../../Utilities/EventHandler.ts" />
+    /// <reference path="../../Utilities/EventHandler1.ts" />
     /// <reference path="MouseButton.ts" />
     /// <reference path="IMouseEvent.ts" />
     /// <reference path="IMouseClickEvent.ts" />
@@ -19,12 +19,12 @@ var eg;
                 var _this = this;
                 this._target = target;
 
-                this.OnClick = new eg.EventHandler();
-                this.OnDoubleClick = new eg.EventHandler();
-                this.OnDown = new eg.EventHandler();
-                this.OnUp = new eg.EventHandler();
-                this.OnMove = new eg.EventHandler();
-                this.OnScroll = new eg.EventHandler();
+                this.OnClick = new eg.EventHandler1();
+                this.OnDoubleClick = new eg.EventHandler1();
+                this.OnDown = new eg.EventHandler1();
+                this.OnUp = new eg.EventHandler1();
+                this.OnMove = new eg.EventHandler1();
+                this.OnScroll = new eg.EventHandler1();
 
                 // Generic flags to check mouse state
                 this.LeftIsDown = false;

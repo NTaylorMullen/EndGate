@@ -1,4 +1,4 @@
-/// <reference path="../Utilities/EventHandler.ts" />
+/// <reference path="../Utilities/EventHandler1.ts" />
 /// <reference path="AudioSettings.ts" />
 
 module eg.Sound {
@@ -46,14 +46,14 @@ module eg.Sound {
             this.SetAudioSource(source);
             this.ApplySettings();
 
-            this.OnComplete = new EventHandler();
+            this.OnComplete = new EventHandler1<Event>();
         }
 
         /**
         * Event: Triggered when the audio clip has completed, will not trigger if the audio clip is repeating.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes the DOM's ended event to bound functions.
         */
-        public OnComplete: EventHandler;
+        public OnComplete: EventHandler1<Event>;
 
         public Volume(percent?: number): number {
             if (typeof percent !== "undefined") {

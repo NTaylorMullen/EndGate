@@ -14,7 +14,7 @@ module AnimatedSprites {
 
         constructor(imageSrc: string, x: number, y: number, spriteSheetWidth: number, spriteSheetHeight: number, frameWidth: number, frameHeight: number, fps: number, frameCount: number, onComplete: Function) {
             this._spriteSheet = new eg.Graphics.Assets.ImageSource(imageSrc, spriteSheetWidth, spriteSheetHeight);
-
+            
             // To create our animation, we pass in our sprite sheet that we want to use for the animation, the fps (frames per second), 
             // our animation frame size, and how many frames the animation is
             this._animation = new eg.Graphics.SpriteAnimation(this._spriteSheet, fps, new eg.Size2d(frameWidth, frameHeight), frameCount);

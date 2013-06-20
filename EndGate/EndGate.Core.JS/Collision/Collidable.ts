@@ -1,7 +1,7 @@
 /// <reference path="../Interfaces/IDisposable.ts" />
 /// <reference path="../Interfaces/ITyped.ts" />
 /// <reference path="../Bounds/Bounds2d.ts" />
-/// <reference path="../Utilities/EventHandler.ts" />
+/// <reference path="../Utilities/EventHandler1.ts" />
 /// <reference path="../Assets/Vectors/Vector2d.ts" />
 /// <reference path="CollisionData.ts" />
 
@@ -31,19 +31,19 @@ module eg.Collision {
             this.Bounds = bounds;
             this._id = Collidable._collidableIDs++;
 
-            this.OnCollision = new EventHandler();
-            this.OnDisposed = new EventHandler();
+            this.OnCollision = new EventHandler1<Assets.CollisionData>();
+            this.OnDisposed = new EventHandler1<Collidable>();
         }
 
         /**
         * Event: Triggered when a collision happens.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes a CollisionData object to bound functions.
         */
-        public OnCollision: EventHandler;
+        public OnCollision: EventHandler1<Assets.CollisionData>;
         /**
         * Event: Triggered when a Collidable has been disposed.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
-        public OnDisposed: EventHandler;
+        public OnDisposed: EventHandler1<Collidable>;
 
         /**
         * Determines if the provided collidable is colliding with this Collidable.

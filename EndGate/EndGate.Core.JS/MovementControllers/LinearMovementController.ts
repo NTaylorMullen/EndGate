@@ -3,7 +3,7 @@
 /// <reference path="../Utilities/NoopTripInvoker.ts" />
 /// <reference path="../Extensions/MathExtensions.ts" />
 /// <reference path="../GameTime.ts" />
-/// <reference path="../Utilities/EventHandler.ts" />
+/// <reference path="../Utilities/EventHandler1.ts" />
 /// <reference path="LinearDirections.ts" />
 /// <reference path="IMoveEvent.ts" />
 /// <reference path="MovementController.ts" />
@@ -34,9 +34,9 @@ module eg.MovementControllers {
         constructor(moveables: IMoveable[], moveSpeed: number, rotateWithMovements: bool);
         /**
         * Creates a new instance of the LinearMovementController object..
-        * @param moveables Array of moveable objects that will be moved when the movement controller moves (this cannot change after construction).
+        * @param movables Array of moveable objects that will be moved when the movement controller moves (this cannot change after construction).
         * @param moveSpeed How fast the movement controller will move.
-        * @param rotateWithMovements Whether the moveables should rotate to face their moving direction.  Default is true (this cannot change after construction).
+        * @param rotateWithMovements Whether the movables should rotate to face their moving direction.  Default is true (this cannot change after construction).
         * @param multiDirectional Whether multiple movements can occur simultaneously, resulting in diagonal movements. Default is true (this cannot change after construction).
         */
         constructor(moveables: IMoveable[], moveSpeed: number, rotateWithMovements: bool, multiDirectional: bool);
@@ -45,7 +45,7 @@ module eg.MovementControllers {
 
             this._moveSpeed = moveSpeed;
             this._moving = new Assets.LinearDirections();
-            this.OnMove = new EventHandler();
+            this.OnMove = new EventHandler1<IMoveEvent>();
             this._rotationUpdater = new eg._.Utilities.NoopTripInvoker(() => {
                 this.UpdateRotation();
             }, rotateWithMovements);
@@ -62,7 +62,7 @@ module eg.MovementControllers {
         * Event: Triggered when a the movement controller starts or stops a movement.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes an IMoveEvent to bound functions.
         */
-        public OnMove: EventHandler;
+        public OnMove: EventHandler1<IMoveEvent>;
 
         /**
         * Determines if the movement controller is moving in the provided direction.

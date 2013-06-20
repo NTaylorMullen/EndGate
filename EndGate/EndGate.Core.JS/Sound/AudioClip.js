@@ -1,6 +1,6 @@
 var eg;
 (function (eg) {
-    /// <reference path="../Utilities/EventHandler.ts" />
+    /// <reference path="../Utilities/EventHandler1.ts" />
     /// <reference path="AudioSettings.ts" />
     (function (Sound) {
         var supportedAudioTypes = {
@@ -22,7 +22,7 @@ var eg;
                 this.SetAudioSource(source);
                 this.ApplySettings();
 
-                this.OnComplete = new eg.EventHandler();
+                this.OnComplete = new eg.EventHandler1();
             }
             AudioClip.prototype.Volume = function (percent) {
                 if (typeof percent !== "undefined") {

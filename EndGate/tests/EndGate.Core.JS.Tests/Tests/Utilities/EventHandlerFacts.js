@@ -56,7 +56,7 @@
     });
 
     QUnit.test("Events can be bound with args, triggered, and then unbound and not triggered.", function () {
-        var e = new eg.EventHandler(),
+        var e = new eg.EventHandler2(),
             resultA = 0,
             resultB = 1,
             add = function (a, b) {

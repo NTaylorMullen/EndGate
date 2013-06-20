@@ -2,7 +2,7 @@
 /// <reference path="../Interfaces/ITyped.ts" />
 /// <reference path="Collidable.ts" />
 /// <reference path="CollisionData.ts" />
-/// <reference path="../Utilities/EventHandler.ts" />
+/// <reference path="../Utilities/EventHandler2.ts" />
 /// <reference path="../GameTime.ts" />
 
 module eg.Collision {
@@ -22,14 +22,14 @@ module eg.Collision {
             this._collidables = [];
             this._enabled = false;
 
-            this.OnCollision = new EventHandler();
+            this.OnCollision = new EventHandler2<Collidable, Collidable>();
         }
 
         /**
         * Event: Triggered when a collision happens among two of the monitored objects.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes two CollisionData objects to bound functions.
         */
-        public OnCollision: EventHandler;
+        public OnCollision: EventHandler2<Collidable, Collidable>;
 
         /**
         * Monitors the provided collidable and will trigger its Collided function and OnCollision event whenever a collision occurs with it and another Collidable.

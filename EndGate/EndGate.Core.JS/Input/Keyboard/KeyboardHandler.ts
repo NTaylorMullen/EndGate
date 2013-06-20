@@ -1,6 +1,6 @@
 /// <reference path="KeyboardCommand.ts" />
 /// <reference path="KeyboardCommandEvent.ts" />
-/// <reference path="../../Utilities/EventHandler.ts" />
+/// <reference path="../../Utilities/EventHandler1.ts" />
 
 module eg.Input {
 
@@ -22,9 +22,9 @@ module eg.Input {
             this._onDownCommands = (<any>{});
             this._onUpCommands = (<any>{});
 
-            this.OnKeyPress = new EventHandler();
-            this.OnKeyDown = new EventHandler();
-            this.OnKeyUp = new EventHandler();
+            this.OnKeyPress = new EventHandler1<KeyboardCommandEvent>();
+            this.OnKeyDown = new EventHandler1<KeyboardCommandEvent>();
+            this.OnKeyUp = new EventHandler1<KeyboardCommandEvent>();
 
             this.Wire();
         }
@@ -33,17 +33,17 @@ module eg.Input {
         * Event: Triggered when any key press occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes a KeyboardCommandEvent object to bound functions.
         */
-        public OnKeyPress: EventHandler;
+        public OnKeyPress: EventHandler1<KeyboardCommandEvent>;
         /**
         * Event: Triggered when any key goes down.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes a KeyboardCommandEvent object to bound functions.
         */
-        public OnKeyDown: EventHandler;
+        public OnKeyDown: EventHandler1<KeyboardCommandEvent>;
         /**
         * Event: Triggered when any key comes up.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes a KeyboardCommandEvent object to bound functions.
         */
-        public OnKeyUp: EventHandler;
+        public OnKeyUp: EventHandler1<KeyboardCommandEvent>;
 
         /**
         * Binds function to be called when the keyCommand is pressed.  To unbind the function, dispose of the returned KeyboardCommand.
@@ -114,7 +114,7 @@ module eg.Input {
             return false;
         }
 
-        private BuildKeyEvent(store: { [id: number]: Assets.KeyboardCommand; }, eventHandler: EventHandler): (ke: KeyboardEvent) => void {
+        private BuildKeyEvent(store: { [id: number]: Assets.KeyboardCommand; }, eventHandler: EventHandler1<KeyboardCommandEvent>): (ke: KeyboardEvent) => void {
             return (ke: KeyboardEvent) => {
                 var keyboardCommandEvent: KeyboardCommandEvent,
                     propogate: bool = true;

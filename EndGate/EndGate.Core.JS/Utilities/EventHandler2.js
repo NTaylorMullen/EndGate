@@ -1,41 +1,33 @@
 /// <reference path="../Interfaces/IDisposable.ts" />
 /// <reference path="../Interfaces/ITyped.ts" />
-
-module eg {
-
+var eg;
+(function (eg) {
     /**
-    * Defines an event handler object that can maintain bound functions and trigger them on demand.
+    * Defines a type constrained event handler object that can maintain bound functions which take in a value T and U and trigger them on demand.
     */
-    export class EventHandler implements _.ITyped {
-        public _type: string = "Event";
-
-        private _actions: Array<Function>;
-        private _hasBindings: bool;
-
+    var EventHandler2 = (function () {
         /**
         * Creates a new instance of the EventHandler object.
         */
-        constructor() {
+        function EventHandler2() {
+            this._type = "Event";
             this._actions = [];
             this._hasBindings = false;
         }
-
         /**
-        * Binds the provided action to the EventHandler.  Trigger will execute all bound functions.
+        * Binds the provided action to the EventHandler1.  Trigger will execute all bound functions.
         * @param action Function to execute on EventHandler Trigger.
         */
-        public Bind(action: Function): void {
+        EventHandler2.prototype.Bind = function (action) {
             this._actions.push(action);
             this._hasBindings = true;
-        }
+        };
 
         /**
-        * Unbinds the provided action from the EventHandler.
+        * Unbinds the provided action from the EventHandler1.
         * @param action Function to unbind.  The action will no longer be executed when the EventHandler gets Triggered.
         */
-        public Unbind(action: Function): void {
-            var foo = this._actions[i];
-
+        EventHandler2.prototype.Unbind = function (action) {
             for (var i = 0; i < this._actions.length; i++) {
                 if (this._actions[i] === action) {
                     this._actions.splice(i, 1);
@@ -44,23 +36,25 @@ module eg {
                     return;
                 }
             }
-        }
+        };
 
         /**
-        * Determines if the EventHandler has active bindings.
+        * Determines if the EventHandler1 has active bindings.
         */
-        public HasBindings(): bool {
+        EventHandler2.prototype.HasBindings = function () {
             return this._hasBindings;
-        }
+        };
 
         /**
         * Executes all bound functions and passes the provided args to each.
+        * @param val1 The first argument to pass to the bound functions.
         */
-        public Trigger(): void {
+        EventHandler2.prototype.Trigger = function (val1, val2) {
             for (var i = 0; i < this._actions.length; i++) {
-                this._actions[i]();
+                this._actions[i](val1, val2);
             }
-        }
-    }
-
-}
+        };
+        return EventHandler2;
+    })();
+    eg.EventHandler2 = EventHandler2;
+})(eg || (eg = {}));

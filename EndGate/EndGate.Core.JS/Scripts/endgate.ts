@@ -1284,19 +1284,19 @@ module eg {
     }
 
 }
-/* EventHandler.ts */
+/* EventHandler1.ts */
 
 
 
 module eg {
 
     /**
-    * Defines an event handler object that can maintain bound functions and trigger them on demand.
+    * Defines a type constrained event handler object that can maintain bound functions which take in a value T and trigger them on demand.
     */
-    export class EventHandler implements _.ITyped {
+    export class EventHandler1<T> implements _.ITyped {
         public _type: string = "Event";
 
-        private _actions: Function[];
+        private _actions: Array<(val: T) => any>;
         private _hasBindings: bool;
 
         /**
@@ -1308,19 +1308,19 @@ module eg {
         }
 
         /**
-        * Binds the provided action to the EventHandler.  Trigger will execute all bound functions.
+        * Binds the provided action to the EventHandler1.  Trigger will execute all bound functions.
         * @param action Function to execute on EventHandler Trigger.
         */
-        public Bind(action: Function): void {
+        public Bind(action: (val: T) => any): void {
             this._actions.push(action);
             this._hasBindings = true;
         }
 
         /**
-        * Unbinds the provided action from the EventHandler.
+        * Unbinds the provided action from the EventHandler1.
         * @param action Function to unbind.  The action will no longer be executed when the EventHandler gets Triggered.
         */
-        public Unbind(action: Function): void {
+        public Unbind(action: (val: T) => any): void {
             for (var i = 0; i < this._actions.length; i++) {
                 if (this._actions[i] === action) {
                     this._actions.splice(i, 1);
@@ -1332,7 +1332,7 @@ module eg {
         }
 
         /**
-        * Determines if the EventHandler has active bindings.
+        * Determines if the EventHandler1 has active bindings.
         */
         public HasBindings(): bool {
             return this._hasBindings;
@@ -1340,11 +1340,11 @@ module eg {
 
         /**
         * Executes all bound functions and passes the provided args to each.
-        * @param args Arguments to pass to each bound function.
+        * @param val The argument to pass to the bound functions.
         */
-        public Trigger(...args: any[]): void {
+        public Trigger(val: T): void {
             for (var i = 0; i < this._actions.length; i++) {
-                this._actions[i].apply(this, args);
+                this._actions[i](val);
             }
         }
     }
@@ -1416,19 +1416,19 @@ module eg.Collision {
             this.Bounds = bounds;
             this._id = Collidable._collidableIDs++;
 
-            this.OnCollision = new EventHandler();
-            this.OnDisposed = new EventHandler();
+            this.OnCollision = new EventHandler1<Assets.CollisionData>();
+            this.OnDisposed = new EventHandler1<Collidable>();
         }
 
         /**
         * Event: Triggered when a collision happens.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes a CollisionData object to bound functions.
         */
-        public OnCollision: EventHandler;
+        public OnCollision: EventHandler1<Assets.CollisionData>;
         /**
         * Event: Triggered when a Collidable has been disposed.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
-        public OnDisposed: EventHandler;
+        public OnDisposed: EventHandler1<Collidable>;
 
         /**
         * Determines if the provided collidable is colliding with this Collidable.
@@ -1461,6 +1461,72 @@ module eg.Collision {
     }
 
 }
+/* EventHandler2.ts */
+
+
+
+module eg {
+
+    /**
+    * Defines a type constrained event handler object that can maintain bound functions which take in a value T and U and trigger them on demand.
+    */
+    export class EventHandler2<T, U> implements _.ITyped {
+        public _type: string = "Event";
+
+        private _actions: Array<(val1: T, val2: U) => any>;
+        private _hasBindings: bool;
+
+        /**
+        * Creates a new instance of the EventHandler object.
+        */
+        constructor() {
+            this._actions = [];
+            this._hasBindings = false;
+        }
+
+        /**
+        * Binds the provided action to the EventHandler1.  Trigger will execute all bound functions.
+        * @param action Function to execute on EventHandler Trigger.
+        */
+        public Bind(action: (val1: T, val2: U) => any): void {
+            this._actions.push(action);
+            this._hasBindings = true;
+        }
+
+        /**
+        * Unbinds the provided action from the EventHandler1.
+        * @param action Function to unbind.  The action will no longer be executed when the EventHandler gets Triggered.
+        */
+        public Unbind(action: (val1: T, val2: U) => any): void {
+            for (var i = 0; i < this._actions.length; i++) {
+                if (this._actions[i] === action) {
+                    this._actions.splice(i, 1);
+
+                    this._hasBindings = this._actions.length > 0;
+                    return;
+                }
+            }
+        }
+
+        /**
+        * Determines if the EventHandler1 has active bindings.
+        */
+        public HasBindings(): bool {
+            return this._hasBindings;
+        }
+
+        /**
+        * Executes all bound functions and passes the provided args to each.
+        * @param val1 The first argument to pass to the bound functions.
+        */
+        public Trigger(val1: T, val2: U): void {
+            for (var i = 0; i < this._actions.length; i++) {
+                this._actions[i](val1, val2);
+            }
+        }
+    }
+
+}
 /* CollisionManager.ts */
 
 
@@ -1486,14 +1552,14 @@ module eg.Collision {
             this._collidables = [];
             this._enabled = false;
 
-            this.OnCollision = new EventHandler();
+            this.OnCollision = new EventHandler2<Collidable, Collidable>();
         }
 
         /**
         * Event: Triggered when a collision happens among two of the monitored objects.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes two CollisionData objects to bound functions.
         */
-        public OnCollision: EventHandler;
+        public OnCollision: EventHandler2<Collidable, Collidable>;
 
         /**
         * Monitors the provided collidable and will trigger its Collided function and OnCollision event whenever a collision occurs with it and another Collidable.
@@ -2152,7 +2218,7 @@ module eg.Rendering {
             // Create an equally sized canvas for a buffer
             this._BufferCanvas = <HTMLCanvasElement>document.createElement("canvas");
             this._BufferContext = this._BufferCanvas.getContext("2d");
-            this.OnRendererSizeChange = new EventHandler();
+            this.OnRendererSizeChange = new EventHandler1<Size2d>();
             this.UpdateBufferSize();
 
             this._disposed = false;
@@ -2162,7 +2228,7 @@ module eg.Rendering {
         * Event: Triggered when the renderOnto canvas changes size.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes the new size as a Size2d.
         */
-        public OnRendererSizeChange: EventHandler;
+        public OnRendererSizeChange: EventHandler1<Size2d>;
 
         /**
         * Renders the provided renderables onto the renderOnto canvas.  Returns the canvas that was rendered onto.
@@ -2657,12 +2723,12 @@ module eg.Input {
         constructor(target: HTMLElement) {
             this._target = target;
 
-            this.OnClick = new EventHandler();
-            this.OnDoubleClick = new EventHandler();
-            this.OnDown = new EventHandler();
-            this.OnUp = new EventHandler();
-            this.OnMove = new EventHandler();
-            this.OnScroll = new EventHandler();
+            this.OnClick = new EventHandler1<IMouseClickEvent>();
+            this.OnDoubleClick = new EventHandler1<IMouseClickEvent>();
+            this.OnDown = new EventHandler1<IMouseClickEvent>();
+            this.OnUp = new EventHandler1<IMouseClickEvent>();
+            this.OnMove = new EventHandler1<IMouseEvent>();
+            this.OnScroll = new EventHandler1<IMouseScrollEvent>();
 
             // Generic flags to check mouse state
             this.LeftIsDown = false;
@@ -2686,62 +2752,62 @@ module eg.Input {
         * Event: Triggered when a mouse click occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes an IMouseClickEvent event object to bound functions.
         */
-        public OnClick: EventHandler;
+        public OnClick: EventHandler1<IMouseClickEvent>;
         /**
         * Event: Triggered when a mouse double click occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes an IMouseClickEvent event object to bound functions.
         */
-        public OnDoubleClick: EventHandler;
+        public OnDoubleClick: EventHandler1<IMouseClickEvent>;
         /**
         * Event: Triggered when a mouse down event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes an IMouseClickEvent event object to bound functions.
         */
-        public OnDown: EventHandler;
+        public OnDown: EventHandler1<IMouseClickEvent>;
         /**
         * Event: Triggered when a mouse up event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes an IMouseClickEvent event object to bound functions.
         */
-        public OnUp: EventHandler;
+        public OnUp: EventHandler1<IMouseClickEvent>;
         /**
         * Event: Triggered when a mouse move event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes an IMouseEvent event object to bound functions.
         */
-        public OnMove: EventHandler;
+        public OnMove: EventHandler1<IMouseEvent>;
         /**
         * Event: Triggered when a mouse scroll event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes an IMouseScrollEvent event object to bound functions.
         */
-        public OnScroll: EventHandler;
+        public OnScroll: EventHandler1<IMouseScrollEvent>;
 
         private Wire(): void {
-            this._target.addEventListener("click",this._target.oncontextmenu = this.BuildEvent(this.OnClick, this.BuildMouseClickEvent),false);
-            this._target.addEventListener("dblclick", this.BuildEvent(this.OnDoubleClick, this.BuildMouseClickEvent), false);
-            this._target.addEventListener("mousedown", this.BuildEvent(this.OnDown, this.BuildMouseClickEvent), false);
-            this._target.addEventListener("mouseup", this.BuildEvent(this.OnUp, this.BuildMouseClickEvent), false);
-            this._target.addEventListener("mousemove", this.BuildEvent(this.OnMove, this.BuildMouseEvent), false);
+            this._target.addEventListener("click",this._target.oncontextmenu = this.BuildEvent<IMouseClickEvent>(this.OnClick, this.BuildMouseClickEvent),false);
+            this._target.addEventListener("dblclick", this.BuildEvent<IMouseClickEvent>(this.OnDoubleClick, this.BuildMouseClickEvent), false);
+            this._target.addEventListener("mousedown", this.BuildEvent<IMouseClickEvent>(this.OnDown, this.BuildMouseClickEvent), false);
+            this._target.addEventListener("mouseup", this.BuildEvent<IMouseClickEvent>(this.OnUp, this.BuildMouseClickEvent), false);
+            this._target.addEventListener("mousemove", this.BuildEvent<IMouseEvent>(this.OnMove, this.BuildMouseEvent), false);
 
             // OnScroll, in order to detect horizontal scrolling need to hack a bit (browser sniffing)
             // if we were just doing vertical scrolling we could settle with the else statement in this block
             if ((/MSIE/i.test(navigator.userAgent))) {
-                this._target.addEventListener("wheel", this.BuildEvent(this.OnScroll, (e: any) => {
+                this._target.addEventListener("wheel", this.BuildEvent<IMouseScrollEvent>(this.OnScroll, (e: any) => {
                     e.wheelDeltaX = -e.deltaX;
                     e.wheelDeltaY = -e.deltaY;
                     return this.BuildMouseScrollEvent(e);
                 }), false);
             }
             else if ((/Firefox/i.test(navigator.userAgent))) {
-                this._target.addEventListener("DOMMouseScroll", this.BuildEvent(this.OnScroll, (e: any) => {
+                this._target.addEventListener("DOMMouseScroll", this.BuildEvent<IMouseScrollEvent>(this.OnScroll, (e: any) => {
                     e.wheelDeltaX = e.axis === 1 ? -e.detail : 0;
                     e.wheelDeltaY = e.axis === 2 ? -e.detail : 0;
                     return this.BuildMouseScrollEvent(e);
                 }), false);
             }
             else {
-                this._target.addEventListener("mousewheel", this.BuildEvent(this.OnScroll, this.BuildMouseScrollEvent), false);
+                this._target.addEventListener("mousewheel", this.BuildEvent<IMouseScrollEvent>(this.OnScroll, this.BuildMouseScrollEvent), false);
             }
         }
 
-        private BuildEvent(eventHandler: EventHandler, mouseEventBuilder: (mouseEvent: MouseEvent) => IMouseEvent, returnValue: bool = false): (e: MouseEvent) => void {
+        private BuildEvent<T>(eventHandler: EventHandler1<T>, mouseEventBuilder: (mouseEvent: MouseEvent) => IMouseEvent, returnValue: bool = false): (e: MouseEvent) => void {
             return (e: MouseEvent) => {
                 if (eventHandler.HasBindings()) {
                     eventHandler.Trigger(mouseEventBuilder.call(this, e));
@@ -2789,6 +2855,73 @@ module eg.Input {
 
         private GetMouseScrollDierction(event: any): Vector2d{
             return new Vector2d(-Math.max(-1, Math.min(1, event.wheelDeltaX)), -Math.max(-1, Math.min(1, event.wheelDeltaY)));
+        }
+    }
+
+}
+/* EventHandler.ts */
+
+
+
+module eg {
+
+    /**
+    * Defines an event handler object that can maintain bound functions and trigger them on demand.
+    */
+    export class EventHandler implements _.ITyped {
+        public _type: string = "Event";
+
+        private _actions: Array<Function>;
+        private _hasBindings: bool;
+
+        /**
+        * Creates a new instance of the EventHandler object.
+        */
+        constructor() {
+            this._actions = [];
+            this._hasBindings = false;
+        }
+
+        /**
+        * Binds the provided action to the EventHandler.  Trigger will execute all bound functions.
+        * @param action Function to execute on EventHandler Trigger.
+        */
+        public Bind(action: Function): void {
+            this._actions.push(action);
+            this._hasBindings = true;
+        }
+
+        /**
+        * Unbinds the provided action from the EventHandler.
+        * @param action Function to unbind.  The action will no longer be executed when the EventHandler gets Triggered.
+        */
+        public Unbind(action: Function): void {
+            var foo = this._actions[i];
+
+            for (var i = 0; i < this._actions.length; i++) {
+                if (this._actions[i] === action) {
+                    this._actions.splice(i, 1);
+
+                    this._hasBindings = this._actions.length > 0;
+                    return;
+                }
+            }
+        }
+
+        /**
+        * Determines if the EventHandler has active bindings.
+        */
+        public HasBindings(): bool {
+            return this._hasBindings;
+        }
+
+        /**
+        * Executes all bound functions and passes the provided args to each.
+        */
+        public Trigger(): void {
+            for (var i = 0; i < this._actions.length; i++) {
+                this._actions[i]();
+            }
         }
     }
 
@@ -3096,9 +3229,9 @@ module eg.Input {
             this._onDownCommands = (<any>{});
             this._onUpCommands = (<any>{});
 
-            this.OnKeyPress = new EventHandler();
-            this.OnKeyDown = new EventHandler();
-            this.OnKeyUp = new EventHandler();
+            this.OnKeyPress = new EventHandler1<KeyboardCommandEvent>();
+            this.OnKeyDown = new EventHandler1<KeyboardCommandEvent>();
+            this.OnKeyUp = new EventHandler1<KeyboardCommandEvent>();
 
             this.Wire();
         }
@@ -3107,17 +3240,17 @@ module eg.Input {
         * Event: Triggered when any key press occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes a KeyboardCommandEvent object to bound functions.
         */
-        public OnKeyPress: EventHandler;
+        public OnKeyPress: EventHandler1<KeyboardCommandEvent>;
         /**
         * Event: Triggered when any key goes down.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes a KeyboardCommandEvent object to bound functions.
         */
-        public OnKeyDown: EventHandler;
+        public OnKeyDown: EventHandler1<KeyboardCommandEvent>;
         /**
         * Event: Triggered when any key comes up.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes a KeyboardCommandEvent object to bound functions.
         */
-        public OnKeyUp: EventHandler;
+        public OnKeyUp: EventHandler1<KeyboardCommandEvent>;
 
         /**
         * Binds function to be called when the keyCommand is pressed.  To unbind the function, dispose of the returned KeyboardCommand.
@@ -3188,7 +3321,7 @@ module eg.Input {
             return false;
         }
 
-        private BuildKeyEvent(store: { [id: number]: Assets.KeyboardCommand; }, eventHandler: EventHandler): (ke: KeyboardEvent) => void {
+        private BuildKeyEvent(store: { [id: number]: Assets.KeyboardCommand; }, eventHandler: EventHandler1<KeyboardCommandEvent>): (ke: KeyboardEvent) => void {
             return (ke: KeyboardEvent) => {
                 var keyboardCommandEvent: KeyboardCommandEvent,
                     propogate: bool = true;
@@ -3363,14 +3496,14 @@ module eg.Sound {
             this.SetAudioSource(source);
             this.ApplySettings();
 
-            this.OnComplete = new EventHandler();
+            this.OnComplete = new EventHandler1<Event>();
         }
 
         /**
         * Event: Triggered when the audio clip has completed, will not trigger if the audio clip is repeating.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes the DOM's ended event to bound functions.
         */
-        public OnComplete: EventHandler;
+        public OnComplete: EventHandler1<Event>;
 
         public Volume(percent?: number): number {
             if (typeof percent !== "undefined") {
@@ -3968,9 +4101,9 @@ module eg.MovementControllers {
         constructor(moveables: IMoveable[], moveSpeed: number, rotateWithMovements: bool);
         /**
         * Creates a new instance of the LinearMovementController object..
-        * @param moveables Array of moveable objects that will be moved when the movement controller moves (this cannot change after construction).
+        * @param movables Array of moveable objects that will be moved when the movement controller moves (this cannot change after construction).
         * @param moveSpeed How fast the movement controller will move.
-        * @param rotateWithMovements Whether the moveables should rotate to face their moving direction.  Default is true (this cannot change after construction).
+        * @param rotateWithMovements Whether the movables should rotate to face their moving direction.  Default is true (this cannot change after construction).
         * @param multiDirectional Whether multiple movements can occur simultaneously, resulting in diagonal movements. Default is true (this cannot change after construction).
         */
         constructor(moveables: IMoveable[], moveSpeed: number, rotateWithMovements: bool, multiDirectional: bool);
@@ -3979,7 +4112,7 @@ module eg.MovementControllers {
 
             this._moveSpeed = moveSpeed;
             this._moving = new Assets.LinearDirections();
-            this.OnMove = new EventHandler();
+            this.OnMove = new EventHandler1<IMoveEvent>();
             this._rotationUpdater = new eg._.Utilities.NoopTripInvoker(() => {
                 this.UpdateRotation();
             }, rotateWithMovements);
@@ -3996,7 +4129,7 @@ module eg.MovementControllers {
         * Event: Triggered when a the movement controller starts or stops a movement.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes an IMoveEvent to bound functions.
         */
-        public OnMove: EventHandler;
+        public OnMove: EventHandler1<IMoveEvent>;
 
         /**
         * Determines if the movement controller is moving in the provided direction.
@@ -4831,7 +4964,7 @@ module eg.Graphics.Assets {
             var setSize = typeof width !== "undefined";
 
             this._loaded = false;
-            this.OnLoaded = new EventHandler();
+            this.OnLoaded = new EventHandler1<ImageSource>();
             this.Source = new Image();
 
             this.Source.onload = () => {
@@ -4860,7 +4993,7 @@ module eg.Graphics.Assets {
         * Event: Triggered when the base image is finished loading.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes the ImageSource to the bound functions.
         */
-        public OnLoaded: EventHandler;
+        public OnLoaded: EventHandler1<ImageSource>;
 
         /**
         * Returns the base Size of the image source.
@@ -6618,6 +6751,8 @@ module eg.Map {
 
 }
 /* EndGateAPI.ts */
+
+
 
 
 

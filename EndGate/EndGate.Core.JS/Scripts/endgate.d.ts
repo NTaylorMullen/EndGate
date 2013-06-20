@@ -740,9 +740,9 @@ declare module eg {
 }
 declare module eg {
     /**
-    * Defines an event handler object that can maintain bound functions and trigger them on demand.
+    * Defines a type constrained event handler object that can maintain bound functions which take in a value T and trigger them on demand.
     */
-    class EventHandler implements eg._.ITyped {
+    class EventHandler1<T> implements eg._.ITyped {
         public _type: string;
         private _actions;
         private _hasBindings;
@@ -751,24 +751,24 @@ declare module eg {
         */
         constructor();
         /**
-        * Binds the provided action to the EventHandler.  Trigger will execute all bound functions.
+        * Binds the provided action to the EventHandler1.  Trigger will execute all bound functions.
         * @param action Function to execute on EventHandler Trigger.
         */
-        public Bind(action: Function): void;
+        public Bind(action: (val: T) => any): void;
         /**
-        * Unbinds the provided action from the EventHandler.
+        * Unbinds the provided action from the EventHandler1.
         * @param action Function to unbind.  The action will no longer be executed when the EventHandler gets Triggered.
         */
-        public Unbind(action: Function): void;
+        public Unbind(action: (val: T) => any): void;
         /**
-        * Determines if the EventHandler has active bindings.
+        * Determines if the EventHandler1 has active bindings.
         */
         public HasBindings(): boolean;
         /**
         * Executes all bound functions and passes the provided args to each.
-        * @param args Arguments to pass to each bound function.
+        * @param val The argument to pass to the bound functions.
         */
-        public Trigger(...args: any[]): void;
+        public Trigger(val: T): void;
     }
 }
 declare module eg.Collision.Assets {
@@ -814,11 +814,11 @@ declare module eg.Collision {
         * Event: Triggered when a collision happens.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes a CollisionData object to bound functions.
         */
-        public OnCollision: eg.EventHandler;
+        public OnCollision: eg.EventHandler1<eg.Collision.Assets.CollisionData>;
         /**
         * Event: Triggered when a Collidable has been disposed.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
-        public OnDisposed: eg.EventHandler;
+        public OnDisposed: eg.EventHandler1<eg.Collision.Collidable>;
         /**
         * Determines if the provided collidable is colliding with this Collidable.
         * @param other Collidable to check collision with.
@@ -833,6 +833,39 @@ declare module eg.Collision {
         * Triggers the OnDisposed event.  If this Collidable is used with a CollisionManager it will be unmonitored when disposed.
         */
         public Dispose(): void;
+    }
+}
+declare module eg {
+    /**
+    * Defines a type constrained event handler object that can maintain bound functions which take in a value T and U and trigger them on demand.
+    */
+    class EventHandler2<T, U> implements eg._.ITyped {
+        public _type: string;
+        private _actions;
+        private _hasBindings;
+        /**
+        * Creates a new instance of the EventHandler object.
+        */
+        constructor();
+        /**
+        * Binds the provided action to the EventHandler1.  Trigger will execute all bound functions.
+        * @param action Function to execute on EventHandler Trigger.
+        */
+        public Bind(action: (val1: T, val2: U) => any): void;
+        /**
+        * Unbinds the provided action from the EventHandler1.
+        * @param action Function to unbind.  The action will no longer be executed when the EventHandler gets Triggered.
+        */
+        public Unbind(action: (val1: T, val2: U) => any): void;
+        /**
+        * Determines if the EventHandler1 has active bindings.
+        */
+        public HasBindings(): boolean;
+        /**
+        * Executes all bound functions and passes the provided args to each.
+        * @param val1 The first argument to pass to the bound functions.
+        */
+        public Trigger(val1: T, val2: U): void;
     }
 }
 declare module eg.Collision {
@@ -851,7 +884,7 @@ declare module eg.Collision {
         * Event: Triggered when a collision happens among two of the monitored objects.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes two CollisionData objects to bound functions.
         */
-        public OnCollision: eg.EventHandler;
+        public OnCollision: eg.EventHandler2<eg.Collision.Collidable, eg.Collision.Collidable>;
         /**
         * Monitors the provided collidable and will trigger its Collided function and OnCollision event whenever a collision occurs with it and another Collidable.
         * If the provided collidable gets disposed it will automatically become unmonitored.
@@ -1002,7 +1035,7 @@ declare module eg.Rendering {
         * Event: Triggered when the renderOnto canvas changes size.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes the new size as a Size2d.
         */
-        public OnRendererSizeChange: eg.EventHandler;
+        public OnRendererSizeChange: eg.EventHandler1<eg.Size2d>;
         /**
         * Renders the provided renderables onto the renderOnto canvas.  Returns the canvas that was rendered onto.
         * @param renderables Array of items that are to be rendered, assumes Visible is set to true.
@@ -1187,40 +1220,72 @@ declare module eg.Input {
         * Event: Triggered when a mouse click occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes an IMouseClickEvent event object to bound functions.
         */
-        public OnClick: eg.EventHandler;
+        public OnClick: eg.EventHandler1<eg.Input.IMouseClickEvent>;
         /**
         * Event: Triggered when a mouse double click occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes an IMouseClickEvent event object to bound functions.
         */
-        public OnDoubleClick: eg.EventHandler;
+        public OnDoubleClick: eg.EventHandler1<eg.Input.IMouseClickEvent>;
         /**
         * Event: Triggered when a mouse down event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes an IMouseClickEvent event object to bound functions.
         */
-        public OnDown: eg.EventHandler;
+        public OnDown: eg.EventHandler1<eg.Input.IMouseClickEvent>;
         /**
         * Event: Triggered when a mouse up event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes an IMouseClickEvent event object to bound functions.
         */
-        public OnUp: eg.EventHandler;
+        public OnUp: eg.EventHandler1<eg.Input.IMouseClickEvent>;
         /**
         * Event: Triggered when a mouse move event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes an IMouseEvent event object to bound functions.
         */
-        public OnMove: eg.EventHandler;
+        public OnMove: eg.EventHandler1<eg.Input.IMouseEvent>;
         /**
         * Event: Triggered when a mouse scroll event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes an IMouseScrollEvent event object to bound functions.
         */
-        public OnScroll: eg.EventHandler;
+        public OnScroll: eg.EventHandler1<eg.Input.IMouseScrollEvent>;
         private Wire();
-        private BuildEvent(eventHandler, mouseEventBuilder, returnValue?);
+        private BuildEvent<T>(eventHandler, mouseEventBuilder, returnValue?);
         private BuildMouseScrollEvent(event);
         private BuildMouseEvent(event);
         private BuildMouseClickEvent(event);
         private GetMousePosition(event);
         private GetMouseButton(event);
         private GetMouseScrollDierction(event);
+    }
+}
+declare module eg {
+    /**
+    * Defines an event handler object that can maintain bound functions and trigger them on demand.
+    */
+    class EventHandler implements eg._.ITyped {
+        public _type: string;
+        private _actions;
+        private _hasBindings;
+        /**
+        * Creates a new instance of the EventHandler object.
+        */
+        constructor();
+        /**
+        * Binds the provided action to the EventHandler.  Trigger will execute all bound functions.
+        * @param action Function to execute on EventHandler Trigger.
+        */
+        public Bind(action: Function): void;
+        /**
+        * Unbinds the provided action from the EventHandler.
+        * @param action Function to unbind.  The action will no longer be executed when the EventHandler gets Triggered.
+        */
+        public Unbind(action: Function): void;
+        /**
+        * Determines if the EventHandler has active bindings.
+        */
+        public HasBindings(): boolean;
+        /**
+        * Executes all bound functions and passes the provided args to each.
+        */
+        public Trigger(): void;
     }
 }
 declare module eg._.Utilities {
@@ -1353,17 +1418,17 @@ declare module eg.Input {
         * Event: Triggered when any key press occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes a KeyboardCommandEvent object to bound functions.
         */
-        public OnKeyPress: eg.EventHandler;
+        public OnKeyPress: eg.EventHandler1<eg.Input.KeyboardCommandEvent>;
         /**
         * Event: Triggered when any key goes down.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes a KeyboardCommandEvent object to bound functions.
         */
-        public OnKeyDown: eg.EventHandler;
+        public OnKeyDown: eg.EventHandler1<eg.Input.KeyboardCommandEvent>;
         /**
         * Event: Triggered when any key comes up.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes a KeyboardCommandEvent object to bound functions.
         */
-        public OnKeyUp: eg.EventHandler;
+        public OnKeyUp: eg.EventHandler1<eg.Input.KeyboardCommandEvent>;
         /**
         * Binds function to be called when the keyCommand is pressed.  To unbind the function, dispose of the returned KeyboardCommand.
         * @param keyCommand The command string required to execute the action.
@@ -1498,7 +1563,7 @@ declare module eg.Sound {
         * Event: Triggered when the audio clip has completed, will not trigger if the audio clip is repeating.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes the DOM's ended event to bound functions.
         */
-        public OnComplete: eg.EventHandler;
+        public OnComplete: eg.EventHandler1<Event>;
         public Volume(percent?: number): number;
         /**
         * Determines if the AudioClip is currently playing.
@@ -1835,9 +1900,9 @@ declare module eg.MovementControllers {
         constructor(moveables: eg.IMoveable[], moveSpeed: number, rotateWithMovements: boolean);
         /**
         * Creates a new instance of the LinearMovementController object..
-        * @param moveables Array of moveable objects that will be moved when the movement controller moves (this cannot change after construction).
+        * @param movables Array of moveable objects that will be moved when the movement controller moves (this cannot change after construction).
         * @param moveSpeed How fast the movement controller will move.
-        * @param rotateWithMovements Whether the moveables should rotate to face their moving direction.  Default is true (this cannot change after construction).
+        * @param rotateWithMovements Whether the movables should rotate to face their moving direction.  Default is true (this cannot change after construction).
         * @param multiDirectional Whether multiple movements can occur simultaneously, resulting in diagonal movements. Default is true (this cannot change after construction).
         */
         constructor(moveables: eg.IMoveable[], moveSpeed: number, rotateWithMovements: boolean, multiDirectional: boolean);
@@ -1845,7 +1910,7 @@ declare module eg.MovementControllers {
         * Event: Triggered when a the movement controller starts or stops a movement.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes an IMoveEvent to bound functions.
         */
-        public OnMove: eg.EventHandler;
+        public OnMove: eg.EventHandler1<eg.MovementControllers.IMoveEvent>;
         /**
         * Determines if the movement controller is moving in the provided direction.
         * @param direction The direction to check.
@@ -2290,7 +2355,7 @@ declare module eg.Graphics.Assets {
         * Event: Triggered when the base image is finished loading.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes the ImageSource to the bound functions.
         */
-        public OnLoaded: eg.EventHandler;
+        public OnLoaded: eg.EventHandler1<eg.Graphics.Assets.ImageSource>;
         /**
         * Returns the base Size of the image source.
         */

@@ -4,12 +4,12 @@
 module eg {
 
     /**
-    * Defines an event handler object that can maintain bound functions and trigger them on demand.
+    * Defines a type constrained event handler object that can maintain bound functions which take in a value T and U and trigger them on demand.
     */
-    export class EventHandler implements _.ITyped {
+    export class EventHandler2<T, U> implements _.ITyped {
         public _type: string = "Event";
 
-        private _actions: Array<Function>;
+        private _actions: Array<(val1: T, val2: U) => any>;
         private _hasBindings: bool;
 
         /**
@@ -21,21 +21,19 @@ module eg {
         }
 
         /**
-        * Binds the provided action to the EventHandler.  Trigger will execute all bound functions.
+        * Binds the provided action to the EventHandler1.  Trigger will execute all bound functions.
         * @param action Function to execute on EventHandler Trigger.
         */
-        public Bind(action: Function): void {
+        public Bind(action: (val1: T, val2: U) => any): void {
             this._actions.push(action);
             this._hasBindings = true;
         }
 
         /**
-        * Unbinds the provided action from the EventHandler.
+        * Unbinds the provided action from the EventHandler1.
         * @param action Function to unbind.  The action will no longer be executed when the EventHandler gets Triggered.
         */
-        public Unbind(action: Function): void {
-            var foo = this._actions[i];
-
+        public Unbind(action: (val1: T, val2: U) => any): void {
             for (var i = 0; i < this._actions.length; i++) {
                 if (this._actions[i] === action) {
                     this._actions.splice(i, 1);
@@ -47,7 +45,7 @@ module eg {
         }
 
         /**
-        * Determines if the EventHandler has active bindings.
+        * Determines if the EventHandler1 has active bindings.
         */
         public HasBindings(): bool {
             return this._hasBindings;
@@ -55,10 +53,11 @@ module eg {
 
         /**
         * Executes all bound functions and passes the provided args to each.
+        * @param val1 The first argument to pass to the bound functions.
         */
-        public Trigger(): void {
+        public Trigger(val1: T, val2: U): void {
             for (var i = 0; i < this._actions.length; i++) {
-                this._actions[i]();
+                this._actions[i](val1, val2);
             }
         }
     }

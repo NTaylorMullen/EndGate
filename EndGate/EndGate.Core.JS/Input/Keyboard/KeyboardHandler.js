@@ -2,7 +2,7 @@ var eg;
 (function (eg) {
     /// <reference path="KeyboardCommand.ts" />
     /// <reference path="KeyboardCommandEvent.ts" />
-    /// <reference path="../../Utilities/EventHandler.ts" />
+    /// <reference path="../../Utilities/EventHandler1.ts" />
     (function (Input) {
         /**
         * Defines a handler that will check for keyboard commands and execute appropriate functions.
@@ -16,9 +16,9 @@ var eg;
                 this._onDownCommands = ({});
                 this._onUpCommands = ({});
 
-                this.OnKeyPress = new eg.EventHandler();
-                this.OnKeyDown = new eg.EventHandler();
-                this.OnKeyUp = new eg.EventHandler();
+                this.OnKeyPress = new eg.EventHandler1();
+                this.OnKeyDown = new eg.EventHandler1();
+                this.OnKeyUp = new eg.EventHandler1();
 
                 this.Wire();
             }

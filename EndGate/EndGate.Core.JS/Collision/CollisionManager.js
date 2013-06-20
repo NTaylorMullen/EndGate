@@ -4,7 +4,7 @@ var eg;
     /// <reference path="../Interfaces/ITyped.ts" />
     /// <reference path="Collidable.ts" />
     /// <reference path="CollisionData.ts" />
-    /// <reference path="../Utilities/EventHandler.ts" />
+    /// <reference path="../Utilities/EventHandler2.ts" />
     /// <reference path="../GameTime.ts" />
     (function (Collision) {
         /**
@@ -19,7 +19,7 @@ var eg;
                 this._collidables = [];
                 this._enabled = false;
 
-                this.OnCollision = new eg.EventHandler();
+                this.OnCollision = new eg.EventHandler2();
             }
             /**
             * Monitors the provided collidable and will trigger its Collided function and OnCollision event whenever a collision occurs with it and another Collidable.

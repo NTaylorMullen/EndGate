@@ -1,6 +1,6 @@
 /// <reference path="../../Assets/Vectors/Vector2d.ts" />
 /// <reference path="../../Assets/Sizes/Size2d.ts" />
-/// <reference path="../../Utilities/EventHandler.ts" />
+/// <reference path="../../Utilities/EventHandler1.ts" />
 
 module eg.Graphics.Assets {
 
@@ -52,7 +52,7 @@ module eg.Graphics.Assets {
             var setSize = typeof width !== "undefined";
 
             this._loaded = false;
-            this.OnLoaded = new EventHandler();
+            this.OnLoaded = new EventHandler1<ImageSource>();
             this.Source = new Image();
 
             this.Source.onload = () => {
@@ -81,7 +81,7 @@ module eg.Graphics.Assets {
         * Event: Triggered when the base image is finished loading.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes the ImageSource to the bound functions.
         */
-        public OnLoaded: EventHandler;
+        public OnLoaded: EventHandler1<ImageSource>;
 
         /**
         * Returns the base Size of the image source.

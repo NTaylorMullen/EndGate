@@ -3,7 +3,7 @@ var eg;
     (function (Graphics) {
         /// <reference path="../../Assets/Vectors/Vector2d.ts" />
         /// <reference path="../../Assets/Sizes/Size2d.ts" />
-        /// <reference path="../../Utilities/EventHandler.ts" />
+        /// <reference path="../../Utilities/EventHandler1.ts" />
         (function (Assets) {
             /**
             * Defines an image resource that can be used within Sprite's, SpriteAnimation's and other drawable graphics.
@@ -18,7 +18,7 @@ var eg;
                     var setSize = typeof width !== "undefined";
 
                     this._loaded = false;
-                    this.OnLoaded = new eg.EventHandler();
+                    this.OnLoaded = new eg.EventHandler1();
                     this.Source = new Image();
 
                     this.Source.onload = function () {
