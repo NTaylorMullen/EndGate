@@ -21,17 +21,17 @@ module eg.MovementControllers {
 
         /**
         * Creates a new instance of the LinearMovementController object which rotates the provided moveable's on movements and can move diagonally.
-        * @param moveables Array of moveable objects that will be moved when the movement controller moves (this cannot change after construction).
+        * @param movables Array of moveable objects that will be moved when the movement controller moves (this cannot change after construction).
         * @param moveSpeed How fast the movement controller will move.
         */
-        constructor(moveables: IMoveable[], moveSpeed: number);
+        constructor(movables: IMoveable[], moveSpeed: number);
         /**
         * Creates a new instance of the LinearMovementController object which can move diagonally.
-        * @param moveables Array of moveable objects that will be moved when the movement controller moves (this cannot change after construction).
+        * @param movables Array of moveable objects that will be moved when the movement controller moves (this cannot change after construction).
         * @param moveSpeed How fast the movement controller will move.
-        * @param rotateWithMovements Whether the moveables should rotate to face their moving direction, default is true (this cannot change after construction).
+        * @param rotateWithMovements Whether the movables should rotate to face their moving direction, default is true (this cannot change after construction).
         */
-        constructor(moveables: IMoveable[], moveSpeed: number, rotateWithMovements: bool);
+        constructor(movables: IMoveable[], moveSpeed: number, rotateWithMovements: bool);
         /**
         * Creates a new instance of the LinearMovementController object..
         * @param movables Array of moveable objects that will be moved when the movement controller moves (this cannot change after construction).
@@ -39,9 +39,9 @@ module eg.MovementControllers {
         * @param rotateWithMovements Whether the movables should rotate to face their moving direction.  Default is true (this cannot change after construction).
         * @param multiDirectional Whether multiple movements can occur simultaneously, resulting in diagonal movements. Default is true (this cannot change after construction).
         */
-        constructor(moveables: IMoveable[], moveSpeed: number, rotateWithMovements: bool, multiDirectional: bool);
-        constructor(moveables: IMoveable[], moveSpeed: number, rotateWithMovements: bool = true, multiDirectional: bool = true) {
-            super(moveables);
+        constructor(movables: IMoveable[], moveSpeed: number, rotateWithMovements: bool, multiDirectional: bool);
+        constructor(movables: IMoveable[], moveSpeed: number, rotateWithMovements: bool = true, multiDirectional: bool = true) {
+            super(movables);
 
             this._moveSpeed = moveSpeed;
             this._moving = new Assets.LinearDirections();

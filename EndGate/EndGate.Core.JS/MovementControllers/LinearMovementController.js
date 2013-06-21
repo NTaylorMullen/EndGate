@@ -21,11 +21,11 @@ var eg;
         */
         var LinearMovementController = (function (_super) {
             __extends(LinearMovementController, _super);
-            function LinearMovementController(moveables, moveSpeed, rotateWithMovements, multiDirectional) {
+            function LinearMovementController(movables, moveSpeed, rotateWithMovements, multiDirectional) {
                 if (typeof rotateWithMovements === "undefined") { rotateWithMovements = true; }
                 if (typeof multiDirectional === "undefined") { multiDirectional = true; }
                 var _this = this;
-                _super.call(this, moveables);
+                _super.call(this, movables);
 
                 this._moveSpeed = moveSpeed;
                 this._moving = new MovementControllers.Assets.LinearDirections();
