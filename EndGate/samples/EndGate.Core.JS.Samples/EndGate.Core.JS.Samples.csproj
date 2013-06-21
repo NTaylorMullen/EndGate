@@ -850,9 +850,9 @@
   </PropertyGroup>
   <Target Name="CustomCollectFiles">
     <ItemGroup>
-      <_CustomFiles Include="Samples\**\*.ts" />
+      <_CustomFiles Include="Content\Samples\**\*.ts" />
       <FilesForPackagingFromProject Include="%(_CustomFiles.Identity)">
-        <DestinationRelativePath>Samples\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
+        <DestinationRelativePath>Content\Samples\%(RecursiveDir)%(Filename)%(Extension)</DestinationRelativePath>
       </FilesForPackagingFromProject>
     </ItemGroup>
   </Target>
