@@ -29,22 +29,131 @@ module eg.Graphics.Abstractions {
             this._stroke = false;
 
             if (typeof color !== "undefined") {
-                this.Color(color);
+                this.Color = color;
             }
         }
 
         /**
         * Gets the current shape color.
         */
-        public Color(): string;
+        public get Color(): string {
+            return this._State.FillStyle;
+        }
+
         /**
-        * Gets and sets the current shape color.
+        * Sets the current shape color.
         * @param color The new color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
         */
-        public Color(color: string): string;
-        public Color(color?: string): string {
+        public set Color(color: string) {
             this._fill = true;
-            return this._State.FillStyle(color);
+            this._State.FillStyle = color;
+        }
+
+        /**
+        * Gets the current border thickness.
+        */
+        public get BorderThickness(): number {
+            return this._State.LineWidth;
+        }
+
+        /**
+        * Sets the current border thickness.
+        * @param thickness The new border thickness in pixels.
+        */
+        public set BorderThickness(thickness: number) {
+            this._State.LineWidth = thickness;
+        }
+
+        /**
+        * Gets the current border color.
+        */
+        public get BorderColor(): string {
+            return this._State.StrokeStyle;
+        }
+
+        /**
+        * Sets the current border color.
+        * @param color The new border color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        */
+        public set BorderColor(color: string) {
+            this._stroke = true;
+            this._State.StrokeStyle = color;
+        }
+
+        /**
+        * Gets the current shadow color.
+        */
+        public get ShadowColor(): string {
+            return this._State.ShadowColor;
+        }
+
+        /**
+        * Sets the current shadow color.
+        * @param color The new shadow color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        */
+        public set ShadowColor(color: string) {
+            this._fill = true;
+            this._State.ShadowColor = color;
+        }        
+
+        /**
+        * Gets the current horizontal shadow position.
+        */
+        public get ShadowX(): number {
+            return this._State.ShadowOffsetX;
+        }
+
+        /**
+        * Sets the current horizontal shadow position.
+        * @param x The shadows new horizontal position.
+        */
+        public set ShadowX(x: number) {
+            this._State.ShadowOffsetX = x;
+        }
+
+        /**
+        * Gets the current vertical shadow position.
+        */
+        public get ShadowY(): number {
+            return this._State.ShadowOffsetY;
+        }
+
+        /**
+        * Sets the current vertical shadow position.
+        * @param y The shadows new vertical position.
+        */
+        public set ShadowY(y: number) {
+            this._State.ShadowOffsetY = y;
+        }
+
+        /**
+        * Gets the current shadow blur.
+        */
+        public get ShadowBlur(): number {
+            return this._State.ShadowBlur;
+        }
+
+        /**
+        * Sets the current shadow blur.
+        * @param blur The shadows new blur.
+        */
+        public set ShadowBlur(blur: number) {
+            this._State.ShadowBlur = blur;
+        }
+
+        /**
+        * Gets the current opacity.  Value is between 0 and 1.
+        */
+        public get Opacity(): number {
+            return this._State.GlobalAlpha;
+        }
+
+        /**
+        * Sets the current opacity.
+        * @param alpha New opacity, value is between 0 and 1.
+        */
+        public set Opacity(alpha: number) {
+            this._State.GlobalAlpha = alpha;
         }
 
         /**
@@ -53,35 +162,8 @@ module eg.Graphics.Abstractions {
         * @param color The new border color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
         */
         public Border(thickness: number, color: string): void {
-            this.BorderThickness(thickness);
-            this.BorderColor(color);
-        }
-
-        /**
-        * Gets the current border thickness.
-        */
-        public BorderThickness(): number;
-        /**
-        * Sets and gets the current border thickness.
-        * @param thickness The new border thickness in pixels.
-        */
-        public BorderThickness(thickness: number): number;
-        public BorderThickness(thickness?: number): number {
-            return this._State.LineWidth(thickness);
-        }
-
-        /**
-        * Gets the current border color.
-        */
-        public BorderColor(): string;
-        /**
-        * Sets and gets the current border color.
-        * @param color The new border color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-        */
-        public BorderColor(color: string): string;
-        public BorderColor(color?: string): string {
-            this._stroke = true;
-            return this._State.StrokeStyle(color);
+            this.BorderThickness = thickness;
+            this.BorderColor = color;
         }
 
         /**
@@ -106,76 +188,10 @@ module eg.Graphics.Abstractions {
         */
         public Shadow(x: number, y: number, color: string, blur: number): void;
         public Shadow(x: number, y: number, color?: string, blur?: number): void {
-            this.ShadowX(x);
-            this.ShadowY(y);
-            this.ShadowColor(color);
-            this.ShadowBlur(blur);
-        }
-
-        /**
-        * Gets the current shadow color.
-        */
-        public ShadowColor(): string;
-        /**
-        * Sets and gets the current shadow color.
-        * @param color The new shadow color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-        */
-        public ShadowColor(color: string): string;
-        public ShadowColor(color?: string): string {
-            this._fill = true;
-            return this._State.ShadowColor(color);
-        }
-
-        /**
-        * Gets the current horizontal shadow position.
-        */
-        public ShadowX(): number;
-        /**
-        * Sets and gets the current horizontal shadow position.
-        * @param x The shadows new horizontal position.
-        */
-        public ShadowX(x: number): number;
-        public ShadowX(x?: number): number {
-            return this._State.ShadowOffsetX(x);
-        }
-
-        /**
-        * Gets the current vertical shadow position.
-        */
-        public ShadowY(): number;
-        /**
-        * Sets and gets the current vertical shadow position.
-        * @param y The shadows new vertical position.
-        */
-        public ShadowY(y: number): number;
-        public ShadowY(y?: number): number {
-            return this._State.ShadowOffsetY(y);
-        }
-
-        /**
-        * Gets the current shadow blur.
-        */
-        public ShadowBlur(): number;
-        /**
-        * Sets and gets the current shadow blur.
-        * @param blur The shadows new blur.
-        */
-        public ShadowBlur(blur: number): number;
-        public ShadowBlur(blur?: number): number {
-            return this._State.ShadowBlur(blur);
-        }
-
-        /**
-        * Gets the current opacity.  Value is between 0 and 1.
-        */
-        public Opacity(): number;
-        /**
-        * Sets and gets the current opacity.
-        * @param alpha New opacity, value is between 0 and 1.
-        */
-        public Opacity(alpha: number): number;
-        public Opacity(alpha?: number): number {
-            return this._State.GlobalAlpha(alpha);
+            this.ShadowX = x;
+            this.ShadowY = y;
+            this.ShadowColor = color;
+            this.ShadowBlur = blur;
         }
 
         public _StartDraw(context: CanvasRenderingContext2D): void {

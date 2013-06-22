@@ -43,8 +43,8 @@ module MapCreator {
 
                 this.VisibleGrid = new eg.Graphics.Grid(this.Scene.DrawArea.width / 2, this.Scene.DrawArea.height / 2, Math.floor(this.ActiveSpriteSheet.ClipSize.Height / this._tileHeight), Math.floor(this.ActiveSpriteSheet.ClipSize.Width / this._tileWidth), this._tileWidth, this._tileHeight, true);
 
-                for (var i = 0; i < this.VisibleGrid.Rows(); i++) {
-                    for (var j = 0; j < this.VisibleGrid.Columns(); j++) {
+                for (var i = 0; i < this.VisibleGrid.Rows; i++) {
+                    for (var j = 0; j < this.VisibleGrid.Columns; j++) {
                         this.VisibleGrid.Fill(i, j, new eg.Graphics.Sprite2d(0, 0, this.ActiveSpriteSheet.Extract(j * this._tileWidth, i * this._tileHeight, this._tileWidth, this._tileHeight)));
                     }
                 }

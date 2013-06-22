@@ -22,8 +22,8 @@ var CollisionInspector;
             this.TextPosition = new eg.Graphics.Text2d(0, 0, Graphic.Position.toString());
 
             // Set the default border color and thickness.  On Collision the border thickness gets set to a visible thickness.
-            this.Graphic.BorderColor(this._collisionBorderColor);
-            this.Graphic.BorderThickness(0);
+            this.Graphic.BorderColor = this._collisionBorderColor;
+            this.Graphic.BorderThickness = 0;
 
             // All children of Graphic will have a relative position to the graphic
             // Hence the reason why TextPosition is at 0,0 (the center of the graphic)
@@ -35,7 +35,7 @@ var CollisionInspector;
 
             // Round the position and then update its text
             this.Graphic.Position.Apply(Math.round);
-            this.TextPosition.Text(this.Graphic.Position.toString());
+            this.TextPosition.Text = this.Graphic.Position.toString();
         };
 
         CollidableShape.prototype.Rotate = function (rotation) {
@@ -46,7 +46,7 @@ var CollisionInspector;
         // Triggered when shapes collide with each other
         CollidableShape.prototype.Collided = function (data) {
             // Make border thickness visible on collision
-            this.Graphic.BorderThickness(this._collisionBorderThickness);
+            this.Graphic.BorderThickness = this._collisionBorderThickness;
 
             // Save last collision so we can determine when we're no longer colliding
             this._lastCollision = data;
@@ -58,7 +58,7 @@ var CollisionInspector;
             if (this._lastCollision !== null) {
                 if (!this._lastCollision.With.IsCollidingWith(this)) {
                     // Reset the border thickness to 0 (invisible)
-                    this.Graphic.BorderThickness(0);
+                    this.Graphic.BorderThickness = 0;
                     this._lastCollision = null;
                 }
             }

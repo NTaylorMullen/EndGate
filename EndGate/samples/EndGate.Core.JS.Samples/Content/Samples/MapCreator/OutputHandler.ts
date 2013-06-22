@@ -29,7 +29,7 @@ module MapCreator {
                     outputString =
                     'class MyGame extends eg.Game {}<br /><br />' +
                     'var myGame = new MyGame(),<br />' +
-                    '   resourceSheet = new eg.Graphics.Assets.ImageSource("' + spriteSheetViewer.SpriteSheetUrl + '", ' + spriteSheetViewer.ActiveSpriteSheet.Size().Width + ', ' + spriteSheetViewer.ActiveSpriteSheet.Size().Height + '),<br />' +
+                    '   resourceSheet = new eg.Graphics.Assets.ImageSource("' + spriteSheetViewer.SpriteSheetUrl + '", ' + spriteSheetViewer.ActiveSpriteSheet.Size.Width + ', ' + spriteSheetViewer.ActiveSpriteSheet.Size.Height + '),<br />' +
                     '   resources: eg.Graphics.Assets.ImageSource[] = eg.Map.SquareTileMap.ExtractTiles(resourceSheet, ' + tileWidth + ', ' + tileHeight + '),<br />' +
                     '   layers: eg.Map.SquareTileMap[] = [<br />';
 
@@ -49,7 +49,7 @@ module MapCreator {
                 else if (outputOptions.val() === "2") {
                     var parent: HTMLElement = document.createElement("div"),
                         copyCanvas: HTMLCanvasElement = <HTMLCanvasElement>document.createElement("canvas"),
-                        size: eg.Size2d = mapBuilder.LayerManager.SelectedLayer.Layer.Size(),
+                        size: eg.Size2d = mapBuilder.LayerManager.SelectedLayer.Layer.Size,
                         tempGame: eg.Game,
                         img: string;
 

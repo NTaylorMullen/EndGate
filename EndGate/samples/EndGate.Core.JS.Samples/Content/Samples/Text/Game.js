@@ -19,8 +19,8 @@ var Texts;
             var that = this;
 
             this.Text = new eg.Graphics.Text2d(defaultPosition.X, defaultPosition.Y, "Hello World!");
-            this.Text.FontSettings().FontSize(20);
-            this.Text.FontSettings().FontFamily(eg.Graphics.Assets.FontFamily.TimesNewRoman);
+            this.Text.FontSettings.FontSize = "20pt";
+            this.Text.FontSettings.FontFamily = eg.Graphics.Assets.FontFamily.TimesNewRoman;
             this.Scene.Add(this.Text);
 
             this._textAnimator = new Texts.TextAnimator(targetAnimators, defaultPosition, defaultRotation, defaultOpacity, this._syncSliders);

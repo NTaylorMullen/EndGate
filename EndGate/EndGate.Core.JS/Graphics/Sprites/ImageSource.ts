@@ -24,6 +24,7 @@ module eg.Graphics.Assets {
         private _size: Size2d;
         private _loaded: bool;
         private _imageLocation;
+        private _onLoaded: EventHandler1<ImageSource>;
 
         /**
         * Creates a new instance of the ImageSource object.
@@ -52,7 +53,7 @@ module eg.Graphics.Assets {
             var setSize = typeof width !== "undefined";
 
             this._loaded = false;
-            this.OnLoaded = new EventHandler1<ImageSource>();
+            this._onLoaded = new EventHandler1<ImageSource>();
             this.Source = new Image();
 
             this.Source.onload = () => {
@@ -64,7 +65,7 @@ module eg.Graphics.Assets {
                     this.ClipSize = this._size.Clone();
                 }
 
-                this.OnLoaded.Trigger(this);
+                this._onLoaded.Trigger(this);
             };
 
             this.Source.src = imageLocation;
@@ -81,12 +82,14 @@ module eg.Graphics.Assets {
         * Event: Triggered when the base image is finished loading.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes the ImageSource to the bound functions.
         */
-        public OnLoaded: EventHandler1<ImageSource>;
+        public get OnLoaded(): EventHandler1<ImageSource> {
+            return this._onLoaded;
+        }
 
         /**
         * Returns the base Size of the image source.
         */
-        public Size(): Size2d {
+        public get Size(): Size2d {
             return this._size.Clone();
         }
 

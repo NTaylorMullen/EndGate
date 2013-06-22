@@ -20,32 +20,128 @@ var eg;
 
                 this._from = new eg.Vector2d(fromX, fromY);
                 this._to = new eg.Vector2d(toX, toY);
-                this.LineWidth(lineWidth);
+                this.LineWidth = lineWidth;
                 this.UpdatePosition();
 
                 if (typeof color !== "undefined") {
-                    this.Color(color);
+                    this.Color = color;
                 }
             }
-            Line2d.prototype.From = function (newPosition) {
-                return this.GetOrSetLinePoint("from", newPosition);
-            };
+            Object.defineProperty(Line2d.prototype, "From", {
+                get: /**
+                * Gets the From location of the Line2d.
+                */
+                function () {
+                    return this._from;
+                },
+                set: /**
+                * Sets the From location of the Line2d.
+                * @param newPosition New From location.
+                */
+                function (newPosition) {
+                    this._from = newPosition;
+                    this.UpdatePosition();
+                },
+                enumerable: true,
+                configurable: true
+            });
 
-            Line2d.prototype.To = function (newPosition) {
-                return this.GetOrSetLinePoint("to", newPosition);
-            };
 
-            Line2d.prototype.Color = function (color) {
-                return this._State.StrokeStyle(color);
-            };
+            Object.defineProperty(Line2d.prototype, "To", {
+                get: /**
+                * Gets the To location of the Line2d.
+                */
+                function () {
+                    return this._to;
+                },
+                set: /**
+                * Sets the To location of the Line2d.
+                * @param newPosition New To location.
+                */
+                function (newPosition) {
+                    this._to = newPosition;
+                    this.UpdatePosition();
+                },
+                enumerable: true,
+                configurable: true
+            });
 
-            Line2d.prototype.LineWidth = function (width) {
-                return this._State.LineWidth(width);
-            };
 
-            Line2d.prototype.LineCap = function (cap) {
-                return this._State.LineCap(cap);
-            };
+            Object.defineProperty(Line2d.prototype, "Color", {
+                get: /**
+                * Gets the line color.
+                */
+                function () {
+                    return this._State.StrokeStyle;
+                },
+                set: /**
+                * Sets the line color.
+                * @param color The new color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+                */
+                function (color) {
+                    this._State.StrokeStyle = color;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+
+            Object.defineProperty(Line2d.prototype, "LineWidth", {
+                get: /**
+                * Gets the line width.
+                */
+                function () {
+                    return this._State.LineWidth;
+                },
+                set: /**
+                * Sets the line width.
+                * @param width The new line width.
+                */
+                function (width) {
+                    this._State.LineWidth = width;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+
+            Object.defineProperty(Line2d.prototype, "LineCap", {
+                get: /**
+                * Gets the line cap.
+                */
+                function () {
+                    return this._State.LineCap;
+                },
+                set: /**
+                * Sets the line cap.
+                * @param width The new line cap.  Values can be "butt", "round", "square".
+                */
+                function (cap) {
+                    this._State.LineCap = cap;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+
+            Object.defineProperty(Line2d.prototype, "Opacity", {
+                get: /**
+                * Gets the current opacity.  Value is between 0 and 1.
+                */
+                function () {
+                    return this._State.GlobalAlpha;
+                },
+                set: /**
+                * Sets the current opacity.
+                * @param alpha New opacity, value is between 0 and 1.
+                */
+                function (alpha) {
+                    this._State.GlobalAlpha = alpha;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
 
             /**
             * Draws the line onto the given context.  If this Line2d is part of a scene the Draw function will be called automatically.
@@ -71,7 +167,7 @@ var eg;
             * The bounding area that represents where the Line2d will draw.
             */
             Line2d.prototype.GetDrawBounds = function () {
-                var bounds = new eg.Bounds.BoundingRectangle(this.Position, new eg.Size2d(this._boundsWidth, this.LineWidth()));
+                var bounds = new eg.Bounds.BoundingRectangle(this.Position, new eg.Size2d(this._boundsWidth, this.LineWidth));
 
                 bounds.Rotation = Math.atan2(this._difference.Y, this._difference.X) + this.Rotation;
 
@@ -92,15 +188,6 @@ var eg;
                 this._to.X += difference.X;
                 this._to.Y += difference.Y;
                 this._cachedPosition = this.Position.Clone();
-            };
-
-            Line2d.prototype.GetOrSetLinePoint = function (name, newPosition) {
-                if (typeof newPosition === "undefined") {
-                    this["_" + name] = newPosition;
-                    this.UpdatePosition();
-                }
-
-                return this["_" + name];
             };
             return Line2d;
         })(Graphics.Abstractions.Graphic2d);

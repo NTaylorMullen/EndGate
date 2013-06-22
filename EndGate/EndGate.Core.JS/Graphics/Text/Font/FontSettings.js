@@ -1,7 +1,6 @@
 var eg;
 (function (eg) {
     (function (Graphics) {
-        /// <reference path="FontMeasurement.ts" />
         /// <reference path="FontFamily.ts" />
         /// <reference path="FontVariant.ts" />
         /// <reference path="FontStyle.ts" />
@@ -18,54 +17,123 @@ var eg;
                 function FontSettings() {
                     this._cachedState = {
                         fontSize: "10px",
-                        fontFamily: "Times New Roman",
-                        fontVariant: "",
+                        fontFamily: Assets.FontFamily.TimesNewRoman,
+                        fontVariant: Assets.FontVariant.Normal,
                         fontWeight: "",
-                        fontStyle: ""
+                        fontStyle: Assets.FontStyle.Normal
                     };
 
                     this._refreshCache = true;
                     this._BuildFont();
                 }
-                FontSettings.prototype.FontSize = function (size, measurement) {
-                    if (typeof measurement === "undefined") { measurement = Assets.FontMeasurement.Points; }
-                    if (size !== undefined) {
-                        return this.GetOrSetCache("fontSize", size.toString() + Assets._.FontMeasurementHelper.Get(measurement));
-                    }
+                Object.defineProperty(FontSettings.prototype, "FontSize", {
+                    get: /**
+                    * Gets the current font size.
+                    */
+                    function () {
+                        return this._cachedState["fontSize"];
+                    },
+                    set: /**
+                    * Sets the current font size.  Expects values such as 20px.
+                    * @param size The new font size.
+                    */
+                    function (size) {
+                        this._refreshCache = true;
+                        this._cachedState["fontSize"] = size;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
 
-                    return this._cachedState["fontSize"];
-                };
 
-                FontSettings.prototype.FontFamily = function (family) {
-                    return this.GetOrSetCache("fontFamily", Assets._.FontFamilyHelper.Get(family));
-                };
+                Object.defineProperty(FontSettings.prototype, "FontFamily", {
+                    get: /**
+                    * Gets the current font family.
+                    */
+                    function () {
+                        return this._cachedState["fontFamily"];
+                    },
+                    set: /**
+                    * Sets the current font family.
+                    * @param family The new font family.
+                    */
+                    function (family) {
+                        this._refreshCache = true;
+                        this._cachedState["fontFamily"] = family;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
 
-                FontSettings.prototype.FontVariant = function (variant) {
-                    return this.GetOrSetCache("fontVariant", Assets._.FontVariantHelper.Get(variant));
-                };
 
-                FontSettings.prototype.FontWeight = function (weight) {
-                    return this.GetOrSetCache("fontWeight", weight);
-                };
+                Object.defineProperty(FontSettings.prototype, "FontVariant", {
+                    get: /**
+                    * Gets the current font variant.
+                    */
+                    function () {
+                        return this._cachedState["fontVariant"];
+                    },
+                    set: /**
+                    * Sets the current font variant.
+                    * @param variant The new font variant.
+                    */
+                    function (variant) {
+                        this._refreshCache = true;
+                        this._cachedState["fontVariant"] = variant;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
 
-                FontSettings.prototype.FontStyle = function (style) {
-                    return this.GetOrSetCache("fontStyle", Assets._.FontStyleHelper.Get(style));
-                };
+
+                Object.defineProperty(FontSettings.prototype, "FontWeight", {
+                    get: /**
+                    * Gets the current font weight.
+                    */
+                    function () {
+                        return this._cachedState["fontWeight"];
+                    },
+                    set: /**
+                    * Sets the current font weight.
+                    * @param weight The new font weight.
+                    */
+                    function (weight) {
+                        this._refreshCache = true;
+                        this._cachedState["fontWeight"] = weight;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+
+
+                Object.defineProperty(FontSettings.prototype, "FontStyle", {
+                    get: /**
+                    * Gets the current font style.
+                    */
+                    function () {
+                        return this._cachedState["fontStyle"];
+                    },
+                    set: /**
+                    * Sets and gets the current font style.
+                    * @param style The new font style.
+                    */
+                    function (style) {
+                        this._refreshCache = true;
+                        this._cachedState["fontStyle"] = style;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+
 
                 FontSettings.prototype._BuildFont = function () {
                     var font;
 
                     if (this._refreshCache) {
-                        font = this._cachedState["fontWeight"] + " " + this._cachedState["fontStyle"] + " " + this._cachedState["fontSize"] + " " + this._cachedState["fontVariant"];
+                        font = this._cachedState["fontWeight"] + " " + Assets.FontStyle[this._cachedState["fontStyle"]].replace("Normal", "") + " " + Assets.FontVariant[this._cachedState["fontVariant"]].replace("Normal", "") + " " + this._cachedState["fontSize"];
 
-                        if (this._cachedState["fontFamily"]) {
-                            font += this._cachedState["fontFamily"];
-
-                            if (this._cachedState["fontFamilyType"]) {
-                                font += ", " + this._cachedState["fontFamilyType"];
-                            }
-                        } else if (this._cachedState["fontFamilyType"]) {
-                            font += this._cachedState["fontFamilyType"];
+                        if (this._cachedState["fontFamily"] !== undefined) {
+                            font += " " + Assets.FontFamily[this._cachedState["fontFamily"]];
                         }
 
                         this._cachedFont = font.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
@@ -73,15 +141,6 @@ var eg;
                     }
 
                     return this._cachedFont;
-                };
-
-                FontSettings.prototype.GetOrSetCache = function (property, value) {
-                    if (typeof value !== "undefined") {
-                        this._cachedState[property] = value;
-                        this._refreshCache = true;
-                    }
-
-                    return this._cachedState[property];
                 };
                 return FontSettings;
             })();

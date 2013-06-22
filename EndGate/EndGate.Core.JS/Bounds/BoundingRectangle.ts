@@ -41,48 +41,44 @@ module eg.Bounds {
         * Calculates the top left corner of the BoundingRectangle.
         */
         public get TopLeft(): Vector2d {
-            var v = new Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);
             if (this.Rotation === 0) {
-                return v;
+                return new Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);
             }
 
-            return v.RotateAround(this.Position, this.Rotation);
+            return new Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight).RotateAround(this.Position, this.Rotation);
         }
 
         /** 
         * Calculates the top right corner of the BoundingRectangle.
         */
         public get TopRight(): Vector2d {
-            var v = new Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);
             if (this.Rotation === 0) {
-                return v;
+                return new Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);
             }
 
-            return v.RotateAround(this.Position, this.Rotation);
+            return new Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight).RotateAround(this.Position, this.Rotation);
         }
 
         /** 
         * Calculates the bottom left corner of the BoundingRectangle.
         */
         public get BotLeft(): Vector2d {
-            var v = new Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);
             if (this.Rotation === 0) {
-                return v;
+                return new Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);
             }
 
-            return v.RotateAround(this.Position, this.Rotation);
+            return new Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight).RotateAround(this.Position, this.Rotation);
         }
 
         /** 
         * Calculates the bottom right corner of the BoundingRectangle.
         */
         public get BotRight(): Vector2d {
-            var v = new Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);
             if (this.Rotation === 0) {
-                return v;
+                return new Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);
             }
 
-            return v.RotateAround(this.Position, this.Rotation);
+            return new Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight).RotateAround(this.Position, this.Rotation);
         }
 
         /**

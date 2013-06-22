@@ -19,7 +19,7 @@ var MapCreator;
                     var resourceMappings = persistenceManager.BuildResourceMaps();
 
                     // Build the code template
-                    outputString = 'class MyGame extends eg.Game {}<br /><br />' + 'var myGame = new MyGame(),<br />' + '   resourceSheet = new eg.Graphics.Assets.ImageSource("' + spriteSheetViewer.SpriteSheetUrl + '", ' + spriteSheetViewer.ActiveSpriteSheet.Size().Width + ', ' + spriteSheetViewer.ActiveSpriteSheet.Size().Height + '),<br />' + '   resources: eg.Graphics.Assets.ImageSource[] = eg.Map.SquareTileMap.ExtractTiles(resourceSheet, ' + tileWidth + ', ' + tileHeight + '),<br />' + '   layers: eg.Map.SquareTileMap[] = [<br />';
+                    outputString = 'class MyGame extends eg.Game {}<br /><br />' + 'var myGame = new MyGame(),<br />' + '   resourceSheet = new eg.Graphics.Assets.ImageSource("' + spriteSheetViewer.SpriteSheetUrl + '", ' + spriteSheetViewer.ActiveSpriteSheet.Size.Width + ', ' + spriteSheetViewer.ActiveSpriteSheet.Size.Height + '),<br />' + '   resources: eg.Graphics.Assets.ImageSource[] = eg.Map.SquareTileMap.ExtractTiles(resourceSheet, ' + tileWidth + ', ' + tileHeight + '),<br />' + '   layers: eg.Map.SquareTileMap[] = [<br />';
 
                     for (var i = 0; i < resourceMappings.length; i++) {
                         if (i > 0) {
@@ -31,7 +31,7 @@ var MapCreator;
 
                     outputString += '<br />]; <br /><br />' + 'for (var i = 0; i < layers.length; i++) {<br />' + '   myGame.Map.Scenery.AddLayer(layers[i]);<br />' + '}<br />';
                 } else if (outputOptions.val() === "2") {
-                    var parent = document.createElement("div"), copyCanvas = document.createElement("canvas"), size = mapBuilder.LayerManager.SelectedLayer.Layer.Size(), tempGame, img;
+                    var parent = document.createElement("div"), copyCanvas = document.createElement("canvas"), size = mapBuilder.LayerManager.SelectedLayer.Layer.Size, tempGame, img;
 
                     copyCanvas.width = size.Width;
                     copyCanvas.height = size.Height;

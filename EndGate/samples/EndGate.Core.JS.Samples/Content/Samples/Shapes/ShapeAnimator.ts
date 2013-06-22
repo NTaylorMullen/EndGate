@@ -86,10 +86,10 @@ module Shapes {
         private Opacity(shape: eg.Graphics.Abstractions.Shape, gameTime: eg.GameTime): void {
             var incrementor = .33 * gameTime.ElapsedSecond;
 
-            shape.Opacity(shape.Opacity() + incrementor * this.Direction);
+            shape.Opacity = shape.Opacity + incrementor * this.Direction;
 
-            if (shape.Opacity() > 1) {
-                shape.Opacity(1);
+            if (shape.Opacity > 1) {
+                shape.Opacity = 1;
             }
         }
     }

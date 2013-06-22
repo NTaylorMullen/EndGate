@@ -81,10 +81,10 @@ module Sprites {
         private Opacity(sprite: eg.Graphics.Sprite2d, gameTime: eg.GameTime): void {
             var incrementor = .33 * gameTime.ElapsedSecond;
 
-            sprite.Opacity(sprite.Opacity() + incrementor * this.Direction);
+            sprite.Opacity += incrementor * this.Direction;
 
-            if (sprite.Opacity() > 1) {
-                sprite.Opacity(1);
+            if (sprite.Opacity > 1) {
+                sprite.Opacity = 1;
             }
         }
     }

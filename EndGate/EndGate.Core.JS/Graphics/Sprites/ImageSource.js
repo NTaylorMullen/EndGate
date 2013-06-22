@@ -18,7 +18,7 @@ var eg;
                     var setSize = typeof width !== "undefined";
 
                     this._loaded = false;
-                    this.OnLoaded = new eg.EventHandler1();
+                    this._onLoaded = new eg.EventHandler1();
                     this.Source = new Image();
 
                     this.Source.onload = function () {
@@ -30,7 +30,7 @@ var eg;
                             _this.ClipSize = _this._size.Clone();
                         }
 
-                        _this.OnLoaded.Trigger(_this);
+                        _this._onLoaded.Trigger(_this);
                     };
 
                     this.Source.src = imageLocation;
@@ -42,12 +42,28 @@ var eg;
                         this.ClipSize = new eg.Size2d(clipWidth, clipHeight);
                     }
                 }
-                /**
-                * Returns the base Size of the image source.
-                */
-                ImageSource.prototype.Size = function () {
-                    return this._size.Clone();
-                };
+                Object.defineProperty(ImageSource.prototype, "OnLoaded", {
+                    get: /**
+                    * Event: Triggered when the base image is finished loading.  Functions can be bound or unbound to this event to be executed when the event triggers.
+                    * Passes the ImageSource to the bound functions.
+                    */
+                    function () {
+                        return this._onLoaded;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+
+                Object.defineProperty(ImageSource.prototype, "Size", {
+                    get: /**
+                    * Returns the base Size of the image source.
+                    */
+                    function () {
+                        return this._size.Clone();
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
 
                 /**
                 * Determines if the ImageSource has been loaded.

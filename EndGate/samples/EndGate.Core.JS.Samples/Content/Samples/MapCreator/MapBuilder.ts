@@ -64,9 +64,9 @@ module MapCreator {
         }
 
         public BuildResourceMap(grid: eg.Graphics.Grid): number[][] {
-            var resources = <eg.Graphics.Sprite2d[]>this._spriteSheetViewer.VisibleGrid.GetSpace(0, 0, this._spriteSheetViewer.VisibleGrid.Rows() - 1, this._spriteSheetViewer.VisibleGrid.Columns() - 1),
-                rows = grid.Rows(),
-                columns = grid.Columns(),
+            var resources = <eg.Graphics.Sprite2d[]>this._spriteSheetViewer.VisibleGrid.GetSpace(0, 0, this._spriteSheetViewer.VisibleGrid.Rows - 1, this._spriteSheetViewer.VisibleGrid.Columns - 1),
+                rows = grid.Rows,
+                columns = grid.Columns,
                 tile: eg.Graphics.Sprite2d,
                 resourceMap: number[][] = [];
 

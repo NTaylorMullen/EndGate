@@ -32,65 +32,245 @@ var eg;
                 this._recalculateBoundsSize = true;
 
                 this._fontSettings = new Graphics.Assets.FontSettings();
-                this.Align("center");
-                this.Baseline("middle");
-                this.Color(color);
+                this.Align = "center";
+                this.Baseline = "middle";
+                this.Color = color;
             }
-            Text2d.prototype.Align = function (alignment) {
-                return this._State.TextAlign(alignment);
-            };
+            Object.defineProperty(Text2d.prototype, "Align", {
+                get: /**
+                * Gets the text alignment of the Text2d.
+                */
+                function () {
+                    return this._State.TextAlign;
+                },
+                set: /**
+                * Gets the text alignment of the Text2d.
+                * @param alignment The new textual alignment for the Text2d.  Values are "start", "end", "left", "center", or "right".
+                */
+                function (alignment) {
+                    this._State.TextAlign = alignment;
+                },
+                enumerable: true,
+                configurable: true
+            });
 
-            Text2d.prototype.Baseline = function (baseline) {
-                return this._State.TextBaseline(baseline);
-            };
 
-            Text2d.prototype.Color = function (color) {
-                return this._State.FillStyle(color);
-            };
+            Object.defineProperty(Text2d.prototype, "Baseline", {
+                get: /**
+                * Gets the text baseline of the Text2d.
+                */
+                function () {
+                    return this._State.TextBaseline;
+                },
+                set: /**
+                * Gets the text baseline of the Text2d.
+                * @param baseline The new textual baseline for the Text2d.  Values are "top", "hanging", "middle", "alphabetic", "ideographic", and "bottom".
+                */
+                function (baseline) {
+                    this._State.TextBaseline = baseline;
+                },
+                enumerable: true,
+                configurable: true
+            });
 
-            Text2d.prototype.Shadow = function (x, y, color, blur) {
-                this.ShadowX(x);
-                this.ShadowY(y);
-                this.ShadowColor(color);
-                this.ShadowBlur(blur);
-            };
 
-            Text2d.prototype.ShadowColor = function (color) {
-                return this._State.ShadowColor(color);
-            };
+            Object.defineProperty(Text2d.prototype, "Color", {
+                get: /**
+                * Gets the current text color.
+                */
+                function () {
+                    return this._State.FillStyle;
+                },
+                set: /**
+                * Gets the current text color.
+                * @param color The new color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+                */
+                function (color) {
+                    this._State.FillStyle = color;
+                },
+                enumerable: true,
+                configurable: true
+            });
 
-            Text2d.prototype.ShadowX = function (x) {
-                return this._State.ShadowOffsetX(x);
-            };
 
-            Text2d.prototype.ShadowY = function (y) {
-                return this._State.ShadowOffsetY(y);
-            };
+            Object.defineProperty(Text2d.prototype, "ShadowColor", {
+                get: /**
+                * Gets the current shadow color.
+                */
+                function () {
+                    return this._State.ShadowColor;
+                },
+                set: /**
+                * Sets the current shadow color.
+                * @param color The new shadow color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+                */
+                function (color) {
+                    this._State.ShadowColor = color;
+                },
+                enumerable: true,
+                configurable: true
+            });
 
-            Text2d.prototype.ShadowBlur = function (blur) {
-                return this._State.ShadowBlur(blur);
-            };
 
-            Text2d.prototype.Opacity = function (alpha) {
-                return this._State.GlobalAlpha(alpha);
-            };
+            Object.defineProperty(Text2d.prototype, "ShadowX", {
+                get: /**
+                * Gets the current horizontal shadow position.
+                */
+                function () {
+                    return this._State.ShadowOffsetX;
+                },
+                set: /**
+                * Sets the current horizontal shadow position.
+                * @param x The shadows new horizontal position.
+                */
+                function (x) {
+                    this._State.ShadowOffsetX = x;
+                },
+                enumerable: true,
+                configurable: true
+            });
 
-            /**
-            * Gets the Text2d's FontSetting's.
-            */
-            Text2d.prototype.FontSettings = function () {
-                this._recalculateBoundsSize = true;
 
-                return this._fontSettings;
-            };
+            Object.defineProperty(Text2d.prototype, "ShadowY", {
+                get: /**
+                * Gets the current vertical shadow position.
+                */
+                function () {
+                    return this._State.ShadowOffsetY;
+                },
+                set: /**
+                * Sets the current vertical shadow position.
+                * @param y The shadows new vertical position.
+                */
+                function (y) {
+                    this._State.ShadowOffsetY = y;
+                },
+                enumerable: true,
+                configurable: true
+            });
 
-            Text2d.prototype.Text = function (text) {
-                if (typeof text !== "undefined") {
+
+            Object.defineProperty(Text2d.prototype, "ShadowBlur", {
+                get: /**
+                * Gets the current shadow blur.
+                */
+                function () {
+                    return this._State.ShadowBlur;
+                },
+                set: /**
+                * Sets the current shadow blur.
+                * @param blur The shadows new blur.
+                */
+                function (blur) {
+                    this._State.ShadowBlur = blur;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+
+            Object.defineProperty(Text2d.prototype, "Opacity", {
+                get: /**
+                * Gets the current opacity.  Value is between 0 and 1.
+                */
+                function () {
+                    return this._State.GlobalAlpha;
+                },
+                set: /**
+                * Sets the current opacity.
+                * @param alpha New opacity, value is between 0 and 1.
+                */
+                function (alpha) {
+                    this._State.GlobalAlpha = alpha;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+
+            Object.defineProperty(Text2d.prototype, "FontSettings", {
+                get: /**
+                * Gets the Text2d's FontSetting's.
+                */
+                function () {
+                    this._recalculateBoundsSize = true;
+
+                    return this._fontSettings;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(Text2d.prototype, "BorderThickness", {
+                get: /**
+                * Gets the current border thickness.
+                */
+                function () {
+                    return this._State.LineWidth;
+                },
+                set: /**
+                * Sets the current border thickness.
+                * @param thickness The new border thickness in pixels.
+                */
+                function (thickness) {
+                    if (thickness === 0) {
+                        this._stroker.Reset();
+                    } else {
+                        this._stroker.Trip();
+                    }
+
+                    this._State.LineWidth = thickness;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+
+            Object.defineProperty(Text2d.prototype, "BorderColor", {
+                get: /**
+                * Gets the current border color.
+                */
+                function () {
+                    return this._State.StrokeStyle;
+                },
+                set: /**
+                * Sets the current border color.
+                * @param color The new border color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+                */
+                function (color) {
+                    this._stroker.Trip();
+                    this._State.StrokeStyle = color;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+
+            Object.defineProperty(Text2d.prototype, "Text", {
+                get: /**
+                * Gets the current Text2d's text.
+                */
+                function () {
+                    return this._text;
+                },
+                set: /**
+                * Sets and gets the current Text2d's text.
+                * @param text The new text.
+                */
+                function (text) {
                     this._recalculateBoundsSize = true;
                     this._text = text;
-                }
+                },
+                enumerable: true,
+                configurable: true
+            });
 
-                return this._text;
+
+            Text2d.prototype.Shadow = function (x, y, color, blur) {
+                this.ShadowX = x;
+                this.ShadowY = y;
+                this.ShadowColor = color;
+                this.ShadowBlur = blur;
             };
 
             /**
@@ -99,23 +279,8 @@ var eg;
             * @param color The new border color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
             */
             Text2d.prototype.Border = function (thickness, color) {
-                this.BorderThickness(thickness);
-                this.BorderColor(color);
-            };
-
-            Text2d.prototype.BorderThickness = function (thickness) {
-                if (thickness === 0) {
-                    this._stroker.Reset();
-                } else {
-                    this._stroker.Trip();
-                }
-
-                return this._State.LineWidth(thickness);
-            };
-
-            Text2d.prototype.BorderColor = function (color) {
-                this._stroker.Trip();
-                return this._State.StrokeStyle(color);
+                this.BorderThickness = thickness;
+                this.BorderColor = color;
             };
 
             /**
@@ -127,7 +292,7 @@ var eg;
 
                 _super.prototype._StartDraw.call(this, context);
 
-                this._State.Font(this._fontSettings._BuildFont());
+                this._State.Font = this._fontSettings._BuildFont();
 
                 context.fillText(this._text, 0, 0);
                 this._stroker.Invoke(context);
@@ -138,7 +303,7 @@ var eg;
                     this._recalculateBoundsSize = false;
                     textSize = context.measureText(this._text);
                     this._drawBounds.Size.Width = textSize.width;
-                    this._drawBounds.Size.Height = parseInt(this._fontSettings.FontSize()) * 1.5;
+                    this._drawBounds.Size.Height = parseInt(this._fontSettings.FontSize) * 1.5;
                 }
             };
 

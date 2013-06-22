@@ -63,7 +63,7 @@ var MapCreator;
             });
         }
         MapBuilder.prototype.BuildResourceMap = function (grid) {
-            var resources = this._spriteSheetViewer.VisibleGrid.GetSpace(0, 0, this._spriteSheetViewer.VisibleGrid.Rows() - 1, this._spriteSheetViewer.VisibleGrid.Columns() - 1), rows = grid.Rows(), columns = grid.Columns(), tile, resourceMap = [];
+            var resources = this._spriteSheetViewer.VisibleGrid.GetSpace(0, 0, this._spriteSheetViewer.VisibleGrid.Rows - 1, this._spriteSheetViewer.VisibleGrid.Columns - 1), rows = grid.Rows, columns = grid.Columns, tile, resourceMap = [];
 
             for (var i = 0; i < rows; i++) {
                 resourceMap[i] = [];

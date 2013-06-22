@@ -51,9 +51,9 @@ module MapCreator {
                 layers = this._getLayers();
 
             var settings: ISettings = {
-                Rows: layers[0].Layer.Rows(),
-                Columns: layers[0].Layer.Columns(),
-                TileSize: layers[0].Layer.TileSize(),
+                Rows: layers[0].Layer.Rows,
+                Columns: layers[0].Layer.Columns,
+                TileSize: layers[0].Layer.TileSize,
                 SpriteSheetUrl: this._spriteSheetUrl,
                 Layers: layerMaps
             },

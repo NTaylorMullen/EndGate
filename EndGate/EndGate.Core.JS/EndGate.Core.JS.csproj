@@ -178,10 +178,6 @@
     <Content Include="Graphics\Text\Font\FontFamily.js">
       <DependentUpon>FontFamily.ts</DependentUpon>
     </Content>
-    <CodeAnalysisDictionary Include="Graphics\Text\Font\FontMeasurement.ts" />
-    <Content Include="Graphics\Text\Font\FontMeasurement.js">
-      <DependentUpon>FontMeasurement.ts</DependentUpon>
-    </Content>
     <CodeAnalysisDictionary Include="Graphics\Text\Font\FontSettings.ts" />
     <Content Include="Graphics\Text\Font\FontSettings.js">
       <DependentUpon>FontSettings.ts</DependentUpon>

@@ -54,7 +54,7 @@
                 heightSlider.UpdateSlider(ensureValue(newHeight, 0, canvas.height));
             },
             Opacity: function () {
-                opacitySlider.UpdateSlider(ensureValue(game.Shape.Opacity() * 100, 0, 100));
+                opacitySlider.UpdateSlider(ensureValue(game.Shape.Opacity * 100, 0, 100));
             }
         },
         // Sync sliders is used to make sure that all sliders are showing the correct values
@@ -72,7 +72,7 @@
 
     // Wire up all the sliders
     shapeColorPicker = new Shapes.ColorPicker($("#redColorPicker"), $("#greenColorPicker"), $("#blueColorPicker"), [127, 0, 127], (newcolor: string) => {
-        game.Shape.Color(newcolor);
+        game.Shape.Color = newcolor;
     });
     rotationSlider = new Shapes.CustomSlider($("#rotationSlider"), -628, 628, 0, (newrotation: number) => {
         game.Shape.Rotation = newrotation / 100;
@@ -84,7 +84,7 @@
         game.Shape.Position.Y = newY;
     });
     opacitySlider = new Shapes.CustomSlider($("#opacitySlider"), 0, 100, 100, (newAlpha) => {
-        game.Shape.Opacity(newAlpha / 100);
+        game.Shape.Opacity = newAlpha / 100;
     });
     widthSlider = new Shapes.CustomSlider($("#widthSlider"), 0, canvas.width, game.Shape.Size.Width, (newWidth: number) => {
         if (game.Shape._type === "Circle") {
@@ -103,22 +103,22 @@
         }
     });
     borderColorPicker = new Shapes.ColorPicker($("#borderRed"), $("#borderGreen"), $("#borderBlue"), [0, 0, 0], (newcolor: string) => {
-        game.Shape.BorderColor(newcolor);
+        game.Shape.BorderColor = newcolor;
     });
     borderThicknessSlider = new Shapes.CustomSlider($("#borderThickness"), 0, 100, 7, (newThickness) => {
-        game.Shape.BorderThickness(newThickness);
+        game.Shape.BorderThickness = newThickness;
     });
     shadowXSlider = new Shapes.CustomSlider($("#shadowX"), -30, 30, 20, (newX: number) => {
-        game.Shape.ShadowX(newX);
+        game.Shape.ShadowX = newX;
     });
     shadowYSlider = new Shapes.CustomSlider($("#shadowY"), -30, 30, 10, (newY: number) => {
-        game.Shape.ShadowY(newY);
+        game.Shape.ShadowY = newY;
     });
     shadowColorPicker = new Shapes.ColorPicker($("#shadowColorRed"), $("#shadowColorGreen"), $("#shadowColorBlue"), [0, 0, 100], (newcolor: string) => {
-        game.Shape.ShadowColor(newcolor);
+        game.Shape.ShadowColor = newcolor;
     });
     shadowBlurSlider = new Shapes.CustomSlider($("#shadowBlur"), 0, 300, 55, (newBlur: number) => {
-        game.Shape.ShadowBlur(newBlur);
+        game.Shape.ShadowBlur = newBlur;
     });
 
 })($, window);

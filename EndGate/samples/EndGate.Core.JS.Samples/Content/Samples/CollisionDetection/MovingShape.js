@@ -34,7 +34,7 @@ var CollisionDetection;
             this._collisionColorAlpha = 1;
 
             // Parse the rgb color into an array
-            var strColor = (data.With).Graphic.Color().replace("rgb(", "").replace(")", "").split(",");
+            var strColor = (data.With).Graphic.Color.replace("rgb(", "").replace(")", "").split(",");
 
             for (var i = 0; i < strColor.length; i++) {
                 this._collisionColor[i] = parseInt(strColor[i]);
@@ -59,7 +59,7 @@ var CollisionDetection;
             // Update the alpha of the border, we multiply by ElapsedSecond so that we at most traverse this._fadeSpeed points per second
             this._collisionColorAlpha = Math.max(this._collisionColorAlpha - gameTime.ElapsedSecond * this._fadeSpeed, 0);
 
-            this.Graphic.BorderColor("rgba(" + this._collisionColor[0] + "," + this._collisionColor[1] + "," + this._collisionColor[2] + "," + this._collisionColorAlpha + ")");
+            this.Graphic.BorderColor = "rgba(" + this._collisionColor[0] + "," + this._collisionColor[1] + "," + this._collisionColor[2] + "," + this._collisionColorAlpha + ")";
 
             // Update the graphic and bounds rotation and position.
             this.Graphic.Rotation = this.Bounds.Rotation = this.Graphic.Rotation + gameTime.ElapsedSecond * MovingShape.RotationSpeed * this._rotationMultiplier;

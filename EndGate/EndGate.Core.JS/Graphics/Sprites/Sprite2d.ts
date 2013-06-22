@@ -46,14 +46,16 @@ module eg.Graphics {
         /**
         * Gets the current opacity.  Value is between 0 and 1.
         */
-        public Opacity(): number;
+        public get Opacity(): number {
+            return this._State.GlobalAlpha;
+        }
+
         /**
-        * Sets and gets the current opacity.
+        * Sets the current opacity.
         * @param alpha New opacity, value is between 0 and 1.
         */
-        public Opacity(alpha: number): number;
-        public Opacity(alpha?: number): number {
-            return this._State.GlobalAlpha(alpha);
+        public set Opacity(alpha: number) {
+            this._State.GlobalAlpha = alpha;
         }
 
         /**

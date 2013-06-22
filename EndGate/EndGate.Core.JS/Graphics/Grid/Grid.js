@@ -51,51 +51,93 @@ var eg;
                 this._gridLines.push(new Graphics.Line2d(topLeft.X, bottomRight.Y, bottomRight.X, bottomRight.Y, 1));
                 this._gridLines.push(new Graphics.Line2d(bottomRight.X, topLeft.Y, bottomRight.X, bottomRight.Y, 1));
 
-                this.GridLineColor(gridLineColor);
+                this.GridLineColor = gridLineColor;
             }
-            Grid.prototype.GridLineColor = function (color) {
-                if (typeof color !== "undefined") {
+            Object.defineProperty(Grid.prototype, "GridLineColor", {
+                get: /**
+                * Gets the current grid line color.  Grid lines are only drawn of DrawGridLines is set to true.
+                */
+                function () {
+                    return this._gridLineColor;
+                },
+                set: /**
+                * Sets the current grid line color.  Grid lines are only drawn of DrawGridLines is set to true.
+                * @param color The new grid line color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+                */
+                function (color) {
                     this._gridLineColor = color;
 
                     for (var i = 0; i < this._gridLines.length; i++) {
-                        this._gridLines[i].Color(color);
+                        this._gridLines[i].Color = color;
                     }
-                }
+                },
+                enumerable: true,
+                configurable: true
+            });
 
-                return this._gridLineColor;
-            };
 
-            /**
-            * Gets the size of the grid.
-            */
-            Grid.prototype.Size = function () {
-                return this._size.Clone();
-            };
+            Object.defineProperty(Grid.prototype, "Size", {
+                get: /**
+                * Gets the size of the grid.
+                */
+                function () {
+                    return this._size.Clone();
+                },
+                enumerable: true,
+                configurable: true
+            });
 
-            /**
-            * Gets the size of the tiles.
-            */
-            Grid.prototype.TileSize = function () {
-                return this._tileSize.Clone();
-            };
+            Object.defineProperty(Grid.prototype, "TileSize", {
+                get: /**
+                * Gets the size of the tiles.
+                */
+                function () {
+                    return this._tileSize.Clone();
+                },
+                enumerable: true,
+                configurable: true
+            });
 
-            /**
-            * Gets the number of rows
-            */
-            Grid.prototype.Rows = function () {
-                return this._rows;
-            };
+            Object.defineProperty(Grid.prototype, "Rows", {
+                get: /**
+                * Gets the number of rows
+                */
+                function () {
+                    return this._rows;
+                },
+                enumerable: true,
+                configurable: true
+            });
 
-            /**
-            * Gets the number of columns
-            */
-            Grid.prototype.Columns = function () {
-                return this._columns;
-            };
+            Object.defineProperty(Grid.prototype, "Columns", {
+                get: /**
+                * Gets the number of columns
+                */
+                function () {
+                    return this._columns;
+                },
+                enumerable: true,
+                configurable: true
+            });
 
-            Grid.prototype.Opacity = function (alpha) {
-                return this._State.GlobalAlpha(alpha);
-            };
+            Object.defineProperty(Grid.prototype, "Opacity", {
+                get: /**
+                * Gets the current opacity.  Value is between 0 and 1.
+                */
+                function () {
+                    return this._State.GlobalAlpha;
+                },
+                set: /**
+                * Sets the current opacity.
+                * @param alpha New opacity, value is between 0 and 1.
+                */
+                function (alpha) {
+                    this._State.GlobalAlpha = alpha;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
 
             /**
             * Fills a tile with the provided graphic.

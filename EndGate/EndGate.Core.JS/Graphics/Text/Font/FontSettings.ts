@@ -1,4 +1,3 @@
-/// <reference path="FontMeasurement.ts" />
 /// <reference path="FontFamily.ts" />
 /// <reference path="FontVariant.ts" />
 /// <reference path="FontStyle.ts" />
@@ -21,10 +20,10 @@ module eg.Graphics.Assets {
         constructor() {
             this._cachedState = {
                 fontSize: "10px",
-                fontFamily: "Times New Roman",
-                fontVariant: "",
+                fontFamily: FontFamily.TimesNewRoman,
+                fontVariant: FontVariant.Normal,
                 fontWeight: "",
-                fontStyle: ""
+                fontStyle: FontStyle.Normal
             };
 
             this._refreshCache = true;
@@ -34,109 +33,97 @@ module eg.Graphics.Assets {
         /**
         * Gets the current font size.
         */
-        public FontSize(): string;
-        /**
-        * Sets and gets the current font size with the measurement in points.
-        * @param size The new font size.
-        */
-        public FontSize(size: number): string;
-        /**
-        * Sets and gets the current font size.
-        * @param size The new font size.
-        * @param measurement The new font sizes measurement type.
-        */
-        public FontSize(size: number, measurement: FontMeasurement): string;
-        public FontSize(size?: number, measurement: FontMeasurement = FontMeasurement.Points): string {
-            if (size !== undefined) {
-                return this.GetOrSetCache("fontSize", size.toString() + _.FontMeasurementHelper.Get(measurement));
-            }
-            
+        public get FontSize(): string {
             return this._cachedState["fontSize"];
+        }
+        /**
+        * Sets the current font size.  Expects values such as 20px.
+        * @param size The new font size.
+        */
+        public set FontSize(size: string) {
+            this._refreshCache = true;
+            this._cachedState["fontSize"] = size;
         }
 
         /**
         * Gets the current font family.
         */
-        public FontFamily(): string;
+        public get FontFamily(): FontFamily {
+            return this._cachedState["fontFamily"];
+        }
+
         /**
-        * Sets and gets the current font family.
+        * Sets the current font family.
         * @param family The new font family.
         */
-        public FontFamily(family: FontFamily): string;
-        public FontFamily(family?: FontFamily): string {
-            return this.GetOrSetCache("fontFamily", _.FontFamilyHelper.Get(family));
+        public set FontFamily(family: FontFamily) {
+            this._refreshCache = true;
+            this._cachedState["fontFamily"] = family;
         }
 
         /**
         * Gets the current font variant.
         */
-        public FontVariant(): string;
+        public get FontVariant(): FontVariant {
+            return this._cachedState["fontVariant"];
+        }
+
         /**
-        * Sets and gets the current font variant.
+        * Sets the current font variant.
         * @param variant The new font variant.
         */
-        public FontVariant(variant: FontVariant): string;
-        public FontVariant(variant?: FontVariant): string {
-            return this.GetOrSetCache("fontVariant", _.FontVariantHelper.Get(variant));
+        public set FontVariant(variant: FontVariant) {
+            this._refreshCache = true;
+            this._cachedState["fontVariant"] = variant;
         }
 
         /**
         * Gets the current font weight.
         */
-        public FontWeight(): string;
+        public get FontWeight(): string {
+            return this._cachedState["fontWeight"];
+        }
+
         /**
-        * Sets and gets the current font weight.
+        * Sets the current font weight.
         * @param weight The new font weight.
         */
-        public FontWeight(weight: string): string;
-        public FontWeight(weight?: string): string {
-            return this.GetOrSetCache("fontWeight", weight);
+        public set FontWeight(weight: string) {
+            this._refreshCache = true;
+            this._cachedState["fontWeight"] = weight;
         }
 
         /**
         * Gets the current font style.
         */
-        public FontStyle(): string;
+        public get FontStyle(): FontStyle {
+            return this._cachedState["fontStyle"];
+        }
+
         /**
         * Sets and gets the current font style.
         * @param style The new font style.
         */
-        public FontStyle(style: FontStyle): string;
-        public FontStyle(style?: FontStyle): string {
-            return this.GetOrSetCache("fontStyle", _.FontStyleHelper.Get(style));
+        public set FontStyle(style: FontStyle) {
+            this._refreshCache = true;
+            this._cachedState["fontStyle"] = style;
         }
 
         public _BuildFont(): string {
             var font;
 
             if (this._refreshCache) {
-                font = this._cachedState["fontWeight"] + " " + this._cachedState["fontStyle"] + " " + this._cachedState["fontSize"] + " " + this._cachedState["fontVariant"];
+                font = this._cachedState["fontWeight"] + " " + FontStyle[this._cachedState["fontStyle"]].replace("Normal", "") + " " + FontVariant[this._cachedState["fontVariant"]].replace("Normal", "")+ " " + this._cachedState["fontSize"];
 
-                if (this._cachedState["fontFamily"]) {
-                    font += this._cachedState["fontFamily"];
-
-                    if (this._cachedState["fontFamilyType"]) {
-                        font += ", " + this._cachedState["fontFamilyType"];
-                    }
+                if (this._cachedState["fontFamily"] !== undefined) {
+                    font += " " + FontFamily[this._cachedState["fontFamily"]];
                 }
-                else if (this._cachedState["fontFamilyType"]) {
-                    font += this._cachedState["fontFamilyType"];
-                }
-
+                               
                 this._cachedFont = font.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
                 this._refreshCache = false;
             }
 
             return this._cachedFont;
-        }
-
-        private GetOrSetCache(property: string, value: any): any {
-            if (typeof value !== "undefined") {
-                this._cachedState[property] = value;
-                this._refreshCache = true;
-            }
-
-            return this._cachedState[property];
         }
     }
 }

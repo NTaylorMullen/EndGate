@@ -78,10 +78,10 @@ var Shapes;
         ShapeAnimator.prototype.Opacity = function (shape, gameTime) {
             var incrementor = .33 * gameTime.ElapsedSecond;
 
-            shape.Opacity(shape.Opacity() + incrementor * this.Direction);
+            shape.Opacity = shape.Opacity + incrementor * this.Direction;
 
-            if (shape.Opacity() > 1) {
-                shape.Opacity(1);
+            if (shape.Opacity > 1) {
+                shape.Opacity = 1;
             }
         };
         ShapeAnimator.AnimationSpeed = 50;

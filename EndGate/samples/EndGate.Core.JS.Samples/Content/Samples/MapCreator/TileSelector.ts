@@ -17,7 +17,7 @@ module MapCreator {
 
             this._groupSelector = new eg.Graphics.Rectangle(0, 0, 0, 0, "rgb(100, 255, 0)");
             this._groupSelector.Border(2, "green");
-            this._groupSelector.Opacity(.4);
+            this._groupSelector.Opacity = .4;
 
             mouseHandler.OnDown.Bind((e: eg.Input.IMouseClickEvent) => {
                 downAt = camera.ToCameraRelative(e.Position);
@@ -89,12 +89,12 @@ module MapCreator {
                 columnIncrementor = (columnEnd >= columnStart) ? 1 : -1;
 
             for (var i = rowStart; i !== rowEnd + rowIncrementor; i += rowIncrementor) {
-                if (i >= this._grid.Rows()) {
+                if (i >= this._grid.Rows) {
                     break;
                 }
 
                 for (var j = columnStart; j !== columnEnd + columnIncrementor; j += columnIncrementor) {
-                    if (j >= this._grid.Columns()) {
+                    if (j >= this._grid.Columns) {
                         break;
                     }
 

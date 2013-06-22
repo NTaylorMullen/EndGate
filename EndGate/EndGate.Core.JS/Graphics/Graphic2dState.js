@@ -8,78 +8,190 @@ var eg;
                     function Graphic2dState() {
                         this._cachedState = {};
                     }
-                    Graphic2dState.prototype.StrokeStyle = function (value) {
-                        return this.GetOrSetCache("strokeStyle", value);
-                    };
+                    Object.defineProperty(Graphic2dState.prototype, "StrokeStyle", {
+                        get: function () {
+                            return this._cachedState["strokeStyle"];
+                        },
+                        set: function (value) {
+                            this._cachedState["strokeStyle"] = value;
+                        },
+                        enumerable: true,
+                        configurable: true
+                    });
 
-                    Graphic2dState.prototype.FillStyle = function (value) {
-                        return this.GetOrSetCache("fillStyle", value);
-                    };
 
-                    Graphic2dState.prototype.GlobalAlpha = function (value) {
-                        return this.GetOrSetCache("globalAlpha", value);
-                    };
+                    Object.defineProperty(Graphic2dState.prototype, "FillStyle", {
+                        get: function () {
+                            return this._cachedState["fillStyle"];
+                        },
+                        set: function (value) {
+                            this._cachedState["fillStyle"] = value;
+                        },
+                        enumerable: true,
+                        configurable: true
+                    });
 
-                    Graphic2dState.prototype.LineWidth = function (value) {
-                        return this.GetOrSetCache("lineWidth", value);
-                    };
 
-                    Graphic2dState.prototype.LineCap = function (value) {
-                        return this.GetOrSetCache("lineCap", value);
-                    };
+                    Object.defineProperty(Graphic2dState.prototype, "GlobalAlpha", {
+                        get: function () {
+                            return this._cachedState["globalAlpha"];
+                        },
+                        set: function (value) {
+                            this._cachedState["globalAlpha"] = value;
+                        },
+                        enumerable: true,
+                        configurable: true
+                    });
 
-                    Graphic2dState.prototype.LineJoin = function (value) {
-                        return this.GetOrSetCache("lineJoin", value);
-                    };
 
-                    Graphic2dState.prototype.MiterLimit = function (value) {
-                        return this.GetOrSetCache("miterLimit", value);
-                    };
+                    Object.defineProperty(Graphic2dState.prototype, "LineWidth", {
+                        get: function () {
+                            return this._cachedState["lineWidth"];
+                        },
+                        set: function (value) {
+                            this._cachedState["lineWidth"] = value;
+                        },
+                        enumerable: true,
+                        configurable: true
+                    });
 
-                    Graphic2dState.prototype.ShadowOffsetX = function (value) {
-                        return this.GetOrSetCache("shadowOffsetX", value);
-                    };
 
-                    Graphic2dState.prototype.ShadowOffsetY = function (value) {
-                        return this.GetOrSetCache("shadowOffsetY", value);
-                    };
+                    Object.defineProperty(Graphic2dState.prototype, "LineCap", {
+                        get: function () {
+                            return this._cachedState["lineCap"];
+                        },
+                        set: function (value) {
+                            this._cachedState["lineCap"] = value;
+                        },
+                        enumerable: true,
+                        configurable: true
+                    });
 
-                    Graphic2dState.prototype.ShadowBlur = function (value) {
-                        return this.GetOrSetCache("shadowBlur", value);
-                    };
 
-                    Graphic2dState.prototype.ShadowColor = function (value) {
-                        return this.GetOrSetCache("shadowColor", value);
-                    };
+                    Object.defineProperty(Graphic2dState.prototype, "LineJoin", {
+                        get: function () {
+                            return this._cachedState["lineJoin"];
+                        },
+                        set: function (value) {
+                            this._cachedState["lineJoin"] = value;
+                        },
+                        enumerable: true,
+                        configurable: true
+                    });
 
-                    Graphic2dState.prototype.GlobalCompositeOperation = function (value) {
-                        return this.GetOrSetCache("globalCompositeOperation", value);
-                    };
 
-                    Graphic2dState.prototype.Font = function (value) {
-                        return this.GetOrSetCache("font", value);
-                    };
+                    Object.defineProperty(Graphic2dState.prototype, "MiterLimit", {
+                        get: function () {
+                            return this._cachedState["miterLimit"];
+                        },
+                        set: function (value) {
+                            this._cachedState["miterLimit"] = value;
+                        },
+                        enumerable: true,
+                        configurable: true
+                    });
 
-                    Graphic2dState.prototype.TextAlign = function (value) {
-                        return this.GetOrSetCache("textAlign", value);
-                    };
 
-                    Graphic2dState.prototype.TextBaseline = function (value) {
-                        return this.GetOrSetCache("textBaseline", value);
-                    };
+                    Object.defineProperty(Graphic2dState.prototype, "ShadowOffsetX", {
+                        get: function () {
+                            return this._cachedState["shadowOffsetX"];
+                        },
+                        set: function (value) {
+                            this._cachedState["shadowOffsetX"] = value;
+                        },
+                        enumerable: true,
+                        configurable: true
+                    });
+
+
+                    Object.defineProperty(Graphic2dState.prototype, "ShadowOffsetY", {
+                        get: function () {
+                            return this._cachedState["shadowOffsetY"];
+                        },
+                        set: function (value) {
+                            this._cachedState["shadowOffsetY"] = value;
+                        },
+                        enumerable: true,
+                        configurable: true
+                    });
+
+
+                    Object.defineProperty(Graphic2dState.prototype, "ShadowBlur", {
+                        get: function () {
+                            return this._cachedState["shadowBlur"];
+                        },
+                        set: function (value) {
+                            this._cachedState["shadowBlur"] = value;
+                        },
+                        enumerable: true,
+                        configurable: true
+                    });
+
+
+                    Object.defineProperty(Graphic2dState.prototype, "ShadowColor", {
+                        get: function () {
+                            return this._cachedState["shadowColor"];
+                        },
+                        set: function (value) {
+                            this._cachedState["shadowColor"] = value;
+                        },
+                        enumerable: true,
+                        configurable: true
+                    });
+
+
+                    Object.defineProperty(Graphic2dState.prototype, "GlobalCompositeOperation", {
+                        get: function () {
+                            return this._cachedState["globalCompositeOperation"];
+                        },
+                        set: function (value) {
+                            this._cachedState["globalCompositeOperation"] = value;
+                        },
+                        enumerable: true,
+                        configurable: true
+                    });
+
+
+                    Object.defineProperty(Graphic2dState.prototype, "Font", {
+                        get: function () {
+                            return this._cachedState["font"];
+                        },
+                        set: function (value) {
+                            this._cachedState["font"] = value;
+                        },
+                        enumerable: true,
+                        configurable: true
+                    });
+
+
+                    Object.defineProperty(Graphic2dState.prototype, "TextAlign", {
+                        get: function () {
+                            return this._cachedState["textAlign"];
+                        },
+                        set: function (value) {
+                            this._cachedState["textAlign"] = value;
+                        },
+                        enumerable: true,
+                        configurable: true
+                    });
+
+
+                    Object.defineProperty(Graphic2dState.prototype, "TextBaseline", {
+                        get: function () {
+                            return this._cachedState["textBaseline"];
+                        },
+                        set: function (value) {
+                            this._cachedState["textBaseline"] = value;
+                        },
+                        enumerable: true,
+                        configurable: true
+                    });
+
 
                     Graphic2dState.prototype.SetContextState = function (context) {
                         for (var key in this._cachedState) {
                             context[key] = this._cachedState[key];
                         }
-                    };
-
-                    Graphic2dState.prototype.GetOrSetCache = function (property, value) {
-                        if (typeof value !== "undefined") {
-                            this._cachedState[property] = value;
-                        }
-
-                        return this._cachedState[property];
                     };
                     return Graphic2dState;
                 })();

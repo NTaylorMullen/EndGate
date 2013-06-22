@@ -805,6 +805,8 @@ declare module eg.Collision {
         public Bounds: eg.Bounds.Abstractions.Bounds2d;
         private static _collidableIDs;
         private _disposed;
+        private _onCollision;
+        private _onDisposed;
         /**
         * Creates a new instance of Collidable.
         * @param bounds Initial bounds for the Collidable.
@@ -814,11 +816,11 @@ declare module eg.Collision {
         * Event: Triggered when a collision happens.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes a CollisionData object to bound functions.
         */
-        public OnCollision: eg.EventHandler1<eg.Collision.Assets.CollisionData>;
+        public OnCollision : eg.EventHandler1<eg.Collision.Assets.CollisionData>;
         /**
         * Event: Triggered when a Collidable has been disposed.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
-        public OnDisposed: eg.EventHandler1<eg.Collision.Collidable>;
+        public OnDisposed : eg.EventHandler1<eg.Collision.Collidable>;
         /**
         * Determines if the provided collidable is colliding with this Collidable.
         * @param other Collidable to check collision with.
@@ -875,6 +877,7 @@ declare module eg.Collision {
     class CollisionManager implements eg.IUpdateable, eg._.ITyped {
         public _type: string;
         private _collidables;
+        private _onCollision;
         private _enabled;
         /**
         * Creates a new instance of CollisionManager.
@@ -884,7 +887,7 @@ declare module eg.Collision {
         * Event: Triggered when a collision happens among two of the monitored objects.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes two CollisionData objects to bound functions.
         */
-        public OnCollision: eg.EventHandler2<eg.Collision.Collidable, eg.Collision.Collidable>;
+        public OnCollision : eg.EventHandler2<eg.Collision.Collidable, eg.Collision.Collidable>;
         /**
         * Monitors the provided collidable and will trigger its Collided function and OnCollision event whenever a collision occurs with it and another Collidable.
         * If the provided collidable gets disposed it will automatically become unmonitored.
@@ -892,7 +895,7 @@ declare module eg.Collision {
         */
         public Monitor(obj: Collision.Collidable): void;
         /**
-        * Unmonitors the provided collidable.  The Collided function and OnCollision event will no longer be triggered when an actual collision may have occured.
+        * Unmonitors the provided collidable.  The Collided function and OnCollision event will no longer be triggered when an actual collision may have occurred.
         * Disposing a monitored collidable will automatically be unmonitored
         * @param obj Collidable to unmonitor.
         */
@@ -908,23 +911,22 @@ declare module eg.Graphics.Assets._ {
     class Graphic2dState {
         private _cachedState;
         constructor();
-        public StrokeStyle(value?: string): string;
-        public FillStyle(value?: string): string;
-        public GlobalAlpha(value?: number): number;
-        public LineWidth(value?: number): number;
-        public LineCap(value?: string): string;
-        public LineJoin(value?: string): string;
-        public MiterLimit(value?: number): number;
-        public ShadowOffsetX(value?: number): number;
-        public ShadowOffsetY(value?: number): number;
-        public ShadowBlur(value?: number): number;
-        public ShadowColor(value?: string): string;
-        public GlobalCompositeOperation(value?: string): string;
-        public Font(value?: string): string;
-        public TextAlign(value?: string): string;
-        public TextBaseline(value?: string): string;
+        public StrokeStyle : string;
+        public FillStyle : string;
+        public GlobalAlpha : number;
+        public LineWidth : number;
+        public LineCap : string;
+        public LineJoin : string;
+        public MiterLimit : number;
+        public ShadowOffsetX : number;
+        public ShadowOffsetY : number;
+        public ShadowBlur : number;
+        public ShadowColor : string;
+        public GlobalCompositeOperation : string;
+        public Font : string;
+        public TextAlign : string;
+        public TextBaseline : string;
         public SetContextState(context: CanvasRenderingContext2D): void;
-        private GetOrSetCache(property, value);
     }
 }
 declare module eg.Graphics.Abstractions {
@@ -1980,24 +1982,6 @@ declare module eg.InputControllers {
 }
 declare module eg.Graphics.Assets {
     /**
-    * Defines valid FontMeasurements that can be used to increase or decrease font sizes of Text2d's.
-    */
-    enum FontMeasurement {
-        Ems,
-        Pixels,
-        Points,
-        Percent,
-    }
-}
-declare module eg.Graphics.Assets._ {
-    class FontMeasurementHelper {
-        static _measurements: string[];
-        static _Initialize(): void;
-        static Get(measurement: Assets.FontMeasurement): string;
-    }
-}
-declare module eg.Graphics.Assets {
-    /**
     * Defines valid FontFamilies that can be used to display Text2d's differently.
     */
     enum FontFamily {
@@ -2026,15 +2010,6 @@ declare module eg.Graphics.Assets {
         Verdana,
     }
 }
-declare module eg.Graphics.Assets._ {
-    class FontFamilyHelper {
-        static _families: {
-            [family: number]: string;
-        };
-        static _Initialize(): void;
-        static Get(family: Assets.FontFamily): string;
-    }
-}
 declare module eg.Graphics.Assets {
     /**
     * Defines valid FontVariant's that can be used to change the appearance of Text2d's.
@@ -2042,15 +2017,6 @@ declare module eg.Graphics.Assets {
     enum FontVariant {
         Normal,
         SmallCaps,
-    }
-}
-declare module eg.Graphics.Assets._ {
-    class FontVariantHelper {
-        static _variants: {
-            [variant: number]: string;
-        };
-        static _Initialize(): void;
-        static Get(variant: Assets.FontVariant): string;
     }
 }
 declare module eg.Graphics.Assets {
@@ -2061,15 +2027,6 @@ declare module eg.Graphics.Assets {
         Normal,
         Italic,
         Oblique,
-    }
-}
-declare module eg.Graphics.Assets._ {
-    class FontStyleHelper {
-        static _styles: {
-            [family: number]: string;
-        };
-        static _Initialize(): void;
-        static Get(style: Assets.FontStyle): string;
     }
 }
 declare module eg.Graphics.Assets {
@@ -2089,56 +2046,44 @@ declare module eg.Graphics.Assets {
         /**
         * Gets the current font size.
         */
-        public FontSize(): string;
         /**
-        * Sets and gets the current font size with the measurement in points.
+        * Sets the current font size.  Expects values such as 20px.
         * @param size The new font size.
         */
-        public FontSize(size: number): string;
-        /**
-        * Sets and gets the current font size.
-        * @param size The new font size.
-        * @param measurement The new font sizes measurement type.
-        */
-        public FontSize(size: number, measurement: Assets.FontMeasurement): string;
+        public FontSize : string;
         /**
         * Gets the current font family.
         */
-        public FontFamily(): string;
         /**
-        * Sets and gets the current font family.
+        * Sets the current font family.
         * @param family The new font family.
         */
-        public FontFamily(family: Assets.FontFamily): string;
+        public FontFamily : Assets.FontFamily;
         /**
         * Gets the current font variant.
         */
-        public FontVariant(): string;
         /**
-        * Sets and gets the current font variant.
+        * Sets the current font variant.
         * @param variant The new font variant.
         */
-        public FontVariant(variant: Assets.FontVariant): string;
+        public FontVariant : Assets.FontVariant;
         /**
         * Gets the current font weight.
         */
-        public FontWeight(): string;
         /**
-        * Sets and gets the current font weight.
+        * Sets the current font weight.
         * @param weight The new font weight.
         */
-        public FontWeight(weight: string): string;
+        public FontWeight : string;
         /**
         * Gets the current font style.
         */
-        public FontStyle(): string;
         /**
         * Sets and gets the current font style.
         * @param style The new font style.
         */
-        public FontStyle(style: Assets.FontStyle): string;
+        public FontStyle : Assets.FontStyle;
         public _BuildFont(): string;
-        private GetOrSetCache(property, value);
     }
 }
 declare module eg.Graphics {
@@ -2170,30 +2115,95 @@ declare module eg.Graphics {
         /**
         * Gets the text alignment of the Text2d.
         */
-        public Align(): string;
         /**
-        * Gets and sets the text alignment of the Text2d.
+        * Gets the text alignment of the Text2d.
         * @param alignment The new textual alignment for the Text2d.  Values are "start", "end", "left", "center", or "right".
         */
-        public Align(alignment: string): string;
+        public Align : string;
         /**
         * Gets the text baseline of the Text2d.
         */
-        public Baseline(): string;
         /**
-        * Gets and sets the text baseline of the Text2d.
+        * Gets the text baseline of the Text2d.
         * @param baseline The new textual baseline for the Text2d.  Values are "top", "hanging", "middle", "alphabetic", "ideographic", and "bottom".
         */
-        public Baseline(baseline: string): string;
+        public Baseline : string;
         /**
         * Gets the current text color.
         */
-        public Color(): string;
         /**
-        * Gets and sets the current text color.
+        * Gets the current text color.
         * @param color The new color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
         */
-        public Color(color: string): string;
+        public Color : string;
+        /**
+        * Gets the current shadow color.
+        */
+        /**
+        * Sets the current shadow color.
+        * @param color The new shadow color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        */
+        public ShadowColor : string;
+        /**
+        * Gets the current horizontal shadow position.
+        */
+        /**
+        * Sets the current horizontal shadow position.
+        * @param x The shadows new horizontal position.
+        */
+        public ShadowX : number;
+        /**
+        * Gets the current vertical shadow position.
+        */
+        /**
+        * Sets the current vertical shadow position.
+        * @param y The shadows new vertical position.
+        */
+        public ShadowY : number;
+        /**
+        * Gets the current shadow blur.
+        */
+        /**
+        * Sets the current shadow blur.
+        * @param blur The shadows new blur.
+        */
+        public ShadowBlur : number;
+        /**
+        * Gets the current opacity.  Value is between 0 and 1.
+        */
+        /**
+        * Sets the current opacity.
+        * @param alpha New opacity, value is between 0 and 1.
+        */
+        public Opacity : number;
+        /**
+        * Gets the Text2d's FontSetting's.
+        */
+        public FontSettings : Graphics.Assets.FontSettings;
+        /**
+        * Gets the current border thickness.
+        */
+        /**
+        * Sets the current border thickness.
+        * @param thickness The new border thickness in pixels.
+        */
+        public BorderThickness : number;
+        /**
+        * Gets the current border color.
+        */
+        /**
+        * Sets the current border color.
+        * @param color The new border color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        */
+        public BorderColor : string;
+        /**
+        * Gets the current Text2d's text.
+        */
+        /**
+        * Sets and gets the current Text2d's text.
+        * @param text The new text.
+        */
+        public Text : string;
         /**
         * Sets the current shadow x and y positions.
         * @param x The shadows new horizontal position.
@@ -2216,87 +2226,11 @@ declare module eg.Graphics {
         */
         public Shadow(x: number, y: number, color: string, blur: number): void;
         /**
-        * Gets the current shadow color.
-        */
-        public ShadowColor(): string;
-        /**
-        * Sets and gets the current shadow color.
-        * @param color The new shadow color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-        */
-        public ShadowColor(color: string): string;
-        /**
-        * Gets the current horizontal shadow position.
-        */
-        public ShadowX(): number;
-        /**
-        * Sets and gets the current horizontal shadow position.
-        * @param x The shadows new horizontal position.
-        */
-        public ShadowX(x: number): number;
-        /**
-        * Gets the current vertical shadow position.
-        */
-        public ShadowY(): number;
-        /**
-        * Sets and gets the current vertical shadow position.
-        * @param y The shadows new vertical position.
-        */
-        public ShadowY(y: number): number;
-        /**
-        * Gets the current shadow blur.
-        */
-        public ShadowBlur(): number;
-        /**
-        * Sets and gets the current shadow blur.
-        * @param blur The shadows new blur.
-        */
-        public ShadowBlur(blur: number): number;
-        /**
-        * Gets the current opacity.  Value is between 0 and 1.
-        */
-        public Opacity(): number;
-        /**
-        * Sets and gets the current opacity.
-        * @param alpha New opacity, value is between 0 and 1.
-        */
-        public Opacity(alpha: number): number;
-        /**
-        * Gets the Text2d's FontSetting's.
-        */
-        public FontSettings(): Graphics.Assets.FontSettings;
-        /**
-        * Gets the current Text2d's text.
-        */
-        public Text(): string;
-        /**
-        * Sets and gets the current Text2d's text.
-        * @param text The new text.
-        */
-        public Text(text: string): string;
-        /**
         * Sets the current borders thickness and color.
         * @param thickness The new border thickness in pixels.
         * @param color The new border color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
         */
         public Border(thickness: number, color: string): void;
-        /**
-        * Gets the current border thickness.
-        */
-        public BorderThickness(): number;
-        /**
-        * Sets and gets the current border thickness.
-        * @param thickness The new border thickness in pixels.
-        */
-        public BorderThickness(thickness: number): number;
-        /**
-        * Gets the current border color.
-        */
-        public BorderColor(): string;
-        /**
-        * Sets and gets the current border color.
-        * @param color The new border color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-        */
-        public BorderColor(color: string): string;
         /**
         * Draws the text onto the given context.  If this Text2d is part of a scene the Draw function will be called automatically.
         * @param context The canvas context to draw the text onto.
@@ -2328,6 +2262,7 @@ declare module eg.Graphics.Assets {
         private _size;
         private _loaded;
         private _imageLocation;
+        private _onLoaded;
         /**
         * Creates a new instance of the ImageSource object.
         * @param imageLocation Image source url (this cannot change after construction).
@@ -2355,11 +2290,11 @@ declare module eg.Graphics.Assets {
         * Event: Triggered when the base image is finished loading.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes the ImageSource to the bound functions.
         */
-        public OnLoaded: eg.EventHandler1<eg.Graphics.Assets.ImageSource>;
+        public OnLoaded : eg.EventHandler1<eg.Graphics.Assets.ImageSource>;
         /**
         * Returns the base Size of the image source.
         */
-        public Size(): eg.Size2d;
+        public Size : eg.Size2d;
         /**
         * Determines if the ImageSource has been loaded.
         */
@@ -2407,12 +2342,11 @@ declare module eg.Graphics {
         /**
         * Gets the current opacity.  Value is between 0 and 1.
         */
-        public Opacity(): number;
         /**
-        * Sets and gets the current opacity.
+        * Sets the current opacity.
         * @param alpha New opacity, value is between 0 and 1.
         */
-        public Opacity(alpha: number): number;
+        public Opacity : number;
         /**
         * Draws the sprite onto the given context.  If this sprite is part of a scene the Draw function will be called automatically.
         * @param context The canvas context to draw the sprite onto.
@@ -2440,6 +2374,7 @@ declare module eg.Graphics {
         private _framesPerRow;
         private _lastStepAt;
         private _stepEvery;
+        private _onComplete;
         /**
         * Creates a new instance of the SpriteAnimation object.
         * @param imageSource The Sprite sheet that contains the image frames used to display the animation.
@@ -2460,7 +2395,14 @@ declare module eg.Graphics {
         /**
         * Event: Triggered when the animation has completed, will not trigger if the animation is repeating.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
-        public OnComplete: eg.EventHandler;
+        public OnComplete : eg.EventHandler;
+        /**
+        * Gets the current frames per second.
+        */
+        /**
+        * Sets the current frames per second.
+        */
+        public Fps : number;
         /**
         * Determines if the animation is currently playing.
         */
@@ -2501,14 +2443,6 @@ declare module eg.Graphics {
         */
         public Reset(): void;
         /**
-        * Gets the current frames per second.
-        */
-        public Fps(): number;
-        /**
-        * Sets and gets the current frames per second.
-        */
-        public Fps(newFps: number): number;
-        /**
         * Updates the animations current frame.  Needs to be updated in order to play the animation.
         * @param gameTime The current game time object.
         */
@@ -2540,36 +2474,73 @@ declare module eg.Graphics.Abstractions {
         /**
         * Gets the current shape color.
         */
-        public Color(): string;
         /**
-        * Gets and sets the current shape color.
+        * Sets the current shape color.
         * @param color The new color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
         */
-        public Color(color: string): string;
+        public Color : string;
+        /**
+        * Gets the current border thickness.
+        */
+        /**
+        * Sets the current border thickness.
+        * @param thickness The new border thickness in pixels.
+        */
+        public BorderThickness : number;
+        /**
+        * Gets the current border color.
+        */
+        /**
+        * Sets the current border color.
+        * @param color The new border color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        */
+        public BorderColor : string;
+        /**
+        * Gets the current shadow color.
+        */
+        /**
+        * Sets the current shadow color.
+        * @param color The new shadow color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        */
+        public ShadowColor : string;
+        /**
+        * Gets the current horizontal shadow position.
+        */
+        /**
+        * Sets the current horizontal shadow position.
+        * @param x The shadows new horizontal position.
+        */
+        public ShadowX : number;
+        /**
+        * Gets the current vertical shadow position.
+        */
+        /**
+        * Sets the current vertical shadow position.
+        * @param y The shadows new vertical position.
+        */
+        public ShadowY : number;
+        /**
+        * Gets the current shadow blur.
+        */
+        /**
+        * Sets the current shadow blur.
+        * @param blur The shadows new blur.
+        */
+        public ShadowBlur : number;
+        /**
+        * Gets the current opacity.  Value is between 0 and 1.
+        */
+        /**
+        * Sets the current opacity.
+        * @param alpha New opacity, value is between 0 and 1.
+        */
+        public Opacity : number;
         /**
         * Sets the current borders thickness and color.
         * @param thickness The new border thickness in pixels.
         * @param color The new border color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
         */
         public Border(thickness: number, color: string): void;
-        /**
-        * Gets the current border thickness.
-        */
-        public BorderThickness(): number;
-        /**
-        * Sets and gets the current border thickness.
-        * @param thickness The new border thickness in pixels.
-        */
-        public BorderThickness(thickness: number): number;
-        /**
-        * Gets the current border color.
-        */
-        public BorderColor(): string;
-        /**
-        * Sets and gets the current border color.
-        * @param color The new border color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-        */
-        public BorderColor(color: string): string;
         /**
         * Sets the current shadow x and y positions.
         * @param x The shadows new horizontal position.
@@ -2591,51 +2562,6 @@ declare module eg.Graphics.Abstractions {
         * @param blur The new shadow blur.
         */
         public Shadow(x: number, y: number, color: string, blur: number): void;
-        /**
-        * Gets the current shadow color.
-        */
-        public ShadowColor(): string;
-        /**
-        * Sets and gets the current shadow color.
-        * @param color The new shadow color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-        */
-        public ShadowColor(color: string): string;
-        /**
-        * Gets the current horizontal shadow position.
-        */
-        public ShadowX(): number;
-        /**
-        * Sets and gets the current horizontal shadow position.
-        * @param x The shadows new horizontal position.
-        */
-        public ShadowX(x: number): number;
-        /**
-        * Gets the current vertical shadow position.
-        */
-        public ShadowY(): number;
-        /**
-        * Sets and gets the current vertical shadow position.
-        * @param y The shadows new vertical position.
-        */
-        public ShadowY(y: number): number;
-        /**
-        * Gets the current shadow blur.
-        */
-        public ShadowBlur(): number;
-        /**
-        * Sets and gets the current shadow blur.
-        * @param blur The shadows new blur.
-        */
-        public ShadowBlur(blur: number): number;
-        /**
-        * Gets the current opacity.  Value is between 0 and 1.
-        */
-        public Opacity(): number;
-        /**
-        * Sets and gets the current opacity.
-        * @param alpha New opacity, value is between 0 and 1.
-        */
-        public Opacity(alpha: number): number;
         public _StartDraw(context: CanvasRenderingContext2D): void;
         public _EndDraw(context: CanvasRenderingContext2D): void;
         public _BuildPath(context: CanvasRenderingContext2D): void;
@@ -2750,48 +2676,51 @@ declare module eg.Graphics {
         /**
         * Gets the From location of the Line2d.
         */
-        public From(): eg.Vector2d;
         /**
-        * Sets and gets the new From location of the Line2d.
+        * Sets the From location of the Line2d.
         * @param newPosition New From location.
         */
-        public From(newPosition: eg.Vector2d): eg.Vector2d;
+        public From : eg.Vector2d;
         /**
         * Gets the To location of the Line2d.
         */
-        public To(): eg.Vector2d;
         /**
-        * Sets and gets the new To location of the Line2d.
+        * Sets the To location of the Line2d.
         * @param newPosition New To location.
         */
-        public To(newPosition: eg.Vector2d): eg.Vector2d;
+        public To : eg.Vector2d;
         /**
-        * Gets the current line color.
+        * Gets the line color.
         */
-        public Color(): string;
         /**
-        * Gets and sets the current line color.
+        * Sets the line color.
         * @param color The new color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
         */
-        public Color(color: string): string;
+        public Color : string;
         /**
-        * Gets the current line width.
+        * Gets the line width.
         */
-        public LineWidth(): number;
         /**
-        * Gets and sets the current line width.
+        * Sets the line width.
         * @param width The new line width.
         */
-        public LineWidth(width: number): number;
+        public LineWidth : number;
         /**
-        * Gets the current line cap.
+        * Gets the line cap.
         */
-        public LineCap(): string;
         /**
-        * Gets and sets the current line cap.
+        * Sets the line cap.
         * @param width The new line cap.  Values can be "butt", "round", "square".
         */
-        public LineCap(cap: string): string;
+        public LineCap : string;
+        /**
+        * Gets the current opacity.  Value is between 0 and 1.
+        */
+        /**
+        * Sets the current opacity.
+        * @param alpha New opacity, value is between 0 and 1.
+        */
+        public Opacity : number;
         /**
         * Draws the line onto the given context.  If this Line2d is part of a scene the Draw function will be called automatically.
         * @param context The canvas context to draw the line onto.
@@ -2803,7 +2732,6 @@ declare module eg.Graphics {
         public GetDrawBounds(): eg.Bounds.Abstractions.Bounds2d;
         private UpdatePosition();
         private RefreshCache();
-        private GetOrSetLinePoint(name, newPosition?);
     }
 }
 declare module eg.Graphics {
@@ -2860,37 +2788,35 @@ declare module eg.Graphics {
         /**
         * Gets the current grid line color.  Grid lines are only drawn of DrawGridLines is set to true.
         */
-        public GridLineColor(): string;
         /**
-        * Gets and sets the current grid line color.  Grid lines are only drawn of DrawGridLines is set to true.
+        * Sets the current grid line color.  Grid lines are only drawn of DrawGridLines is set to true.
         * @param color The new grid line color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
         */
-        public GridLineColor(color: string): string;
+        public GridLineColor : string;
         /**
         * Gets the size of the grid.
         */
-        public Size(): eg.Size2d;
+        public Size : eg.Size2d;
         /**
         * Gets the size of the tiles.
         */
-        public TileSize(): eg.Size2d;
+        public TileSize : eg.Size2d;
         /**
         * Gets the number of rows
         */
-        public Rows(): number;
+        public Rows : number;
         /**
         * Gets the number of columns
         */
-        public Columns(): number;
+        public Columns : number;
         /**
         * Gets the current opacity.  Value is between 0 and 1.
         */
-        public Opacity(): number;
         /**
-        * Sets and gets the current opacity.
+        * Sets the current opacity.
         * @param alpha New opacity, value is between 0 and 1.
         */
-        public Opacity(alpha: number): number;
+        public Opacity : number;
         /**
         * Fills a tile with the provided graphic.
         * @param row The row.

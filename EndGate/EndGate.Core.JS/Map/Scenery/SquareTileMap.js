@@ -77,7 +77,7 @@ var eg;
             };
 
             SquareTileMap.prototype.BuildCache = function () {
-                var size = this._grid.Size(), originalPosition = this._grid.Position;
+                var size = this._grid.Size, originalPosition = this._grid.Position;
 
                 this._mapCache = document.createElement("canvas");
                 this._mapCache.width = size.Width;
@@ -96,7 +96,7 @@ var eg;
                     tiles[i] = [];
                     for (var j = 0; j < mappings[i].length; j++) {
                         if (mappings[i][j] >= 0) {
-                            tiles[i].push(new Map.SquareTile(this._Resources[mappings[i][j]], this._grid.TileSize().Width, this._grid.TileSize().Height));
+                            tiles[i].push(new Map.SquareTile(this._Resources[mappings[i][j]], this._grid.TileSize.Width, this._grid.TileSize.Height));
                         } else {
                             tiles[i].push(null);
                         }

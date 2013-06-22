@@ -1406,6 +1406,8 @@ module eg.Collision {
 
         private static _collidableIDs: number = 0;
         private _disposed: bool;
+        private _onCollision: EventHandler1<Assets.CollisionData>;
+        private _onDisposed: EventHandler1<Collidable>;
 
         /**
         * Creates a new instance of Collidable.
@@ -1416,19 +1418,23 @@ module eg.Collision {
             this.Bounds = bounds;
             this._id = Collidable._collidableIDs++;
 
-            this.OnCollision = new EventHandler1<Assets.CollisionData>();
-            this.OnDisposed = new EventHandler1<Collidable>();
+            this._onCollision = new EventHandler1<Assets.CollisionData>();
+            this._onDisposed = new EventHandler1<Collidable>();
         }
 
         /**
         * Event: Triggered when a collision happens.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes a CollisionData object to bound functions.
         */
-        public OnCollision: EventHandler1<Assets.CollisionData>;
+        public get OnCollision(): EventHandler1<Assets.CollisionData> {
+            return this._onCollision;
+        }
         /**
         * Event: Triggered when a Collidable has been disposed.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
-        public OnDisposed: EventHandler1<Collidable>;
+        public get OnDisposed(): EventHandler1<Collidable> {
+            return this._onDisposed;
+        }
 
         /**
         * Determines if the provided collidable is colliding with this Collidable.
@@ -1543,6 +1549,7 @@ module eg.Collision {
     export class CollisionManager implements IUpdateable, _.ITyped {
         public _type: string = "CollisionManager";
         private _collidables: Collidable[];
+        private _onCollision: EventHandler2<Collidable, Collidable>;
         private _enabled: bool;
 
         /**
@@ -1552,14 +1559,16 @@ module eg.Collision {
             this._collidables = [];
             this._enabled = false;
 
-            this.OnCollision = new EventHandler2<Collidable, Collidable>();
+            this._onCollision = new EventHandler2<Collidable, Collidable>();
         }
 
         /**
         * Event: Triggered when a collision happens among two of the monitored objects.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes two CollisionData objects to bound functions.
         */
-        public OnCollision: EventHandler2<Collidable, Collidable>;
+        public get OnCollision(): EventHandler2<Collidable, Collidable> {
+            return this._onCollision;
+        }
 
         /**
         * Monitors the provided collidable and will trigger its Collided function and OnCollision event whenever a collision occurs with it and another Collidable.
@@ -1577,7 +1586,7 @@ module eg.Collision {
         }
 
         /**
-        * Unmonitors the provided collidable.  The Collided function and OnCollision event will no longer be triggered when an actual collision may have occured.
+        * Unmonitors the provided collidable.  The Collided function and OnCollision event will no longer be triggered when an actual collision may have occurred.
         * Disposing a monitored collidable will automatically be unmonitored
         * @param obj Collidable to unmonitor.
         */
@@ -1628,79 +1637,131 @@ module eg.Graphics.Assets._ {
         constructor() {
             this._cachedState = {};
         }
-        
-        public StrokeStyle(value?: string): string {
-            return this.GetOrSetCache("strokeStyle", value);
+
+        public get StrokeStyle(): string {
+            return this._cachedState["strokeStyle"];
         }
 
-        public FillStyle(value?: string): string {
-            return this.GetOrSetCache("fillStyle", value);
+        public set StrokeStyle(value: string) {
+            this._cachedState["strokeStyle"] = value
         }
 
-        public GlobalAlpha(value?: number): number {
-            return this.GetOrSetCache("globalAlpha", value);
+        public get FillStyle(): string {
+            return this._cachedState["fillStyle"];
         }
 
-        public LineWidth(value?: number): number {
-            return this.GetOrSetCache("lineWidth", value);
+        public set FillStyle(value: string) {
+            this._cachedState["fillStyle"] = value;
         }
 
-        public LineCap(value?: string): string {
-            return this.GetOrSetCache("lineCap", value);
+        public get GlobalAlpha(): number {
+            return this._cachedState["globalAlpha"];
         }
 
-        public LineJoin(value?: string): string {
-            return this.GetOrSetCache("lineJoin", value);
+        public set GlobalAlpha(value: number) {
+            this._cachedState["globalAlpha"] = value;
         }
 
-        public MiterLimit(value?: number): number {
-            return this.GetOrSetCache("miterLimit", value);
-        }
-        
-        public ShadowOffsetX(value?: number): number {
-            return this.GetOrSetCache("shadowOffsetX", value);
+        public get LineWidth(): number {
+            return this._cachedState["lineWidth"];
         }
 
-        public ShadowOffsetY(value?: number): number {
-            return this.GetOrSetCache("shadowOffsetY", value);
+        public set LineWidth(value: number) {
+            this._cachedState["lineWidth"] = value;
         }
 
-        public ShadowBlur(value?: number): number {
-            return this.GetOrSetCache("shadowBlur", value);
+        public get LineCap(): string {
+            return this._cachedState["lineCap"];
         }
 
-        public ShadowColor(value?: string): string {
-            return this.GetOrSetCache("shadowColor", value);
+        public set LineCap(value: string) {
+            this._cachedState["lineCap"] = value;
         }
 
-        public GlobalCompositeOperation(value?: string): string {
-            return this.GetOrSetCache("globalCompositeOperation", value);
+        public get LineJoin(): string {
+            return this._cachedState["lineJoin"];
         }
 
-        public Font(value?: string): string {
-            return this.GetOrSetCache("font", value);
+        public set LineJoin(value: string) {
+            this._cachedState["lineJoin"] = value;
         }
 
-        public TextAlign(value?: string): string {
-            return this.GetOrSetCache("textAlign", value);
+        public get MiterLimit(): number {
+            return this._cachedState["miterLimit"];
         }
 
-        public TextBaseline(value?: string): string {
-            return this.GetOrSetCache("textBaseline", value);
+        public set MiterLimit(value: number) {
+            this._cachedState["miterLimit"] = value;
+        }
+
+        public get ShadowOffsetX(): number {
+            return this._cachedState["shadowOffsetX"];
+        }
+
+        public set ShadowOffsetX(value: number) {
+            this._cachedState["shadowOffsetX"] = value;
+        }
+
+        public get ShadowOffsetY(): number {
+            return this._cachedState["shadowOffsetY"];
+        }
+
+        public set ShadowOffsetY(value: number) {
+            this._cachedState["shadowOffsetY"] = value;
+        }
+
+        public get ShadowBlur(): number {
+            return this._cachedState["shadowBlur"];
+        }
+
+        public set ShadowBlur(value: number) {
+            this._cachedState["shadowBlur"] = value;
+        }
+
+        public get ShadowColor(): string {
+            return this._cachedState["shadowColor"];
+        }
+
+        public set ShadowColor(value: string) {
+            this._cachedState["shadowColor"] = value;
+        }
+
+        public get GlobalCompositeOperation(): string {
+            return this._cachedState["globalCompositeOperation"];
+        }
+
+        public set GlobalCompositeOperation(value: string) {
+            this._cachedState["globalCompositeOperation"] = value;
+        }
+
+        public get Font(): string {
+            return this._cachedState["font"];
+        }
+
+        public set Font(value: string) {
+            this._cachedState["font"] = value;
+        }
+
+        public get TextAlign(): string {
+            return this._cachedState["textAlign"];
+        }
+
+        public set TextAlign(value: string) {
+            this._cachedState["textAlign"] = value;
+        }
+
+        public get TextBaseline(): string {
+            return this._cachedState["textBaseline"];
+        }
+
+        public set TextBaseline(value: string) {
+            this._cachedState["textBaseline"] = value;
         }
 
         public SetContextState(context: CanvasRenderingContext2D): void {
             for (var key in this._cachedState) {
                 context[key] = this._cachedState[key];
             }
-        }
-
-        private GetOrSetCache(property: string, value: any): any {
-            if (typeof value !== "undefined") {
-                this._cachedState[property] = value;
-            }
-
-            return this._cachedState[property];
         }
     }
 
@@ -2006,48 +2067,44 @@ module eg.Bounds {
         * Calculates the top left corner of the BoundingRectangle.
         */
         public get TopLeft(): Vector2d {
-            var v = new Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);
             if (this.Rotation === 0) {
-                return v;
+                return new Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);
             }
 
-            return v.RotateAround(this.Position, this.Rotation);
+            return new Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight).RotateAround(this.Position, this.Rotation);
         }
 
         /** 
         * Calculates the top right corner of the BoundingRectangle.
         */
         public get TopRight(): Vector2d {
-            var v = new Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);
             if (this.Rotation === 0) {
-                return v;
+                return new Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);
             }
 
-            return v.RotateAround(this.Position, this.Rotation);
+            return new Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight).RotateAround(this.Position, this.Rotation);
         }
 
         /** 
         * Calculates the bottom left corner of the BoundingRectangle.
         */
         public get BotLeft(): Vector2d {
-            var v = new Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);
             if (this.Rotation === 0) {
-                return v;
+                return new Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);
             }
 
-            return v.RotateAround(this.Position, this.Rotation);
+            return new Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight).RotateAround(this.Position, this.Rotation);
         }
 
         /** 
         * Calculates the bottom right corner of the BoundingRectangle.
         */
         public get BotRight(): Vector2d {
-            var v = new Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);
             if (this.Rotation === 0) {
-                return v;
+                return new Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);
             }
 
-            return v.RotateAround(this.Position, this.Rotation);
+            return new Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight).RotateAround(this.Position, this.Rotation);
         }
 
         /**
@@ -4314,35 +4371,6 @@ module eg.InputControllers {
     }
 
 }
-/* FontMeasurement.ts */
-module eg.Graphics.Assets {
-
-    /**
-    * Defines valid FontMeasurements that can be used to increase or decrease font sizes of Text2d's.
-    */
-    export enum FontMeasurement {
-        Ems,
-        Pixels,
-        Points,
-        Percent
-    };    
-}
-
-module eg.Graphics.Assets._ {
-    export class FontMeasurementHelper {
-        public static _measurements: string[];
-
-        public static _Initialize() {
-            FontMeasurementHelper._measurements = ["em", "px", "pt", "%"];
-        }
-
-        public static Get(measurement: FontMeasurement): string {
-            return FontMeasurementHelper._measurements[measurement];
-        }
-    }
-
-    FontMeasurementHelper._Initialize();
-}
 /* FontFamily.ts */
 module eg.Graphics.Assets {
 
@@ -4376,30 +4404,6 @@ module eg.Graphics.Assets {
     };
 
 }
-
-module eg.Graphics.Assets._ {
-    export class FontFamilyHelper {
-        public static _families: { [family: number]: string; };
-
-        public static _Initialize() {
-            FontFamilyHelper._families = (<{ [family: number]: string; } >{});
-
-            for (var family in FontFamily) {
-                if (family !== "_map") {
-                    FontFamilyHelper._families[FontFamily[family]] = family;
-                }
-            }
-
-            FontFamilyHelper._families[FontFamily["TimesNewRoman"]] = "Times New Roman";
-        }
-
-        public static Get(family: FontFamily): string {
-            return FontFamilyHelper._families[family];
-        }
-    }
-
-    FontFamilyHelper._Initialize();
-}
 /* FontVariant.ts */
 module eg.Graphics.Assets {
 
@@ -4411,30 +4415,6 @@ module eg.Graphics.Assets {
         SmallCaps
     };    
 
-}
-
-module eg.Graphics.Assets._ {
-    export class FontVariantHelper {
-        public static _variants: { [variant: number]: string; };
-
-        public static _Initialize() {
-            FontVariantHelper._variants = (<{ [family: number]: string; } >{});
-
-            for (var family in FontVariant) {
-                if (family !== "_map") {
-                    FontVariantHelper._variants[FontVariant[family]] = family;
-                }
-            }
-
-            FontVariantHelper._variants["SmallCaps"] = "Times New Roman";
-        }
-
-        public static Get(variant: FontVariant): string {
-            return FontVariantHelper._variants[variant];
-        }
-    }
-
-    FontVariantHelper._Initialize();
 }
 /* FontStyle.ts */
 module eg.Graphics.Assets {
@@ -4449,30 +4429,7 @@ module eg.Graphics.Assets {
     }
 
 }
-
-module eg.Graphics.Assets._ {
-    export class FontStyleHelper {
-        public static _styles: { [family: number]: string; };
-
-        public static _Initialize() {
-            FontStyleHelper._styles = (<{ [family: number]: string; } >{});
-
-            for (var style in FontStyle) {
-                if (style !== "_map") {
-                    FontStyleHelper._styles[FontStyle[style]] = style;
-                }
-            }
-        }
-
-        public static Get(style: FontStyle): string {
-            return FontStyleHelper._styles[style];
-        }
-    }
-
-    FontStyleHelper._Initialize();
-}
 /* FontSettings.ts */
-
 
 
 
@@ -4495,10 +4452,10 @@ module eg.Graphics.Assets {
         constructor() {
             this._cachedState = {
                 fontSize: "10px",
-                fontFamily: "Times New Roman",
-                fontVariant: "",
+                fontFamily: FontFamily.TimesNewRoman,
+                fontVariant: FontVariant.Normal,
                 fontWeight: "",
-                fontStyle: ""
+                fontStyle: FontStyle.Normal
             };
 
             this._refreshCache = true;
@@ -4508,109 +4465,97 @@ module eg.Graphics.Assets {
         /**
         * Gets the current font size.
         */
-        public FontSize(): string;
-        /**
-        * Sets and gets the current font size with the measurement in points.
-        * @param size The new font size.
-        */
-        public FontSize(size: number): string;
-        /**
-        * Sets and gets the current font size.
-        * @param size The new font size.
-        * @param measurement The new font sizes measurement type.
-        */
-        public FontSize(size: number, measurement: FontMeasurement): string;
-        public FontSize(size?: number, measurement: FontMeasurement = FontMeasurement.Points): string {
-            if (size !== undefined) {
-                return this.GetOrSetCache("fontSize", size.toString() + _.FontMeasurementHelper.Get(measurement));
-            }
-            
+        public get FontSize(): string {
             return this._cachedState["fontSize"];
+        }
+        /**
+        * Sets the current font size.  Expects values such as 20px.
+        * @param size The new font size.
+        */
+        public set FontSize(size: string) {
+            this._refreshCache = true;
+            this._cachedState["fontSize"] = size;
         }
 
         /**
         * Gets the current font family.
         */
-        public FontFamily(): string;
+        public get FontFamily(): FontFamily {
+            return this._cachedState["fontFamily"];
+        }
+
         /**
-        * Sets and gets the current font family.
+        * Sets the current font family.
         * @param family The new font family.
         */
-        public FontFamily(family: FontFamily): string;
-        public FontFamily(family?: FontFamily): string {
-            return this.GetOrSetCache("fontFamily", _.FontFamilyHelper.Get(family));
+        public set FontFamily(family: FontFamily) {
+            this._refreshCache = true;
+            this._cachedState["fontFamily"] = family;
         }
 
         /**
         * Gets the current font variant.
         */
-        public FontVariant(): string;
+        public get FontVariant(): FontVariant {
+            return this._cachedState["fontVariant"];
+        }
+
         /**
-        * Sets and gets the current font variant.
+        * Sets the current font variant.
         * @param variant The new font variant.
         */
-        public FontVariant(variant: FontVariant): string;
-        public FontVariant(variant?: FontVariant): string {
-            return this.GetOrSetCache("fontVariant", _.FontVariantHelper.Get(variant));
+        public set FontVariant(variant: FontVariant) {
+            this._refreshCache = true;
+            this._cachedState["fontVariant"] = variant;
         }
 
         /**
         * Gets the current font weight.
         */
-        public FontWeight(): string;
+        public get FontWeight(): string {
+            return this._cachedState["fontWeight"];
+        }
+
         /**
-        * Sets and gets the current font weight.
+        * Sets the current font weight.
         * @param weight The new font weight.
         */
-        public FontWeight(weight: string): string;
-        public FontWeight(weight?: string): string {
-            return this.GetOrSetCache("fontWeight", weight);
+        public set FontWeight(weight: string) {
+            this._refreshCache = true;
+            this._cachedState["fontWeight"] = weight;
         }
 
         /**
         * Gets the current font style.
         */
-        public FontStyle(): string;
+        public get FontStyle(): FontStyle {
+            return this._cachedState["fontStyle"];
+        }
+
         /**
         * Sets and gets the current font style.
         * @param style The new font style.
         */
-        public FontStyle(style: FontStyle): string;
-        public FontStyle(style?: FontStyle): string {
-            return this.GetOrSetCache("fontStyle", _.FontStyleHelper.Get(style));
+        public set FontStyle(style: FontStyle) {
+            this._refreshCache = true;
+            this._cachedState["fontStyle"] = style;
         }
 
         public _BuildFont(): string {
             var font;
 
             if (this._refreshCache) {
-                font = this._cachedState["fontWeight"] + " " + this._cachedState["fontStyle"] + " " + this._cachedState["fontSize"] + " " + this._cachedState["fontVariant"];
+                font = this._cachedState["fontWeight"] + " " + FontStyle[this._cachedState["fontStyle"]].replace("Normal", "") + " " + FontVariant[this._cachedState["fontVariant"]].replace("Normal", "")+ " " + this._cachedState["fontSize"];
 
-                if (this._cachedState["fontFamily"]) {
-                    font += this._cachedState["fontFamily"];
-
-                    if (this._cachedState["fontFamilyType"]) {
-                        font += ", " + this._cachedState["fontFamilyType"];
-                    }
+                if (this._cachedState["fontFamily"] !== undefined) {
+                    font += " " + FontFamily[this._cachedState["fontFamily"]];
                 }
-                else if (this._cachedState["fontFamilyType"]) {
-                    font += this._cachedState["fontFamilyType"];
-                }
-
+                               
                 this._cachedFont = font.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
                 this._refreshCache = false;
             }
 
             return this._cachedFont;
-        }
-
-        private GetOrSetCache(property: string, value: any): any {
-            if (typeof value !== "undefined") {
-                this._cachedState[property] = value;
-                this._refreshCache = true;
-            }
-
-            return this._cachedState[property];
         }
     }
 }
@@ -4664,48 +4609,192 @@ module eg.Graphics {
             this._recalculateBoundsSize = true;
 
             this._fontSettings = new Assets.FontSettings();
-            this.Align("center");
-            this.Baseline("middle");
-            this.Color(color);
+            this.Align = "center";
+            this.Baseline = "middle";
+            this.Color = color;
         }
 
         /**
         * Gets the text alignment of the Text2d.
         */
-        public Align(): string;
+        public get Align(): string {
+            return this._State.TextAlign;
+        }
+
         /**
-        * Gets and sets the text alignment of the Text2d.
+        * Gets the text alignment of the Text2d.
         * @param alignment The new textual alignment for the Text2d.  Values are "start", "end", "left", "center", or "right".
         */
-        public Align(alignment: string): string;
-        public Align(alignment?: string): string {
-            return this._State.TextAlign(alignment);
-        }
+        public set Align(alignment: string) {
+            this._State.TextAlign = alignment;
+        }        
 
         /**
         * Gets the text baseline of the Text2d.
         */
-        public Baseline(): string;
+        public get Baseline(): string {
+            return this._State.TextBaseline;
+        }
+
         /**
-        * Gets and sets the text baseline of the Text2d.
+        * Gets the text baseline of the Text2d.
         * @param baseline The new textual baseline for the Text2d.  Values are "top", "hanging", "middle", "alphabetic", "ideographic", and "bottom".
         */
-        public Baseline(baseline: string): string;
-        public Baseline(baseline?: string): string {
-            return this._State.TextBaseline(baseline);
+        public set Baseline(baseline: string) {
+            this._State.TextBaseline = baseline;
         }
 
         /**
         * Gets the current text color.
         */
-        public Color(): string;
+        public get Color(): string {
+            return this._State.FillStyle;
+        }
+
         /**
-        * Gets and sets the current text color.
+        * Gets the current text color.
         * @param color The new color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
         */
-        public Color(color: string): string;
-        public Color(color?: string): string {
-            return this._State.FillStyle(color);
+        public set Color(color: string) {
+            this._State.FillStyle = color;
+        }
+
+        /**
+        * Gets the current shadow color.
+        */
+        public get ShadowColor(): string {
+            return this._State.ShadowColor;
+        }
+
+        /**
+        * Sets the current shadow color.
+        * @param color The new shadow color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        */
+        public set ShadowColor(color: string) {
+            this._State.ShadowColor = color;
+        }
+
+        /**
+        * Gets the current horizontal shadow position.
+        */
+        public get ShadowX(): number {
+            return this._State.ShadowOffsetX;
+        }
+
+        /**
+        * Sets the current horizontal shadow position.
+        * @param x The shadows new horizontal position.
+        */
+        public set ShadowX(x: number) {
+            this._State.ShadowOffsetX = x;
+        }
+
+        /**
+        * Gets the current vertical shadow position.
+        */
+        public get ShadowY(): number {
+            return this._State.ShadowOffsetY;
+        }
+
+        /**
+        * Sets the current vertical shadow position.
+        * @param y The shadows new vertical position.
+        */
+        public set ShadowY(y: number) {
+            this._State.ShadowOffsetY = y;
+        }
+
+        /**
+        * Gets the current shadow blur.
+        */
+        public get ShadowBlur(): number {
+            return this._State.ShadowBlur;
+        }
+
+        /**
+        * Sets the current shadow blur.
+        * @param blur The shadows new blur.
+        */
+        public set ShadowBlur(blur: number) {
+            this._State.ShadowBlur = blur;
+        }
+
+        /**
+        * Gets the current opacity.  Value is between 0 and 1.
+        */
+        public get Opacity(): number {
+            return this._State.GlobalAlpha;
+        }
+
+        /**
+        * Sets the current opacity.
+        * @param alpha New opacity, value is between 0 and 1.
+        */
+        public set Opacity(alpha: number) {
+            this._State.GlobalAlpha = alpha;
+        }
+
+        /**
+        * Gets the Text2d's FontSetting's.
+        */
+        public get FontSettings(): Assets.FontSettings {
+            this._recalculateBoundsSize = true;
+
+            return this._fontSettings;
+        }
+
+        /**
+* Gets the current border thickness.
+*/
+        public get BorderThickness(): number {
+            return this._State.LineWidth;
+        }
+
+        /**
+        * Sets the current border thickness.
+        * @param thickness The new border thickness in pixels.
+        */
+        public set BorderThickness(thickness: number) {
+            if (thickness === 0) {
+                this._stroker.Reset();
+            }
+            else {
+                this._stroker.Trip();
+            }
+
+            this._State.LineWidth = thickness;
+        }
+
+        /**
+        * Gets the current border color.
+        */
+        public get BorderColor(): string {
+            return this._State.StrokeStyle;
+        }
+
+        /**
+        * Sets the current border color.
+        * @param color The new border color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        */
+        public set BorderColor(color: string) {
+            this._stroker.Trip();
+            this._State.StrokeStyle = color;
+        }
+
+        /**
+        * Gets the current Text2d's text.
+        */
+        public get Text(): string {
+            return this._text;
+        }
+
+        /**
+        * Sets and gets the current Text2d's text.
+        * @param text The new text.
+        */
+        public set Text(text: string) {
+            this._recalculateBoundsSize = true;
+            this._text = text;
         }
 
         /**
@@ -4730,103 +4819,11 @@ module eg.Graphics {
         */
         public Shadow(x: number, y: number, color: string, blur: number): void;
         public Shadow(x: number, y: number, color?: string, blur?: number): void {
-            this.ShadowX(x);
-            this.ShadowY(y);
-            this.ShadowColor(color);
-            this.ShadowBlur(blur);
-        }
-
-        /**
-        * Gets the current shadow color.
-        */
-        public ShadowColor(): string;
-        /**
-        * Sets and gets the current shadow color.
-        * @param color The new shadow color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-        */
-        public ShadowColor(color: string): string;
-        public ShadowColor(color?: string): string {
-            return this._State.ShadowColor(color);
-        }
-
-        /**
-        * Gets the current horizontal shadow position.
-        */
-        public ShadowX(): number;
-        /**
-        * Sets and gets the current horizontal shadow position.
-        * @param x The shadows new horizontal position.
-        */
-        public ShadowX(x: number): number;
-        public ShadowX(x?: number): number {
-            return this._State.ShadowOffsetX(x);
-        }
-
-        /**
-        * Gets the current vertical shadow position.
-        */
-        public ShadowY(): number;
-        /**
-        * Sets and gets the current vertical shadow position.
-        * @param y The shadows new vertical position.
-        */
-        public ShadowY(y: number): number;
-        public ShadowY(y?: number): number {
-            return this._State.ShadowOffsetY(y);
-        }
-
-        /**
-        * Gets the current shadow blur.
-        */
-        public ShadowBlur(): number;
-        /**
-        * Sets and gets the current shadow blur.
-        * @param blur The shadows new blur.
-        */
-        public ShadowBlur(blur: number): number;
-        public ShadowBlur(blur?: number): number {
-            return this._State.ShadowBlur(blur);
-        }
-
-        /**
-        * Gets the current opacity.  Value is between 0 and 1.
-        */
-        public Opacity(): number;
-        /**
-        * Sets and gets the current opacity.
-        * @param alpha New opacity, value is between 0 and 1.
-        */
-        public Opacity(alpha: number): number;
-        public Opacity(alpha?: number): number {
-            return this._State.GlobalAlpha(alpha);
-        }
-
-        /**
-        * Gets the Text2d's FontSetting's.
-        */
-        public FontSettings(): Assets.FontSettings {
-            this._recalculateBoundsSize = true;
-
-            return this._fontSettings;
-        }
-
-        /**
-        * Gets the current Text2d's text.
-        */
-        public Text(): string;
-        /**
-        * Sets and gets the current Text2d's text.
-        * @param text The new text.
-        */
-        public Text(text: string): string;
-        public Text(text?: string): string {
-            if (typeof text !== "undefined") {
-                this._recalculateBoundsSize = true;
-                this._text = text;
-            }
-
-            return this._text;
-        }
+            this.ShadowX = x;
+            this.ShadowY = y;
+            this.ShadowColor = color;
+            this.ShadowBlur = blur;
+        }       
 
         /**
         * Sets the current borders thickness and color.
@@ -4834,42 +4831,8 @@ module eg.Graphics {
         * @param color The new border color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
         */
         public Border(thickness: number, color: string): void {
-            this.BorderThickness(thickness);
-            this.BorderColor(color);
-        }
-
-        /**
-        * Gets the current border thickness.
-        */
-        public BorderThickness(): number;
-        /**
-        * Sets and gets the current border thickness.
-        * @param thickness The new border thickness in pixels.
-        */
-        public BorderThickness(thickness: number): number;
-        public BorderThickness(thickness?: number): number {
-            if (thickness === 0) {
-                this._stroker.Reset();
-            }
-            else {
-                this._stroker.Trip();
-            }
-
-            return this._State.LineWidth(thickness);
-        }
-
-        /**
-        * Gets the current border color.
-        */
-        public BorderColor(): string;
-        /**
-        * Sets and gets the current border color.
-        * @param color The new border color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-        */
-        public BorderColor(color: string): string;
-        public BorderColor(color?: string): string {
-            this._stroker.Trip();
-            return this._State.StrokeStyle(color);
+            this.BorderThickness = thickness;
+            this.BorderColor = color;
         }
 
         /**
@@ -4881,7 +4844,7 @@ module eg.Graphics {
 
             super._StartDraw(context);
 
-            this._State.Font(this._fontSettings._BuildFont());
+            this._State.Font = this._fontSettings._BuildFont();
 
             context.fillText(this._text, 0, 0);
             this._stroker.Invoke(context);
@@ -4893,7 +4856,7 @@ module eg.Graphics {
                 this._recalculateBoundsSize = false;
                 textSize = context.measureText(this._text);
                 this._drawBounds.Size.Width = textSize.width;
-                this._drawBounds.Size.Height = parseInt(this._fontSettings.FontSize()) * 1.5;
+                this._drawBounds.Size.Height = parseInt(this._fontSettings.FontSize) * 1.5;
             }
         }
 
@@ -4907,7 +4870,6 @@ module eg.Graphics {
             return this._drawBounds;
         }
     }
-
 }
 /* ImageSource.ts */
 
@@ -4936,6 +4898,7 @@ module eg.Graphics.Assets {
         private _size: Size2d;
         private _loaded: bool;
         private _imageLocation;
+        private _onLoaded: EventHandler1<ImageSource>;
 
         /**
         * Creates a new instance of the ImageSource object.
@@ -4964,7 +4927,7 @@ module eg.Graphics.Assets {
             var setSize = typeof width !== "undefined";
 
             this._loaded = false;
-            this.OnLoaded = new EventHandler1<ImageSource>();
+            this._onLoaded = new EventHandler1<ImageSource>();
             this.Source = new Image();
 
             this.Source.onload = () => {
@@ -4976,7 +4939,7 @@ module eg.Graphics.Assets {
                     this.ClipSize = this._size.Clone();
                 }
 
-                this.OnLoaded.Trigger(this);
+                this._onLoaded.Trigger(this);
             };
 
             this.Source.src = imageLocation;
@@ -4993,12 +4956,14 @@ module eg.Graphics.Assets {
         * Event: Triggered when the base image is finished loading.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes the ImageSource to the bound functions.
         */
-        public OnLoaded: EventHandler1<ImageSource>;
+        public get OnLoaded(): EventHandler1<ImageSource> {
+            return this._onLoaded;
+        }
 
         /**
         * Returns the base Size of the image source.
         */
-        public Size(): Size2d {
+        public get Size(): Size2d {
             return this._size.Clone();
         }
 
@@ -5071,14 +5036,16 @@ module eg.Graphics {
         /**
         * Gets the current opacity.  Value is between 0 and 1.
         */
-        public Opacity(): number;
+        public get Opacity(): number {
+            return this._State.GlobalAlpha;
+        }
+
         /**
-        * Sets and gets the current opacity.
+        * Sets the current opacity.
         * @param alpha New opacity, value is between 0 and 1.
         */
-        public Opacity(alpha: number): number;
-        public Opacity(alpha?: number): number {
-            return this._State.GlobalAlpha(alpha);
+        public set Opacity(alpha: number) {
+            this._State.GlobalAlpha = alpha;
         }
 
         /**
@@ -5133,6 +5100,7 @@ module eg.Graphics {
         private _lastStepAt: number;
         // Step to the next frame ever X ms
         private _stepEvery: number;
+        private _onComplete: EventHandler;
 
         /**
         * Creates a new instance of the SpriteAnimation object.
@@ -5162,15 +5130,32 @@ module eg.Graphics {
             this._framesPerRow = Math.min(Math.floor((imageSource.ClipSize.Width - startOffset.X) / frameSize.Width), frameCount);
             this._lastStepAt = 0;
 
-            this.OnComplete = new EventHandler();
+            this._onComplete = new EventHandler();
 
-            this.Fps(fps);
+            this.Fps = fps;
         }
 
         /**
         * Event: Triggered when the animation has completed, will not trigger if the animation is repeating.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
-        public OnComplete: EventHandler;
+        public get OnComplete(): EventHandler {
+            return this._onComplete;
+        }
+
+        /**
+        * Gets the current frames per second.
+        */
+        public get Fps(): number {
+            return this._fps;
+        }
+
+        /**
+        * Sets the current frames per second.
+        */
+        public set Fps(newFps: number) {
+            this._fps = newFps;
+            this._stepEvery = 1000 / this._fps;
+        }
 
         /**
         * Determines if the animation is currently playing.
@@ -5252,24 +5237,7 @@ module eg.Graphics {
         public Reset(): void {
             this._currentFrame = 0;
             this.UpdateImageSource();
-        }
-
-        /**
-        * Gets the current frames per second.
-        */
-        public Fps(): number;
-        /**
-        * Sets and gets the current frames per second.
-        */
-        public Fps(newFps: number): number;
-        public Fps(newFps?: number): number {
-            if (typeof newFps !== "undefined") {
-                this._fps = newFps;
-                this._stepEvery = 1000 / this._fps;
-            }
-
-            return this._fps;
-        }
+        }        
 
         /**
         * Updates the animations current frame.  Needs to be updated in order to play the animation.
@@ -5339,22 +5307,131 @@ module eg.Graphics.Abstractions {
             this._stroke = false;
 
             if (typeof color !== "undefined") {
-                this.Color(color);
+                this.Color = color;
             }
         }
 
         /**
         * Gets the current shape color.
         */
-        public Color(): string;
+        public get Color(): string {
+            return this._State.FillStyle;
+        }
+
         /**
-        * Gets and sets the current shape color.
+        * Sets the current shape color.
         * @param color The new color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
         */
-        public Color(color: string): string;
-        public Color(color?: string): string {
+        public set Color(color: string) {
             this._fill = true;
-            return this._State.FillStyle(color);
+            this._State.FillStyle = color;
+        }
+
+        /**
+        * Gets the current border thickness.
+        */
+        public get BorderThickness(): number {
+            return this._State.LineWidth;
+        }
+
+        /**
+        * Sets the current border thickness.
+        * @param thickness The new border thickness in pixels.
+        */
+        public set BorderThickness(thickness: number) {
+            this._State.LineWidth = thickness;
+        }
+
+        /**
+        * Gets the current border color.
+        */
+        public get BorderColor(): string {
+            return this._State.StrokeStyle;
+        }
+
+        /**
+        * Sets the current border color.
+        * @param color The new border color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        */
+        public set BorderColor(color: string) {
+            this._stroke = true;
+            this._State.StrokeStyle = color;
+        }
+
+        /**
+        * Gets the current shadow color.
+        */
+        public get ShadowColor(): string {
+            return this._State.ShadowColor;
+        }
+
+        /**
+        * Sets the current shadow color.
+        * @param color The new shadow color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        */
+        public set ShadowColor(color: string) {
+            this._fill = true;
+            this._State.ShadowColor = color;
+        }        
+
+        /**
+        * Gets the current horizontal shadow position.
+        */
+        public get ShadowX(): number {
+            return this._State.ShadowOffsetX;
+        }
+
+        /**
+        * Sets the current horizontal shadow position.
+        * @param x The shadows new horizontal position.
+        */
+        public set ShadowX(x: number) {
+            this._State.ShadowOffsetX = x;
+        }
+
+        /**
+        * Gets the current vertical shadow position.
+        */
+        public get ShadowY(): number {
+            return this._State.ShadowOffsetY;
+        }
+
+        /**
+        * Sets the current vertical shadow position.
+        * @param y The shadows new vertical position.
+        */
+        public set ShadowY(y: number) {
+            this._State.ShadowOffsetY = y;
+        }
+
+        /**
+        * Gets the current shadow blur.
+        */
+        public get ShadowBlur(): number {
+            return this._State.ShadowBlur;
+        }
+
+        /**
+        * Sets the current shadow blur.
+        * @param blur The shadows new blur.
+        */
+        public set ShadowBlur(blur: number) {
+            this._State.ShadowBlur = blur;
+        }
+
+        /**
+        * Gets the current opacity.  Value is between 0 and 1.
+        */
+        public get Opacity(): number {
+            return this._State.GlobalAlpha;
+        }
+
+        /**
+        * Sets the current opacity.
+        * @param alpha New opacity, value is between 0 and 1.
+        */
+        public set Opacity(alpha: number) {
+            this._State.GlobalAlpha = alpha;
         }
 
         /**
@@ -5363,35 +5440,8 @@ module eg.Graphics.Abstractions {
         * @param color The new border color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
         */
         public Border(thickness: number, color: string): void {
-            this.BorderThickness(thickness);
-            this.BorderColor(color);
-        }
-
-        /**
-        * Gets the current border thickness.
-        */
-        public BorderThickness(): number;
-        /**
-        * Sets and gets the current border thickness.
-        * @param thickness The new border thickness in pixels.
-        */
-        public BorderThickness(thickness: number): number;
-        public BorderThickness(thickness?: number): number {
-            return this._State.LineWidth(thickness);
-        }
-
-        /**
-        * Gets the current border color.
-        */
-        public BorderColor(): string;
-        /**
-        * Sets and gets the current border color.
-        * @param color The new border color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-        */
-        public BorderColor(color: string): string;
-        public BorderColor(color?: string): string {
-            this._stroke = true;
-            return this._State.StrokeStyle(color);
+            this.BorderThickness = thickness;
+            this.BorderColor = color;
         }
 
         /**
@@ -5416,76 +5466,10 @@ module eg.Graphics.Abstractions {
         */
         public Shadow(x: number, y: number, color: string, blur: number): void;
         public Shadow(x: number, y: number, color?: string, blur?: number): void {
-            this.ShadowX(x);
-            this.ShadowY(y);
-            this.ShadowColor(color);
-            this.ShadowBlur(blur);
-        }
-
-        /**
-        * Gets the current shadow color.
-        */
-        public ShadowColor(): string;
-        /**
-        * Sets and gets the current shadow color.
-        * @param color The new shadow color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-        */
-        public ShadowColor(color: string): string;
-        public ShadowColor(color?: string): string {
-            this._fill = true;
-            return this._State.ShadowColor(color);
-        }
-
-        /**
-        * Gets the current horizontal shadow position.
-        */
-        public ShadowX(): number;
-        /**
-        * Sets and gets the current horizontal shadow position.
-        * @param x The shadows new horizontal position.
-        */
-        public ShadowX(x: number): number;
-        public ShadowX(x?: number): number {
-            return this._State.ShadowOffsetX(x);
-        }
-
-        /**
-        * Gets the current vertical shadow position.
-        */
-        public ShadowY(): number;
-        /**
-        * Sets and gets the current vertical shadow position.
-        * @param y The shadows new vertical position.
-        */
-        public ShadowY(y: number): number;
-        public ShadowY(y?: number): number {
-            return this._State.ShadowOffsetY(y);
-        }
-
-        /**
-        * Gets the current shadow blur.
-        */
-        public ShadowBlur(): number;
-        /**
-        * Sets and gets the current shadow blur.
-        * @param blur The shadows new blur.
-        */
-        public ShadowBlur(blur: number): number;
-        public ShadowBlur(blur?: number): number {
-            return this._State.ShadowBlur(blur);
-        }
-
-        /**
-        * Gets the current opacity.  Value is between 0 and 1.
-        */
-        public Opacity(): number;
-        /**
-        * Sets and gets the current opacity.
-        * @param alpha New opacity, value is between 0 and 1.
-        */
-        public Opacity(alpha: number): number;
-        public Opacity(alpha?: number): number {
-            return this._State.GlobalAlpha(alpha);
+            this.ShadowX = x;
+            this.ShadowY = y;
+            this.ShadowColor = color;
+            this.ShadowBlur = blur;
         }
 
         public _StartDraw(context: CanvasRenderingContext2D): void {
@@ -5687,78 +5671,105 @@ module eg.Graphics {
 
             this._from = new Vector2d(fromX, fromY);
             this._to = new Vector2d(toX, toY);
-            this.LineWidth(lineWidth);
+            this.LineWidth = lineWidth;
             this.UpdatePosition();
 
             if (typeof color !== "undefined") {
-                this.Color(color);
+                this.Color = color;
             }
         }
 
         /**
         * Gets the From location of the Line2d.
         */
-        public From(): Vector2d;
+        public get From(): Vector2d {
+            return this._from;
+        }
+
         /**
-        * Sets and gets the new From location of the Line2d.
+        * Sets the From location of the Line2d.
         * @param newPosition New From location.
         */
-        public From(newPosition: Vector2d): Vector2d;
-        public From(newPosition?: Vector2d): Vector2d {
-            return this.GetOrSetLinePoint("from", newPosition);
+        public set From(newPosition: Vector2d) {
+            this._from = newPosition;
+            this.UpdatePosition();
         }
 
         /**
         * Gets the To location of the Line2d.
         */
-        public To(): Vector2d;
+        public get To(): Vector2d {
+            return this._to;
+        }
+
         /**
-        * Sets and gets the new To location of the Line2d.
+        * Sets the To location of the Line2d.
         * @param newPosition New To location.
         */
-        public To(newPosition: Vector2d): Vector2d;
-        public To(newPosition?: Vector2d): Vector2d {
-            return this.GetOrSetLinePoint("to", newPosition);
+        public set To(newPosition: Vector2d) {
+            this._to = newPosition;
+            this.UpdatePosition();
         }
 
         /**
-        * Gets the current line color.
+        * Gets the line color.
         */
-        public Color(): string;
+        public get Color(): string {
+            return this._State.StrokeStyle;
+        }
+
         /**
-        * Gets and sets the current line color.
+        * Sets the line color.
         * @param color The new color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
         */
-        public Color(color: string): string;
-        public Color(color?: string): string {
-            return this._State.StrokeStyle(color);
+        public set Color(color: string) {
+            this._State.StrokeStyle = color;
         }
 
         /**
-        * Gets the current line width.
+        * Gets the line width.
         */
-        public LineWidth(): number;
+        public get LineWidth(): number {
+            return this._State.LineWidth;
+        }
+
         /**
-        * Gets and sets the current line width.
+        * Sets the line width.
         * @param width The new line width.
         */
-        public LineWidth(width: number): number;
-        public LineWidth(width?: number): number {
-            return this._State.LineWidth(width);
+        public set LineWidth(width: number) {
+            this._State.LineWidth = width;
         }
 
         /**
-        * Gets the current line cap.
+        * Gets the line cap.
         */
-        public LineCap(): string;
+        public get LineCap(): string {
+            return this._State.LineCap;
+        }
+
         /**
-        * Gets and sets the current line cap.
+        * Sets the line cap.
         * @param width The new line cap.  Values can be "butt", "round", "square".
         */
-        public LineCap(cap: string): string;
-        public LineCap(cap?: string): string {
-            return this._State.LineCap(cap);
+        public set LineCap(cap: string) {
+            this._State.LineCap = cap;
+        }     
+        
+        /**
+        * Gets the current opacity.  Value is between 0 and 1.
+        */
+        public get Opacity(): number {
+            return this._State.GlobalAlpha;
         }
+
+        /**
+        * Sets the current opacity.
+        * @param alpha New opacity, value is between 0 and 1.
+        */
+        public set Opacity(alpha: number) {
+            this._State.GlobalAlpha = alpha;
+        }   
 
         /**
         * Draws the line onto the given context.  If this Line2d is part of a scene the Draw function will be called automatically.
@@ -5785,7 +5796,7 @@ module eg.Graphics {
         * The bounding area that represents where the Line2d will draw.
         */
         public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
-            var bounds = new Bounds.BoundingRectangle(this.Position, new Size2d(this._boundsWidth, this.LineWidth()));
+            var bounds = new Bounds.BoundingRectangle(this.Position, new Size2d(this._boundsWidth, this.LineWidth));
 
             bounds.Rotation = Math.atan2(this._difference.Y, this._difference.X) + this.Rotation;
 
@@ -5806,15 +5817,6 @@ module eg.Graphics {
             this._to.X += difference.X;
             this._to.Y += difference.Y;
             this._cachedPosition = this.Position.Clone();
-        }
-
-        private GetOrSetLinePoint(name: string, newPosition?: Vector2d): Vector2d {
-            if (typeof newPosition === "undefined") {
-                this["_" + name] = newPosition;
-                this.UpdatePosition();
-            }
-
-            return this["_" + name];
         }
     }
 
@@ -5914,71 +5916,71 @@ module eg.Graphics {
             this._gridLines.push(new Line2d(topLeft.X, bottomRight.Y, bottomRight.X, bottomRight.Y, 1));
             this._gridLines.push(new Line2d(bottomRight.X, topLeft.Y, bottomRight.X, bottomRight.Y, 1));
 
-            this.GridLineColor(gridLineColor);
+            this.GridLineColor = gridLineColor;
         }
 
         /**
         * Gets the current grid line color.  Grid lines are only drawn of DrawGridLines is set to true.
         */
-        public GridLineColor(): string;
-        /**
-        * Gets and sets the current grid line color.  Grid lines are only drawn of DrawGridLines is set to true.
-        * @param color The new grid line color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-        */
-        public GridLineColor(color: string): string;
-        public GridLineColor(color?: string): string {
-            if (typeof color !== "undefined") {
-                this._gridLineColor = color;
-
-                for (var i = 0; i < this._gridLines.length; i++) {
-                    this._gridLines[i].Color(color);
-                }
-            }
-
+        public get GridLineColor(): string {
             return this._gridLineColor;
         }
 
         /**
+        * Sets the current grid line color.  Grid lines are only drawn of DrawGridLines is set to true.
+        * @param color The new grid line color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        */
+        public set GridLineColor(color: string) {
+            this._gridLineColor = color;
+
+            for (var i = 0; i < this._gridLines.length; i++) {
+                this._gridLines[i].Color = color;
+            }
+        }        
+
+        /**
         * Gets the size of the grid.
         */
-        public Size(): Size2d {
+        public get Size(): Size2d {
             return this._size.Clone();
         }
 
         /**
         * Gets the size of the tiles.
         */
-        public TileSize(): Size2d {
+        public get TileSize(): Size2d {
             return this._tileSize.Clone();
         }
 
         /**
         * Gets the number of rows
         */
-        public Rows(): number {
+        public get Rows(): number {
             return this._rows;
         }
 
         /**
         * Gets the number of columns
         */
-        public Columns(): number {
+        public get Columns(): number {
             return this._columns;
         }
 
         /**
         * Gets the current opacity.  Value is between 0 and 1.
         */
-        public Opacity(): number;
-        /**
-        * Sets and gets the current opacity.
-        * @param alpha New opacity, value is between 0 and 1.
-        */
-        public Opacity(alpha: number): number;
-        public Opacity(alpha?: number): number {
-            return this._State.GlobalAlpha(alpha);
+        public get Opacity(): number {
+            return this._State.GlobalAlpha;
         }
 
+        /**
+        * Sets the current opacity.
+        * @param alpha New opacity, value is between 0 and 1.
+        */
+        public set Opacity(alpha: number) {
+            this._State.GlobalAlpha = alpha;
+        }
+        
         /**
         * Fills a tile with the provided graphic.
         * @param row The row.
@@ -6717,7 +6719,7 @@ module eg.Map {
         }
 
         private BuildCache(): void {
-            var size: Size2d = this._grid.Size(),
+            var size: Size2d = this._grid.Size,
                 originalPosition = this._grid.Position;
 
             this._mapCache = <HTMLCanvasElement>document.createElement("canvas");
@@ -6737,7 +6739,7 @@ module eg.Map {
                 tiles[i] = [];
                 for (var j = 0; j < mappings[i].length; j++) {
                     if (mappings[i][j] >= 0) {
-                        tiles[i].push(new SquareTile(this._Resources[mappings[i][j]], this._grid.TileSize().Width, this._grid.TileSize().Height));
+                        tiles[i].push(new SquareTile(this._Resources[mappings[i][j]], this._grid.TileSize.Width, this._grid.TileSize.Height));
                     }
                     else {
                         tiles[i].push(null);

@@ -35,9 +35,9 @@ var MapCreator;
             var layerMaps = this.BuildResourceMaps(), layers = this._getLayers();
 
             var settings = {
-                Rows: layers[0].Layer.Rows(),
-                Columns: layers[0].Layer.Columns(),
-                TileSize: layers[0].Layer.TileSize(),
+                Rows: layers[0].Layer.Rows,
+                Columns: layers[0].Layer.Columns,
+                TileSize: layers[0].Layer.TileSize,
                 SpriteSheetUrl: this._spriteSheetUrl,
                 Layers: layerMaps
             }, maps = localStorage.getItem(namespace);

@@ -23,10 +23,40 @@ var eg;
                 this._framesPerRow = Math.min(Math.floor((imageSource.ClipSize.Width - startOffset.X) / frameSize.Width), frameCount);
                 this._lastStepAt = 0;
 
-                this.OnComplete = new eg.EventHandler();
+                this._onComplete = new eg.EventHandler();
 
-                this.Fps(fps);
+                this.Fps = fps;
             }
+            Object.defineProperty(SpriteAnimation.prototype, "OnComplete", {
+                get: /**
+                * Event: Triggered when the animation has completed, will not trigger if the animation is repeating.  Functions can be bound or unbound to this event to be executed when the event triggers.
+                */
+                function () {
+                    return this._onComplete;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(SpriteAnimation.prototype, "Fps", {
+                get: /**
+                * Gets the current frames per second.
+                */
+                function () {
+                    return this._fps;
+                },
+                set: /**
+                * Sets the current frames per second.
+                */
+                function (newFps) {
+                    this._fps = newFps;
+                    this._stepEvery = 1000 / this._fps;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+
             /**
             * Determines if the animation is currently playing.
             */
@@ -82,15 +112,6 @@ var eg;
             SpriteAnimation.prototype.Reset = function () {
                 this._currentFrame = 0;
                 this.UpdateImageSource();
-            };
-
-            SpriteAnimation.prototype.Fps = function (newFps) {
-                if (typeof newFps !== "undefined") {
-                    this._fps = newFps;
-                    this._stepEvery = 1000 / this._fps;
-                }
-
-                return this._fps;
             };
 
             /**

@@ -21,6 +21,8 @@ module eg.Collision {
 
         private static _collidableIDs: number = 0;
         private _disposed: bool;
+        private _onCollision: EventHandler1<Assets.CollisionData>;
+        private _onDisposed: EventHandler1<Collidable>;
 
         /**
         * Creates a new instance of Collidable.
@@ -31,19 +33,23 @@ module eg.Collision {
             this.Bounds = bounds;
             this._id = Collidable._collidableIDs++;
 
-            this.OnCollision = new EventHandler1<Assets.CollisionData>();
-            this.OnDisposed = new EventHandler1<Collidable>();
+            this._onCollision = new EventHandler1<Assets.CollisionData>();
+            this._onDisposed = new EventHandler1<Collidable>();
         }
 
         /**
         * Event: Triggered when a collision happens.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes a CollisionData object to bound functions.
         */
-        public OnCollision: EventHandler1<Assets.CollisionData>;
+        public get OnCollision(): EventHandler1<Assets.CollisionData> {
+            return this._onCollision;
+        }
         /**
         * Event: Triggered when a Collidable has been disposed.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
-        public OnDisposed: EventHandler1<Collidable>;
+        public get OnDisposed(): EventHandler1<Collidable> {
+            return this._onDisposed;
+        }
 
         /**
         * Determines if the provided collidable is colliding with this Collidable.

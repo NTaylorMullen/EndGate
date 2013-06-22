@@ -25,8 +25,8 @@ module KeyboardInput {
             var keyStatus = new eg.Graphics.Text2d(xOffset, yOffset, "");
 
             // Apply default font settings
-            keyStatus.FontSettings().FontSize(this._fontSize);
-            keyStatus.Align(this._fontAlignment);
+            keyStatus.FontSettings.FontSize = this._fontSize + "pt";
+            keyStatus.Align = this._fontAlignment;
 
             // Add to game scene so the text is drawn
             gameScene.Add(keyStatus);
@@ -54,15 +54,15 @@ module KeyboardInput {
 
             // Bind the key handling events so that when we hit keys on the keyboard it updates the status viewers accordingly
             keyboard.OnKeyDown.Bind((kce: eg.Input.KeyboardCommandEvent) => {
-                this._keyDownStatus.Text("Down: " + buildModifierAddition(kce) + kce.Key);
+                this._keyDownStatus.Text = "Down: " + buildModifierAddition(kce) + kce.Key;
             });
 
             keyboard.OnKeyUp.Bind((kce: eg.Input.KeyboardCommandEvent) => {
-                this._keyUpStatus.Text("Up: " + buildModifierAddition(kce) + kce.Key);
+                this._keyUpStatus.Text = "Up: " + buildModifierAddition(kce) + kce.Key;
             });
 
             keyboard.OnKeyPress.Bind((kce: eg.Input.KeyboardCommandEvent) => {
-                this._keyPressStatus.Text("Press: " + buildModifierAddition(kce) + kce.Key);
+                this._keyPressStatus.Text = "Press: " + buildModifierAddition(kce) + kce.Key;
             });
         }
     }

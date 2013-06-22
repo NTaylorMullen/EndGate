@@ -42,12 +42,11 @@ var eg;
                 * Calculates the top left corner of the BoundingRectangle.
                 */
                 function () {
-                    this.v = new eg.Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);;
                     if (this.Rotation === 0) {
-                        return v;
+                        return new eg.Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);
                     }
 
-                    return v.RotateAround(this.Position, this.Rotation);
+                    return new eg.Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight).RotateAround(this.Position, this.Rotation);
                 },
                 enumerable: true,
                 configurable: true
@@ -58,12 +57,11 @@ var eg;
                 * Calculates the top right corner of the BoundingRectangle.
                 */
                 function () {
-                    this.v = new eg.Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);;
                     if (this.Rotation === 0) {
-                        return v;
+                        return new eg.Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);
                     }
 
-                    return v.RotateAround(this.Position, this.Rotation);
+                    return new eg.Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight).RotateAround(this.Position, this.Rotation);
                 },
                 enumerable: true,
                 configurable: true
@@ -74,12 +72,11 @@ var eg;
                 * Calculates the bottom left corner of the BoundingRectangle.
                 */
                 function () {
-                    this.v = new eg.Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);;
                     if (this.Rotation === 0) {
-                        return v;
+                        return new eg.Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);
                     }
 
-                    return v.RotateAround(this.Position, this.Rotation);
+                    return new eg.Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight).RotateAround(this.Position, this.Rotation);
                 },
                 enumerable: true,
                 configurable: true
@@ -90,12 +87,11 @@ var eg;
                 * Calculates the bottom right corner of the BoundingRectangle.
                 */
                 function () {
-                    this.v = new eg.Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);;
                     if (this.Rotation === 0) {
-                        return v;
+                        return new eg.Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);
                     }
 
-                    return v.RotateAround(this.Position, this.Rotation);
+                    return new eg.Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight).RotateAround(this.Position, this.Rotation);
                 },
                 enumerable: true,
                 configurable: true

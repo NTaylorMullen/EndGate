@@ -38,39 +38,3 @@ var eg;
     })(eg.Graphics || (eg.Graphics = {}));
     var Graphics = eg.Graphics;
 })(eg || (eg = {}));
-
-var eg;
-(function (eg) {
-    (function (Graphics) {
-        (function (Assets) {
-            (function (_) {
-                var FontFamilyHelper = (function () {
-                    function FontFamilyHelper() {
-                    }
-                    FontFamilyHelper._Initialize = function () {
-                        FontFamilyHelper._families = ({});
-
-                        for (var family in Assets.FontFamily) {
-                            if (family !== "_map") {
-                                FontFamilyHelper._families[Assets.FontFamily[family]] = family;
-                            }
-                        }
-
-                        FontFamilyHelper._families[Assets.FontFamily["TimesNewRoman"]] = "Times New Roman";
-                    };
-
-                    FontFamilyHelper.Get = function (family) {
-                        return FontFamilyHelper._families[family];
-                    };
-                    return FontFamilyHelper;
-                })();
-                _.FontFamilyHelper = FontFamilyHelper;
-
-                FontFamilyHelper._Initialize();
-            })(Assets._ || (Assets._ = {}));
-            var _ = Assets._;
-        })(Graphics.Assets || (Graphics.Assets = {}));
-        var Assets = Graphics.Assets;
-    })(eg.Graphics || (eg.Graphics = {}));
-    var Graphics = eg.Graphics;
-})(eg || (eg = {}));

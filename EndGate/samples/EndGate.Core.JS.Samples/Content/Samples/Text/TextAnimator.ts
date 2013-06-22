@@ -75,16 +75,16 @@ module Texts {
         private Size(text: eg.Graphics.Text2d, gameTime: eg.GameTime): void {
             var incrementor = (TextAnimator.AnimationSpeed / 2) * gameTime.ElapsedSecond;
 
-            text.FontSettings().FontSize(parseFloat(text.FontSettings().FontSize()) + this.Direction * incrementor);
+            text.FontSettings.FontSize = parseFloat(text.FontSettings.FontSize) + this.Direction * incrementor + "pt";
         }
 
         private Opacity(text: eg.Graphics.Text2d, gameTime: eg.GameTime): void {
             var incrementor = .33 * gameTime.ElapsedSecond;
 
-            text.Opacity(text.Opacity() + incrementor * this.Direction);
+            text.Opacity += incrementor * this.Direction;
 
-            if (text.Opacity() > 1) {
-                text.Opacity(1);
+            if (text.Opacity > 1) {
+                text.Opacity = 1;
             }
         }
     }

@@ -17,37 +17,3 @@ var eg;
     })(eg.Graphics || (eg.Graphics = {}));
     var Graphics = eg.Graphics;
 })(eg || (eg = {}));
-
-var eg;
-(function (eg) {
-    (function (Graphics) {
-        (function (Assets) {
-            (function (_) {
-                var FontStyleHelper = (function () {
-                    function FontStyleHelper() {
-                    }
-                    FontStyleHelper._Initialize = function () {
-                        FontStyleHelper._styles = ({});
-
-                        for (var style in Assets.FontStyle) {
-                            if (style !== "_map") {
-                                FontStyleHelper._styles[Assets.FontStyle[style]] = style;
-                            }
-                        }
-                    };
-
-                    FontStyleHelper.Get = function (style) {
-                        return FontStyleHelper._styles[style];
-                    };
-                    return FontStyleHelper;
-                })();
-                _.FontStyleHelper = FontStyleHelper;
-
-                FontStyleHelper._Initialize();
-            })(Assets._ || (Assets._ = {}));
-            var _ = Assets._;
-        })(Graphics.Assets || (Graphics.Assets = {}));
-        var Assets = Graphics.Assets;
-    })(eg.Graphics || (eg.Graphics = {}));
-    var Graphics = eg.Graphics;
-})(eg || (eg = {}));

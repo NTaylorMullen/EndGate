@@ -19,8 +19,20 @@ var eg;
                 this._collidables = [];
                 this._enabled = false;
 
-                this.OnCollision = new eg.EventHandler2();
+                this._onCollision = new eg.EventHandler2();
             }
+            Object.defineProperty(CollisionManager.prototype, "OnCollision", {
+                get: /**
+                * Event: Triggered when a collision happens among two of the monitored objects.  Functions can be bound or unbound to this event to be executed when the event triggers.
+                * Passes two CollisionData objects to bound functions.
+                */
+                function () {
+                    return this._onCollision;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
             /**
             * Monitors the provided collidable and will trigger its Collided function and OnCollision event whenever a collision occurs with it and another Collidable.
             * If the provided collidable gets disposed it will automatically become unmonitored.
@@ -38,7 +50,7 @@ var eg;
             };
 
             /**
-            * Unmonitors the provided collidable.  The Collided function and OnCollision event will no longer be triggered when an actual collision may have occured.
+            * Unmonitors the provided collidable.  The Collided function and OnCollision event will no longer be triggered when an actual collision may have occurred.
             * Disposing a monitored collidable will automatically be unmonitored
             * @param obj Collidable to unmonitor.
             */

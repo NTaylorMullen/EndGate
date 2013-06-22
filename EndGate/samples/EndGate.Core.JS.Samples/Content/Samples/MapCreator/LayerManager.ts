@@ -15,7 +15,7 @@ module MapCreator {
 
         constructor(private _gameScene: eg.Rendering.Scene2d, private _defaultGrid: eg.Graphics.Grid, private _layersSelect: JQuery, addLayerButton: JQuery, layerName: JQuery, private _onLayerChange: (layer: ILayer) => void ) {
             // Build default layer for map builder
-            this.Layers = [{ Name: "Background", Layer: new eg.Graphics.Grid(_defaultGrid.Position.X, _defaultGrid.Position.Y, _defaultGrid.Rows(), _defaultGrid.Columns(), _defaultGrid.TileSize().Width, _defaultGrid.TileSize().Height) }];
+            this.Layers = [{ Name: "Background", Layer: new eg.Graphics.Grid(_defaultGrid.Position.X, _defaultGrid.Position.Y, _defaultGrid.Rows, _defaultGrid.Columns, _defaultGrid.TileSize.Width, _defaultGrid.TileSize.Height) }];
             this.SelectedLayer = this.Layers[0];
 
             _layersSelect.change(() => {
@@ -36,7 +36,7 @@ module MapCreator {
             // Build empty layer based off of the visible grid
             var addedLayer: ILayer = {
                 Name: layerName,
-                Layer: new eg.Graphics.Grid(this._defaultGrid.Position.X, this._defaultGrid.Position.Y, this._defaultGrid.Rows(), this._defaultGrid.Columns(), this._defaultGrid.TileSize().Width, this._defaultGrid.TileSize().Height)
+                Layer: new eg.Graphics.Grid(this._defaultGrid.Position.X, this._defaultGrid.Position.Y, this._defaultGrid.Rows, this._defaultGrid.Columns, this._defaultGrid.TileSize.Width, this._defaultGrid.TileSize.Height)
             };
 
             // Add layer to the list of layers that we're maintaining
@@ -56,7 +56,7 @@ module MapCreator {
         }
 
         public LoadLayersFromResourceMaps(resourceMaps: ILayerMap[], spriteSheet: eg.Graphics.Grid) {
-            var resources = <eg.Graphics.Sprite2d[]>spriteSheet.GetSpace(0, 0, spriteSheet.Rows() - 1, spriteSheet.Columns() - 1),
+            var resources = <eg.Graphics.Sprite2d[]>spriteSheet.GetSpace(0, 0, spriteSheet.Rows - 1, spriteSheet.Columns - 1),
                 grid: eg.Graphics.Grid,
                 currentLayer: ILayer,
                 originalLayer: eg.Graphics.Grid = this.Layers[0].Layer;
@@ -72,7 +72,7 @@ module MapCreator {
                 for (var row = 0; row < resourceMaps[i].Layer.length; row++) {
                     for (var column = 0; column < resourceMaps[i].Layer[row].length; column++) {
                         if (resourceMaps[i].Layer[row][column] !== -1) {
-                            grid.Fill(row, column, new eg.Graphics.Sprite2d(0, 0, resources[resourceMaps[i].Layer[row][column]].Image, spriteSheet.TileSize().Width, spriteSheet.TileSize().Height));
+                            grid.Fill(row, column, new eg.Graphics.Sprite2d(0, 0, resources[resourceMaps[i].Layer[row][column]].Image, spriteSheet.TileSize.Width, spriteSheet.TileSize.Height));
                         }
                     }
                 }

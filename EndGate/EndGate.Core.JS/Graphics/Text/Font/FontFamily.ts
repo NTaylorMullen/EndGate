@@ -30,27 +30,3 @@ module eg.Graphics.Assets {
     };
 
 }
-
-module eg.Graphics.Assets._ {
-    export class FontFamilyHelper {
-        public static _families: { [family: number]: string; };
-
-        public static _Initialize() {
-            FontFamilyHelper._families = (<{ [family: number]: string; } >{});
-
-            for (var family in FontFamily) {
-                if (family !== "_map") {
-                    FontFamilyHelper._families[FontFamily[family]] = family;
-                }
-            }
-
-            FontFamilyHelper._families[FontFamily["TimesNewRoman"]] = "Times New Roman";
-        }
-
-        public static Get(family: FontFamily): string {
-            return FontFamilyHelper._families[family];
-        }
-    }
-
-    FontFamilyHelper._Initialize();
-}

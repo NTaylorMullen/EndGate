@@ -74,10 +74,10 @@ var Sprites;
         SpriteAnimator.prototype.Opacity = function (sprite, gameTime) {
             var incrementor = .33 * gameTime.ElapsedSecond;
 
-            sprite.Opacity(sprite.Opacity() + incrementor * this.Direction);
+            sprite.Opacity += incrementor * this.Direction;
 
-            if (sprite.Opacity() > 1) {
-                sprite.Opacity(1);
+            if (sprite.Opacity > 1) {
+                sprite.Opacity = 1;
             }
         };
         SpriteAnimator.AnimationSpeed = 50;

@@ -24,6 +24,7 @@ module eg.Graphics {
         private _lastStepAt: number;
         // Step to the next frame ever X ms
         private _stepEvery: number;
+        private _onComplete: EventHandler;
 
         /**
         * Creates a new instance of the SpriteAnimation object.
@@ -53,15 +54,32 @@ module eg.Graphics {
             this._framesPerRow = Math.min(Math.floor((imageSource.ClipSize.Width - startOffset.X) / frameSize.Width), frameCount);
             this._lastStepAt = 0;
 
-            this.OnComplete = new EventHandler();
+            this._onComplete = new EventHandler();
 
-            this.Fps(fps);
+            this.Fps = fps;
         }
 
         /**
         * Event: Triggered when the animation has completed, will not trigger if the animation is repeating.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
-        public OnComplete: EventHandler;
+        public get OnComplete(): EventHandler {
+            return this._onComplete;
+        }
+
+        /**
+        * Gets the current frames per second.
+        */
+        public get Fps(): number {
+            return this._fps;
+        }
+
+        /**
+        * Sets the current frames per second.
+        */
+        public set Fps(newFps: number) {
+            this._fps = newFps;
+            this._stepEvery = 1000 / this._fps;
+        }
 
         /**
         * Determines if the animation is currently playing.
@@ -143,24 +161,7 @@ module eg.Graphics {
         public Reset(): void {
             this._currentFrame = 0;
             this.UpdateImageSource();
-        }
-
-        /**
-        * Gets the current frames per second.
-        */
-        public Fps(): number;
-        /**
-        * Sets and gets the current frames per second.
-        */
-        public Fps(newFps: number): number;
-        public Fps(newFps?: number): number {
-            if (typeof newFps !== "undefined") {
-                this._fps = newFps;
-                this._stepEvery = 1000 / this._fps;
-            }
-
-            return this._fps;
-        }
+        }        
 
         /**
         * Updates the animations current frame.  Needs to be updated in order to play the animation.

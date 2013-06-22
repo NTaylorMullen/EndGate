@@ -92,71 +92,71 @@ module eg.Graphics {
             this._gridLines.push(new Line2d(topLeft.X, bottomRight.Y, bottomRight.X, bottomRight.Y, 1));
             this._gridLines.push(new Line2d(bottomRight.X, topLeft.Y, bottomRight.X, bottomRight.Y, 1));
 
-            this.GridLineColor(gridLineColor);
+            this.GridLineColor = gridLineColor;
         }
 
         /**
         * Gets the current grid line color.  Grid lines are only drawn of DrawGridLines is set to true.
         */
-        public GridLineColor(): string;
-        /**
-        * Gets and sets the current grid line color.  Grid lines are only drawn of DrawGridLines is set to true.
-        * @param color The new grid line color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-        */
-        public GridLineColor(color: string): string;
-        public GridLineColor(color?: string): string {
-            if (typeof color !== "undefined") {
-                this._gridLineColor = color;
-
-                for (var i = 0; i < this._gridLines.length; i++) {
-                    this._gridLines[i].Color(color);
-                }
-            }
-
+        public get GridLineColor(): string {
             return this._gridLineColor;
         }
 
         /**
+        * Sets the current grid line color.  Grid lines are only drawn of DrawGridLines is set to true.
+        * @param color The new grid line color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        */
+        public set GridLineColor(color: string) {
+            this._gridLineColor = color;
+
+            for (var i = 0; i < this._gridLines.length; i++) {
+                this._gridLines[i].Color = color;
+            }
+        }        
+
+        /**
         * Gets the size of the grid.
         */
-        public Size(): Size2d {
+        public get Size(): Size2d {
             return this._size.Clone();
         }
 
         /**
         * Gets the size of the tiles.
         */
-        public TileSize(): Size2d {
+        public get TileSize(): Size2d {
             return this._tileSize.Clone();
         }
 
         /**
         * Gets the number of rows
         */
-        public Rows(): number {
+        public get Rows(): number {
             return this._rows;
         }
 
         /**
         * Gets the number of columns
         */
-        public Columns(): number {
+        public get Columns(): number {
             return this._columns;
         }
 
         /**
         * Gets the current opacity.  Value is between 0 and 1.
         */
-        public Opacity(): number;
-        /**
-        * Sets and gets the current opacity.
-        * @param alpha New opacity, value is between 0 and 1.
-        */
-        public Opacity(alpha: number): number;
-        public Opacity(alpha?: number): number {
-            return this._State.GlobalAlpha(alpha);
+        public get Opacity(): number {
+            return this._State.GlobalAlpha;
         }
 
+        /**
+        * Sets the current opacity.
+        * @param alpha New opacity, value is between 0 and 1.
+        */
+        public set Opacity(alpha: number) {
+            this._State.GlobalAlpha = alpha;
+        }
+        
         /**
         * Fills a tile with the provided graphic.
         * @param row The row.

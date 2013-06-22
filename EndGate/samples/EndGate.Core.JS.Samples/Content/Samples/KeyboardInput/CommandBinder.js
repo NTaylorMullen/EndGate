@@ -9,8 +9,8 @@ var KeyboardInput;
             this._fontSize = 20;
             this._fontWeight = "bold";
             this._bindingTextViewer = new eg.Graphics.Text2d(bindPostion.X, bindPostion.Y, "");
-            this._bindingTextViewer.FontSettings().FontSize(this._fontSize);
-            this._bindingTextViewer.FontSettings().FontWeight(this._fontWeight);
+            this._bindingTextViewer.FontSettings.FontSize = this._fontSize + "pt";
+            this._bindingTextViewer.FontSettings.FontWeight = this._fontWeight;
             gameScene.Add(this._bindingTextViewer);
 
             this._commandManager = new KeyboardInput.CommandManager(keyboard, commandHolder);
@@ -24,7 +24,7 @@ var KeyboardInput;
                 var commandResult = bindingResultInput.val();
 
                 _this._commandManager.Add(bindingCommandInput.val(), commandResult, function () {
-                    that._bindingTextViewer.Text(commandResult);
+                    that._bindingTextViewer.Text = commandResult;
                 });
 
                 bindingCommandInput.val("");

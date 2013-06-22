@@ -51,10 +51,10 @@
                 rotationSlider.UpdateSlider(ensureValue(game.Text.Rotation * 100, -628, 628));
             },
             Size: function () {
-                fontSizeSlider.UpdateSlider(ensureValue(parseFloat(game.Text.FontSettings().FontSize()), 0, 100));
+                fontSizeSlider.UpdateSlider(ensureValue(parseFloat(game.Text.FontSettings.FontSize), 0, 100));
             },
             Opacity: function () {
-                opacitySlider.UpdateSlider(ensureValue(game.Text.Opacity() * 100, 0, 100));
+                opacitySlider.UpdateSlider(ensureValue(game.Text.Opacity * 100, 0, 100));
             }
         },
         // Sync sliders is used to make sure that all sliders are showing the correct values
@@ -72,7 +72,7 @@
 
     // Wire up all the sliders
     textColorPicker = new Texts.ColorPicker($("#redColorPicker"), $("#greenColorPicker"), $("#blueColorPicker"), [127, 0, 127], (newcolor: string) => {
-        game.Text.Color(newcolor);
+        game.Text.Color = newcolor;
     });
     rotationSlider = new Texts.CustomSlider($("#rotationSlider"), -628, 628, 0, (newrotation: number) => {
         game.Text.Rotation = newrotation / 100;
@@ -84,41 +84,41 @@
         game.Text.Position.Y = newY;
     });
     opacitySlider = new Texts.CustomSlider($("#opacitySlider"), 0, 100, 100, (newAlpha) => {
-        game.Text.Opacity(newAlpha / 100);
+        game.Text.Opacity = newAlpha / 100;
     });
     fontSizeSlider = new Texts.CustomSlider($("#fontSizeSlider"), 0, 100, 20, (newSize) => {
-        game.Text.FontSettings().FontSize(newSize);
+        game.Text.FontSettings.FontSize = newSize + "pt";
     });
     borderColorPicker = new Texts.ColorPicker($("#borderRed"), $("#borderGreen"), $("#borderBlue"), [0, 0, 0], (newcolor: string) => {
-        game.Text.BorderColor(newcolor);
+        game.Text.BorderColor = newcolor;
     });
     borderThicknessSlider = new Texts.CustomSlider($("#borderThickness"), 0, 100, 0, (newThickness) => {
-        game.Text.BorderThickness(newThickness);
+        game.Text.BorderThickness = newThickness;
     });
     shadowXSlider = new Texts.CustomSlider($("#shadowX"), -30, 30, 20, (newX: number) => {
-        game.Text.ShadowX(newX);
+        game.Text.ShadowX = newX;
     });
     shadowYSlider = new Texts.CustomSlider($("#shadowY"), -30, 30, 10, (newY: number) => {
-        game.Text.ShadowY(newY);
+        game.Text.ShadowY = newY;
     });
     shadowColorPicker = new Texts.ColorPicker($("#shadowColorRed"), $("#shadowColorGreen"), $("#shadowColorBlue"), [0, 0, 100], (newcolor: string) => {
-        game.Text.ShadowColor(newcolor);
+        game.Text.ShadowColor = newcolor;
     });
     shadowBlurSlider = new Texts.CustomSlider($("#shadowBlur"), 0, 300, 55, (newBlur: number) => {
-        game.Text.ShadowBlur(newBlur);
+        game.Text.ShadowBlur = newBlur;
     });
 
     // Wire up text selections
     fillSelect(fontFamilySelect, eg.Graphics.Assets.FontFamily, function () {
-        game.Text.FontSettings().FontFamily(eg.Graphics.Assets.FontFamily[<string>$(this).val()]);
+        game.Text.FontSettings.FontFamily = eg.Graphics.Assets.FontFamily[<string>$(this).val()];
     });
 
     fillSelect(fontStyleSelect, eg.Graphics.Assets.FontStyle, function () {
-        game.Text.FontSettings().FontStyle(eg.Graphics.Assets.FontStyle[<string>$(this).val()]);
+        game.Text.FontSettings.FontStyle = eg.Graphics.Assets.FontStyle[<string>$(this).val()];
     });
 
     fontWeightSelect.change(function () {
-        game.Text.FontSettings().FontWeight($(this).val());
+        game.Text.FontSettings.FontWeight = $(this).val();
     });
 
 })($, window);

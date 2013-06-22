@@ -21,9 +21,32 @@ var eg;
                 this.Bounds = bounds;
                 this._id = Collidable._collidableIDs++;
 
-                this.OnCollision = new eg.EventHandler1();
-                this.OnDisposed = new eg.EventHandler1();
+                this._onCollision = new eg.EventHandler1();
+                this._onDisposed = new eg.EventHandler1();
             }
+            Object.defineProperty(Collidable.prototype, "OnCollision", {
+                get: /**
+                * Event: Triggered when a collision happens.  Functions can be bound or unbound to this event to be executed when the event triggers.
+                * Passes a CollisionData object to bound functions.
+                */
+                function () {
+                    return this._onCollision;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(Collidable.prototype, "OnDisposed", {
+                get: /**
+                * Event: Triggered when a Collidable has been disposed.  Functions can be bound or unbound to this event to be executed when the event triggers.
+                */
+                function () {
+                    return this._onDisposed;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
             /**
             * Determines if the provided collidable is colliding with this Collidable.
             * @param other Collidable to check collision with.

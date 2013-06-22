@@ -46,78 +46,105 @@ module eg.Graphics {
 
             this._from = new Vector2d(fromX, fromY);
             this._to = new Vector2d(toX, toY);
-            this.LineWidth(lineWidth);
+            this.LineWidth = lineWidth;
             this.UpdatePosition();
 
             if (typeof color !== "undefined") {
-                this.Color(color);
+                this.Color = color;
             }
         }
 
         /**
         * Gets the From location of the Line2d.
         */
-        public From(): Vector2d;
+        public get From(): Vector2d {
+            return this._from;
+        }
+
         /**
-        * Sets and gets the new From location of the Line2d.
+        * Sets the From location of the Line2d.
         * @param newPosition New From location.
         */
-        public From(newPosition: Vector2d): Vector2d;
-        public From(newPosition?: Vector2d): Vector2d {
-            return this.GetOrSetLinePoint("from", newPosition);
+        public set From(newPosition: Vector2d) {
+            this._from = newPosition;
+            this.UpdatePosition();
         }
 
         /**
         * Gets the To location of the Line2d.
         */
-        public To(): Vector2d;
+        public get To(): Vector2d {
+            return this._to;
+        }
+
         /**
-        * Sets and gets the new To location of the Line2d.
+        * Sets the To location of the Line2d.
         * @param newPosition New To location.
         */
-        public To(newPosition: Vector2d): Vector2d;
-        public To(newPosition?: Vector2d): Vector2d {
-            return this.GetOrSetLinePoint("to", newPosition);
+        public set To(newPosition: Vector2d) {
+            this._to = newPosition;
+            this.UpdatePosition();
         }
 
         /**
-        * Gets the current line color.
+        * Gets the line color.
         */
-        public Color(): string;
+        public get Color(): string {
+            return this._State.StrokeStyle;
+        }
+
         /**
-        * Gets and sets the current line color.
+        * Sets the line color.
         * @param color The new color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
         */
-        public Color(color: string): string;
-        public Color(color?: string): string {
-            return this._State.StrokeStyle(color);
+        public set Color(color: string) {
+            this._State.StrokeStyle = color;
         }
 
         /**
-        * Gets the current line width.
+        * Gets the line width.
         */
-        public LineWidth(): number;
+        public get LineWidth(): number {
+            return this._State.LineWidth;
+        }
+
         /**
-        * Gets and sets the current line width.
+        * Sets the line width.
         * @param width The new line width.
         */
-        public LineWidth(width: number): number;
-        public LineWidth(width?: number): number {
-            return this._State.LineWidth(width);
+        public set LineWidth(width: number) {
+            this._State.LineWidth = width;
         }
 
         /**
-        * Gets the current line cap.
+        * Gets the line cap.
         */
-        public LineCap(): string;
+        public get LineCap(): string {
+            return this._State.LineCap;
+        }
+
         /**
-        * Gets and sets the current line cap.
+        * Sets the line cap.
         * @param width The new line cap.  Values can be "butt", "round", "square".
         */
-        public LineCap(cap: string): string;
-        public LineCap(cap?: string): string {
-            return this._State.LineCap(cap);
+        public set LineCap(cap: string) {
+            this._State.LineCap = cap;
+        }     
+        
+        /**
+        * Gets the current opacity.  Value is between 0 and 1.
+        */
+        public get Opacity(): number {
+            return this._State.GlobalAlpha;
         }
+
+        /**
+        * Sets the current opacity.
+        * @param alpha New opacity, value is between 0 and 1.
+        */
+        public set Opacity(alpha: number) {
+            this._State.GlobalAlpha = alpha;
+        }   
 
         /**
         * Draws the line onto the given context.  If this Line2d is part of a scene the Draw function will be called automatically.
@@ -144,7 +171,7 @@ module eg.Graphics {
         * The bounding area that represents where the Line2d will draw.
         */
         public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
-            var bounds = new Bounds.BoundingRectangle(this.Position, new Size2d(this._boundsWidth, this.LineWidth()));
+            var bounds = new Bounds.BoundingRectangle(this.Position, new Size2d(this._boundsWidth, this.LineWidth));
 
             bounds.Rotation = Math.atan2(this._difference.Y, this._difference.X) + this.Rotation;
 
@@ -165,15 +192,6 @@ module eg.Graphics {
             this._to.X += difference.X;
             this._to.Y += difference.Y;
             this._cachedPosition = this.Position.Clone();
-        }
-
-        private GetOrSetLinePoint(name: string, newPosition?: Vector2d): Vector2d {
-            if (typeof newPosition === "undefined") {
-                this["_" + name] = newPosition;
-                this.UpdatePosition();
-            }
-
-            return this["_" + name];
         }
     }
 

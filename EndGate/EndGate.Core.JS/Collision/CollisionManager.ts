@@ -13,6 +13,7 @@ module eg.Collision {
     export class CollisionManager implements IUpdateable, _.ITyped {
         public _type: string = "CollisionManager";
         private _collidables: Collidable[];
+        private _onCollision: EventHandler2<Collidable, Collidable>;
         private _enabled: bool;
 
         /**
@@ -22,14 +23,16 @@ module eg.Collision {
             this._collidables = [];
             this._enabled = false;
 
-            this.OnCollision = new EventHandler2<Collidable, Collidable>();
+            this._onCollision = new EventHandler2<Collidable, Collidable>();
         }
 
         /**
         * Event: Triggered when a collision happens among two of the monitored objects.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes two CollisionData objects to bound functions.
         */
-        public OnCollision: EventHandler2<Collidable, Collidable>;
+        public get OnCollision(): EventHandler2<Collidable, Collidable> {
+            return this._onCollision;
+        }
 
         /**
         * Monitors the provided collidable and will trigger its Collided function and OnCollision event whenever a collision occurs with it and another Collidable.
@@ -47,7 +50,7 @@ module eg.Collision {
         }
 
         /**
-        * Unmonitors the provided collidable.  The Collided function and OnCollision event will no longer be triggered when an actual collision may have occured.
+        * Unmonitors the provided collidable.  The Collided function and OnCollision event will no longer be triggered when an actual collision may have occurred.
         * Disposing a monitored collidable will automatically be unmonitored
         * @param obj Collidable to unmonitor.
         */

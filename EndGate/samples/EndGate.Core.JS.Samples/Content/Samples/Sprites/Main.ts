@@ -39,7 +39,7 @@
                 heightSlider.UpdateSlider(ensureValue(newHeight, 0, canvas.height));
             },
             Opacity: function () {
-                opacitySlider.UpdateSlider(ensureValue(game.Sprite.Opacity() * 100, 0, 100));
+                opacitySlider.UpdateSlider(ensureValue(game.Sprite.Opacity * 100, 0, 100));
             }
         },
         // Sync sliders is used to make sure that all sliders are showing the correct values
@@ -66,7 +66,7 @@
         game.Sprite.Position.Y = newY;
     });
     opacitySlider = new Sprites.CustomSlider($("#opacitySlider"), 0, 100, 100, (newAlpha) => {
-        game.Sprite.Opacity(newAlpha / 100);
+        game.Sprite.Opacity = newAlpha / 100;
     });
     widthSlider = new Sprites.CustomSlider($("#widthSlider"), 0, canvas.width, game.Sprite.Size.Width, (newWidth: number) => {
         game.Sprite.Size.Width = newWidth;
