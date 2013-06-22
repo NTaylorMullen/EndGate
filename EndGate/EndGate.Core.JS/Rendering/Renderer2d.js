@@ -20,11 +20,23 @@ var eg;
                 // Create an equally sized canvas for a buffer
                 this._BufferCanvas = document.createElement("canvas");
                 this._BufferContext = this._BufferCanvas.getContext("2d");
-                this.OnRendererSizeChange = new eg.EventHandler1();
+                this._onRendererSizeChange = new eg.EventHandler1();
                 this.UpdateBufferSize();
 
                 this._disposed = false;
             }
+            Object.defineProperty(Renderer2d.prototype, "OnRendererSizeChange", {
+                get: /**
+                * Event: Triggered when the renderOnto canvas changes size.  Functions can be bound or unbound to this event to be executed when the event triggers.
+                * Passes the new size as a Size2d.
+                */
+                function () {
+                    return this._onRendererSizeChange;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
             /**
             * Renders the provided renderables onto the renderOnto canvas.  Returns the canvas that was rendered onto.
             * @param renderables Array of items that are to be rendered, assumes Visible is set to true.

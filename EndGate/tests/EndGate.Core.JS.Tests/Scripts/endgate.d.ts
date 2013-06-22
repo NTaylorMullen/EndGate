@@ -1028,6 +1028,7 @@ declare module eg.Rendering {
         private _visibleCanvas;
         private _visibleContext;
         private _disposed;
+        private _onRendererSizeChange;
         /**
         * Creates a new instance of the Renderer2d object.
         * @param renderOnto The canvas to render onto.
@@ -1037,7 +1038,7 @@ declare module eg.Rendering {
         * Event: Triggered when the renderOnto canvas changes size.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes the new size as a Size2d.
         */
-        public OnRendererSizeChange: eg.EventHandler1<eg.Size2d>;
+        public OnRendererSizeChange : eg.EventHandler1<eg.Size2d>;
         /**
         * Renders the provided renderables onto the renderOnto canvas.  Returns the canvas that was rendered onto.
         * @param renderables Array of items that are to be rendered, assumes Visible is set to true.
@@ -1101,18 +1102,12 @@ declare module eg.Rendering {
     * Defines a scene object that is used to maintain a list of renderable objects that are rendered onto a joint game area.
     */
     class Scene2d implements eg.IDisposable {
-        /**
-        * The canvas that the Scene2d uses as its game area.
-        */
-        public DrawArea: HTMLCanvasElement;
-        /**
-        * The game camera.
-        */
-        public Camera: Rendering.Camera2d;
         private _actors;
         private _renderer;
         private _onDraw;
         private _disposed;
+        private _camera;
+        private _drawArea;
         /**
         * Creates a new instance of the Scene2d object.  The game canvas is created and appended to the HTML body to fill the screen.
         */
@@ -1128,6 +1123,14 @@ declare module eg.Rendering {
         * @param drawArea The game canvas to draw onto.
         */
         constructor(onDraw: (context: CanvasRenderingContext2D) => void, drawArea: HTMLCanvasElement);
+        /**
+        * The canvas that the Scene2d uses as its game area.
+        */
+        public DrawArea : HTMLCanvasElement;
+        /**
+        * The game camera.
+        */
+        public Camera : Rendering.Camera2d;
         /**
         * Adds an actor to the scene.  All actors added to the scene have their Draw function called automatically.
         * @param actor The graphic to add to the scene.

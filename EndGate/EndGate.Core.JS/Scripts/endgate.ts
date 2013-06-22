@@ -2263,6 +2263,7 @@ module eg.Rendering {
         private _visibleCanvas: HTMLCanvasElement;
         private _visibleContext: CanvasRenderingContext2D;
         private _disposed: bool;
+        private _onRendererSizeChange: EventHandler1<Size2d>;
 
         /**
         * Creates a new instance of the Renderer2d object.
@@ -2275,7 +2276,7 @@ module eg.Rendering {
             // Create an equally sized canvas for a buffer
             this._BufferCanvas = <HTMLCanvasElement>document.createElement("canvas");
             this._BufferContext = this._BufferCanvas.getContext("2d");
-            this.OnRendererSizeChange = new EventHandler1<Size2d>();
+            this._onRendererSizeChange = new EventHandler1<Size2d>();
             this.UpdateBufferSize();
 
             this._disposed = false;
@@ -2285,7 +2286,9 @@ module eg.Rendering {
         * Event: Triggered when the renderOnto canvas changes size.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes the new size as a Size2d.
         */
-        public OnRendererSizeChange: EventHandler1<Size2d>;
+        public get OnRendererSizeChange(): EventHandler1<Size2d> {
+            return this._onRendererSizeChange;
+        }
 
         /**
         * Renders the provided renderables onto the renderOnto canvas.  Returns the canvas that was rendered onto.
@@ -2565,20 +2568,13 @@ module eg.Rendering {
     /**
     * Defines a scene object that is used to maintain a list of renderable objects that are rendered onto a joint game area.
     */
-    export class Scene2d implements IDisposable {
-        /**
-        * The canvas that the Scene2d uses as its game area.
-        */
-        public DrawArea: HTMLCanvasElement;
-        /**
-        * The game camera.
-        */
-        public Camera: Camera2d;
-
+    export class Scene2d implements IDisposable {       
         private _actors: Graphics.Abstractions.Graphic2d[];
         private _renderer: _.IRenderer;
         private _onDraw: (context: CanvasRenderingContext2D) => void;
         private _disposed: bool;
+        private _camera: Camera2d;
+        private _drawArea: HTMLCanvasElement;
 
         /**
         * Creates a new instance of the Scene2d object.  The game canvas is created and appended to the HTML body to fill the screen.
@@ -2606,10 +2602,24 @@ module eg.Rendering {
 
             this.ApplyStyles(drawArea);
 
-            this.DrawArea = drawArea;
-            this.Camera = new Camera2d(new Vector2d(this.DrawArea.width / 2, this.DrawArea.height / 2), new Size2d(this.DrawArea.width, this.DrawArea.height));
-            this._renderer = new Camera2dRenderer(this.DrawArea, this.Camera);
+            this._drawArea = drawArea;
+            this._camera = new Camera2d(new Vector2d(this._drawArea.width / 2, this._drawArea.height / 2), new Size2d(this._drawArea.width, this._drawArea.height));
+            this._renderer = new Camera2dRenderer(this._drawArea, this._camera);
             this._disposed = false;
+        }
+
+        /**
+        * The canvas that the Scene2d uses as its game area.
+        */
+        public get DrawArea(): HTMLCanvasElement {
+            return this._drawArea;
+        }
+
+        /**
+        * The game camera.
+        */
+        public get Camera(): Camera2d {
+            return this._camera;
         }
 
         /**

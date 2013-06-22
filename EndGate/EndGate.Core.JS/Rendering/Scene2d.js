@@ -27,11 +27,33 @@ var eg;
 
                 this.ApplyStyles(drawArea);
 
-                this.DrawArea = drawArea;
-                this.Camera = new Rendering.Camera2d(new eg.Vector2d(this.DrawArea.width / 2, this.DrawArea.height / 2), new eg.Size2d(this.DrawArea.width, this.DrawArea.height));
-                this._renderer = new Rendering.Camera2dRenderer(this.DrawArea, this.Camera);
+                this._drawArea = drawArea;
+                this._camera = new Rendering.Camera2d(new eg.Vector2d(this._drawArea.width / 2, this._drawArea.height / 2), new eg.Size2d(this._drawArea.width, this._drawArea.height));
+                this._renderer = new Rendering.Camera2dRenderer(this._drawArea, this._camera);
                 this._disposed = false;
             }
+            Object.defineProperty(Scene2d.prototype, "DrawArea", {
+                get: /**
+                * The canvas that the Scene2d uses as its game area.
+                */
+                function () {
+                    return this._drawArea;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(Scene2d.prototype, "Camera", {
+                get: /**
+                * The game camera.
+                */
+                function () {
+                    return this._camera;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
             /**
             * Adds an actor to the scene.  All actors added to the scene have their Draw function called automatically.
             * @param actor The graphic to add to the scene.

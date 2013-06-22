@@ -1452,11 +1452,19 @@ var eg;
 
                 this._BufferCanvas = document.createElement("canvas");
                 this._BufferContext = this._BufferCanvas.getContext("2d");
-                this.OnRendererSizeChange = new eg.EventHandler1();
+                this._onRendererSizeChange = new eg.EventHandler1();
                 this.UpdateBufferSize();
 
                 this._disposed = false;
             }
+            Object.defineProperty(Renderer2d.prototype, "OnRendererSizeChange", {
+                get: function () {
+                    return this._onRendererSizeChange;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
             Renderer2d.prototype.Render = function (renderables) {
                 if (this._BufferCanvas.width !== this._visibleCanvas.width || this._BufferCanvas.height !== this._visibleCanvas.height) {
                     this.UpdateBufferSize();
@@ -1688,11 +1696,27 @@ var eg;
 
                 this.ApplyStyles(drawArea);
 
-                this.DrawArea = drawArea;
-                this.Camera = new Rendering.Camera2d(new eg.Vector2d(this.DrawArea.width / 2, this.DrawArea.height / 2), new eg.Size2d(this.DrawArea.width, this.DrawArea.height));
-                this._renderer = new Rendering.Camera2dRenderer(this.DrawArea, this.Camera);
+                this._drawArea = drawArea;
+                this._camera = new Rendering.Camera2d(new eg.Vector2d(this._drawArea.width / 2, this._drawArea.height / 2), new eg.Size2d(this._drawArea.width, this._drawArea.height));
+                this._renderer = new Rendering.Camera2dRenderer(this._drawArea, this._camera);
                 this._disposed = false;
             }
+            Object.defineProperty(Scene2d.prototype, "DrawArea", {
+                get: function () {
+                    return this._drawArea;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(Scene2d.prototype, "Camera", {
+                get: function () {
+                    return this._camera;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
             Scene2d.prototype.Add = function (actor) {
                 this._actors.push(actor);
             };
