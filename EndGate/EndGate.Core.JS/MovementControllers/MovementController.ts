@@ -29,8 +29,8 @@ module eg.MovementControllers.Abstractions {
         * @param moveables Moveable objects to synchronize.
         */
         constructor(moveables: IMoveable[]) {
-            this.Position = Vector2d.Zero();
-            this.Velocity = Vector2d.Zero();
+            this.Position = Vector2d.Zero;
+            this.Velocity = Vector2d.Zero;
             this.Rotation = 0;
             this._frozen = false;
 

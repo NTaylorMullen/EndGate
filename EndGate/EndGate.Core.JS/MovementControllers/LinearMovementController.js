@@ -105,7 +105,7 @@ var eg;
             };
 
             LinearMovementController.prototype.UpdateVelocityNoMultiDirection = function () {
-                var velocity = eg.Vector2d.Zero();
+                var velocity = eg.Vector2d.Zero;
 
                 if (velocity.IsZero()) {
                     if (this._moving.Up) {
@@ -129,7 +129,7 @@ var eg;
             };
 
             LinearMovementController.prototype.UpdateVelocityWithMultiDirection = function () {
-                var velocity = eg.Vector2d.Zero();
+                var velocity = eg.Vector2d.Zero;
 
                 if (this._moving.Up) {
                     velocity.Y -= this._moveSpeed;

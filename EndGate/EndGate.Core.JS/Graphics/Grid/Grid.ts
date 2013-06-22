@@ -459,7 +459,7 @@ module eg.Graphics {
         * @param y The vertical coordinate to convert to a row.
         */
         public ConvertToRow(y: number): number {
-            return Math.floor((y - (this.Position.Y - this._size.HalfHeight())) / this._tileSize.Height);
+            return Math.floor((y - (this.Position.Y - this._size.HalfHeight)) / this._tileSize.Height);
         }
 
         /**
@@ -467,11 +467,11 @@ module eg.Graphics {
         * @param x The horizontal component to convert to a column.
         */
         public ConvertToColumn(x: number): number {
-            return Math.floor((x - (this.Position.X - this._size.HalfWidth())) / this._tileSize.Width);
+            return Math.floor((x - (this.Position.X - this._size.HalfWidth)) / this._tileSize.Width);
         }
 
         private GetInsideGridPosition(row: number, column: number): Vector2d {
-            return new Vector2d(column * this._tileSize.Width - this._size.HalfWidth() + this._tileSize.HalfWidth(), row * this._tileSize.Height - this._size.HalfHeight() + this._tileSize.HalfHeight());
+            return new Vector2d(column * this._tileSize.Width - this._size.HalfWidth + this._tileSize.HalfWidth, row * this._tileSize.Height - this._size.HalfHeight + this._tileSize.HalfHeight);
         }
 
         private ValidRow(row: number): bool {

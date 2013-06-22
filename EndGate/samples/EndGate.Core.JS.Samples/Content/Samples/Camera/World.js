@@ -13,10 +13,10 @@ var Camera;
             scene.Add(this.CreateRotatedRect(0, 0, 200, 150, "gray", Math.PI / 4));
             scene.Add(this.CreateRotatedRect(0, 800, 400, 125, "yellow", Math.PI * 1.75));
             scene.Add(this.CreateRotatedText(camSize.Width, -30, "Hello!", 0));
-            scene.Add(this.CreateRotatedText(camSize.HalfWidth(), 0, "TOP SIDE", 0));
-            scene.Add(this.CreateRotatedText(0, camSize.HalfHeight(), "LEFT SIDE", -Math.PI / 2));
-            scene.Add(this.CreateRotatedText(camSize.Width, camSize.HalfHeight(), "RIGHT SIDE", Math.PI / 2));
-            scene.Add(this.CreateRotatedText(camSize.HalfWidth(), camSize.Height, "BOTTOM SIDE", Math.PI));
+            scene.Add(this.CreateRotatedText(camSize.HalfWidth, 0, "TOP SIDE", 0));
+            scene.Add(this.CreateRotatedText(0, camSize.HalfHeight, "LEFT SIDE", -Math.PI / 2));
+            scene.Add(this.CreateRotatedText(camSize.Width, camSize.HalfHeight, "RIGHT SIDE", Math.PI / 2));
+            scene.Add(this.CreateRotatedText(camSize.HalfWidth, camSize.Height, "BOTTOM SIDE", Math.PI));
         }
         // These two functions are just helper functions to make the above code look nicer
         World.prototype.CreateRotatedRect = function (x, y, width, height, color, rotation) {

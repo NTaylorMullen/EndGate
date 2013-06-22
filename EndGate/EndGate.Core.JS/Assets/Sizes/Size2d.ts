@@ -37,35 +37,35 @@ module eg {
         /**
         * Returns a Size2d with all its components set to zero.
         */
-        public static Zero(): Size2d {
+        public static get Zero(): Size2d {
             return new Size2d(0, 0);
         }
 
         /**
         * Returns a Size2d with all its components set to one.
         */
-        public static One(): Size2d {
+        public static get One(): Size2d {
             return new Size2d(1, 1);
         }
 
         /**
         * Returns the radius that encompasses the two dimensional size of this Size2d.
         */
-        public Radius(): number {
+        public get Radius(): number {
             return .5 * Math.sqrt(this.Width * this.Width + this.Height * this.Height);
         }
 
         /**
         * Returns half of the Width component of this Size2d.
         */
-        public HalfWidth(): number {
+        public get HalfWidth(): number {
             return this.Width / 2;
         }
 
         /**
         * Returns half of the Height component of this Size2d.
         */
-        public HalfHeight(): number {
+        public get HalfHeight(): number {
             return this.Height / 2;
         }
 

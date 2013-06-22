@@ -5,7 +5,7 @@
     QUnit.test("Un-rotated Rectangle Corners Get works", function () {
         var rect = new eg.Bounds.BoundingRectangle(new eg.Vector2d(3, 3), new eg.Size2d(6, 6));
 
-        QUnit.ok(rect.TopLeft().Equivalent(eg.Vector2d.Zero()));
+        QUnit.ok(rect.TopLeft().Equivalent(eg.Vector2d.Zero));
         QUnit.ok(rect.TopRight().Equivalent(new eg.Vector2d(6, 0)));
         QUnit.ok(rect.BotLeft().Equivalent(new eg.Vector2d(0, 6)));
         QUnit.ok(rect.BotRight().Equivalent(new eg.Vector2d(6, 6)));
@@ -14,7 +14,7 @@
         QUnit.ok(rect.TopLeft().Equivalent(new eg.Vector2d(-6, -6)));
         QUnit.ok(rect.TopRight().Equivalent(new eg.Vector2d(0, -6)));
         QUnit.ok(rect.BotLeft().Equivalent(new eg.Vector2d(-6, 0)));
-        QUnit.ok(rect.BotRight().Equivalent(eg.Vector2d.Zero()));
+        QUnit.ok(rect.BotRight().Equivalent(eg.Vector2d.Zero));
     });
 
     QUnit.test("Rotated Rectangle Corners Get works", function () {

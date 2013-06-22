@@ -7,7 +7,7 @@
 
         QUnit.ok(!(m === m.Add(0)), "Adding 0 returns a new Matrix2x2");
         QUnit.ok(m.Equivalent(m.Add(0)), "Adding 0 returns an equivalent Matrix2x2");
-        QUnit.ok(m.Add(eg.Matrix2x2.Identity()).Equivalent(new eg.Matrix2x2(2, 2, 3, 5)), "Matrix2x2 can be added to other Matrixes, resulting in a valid new Matrix2x2.");
+        QUnit.ok(m.Add(eg.Matrix2x2.Identity).Equivalent(new eg.Matrix2x2(2, 2, 3, 5)), "Matrix2x2 can be added to other Matrixes, resulting in a valid new Matrix2x2.");
         QUnit.ok(m.Add(m).Equivalent(new eg.Matrix2x2(2, 4, 6, 8)), "Adding the Matrix2x2 to itself doubles the Matrix2x2 value.");
         QUnit.ok(m.Add(.1).Equivalent(new eg.Matrix2x2(1.1, 2.1, 3.1, 4.1)), "Adding floating point numbers create equivalent Matrix2x2's.");
     });
@@ -19,8 +19,8 @@
         QUnit.ok(!(m.Multiply(-1) === m.SubtractFrom(0)), "SubtractFrom 0 returns a new Matrix2x2");
         QUnit.ok(m.Equivalent(m.Subtract(0)), "Subtracting 0 returns an equivalent Matrix2x2");
         QUnit.ok(m.Multiply(-1).Equivalent(m.SubtractFrom(0)), "SubtractFrom 0 returns the negated Matrix2x2");
-        QUnit.ok(m.Subtract(m).Equivalent(eg.Matrix2x2.Zero()), "Subtracting the Matrix2x2 from itself results in a 0 Matrix2x2.");
-        QUnit.ok(m.SubtractFrom(m).Equivalent(eg.Matrix2x2.Zero()), "SubtractFrom the same Matrix2x2 results in a 0 Matrix2x2.");
+        QUnit.ok(m.Subtract(m).Equivalent(eg.Matrix2x2.Zero), "Subtracting the Matrix2x2 from itself results in a 0 Matrix2x2.");
+        QUnit.ok(m.SubtractFrom(m).Equivalent(eg.Matrix2x2.Zero), "SubtractFrom the same Matrix2x2 results in a 0 Matrix2x2.");
         QUnit.ok(m.Subtract(.1).Equivalent(new eg.Matrix2x2(.9, 1.9, 2.9, 3.9)), "Subtracting small floating point numbers create floating point Matrix2x2s.");
         QUnit.ok(m.SubtractFrom(.1).Equivalent(new eg.Matrix2x2(-.9, -1.9, -2.9, -3.9)), "SubtractFrom small floating point numbers create negative floating point Matrix2x2s.");
     });
@@ -28,8 +28,8 @@
     QUnit.test("Matrix2x2 multiplies correctly.", function () {
         var m = new eg.Matrix2x2(1, 2, 3, 4);
 
-        QUnit.ok(!(eg.Matrix2x2.Zero() === m.Multiply(0)), "Multiplying 0 returns a new Matrix2x2");
-        QUnit.ok(eg.Matrix2x2.Zero().Equivalent(m.Multiply(0)), "Multiplying by 0 returns the zero Matrix2x2");
+        QUnit.ok(!(eg.Matrix2x2.Zero === m.Multiply(0)), "Multiplying 0 returns a new Matrix2x2");
+        QUnit.ok(eg.Matrix2x2.Zero.Equivalent(m.Multiply(0)), "Multiplying by 0 returns the zero Matrix2x2");
         QUnit.ok(m.Multiply(m).Equivalent(new eg.Matrix2x2(7, 10, 15, 22)), "Multiplying the Matrix2x2 by itself squares the Matrix2x2 value.");
         QUnit.ok(m.Multiply(.5).Equivalent(new eg.Matrix2x2(.5, 1, 1.5, 2)), "Multiplying floating point numbers create valid Matrix2x2s.");
     });

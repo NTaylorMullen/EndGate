@@ -11,7 +11,7 @@
                     draws1++;
                 },
                 GetDrawBounds: function () {
-                    return new eg.Bounds.BoundingCircle(eg.Vector2d.Zero(), 5);
+                    return new eg.Bounds.BoundingCircle(eg.Vector2d.Zero, 5);
                 },
                 Visible: true
             },
@@ -20,7 +20,7 @@
                     draws2++;
                 },
                 GetDrawBounds: function () {
-                    return new eg.Bounds.BoundingCircle(eg.Vector2d.Zero(), 5);
+                    return new eg.Bounds.BoundingCircle(eg.Vector2d.Zero, 5);
                 },
                 Visible: true
             };
@@ -62,7 +62,7 @@
                     draws1++;
                 },
                 GetDrawBounds: function () {
-                    return new eg.Bounds.BoundingCircle(eg.Vector2d.Zero(), 5);
+                    return new eg.Bounds.BoundingCircle(eg.Vector2d.Zero, 5);
                 },
                 Visible: true
             },
@@ -71,7 +71,7 @@
                     draws2++;
                 },
                 GetDrawBounds: function () {
-                    return new eg.Bounds.BoundingCircle(eg.Vector2d.Zero(), 5);
+                    return new eg.Bounds.BoundingCircle(eg.Vector2d.Zero, 5);
                 },
                 Visible: true
             };

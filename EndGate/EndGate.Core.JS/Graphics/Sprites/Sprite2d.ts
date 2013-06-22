@@ -63,7 +63,7 @@ module eg.Graphics {
         public Draw(context: CanvasRenderingContext2D): void {
             super._StartDraw(context);
 
-            context.drawImage(this.Image.Source, this.Image.ClipLocation.X, this.Image.ClipLocation.Y, this.Image.ClipSize.Width, this.Image.ClipSize.Height, - this.Size.HalfWidth(), - this.Size.HalfHeight(), this.Size.Width, this.Size.Height)
+            context.drawImage(this.Image.Source, this.Image.ClipLocation.X, this.Image.ClipLocation.Y, this.Image.ClipSize.Width, this.Image.ClipSize.Height, - this.Size.HalfWidth, - this.Size.HalfHeight, this.Size.Width, this.Size.Height)
 
             super._EndDraw(context);
         }

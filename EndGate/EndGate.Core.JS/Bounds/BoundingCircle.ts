@@ -70,13 +70,13 @@ module eg.Bounds {
 
             var circleDistance = translated.Distance(rectangle.Position);
 
-            if (circleDistance.X > (rectangle.Size.HalfWidth() + this.Radius)) { return false; }
-            if (circleDistance.Y > (rectangle.Size.HalfHeight() + this.Radius)) { return false; }
+            if (circleDistance.X > (rectangle.Size.HalfWidth + this.Radius)) { return false; }
+            if (circleDistance.Y > (rectangle.Size.HalfHeight + this.Radius)) { return false; }
 
-            if (circleDistance.X <= (rectangle.Size.HalfWidth())) { return true; }
-            if (circleDistance.Y <= (rectangle.Size.HalfHeight())) { return true; }
+            if (circleDistance.X <= (rectangle.Size.HalfWidth)) { return true; }
+            if (circleDistance.Y <= (rectangle.Size.HalfHeight)) { return true; }
 
-            var cornerDistance_sq = Math.pow(circleDistance.X - rectangle.Size.HalfWidth(), 2) + Math.pow(circleDistance.Y - rectangle.Size.HalfHeight(), 2);
+            var cornerDistance_sq = Math.pow(circleDistance.X - rectangle.Size.HalfWidth, 2) + Math.pow(circleDistance.Y - rectangle.Size.HalfHeight, 2);
 
             return (cornerDistance_sq <= (this.Radius * this.Radius));
         }

@@ -116,7 +116,7 @@ foreach($file in $dependencyArray)
 
 Clear-Content $outputDeclarationPath
 
-tsc --comments --out $outputDeclarationPath --declaration $allFilesStr
+tsc --comments --out $outputDeclarationPath --declaration $allFilesStr --target ES5
 
 # Since TypeScript will not push imports into declaration files I need to append the alias via the build step
 # Commented this piece out for now until https://typescript.codeplex.com/workitem/1182 has been fixed.
@@ -141,6 +141,6 @@ Write-Host "done" -ForegroundColor Green
 ######  JS FILE  ######
 Write-Host "Building $outputJS... " -NoNewline -ForegroundColor Yellow
 
-tsc $outputTSPath
+tsc $outputTSPath --target ES5
 
 Write-Host "done" -ForegroundColor Green

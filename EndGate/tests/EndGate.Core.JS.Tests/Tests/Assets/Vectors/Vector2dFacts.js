@@ -18,8 +18,8 @@
         QUnit.ok(!(v.Negate() === v.SubtractFrom(0)), "SubtractFrom 0 returns a new vector2d");
         QUnit.ok(v.Equivalent(v.Subtract(0)), "Subtracting 0 returns an equivalent vector2d");
         QUnit.ok(v.Negate().Equivalent(v.SubtractFrom(0)), "SubtractFrom 0 returns the negated vector2d");
-        QUnit.ok(v.Subtract(v).Equivalent(eg.Vector2d.Zero()), "Subtracting the vector from itself results in a 0 vector2d.");
-        QUnit.ok(v.SubtractFrom(v).Equivalent(eg.Vector2d.Zero()), "SubtractFrom the same vector2d results in a 0 vector2d.");
+        QUnit.ok(v.Subtract(v).Equivalent(eg.Vector2d.Zero), "Subtracting the vector from itself results in a 0 vector2d.");
+        QUnit.ok(v.SubtractFrom(v).Equivalent(eg.Vector2d.Zero), "SubtractFrom the same vector2d results in a 0 vector2d.");
         QUnit.ok(v.Subtract(.1).Equivalent(new eg.Vector2d(1.9, 2.9)), "Subtracting small floating point numbers create floating point vector2ds.");
         QUnit.ok(v.SubtractFrom(.1).Equivalent(new eg.Vector2d(-1.9, -2.9)), "SubtractFrom small floating point numbers create negative floating point vector2ds.");
     });
@@ -27,8 +27,8 @@
     QUnit.test("Vector2d multiplies correctly.", function () {
         var v = new eg.Vector2d(2, 3);
 
-        QUnit.ok(!(eg.Vector2d.Zero() === v.Multiply(0)), "Multiplying 0 returns a new vector2d");
-        QUnit.ok(eg.Vector2d.Zero().Equivalent(v.Multiply(0)), "Multiplying by 0 returns the zero vector2d");
+        QUnit.ok(!(eg.Vector2d.Zero === v.Multiply(0)), "Multiplying 0 returns a new vector2d");
+        QUnit.ok(eg.Vector2d.Zero.Equivalent(v.Multiply(0)), "Multiplying by 0 returns the zero vector2d");
         QUnit.ok(v.Multiply(v).Equivalent(new eg.Vector2d(4, 9)), "Multiplying the vector by itself squares the vector2d value.");
         QUnit.ok(v.Multiply(.5).Equivalent(new eg.Vector2d(1, 1.5)), "Multiplying floating point numbers create valid vector2ds.");
     });
@@ -40,8 +40,8 @@
         QUnit.ok(!(eg.Vector2d(.5, .25) === v.DivideFrom(1)), "DivideFrom 1 returns a new vector2d");
         QUnit.ok(v.Equivalent(v.Divide(1)), "Dividing 1 returns the same vector2d");
         QUnit.ok(new eg.Vector2d(.5, .25).Equivalent(v.DivideFrom(1)), "DivideFrom 1 returns the portion of the original vector2d");
-        QUnit.ok(v.Divide(v).Equivalent(eg.Vector2d.One()), "Divide the vector by itself results in a 1 vector2d.");
-        QUnit.ok(v.DivideFrom(v).Equivalent(eg.Vector2d.One()), "DivideFrom the same vector2d results in a 1 vector2d.");
+        QUnit.ok(v.Divide(v).Equivalent(eg.Vector2d.One), "Divide the vector by itself results in a 1 vector2d.");
+        QUnit.ok(v.DivideFrom(v).Equivalent(eg.Vector2d.One), "DivideFrom the same vector2d results in a 1 vector2d.");
         QUnit.ok(v.Divide(.1).Equivalent(new eg.Vector2d(20, 40)), "Divide by small floating point numbers create floating point vector2ds.");
         QUnit.ok(v.DivideFrom(.1).Equivalent(new eg.Vector2d(.05, .025)), "DivideFrom small floating point numbers create same floating point vector2ds as Divide.");
     });
@@ -131,10 +131,10 @@
     });
 
     QUnit.test("Vector2d Rotate Around works.", function () {
-        var v1 = eg.Vector2d.Zero();
+        var v1 = eg.Vector2d.Zero;
 
         // Flip
-        var rotated = v1.RotateAround(eg.Vector2d.One(), Math.PI);
+        var rotated = v1.RotateAround(eg.Vector2d.One, Math.PI);
 
         QUnit.notEqual(v1, rotated, "v1 reference does not have same reference as rotated.");
         QUnit.ok(!v1.Equivalent(rotated), "v1 is not equivalent to the rotated value.");

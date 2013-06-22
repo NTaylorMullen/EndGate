@@ -43,7 +43,7 @@ module eg.Graphics {
                 context.strokeText(this._text, 0, 0);
             });
 
-            this._drawBounds = new Bounds.BoundingRectangle(this.Position, Size2d.One());
+            this._drawBounds = new Bounds.BoundingRectangle(this.Position, Size2d.One);
             this._recalculateBoundsSize = true;
 
             this._fontSettings = new Assets.FontSettings();

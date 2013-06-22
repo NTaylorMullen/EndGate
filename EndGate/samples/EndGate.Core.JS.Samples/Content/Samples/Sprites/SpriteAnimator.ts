@@ -59,7 +59,7 @@ module Sprites {
                 direction = sprite.Position.Subtract(this._defaultPosition).Abs().Sign();
 
             if (direction.Magnitude() === 0) {
-                direction = eg.Vector2d.One();
+                direction = eg.Vector2d.One;
             }
 
             sprite.Position = sprite.Position.Add(direction.Multiply(this.Direction).Multiply(incrementor));

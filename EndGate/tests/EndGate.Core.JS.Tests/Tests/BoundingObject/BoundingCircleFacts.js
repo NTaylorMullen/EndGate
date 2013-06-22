@@ -3,13 +3,13 @@
     QUnit.module("Bounding Circle Facts");
 
     QUnit.test("Area Works", function () {
-        var obj = new eg.Bounds.BoundingCircle(eg.Vector2d.Zero(), 10);
+        var obj = new eg.Bounds.BoundingCircle(eg.Vector2d.Zero, 10);
 
         QUnit.equal(Math.round(obj.Area()), 314);
     });
 
     QUnit.test("Circumference Works", function () {
-        var obj = new eg.Bounds.BoundingCircle(eg.Vector2d.Zero(), 10);
+        var obj = new eg.Bounds.BoundingCircle(eg.Vector2d.Zero, 10);
 
         QUnit.equal(Math.round(obj.Circumference()), 63);
     });
@@ -54,7 +54,7 @@
     QUnit.test("Contain point works", function () {
         var circle = new eg.Bounds.BoundingCircle(new eg.Vector2d(10, 5), 10);
 
-        QUnit.ok(!circle.ContainsPoint(eg.Vector2d.Zero()));
+        QUnit.ok(!circle.ContainsPoint(eg.Vector2d.Zero));
         QUnit.ok(circle.ContainsPoint(new eg.Vector2d(3, 3)));
     });
 

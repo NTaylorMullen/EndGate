@@ -235,14 +235,14 @@ module eg {
         /**
         * Creates a Matrix2x2 with all its rows and columns initialized to 0.
         */
-        public static Zero(): Matrix2x2 {
+        public static get Zero(): Matrix2x2 {
             return new Matrix2x2();
         }
 
         /**
         * Returns the identity matrix for a 2x2.
         */
-        public static Identity(): Matrix2x2 {
+        public static get Identity(): Matrix2x2 {
             return new Matrix2x2(1,0,0,1);
         }
     }

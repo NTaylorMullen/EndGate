@@ -131,35 +131,35 @@ module eg {
         /**
         * Returns a Size2d with all its components set to zero.
         */
-        public static Zero(): Size2d {
+        public static get Zero(): Size2d {
             return new Size2d(0, 0);
         }
 
         /**
         * Returns a Size2d with all its components set to one.
         */
-        public static One(): Size2d {
+        public static get One(): Size2d {
             return new Size2d(1, 1);
         }
 
         /**
         * Returns the radius that encompasses the two dimensional size of this Size2d.
         */
-        public Radius(): number {
+        public get Radius(): number {
             return .5 * Math.sqrt(this.Width * this.Width + this.Height * this.Height);
         }
 
         /**
         * Returns half of the Width component of this Size2d.
         */
-        public HalfWidth(): number {
+        public get HalfWidth(): number {
             return this.Width / 2;
         }
 
         /**
         * Returns half of the Height component of this Size2d.
         */
-        public HalfHeight(): number {
+        public get HalfHeight(): number {
             return this.Height / 2;
         }
 
@@ -436,15 +436,15 @@ module eg {
         /**
         * Returns a Vector2d with all its components set to zero.
         */
-        public static Zero(): Vector2d {
-            return new Vector2d(0, 0);
+        public static get Zero(): Vector2d {
+            return new Vector2d(0,0);
         }
 
         /**
         * Returns a Vector2d with all its components set to one.
         */
-        public static One(): Vector2d {
-            return new Vector2d(1, 1);
+        public static get One(): Vector2d {
+            return new Vector2d(1,1);
         }
 
         /**
@@ -475,7 +475,7 @@ module eg {
             return new Vector2d(
                 Math.roundTo(ca * (this.X - point.X) - sa * (this.Y - point.Y) + point.X, precision),
                 Math.roundTo(sa * (this.X - point.X) + ca * (this.Y - point.Y) + point.Y, precision)
-            );
+                );
         }
 
         /**
@@ -1941,13 +1941,13 @@ module eg.Bounds {
 
             var circleDistance = translated.Distance(rectangle.Position);
 
-            if (circleDistance.X > (rectangle.Size.HalfWidth() + this.Radius)) { return false; }
-            if (circleDistance.Y > (rectangle.Size.HalfHeight() + this.Radius)) { return false; }
+            if (circleDistance.X > (rectangle.Size.HalfWidth + this.Radius)) { return false; }
+            if (circleDistance.Y > (rectangle.Size.HalfHeight + this.Radius)) { return false; }
 
-            if (circleDistance.X <= (rectangle.Size.HalfWidth())) { return true; }
-            if (circleDistance.Y <= (rectangle.Size.HalfHeight())) { return true; }
+            if (circleDistance.X <= (rectangle.Size.HalfWidth)) { return true; }
+            if (circleDistance.Y <= (rectangle.Size.HalfHeight)) { return true; }
 
-            var cornerDistance_sq = Math.pow(circleDistance.X - rectangle.Size.HalfWidth(), 2) + Math.pow(circleDistance.Y - rectangle.Size.HalfHeight(), 2);
+            var cornerDistance_sq = Math.pow(circleDistance.X - rectangle.Size.HalfWidth, 2) + Math.pow(circleDistance.Y - rectangle.Size.HalfHeight, 2);
 
             return (cornerDistance_sq <= (this.Radius * this.Radius));
         }
@@ -2013,7 +2013,7 @@ module eg.Bounds {
         * Calculates the top left corner of the BoundingRectangle.
         */
         public TopLeft(): Vector2d {
-            var v = new Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
+            var v = new Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);
             if (this.Rotation === 0) {
                 return v;
             }
@@ -2025,7 +2025,7 @@ module eg.Bounds {
         * Calculates the top right corner of the BoundingRectangle.
         */
         public TopRight(): Vector2d {
-            var v = new Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
+            var v = new Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);
             if (this.Rotation === 0) {
                 return v;
             }
@@ -2037,7 +2037,7 @@ module eg.Bounds {
         * Calculates the bottom left corner of the BoundingRectangle.
         */
         public BotLeft(): Vector2d {
-            var v = new Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
+            var v = new Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);
             if (this.Rotation === 0) {
                 return v;
             }
@@ -2049,7 +2049,7 @@ module eg.Bounds {
         * Calculates the bottom right corner of the BoundingRectangle.
         */
         public BotRight(): Vector2d {
-            var v = new Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
+            var v = new Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);
             if (this.Rotation === 0) {
                 return v;
             }
@@ -2078,7 +2078,7 @@ module eg.Bounds {
 
                 return theirTopLeft.X <= myBotRight.X && theirBotRight.X >= myTopLeft.X && theirTopLeft.Y <= myBotRight.Y && theirBotRight.Y >= myTopLeft.Y;
             }
-            else if (rectangle.Position.Distance(this.Position).Magnitude() <= rectangle.Size.Radius() + this.Size.Radius()) {// Check if we're somewhat close to the rectangle ect that we might be colliding with
+            else if (rectangle.Position.Distance(this.Position).Magnitude() <= rectangle.Size.Radius + this.Size.Radius) {// Check if we're somewhat close to the rectangle ect that we might be colliding with
                 var axisList: Vector2d[] = [this.TopRight().Subtract(this.TopLeft()), this.TopRight().Subtract(this.BotRight()), rectangle.TopLeft().Subtract(rectangle.BotLeft()), rectangle.TopLeft().Subtract(rectangle.TopRight())];
                 var myVertices = this.Corners();
                 var theirVertices = rectangle.Corners();
@@ -4021,8 +4021,8 @@ module eg.MovementControllers.Abstractions {
         * @param moveables Moveable objects to synchronize.
         */
         constructor(moveables: IMoveable[]) {
-            this.Position = Vector2d.Zero();
-            this.Velocity = Vector2d.Zero();
+            this.Position = Vector2d.Zero;
+            this.Velocity = Vector2d.Zero;
             this.Rotation = 0;
             this._frozen = false;
 
@@ -4206,7 +4206,7 @@ module eg.MovementControllers {
         }
 
         private UpdateVelocityNoMultiDirection(): void {
-            var velocity = Vector2d.Zero();
+            var velocity = Vector2d.Zero;
 
             if (velocity.IsZero()) {
                 if (this._moving.Up) {
@@ -4230,7 +4230,7 @@ module eg.MovementControllers {
         }
 
         private UpdateVelocityWithMultiDirection(): void {
-            var velocity = Vector2d.Zero();
+            var velocity = Vector2d.Zero;
 
             if (this._moving.Up) {
                 velocity.Y -= this._moveSpeed;
@@ -4660,7 +4660,7 @@ module eg.Graphics {
                 context.strokeText(this._text, 0, 0);
             });
 
-            this._drawBounds = new Bounds.BoundingRectangle(this.Position, Size2d.One());
+            this._drawBounds = new Bounds.BoundingRectangle(this.Position, Size2d.One);
             this._recalculateBoundsSize = true;
 
             this._fontSettings = new Assets.FontSettings();
@@ -4972,7 +4972,7 @@ module eg.Graphics.Assets {
 
                 if (!setSize) {
                     this._size = new Size2d(this.Source.width, this.Source.height);
-                    this.ClipLocation = Vector2d.Zero();
+                    this.ClipLocation = Vector2d.Zero;
                     this.ClipSize = this._size.Clone();
                 }
 
@@ -5088,7 +5088,7 @@ module eg.Graphics {
         public Draw(context: CanvasRenderingContext2D): void {
             super._StartDraw(context);
 
-            context.drawImage(this.Image.Source, this.Image.ClipLocation.X, this.Image.ClipLocation.Y, this.Image.ClipSize.Width, this.Image.ClipSize.Height, - this.Size.HalfWidth(), - this.Size.HalfHeight(), this.Size.Width, this.Size.Height)
+            context.drawImage(this.Image.Source, this.Image.ClipLocation.X, this.Image.ClipLocation.Y, this.Image.ClipSize.Width, this.Image.ClipSize.Height, - this.Size.HalfWidth, - this.Size.HalfHeight, this.Size.Width, this.Size.Height)
 
             super._EndDraw(context);
         }
@@ -5150,8 +5150,8 @@ module eg.Graphics {
         * @param frameCount How many frames to play for the animation.
         * @param startOffset The positional offset within the imageSource on where the set of animation frames begin.
         */
-        constructor(imageSource: Assets.ImageSource, fps: number, frameSize: Size2d, frameCount: number, startOffset: Vector2d = Vector2d.Zero());
-        constructor(imageSource: Assets.ImageSource, fps: number, frameSize: Size2d, frameCount: number, startOffset: Vector2d = Vector2d.Zero()) {
+        constructor(imageSource: Assets.ImageSource, fps: number, frameSize: Size2d, frameCount: number, startOffset: Vector2d = Vector2d.Zero);
+        constructor(imageSource: Assets.ImageSource, fps: number, frameSize: Size2d, frameCount: number, startOffset: Vector2d = Vector2d.Zero) {
             this._imageSource = imageSource;
             this._frameSize = frameSize;
             this._frameCount = frameCount;
@@ -5633,7 +5633,7 @@ module eg.Graphics {
         }
 
         public _BuildPath(context: CanvasRenderingContext2D): void {
-            context.rect(-this.Size.HalfWidth(), -this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
+            context.rect(-this.Size.HalfWidth, -this.Size.HalfHeight, this.Size.Width, this.Size.Height);
         }
     }
 
@@ -5683,7 +5683,7 @@ module eg.Graphics {
         */
         constructor(fromX: number, fromY: number, toX: number, toY: number, lineWidth: number, color: string);
         constructor(fromX: number, fromY: number, toX: number, toY: number, lineWidth: number = 1, color?: string) {
-            super(Vector2d.Zero());// Set to zero here then updated in the rest of the constructor (use same logic)
+            super(Vector2d.Zero);// Set to zero here then updated in the rest of the constructor (use same logic)
 
             this._from = new Vector2d(fromX, fromY);
             this._to = new Vector2d(toX, toY);
@@ -6281,7 +6281,7 @@ module eg.Graphics {
         * @param y The vertical coordinate to convert to a row.
         */
         public ConvertToRow(y: number): number {
-            return Math.floor((y - (this.Position.Y - this._size.HalfHeight())) / this._tileSize.Height);
+            return Math.floor((y - (this.Position.Y - this._size.HalfHeight)) / this._tileSize.Height);
         }
 
         /**
@@ -6289,11 +6289,11 @@ module eg.Graphics {
         * @param x The horizontal component to convert to a column.
         */
         public ConvertToColumn(x: number): number {
-            return Math.floor((x - (this.Position.X - this._size.HalfWidth())) / this._tileSize.Width);
+            return Math.floor((x - (this.Position.X - this._size.HalfWidth)) / this._tileSize.Width);
         }
 
         private GetInsideGridPosition(row: number, column: number): Vector2d {
-            return new Vector2d(column * this._tileSize.Width - this._size.HalfWidth() + this._tileSize.HalfWidth(), row * this._tileSize.Height - this._size.HalfHeight() + this._tileSize.HalfHeight());
+            return new Vector2d(column * this._tileSize.Width - this._size.HalfWidth + this._tileSize.HalfWidth, row * this._tileSize.Height - this._size.HalfHeight + this._tileSize.HalfHeight);
         }
 
         private ValidRow(row: number): bool {
@@ -6544,14 +6544,14 @@ module eg {
         /**
         * Creates a Matrix2x2 with all its rows and columns initialized to 0.
         */
-        public static Zero(): Matrix2x2 {
+        public static get Zero(): Matrix2x2 {
             return new Matrix2x2();
         }
 
         /**
         * Returns the identity matrix for a 2x2.
         */
-        public static Identity(): Matrix2x2 {
+        public static get Identity(): Matrix2x2 {
             return new Matrix2x2(1,0,0,1);
         }
     }
@@ -6725,7 +6725,7 @@ module eg.Map {
             this._mapCache.height = size.Height;
 
             // Draw the grid onto the cached map
-            this._grid.Position = new Vector2d(size.HalfWidth(), size.HalfHeight());
+            this._grid.Position = new Vector2d(size.HalfWidth, size.HalfHeight);
             this._grid.Draw(this._mapCache.getContext("2d"));
             this._grid.Position = originalPosition;
         }
@@ -6791,3 +6791,17 @@ module eg.Map {
 
 // NOTE: Should re-alias all methods once the TypeScript .9 bug has been fixed: https://typescript.codeplex.com/workitem/1182
 //import eg = EndGate;
+/* Tween.ts */
+module eg.Tweening {
+
+    export class Tween {
+        private _playing: boolean;
+
+        constructor() {
+        }
+
+        get Playing(): boolean {
+            return this._playing;
+        }
+    }
+}

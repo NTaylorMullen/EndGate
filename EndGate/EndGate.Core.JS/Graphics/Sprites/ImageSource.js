@@ -26,7 +26,7 @@ var eg;
 
                         if (!setSize) {
                             _this._size = new eg.Size2d(_this.Source.width, _this.Source.height);
-                            _this.ClipLocation = eg.Vector2d.Zero();
+                            _this.ClipLocation = eg.Vector2d.Zero;
                             _this.ClipSize = _this._size.Clone();
                         }
 

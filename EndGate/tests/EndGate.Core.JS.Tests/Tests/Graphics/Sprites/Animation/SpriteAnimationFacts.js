@@ -33,7 +33,7 @@
         animation.Update(gameTime);
 
         QUnit.ok(imageSource.ClipSize.Equivalent(new eg.Size2d(50, 50)));
-        QUnit.ok(imageSource.ClipLocation.Equivalent(eg.Vector2d.Zero()));
+        QUnit.ok(imageSource.ClipLocation.Equivalent(eg.Vector2d.Zero));
 
         gameTime.Now = new Date(new Date().getTime() + (1000 / 20));
 

@@ -60,7 +60,7 @@ module eg.Graphics.Assets {
 
                 if (!setSize) {
                     this._size = new Size2d(this.Source.width, this.Source.height);
-                    this.ClipLocation = Vector2d.Zero();
+                    this.ClipLocation = Vector2d.Zero;
                     this.ClipSize = this._size.Clone();
                 }
 

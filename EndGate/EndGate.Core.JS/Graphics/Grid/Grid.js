@@ -331,7 +331,7 @@ var eg;
             * @param y The vertical coordinate to convert to a row.
             */
             Grid.prototype.ConvertToRow = function (y) {
-                return Math.floor((y - (this.Position.Y - this._size.HalfHeight())) / this._tileSize.Height);
+                return Math.floor((y - (this.Position.Y - this._size.HalfHeight)) / this._tileSize.Height);
             };
 
             /**
@@ -339,11 +339,11 @@ var eg;
             * @param x The horizontal component to convert to a column.
             */
             Grid.prototype.ConvertToColumn = function (x) {
-                return Math.floor((x - (this.Position.X - this._size.HalfWidth())) / this._tileSize.Width);
+                return Math.floor((x - (this.Position.X - this._size.HalfWidth)) / this._tileSize.Width);
             };
 
             Grid.prototype.GetInsideGridPosition = function (row, column) {
-                return new eg.Vector2d(column * this._tileSize.Width - this._size.HalfWidth() + this._tileSize.HalfWidth(), row * this._tileSize.Height - this._size.HalfHeight() + this._tileSize.HalfHeight());
+                return new eg.Vector2d(column * this._tileSize.Width - this._size.HalfWidth + this._tileSize.HalfWidth, row * this._tileSize.Height - this._size.HalfHeight + this._tileSize.HalfHeight);
             };
 
             Grid.prototype.ValidRow = function (row) {

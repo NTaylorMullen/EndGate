@@ -139,7 +139,7 @@ module eg.MovementControllers {
         }
 
         private UpdateVelocityNoMultiDirection(): void {
-            var velocity = Vector2d.Zero();
+            var velocity = Vector2d.Zero;
 
             if (velocity.IsZero()) {
                 if (this._moving.Up) {
@@ -163,7 +163,7 @@ module eg.MovementControllers {
         }
 
         private UpdateVelocityWithMultiDirection(): void {
-            var velocity = Vector2d.Zero();
+            var velocity = Vector2d.Zero;
 
             if (this._moving.Up) {
                 velocity.Y -= this._moveSpeed;

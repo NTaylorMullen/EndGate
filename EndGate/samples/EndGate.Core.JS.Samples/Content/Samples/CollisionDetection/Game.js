@@ -79,7 +79,7 @@ var CollisionDetection;
         };
 
         Game.prototype.GetRandomVelocity = function () {
-            var axi = ["X", "Y"][Math.floor(Math.random() * 2)], velocity = eg.Vector2d.Zero();
+            var axi = ["X", "Y"][Math.floor(Math.random() * 2)], velocity = eg.Vector2d.Zero;
 
             velocity[axi] = Math.floor(Math.random() * Game.MaxVelocity) + Game.MinVelocity;
 

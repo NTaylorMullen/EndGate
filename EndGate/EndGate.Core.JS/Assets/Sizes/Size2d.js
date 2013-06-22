@@ -11,40 +11,60 @@ var eg;
             this.Width = first || 0;
             this.Height = typeof second !== "undefined" ? second : this.Width;
         }
-        Size2d.Zero = /**
-        * Returns a Size2d with all its components set to zero.
-        */
-        function () {
-            return new Size2d(0, 0);
-        };
+        Object.defineProperty(Size2d, "Zero", {
+            get: /**
+            * Returns a Size2d with all its components set to zero.
+            */
+            function () {
+                return new Size2d(0, 0);
+            },
+            enumerable: true,
+            configurable: true
+        });
 
-        Size2d.One = /**
-        * Returns a Size2d with all its components set to one.
-        */
-        function () {
-            return new Size2d(1, 1);
-        };
+        Object.defineProperty(Size2d, "One", {
+            get: /**
+            * Returns a Size2d with all its components set to one.
+            */
+            function () {
+                return new Size2d(1, 1);
+            },
+            enumerable: true,
+            configurable: true
+        });
 
-        /**
-        * Returns the radius that encompasses the two dimensional size of this Size2d.
-        */
-        Size2d.prototype.Radius = function () {
-            return .5 * Math.sqrt(this.Width * this.Width + this.Height * this.Height);
-        };
+        Object.defineProperty(Size2d.prototype, "Radius", {
+            get: /**
+            * Returns the radius that encompasses the two dimensional size of this Size2d.
+            */
+            function () {
+                return .5 * Math.sqrt(this.Width * this.Width + this.Height * this.Height);
+            },
+            enumerable: true,
+            configurable: true
+        });
 
-        /**
-        * Returns half of the Width component of this Size2d.
-        */
-        Size2d.prototype.HalfWidth = function () {
-            return this.Width / 2;
-        };
+        Object.defineProperty(Size2d.prototype, "HalfWidth", {
+            get: /**
+            * Returns half of the Width component of this Size2d.
+            */
+            function () {
+                return this.Width / 2;
+            },
+            enumerable: true,
+            configurable: true
+        });
 
-        /**
-        * Returns half of the Height component of this Size2d.
-        */
-        Size2d.prototype.HalfHeight = function () {
-            return this.Height / 2;
-        };
+        Object.defineProperty(Size2d.prototype, "HalfHeight", {
+            get: /**
+            * Returns half of the Height component of this Size2d.
+            */
+            function () {
+                return this.Height / 2;
+            },
+            enumerable: true,
+            configurable: true
+        });
 
         /**
         * Executes the action with the Width and Height of this Size2d and sets the Width and Height to the corresponding return values.

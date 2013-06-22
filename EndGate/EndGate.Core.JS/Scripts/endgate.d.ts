@@ -94,11 +94,11 @@ declare module eg {
         /**
         * Returns a Vector2d with all its components set to zero.
         */
-        static Zero(): Vector2d;
+        static Zero : Vector2d;
         /**
         * Returns a Vector2d with all its components set to one.
         */
-        static One(): Vector2d;
+        static One : Vector2d;
         /**
         * Returns a Vector2d that represents the current Vector2d projected onto the provided Vector2d.
         * @param vector Source vector.
@@ -301,23 +301,23 @@ declare module eg {
         /**
         * Returns a Size2d with all its components set to zero.
         */
-        static Zero(): Size2d;
+        static Zero : Size2d;
         /**
         * Returns a Size2d with all its components set to one.
         */
-        static One(): Size2d;
+        static One : Size2d;
         /**
         * Returns the radius that encompasses the two dimensional size of this Size2d.
         */
-        public Radius(): number;
+        public Radius : number;
         /**
         * Returns half of the Width component of this Size2d.
         */
-        public HalfWidth(): number;
+        public HalfWidth : number;
         /**
         * Returns half of the Height component of this Size2d.
         */
-        public HalfHeight(): number;
+        public HalfHeight : number;
         /**
         * Executes the action with the Width and Height of this Size2d and sets the Width and Height to the corresponding return values.
         * @param action The function used to modify the Width and Height.
@@ -3157,11 +3157,11 @@ declare module eg {
         /**
         * Creates a Matrix2x2 with all its rows and columns initialized to 0.
         */
-        static Zero(): Matrix2x2;
+        static Zero : Matrix2x2;
         /**
         * Returns the identity matrix for a 2x2.
         */
-        static Identity(): Matrix2x2;
+        static Identity : Matrix2x2;
     }
 }
 declare module eg.Map {
@@ -3252,5 +3252,12 @@ declare module eg.Map {
         public GetDrawBounds(): eg.Bounds.Abstractions.Bounds2d;
         private BuildCache();
         private FillGridWith(mappings);
+    }
+}
+declare module eg.Tweening {
+    class Tween {
+        private _playing;
+        constructor();
+        public Playing : boolean;
     }
 }

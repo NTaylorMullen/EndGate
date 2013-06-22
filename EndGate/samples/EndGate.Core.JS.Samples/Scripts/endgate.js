@@ -165,13 +165,21 @@ var eg;
             return new Vector2d(this.X - num * normalUnit.X, this.Y - num * normalUnit.Y);
         };
 
-        Vector2d.Zero = function () {
-            return new Vector2d(0, 0);
-        };
+        Object.defineProperty(Vector2d, "Zero", {
+            get: function () {
+                return new Vector2d(0, 0);
+            },
+            enumerable: true,
+            configurable: true
+        });
 
-        Vector2d.One = function () {
-            return new Vector2d(1, 1);
-        };
+        Object.defineProperty(Vector2d, "One", {
+            get: function () {
+                return new Vector2d(1, 1);
+            },
+            enumerable: true,
+            configurable: true
+        });
 
         Vector2d.prototype.ProjectOnto = function (vector) {
             return vector.Multiply(this.Dot(vector) / vector.Dot(vector));
@@ -1099,21 +1107,21 @@ var eg;
 
                 var circleDistance = translated.Distance(rectangle.Position);
 
-                if (circleDistance.X > (rectangle.Size.HalfWidth() + this.Radius)) {
+                if (circleDistance.X > (rectangle.Size.HalfWidth + this.Radius)) {
                     return false;
                 }
-                if (circleDistance.Y > (rectangle.Size.HalfHeight() + this.Radius)) {
+                if (circleDistance.Y > (rectangle.Size.HalfHeight + this.Radius)) {
                     return false;
                 }
 
-                if (circleDistance.X <= (rectangle.Size.HalfWidth())) {
+                if (circleDistance.X <= (rectangle.Size.HalfWidth)) {
                     return true;
                 }
-                if (circleDistance.Y <= (rectangle.Size.HalfHeight())) {
+                if (circleDistance.Y <= (rectangle.Size.HalfHeight)) {
                     return true;
                 }
 
-                var cornerDistance_sq = Math.pow(circleDistance.X - rectangle.Size.HalfWidth(), 2) + Math.pow(circleDistance.Y - rectangle.Size.HalfHeight(), 2);
+                var cornerDistance_sq = Math.pow(circleDistance.X - rectangle.Size.HalfWidth, 2) + Math.pow(circleDistance.Y - rectangle.Size.HalfHeight, 2);
 
                 return (cornerDistance_sq <= (this.Radius * this.Radius));
             };
@@ -1149,7 +1157,7 @@ var eg;
             };
 
             BoundingRectangle.prototype.TopLeft = function () {
-                var v = new eg.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
+                var v = new eg.Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);
                 if (this.Rotation === 0) {
                     return v;
                 }
@@ -1158,7 +1166,7 @@ var eg;
             };
 
             BoundingRectangle.prototype.TopRight = function () {
-                var v = new eg.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y - this.Size.HalfHeight());
+                var v = new eg.Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);
                 if (this.Rotation === 0) {
                     return v;
                 }
@@ -1167,7 +1175,7 @@ var eg;
             };
 
             BoundingRectangle.prototype.BotLeft = function () {
-                var v = new eg.Vector2d(this.Position.X - this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
+                var v = new eg.Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);
                 if (this.Rotation === 0) {
                     return v;
                 }
@@ -1176,7 +1184,7 @@ var eg;
             };
 
             BoundingRectangle.prototype.BotRight = function () {
-                var v = new eg.Vector2d(this.Position.X + this.Size.HalfWidth(), this.Position.Y + this.Size.HalfHeight());
+                var v = new eg.Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);
                 if (this.Rotation === 0) {
                     return v;
                 }
@@ -2389,8 +2397,8 @@ var eg;
         (function (Abstractions) {
             var MovementController = (function () {
                 function MovementController(moveables) {
-                    this.Position = eg.Vector2d.Zero();
-                    this.Velocity = eg.Vector2d.Zero();
+                    this.Position = eg.Vector2d.Zero;
+                    this.Velocity = eg.Vector2d.Zero;
                     this.Rotation = 0;
                     this._frozen = false;
 
@@ -2491,7 +2499,7 @@ var eg;
             };
 
             LinearMovementController.prototype.UpdateVelocityNoMultiDirection = function () {
-                var velocity = eg.Vector2d.Zero();
+                var velocity = eg.Vector2d.Zero;
 
                 if (velocity.IsZero()) {
                     if (this._moving.Up) {
@@ -2515,7 +2523,7 @@ var eg;
             };
 
             LinearMovementController.prototype.UpdateVelocityWithMultiDirection = function () {
-                var velocity = eg.Vector2d.Zero();
+                var velocity = eg.Vector2d.Zero;
 
                 if (this._moving.Up) {
                     velocity.Y -= this._moveSpeed;
@@ -3045,7 +3053,7 @@ var eg;
 
                         if (!setSize) {
                             _this._size = new eg.Size2d(_this.Source.width, _this.Source.height);
-                            _this.ClipLocation = eg.Vector2d.Zero();
+                            _this.ClipLocation = eg.Vector2d.Zero;
                             _this.ClipSize = _this._size.Clone();
                         }
 
@@ -3102,7 +3110,7 @@ var eg;
             Sprite2d.prototype.Draw = function (context) {
                 _super.prototype._StartDraw.call(this, context);
 
-                context.drawImage(this.Image.Source, this.Image.ClipLocation.X, this.Image.ClipLocation.Y, this.Image.ClipSize.Width, this.Image.ClipSize.Height, -this.Size.HalfWidth(), -this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
+                context.drawImage(this.Image.Source, this.Image.ClipLocation.X, this.Image.ClipLocation.Y, this.Image.ClipSize.Width, this.Image.ClipSize.Height, -this.Size.HalfWidth, -this.Size.HalfHeight, this.Size.Width, this.Size.Height);
 
                 _super.prototype._EndDraw.call(this, context);
             };
@@ -3126,7 +3134,7 @@ var eg;
     (function (Graphics) {
         var SpriteAnimation = (function () {
             function SpriteAnimation(imageSource, fps, frameSize, frameCount, startOffset) {
-                if (typeof startOffset === "undefined") { startOffset = eg.Vector2d.Zero(); }
+                if (typeof startOffset === "undefined") { startOffset = eg.Vector2d.Zero; }
                 this._imageSource = imageSource;
                 this._frameSize = frameSize;
                 this._frameCount = frameCount;
@@ -3381,7 +3389,7 @@ var eg;
             };
 
             Rectangle.prototype._BuildPath = function (context) {
-                context.rect(-this.Size.HalfWidth(), -this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
+                context.rect(-this.Size.HalfWidth, -this.Size.HalfHeight, this.Size.Width, this.Size.Height);
             };
             return Rectangle;
         })(Graphics.Abstractions.Shape);
@@ -3397,7 +3405,7 @@ var eg;
             __extends(Line2d, _super);
             function Line2d(fromX, fromY, toX, toY, lineWidth, color) {
                 if (typeof lineWidth === "undefined") { lineWidth = 1; }
-                _super.call(this, eg.Vector2d.Zero());
+                _super.call(this, eg.Vector2d.Zero);
                 this._type = "Line2d";
 
                 this._from = new eg.Vector2d(fromX, fromY);
@@ -3744,15 +3752,15 @@ var eg;
             };
 
             Grid.prototype.ConvertToRow = function (y) {
-                return Math.floor((y - (this.Position.Y - this._size.HalfHeight())) / this._tileSize.Height);
+                return Math.floor((y - (this.Position.Y - this._size.HalfHeight)) / this._tileSize.Height);
             };
 
             Grid.prototype.ConvertToColumn = function (x) {
-                return Math.floor((x - (this.Position.X - this._size.HalfWidth())) / this._tileSize.Width);
+                return Math.floor((x - (this.Position.X - this._size.HalfWidth)) / this._tileSize.Width);
             };
 
             Grid.prototype.GetInsideGridPosition = function (row, column) {
-                return new eg.Vector2d(column * this._tileSize.Width - this._size.HalfWidth() + this._tileSize.HalfWidth(), row * this._tileSize.Height - this._size.HalfHeight() + this._tileSize.HalfHeight());
+                return new eg.Vector2d(column * this._tileSize.Width - this._size.HalfWidth + this._tileSize.HalfWidth, row * this._tileSize.Height - this._size.HalfHeight + this._tileSize.HalfHeight);
             };
 
             Grid.prototype.ValidRow = function (row) {
@@ -3979,7 +3987,7 @@ var eg;
                 this._mapCache.width = size.Width;
                 this._mapCache.height = size.Height;
 
-                this._grid.Position = new eg.Vector2d(size.HalfWidth(), size.HalfHeight());
+                this._grid.Position = new eg.Vector2d(size.HalfWidth, size.HalfHeight);
                 this._grid.Draw(this._mapCache.getContext("2d"));
                 this._grid.Position = originalPosition;
             };
@@ -4005,4 +4013,24 @@ var eg;
         Map.SquareTileMap = SquareTileMap;
     })(eg.Map || (eg.Map = {}));
     var Map = eg.Map;
+})(eg || (eg = {}));
+
+var eg;
+(function (eg) {
+    (function (Tweening) {
+        var Tween = (function () {
+            function Tween() {
+            }
+            Object.defineProperty(Tween.prototype, "Playing", {
+                get: function () {
+                    return this._playing;
+                },
+                enumerable: true,
+                configurable: true
+            });
+            return Tween;
+        })();
+        Tweening.Tween = Tween;
+    })(eg.Tweening || (eg.Tweening = {}));
+    var Tweening = eg.Tweening;
 })(eg || (eg = {}));

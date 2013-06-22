@@ -12,7 +12,7 @@ var eg;
         */
         var SpriteAnimation = (function () {
             function SpriteAnimation(imageSource, fps, frameSize, frameCount, startOffset) {
-                if (typeof startOffset === "undefined") { startOffset = eg.Vector2d.Zero(); }
+                if (typeof startOffset === "undefined") { startOffset = eg.Vector2d.Zero; }
                 this._imageSource = imageSource;
                 this._frameSize = frameSize;
                 this._frameCount = frameCount;

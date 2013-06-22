@@ -15,8 +15,8 @@ var eg;
                 * @param moveables Moveable objects to synchronize.
                 */
                 function MovementController(moveables) {
-                    this.Position = eg.Vector2d.Zero();
-                    this.Velocity = eg.Vector2d.Zero();
+                    this.Position = eg.Vector2d.Zero;
+                    this.Velocity = eg.Vector2d.Zero;
                     this.Rotation = 0;
                     this._frozen = false;
 

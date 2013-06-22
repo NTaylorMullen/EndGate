@@ -34,7 +34,7 @@ var eg;
             };
 
             Rectangle.prototype._BuildPath = function (context) {
-                context.rect(-this.Size.HalfWidth(), -this.Size.HalfHeight(), this.Size.Width, this.Size.Height);
+                context.rect(-this.Size.HalfWidth, -this.Size.HalfHeight, this.Size.Width, this.Size.Height);
             };
             return Rectangle;
         })(Graphics.Abstractions.Shape);

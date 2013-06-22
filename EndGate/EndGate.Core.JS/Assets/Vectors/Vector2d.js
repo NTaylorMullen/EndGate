@@ -22,19 +22,27 @@ var eg;
             return new Vector2d(this.X - num * normalUnit.X, this.Y - num * normalUnit.Y);
         };
 
-        Vector2d.Zero = /**
-        * Returns a Vector2d with all its components set to zero.
-        */
-        function () {
-            return new Vector2d(0, 0);
-        };
+        Object.defineProperty(Vector2d, "Zero", {
+            get: /**
+            * Returns a Vector2d with all its components set to zero.
+            */
+            function () {
+                return new Vector2d(0, 0);
+            },
+            enumerable: true,
+            configurable: true
+        });
 
-        Vector2d.One = /**
-        * Returns a Vector2d with all its components set to one.
-        */
-        function () {
-            return new Vector2d(1, 1);
-        };
+        Object.defineProperty(Vector2d, "One", {
+            get: /**
+            * Returns a Vector2d with all its components set to one.
+            */
+            function () {
+                return new Vector2d(1, 1);
+            },
+            enumerable: true,
+            configurable: true
+        });
 
         /**
         * Returns a Vector2d that represents the current Vector2d projected onto the provided Vector2d.

@@ -48,15 +48,15 @@ module eg {
         /**
         * Returns a Vector2d with all its components set to zero.
         */
-        public static Zero(): Vector2d {
-            return new Vector2d(0, 0);
+        public static get Zero(): Vector2d {
+            return new Vector2d(0,0);
         }
 
         /**
         * Returns a Vector2d with all its components set to one.
         */
-        public static One(): Vector2d {
-            return new Vector2d(1, 1);
+        public static get One(): Vector2d {
+            return new Vector2d(1,1);
         }
 
         /**
@@ -87,7 +87,7 @@ module eg {
             return new Vector2d(
                 Math.roundTo(ca * (this.X - point.X) - sa * (this.Y - point.Y) + point.X, precision),
                 Math.roundTo(sa * (this.X - point.X) + ca * (this.Y - point.Y) + point.Y, precision)
-            );
+                );
         }
 
         /**

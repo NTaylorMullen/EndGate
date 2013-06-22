@@ -94,11 +94,11 @@ declare module eg {
         /**
         * Returns a Vector2d with all its components set to zero.
         */
-        static Zero(): Vector2d;
+        static Zero : Vector2d;
         /**
         * Returns a Vector2d with all its components set to one.
         */
-        static One(): Vector2d;
+        static One : Vector2d;
         /**
         * Returns a Vector2d that represents the current Vector2d projected onto the provided Vector2d.
         * @param vector Source vector.
@@ -3252,5 +3252,12 @@ declare module eg.Map {
         public GetDrawBounds(): eg.Bounds.Abstractions.Bounds2d;
         private BuildCache();
         private FillGridWith(mappings);
+    }
+}
+declare module eg.Tweening {
+    class Tween {
+        private _playing;
+        constructor();
+        public Playing : boolean;
     }
 }

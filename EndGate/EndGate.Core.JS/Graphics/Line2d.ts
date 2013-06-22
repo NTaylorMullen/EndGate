@@ -42,7 +42,7 @@ module eg.Graphics {
         */
         constructor(fromX: number, fromY: number, toX: number, toY: number, lineWidth: number, color: string);
         constructor(fromX: number, fromY: number, toX: number, toY: number, lineWidth: number = 1, color?: string) {
-            super(Vector2d.Zero());// Set to zero here then updated in the rest of the constructor (use same logic)
+            super(Vector2d.Zero);// Set to zero here then updated in the rest of the constructor (use same logic)
 
             this._from = new Vector2d(fromX, fromY);
             this._to = new Vector2d(toX, toY);

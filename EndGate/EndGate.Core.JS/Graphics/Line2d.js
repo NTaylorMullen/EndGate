@@ -15,7 +15,7 @@ var eg;
             __extends(Line2d, _super);
             function Line2d(fromX, fromY, toX, toY, lineWidth, color) {
                 if (typeof lineWidth === "undefined") { lineWidth = 1; }
-                _super.call(this, eg.Vector2d.Zero());
+                _super.call(this, eg.Vector2d.Zero);
                 this._type = "Line2d";
 
                 this._from = new eg.Vector2d(fromX, fromY);

@@ -28,7 +28,7 @@ var eg;
                     context.strokeText(_this._text, 0, 0);
                 });
 
-                this._drawBounds = new eg.Bounds.BoundingRectangle(this.Position, eg.Size2d.One());
+                this._drawBounds = new eg.Bounds.BoundingRectangle(this.Position, eg.Size2d.One);
                 this._recalculateBoundsSize = true;
 
                 this._fontSettings = new Graphics.Assets.FontSettings();

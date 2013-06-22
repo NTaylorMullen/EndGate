@@ -53,7 +53,7 @@ var Shapes;
             var incrementor = ShapeAnimator.AnimationSpeed * gameTime.ElapsedSecond, direction = shape.Position.Subtract(this._defaultPosition).Abs().Sign();
 
             if (direction.Magnitude() === 0) {
-                direction = eg.Vector2d.One();
+                direction = eg.Vector2d.One;
             }
 
             shape.Position = shape.Position.Add(direction.Multiply(this.Direction).Multiply(incrementor));
