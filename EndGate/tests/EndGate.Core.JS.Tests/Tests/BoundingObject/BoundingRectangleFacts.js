@@ -5,26 +5,26 @@
     QUnit.test("Un-rotated Rectangle Corners Get works", function () {
         var rect = new eg.Bounds.BoundingRectangle(new eg.Vector2d(3, 3), new eg.Size2d(6, 6));
 
-        QUnit.ok(rect.TopLeft().Equivalent(eg.Vector2d.Zero));
-        QUnit.ok(rect.TopRight().Equivalent(new eg.Vector2d(6, 0)));
-        QUnit.ok(rect.BotLeft().Equivalent(new eg.Vector2d(0, 6)));
-        QUnit.ok(rect.BotRight().Equivalent(new eg.Vector2d(6, 6)));
+        QUnit.ok(rect.TopLeft.Equivalent(eg.Vector2d.Zero));
+        QUnit.ok(rect.TopRight.Equivalent(new eg.Vector2d(6, 0)));
+        QUnit.ok(rect.BotLeft.Equivalent(new eg.Vector2d(0, 6)));
+        QUnit.ok(rect.BotRight.Equivalent(new eg.Vector2d(6, 6)));
 
         rect.Position = rect.Position.Subtract(6);
-        QUnit.ok(rect.TopLeft().Equivalent(new eg.Vector2d(-6, -6)));
-        QUnit.ok(rect.TopRight().Equivalent(new eg.Vector2d(0, -6)));
-        QUnit.ok(rect.BotLeft().Equivalent(new eg.Vector2d(-6, 0)));
-        QUnit.ok(rect.BotRight().Equivalent(eg.Vector2d.Zero));
+        QUnit.ok(rect.TopLeft.Equivalent(new eg.Vector2d(-6, -6)));
+        QUnit.ok(rect.TopRight.Equivalent(new eg.Vector2d(0, -6)));
+        QUnit.ok(rect.BotLeft.Equivalent(new eg.Vector2d(-6, 0)));
+        QUnit.ok(rect.BotRight.Equivalent(eg.Vector2d.Zero));
     });
 
     QUnit.test("Rotated Rectangle Corners Get works", function () {
         var rect = new eg.Bounds.BoundingRectangle(new eg.Vector2d(3, 2), new eg.Size2d(4, 2));
         rect.Rotation = -Math.PI / 2;
 
-        var topLeft = rect.TopLeft().Clone();
-        topRight = rect.TopRight().Clone(),
-        botLeft = rect.BotLeft().Clone(),
-        botRight = rect.BotRight().Clone();
+        var topLeft = rect.TopLeft.Clone();
+        topRight = rect.TopRight.Clone(),
+        botLeft = rect.BotLeft.Clone(),
+        botRight = rect.BotRight.Clone();
 
         topLeft.Apply(Math.round);
         topRight.Apply(Math.round);
@@ -122,10 +122,10 @@
         }
 
         QUnit.ok(!rect.ContainsPoint(new eg.Vector2d(-1, 0)));
-        QUnit.ok(!rect.ContainsPoint(rect.TopRight().Add(1)));
-        QUnit.ok(!rect.ContainsPoint(rect.BotRight().Add(1)));
-        QUnit.ok(!rect.ContainsPoint(rect.TopLeft().Subtract(1)));
-        QUnit.ok(!rect.ContainsPoint(rect.BotLeft().Subtract(1)));
+        QUnit.ok(!rect.ContainsPoint(rect.TopRight.Add(1)));
+        QUnit.ok(!rect.ContainsPoint(rect.BotRight.Add(1)));
+        QUnit.ok(!rect.ContainsPoint(rect.TopLeft.Subtract(1)));
+        QUnit.ok(!rect.ContainsPoint(rect.BotLeft.Subtract(1)));
     });
 
     QUnit.test("Rotated rectangle contains point works.", function () {
@@ -146,16 +146,16 @@
 
         QUnit.ok(!rect.ContainsPoint(new eg.Vector2d(-1, 0)));
 
-        QUnit.ok(!rect.ContainsPoint(rect.TopRight().Add(1)));
+        QUnit.ok(!rect.ContainsPoint(rect.TopRight.Add(1)));
 
-        QUnit.ok(!rect.ContainsPoint(rect.BotRight().Add(1)));
-        QUnit.ok(!rect.ContainsPoint(rect.TopLeft().Subtract(1)));
-        QUnit.ok(!rect.ContainsPoint(rect.BotLeft().Subtract(1)));
+        QUnit.ok(!rect.ContainsPoint(rect.BotRight.Add(1)));
+        QUnit.ok(!rect.ContainsPoint(rect.TopLeft.Subtract(1)));
+        QUnit.ok(!rect.ContainsPoint(rect.BotLeft.Subtract(1)));
 
-        QUnit.ok(rect.ContainsPoint(rect.TopRight().Subtract(1)));
-        QUnit.ok(rect.ContainsPoint(rect.BotRight().Subtract(1)));
-        QUnit.ok(rect.ContainsPoint(rect.TopLeft().Add(1)));
-        QUnit.ok(rect.ContainsPoint(rect.BotLeft().Add(1)));
+        QUnit.ok(rect.ContainsPoint(rect.TopRight.Subtract(1)));
+        QUnit.ok(rect.ContainsPoint(rect.BotRight.Subtract(1)));
+        QUnit.ok(rect.ContainsPoint(rect.TopLeft.Add(1)));
+        QUnit.ok(rect.ContainsPoint(rect.BotLeft.Add(1)));
     });
 
 })();

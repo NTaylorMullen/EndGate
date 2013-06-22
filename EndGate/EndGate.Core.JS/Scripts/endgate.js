@@ -179,12 +179,6 @@ var eg;
             this.X = x || 0;
             this.Y = y || 0;
         }
-        Vector2d.prototype.Reflect = function (normal) {
-            var normalUnit = normal.Unit(), num = this.Dot(normalUnit) * 2;
-
-            return new Vector2d(this.X - num * normalUnit.X, this.Y - num * normalUnit.Y);
-        };
-
         Object.defineProperty(Vector2d, "Zero", {
             get: function () {
                 return new Vector2d(0, 0);
@@ -200,6 +194,12 @@ var eg;
             enumerable: true,
             configurable: true
         });
+
+        Vector2d.prototype.Reflect = function (normal) {
+            var normalUnit = normal.Unit(), num = this.Dot(normalUnit) * 2;
+
+            return new Vector2d(this.X - num * normalUnit.X, this.Y - num * normalUnit.Y);
+        };
 
         Vector2d.prototype.ProjectOnto = function (vector) {
             return vector.Multiply(this.Dot(vector) / vector.Dot(vector));
@@ -1172,44 +1172,60 @@ var eg;
                 this.Size.Height *= y;
             };
 
+            Object.defineProperty(BoundingRectangle.prototype, "TopLeft", {
+                get: function () {
+                    this.v = new eg.Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);;
+                    if (this.Rotation === 0) {
+                        return v;
+                    }
+
+                    return v.RotateAround(this.Position, this.Rotation);
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(BoundingRectangle.prototype, "TopRight", {
+                get: function () {
+                    this.v = new eg.Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);;
+                    if (this.Rotation === 0) {
+                        return v;
+                    }
+
+                    return v.RotateAround(this.Position, this.Rotation);
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(BoundingRectangle.prototype, "BotLeft", {
+                get: function () {
+                    this.v = new eg.Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);;
+                    if (this.Rotation === 0) {
+                        return v;
+                    }
+
+                    return v.RotateAround(this.Position, this.Rotation);
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(BoundingRectangle.prototype, "BotRight", {
+                get: function () {
+                    this.v = new eg.Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);;
+                    if (this.Rotation === 0) {
+                        return v;
+                    }
+
+                    return v.RotateAround(this.Position, this.Rotation);
+                },
+                enumerable: true,
+                configurable: true
+            });
+
             BoundingRectangle.prototype.Corners = function () {
-                return [this.TopLeft(), this.TopRight(), this.BotLeft(), this.BotRight()];
-            };
-
-            BoundingRectangle.prototype.TopLeft = function () {
-                var v = new eg.Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);
-                if (this.Rotation === 0) {
-                    return v;
-                }
-
-                return v.RotateAround(this.Position, this.Rotation);
-            };
-
-            BoundingRectangle.prototype.TopRight = function () {
-                var v = new eg.Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);
-                if (this.Rotation === 0) {
-                    return v;
-                }
-
-                return v.RotateAround(this.Position, this.Rotation);
-            };
-
-            BoundingRectangle.prototype.BotLeft = function () {
-                var v = new eg.Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);
-                if (this.Rotation === 0) {
-                    return v;
-                }
-
-                return v.RotateAround(this.Position, this.Rotation);
-            };
-
-            BoundingRectangle.prototype.BotRight = function () {
-                var v = new eg.Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);
-                if (this.Rotation === 0) {
-                    return v;
-                }
-
-                return v.RotateAround(this.Position, this.Rotation);
+                return [this.TopLeft, this.TopRight, this.BotLeft, this.BotRight];
             };
 
             BoundingRectangle.prototype.IntersectsCircle = function (circle) {
@@ -1218,11 +1234,11 @@ var eg;
 
             BoundingRectangle.prototype.IntersectsRectangle = function (rectangle) {
                 if (this.Rotation === 0 && rectangle.Rotation === 0) {
-                    var myTopLeft = this.TopLeft(), myBotRight = this.BotRight(), theirTopLeft = rectangle.TopLeft(), theirBotRight = rectangle.BotRight();
+                    var myTopLeft = this.TopLeft, myBotRight = this.BotRight, theirTopLeft = rectangle.TopLeft, theirBotRight = rectangle.BotRight;
 
                     return theirTopLeft.X <= myBotRight.X && theirBotRight.X >= myTopLeft.X && theirTopLeft.Y <= myBotRight.Y && theirBotRight.Y >= myTopLeft.Y;
                 } else if (rectangle.Position.Distance(this.Position).Magnitude() <= rectangle.Size.Radius + this.Size.Radius) {
-                    var axisList = [this.TopRight().Subtract(this.TopLeft()), this.TopRight().Subtract(this.BotRight()), rectangle.TopLeft().Subtract(rectangle.BotLeft()), rectangle.TopLeft().Subtract(rectangle.TopRight())];
+                    var axisList = [this.TopRight.Subtract(this.TopLeft), this.TopRight.Subtract(this.BotRight), rectangle.TopLeft.Subtract(rectangle.BotLeft), rectangle.TopLeft.Subtract(rectangle.TopRight)];
                     var myVertices = this.Corners();
                     var theirVertices = rectangle.Corners();
 
@@ -1250,7 +1266,7 @@ var eg;
                     point = point.RotateAround(this.Position, -savedRotation);
                 }
 
-                var myTopLeft = this.TopLeft(), myBotRight = this.BotRight();
+                var myTopLeft = this.TopLeft, myBotRight = this.BotRight;
 
                 this.Rotation = savedRotation;
 
@@ -3811,6 +3827,22 @@ var eg;
                 [botLeft, botRight]
             ];
         }
+        Object.defineProperty(Matrix2x2, "Zero", {
+            get: function () {
+                return new Matrix2x2();
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        Object.defineProperty(Matrix2x2, "Identity", {
+            get: function () {
+                return new Matrix2x2(1, 0, 0, 1);
+            },
+            enumerable: true,
+            configurable: true
+        });
+
         Matrix2x2.prototype.Apply = function (action) {
             this.Values[0][0] = action(this.Values[0][0]);
             this.Values[0][1] = action(this.Values[0][1]);
@@ -3904,22 +3936,6 @@ var eg;
         Matrix2x2.Scale = function (vector) {
             return new Matrix2x2(vector.X, 0, 0, vector.Y);
         };
-
-        Object.defineProperty(Matrix2x2, "Zero", {
-            get: function () {
-                return new Matrix2x2();
-            },
-            enumerable: true,
-            configurable: true
-        });
-
-        Object.defineProperty(Matrix2x2, "Identity", {
-            get: function () {
-                return new Matrix2x2(1, 0, 0, 1);
-            },
-            enumerable: true,
-            configurable: true
-        });
         return Matrix2x2;
     })();
     eg.Matrix2x2 = Matrix2x2;

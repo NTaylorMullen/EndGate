@@ -87,11 +87,6 @@ declare module eg {
         */
         constructor(x: number, y: number);
         /**
-        * Returns a Vector2d that's reflected over the normal.
-        * @param normal The normal to reflect over.
-        */
-        public Reflect(normal: Vector2d): Vector2d;
-        /**
         * Returns a Vector2d with all its components set to zero.
         */
         static Zero : Vector2d;
@@ -99,6 +94,11 @@ declare module eg {
         * Returns a Vector2d with all its components set to one.
         */
         static One : Vector2d;
+        /**
+        * Returns a Vector2d that's reflected over the normal.
+        * @param normal The normal to reflect over.
+        */
+        public Reflect(normal: Vector2d): Vector2d;
         /**
         * Returns a Vector2d that represents the current Vector2d projected onto the provided Vector2d.
         * @param vector Source vector.
@@ -535,25 +535,25 @@ declare module eg.Bounds {
         */
         public Scale(x: number, y: number): void;
         /**
-        * Returns a list of vertices that are the locations of each corner of the BoundingRectangle. Format: [TopLeft, TopRight, BotLeft, BotRight].
-        */
-        public Corners(): eg.Vector2d[];
-        /**
         * Calculates the top left corner of the BoundingRectangle.
         */
-        public TopLeft(): eg.Vector2d;
+        public TopLeft : eg.Vector2d;
         /**
         * Calculates the top right corner of the BoundingRectangle.
         */
-        public TopRight(): eg.Vector2d;
+        public TopRight : eg.Vector2d;
         /**
         * Calculates the bottom left corner of the BoundingRectangle.
         */
-        public BotLeft(): eg.Vector2d;
+        public BotLeft : eg.Vector2d;
         /**
         * Calculates the bottom right corner of the BoundingRectangle.
         */
-        public BotRight(): eg.Vector2d;
+        public BotRight : eg.Vector2d;
+        /**
+        * Returns a list of vertices that are the locations of each corner of the BoundingRectangle. Format: [TopLeft, TopRight, BotLeft, BotRight].
+        */
+        public Corners(): eg.Vector2d[];
         /**
         * Determines if the current BoundingRectangle is intersecting the provided BoundingCircle.
         * @param circle BoundingCircle to check intersection with.
@@ -3050,6 +3050,14 @@ declare module eg {
         */
         constructor(topLeft: number, topRight: number, botLeft: number, botRight: number);
         /**
+        * Creates a Matrix2x2 with all its rows and columns initialized to 0.
+        */
+        static Zero : Matrix2x2;
+        /**
+        * Returns the identity matrix for a 2x2.
+        */
+        static Identity : Matrix2x2;
+        /**
         * Executes the action with each row and column item of this Matrix2x2 and modifies their values.
         * @param action The function used to modify each row and column items.
         */
@@ -3154,14 +3162,6 @@ declare module eg {
         * @param vector The vector used to determine the X and Y scaling values.
         */
         static Scale(vector: eg.Vector2d): Matrix2x2;
-        /**
-        * Creates a Matrix2x2 with all its rows and columns initialized to 0.
-        */
-        static Zero : Matrix2x2;
-        /**
-        * Returns the identity matrix for a 2x2.
-        */
-        static Identity : Matrix2x2;
     }
 }
 declare module eg.Map {

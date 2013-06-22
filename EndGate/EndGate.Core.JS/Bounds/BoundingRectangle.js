@@ -37,59 +37,75 @@ var eg;
                 this.Size.Height *= y;
             };
 
+            Object.defineProperty(BoundingRectangle.prototype, "TopLeft", {
+                get: /**
+                * Calculates the top left corner of the BoundingRectangle.
+                */
+                function () {
+                    this.v = new eg.Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);;
+                    if (this.Rotation === 0) {
+                        return v;
+                    }
+
+                    return v.RotateAround(this.Position, this.Rotation);
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(BoundingRectangle.prototype, "TopRight", {
+                get: /**
+                * Calculates the top right corner of the BoundingRectangle.
+                */
+                function () {
+                    this.v = new eg.Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);;
+                    if (this.Rotation === 0) {
+                        return v;
+                    }
+
+                    return v.RotateAround(this.Position, this.Rotation);
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(BoundingRectangle.prototype, "BotLeft", {
+                get: /**
+                * Calculates the bottom left corner of the BoundingRectangle.
+                */
+                function () {
+                    this.v = new eg.Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);;
+                    if (this.Rotation === 0) {
+                        return v;
+                    }
+
+                    return v.RotateAround(this.Position, this.Rotation);
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(BoundingRectangle.prototype, "BotRight", {
+                get: /**
+                * Calculates the bottom right corner of the BoundingRectangle.
+                */
+                function () {
+                    this.v = new eg.Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);;
+                    if (this.Rotation === 0) {
+                        return v;
+                    }
+
+                    return v.RotateAround(this.Position, this.Rotation);
+                },
+                enumerable: true,
+                configurable: true
+            });
+
             /**
             * Returns a list of vertices that are the locations of each corner of the BoundingRectangle. Format: [TopLeft, TopRight, BotLeft, BotRight].
             */
             BoundingRectangle.prototype.Corners = function () {
-                return [this.TopLeft(), this.TopRight(), this.BotLeft(), this.BotRight()];
-            };
-
-            /**
-            * Calculates the top left corner of the BoundingRectangle.
-            */
-            BoundingRectangle.prototype.TopLeft = function () {
-                var v = new eg.Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);
-                if (this.Rotation === 0) {
-                    return v;
-                }
-
-                return v.RotateAround(this.Position, this.Rotation);
-            };
-
-            /**
-            * Calculates the top right corner of the BoundingRectangle.
-            */
-            BoundingRectangle.prototype.TopRight = function () {
-                var v = new eg.Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);
-                if (this.Rotation === 0) {
-                    return v;
-                }
-
-                return v.RotateAround(this.Position, this.Rotation);
-            };
-
-            /**
-            * Calculates the bottom left corner of the BoundingRectangle.
-            */
-            BoundingRectangle.prototype.BotLeft = function () {
-                var v = new eg.Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);
-                if (this.Rotation === 0) {
-                    return v;
-                }
-
-                return v.RotateAround(this.Position, this.Rotation);
-            };
-
-            /**
-            * Calculates the bottom right corner of the BoundingRectangle.
-            */
-            BoundingRectangle.prototype.BotRight = function () {
-                var v = new eg.Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);
-                if (this.Rotation === 0) {
-                    return v;
-                }
-
-                return v.RotateAround(this.Position, this.Rotation);
+                return [this.TopLeft, this.TopRight, this.BotLeft, this.BotRight];
             };
 
             /**
@@ -106,11 +122,11 @@ var eg;
             */
             BoundingRectangle.prototype.IntersectsRectangle = function (rectangle) {
                 if (this.Rotation === 0 && rectangle.Rotation === 0) {
-                    var myTopLeft = this.TopLeft(), myBotRight = this.BotRight(), theirTopLeft = rectangle.TopLeft(), theirBotRight = rectangle.BotRight();
+                    var myTopLeft = this.TopLeft, myBotRight = this.BotRight, theirTopLeft = rectangle.TopLeft, theirBotRight = rectangle.BotRight;
 
                     return theirTopLeft.X <= myBotRight.X && theirBotRight.X >= myTopLeft.X && theirTopLeft.Y <= myBotRight.Y && theirBotRight.Y >= myTopLeft.Y;
                 } else if (rectangle.Position.Distance(this.Position).Magnitude() <= rectangle.Size.Radius + this.Size.Radius) {
-                    var axisList = [this.TopRight().Subtract(this.TopLeft()), this.TopRight().Subtract(this.BotRight()), rectangle.TopLeft().Subtract(rectangle.BotLeft()), rectangle.TopLeft().Subtract(rectangle.TopRight())];
+                    var axisList = [this.TopRight.Subtract(this.TopLeft), this.TopRight.Subtract(this.BotRight), rectangle.TopLeft.Subtract(rectangle.BotLeft), rectangle.TopLeft.Subtract(rectangle.TopRight)];
                     var myVertices = this.Corners();
                     var theirVertices = rectangle.Corners();
 
@@ -142,7 +158,7 @@ var eg;
                     point = point.RotateAround(this.Position, -savedRotation);
                 }
 
-                var myTopLeft = this.TopLeft(), myBotRight = this.BotRight();
+                var myTopLeft = this.TopLeft, myBotRight = this.BotRight;
 
                 this.Rotation = savedRotation;
 

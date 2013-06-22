@@ -423,6 +423,20 @@ module eg {
         }
 
         /**
+        * Returns a Vector2d with all its components set to zero.
+        */
+        public static get Zero(): Vector2d {
+            return new Vector2d(0, 0);
+        }
+
+        /**
+        * Returns a Vector2d with all its components set to one.
+        */
+        public static get One(): Vector2d {
+            return new Vector2d(1, 1);
+        }
+
+        /**
         * Returns a Vector2d that's reflected over the normal.
         * @param normal The normal to reflect over.
         */
@@ -431,20 +445,6 @@ module eg {
                 num = this.Dot(normalUnit) * 2;
 
             return new Vector2d(this.X - num * normalUnit.X, this.Y - num * normalUnit.Y);
-        }
-
-        /**
-        * Returns a Vector2d with all its components set to zero.
-        */
-        public static get Zero(): Vector2d {
-            return new Vector2d(0,0);
-        }
-
-        /**
-        * Returns a Vector2d with all its components set to one.
-        */
-        public static get One(): Vector2d {
-            return new Vector2d(1,1);
         }
 
         /**
@@ -2000,19 +2000,12 @@ module eg.Bounds {
         public Scale(x: number, y: number): void {
             this.Size.Width *= x;
             this.Size.Height *= y;
-        }
-
-        /**
-        * Returns a list of vertices that are the locations of each corner of the BoundingRectangle. Format: [TopLeft, TopRight, BotLeft, BotRight].
-        */
-        public Corners(): Vector2d[] {
-            return [this.TopLeft(), this.TopRight(), this.BotLeft(), this.BotRight()];
-        }
+        }        
 
         /** 
         * Calculates the top left corner of the BoundingRectangle.
         */
-        public TopLeft(): Vector2d {
+        public get TopLeft(): Vector2d {
             var v = new Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);
             if (this.Rotation === 0) {
                 return v;
@@ -2024,7 +2017,7 @@ module eg.Bounds {
         /** 
         * Calculates the top right corner of the BoundingRectangle.
         */
-        public TopRight(): Vector2d {
+        public get TopRight(): Vector2d {
             var v = new Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);
             if (this.Rotation === 0) {
                 return v;
@@ -2036,7 +2029,7 @@ module eg.Bounds {
         /** 
         * Calculates the bottom left corner of the BoundingRectangle.
         */
-        public BotLeft(): Vector2d {
+        public get BotLeft(): Vector2d {
             var v = new Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);
             if (this.Rotation === 0) {
                 return v;
@@ -2048,13 +2041,20 @@ module eg.Bounds {
         /** 
         * Calculates the bottom right corner of the BoundingRectangle.
         */
-        public BotRight(): Vector2d {
+        public get BotRight(): Vector2d {
             var v = new Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);
             if (this.Rotation === 0) {
                 return v;
             }
 
             return v.RotateAround(this.Position, this.Rotation);
+        }
+
+        /**
+        * Returns a list of vertices that are the locations of each corner of the BoundingRectangle. Format: [TopLeft, TopRight, BotLeft, BotRight].
+        */
+        public Corners(): Vector2d[] {
+            return [this.TopLeft, this.TopRight, this.BotLeft, this.BotRight];
         }
 
         /**
@@ -2071,15 +2071,15 @@ module eg.Bounds {
         */
         public IntersectsRectangle(rectangle: BoundingRectangle): bool {
             if (this.Rotation === 0 && rectangle.Rotation === 0) {
-                var myTopLeft = this.TopLeft(),
-                    myBotRight = this.BotRight(),
-                    theirTopLeft = rectangle.TopLeft(),
-                    theirBotRight = rectangle.BotRight();
+                var myTopLeft = this.TopLeft,
+                    myBotRight = this.BotRight,
+                    theirTopLeft = rectangle.TopLeft,
+                    theirBotRight = rectangle.BotRight;
 
                 return theirTopLeft.X <= myBotRight.X && theirBotRight.X >= myTopLeft.X && theirTopLeft.Y <= myBotRight.Y && theirBotRight.Y >= myTopLeft.Y;
             }
             else if (rectangle.Position.Distance(this.Position).Magnitude() <= rectangle.Size.Radius + this.Size.Radius) {// Check if we're somewhat close to the rectangle ect that we might be colliding with
-                var axisList: Vector2d[] = [this.TopRight().Subtract(this.TopLeft()), this.TopRight().Subtract(this.BotRight()), rectangle.TopLeft().Subtract(rectangle.BotLeft()), rectangle.TopLeft().Subtract(rectangle.TopRight())];
+                var axisList: Vector2d[] = [this.TopRight.Subtract(this.TopLeft), this.TopRight.Subtract(this.BotRight), rectangle.TopLeft.Subtract(rectangle.BotLeft), rectangle.TopLeft.Subtract(rectangle.TopRight)];
                 var myVertices = this.Corners();
                 var theirVertices = rectangle.Corners();
 
@@ -2112,8 +2112,8 @@ module eg.Bounds {
                 point = point.RotateAround(this.Position, -savedRotation);
             }
 
-            var myTopLeft = this.TopLeft(),
-                myBotRight = this.BotRight();
+            var myTopLeft = this.TopLeft,
+                myBotRight = this.BotRight;
 
             this.Rotation = savedRotation;
 
@@ -6342,6 +6342,20 @@ module eg {
                 [botLeft, botRight]
             ];
         }
+        
+        /**
+        * Creates a Matrix2x2 with all its rows and columns initialized to 0.
+        */
+        public static get Zero(): Matrix2x2 {
+            return new Matrix2x2();
+        }
+
+        /**
+        * Returns the identity matrix for a 2x2.
+        */
+        public static get Identity(): Matrix2x2 {
+            return new Matrix2x2(1, 0, 0, 1);
+        }
 
         /**
         * Executes the action with each row and column item of this Matrix2x2 and modifies their values.
@@ -6539,20 +6553,6 @@ module eg {
         */
         public static Scale(vector: Vector2d): Matrix2x2 {
             return new Matrix2x2(vector.X, 0, 0, vector.Y);
-        }
-
-        /**
-        * Creates a Matrix2x2 with all its rows and columns initialized to 0.
-        */
-        public static get Zero(): Matrix2x2 {
-            return new Matrix2x2();
-        }
-
-        /**
-        * Returns the identity matrix for a 2x2.
-        */
-        public static get Identity(): Matrix2x2 {
-            return new Matrix2x2(1,0,0,1);
         }
     }
 }

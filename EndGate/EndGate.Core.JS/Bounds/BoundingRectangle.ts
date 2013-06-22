@@ -35,19 +35,12 @@ module eg.Bounds {
         public Scale(x: number, y: number): void {
             this.Size.Width *= x;
             this.Size.Height *= y;
-        }
-
-        /**
-        * Returns a list of vertices that are the locations of each corner of the BoundingRectangle. Format: [TopLeft, TopRight, BotLeft, BotRight].
-        */
-        public Corners(): Vector2d[] {
-            return [this.TopLeft(), this.TopRight(), this.BotLeft(), this.BotRight()];
-        }
+        }        
 
         /** 
         * Calculates the top left corner of the BoundingRectangle.
         */
-        public TopLeft(): Vector2d {
+        public get TopLeft(): Vector2d {
             var v = new Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);
             if (this.Rotation === 0) {
                 return v;
@@ -59,7 +52,7 @@ module eg.Bounds {
         /** 
         * Calculates the top right corner of the BoundingRectangle.
         */
-        public TopRight(): Vector2d {
+        public get TopRight(): Vector2d {
             var v = new Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);
             if (this.Rotation === 0) {
                 return v;
@@ -71,7 +64,7 @@ module eg.Bounds {
         /** 
         * Calculates the bottom left corner of the BoundingRectangle.
         */
-        public BotLeft(): Vector2d {
+        public get BotLeft(): Vector2d {
             var v = new Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);
             if (this.Rotation === 0) {
                 return v;
@@ -83,13 +76,20 @@ module eg.Bounds {
         /** 
         * Calculates the bottom right corner of the BoundingRectangle.
         */
-        public BotRight(): Vector2d {
+        public get BotRight(): Vector2d {
             var v = new Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);
             if (this.Rotation === 0) {
                 return v;
             }
 
             return v.RotateAround(this.Position, this.Rotation);
+        }
+
+        /**
+        * Returns a list of vertices that are the locations of each corner of the BoundingRectangle. Format: [TopLeft, TopRight, BotLeft, BotRight].
+        */
+        public Corners(): Vector2d[] {
+            return [this.TopLeft, this.TopRight, this.BotLeft, this.BotRight];
         }
 
         /**
@@ -106,15 +106,15 @@ module eg.Bounds {
         */
         public IntersectsRectangle(rectangle: BoundingRectangle): bool {
             if (this.Rotation === 0 && rectangle.Rotation === 0) {
-                var myTopLeft = this.TopLeft(),
-                    myBotRight = this.BotRight(),
-                    theirTopLeft = rectangle.TopLeft(),
-                    theirBotRight = rectangle.BotRight();
+                var myTopLeft = this.TopLeft,
+                    myBotRight = this.BotRight,
+                    theirTopLeft = rectangle.TopLeft,
+                    theirBotRight = rectangle.BotRight;
 
                 return theirTopLeft.X <= myBotRight.X && theirBotRight.X >= myTopLeft.X && theirTopLeft.Y <= myBotRight.Y && theirBotRight.Y >= myTopLeft.Y;
             }
             else if (rectangle.Position.Distance(this.Position).Magnitude() <= rectangle.Size.Radius + this.Size.Radius) {// Check if we're somewhat close to the rectangle ect that we might be colliding with
-                var axisList: Vector2d[] = [this.TopRight().Subtract(this.TopLeft()), this.TopRight().Subtract(this.BotRight()), rectangle.TopLeft().Subtract(rectangle.BotLeft()), rectangle.TopLeft().Subtract(rectangle.TopRight())];
+                var axisList: Vector2d[] = [this.TopRight.Subtract(this.TopLeft), this.TopRight.Subtract(this.BotRight), rectangle.TopLeft.Subtract(rectangle.BotLeft), rectangle.TopLeft.Subtract(rectangle.TopRight)];
                 var myVertices = this.Corners();
                 var theirVertices = rectangle.Corners();
 
@@ -147,8 +147,8 @@ module eg.Bounds {
                 point = point.RotateAround(this.Position, -savedRotation);
             }
 
-            var myTopLeft = this.TopLeft(),
-                myBotRight = this.BotRight();
+            var myTopLeft = this.TopLeft,
+                myBotRight = this.BotRight;
 
             this.Rotation = savedRotation;
 
