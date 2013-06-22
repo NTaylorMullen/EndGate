@@ -14,6 +14,10 @@ module eg.Input {
         private _onDownCommands: { [id: number]: Assets.KeyboardCommand; };
         private _onUpCommands: { [id: number]: Assets.KeyboardCommand; };
 
+        private _onKeyPress: EventHandler1<KeyboardCommandEvent>;
+        private _onKeyDown: EventHandler1<KeyboardCommandEvent>;
+        private _onKeyUp: EventHandler1<KeyboardCommandEvent>;
+
         /**
         * Creates a new instance of the KeyboardHandler object.
         */
@@ -22,9 +26,9 @@ module eg.Input {
             this._onDownCommands = (<any>{});
             this._onUpCommands = (<any>{});
 
-            this.OnKeyPress = new EventHandler1<KeyboardCommandEvent>();
-            this.OnKeyDown = new EventHandler1<KeyboardCommandEvent>();
-            this.OnKeyUp = new EventHandler1<KeyboardCommandEvent>();
+            this._onKeyPress = new EventHandler1<KeyboardCommandEvent>();
+            this._onKeyDown = new EventHandler1<KeyboardCommandEvent>();
+            this._onKeyUp = new EventHandler1<KeyboardCommandEvent>();
 
             this.Wire();
         }
@@ -33,17 +37,25 @@ module eg.Input {
         * Event: Triggered when any key press occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes a KeyboardCommandEvent object to bound functions.
         */
-        public OnKeyPress: EventHandler1<KeyboardCommandEvent>;
+        public get OnKeyPress(): EventHandler1<KeyboardCommandEvent> {
+            return this._onKeyPress;
+        }
+
         /**
         * Event: Triggered when any key goes down.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes a KeyboardCommandEvent object to bound functions.
         */
-        public OnKeyDown: EventHandler1<KeyboardCommandEvent>;
+        public get OnKeyDown(): EventHandler1<KeyboardCommandEvent> {
+            return this._onKeyDown;
+        }
+
         /**
         * Event: Triggered when any key comes up.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes a KeyboardCommandEvent object to bound functions.
         */
-        public OnKeyUp: EventHandler1<KeyboardCommandEvent>;
+        public get OnKeyUp(): EventHandler1<KeyboardCommandEvent> {
+            return this._onKeyUp;
+        }
 
         /**
         * Binds function to be called when the keyCommand is pressed.  To unbind the function, dispose of the returned KeyboardCommand.

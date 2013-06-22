@@ -1772,51 +1772,131 @@ var eg;
                 var _this = this;
                 this._target = target;
 
-                this.OnClick = new eg.EventHandler1();
-                this.OnDoubleClick = new eg.EventHandler1();
-                this.OnDown = new eg.EventHandler1();
-                this.OnUp = new eg.EventHandler1();
-                this.OnMove = new eg.EventHandler1();
-                this.OnScroll = new eg.EventHandler1();
+                this._onClick = new eg.EventHandler1();
+                this._onDoubleClick = new eg.EventHandler1();
+                this._onDown = new eg.EventHandler1();
+                this._onUp = new eg.EventHandler1();
+                this._onMove = new eg.EventHandler1();
+                this._onScroll = new eg.EventHandler1();
 
-                this.LeftIsDown = false;
-                this.MiddleIsDown = false;
-                this.RightIsDown = false;
+                this._leftIsDown = false;
+                this._middleIsDown = false;
+                this._rightIsDown = false;
 
                 this.Wire();
 
                 this.OnDown.Bind(function (e) {
-                    _this.IsDown = true;
+                    _this._isDown = true;
                     _this[e.Button + "IsDown"] = true;
                 });
 
                 this.OnUp.Bind(function (e) {
-                    _this.IsDown = false;
+                    _this._isDown = false;
                     _this[e.Button + "IsDown"] = false;
                 });
             }
+            Object.defineProperty(MouseHandler.prototype, "LeftIsDown", {
+                get: function () {
+                    return this._leftIsDown;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(MouseHandler.prototype, "MiddleIsDown", {
+                get: function () {
+                    return this._middleIsDown;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(MouseHandler.prototype, "RightIsDown", {
+                get: function () {
+                    return this._rightIsDown;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(MouseHandler.prototype, "IsDown", {
+                get: function () {
+                    return this._isDown;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(MouseHandler.prototype, "OnClick", {
+                get: function () {
+                    return this._onClick;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(MouseHandler.prototype, "OnDoubleClick", {
+                get: function () {
+                    return this._onDoubleClick;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(MouseHandler.prototype, "OnDown", {
+                get: function () {
+                    return this._onDown;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(MouseHandler.prototype, "OnUp", {
+                get: function () {
+                    return this._onUp;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(MouseHandler.prototype, "OnMove", {
+                get: function () {
+                    return this._onMove;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(MouseHandler.prototype, "OnScroll", {
+                get: function () {
+                    return this._onScroll;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
             MouseHandler.prototype.Wire = function () {
                 var _this = this;
-                this._target.addEventListener("click", this._target.oncontextmenu = this.BuildEvent(this.OnClick, this.BuildMouseClickEvent), false);
-                this._target.addEventListener("dblclick", this.BuildEvent(this.OnDoubleClick, this.BuildMouseClickEvent), false);
-                this._target.addEventListener("mousedown", this.BuildEvent(this.OnDown, this.BuildMouseClickEvent), false);
-                this._target.addEventListener("mouseup", this.BuildEvent(this.OnUp, this.BuildMouseClickEvent), false);
-                this._target.addEventListener("mousemove", this.BuildEvent(this.OnMove, this.BuildMouseEvent), false);
+                this._target.addEventListener("click", this._target.oncontextmenu = this.BuildEvent(this._onClick, this.BuildMouseClickEvent), false);
+                this._target.addEventListener("dblclick", this.BuildEvent(this._onDoubleClick, this.BuildMouseClickEvent), false);
+                this._target.addEventListener("mousedown", this.BuildEvent(this._onDown, this.BuildMouseClickEvent), false);
+                this._target.addEventListener("mouseup", this.BuildEvent(this._onUp, this.BuildMouseClickEvent), false);
+                this._target.addEventListener("mousemove", this.BuildEvent(this._onMove, this.BuildMouseEvent), false);
 
                 if ((/MSIE/i.test(navigator.userAgent))) {
-                    this._target.addEventListener("wheel", this.BuildEvent(this.OnScroll, function (e) {
+                    this._target.addEventListener("wheel", this.BuildEvent(this._onScroll, function (e) {
                         e.wheelDeltaX = -e.deltaX;
                         e.wheelDeltaY = -e.deltaY;
                         return _this.BuildMouseScrollEvent(e);
                     }), false);
                 } else if ((/Firefox/i.test(navigator.userAgent))) {
-                    this._target.addEventListener("DOMMouseScroll", this.BuildEvent(this.OnScroll, function (e) {
+                    this._target.addEventListener("DOMMouseScroll", this.BuildEvent(this._onScroll, function (e) {
                         e.wheelDeltaX = e.axis === 1 ? -e.detail : 0;
                         e.wheelDeltaY = e.axis === 2 ? -e.detail : 0;
                         return _this.BuildMouseScrollEvent(e);
                     }), false);
                 } else {
-                    this._target.addEventListener("mousewheel", this.BuildEvent(this.OnScroll, this.BuildMouseScrollEvent), false);
+                    this._target.addEventListener("mousewheel", this.BuildEvent(this._onScroll, this.BuildMouseScrollEvent), false);
                 }
             };
 
@@ -2116,11 +2196,19 @@ var eg;
                     this.Modifiers = Input.Assets.KeyboardModifiers.BuildFromCommandString(command);
                     this.Key = Input._.KeyboardCommandHelper.ParseKey(command);
 
-                    this.OnDispose = new eg.EventHandler();
+                    this._onDisposed = new eg.EventHandler();
                     this._onDisposeInvoker = new eg._.Utilities.NoopTripInvoker(function () {
-                        _this.OnDispose.Trigger();
+                        _this._onDisposed.Trigger();
                     }, true);
                 }
+                Object.defineProperty(KeyboardCommand.prototype, "OnDispose", {
+                    get: function () {
+                        return this._onDisposed;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+
                 KeyboardCommand.prototype.Dispose = function () {
                     this._onDisposeInvoker.InvokeOnce();
                 };
@@ -2142,12 +2230,36 @@ var eg;
                 this._onDownCommands = ({});
                 this._onUpCommands = ({});
 
-                this.OnKeyPress = new eg.EventHandler1();
-                this.OnKeyDown = new eg.EventHandler1();
-                this.OnKeyUp = new eg.EventHandler1();
+                this._onKeyPress = new eg.EventHandler1();
+                this._onKeyDown = new eg.EventHandler1();
+                this._onKeyUp = new eg.EventHandler1();
 
                 this.Wire();
             }
+            Object.defineProperty(KeyboardHandler.prototype, "OnKeyPress", {
+                get: function () {
+                    return this._onKeyPress;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(KeyboardHandler.prototype, "OnKeyDown", {
+                get: function () {
+                    return this._onKeyDown;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(KeyboardHandler.prototype, "OnKeyUp", {
+                get: function () {
+                    return this._onKeyUp;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
             KeyboardHandler.prototype.OnCommandPress = function (keyCommand, action) {
                 return this.UpdateCache(keyCommand, action, this._onPressCommands);
             };

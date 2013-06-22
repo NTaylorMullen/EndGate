@@ -22,11 +22,22 @@ var eg;
                     this.Modifiers = Input.Assets.KeyboardModifiers.BuildFromCommandString(command);
                     this.Key = Input._.KeyboardCommandHelper.ParseKey(command);
 
-                    this.OnDispose = new eg.EventHandler();
+                    this._onDisposed = new eg.EventHandler();
                     this._onDisposeInvoker = new eg._.Utilities.NoopTripInvoker(function () {
-                        _this.OnDispose.Trigger();
+                        _this._onDisposed.Trigger();
                     }, true);
                 }
+                Object.defineProperty(KeyboardCommand.prototype, "OnDispose", {
+                    get: /**
+                    * Event: Triggered when a KeyboardCommand has been disposed.  If this KeyboardCommand is used with a KeyboardHandler it will no longer trigger the Action function.  Functions can be bound or unbound to this event to be executed when the event triggers.
+                    */
+                    function () {
+                        return this._onDisposed;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+
                 /**
                 * Triggers the OnDisposed event.  If this KeyboardCommand is used with a KeyboardHandler it will no longer trigger the Action function.
                 */

@@ -31,6 +31,8 @@ var MouseInput;
             this._onMoveColor = "#000000";
             this._shapes = [];
 
+            this.Input.Mouse.OnClick = null;
+
             // Bind each of the mouse events individually to draw different color circles
             this.Input.Mouse.OnClick.Bind(function (clickEvent) {
                 lastMouseEvent.text(clickEvent.Button + " Click at " + clickEvent.Position.toString());

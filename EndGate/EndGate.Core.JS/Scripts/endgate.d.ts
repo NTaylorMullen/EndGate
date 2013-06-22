@@ -1195,23 +1195,17 @@ declare module eg.Input {
     * Defines a handler that will monitor mouse events over a specified area and will execute appropriate functions based on the events.
     */
     class MouseHandler {
-        /**
-        * Indicates if the left mouse button is down
-        */
-        public LeftIsDown: boolean;
-        /**
-        * Indicates if the middle mouse button is down
-        */
-        public MiddleIsDown: boolean;
-        /**
-        * Indicates if the right mouse button is down
-        */
-        public RightIsDown: boolean;
-        /**
-        * Indicates if any mouse button is down.
-        */
-        public IsDown: boolean;
         private static MouseButtonArray;
+        private _leftIsDown;
+        private _middleIsDown;
+        private _rightIsDown;
+        private _isDown;
+        private _onClick;
+        private _onDoubleClick;
+        private _onDown;
+        private _onUp;
+        private _onMove;
+        private _onScroll;
         private _target;
         /**
         * Creates a new instance of the MouseHandler object.
@@ -1219,35 +1213,51 @@ declare module eg.Input {
         */
         constructor(target: HTMLElement);
         /**
+        * Indicates if the left mouse button is down
+        */
+        public LeftIsDown : boolean;
+        /**
+        * Indicates if the middle mouse button is down
+        */
+        public MiddleIsDown : boolean;
+        /**
+        * Indicates if the right mouse button is down
+        */
+        public RightIsDown : boolean;
+        /**
+        * Indicates if any mouse button is down.
+        */
+        public IsDown : boolean;
+        /**
         * Event: Triggered when a mouse click occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes an IMouseClickEvent event object to bound functions.
         */
-        public OnClick: eg.EventHandler1<eg.Input.IMouseClickEvent>;
+        public OnClick : eg.EventHandler1<eg.Input.IMouseClickEvent>;
         /**
         * Event: Triggered when a mouse double click occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes an IMouseClickEvent event object to bound functions.
         */
-        public OnDoubleClick: eg.EventHandler1<eg.Input.IMouseClickEvent>;
+        public OnDoubleClick : eg.EventHandler1<eg.Input.IMouseClickEvent>;
         /**
         * Event: Triggered when a mouse down event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes an IMouseClickEvent event object to bound functions.
         */
-        public OnDown: eg.EventHandler1<eg.Input.IMouseClickEvent>;
+        public OnDown : eg.EventHandler1<eg.Input.IMouseClickEvent>;
         /**
         * Event: Triggered when a mouse up event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes an IMouseClickEvent event object to bound functions.
         */
-        public OnUp: eg.EventHandler1<eg.Input.IMouseClickEvent>;
+        public OnUp : eg.EventHandler1<eg.Input.IMouseClickEvent>;
         /**
         * Event: Triggered when a mouse move event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes an IMouseEvent event object to bound functions.
         */
-        public OnMove: eg.EventHandler1<eg.Input.IMouseEvent>;
+        public OnMove : eg.EventHandler1<eg.Input.IMouseEvent>;
         /**
         * Event: Triggered when a mouse scroll event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes an IMouseScrollEvent event object to bound functions.
         */
-        public OnScroll: eg.EventHandler1<eg.Input.IMouseScrollEvent>;
+        public OnScroll : eg.EventHandler1<eg.Input.IMouseScrollEvent>;
         private Wire();
         private BuildEvent<T>(eventHandler, mouseEventBuilder, returnValue?);
         private BuildMouseScrollEvent(event);
@@ -1386,6 +1396,7 @@ declare module eg.Input.Assets {
         */
         public Modifiers: Assets.KeyboardModifiers;
         private _onDisposeInvoker;
+        private _onDisposed;
         /**
         * Creates a new instance of the KeyboardCommand object.
         * @param command Initial command required to trigger the action function.
@@ -1395,7 +1406,7 @@ declare module eg.Input.Assets {
         /**
         * Event: Triggered when a KeyboardCommand has been disposed.  If this KeyboardCommand is used with a KeyboardHandler it will no longer trigger the Action function.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
-        public OnDispose: eg.EventHandler;
+        public OnDispose : eg.EventHandler;
         /**
         * Triggers the OnDisposed event.  If this KeyboardCommand is used with a KeyboardHandler it will no longer trigger the Action function.
         */
@@ -1412,6 +1423,9 @@ declare module eg.Input {
         private _onPressCommands;
         private _onDownCommands;
         private _onUpCommands;
+        private _onKeyPress;
+        private _onKeyDown;
+        private _onKeyUp;
         /**
         * Creates a new instance of the KeyboardHandler object.
         */
@@ -1420,17 +1434,17 @@ declare module eg.Input {
         * Event: Triggered when any key press occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes a KeyboardCommandEvent object to bound functions.
         */
-        public OnKeyPress: eg.EventHandler1<eg.Input.KeyboardCommandEvent>;
+        public OnKeyPress : eg.EventHandler1<eg.Input.KeyboardCommandEvent>;
         /**
         * Event: Triggered when any key goes down.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes a KeyboardCommandEvent object to bound functions.
         */
-        public OnKeyDown: eg.EventHandler1<eg.Input.KeyboardCommandEvent>;
+        public OnKeyDown : eg.EventHandler1<eg.Input.KeyboardCommandEvent>;
         /**
         * Event: Triggered when any key comes up.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes a KeyboardCommandEvent object to bound functions.
         */
-        public OnKeyUp: eg.EventHandler1<eg.Input.KeyboardCommandEvent>;
+        public OnKeyUp : eg.EventHandler1<eg.Input.KeyboardCommandEvent>;
         /**
         * Binds function to be called when the keyCommand is pressed.  To unbind the function, dispose of the returned KeyboardCommand.
         * @param keyCommand The command string required to execute the action.

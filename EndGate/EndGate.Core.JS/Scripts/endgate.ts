@@ -2749,27 +2749,23 @@ module eg.Input {
     /**
     * Defines a handler that will monitor mouse events over a specified area and will execute appropriate functions based on the events.
     */
-    export class MouseHandler {
-        // Active flags
-        /**
-        * Indicates if the left mouse button is down
-        */
-        public LeftIsDown: bool;
-        /**
-        * Indicates if the middle mouse button is down
-        */
-        public MiddleIsDown: bool;
-        /**
-        * Indicates if the right mouse button is down
-        */
-        public RightIsDown: bool;
-        /**
-        * Indicates if any mouse button is down.
-        */
-        public IsDown: bool;
-
+    export class MouseHandler {       
         // Used to determine mouse buttons without using extra conditional statements, performance enhancer
         private static MouseButtonArray = [null, _.MouseButton.Left, _.MouseButton.Middle, _.MouseButton.Right];
+
+        // Active flags        
+        private _leftIsDown: boolean;
+        private _middleIsDown: boolean;
+        private _rightIsDown: boolean;
+        private _isDown: boolean;
+
+        // Events
+        private _onClick: EventHandler1<IMouseClickEvent>;
+        private _onDoubleClick: EventHandler1<IMouseClickEvent>;
+        private _onDown: EventHandler1<IMouseClickEvent>;
+        private _onUp: EventHandler1<IMouseClickEvent>;
+        private _onMove: EventHandler1<IMouseEvent>;
+        private _onScroll: EventHandler1<IMouseScrollEvent>;
 
         private _target: HTMLElement;
 
@@ -2780,87 +2776,132 @@ module eg.Input {
         constructor(target: HTMLElement) {
             this._target = target;
 
-            this.OnClick = new EventHandler1<IMouseClickEvent>();
-            this.OnDoubleClick = new EventHandler1<IMouseClickEvent>();
-            this.OnDown = new EventHandler1<IMouseClickEvent>();
-            this.OnUp = new EventHandler1<IMouseClickEvent>();
-            this.OnMove = new EventHandler1<IMouseEvent>();
-            this.OnScroll = new EventHandler1<IMouseScrollEvent>();
+            this._onClick = new EventHandler1<IMouseClickEvent>();
+            this._onDoubleClick = new EventHandler1<IMouseClickEvent>();
+            this._onDown = new EventHandler1<IMouseClickEvent>();
+            this._onUp = new EventHandler1<IMouseClickEvent>();
+            this._onMove = new EventHandler1<IMouseEvent>();
+            this._onScroll = new EventHandler1<IMouseScrollEvent>();
 
             // Generic flags to check mouse state
-            this.LeftIsDown = false;
-            this.MiddleIsDown= false;
-            this.RightIsDown = false;
+            this._leftIsDown = false;
+            this._middleIsDown= false;
+            this._rightIsDown = false;
 
             this.Wire();
 
             this.OnDown.Bind((e: IMouseClickEvent) => {
-                this.IsDown = true;
+                this._isDown = true;
                 this[e.Button + "IsDown"] = true;
             });
 
             this.OnUp.Bind((e: IMouseClickEvent) => {
-                this.IsDown = false;
+                this._isDown = false;
                 this[e.Button + "IsDown"] = false;
             });
+        }
+
+        /**
+        * Indicates if the left mouse button is down
+        */
+        public get LeftIsDown(): boolean {
+            return this._leftIsDown;
+        }
+
+        /**
+        * Indicates if the middle mouse button is down
+        */
+        public get MiddleIsDown(): boolean {
+            return this._middleIsDown;
+        }
+
+        /**
+        * Indicates if the right mouse button is down
+        */
+        public get RightIsDown(): boolean {
+            return this._rightIsDown;
+        }
+
+        /**
+        * Indicates if any mouse button is down.
+        */
+        public get IsDown(): boolean {
+            return this._isDown;
         }
 
         /**
         * Event: Triggered when a mouse click occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes an IMouseClickEvent event object to bound functions.
         */
-        public OnClick: EventHandler1<IMouseClickEvent>;
+        public get OnClick(): EventHandler1<IMouseClickEvent> {
+            return this._onClick;
+        }
+
         /**
         * Event: Triggered when a mouse double click occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes an IMouseClickEvent event object to bound functions.
         */
-        public OnDoubleClick: EventHandler1<IMouseClickEvent>;
+        public get OnDoubleClick(): EventHandler1<IMouseClickEvent> {
+            return this._onDoubleClick;
+        }
+
         /**
         * Event: Triggered when a mouse down event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes an IMouseClickEvent event object to bound functions.
         */
-        public OnDown: EventHandler1<IMouseClickEvent>;
+        public get OnDown(): EventHandler1<IMouseClickEvent> {
+            return this._onDown;
+        }
+
         /**
         * Event: Triggered when a mouse up event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes an IMouseClickEvent event object to bound functions.
         */
-        public OnUp: EventHandler1<IMouseClickEvent>;
+        public get OnUp(): EventHandler1<IMouseClickEvent> {
+            return this._onUp;
+        }
+
         /**
         * Event: Triggered when a mouse move event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes an IMouseEvent event object to bound functions.
         */
-        public OnMove: EventHandler1<IMouseEvent>;
+        public get OnMove(): EventHandler1<IMouseEvent> {
+            return this._onMove;
+        }
+
         /**
         * Event: Triggered when a mouse scroll event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes an IMouseScrollEvent event object to bound functions.
         */
-        public OnScroll: EventHandler1<IMouseScrollEvent>;
+        public get OnScroll(): EventHandler1<IMouseScrollEvent> {
+            return this._onScroll;
+        }
 
         private Wire(): void {
-            this._target.addEventListener("click",this._target.oncontextmenu = this.BuildEvent<IMouseClickEvent>(this.OnClick, this.BuildMouseClickEvent),false);
-            this._target.addEventListener("dblclick", this.BuildEvent<IMouseClickEvent>(this.OnDoubleClick, this.BuildMouseClickEvent), false);
-            this._target.addEventListener("mousedown", this.BuildEvent<IMouseClickEvent>(this.OnDown, this.BuildMouseClickEvent), false);
-            this._target.addEventListener("mouseup", this.BuildEvent<IMouseClickEvent>(this.OnUp, this.BuildMouseClickEvent), false);
-            this._target.addEventListener("mousemove", this.BuildEvent<IMouseEvent>(this.OnMove, this.BuildMouseEvent), false);
+            this._target.addEventListener("click",this._target.oncontextmenu = this.BuildEvent<IMouseClickEvent>(this._onClick, this.BuildMouseClickEvent),false);
+            this._target.addEventListener("dblclick", this.BuildEvent<IMouseClickEvent>(this._onDoubleClick, this.BuildMouseClickEvent), false);
+            this._target.addEventListener("mousedown", this.BuildEvent<IMouseClickEvent>(this._onDown, this.BuildMouseClickEvent), false);
+            this._target.addEventListener("mouseup", this.BuildEvent<IMouseClickEvent>(this._onUp, this.BuildMouseClickEvent), false);
+            this._target.addEventListener("mousemove", this.BuildEvent<IMouseEvent>(this._onMove, this.BuildMouseEvent), false);
 
             // OnScroll, in order to detect horizontal scrolling need to hack a bit (browser sniffing)
             // if we were just doing vertical scrolling we could settle with the else statement in this block
             if ((/MSIE/i.test(navigator.userAgent))) {
-                this._target.addEventListener("wheel", this.BuildEvent<IMouseScrollEvent>(this.OnScroll, (e: any) => {
+                this._target.addEventListener("wheel", this.BuildEvent<IMouseScrollEvent>(this._onScroll, (e: any) => {
                     e.wheelDeltaX = -e.deltaX;
                     e.wheelDeltaY = -e.deltaY;
                     return this.BuildMouseScrollEvent(e);
                 }), false);
             }
             else if ((/Firefox/i.test(navigator.userAgent))) {
-                this._target.addEventListener("DOMMouseScroll", this.BuildEvent<IMouseScrollEvent>(this.OnScroll, (e: any) => {
+                this._target.addEventListener("DOMMouseScroll", this.BuildEvent<IMouseScrollEvent>(this._onScroll, (e: any) => {
                     e.wheelDeltaX = e.axis === 1 ? -e.detail : 0;
                     e.wheelDeltaY = e.axis === 2 ? -e.detail : 0;
                     return this.BuildMouseScrollEvent(e);
                 }), false);
             }
             else {
-                this._target.addEventListener("mousewheel", this.BuildEvent<IMouseScrollEvent>(this.OnScroll, this.BuildMouseScrollEvent), false);
+                this._target.addEventListener("mousewheel", this.BuildEvent<IMouseScrollEvent>(this._onScroll, this.BuildMouseScrollEvent), false);
             }
         }
 
@@ -3230,6 +3271,7 @@ module eg.Input.Assets {
         public Modifiers: Assets.KeyboardModifiers;
 
         private _onDisposeInvoker: eg._.Utilities.NoopTripInvoker;
+        private _onDisposed: EventHandler;
 
         /**
         * Creates a new instance of the KeyboardCommand object.
@@ -3241,16 +3283,18 @@ module eg.Input.Assets {
             this.Modifiers = Assets.KeyboardModifiers.BuildFromCommandString(command);
             this.Key = _.KeyboardCommandHelper.ParseKey(command);
 
-            this.OnDispose = new EventHandler();
+            this._onDisposed = new EventHandler();
             this._onDisposeInvoker = new eg._.Utilities.NoopTripInvoker(() => {
-                this.OnDispose.Trigger();
+                this._onDisposed.Trigger();
             }, true);
         }
 
         /**
         * Event: Triggered when a KeyboardCommand has been disposed.  If this KeyboardCommand is used with a KeyboardHandler it will no longer trigger the Action function.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
-        public OnDispose: EventHandler;
+        public get OnDispose(): EventHandler {
+            return this._onDisposed;
+        }
 
         /**
         * Triggers the OnDisposed event.  If this KeyboardCommand is used with a KeyboardHandler it will no longer trigger the Action function.
@@ -3278,6 +3322,10 @@ module eg.Input {
         private _onDownCommands: { [id: number]: Assets.KeyboardCommand; };
         private _onUpCommands: { [id: number]: Assets.KeyboardCommand; };
 
+        private _onKeyPress: EventHandler1<KeyboardCommandEvent>;
+        private _onKeyDown: EventHandler1<KeyboardCommandEvent>;
+        private _onKeyUp: EventHandler1<KeyboardCommandEvent>;
+
         /**
         * Creates a new instance of the KeyboardHandler object.
         */
@@ -3286,9 +3334,9 @@ module eg.Input {
             this._onDownCommands = (<any>{});
             this._onUpCommands = (<any>{});
 
-            this.OnKeyPress = new EventHandler1<KeyboardCommandEvent>();
-            this.OnKeyDown = new EventHandler1<KeyboardCommandEvent>();
-            this.OnKeyUp = new EventHandler1<KeyboardCommandEvent>();
+            this._onKeyPress = new EventHandler1<KeyboardCommandEvent>();
+            this._onKeyDown = new EventHandler1<KeyboardCommandEvent>();
+            this._onKeyUp = new EventHandler1<KeyboardCommandEvent>();
 
             this.Wire();
         }
@@ -3297,17 +3345,25 @@ module eg.Input {
         * Event: Triggered when any key press occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes a KeyboardCommandEvent object to bound functions.
         */
-        public OnKeyPress: EventHandler1<KeyboardCommandEvent>;
+        public get OnKeyPress(): EventHandler1<KeyboardCommandEvent> {
+            return this._onKeyPress;
+        }
+
         /**
         * Event: Triggered when any key goes down.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes a KeyboardCommandEvent object to bound functions.
         */
-        public OnKeyDown: EventHandler1<KeyboardCommandEvent>;
+        public get OnKeyDown(): EventHandler1<KeyboardCommandEvent> {
+            return this._onKeyDown;
+        }
+
         /**
         * Event: Triggered when any key comes up.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes a KeyboardCommandEvent object to bound functions.
         */
-        public OnKeyUp: EventHandler1<KeyboardCommandEvent>;
+        public get OnKeyUp(): EventHandler1<KeyboardCommandEvent> {
+            return this._onKeyUp;
+        }
 
         /**
         * Binds function to be called when the keyCommand is pressed.  To unbind the function, dispose of the returned KeyboardCommand.

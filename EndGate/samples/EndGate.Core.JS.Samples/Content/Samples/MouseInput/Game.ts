@@ -26,6 +26,8 @@ module MouseInput {
         constructor(canvas: HTMLCanvasElement, lastMouseEvent: JQuery) {
             super(canvas);
 
+            this.Input.Mouse.OnClick = null;
+
             // Bind each of the mouse events individually to draw different color circles
             this.Input.Mouse.OnClick.Bind((clickEvent: eg.Input.IMouseClickEvent) => {
                 lastMouseEvent.text(clickEvent.Button + " Click at " + clickEvent.Position.toString());

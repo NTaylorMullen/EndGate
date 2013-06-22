@@ -19,52 +19,168 @@ var eg;
                 var _this = this;
                 this._target = target;
 
-                this.OnClick = new eg.EventHandler1();
-                this.OnDoubleClick = new eg.EventHandler1();
-                this.OnDown = new eg.EventHandler1();
-                this.OnUp = new eg.EventHandler1();
-                this.OnMove = new eg.EventHandler1();
-                this.OnScroll = new eg.EventHandler1();
+                this._onClick = new eg.EventHandler1();
+                this._onDoubleClick = new eg.EventHandler1();
+                this._onDown = new eg.EventHandler1();
+                this._onUp = new eg.EventHandler1();
+                this._onMove = new eg.EventHandler1();
+                this._onScroll = new eg.EventHandler1();
 
                 // Generic flags to check mouse state
-                this.LeftIsDown = false;
-                this.MiddleIsDown = false;
-                this.RightIsDown = false;
+                this._leftIsDown = false;
+                this._middleIsDown = false;
+                this._rightIsDown = false;
 
                 this.Wire();
 
                 this.OnDown.Bind(function (e) {
-                    _this.IsDown = true;
+                    _this._isDown = true;
                     _this[e.Button + "IsDown"] = true;
                 });
 
                 this.OnUp.Bind(function (e) {
-                    _this.IsDown = false;
+                    _this._isDown = false;
                     _this[e.Button + "IsDown"] = false;
                 });
             }
+            Object.defineProperty(MouseHandler.prototype, "LeftIsDown", {
+                get: /**
+                * Indicates if the left mouse button is down
+                */
+                function () {
+                    return this._leftIsDown;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(MouseHandler.prototype, "MiddleIsDown", {
+                get: /**
+                * Indicates if the middle mouse button is down
+                */
+                function () {
+                    return this._middleIsDown;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(MouseHandler.prototype, "RightIsDown", {
+                get: /**
+                * Indicates if the right mouse button is down
+                */
+                function () {
+                    return this._rightIsDown;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(MouseHandler.prototype, "IsDown", {
+                get: /**
+                * Indicates if any mouse button is down.
+                */
+                function () {
+                    return this._isDown;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(MouseHandler.prototype, "OnClick", {
+                get: /**
+                * Event: Triggered when a mouse click occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
+                * Passes an IMouseClickEvent event object to bound functions.
+                */
+                function () {
+                    return this._onClick;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(MouseHandler.prototype, "OnDoubleClick", {
+                get: /**
+                * Event: Triggered when a mouse double click occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
+                * Passes an IMouseClickEvent event object to bound functions.
+                */
+                function () {
+                    return this._onDoubleClick;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(MouseHandler.prototype, "OnDown", {
+                get: /**
+                * Event: Triggered when a mouse down event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
+                * Passes an IMouseClickEvent event object to bound functions.
+                */
+                function () {
+                    return this._onDown;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(MouseHandler.prototype, "OnUp", {
+                get: /**
+                * Event: Triggered when a mouse up event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
+                * Passes an IMouseClickEvent event object to bound functions.
+                */
+                function () {
+                    return this._onUp;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(MouseHandler.prototype, "OnMove", {
+                get: /**
+                * Event: Triggered when a mouse move event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
+                * Passes an IMouseEvent event object to bound functions.
+                */
+                function () {
+                    return this._onMove;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(MouseHandler.prototype, "OnScroll", {
+                get: /**
+                * Event: Triggered when a mouse scroll event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
+                * Passes an IMouseScrollEvent event object to bound functions.
+                */
+                function () {
+                    return this._onScroll;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
             MouseHandler.prototype.Wire = function () {
                 var _this = this;
-                this._target.addEventListener("click", this._target.oncontextmenu = this.BuildEvent(this.OnClick, this.BuildMouseClickEvent), false);
-                this._target.addEventListener("dblclick", this.BuildEvent(this.OnDoubleClick, this.BuildMouseClickEvent), false);
-                this._target.addEventListener("mousedown", this.BuildEvent(this.OnDown, this.BuildMouseClickEvent), false);
-                this._target.addEventListener("mouseup", this.BuildEvent(this.OnUp, this.BuildMouseClickEvent), false);
-                this._target.addEventListener("mousemove", this.BuildEvent(this.OnMove, this.BuildMouseEvent), false);
+                this._target.addEventListener("click", this._target.oncontextmenu = this.BuildEvent(this._onClick, this.BuildMouseClickEvent), false);
+                this._target.addEventListener("dblclick", this.BuildEvent(this._onDoubleClick, this.BuildMouseClickEvent), false);
+                this._target.addEventListener("mousedown", this.BuildEvent(this._onDown, this.BuildMouseClickEvent), false);
+                this._target.addEventListener("mouseup", this.BuildEvent(this._onUp, this.BuildMouseClickEvent), false);
+                this._target.addEventListener("mousemove", this.BuildEvent(this._onMove, this.BuildMouseEvent), false);
 
                 if ((/MSIE/i.test(navigator.userAgent))) {
-                    this._target.addEventListener("wheel", this.BuildEvent(this.OnScroll, function (e) {
+                    this._target.addEventListener("wheel", this.BuildEvent(this._onScroll, function (e) {
                         e.wheelDeltaX = -e.deltaX;
                         e.wheelDeltaY = -e.deltaY;
                         return _this.BuildMouseScrollEvent(e);
                     }), false);
                 } else if ((/Firefox/i.test(navigator.userAgent))) {
-                    this._target.addEventListener("DOMMouseScroll", this.BuildEvent(this.OnScroll, function (e) {
+                    this._target.addEventListener("DOMMouseScroll", this.BuildEvent(this._onScroll, function (e) {
                         e.wheelDeltaX = e.axis === 1 ? -e.detail : 0;
                         e.wheelDeltaY = e.axis === 2 ? -e.detail : 0;
                         return _this.BuildMouseScrollEvent(e);
                     }), false);
                 } else {
-                    this._target.addEventListener("mousewheel", this.BuildEvent(this.OnScroll, this.BuildMouseScrollEvent), false);
+                    this._target.addEventListener("mousewheel", this.BuildEvent(this._onScroll, this.BuildMouseScrollEvent), false);
                 }
             };
 

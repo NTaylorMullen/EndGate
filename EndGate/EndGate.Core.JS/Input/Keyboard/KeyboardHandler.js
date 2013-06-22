@@ -16,12 +16,48 @@ var eg;
                 this._onDownCommands = ({});
                 this._onUpCommands = ({});
 
-                this.OnKeyPress = new eg.EventHandler1();
-                this.OnKeyDown = new eg.EventHandler1();
-                this.OnKeyUp = new eg.EventHandler1();
+                this._onKeyPress = new eg.EventHandler1();
+                this._onKeyDown = new eg.EventHandler1();
+                this._onKeyUp = new eg.EventHandler1();
 
                 this.Wire();
             }
+            Object.defineProperty(KeyboardHandler.prototype, "OnKeyPress", {
+                get: /**
+                * Event: Triggered when any key press occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
+                * Passes a KeyboardCommandEvent object to bound functions.
+                */
+                function () {
+                    return this._onKeyPress;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(KeyboardHandler.prototype, "OnKeyDown", {
+                get: /**
+                * Event: Triggered when any key goes down.  Functions can be bound or unbound to this event to be executed when the event triggers.
+                * Passes a KeyboardCommandEvent object to bound functions.
+                */
+                function () {
+                    return this._onKeyDown;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(KeyboardHandler.prototype, "OnKeyUp", {
+                get: /**
+                * Event: Triggered when any key comes up.  Functions can be bound or unbound to this event to be executed when the event triggers.
+                * Passes a KeyboardCommandEvent object to bound functions.
+                */
+                function () {
+                    return this._onKeyUp;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
             /**
             * Binds function to be called when the keyCommand is pressed.  To unbind the function, dispose of the returned KeyboardCommand.
             * @param keyCommand The command string required to execute the action.

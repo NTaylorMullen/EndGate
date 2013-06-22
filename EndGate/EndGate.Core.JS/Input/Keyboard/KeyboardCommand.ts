@@ -24,6 +24,7 @@ module eg.Input.Assets {
         public Modifiers: Assets.KeyboardModifiers;
 
         private _onDisposeInvoker: eg._.Utilities.NoopTripInvoker;
+        private _onDisposed: EventHandler;
 
         /**
         * Creates a new instance of the KeyboardCommand object.
@@ -35,16 +36,18 @@ module eg.Input.Assets {
             this.Modifiers = Assets.KeyboardModifiers.BuildFromCommandString(command);
             this.Key = _.KeyboardCommandHelper.ParseKey(command);
 
-            this.OnDispose = new EventHandler();
+            this._onDisposed = new EventHandler();
             this._onDisposeInvoker = new eg._.Utilities.NoopTripInvoker(() => {
-                this.OnDispose.Trigger();
+                this._onDisposed.Trigger();
             }, true);
         }
 
         /**
         * Event: Triggered when a KeyboardCommand has been disposed.  If this KeyboardCommand is used with a KeyboardHandler it will no longer trigger the Action function.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
-        public OnDispose: EventHandler;
+        public get OnDispose(): EventHandler {
+            return this._onDisposed;
+        }
 
         /**
         * Triggers the OnDisposed event.  If this KeyboardCommand is used with a KeyboardHandler it will no longer trigger the Action function.
