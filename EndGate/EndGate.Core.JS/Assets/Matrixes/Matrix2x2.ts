@@ -33,6 +33,20 @@ module eg {
                 [botLeft, botRight]
             ];
         }
+        
+        /**
+        * Creates a Matrix2x2 with all its rows and columns initialized to 0.
+        */
+        public static get Zero(): Matrix2x2 {
+            return new Matrix2x2();
+        }
+
+        /**
+        * Returns the identity matrix for a 2x2.
+        */
+        public static get Identity(): Matrix2x2 {
+            return new Matrix2x2(1, 0, 0, 1);
+        }
 
         /**
         * Executes the action with each row and column item of this Matrix2x2 and modifies their values.
@@ -230,20 +244,6 @@ module eg {
         */
         public static Scale(vector: Vector2d): Matrix2x2 {
             return new Matrix2x2(vector.X, 0, 0, vector.Y);
-        }
-
-        /**
-        * Creates a Matrix2x2 with all its rows and columns initialized to 0.
-        */
-        public static get Zero(): Matrix2x2 {
-            return new Matrix2x2();
-        }
-
-        /**
-        * Returns the identity matrix for a 2x2.
-        */
-        public static get Identity(): Matrix2x2 {
-            return new Matrix2x2(1,0,0,1);
         }
     }
 }

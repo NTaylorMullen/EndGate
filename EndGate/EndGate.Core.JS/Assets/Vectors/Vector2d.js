@@ -12,16 +12,6 @@ var eg;
             this.X = x || 0;
             this.Y = y || 0;
         }
-        /**
-        * Returns a Vector2d that's reflected over the normal.
-        * @param normal The normal to reflect over.
-        */
-        Vector2d.prototype.Reflect = function (normal) {
-            var normalUnit = normal.Unit(), num = this.Dot(normalUnit) * 2;
-
-            return new Vector2d(this.X - num * normalUnit.X, this.Y - num * normalUnit.Y);
-        };
-
         Object.defineProperty(Vector2d, "Zero", {
             get: /**
             * Returns a Vector2d with all its components set to zero.
@@ -43,6 +33,16 @@ var eg;
             enumerable: true,
             configurable: true
         });
+
+        /**
+        * Returns a Vector2d that's reflected over the normal.
+        * @param normal The normal to reflect over.
+        */
+        Vector2d.prototype.Reflect = function (normal) {
+            var normalUnit = normal.Unit(), num = this.Dot(normalUnit) * 2;
+
+            return new Vector2d(this.X - num * normalUnit.X, this.Y - num * normalUnit.Y);
+        };
 
         /**
         * Returns a Vector2d that represents the current Vector2d projected onto the provided Vector2d.

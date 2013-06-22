@@ -18,6 +18,28 @@ var eg;
                 [botLeft, botRight]
             ];
         }
+        Object.defineProperty(Matrix2x2, "Zero", {
+            get: /**
+            * Creates a Matrix2x2 with all its rows and columns initialized to 0.
+            */
+            function () {
+                return new Matrix2x2();
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        Object.defineProperty(Matrix2x2, "Identity", {
+            get: /**
+            * Returns the identity matrix for a 2x2.
+            */
+            function () {
+                return new Matrix2x2(1, 0, 0, 1);
+            },
+            enumerable: true,
+            configurable: true
+        });
+
         /**
         * Executes the action with each row and column item of this Matrix2x2 and modifies their values.
         * @param action The function used to modify each row and column items.
@@ -146,28 +168,6 @@ var eg;
         function (vector) {
             return new Matrix2x2(vector.X, 0, 0, vector.Y);
         };
-
-        Object.defineProperty(Matrix2x2, "Zero", {
-            get: /**
-            * Creates a Matrix2x2 with all its rows and columns initialized to 0.
-            */
-            function () {
-                return new Matrix2x2();
-            },
-            enumerable: true,
-            configurable: true
-        });
-
-        Object.defineProperty(Matrix2x2, "Identity", {
-            get: /**
-            * Returns the identity matrix for a 2x2.
-            */
-            function () {
-                return new Matrix2x2(1, 0, 0, 1);
-            },
-            enumerable: true,
-            configurable: true
-        });
         return Matrix2x2;
     })();
     eg.Matrix2x2 = Matrix2x2;

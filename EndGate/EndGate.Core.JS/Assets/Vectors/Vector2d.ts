@@ -35,6 +35,20 @@ module eg {
         }
 
         /**
+        * Returns a Vector2d with all its components set to zero.
+        */
+        public static get Zero(): Vector2d {
+            return new Vector2d(0, 0);
+        }
+
+        /**
+        * Returns a Vector2d with all its components set to one.
+        */
+        public static get One(): Vector2d {
+            return new Vector2d(1, 1);
+        }
+
+        /**
         * Returns a Vector2d that's reflected over the normal.
         * @param normal The normal to reflect over.
         */
@@ -43,20 +57,6 @@ module eg {
                 num = this.Dot(normalUnit) * 2;
 
             return new Vector2d(this.X - num * normalUnit.X, this.Y - num * normalUnit.Y);
-        }
-
-        /**
-        * Returns a Vector2d with all its components set to zero.
-        */
-        public static get Zero(): Vector2d {
-            return new Vector2d(0,0);
-        }
-
-        /**
-        * Returns a Vector2d with all its components set to one.
-        */
-        public static get One(): Vector2d {
-            return new Vector2d(1,1);
         }
 
         /**
