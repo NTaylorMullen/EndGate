@@ -730,12 +730,11 @@ declare module eg {
         /**
         * Gets the current update rate.
         */
-        public UpdateRate(): number;
         /**
-        * Sets and gets the update rate.
+        * Sets the update rate.
         * @param updateRate The new update rate. X many updates per second.
         */
-        public UpdateRate(updateRate: number): number;
+        public UpdateRate : number;
     }
 }
 declare module eg {

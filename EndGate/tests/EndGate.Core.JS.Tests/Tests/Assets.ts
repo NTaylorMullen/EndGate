@@ -11,7 +11,7 @@ class UpdateTester extends eg.Game {
     {
         super();
 
-        this.Configuration.UpdateRate(updateRate);
+        this.Configuration.UpdateRate = updateRate;
         this.UpdateCount = 0;
         this._onUpdateLimit = onUpdateLimit;
         this._updateLimit = updateLimit;

@@ -1260,26 +1260,23 @@ module eg {
         */
         constructor(updateRateSetter: (updateRate: number) => void ) {
             this._updateRateSetter = updateRateSetter;
-            this.UpdateRate(this._defaultUpdateRate);
+            this._updateRate = this._defaultUpdateRate;
         }
 
         /**
         * Gets the current update rate.
         */
-        public UpdateRate(): number;
+        public get UpdateRate(): number {
+            return this._updateRate;
+        }
+
         /**
-        * Sets and gets the update rate.
+        * Sets the update rate.
         * @param updateRate The new update rate. X many updates per second.
         */
-        public UpdateRate(updateRate: number): number;
-        public UpdateRate(updateRate?: number): number {
-            if (typeof updateRate !== "undefined") {
-                this._updateRate = updateRate;
-                this._updateRateSetter(this._updateRate);
-            }
-            else {
-                return this._updateRate;
-            }
+        public set UpdateRate(updateRate: number) {
+            this._updateRate = updateRate;
+            this._updateRateSetter(this._updateRate);
         }
     }
 

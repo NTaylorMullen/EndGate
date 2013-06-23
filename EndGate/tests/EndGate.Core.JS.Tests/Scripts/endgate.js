@@ -681,16 +681,20 @@ var eg;
         function GameConfiguration(updateRateSetter) {
             this._defaultUpdateRate = 40;
             this._updateRateSetter = updateRateSetter;
-            this.UpdateRate(this._defaultUpdateRate);
+            this._updateRate = this._defaultUpdateRate;
         }
-        GameConfiguration.prototype.UpdateRate = function (updateRate) {
-            if (typeof updateRate !== "undefined") {
+        Object.defineProperty(GameConfiguration.prototype, "UpdateRate", {
+            get: function () {
+                return this._updateRate;
+            },
+            set: function (updateRate) {
                 this._updateRate = updateRate;
                 this._updateRateSetter(this._updateRate);
-            } else {
-                return this._updateRate;
-            }
-        };
+            },
+            enumerable: true,
+            configurable: true
+        });
+
         return GameConfiguration;
     })();
     eg.GameConfiguration = GameConfiguration;

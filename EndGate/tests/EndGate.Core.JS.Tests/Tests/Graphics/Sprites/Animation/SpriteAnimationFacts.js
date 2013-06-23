@@ -106,7 +106,7 @@
 
         QUnit.equal(animation._currentFrame, 1);
 
-        animation.Fps(40);
+        animation.Fps = 40;
         gameTime.Now = new Date(gameTime.Now.getTime() + (1000/40));
 
         animation.Update(gameTime);

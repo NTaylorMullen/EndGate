@@ -10,7 +10,7 @@ var UpdateTester = (function (_super) {
     function UpdateTester(updateRate, onUpdateLimit, updateLimit) {
         _super.call(this);
 
-        this.Configuration.UpdateRate(updateRate);
+        this.Configuration.UpdateRate = updateRate;
         this.UpdateCount = 0;
         this._onUpdateLimit = onUpdateLimit;
         this._updateLimit = updateLimit;
