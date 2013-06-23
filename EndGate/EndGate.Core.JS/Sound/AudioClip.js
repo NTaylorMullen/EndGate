@@ -17,21 +17,44 @@ var eg;
         var AudioClip = (function () {
             function AudioClip(source, settings) {
                 if (typeof settings === "undefined") { settings = Sound.AudioSettings.Default; }
-                this._settings = settings;
+                this._settings = settings.Clone();
                 this._audio = document.createElement("audio");
                 this.SetAudioSource(source);
                 this.ApplySettings();
 
-                this.OnComplete = new eg.EventHandler1();
+                this._onComplete = new eg.EventHandler1();
             }
-            AudioClip.prototype.Volume = function (percent) {
-                if (typeof percent !== "undefined") {
+            Object.defineProperty(AudioClip.prototype, "OnComplete", {
+                get: /**
+                * Event: Triggered when the audio clip has completed, will not trigger if the audio clip is repeating.  Functions can be bound or unbound to this event to be executed when the event triggers.
+                * Passes the DOM's ended event to bound functions.
+                */
+                function () {
+                    return this._onComplete;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(AudioClip.prototype, "Volume", {
+                get: /**
+                * Gets the audio clip volume.
+                */
+                function () {
+                    return this._settings.Volume;
+                },
+                set: /**
+                * Sets the audio clip volume. Expects values 0-100 (%).
+                * @param percent The percent volume to play the audio clip at.
+                */
+                function (percent) {
                     this._settings.Volume = percent;
                     this._audio.volume = Math.max(Math.min(percent / 100, 1), 0);
-                }
+                },
+                enumerable: true,
+                configurable: true
+            });
 
-                return this._settings.Volume;
-            };
 
             /**
             * Determines if the AudioClip is currently playing.
@@ -117,7 +140,7 @@ var eg;
                 this._audio.loop = this._settings.Repeat;
                 this._audio.autoplay = this._settings.AutoPlay;
                 this._audio.preload = this._settings.Preload;
-                this.Volume(this._settings.Volume);
+                this.Volume = this._settings.Volume;
 
                 this._audio.addEventListener("ended", function (e) {
                     _this.OnComplete.Trigger(e);

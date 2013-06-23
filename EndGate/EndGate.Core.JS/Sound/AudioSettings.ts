@@ -62,6 +62,13 @@ module eg.Sound {
             this.AutoPlay = autoplay;
             this.Preload = preload;
         }
+
+        /**
+        * Returns a new AudioSettings object that is identical to the current AudioSettings object.
+        */
+        public Clone(): AudioSettings {
+            return new AudioSettings(this.Repeat, this.Volume, this.AutoPlay, this.Preload);
+        }
     }
 
 }

@@ -17,6 +17,7 @@ module eg.Sound {
     export class AudioClip {
         private _audio: HTMLAudioElement;
         private _settings: AudioSettings;
+        private _onComplete: EventHandler1<Event>;
 
         /**
         * Creates a new instance of the AudioClip object.
@@ -41,27 +42,36 @@ module eg.Sound {
         */
         constructor(source: string[], settings: AudioSettings = AudioSettings.Default);
         constructor(source: any, settings: AudioSettings = AudioSettings.Default) {
-            this._settings = settings;
+            this._settings = settings.Clone();
             this._audio = <HTMLAudioElement>document.createElement("audio");
             this.SetAudioSource(source);
             this.ApplySettings();
 
-            this.OnComplete = new EventHandler1<Event>();
+            this._onComplete = new EventHandler1<Event>();
         }
 
         /**
         * Event: Triggered when the audio clip has completed, will not trigger if the audio clip is repeating.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes the DOM's ended event to bound functions.
         */
-        public OnComplete: EventHandler1<Event>;
+        public get OnComplete(): EventHandler1<Event> {
+            return this._onComplete;
+        }
 
-        public Volume(percent?: number): number {
-            if (typeof percent !== "undefined") {
-                this._settings.Volume = percent;
-                this._audio.volume = Math.max(Math.min(percent / 100, 1), 0);
-            }
-
+        /**
+        * Gets the audio clip volume.
+        */
+        public get Volume(): number {
             return this._settings.Volume;
+        }
+
+        /**
+        * Sets the audio clip volume. Expects values 0-100 (%).
+        * @param percent The percent volume to play the audio clip at.
+        */
+        public set Volume(percent: number) {
+            this._settings.Volume = percent;
+            this._audio.volume = Math.max(Math.min(percent / 100, 1), 0);
         }
 
         /**
@@ -149,7 +159,7 @@ module eg.Sound {
             this._audio.loop = this._settings.Repeat;
             this._audio.autoplay = this._settings.AutoPlay;
             this._audio.preload = this._settings.Preload;
-            this.Volume(this._settings.Volume);
+            this.Volume = this._settings.Volume;
 
             this._audio.addEventListener("ended", (e: Event) => {
                 this.OnComplete.Trigger(e);

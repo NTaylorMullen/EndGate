@@ -2397,6 +2397,9 @@ var eg;
                 this.AutoPlay = autoplay;
                 this.Preload = preload;
             }
+            AudioSettings.prototype.Clone = function () {
+                return new AudioSettings(this.Repeat, this.Volume, this.AutoPlay, this.Preload);
+            };
             AudioSettings.Default = new AudioSettings();
             return AudioSettings;
         })();
@@ -2419,21 +2422,33 @@ var eg;
         var AudioClip = (function () {
             function AudioClip(source, settings) {
                 if (typeof settings === "undefined") { settings = Sound.AudioSettings.Default; }
-                this._settings = settings;
+                this._settings = settings.Clone();
                 this._audio = document.createElement("audio");
                 this.SetAudioSource(source);
                 this.ApplySettings();
 
-                this.OnComplete = new eg.EventHandler1();
+                this._onComplete = new eg.EventHandler1();
             }
-            AudioClip.prototype.Volume = function (percent) {
-                if (typeof percent !== "undefined") {
+            Object.defineProperty(AudioClip.prototype, "OnComplete", {
+                get: function () {
+                    return this._onComplete;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(AudioClip.prototype, "Volume", {
+                get: function () {
+                    return this._settings.Volume;
+                },
+                set: function (percent) {
                     this._settings.Volume = percent;
                     this._audio.volume = Math.max(Math.min(percent / 100, 1), 0);
-                }
+                },
+                enumerable: true,
+                configurable: true
+            });
 
-                return this._settings.Volume;
-            };
 
             AudioClip.prototype.IsPlaying = function () {
                 return !this._audio.paused;
@@ -2500,7 +2515,7 @@ var eg;
                 this._audio.loop = this._settings.Repeat;
                 this._audio.autoplay = this._settings.AutoPlay;
                 this._audio.preload = this._settings.Preload;
-                this.Volume(this._settings.Volume);
+                this.Volume = this._settings.Volume;
 
                 this._audio.addEventListener("ended", function (e) {
                     _this.OnComplete.Trigger(e);

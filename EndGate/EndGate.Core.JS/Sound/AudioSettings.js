@@ -15,6 +15,12 @@ var eg;
                 this.AutoPlay = autoplay;
                 this.Preload = preload;
             }
+            /**
+            * Returns a new AudioSettings object that is identical to the current AudioSettings object.
+            */
+            AudioSettings.prototype.Clone = function () {
+                return new AudioSettings(this.Repeat, this.Volume, this.AutoPlay, this.Preload);
+            };
             AudioSettings.Default = new AudioSettings();
             return AudioSettings;
         })();

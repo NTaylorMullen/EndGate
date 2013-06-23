@@ -1547,6 +1547,10 @@ declare module eg.Sound {
         * @param preload Initial value of the preload component.  Values can be "auto", "metadata", or "none".
         */
         constructor(repeat: boolean, volume: number, autoplay: boolean, preload: string);
+        /**
+        * Returns a new AudioSettings object that is identical to the current AudioSettings object.
+        */
+        public Clone(): AudioSettings;
     }
 }
 declare module eg.Sound {
@@ -1556,6 +1560,7 @@ declare module eg.Sound {
     class AudioClip {
         private _audio;
         private _settings;
+        private _onComplete;
         /**
         * Creates a new instance of the AudioClip object.
         * @param source An array of source paths to audio clips.  Pass in multiple audio types of the same clip to ensure cross browser compatibility.
@@ -1582,8 +1587,15 @@ declare module eg.Sound {
         * Event: Triggered when the audio clip has completed, will not trigger if the audio clip is repeating.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes the DOM's ended event to bound functions.
         */
-        public OnComplete: eg.EventHandler1<Event>;
-        public Volume(percent?: number): number;
+        public OnComplete : eg.EventHandler1<Event>;
+        /**
+        * Gets the audio clip volume.
+        */
+        /**
+        * Sets the audio clip volume. Expects values 0-100 (%).
+        * @param percent The percent volume to play the audio clip at.
+        */
+        public Volume : number;
         /**
         * Determines if the AudioClip is currently playing.
         */
