@@ -20,7 +20,262 @@ declare module eg._ {
     }
 
 }
+/* TimeSpan.ts */
+
+
+module eg {
+
+    /**
+    * Defines a time interval.
+    */
+    export class TimeSpan implements _.ITyped {
+        public _type: string = "TimeSpan";
+
+        private static _secondsMultiplier: number = 1000;
+        private static _minutesMultiplier: number = TimeSpan._secondsMultiplier * 60;
+
+        private _milliseconds: number;
+        private _seconds: number;
+        private _minutes: number;
+
+        /**
+        * Creates a new instance of TimeSpan based on the provided milliseconds.
+        * @param milliseconds Number of milliseconds.
+        */
+        constructor(milliseconds: number);
+        /**
+        * Creates a new instance of TimeSpan based on the provided milliseconds, seconds and minutes.
+        * @param milliseconds Number of milliseconds.
+        * @param seconds Number of seconds.
+        */
+        constructor(milliseconds: number, seconds: number);
+        /**
+        * Creates a new instance of TimeSpan based on the provided milliseconds, seconds and minutes.
+        * @param milliseconds Number of milliseconds.
+        * @param seconds Number of seconds.
+        * @param minutes Number of minutes.
+        */
+        constructor(milliseconds: number, seconds: number, minutes: number);
+        constructor(milliseconds: number, seconds: number = 0, minutes: number = 0) {
+            this.Milliseconds = milliseconds + seconds * TimeSpan._secondsMultiplier + minutes * TimeSpan._minutesMultiplier;
+        }
+
+        /**
+        * Gets or sets the number of milliseconds the TimeSpan represents.
+        */
+        public get Milliseconds(): number {
+            return this._milliseconds;
+        }
+        public set Milliseconds(val: number) {
+            this._milliseconds = val;
+            this._seconds = val / TimeSpan._secondsMultiplier;
+            this._minutes = val / TimeSpan._minutesMultiplier;
+        }
+
+        /**
+        * Gets or sets the number of seconds the TimeSpan represents.
+        */
+        public get Seconds(): number {
+            return this._seconds;
+        }
+        public set Seconds(val: number) {
+            this._seconds = val;
+            this._milliseconds = val * TimeSpan._secondsMultiplier;
+            this._minutes = this._milliseconds / TimeSpan._minutesMultiplier;
+        }
+
+        /**
+        * Gets or sets the number of minutes the TimeSpan represents.
+        */
+        public get Minutes(): number {
+            return this._seconds;
+        }
+        public set Minutes(val: number) {
+            this._minutes = val;
+            this._seconds = val * 60;
+            this._milliseconds = this._seconds * TimeSpan._secondsMultiplier;
+        }
+
+        /**
+        * Returns a TimeSpan that represents the addition of the current TimeSpan's milliseconds to the provided TimeSpan's milliseconds.
+        * @param val The TimeSpan to add.
+        */
+        public Add(val: TimeSpan): TimeSpan;
+        /**
+        * Returns a TimeSpan that represents the addition of the current TimeSpan's milliseconds to the provided milliseconds.
+        * @param val The number of milliseconds to add.
+        */
+        public Add(val: number): TimeSpan;
+        public Add(val: any): TimeSpan {
+            if (val._type === "TimeSpan") {
+                return new TimeSpan(this.Milliseconds + val.Milliseconds);
+            }
+            else {
+                return new TimeSpan(this.Milliseconds + val);
+            }
+        }
+
+        /**
+        * Returns a TimeSpan that represents the multiplication of the current TimeSpan's milliseconds by the provided TimeSpan's milliseconds.
+        * @param val The TimeSpan to multiply.
+        */
+        public Multiply(val: TimeSpan): TimeSpan;
+        /**
+        * Returns a TimeSpan that represents the multiplication of the current TimeSpan's milliseconds by the provided milliseconds.
+        * @param val The number of milliseconds to multiply.
+        */
+        public Multiply(val: number): TimeSpan;
+        public Multiply(val: any): TimeSpan {
+            if (val._type === "TimeSpan") {
+                return new TimeSpan(this.Milliseconds * val.Milliseconds);
+            }
+            else {
+                return new TimeSpan(this.Milliseconds * val);
+            }
+        }
+
+        /**
+        * Returns a TimeSpan that represents the subtraction of the current TimeSpan's milliseconds by the provided TimeSpan's milliseconds.
+        * @param val The TimeSpan to subtract by.
+        */
+        public Subtract(val: TimeSpan): TimeSpan;
+        /**
+        * Returns a TimeSpan that represents the subtraction of the current TimeSpan's milliseconds by the provided milliseconds.
+        * @param val The number of milliseconds to subtract by.
+        */
+        public Subtract(val: number): TimeSpan;
+        public Subtract(val: any): TimeSpan {
+            if (val._type === "TimeSpan") {
+                return new TimeSpan(this.Milliseconds - val.Milliseconds);
+            }
+            else {
+                return new TimeSpan(this.Milliseconds - val);
+            }
+        }
+
+        /**
+        * Returns a TimeSpan that represents the subtraction of the current TimeSpan's milliseconds from the provided TimeSpan's milliseconds.
+        * @param val The TimeSpan to subtract from.
+        */
+        public SubtractFrom(val: TimeSpan): TimeSpan;
+        /**
+        * Returns a TimeSpan that represents the subtraction of the current TimeSpan's milliseconds from the provided milliseconds.
+        * @param val The number of milliseconds to subtract from.
+        */
+        public SubtractFrom(val: number): TimeSpan;
+        public SubtractFrom(val: any): TimeSpan {
+            if (val._type === "TimeSpan") {
+                return new TimeSpan(val.Milliseconds - this.Milliseconds);
+            }
+            else {
+                return new TimeSpan(val - this.Milliseconds);
+            }
+        }
+
+        /**
+        * Returns a TimeSpan that represents the division of the current TimeSpan's milliseconds by the provided TimeSpan's milliseconds.
+        * @param val The TimeSpan to divide by.
+        */
+        public Divide(val: TimeSpan): TimeSpan;
+        /**
+        * Returns a TimeSpan that represents the division of the current TimeSpan's milliseconds by the provided milliseconds.
+        * @param val The number of milliseconds to divide by.
+        */
+        public Divide(val: number): TimeSpan;
+        public Divide(val: any): TimeSpan {
+            if (val._type === "TimeSpan") {
+                return new TimeSpan(this.Milliseconds / val.Milliseconds);
+            }
+            else {
+                return new TimeSpan(this.Milliseconds / val);
+            }
+        }
+
+        /**
+        * Returns a TimeSpan that represents the division of the current TimeSpan's milliseconds from the provided TimeSpan's milliseconds.
+        * @param val The TimeSpan to divide from.
+        */
+        public DivideFrom(val: TimeSpan): TimeSpan;
+        /**
+        * Returns a TimeSpan that represents the division of the current TimeSpan's milliseconds from the provided milliseconds.
+        * @param val The number of milliseconds to divide from.
+        */
+        public DivideFrom(val: number): TimeSpan;
+        public DivideFrom(val: any): TimeSpan {
+            if (val._type === "TimeSpan") {
+                return new TimeSpan(val.Milliseconds / this.Milliseconds);
+            }
+            else {
+                return new TimeSpan(val / this.Milliseconds);
+            }
+        }
+
+        /**
+        * Determines whether this TimeSpan represents the same amount of time as the provided TimeSpan.
+        * @param span The TimeSpan to compare the current TimeSpan to.
+        */
+        public Equivalent(timeSpan: TimeSpan): bool {
+            return this.Milliseconds === timeSpan.Milliseconds;
+        }
+
+        /**
+        * Returns a TimeSpan that represents the same time interval.
+        */
+        public Clone(): TimeSpan {
+            return new TimeSpan(this.Milliseconds);
+        }
+
+        /**
+        * Overridden toString method to display TimeSpan in the ms:s:m format.
+        */
+        public toString(): string {
+            return this.Milliseconds + ":" + this.Seconds + ":" + this.Minutes;
+        }
+
+        /**
+        * Returns a TimeSpan that represents the specified number of milliseconds.
+        * @param val Number of milliseconds.
+        */
+        public static FromMilliseconds(val: number): TimeSpan {
+            return new TimeSpan(val);
+        }
+
+        /**
+        * Returns a TimeSpan that represents the specified number of seconds.
+        * @param val Number of seconds.
+        */
+        public static FromSeconds(val: number): TimeSpan {
+            return new TimeSpan(0, val);
+        }
+
+        /**
+        * Returns a TimeSpan that represents the specified number of minutes.
+        * @param val Number of minutes.
+        */
+        public static FromMinutes(val: number): TimeSpan {
+            return new TimeSpan(0, 0, val);
+        }
+
+        /**
+        * Returns a TimeSpan that represents a 0 millisecond time interval.
+        */
+        public static Zero(): TimeSpan {
+            return new TimeSpan(0);
+        }
+
+        /**
+        * Returns a TimeSpan that represents the time between the two dates.
+        * @param from The from date.
+        * @param to The to date.
+        */
+        public static DateSpan(from: Date, to: Date): TimeSpan {
+            return new TimeSpan(to.getTime() - from.getTime());
+        }
+    }
+
+}
 /* GameTime.ts */
+
 
 
 module eg {
@@ -31,45 +286,58 @@ module eg {
     export class GameTime implements _.ITyped {
         public _type: string = "GameTime";
 
-        /**
-        * The current date time at the start of the Update.
-        */
-        public Now: Date;
-        /**
-        * Total amount of milliseconds surpassed since construction.
-        */
-        public Total: number;
-        /**
-        * Elapsed milliseconds since last Update.
-        */
-        public Elapsed: number;
-        /**
-        * Elapsed second since last Update.  It's essentially 1/Elapsed.
-        */
-        public ElapsedSecond: number;
-
-        // Start time in milliseconds
-        private _start: number;
+        // Start date
+        private _start: Date;
+        private _lastUpdate: Date;
+        private _elapsed: TimeSpan;
+        private _elapsedSecond: number;
 
         /**
         * Creates a new instance of the GameTime object.
         */
         constructor() {
-            this.Now = new Date();
-            this._start = this.Now.getTime();
+            this._start = this._lastUpdate = new Date();
+
+            this.Update();
+        }
+
+        /**
+        * Gets the elapsed time since the last update.
+        */
+        public get Elapsed(): TimeSpan {
+            return this._elapsed;
+        }
+
+        /**
+        * Gets the elapsed second since the last Update.  It's essentially Elapsed.Milliseconds / 1000.
+        */
+        public get ElapsedSecond(): number {
+            return this._elapsedSecond;
+        }
+
+        /**
+        * Gets the current date time at the start of the update.
+        */
+        public get Now(): Date {
+            return this._lastUpdate;
+        }
+
+        /**
+        * Gets the total amount of time surpassed since construction.
+        */
+        public get Total(): TimeSpan {
+            return TimeSpan.DateSpan(this._start, new Date());
         }
 
         /**
         * Updates the game time object.  Causes the gameTime to refresh all its components.
         */
         public Update(): void {
-            var now = new Date(),
-                nowMs = now.getTime();
+            var now = new Date();
 
-            this.Elapsed = nowMs - this.Now.getTime();
-            this.ElapsedSecond = this.Elapsed / 1000;
-            this.Total = nowMs - this._start;
-            this.Now = now;
+            this._elapsed = new TimeSpan(now.getTime() - this._lastUpdate.getTime());
+            this._elapsedSecond = this._elapsed.Milliseconds / 1000;
+            this._lastUpdate = now;
         }
     }
 
@@ -143,21 +411,21 @@ module eg {
         }
 
         /**
-        * Returns the radius that encompasses the two dimensional size of this Size2d.
+        * Gets the radius that encompasses the two dimensional size of this Size2d.
         */
         public get Radius(): number {
             return .5 * Math.sqrt(this.Width * this.Width + this.Height * this.Height);
         }
 
         /**
-        * Returns half of the Width component of this Size2d.
+        * Gets half of the Width component of this Size2d.
         */
         public get HalfWidth(): number {
             return this.Width / 2;
         }
 
         /**
-        * Returns half of the Height component of this Size2d.
+        * Gets half of the Height component of this Size2d.
         */
         public get HalfHeight(): number {
             return this.Height / 2;
@@ -1264,16 +1532,11 @@ module eg {
         }
 
         /**
-        * Gets the current update rate.
+        * Gets or sets the UpdateRate of the game.  Update rates are represented as X many updates per second.
         */
         public get UpdateRate(): number {
             return this._updateRate;
         }
-
-        /**
-        * Sets the update rate.
-        * @param updateRate The new update rate. X many updates per second.
-        */
         public set UpdateRate(updateRate: number) {
             this._updateRate = updateRate;
             this._updateRateSetter(this._updateRate);
@@ -1420,14 +1683,13 @@ module eg.Collision {
         }
 
         /**
-        * Event: Triggered when a collision happens.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes a CollisionData object to bound functions.
+        * Gets an event that is triggered when a collision happens.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public get OnCollision(): EventHandler1<Assets.CollisionData> {
             return this._onCollision;
         }
         /**
-        * Event: Triggered when a Collidable has been disposed.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Gets an event that is triggered when the Collidable has been disposed.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public get OnDisposed(): EventHandler1<Collidable> {
             return this._onDisposed;
@@ -1560,8 +1822,7 @@ module eg.Collision {
         }
 
         /**
-        * Event: Triggered when a collision happens among two of the monitored objects.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes two CollisionData objects to bound functions.
+        * Gets an event that is triggered when a collision happens among two of the monitored objects.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public get OnCollision(): EventHandler2<Collidable, Collidable> {
             return this._onCollision;
@@ -1638,7 +1899,6 @@ module eg.Graphics.Assets._ {
         public get StrokeStyle(): string {
             return this._cachedState["strokeStyle"];
         }
-
         public set StrokeStyle(value: string) {
             this._cachedState["strokeStyle"] = value
         }
@@ -1646,7 +1906,6 @@ module eg.Graphics.Assets._ {
         public get FillStyle(): string {
             return this._cachedState["fillStyle"];
         }
-
         public set FillStyle(value: string) {
             this._cachedState["fillStyle"] = value;
         }
@@ -1654,7 +1913,6 @@ module eg.Graphics.Assets._ {
         public get GlobalAlpha(): number {
             return this._cachedState["globalAlpha"];
         }
-
         public set GlobalAlpha(value: number) {
             this._cachedState["globalAlpha"] = value;
         }
@@ -1662,7 +1920,6 @@ module eg.Graphics.Assets._ {
         public get LineWidth(): number {
             return this._cachedState["lineWidth"];
         }
-
         public set LineWidth(value: number) {
             this._cachedState["lineWidth"] = value;
         }
@@ -1670,7 +1927,6 @@ module eg.Graphics.Assets._ {
         public get LineCap(): string {
             return this._cachedState["lineCap"];
         }
-
         public set LineCap(value: string) {
             this._cachedState["lineCap"] = value;
         }
@@ -1678,7 +1934,6 @@ module eg.Graphics.Assets._ {
         public get LineJoin(): string {
             return this._cachedState["lineJoin"];
         }
-
         public set LineJoin(value: string) {
             this._cachedState["lineJoin"] = value;
         }
@@ -1686,7 +1941,6 @@ module eg.Graphics.Assets._ {
         public get MiterLimit(): number {
             return this._cachedState["miterLimit"];
         }
-
         public set MiterLimit(value: number) {
             this._cachedState["miterLimit"] = value;
         }
@@ -1694,7 +1948,6 @@ module eg.Graphics.Assets._ {
         public get ShadowOffsetX(): number {
             return this._cachedState["shadowOffsetX"];
         }
-
         public set ShadowOffsetX(value: number) {
             this._cachedState["shadowOffsetX"] = value;
         }
@@ -1702,7 +1955,6 @@ module eg.Graphics.Assets._ {
         public get ShadowOffsetY(): number {
             return this._cachedState["shadowOffsetY"];
         }
-
         public set ShadowOffsetY(value: number) {
             this._cachedState["shadowOffsetY"] = value;
         }
@@ -1710,7 +1962,6 @@ module eg.Graphics.Assets._ {
         public get ShadowBlur(): number {
             return this._cachedState["shadowBlur"];
         }
-
         public set ShadowBlur(value: number) {
             this._cachedState["shadowBlur"] = value;
         }
@@ -1718,7 +1969,6 @@ module eg.Graphics.Assets._ {
         public get ShadowColor(): string {
             return this._cachedState["shadowColor"];
         }
-
         public set ShadowColor(value: string) {
             this._cachedState["shadowColor"] = value;
         }
@@ -1726,7 +1976,6 @@ module eg.Graphics.Assets._ {
         public get GlobalCompositeOperation(): string {
             return this._cachedState["globalCompositeOperation"];
         }
-
         public set GlobalCompositeOperation(value: string) {
             this._cachedState["globalCompositeOperation"] = value;
         }
@@ -1734,7 +1983,6 @@ module eg.Graphics.Assets._ {
         public get Font(): string {
             return this._cachedState["font"];
         }
-
         public set Font(value: string) {
             this._cachedState["font"] = value;
         }
@@ -1742,7 +1990,6 @@ module eg.Graphics.Assets._ {
         public get TextAlign(): string {
             return this._cachedState["textAlign"];
         }
-
         public set TextAlign(value: string) {
             this._cachedState["textAlign"] = value;
         }
@@ -1750,7 +1997,6 @@ module eg.Graphics.Assets._ {
         public get TextBaseline(): string {
             return this._cachedState["textBaseline"];
         }
-
         public set TextBaseline(value: string) {
             this._cachedState["textBaseline"] = value;
         }
@@ -2061,7 +2307,7 @@ module eg.Bounds {
         }        
 
         /** 
-        * Calculates the top left corner of the BoundingRectangle.
+        * Gets the top left corner of the BoundingRectangle.
         */
         public get TopLeft(): Vector2d {
             if (this.Rotation === 0) {
@@ -2072,7 +2318,7 @@ module eg.Bounds {
         }
 
         /** 
-        * Calculates the top right corner of the BoundingRectangle.
+        * Gets the top right corner of the BoundingRectangle.
         */
         public get TopRight(): Vector2d {
             if (this.Rotation === 0) {
@@ -2083,7 +2329,7 @@ module eg.Bounds {
         }
 
         /** 
-        * Calculates the bottom left corner of the BoundingRectangle.
+        * Gets the bottom left corner of the BoundingRectangle.
         */
         public get BotLeft(): Vector2d {
             if (this.Rotation === 0) {
@@ -2094,7 +2340,7 @@ module eg.Bounds {
         }
 
         /** 
-        * Calculates the bottom right corner of the BoundingRectangle.
+        * Gets the bottom right corner of the BoundingRectangle.
         */
         public get BotRight(): Vector2d {
             if (this.Rotation === 0) {
@@ -2280,8 +2526,7 @@ module eg.Rendering {
         }
 
         /**
-        * Event: Triggered when the renderOnto canvas changes size.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes the new size as a Size2d.
+        * Gets an event that is triggered when the renderOnto canvas changes size.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public get OnRendererSizeChange(): EventHandler1<Size2d> {
             return this._onRendererSizeChange;
@@ -2606,14 +2851,14 @@ module eg.Rendering {
         }
 
         /**
-        * The canvas that the Scene2d uses as its game area.
+        * Gets the canvas that the Scene2d uses as its game area.
         */
         public get DrawArea(): HTMLCanvasElement {
             return this._drawArea;
         }
 
         /**
-        * The game camera.
+        * Gets the game camera.
         */
         public get Camera(): Camera2d {
             return this._camera;
@@ -2837,48 +3082,42 @@ module eg.Input {
         }
 
         /**
-        * Event: Triggered when a mouse click occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes an IMouseClickEvent event object to bound functions.
+        * Gets an event that is triggered when a mouse click occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public get OnClick(): EventHandler1<IMouseClickEvent> {
             return this._onClick;
         }
 
         /**
-        * Event: Triggered when a mouse double click occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes an IMouseClickEvent event object to bound functions.
+        * Gets an event that is triggered when a mouse double click occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public get OnDoubleClick(): EventHandler1<IMouseClickEvent> {
             return this._onDoubleClick;
         }
 
         /**
-        * Event: Triggered when a mouse down event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes an IMouseClickEvent event object to bound functions.
+        * Gets an event that is triggered when a mouse down event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public get OnDown(): EventHandler1<IMouseClickEvent> {
             return this._onDown;
         }
 
         /**
-        * Event: Triggered when a mouse up event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes an IMouseClickEvent event object to bound functions.
+        * Gets an event that is triggered when a mouse up event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public get OnUp(): EventHandler1<IMouseClickEvent> {
             return this._onUp;
         }
 
         /**
-        * Event: Triggered when a mouse move event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes an IMouseEvent event object to bound functions.
+        * Gets an event that is triggered when a mouse move event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public get OnMove(): EventHandler1<IMouseEvent> {
             return this._onMove;
         }
 
         /**
-        * Event: Triggered when a mouse scroll event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes an IMouseScrollEvent event object to bound functions.
+        * Gets an event that is triggered when a mouse scroll event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public get OnScroll(): EventHandler1<IMouseScrollEvent> {
             return this._onScroll;
@@ -3297,7 +3536,7 @@ module eg.Input.Assets {
         }
 
         /**
-        * Event: Triggered when a KeyboardCommand has been disposed.  If this KeyboardCommand is used with a KeyboardHandler it will no longer trigger the Action function.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Gets an event that is triggered when a KeyboardCommand has been disposed.  If this KeyboardCommand is used with a KeyboardHandler it will no longer trigger the Action function.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public get OnDispose(): EventHandler {
             return this._onDisposed;
@@ -3349,24 +3588,21 @@ module eg.Input {
         }
 
         /**
-        * Event: Triggered when any key press occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes a KeyboardCommandEvent object to bound functions.
+        * Gets an event that is triggered when any key press occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public get OnKeyPress(): EventHandler1<KeyboardCommandEvent> {
             return this._onKeyPress;
         }
 
         /**
-        * Event: Triggered when any key goes down.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes a KeyboardCommandEvent object to bound functions.
+        *Gets an event that is triggered when any key goes down.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public get OnKeyDown(): EventHandler1<KeyboardCommandEvent> {
             return this._onKeyDown;
         }
 
         /**
-        * Event: Triggered when any key comes up.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes a KeyboardCommandEvent object to bound functions.
+        * Gets an event that is triggered when any key comes up.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public get OnKeyUp(): EventHandler1<KeyboardCommandEvent> {
             return this._onKeyUp;
@@ -3628,24 +3864,18 @@ module eg.Sound {
         }
 
         /**
-        * Event: Triggered when the audio clip has completed, will not trigger if the audio clip is repeating.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes the DOM's ended event to bound functions.
+        * Gets an event that is triggered when the audio clip has completed, will not trigger if the audio clip is repeating.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public get OnComplete(): EventHandler1<Event> {
             return this._onComplete;
         }
 
         /**
-        * Gets the audio clip volume.
+        * Gets or sets the audio clip volume.
         */
         public get Volume(): number {
             return this._settings.Volume;
         }
-
-        /**
-        * Sets the audio clip volume. Expects values 0-100 (%).
-        * @param percent The percent volume to play the audio clip at.
-        */
         public set Volume(percent: number) {
             this._settings.Volume = percent;
             this._audio.volume = Math.max(Math.min(percent / 100, 1), 0);
@@ -4543,79 +4773,55 @@ module eg.Graphics.Assets {
         }
 
         /**
-        * Gets the current font size.
+        * Gets or sets the current font size.  Values can be things such as 20px.
         */
         public get FontSize(): string {
             return this._cachedState["fontSize"];
         }
-        /**
-        * Sets the current font size.  Expects values such as 20px.
-        * @param size The new font size.
-        */
         public set FontSize(size: string) {
             this._refreshCache = true;
             this._cachedState["fontSize"] = size;
         }
 
         /**
-        * Gets the current font family.
+        * Gets or sets the font family.
         */
         public get FontFamily(): FontFamily {
             return this._cachedState["fontFamily"];
         }
-
-        /**
-        * Sets the current font family.
-        * @param family The new font family.
-        */
         public set FontFamily(family: FontFamily) {
             this._refreshCache = true;
             this._cachedState["fontFamily"] = family;
         }
 
         /**
-        * Gets the current font variant.
+        * Gets or sets the font variant.
         */
         public get FontVariant(): FontVariant {
             return this._cachedState["fontVariant"];
         }
-
-        /**
-        * Sets the current font variant.
-        * @param variant The new font variant.
-        */
         public set FontVariant(variant: FontVariant) {
             this._refreshCache = true;
             this._cachedState["fontVariant"] = variant;
         }
 
         /**
-        * Gets the current font weight.
+        * Gets or sets the current font weight.
         */
         public get FontWeight(): string {
             return this._cachedState["fontWeight"];
         }
-
-        /**
-        * Sets the current font weight.
-        * @param weight The new font weight.
-        */
         public set FontWeight(weight: string) {
             this._refreshCache = true;
             this._cachedState["fontWeight"] = weight;
         }
 
         /**
-        * Gets the current font style.
+        * Gets or sets the current font style.
         */
         public get FontStyle(): FontStyle {
             return this._cachedState["fontStyle"];
         }
-
-        /**
-        * Sets and gets the current font style.
-        * @param style The new font style.
-        */
         public set FontStyle(style: FontStyle) {
             this._refreshCache = true;
             this._cachedState["fontStyle"] = style;
@@ -4695,121 +4901,81 @@ module eg.Graphics {
         }
 
         /**
-        * Gets the text alignment of the Text2d.
+        * Gets or sets the text alignment of the Text2d.  Values can be "start", "end", "left", "center", or "right".
         */
         public get Align(): string {
             return this._State.TextAlign;
         }
-
-        /**
-        * Gets the text alignment of the Text2d.
-        * @param alignment The new textual alignment for the Text2d.  Values are "start", "end", "left", "center", or "right".
-        */
         public set Align(alignment: string) {
             this._State.TextAlign = alignment;
         }        
 
         /**
-        * Gets the text baseline of the Text2d.
+        * Gets or sets the text baseline of the Text2d.  Values can be "top", "hanging", "middle", "alphabetic", "ideographic", and "bottom".
         */
         public get Baseline(): string {
             return this._State.TextBaseline;
         }
-
-        /**
-        * Gets the text baseline of the Text2d.
-        * @param baseline The new textual baseline for the Text2d.  Values are "top", "hanging", "middle", "alphabetic", "ideographic", and "bottom".
-        */
         public set Baseline(baseline: string) {
             this._State.TextBaseline = baseline;
         }
 
         /**
-        * Gets the current text color.
+        * Gets or sets the current text color.  Valid colors are strings like "red" or "rgb(255,0,0)".
         */
         public get Color(): string {
             return this._State.FillStyle;
         }
-
-        /**
-        * Gets the current text color.
-        * @param color The new color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-        */
         public set Color(color: string) {
             this._State.FillStyle = color;
         }
 
         /**
-        * Gets the current shadow color.
+        * Gets or sets the current shadow color.  Valid colors are strings like "red" or "rgb(255,0,0)".
         */
         public get ShadowColor(): string {
             return this._State.ShadowColor;
         }
-
-        /**
-        * Sets the current shadow color.
-        * @param color The new shadow color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-        */
         public set ShadowColor(color: string) {
             this._State.ShadowColor = color;
         }
 
         /**
-        * Gets the current horizontal shadow position.
+        * Gets or sets the current horizontal shadow position.
         */
         public get ShadowX(): number {
             return this._State.ShadowOffsetX;
         }
-
-        /**
-        * Sets the current horizontal shadow position.
-        * @param x The shadows new horizontal position.
-        */
         public set ShadowX(x: number) {
             this._State.ShadowOffsetX = x;
         }
 
         /**
-        * Gets the current vertical shadow position.
+        * Gets or sets the current vertical shadow position.
         */
         public get ShadowY(): number {
             return this._State.ShadowOffsetY;
         }
-
-        /**
-        * Sets the current vertical shadow position.
-        * @param y The shadows new vertical position.
-        */
         public set ShadowY(y: number) {
             this._State.ShadowOffsetY = y;
         }
 
         /**
-        * Gets the current shadow blur.
+        * Gets or sets the current shadow blur.
         */
         public get ShadowBlur(): number {
             return this._State.ShadowBlur;
         }
-
-        /**
-        * Sets the current shadow blur.
-        * @param blur The shadows new blur.
-        */
         public set ShadowBlur(blur: number) {
             this._State.ShadowBlur = blur;
         }
 
         /**
-        * Gets the current opacity.  Value is between 0 and 1.
+        * Gets or sets the current opacity.  Value is between 0 and 1.
         */
         public get Opacity(): number {
             return this._State.GlobalAlpha;
         }
-
-        /**
-        * Sets the current opacity.
-        * @param alpha New opacity, value is between 0 and 1.
-        */
         public set Opacity(alpha: number) {
             this._State.GlobalAlpha = alpha;
         }
@@ -4824,16 +4990,11 @@ module eg.Graphics {
         }
 
         /**
-* Gets the current border thickness.
-*/
+        * Gets or sets the current border thickness.
+        */
         public get BorderThickness(): number {
             return this._State.LineWidth;
         }
-
-        /**
-        * Sets the current border thickness.
-        * @param thickness The new border thickness in pixels.
-        */
         public set BorderThickness(thickness: number) {
             if (thickness === 0) {
                 this._stroker.Reset();
@@ -4846,32 +5007,22 @@ module eg.Graphics {
         }
 
         /**
-        * Gets the current border color.
+        * Gets or sets the current border color.  Valid colors are strings like "red" or "rgb(255,0,0)".
         */
         public get BorderColor(): string {
             return this._State.StrokeStyle;
         }
-
-        /**
-        * Sets the current border color.
-        * @param color The new border color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-        */
         public set BorderColor(color: string) {
             this._stroker.Trip();
             this._State.StrokeStyle = color;
         }
 
         /**
-        * Gets the current Text2d's text.
+        * Gets or sets the current Text2d's text.
         */
         public get Text(): string {
             return this._text;
         }
-
-        /**
-        * Sets and gets the current Text2d's text.
-        * @param text The new text.
-        */
         public set Text(text: string) {
             this._recalculateBoundsSize = true;
             this._text = text;
@@ -5033,8 +5184,7 @@ module eg.Graphics.Assets {
         }
 
         /**
-        * Event: Triggered when the base image is finished loading.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes the ImageSource to the bound functions.
+        * Gets an event that is triggered when the base image is finished loading.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public get OnLoaded(): EventHandler1<ImageSource> {
             return this._onLoaded;
@@ -5114,16 +5264,11 @@ module eg.Graphics {
         }
 
         /**
-        * Gets the current opacity.  Value is between 0 and 1.
+        * Gets or sets the current opacity.  Value is between 0 and 1.
         */
         public get Opacity(): number {
             return this._State.GlobalAlpha;
         }
-
-        /**
-        * Sets the current opacity.
-        * @param alpha New opacity, value is between 0 and 1.
-        */
         public set Opacity(alpha: number) {
             this._State.GlobalAlpha = alpha;
         }
@@ -5216,22 +5361,18 @@ module eg.Graphics {
         }
 
         /**
-        * Event: Triggered when the animation has completed, will not trigger if the animation is repeating.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Gets an event that is triggered when the animation has completed, will not trigger if the animation is repeating.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public get OnComplete(): EventHandler {
             return this._onComplete;
         }
 
         /**
-        * Gets the current frames per second.
+        * Gets or sets the current frames per second.
         */
         public get Fps(): number {
             return this._fps;
         }
-
-        /**
-        * Sets the current frames per second.
-        */
         public set Fps(newFps: number) {
             this._fps = newFps;
             this._stepEvery = 1000 / this._fps;
@@ -5392,124 +5533,84 @@ module eg.Graphics.Abstractions {
         }
 
         /**
-        * Gets the current shape color.
+        * Gets or sets the current shape color.  Valid colors are strings like "red" or "rgb(255,0,0)".
         */
         public get Color(): string {
             return this._State.FillStyle;
         }
-
-        /**
-        * Sets the current shape color.
-        * @param color The new color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-        */
         public set Color(color: string) {
             this._fill = true;
             this._State.FillStyle = color;
         }
 
         /**
-        * Gets the current border thickness.
+        * Gets or sets the current border thickness.
         */
         public get BorderThickness(): number {
             return this._State.LineWidth;
         }
-
-        /**
-        * Sets the current border thickness.
-        * @param thickness The new border thickness in pixels.
-        */
         public set BorderThickness(thickness: number) {
             this._State.LineWidth = thickness;
         }
 
         /**
-        * Gets the current border color.
+        * Gets or sets the current border color.  Valid colors are strings like "red" or "rgb(255,0,0)".
         */
         public get BorderColor(): string {
             return this._State.StrokeStyle;
         }
-
-        /**
-        * Sets the current border color.
-        * @param color The new border color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-        */
         public set BorderColor(color: string) {
             this._stroke = true;
             this._State.StrokeStyle = color;
         }
 
         /**
-        * Gets the current shadow color.
+        * Gets or sets the current shadow color.  Valid colors are strings like "red" or "rgb(255,0,0)".
         */
         public get ShadowColor(): string {
             return this._State.ShadowColor;
         }
-
-        /**
-        * Sets the current shadow color.
-        * @param color The new shadow color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-        */
         public set ShadowColor(color: string) {
             this._fill = true;
             this._State.ShadowColor = color;
-        }        
+        }
 
         /**
-        * Gets the current horizontal shadow position.
+        * Gets or sets the current horizontal shadow position.
         */
         public get ShadowX(): number {
             return this._State.ShadowOffsetX;
         }
-
-        /**
-        * Sets the current horizontal shadow position.
-        * @param x The shadows new horizontal position.
-        */
         public set ShadowX(x: number) {
             this._State.ShadowOffsetX = x;
         }
 
         /**
-        * Gets the current vertical shadow position.
+        * Gets or sets the current vertical shadow position.
         */
         public get ShadowY(): number {
             return this._State.ShadowOffsetY;
         }
-
-        /**
-        * Sets the current vertical shadow position.
-        * @param y The shadows new vertical position.
-        */
         public set ShadowY(y: number) {
             this._State.ShadowOffsetY = y;
         }
 
         /**
-        * Gets the current shadow blur.
+        * Gets or sets the current shadow blur.
         */
         public get ShadowBlur(): number {
             return this._State.ShadowBlur;
         }
-
-        /**
-        * Sets the current shadow blur.
-        * @param blur The shadows new blur.
-        */
         public set ShadowBlur(blur: number) {
             this._State.ShadowBlur = blur;
         }
 
         /**
-        * Gets the current opacity.  Value is between 0 and 1.
+        * Gets or sets the current opacity.  Value is between 0 and 1.
         */
         public get Opacity(): number {
             return this._State.GlobalAlpha;
         }
-
-        /**
-        * Sets the current opacity.
-        * @param alpha New opacity, value is between 0 and 1.
-        */
         public set Opacity(alpha: number) {
             this._State.GlobalAlpha = alpha;
         }
@@ -5710,6 +5811,9 @@ module eg.Graphics {
 
 module eg.Graphics {
 
+    /**
+    * Defines a drawable 2d line element.
+    */
     export class Line2d extends Abstractions.Graphic2d {
         public _type: string = "Line2d";
 
@@ -5760,93 +5864,63 @@ module eg.Graphics {
         }
 
         /**
-        * Gets the From location of the Line2d.
+        * Gets or sets the From location of the Line2d.
         */
         public get From(): Vector2d {
             return this._from;
         }
-
-        /**
-        * Sets the From location of the Line2d.
-        * @param newPosition New From location.
-        */
         public set From(newPosition: Vector2d) {
             this._from = newPosition;
             this.UpdatePosition();
         }
 
         /**
-        * Gets the To location of the Line2d.
+        * Gets or sets the To location of the Line2d.
         */
         public get To(): Vector2d {
             return this._to;
         }
-
-        /**
-        * Sets the To location of the Line2d.
-        * @param newPosition New To location.
-        */
         public set To(newPosition: Vector2d) {
             this._to = newPosition;
             this.UpdatePosition();
         }
 
         /**
-        * Gets the line color.
+        * Gets or sets the line color.  Valid colors are strings like "red" or "rgb(255,0,0)".
         */
         public get Color(): string {
             return this._State.StrokeStyle;
         }
-
-        /**
-        * Sets the line color.
-        * @param color The new color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-        */
         public set Color(color: string) {
             this._State.StrokeStyle = color;
         }
 
         /**
-        * Gets the line width.
+        * Gets or sets the line width.
         */
         public get LineWidth(): number {
             return this._State.LineWidth;
         }
-
-        /**
-        * Sets the line width.
-        * @param width The new line width.
-        */
         public set LineWidth(width: number) {
             this._State.LineWidth = width;
         }
 
         /**
-        * Gets the line cap.
+        * Gets or sets the line cap.  Values can be "butt", "round", "square".
         */
         public get LineCap(): string {
             return this._State.LineCap;
         }
-
-        /**
-        * Sets the line cap.
-        * @param width The new line cap.  Values can be "butt", "round", "square".
-        */
         public set LineCap(cap: string) {
             this._State.LineCap = cap;
         }     
         
         /**
-        * Gets the current opacity.  Value is between 0 and 1.
+        * Gets or sets the current opacity.  Value is between 0 and 1.
         */
         public get Opacity(): number {
             return this._State.GlobalAlpha;
         }
-
-        /**
-        * Sets the current opacity.
-        * @param alpha New opacity, value is between 0 and 1.
-        */
         public set Opacity(alpha: number) {
             this._State.GlobalAlpha = alpha;
         }   
@@ -6000,16 +6074,11 @@ module eg.Graphics {
         }
 
         /**
-        * Gets the current grid line color.  Grid lines are only drawn of DrawGridLines is set to true.
+        * Gets or sets the current grid line color.  Grid lines are only drawn of DrawGridLines is set to true.  Valid colors are strings like "red" or "rgb(255,0,0)".
         */
         public get GridLineColor(): string {
             return this._gridLineColor;
         }
-
-        /**
-        * Sets the current grid line color.  Grid lines are only drawn of DrawGridLines is set to true.
-        * @param color The new grid line color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-        */
         public set GridLineColor(color: string) {
             this._gridLineColor = color;
 
@@ -6033,30 +6102,25 @@ module eg.Graphics {
         }
 
         /**
-        * Gets the number of rows
+        * Gets the number of rows.
         */
         public get Rows(): number {
             return this._rows;
         }
 
         /**
-        * Gets the number of columns
+        * Gets the number of columns.
         */
         public get Columns(): number {
             return this._columns;
         }
 
         /**
-        * Gets the current opacity.  Value is between 0 and 1.
+        * Gets or sets the current opacity.  Value is between 0 and 1.
         */
         public get Opacity(): number {
             return this._State.GlobalAlpha;
         }
-
-        /**
-        * Sets the current opacity.
-        * @param alpha New opacity, value is between 0 and 1.
-        */
         public set Opacity(alpha: number) {
             this._State.GlobalAlpha = alpha;
         }
@@ -6876,10 +6940,10 @@ module eg.Map {
 /* Tween.ts */
 module eg.Tweening {
 
-    export class Tween {
+    export class Tween<T> {
         private _playing: boolean;
 
-        constructor() {
+        constructor(from: T, to: T) {
         }
 
         get Playing(): boolean {

@@ -38,8 +38,7 @@ module eg.Rendering {
         }
 
         /**
-        * Event: Triggered when the renderOnto canvas changes size.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes the new size as a Size2d.
+        * Gets an event that is triggered when the renderOnto canvas changes size.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public get OnRendererSizeChange(): EventHandler1<Size2d> {
             return this._onRendererSizeChange;

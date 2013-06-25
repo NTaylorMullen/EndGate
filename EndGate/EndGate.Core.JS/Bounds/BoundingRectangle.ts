@@ -38,7 +38,7 @@ module eg.Bounds {
         }        
 
         /** 
-        * Calculates the top left corner of the BoundingRectangle.
+        * Gets the top left corner of the BoundingRectangle.
         */
         public get TopLeft(): Vector2d {
             if (this.Rotation === 0) {
@@ -49,7 +49,7 @@ module eg.Bounds {
         }
 
         /** 
-        * Calculates the top right corner of the BoundingRectangle.
+        * Gets the top right corner of the BoundingRectangle.
         */
         public get TopRight(): Vector2d {
             if (this.Rotation === 0) {
@@ -60,7 +60,7 @@ module eg.Bounds {
         }
 
         /** 
-        * Calculates the bottom left corner of the BoundingRectangle.
+        * Gets the bottom left corner of the BoundingRectangle.
         */
         public get BotLeft(): Vector2d {
             if (this.Rotation === 0) {
@@ -71,7 +71,7 @@ module eg.Bounds {
         }
 
         /** 
-        * Calculates the bottom right corner of the BoundingRectangle.
+        * Gets the bottom right corner of the BoundingRectangle.
         */
         public get BotRight(): Vector2d {
             if (this.Rotation === 0) {

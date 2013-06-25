@@ -26,8 +26,7 @@ var eg;
             }
             Object.defineProperty(AudioClip.prototype, "OnComplete", {
                 get: /**
-                * Event: Triggered when the audio clip has completed, will not trigger if the audio clip is repeating.  Functions can be bound or unbound to this event to be executed when the event triggers.
-                * Passes the DOM's ended event to bound functions.
+                * Gets an event that is triggered when the audio clip has completed, will not trigger if the audio clip is repeating.  Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
                 function () {
                     return this._onComplete;
@@ -38,23 +37,18 @@ var eg;
 
             Object.defineProperty(AudioClip.prototype, "Volume", {
                 get: /**
-                * Gets the audio clip volume.
+                * Gets or sets the audio clip volume.
                 */
                 function () {
                     return this._settings.Volume;
                 },
-                set: /**
-                * Sets the audio clip volume. Expects values 0-100 (%).
-                * @param percent The percent volume to play the audio clip at.
-                */
-                function (percent) {
+                set: function (percent) {
                     this._settings.Volume = percent;
                     this._audio.volume = Math.max(Math.min(percent / 100, 1), 0);
                 },
                 enumerable: true,
                 configurable: true
             });
-
 
             /**
             * Determines if the AudioClip is currently playing.

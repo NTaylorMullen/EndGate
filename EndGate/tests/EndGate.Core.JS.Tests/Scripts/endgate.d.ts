@@ -16,31 +16,175 @@ declare module eg._ {
 }
 declare module eg {
     /**
+    * Defines a time interval.
+    */
+    class TimeSpan implements eg._.ITyped {
+        public _type: string;
+        private static _secondsMultiplier;
+        private static _minutesMultiplier;
+        private _milliseconds;
+        private _seconds;
+        private _minutes;
+        /**
+        * Creates a new instance of TimeSpan based on the provided milliseconds.
+        * @param milliseconds Number of milliseconds.
+        */
+        constructor(milliseconds: number);
+        /**
+        * Creates a new instance of TimeSpan based on the provided milliseconds, seconds and minutes.
+        * @param milliseconds Number of milliseconds.
+        * @param seconds Number of seconds.
+        */
+        constructor(milliseconds: number, seconds: number);
+        /**
+        * Creates a new instance of TimeSpan based on the provided milliseconds, seconds and minutes.
+        * @param milliseconds Number of milliseconds.
+        * @param seconds Number of seconds.
+        * @param minutes Number of minutes.
+        */
+        constructor(milliseconds: number, seconds: number, minutes: number);
+        /**
+        * Gets or sets the number of milliseconds the TimeSpan represents.
+        */
+        public Milliseconds : number;
+        /**
+        * Gets or sets the number of seconds the TimeSpan represents.
+        */
+        public Seconds : number;
+        /**
+        * Gets or sets the number of minutes the TimeSpan represents.
+        */
+        public Minutes : number;
+        /**
+        * Returns a TimeSpan that represents the addition of the current TimeSpan's milliseconds to the provided TimeSpan's milliseconds.
+        * @param val The TimeSpan to add.
+        */
+        public Add(val: TimeSpan): TimeSpan;
+        /**
+        * Returns a TimeSpan that represents the addition of the current TimeSpan's milliseconds to the provided milliseconds.
+        * @param val The number of milliseconds to add.
+        */
+        public Add(val: number): TimeSpan;
+        /**
+        * Returns a TimeSpan that represents the multiplication of the current TimeSpan's milliseconds by the provided TimeSpan's milliseconds.
+        * @param val The TimeSpan to multiply.
+        */
+        public Multiply(val: TimeSpan): TimeSpan;
+        /**
+        * Returns a TimeSpan that represents the multiplication of the current TimeSpan's milliseconds by the provided milliseconds.
+        * @param val The number of milliseconds to multiply.
+        */
+        public Multiply(val: number): TimeSpan;
+        /**
+        * Returns a TimeSpan that represents the subtraction of the current TimeSpan's milliseconds by the provided TimeSpan's milliseconds.
+        * @param val The TimeSpan to subtract by.
+        */
+        public Subtract(val: TimeSpan): TimeSpan;
+        /**
+        * Returns a TimeSpan that represents the subtraction of the current TimeSpan's milliseconds by the provided milliseconds.
+        * @param val The number of milliseconds to subtract by.
+        */
+        public Subtract(val: number): TimeSpan;
+        /**
+        * Returns a TimeSpan that represents the subtraction of the current TimeSpan's milliseconds from the provided TimeSpan's milliseconds.
+        * @param val The TimeSpan to subtract from.
+        */
+        public SubtractFrom(val: TimeSpan): TimeSpan;
+        /**
+        * Returns a TimeSpan that represents the subtraction of the current TimeSpan's milliseconds from the provided milliseconds.
+        * @param val The number of milliseconds to subtract from.
+        */
+        public SubtractFrom(val: number): TimeSpan;
+        /**
+        * Returns a TimeSpan that represents the division of the current TimeSpan's milliseconds by the provided TimeSpan's milliseconds.
+        * @param val The TimeSpan to divide by.
+        */
+        public Divide(val: TimeSpan): TimeSpan;
+        /**
+        * Returns a TimeSpan that represents the division of the current TimeSpan's milliseconds by the provided milliseconds.
+        * @param val The number of milliseconds to divide by.
+        */
+        public Divide(val: number): TimeSpan;
+        /**
+        * Returns a TimeSpan that represents the division of the current TimeSpan's milliseconds from the provided TimeSpan's milliseconds.
+        * @param val The TimeSpan to divide from.
+        */
+        public DivideFrom(val: TimeSpan): TimeSpan;
+        /**
+        * Returns a TimeSpan that represents the division of the current TimeSpan's milliseconds from the provided milliseconds.
+        * @param val The number of milliseconds to divide from.
+        */
+        public DivideFrom(val: number): TimeSpan;
+        /**
+        * Determines whether this TimeSpan represents the same amount of time as the provided TimeSpan.
+        * @param span The TimeSpan to compare the current TimeSpan to.
+        */
+        public Equivalent(timeSpan: TimeSpan): boolean;
+        /**
+        * Returns a TimeSpan that represents the same time interval.
+        */
+        public Clone(): TimeSpan;
+        /**
+        * Overridden toString method to display TimeSpan in the ms:s:m format.
+        */
+        public toString(): string;
+        /**
+        * Returns a TimeSpan that represents the specified number of milliseconds.
+        * @param val Number of milliseconds.
+        */
+        static FromMilliseconds(val: number): TimeSpan;
+        /**
+        * Returns a TimeSpan that represents the specified number of seconds.
+        * @param val Number of seconds.
+        */
+        static FromSeconds(val: number): TimeSpan;
+        /**
+        * Returns a TimeSpan that represents the specified number of minutes.
+        * @param val Number of minutes.
+        */
+        static FromMinutes(val: number): TimeSpan;
+        /**
+        * Returns a TimeSpan that represents a 0 millisecond time interval.
+        */
+        static Zero(): TimeSpan;
+        /**
+        * Returns a TimeSpan that represents the time between the two dates.
+        * @param from The from date.
+        * @param to The to date.
+        */
+        static DateSpan(from: Date, to: Date): TimeSpan;
+    }
+}
+declare module eg {
+    /**
     * Defines a game time class that is used to manage update timing execution as well as total game time.
     */
     class GameTime implements eg._.ITyped {
         public _type: string;
-        /**
-        * The current date time at the start of the Update.
-        */
-        public Now: Date;
-        /**
-        * Total amount of milliseconds surpassed since construction.
-        */
-        public Total: number;
-        /**
-        * Elapsed milliseconds since last Update.
-        */
-        public Elapsed: number;
-        /**
-        * Elapsed second since last Update.  It's essentially 1/Elapsed.
-        */
-        public ElapsedSecond: number;
         private _start;
+        private _lastUpdate;
+        private _elapsed;
+        private _elapsedSecond;
         /**
         * Creates a new instance of the GameTime object.
         */
         constructor();
+        /**
+        * Gets the elapsed time since the last update.
+        */
+        public Elapsed : eg.TimeSpan;
+        /**
+        * Gets the elapsed second since the last Update.  It's essentially Elapsed.Milliseconds / 1000.
+        */
+        public ElapsedSecond : number;
+        /**
+        * Gets the current date time at the start of the update.
+        */
+        public Now : Date;
+        /**
+        * Gets the total amount of time surpassed since construction.
+        */
+        public Total : eg.TimeSpan;
         /**
         * Updates the game time object.  Causes the gameTime to refresh all its components.
         */
@@ -307,15 +451,15 @@ declare module eg {
         */
         static One : Size2d;
         /**
-        * Returns the radius that encompasses the two dimensional size of this Size2d.
+        * Gets the radius that encompasses the two dimensional size of this Size2d.
         */
         public Radius : number;
         /**
-        * Returns half of the Width component of this Size2d.
+        * Gets half of the Width component of this Size2d.
         */
         public HalfWidth : number;
         /**
-        * Returns half of the Height component of this Size2d.
+        * Gets half of the Height component of this Size2d.
         */
         public HalfHeight : number;
         /**
@@ -535,19 +679,19 @@ declare module eg.Bounds {
         */
         public Scale(x: number, y: number): void;
         /**
-        * Calculates the top left corner of the BoundingRectangle.
+        * Gets the top left corner of the BoundingRectangle.
         */
         public TopLeft : eg.Vector2d;
         /**
-        * Calculates the top right corner of the BoundingRectangle.
+        * Gets the top right corner of the BoundingRectangle.
         */
         public TopRight : eg.Vector2d;
         /**
-        * Calculates the bottom left corner of the BoundingRectangle.
+        * Gets the bottom left corner of the BoundingRectangle.
         */
         public BotLeft : eg.Vector2d;
         /**
-        * Calculates the bottom right corner of the BoundingRectangle.
+        * Gets the bottom right corner of the BoundingRectangle.
         */
         public BotRight : eg.Vector2d;
         /**
@@ -728,11 +872,7 @@ declare module eg {
         */
         constructor(updateRateSetter: (updateRate: number) => void);
         /**
-        * Gets the current update rate.
-        */
-        /**
-        * Sets the update rate.
-        * @param updateRate The new update rate. X many updates per second.
+        * Gets or sets the UpdateRate of the game.  Update rates are represented as X many updates per second.
         */
         public UpdateRate : number;
     }
@@ -812,12 +952,11 @@ declare module eg.Collision {
         */
         constructor(bounds: eg.Bounds.Abstractions.Bounds2d);
         /**
-        * Event: Triggered when a collision happens.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes a CollisionData object to bound functions.
+        * Gets an event that is triggered when a collision happens.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public OnCollision : eg.EventHandler1<eg.Collision.Assets.CollisionData>;
         /**
-        * Event: Triggered when a Collidable has been disposed.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Gets an event that is triggered when the Collidable has been disposed.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public OnDisposed : eg.EventHandler1<eg.Collision.Collidable>;
         /**
@@ -883,8 +1022,7 @@ declare module eg.Collision {
         */
         constructor();
         /**
-        * Event: Triggered when a collision happens among two of the monitored objects.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes two CollisionData objects to bound functions.
+        * Gets an event that is triggered when a collision happens among two of the monitored objects.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public OnCollision : eg.EventHandler2<eg.Collision.Collidable, eg.Collision.Collidable>;
         /**
@@ -1034,8 +1172,7 @@ declare module eg.Rendering {
         */
         constructor(renderOnto: HTMLCanvasElement);
         /**
-        * Event: Triggered when the renderOnto canvas changes size.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes the new size as a Size2d.
+        * Gets an event that is triggered when the renderOnto canvas changes size.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public OnRendererSizeChange : eg.EventHandler1<eg.Size2d>;
         /**
@@ -1123,11 +1260,11 @@ declare module eg.Rendering {
         */
         constructor(onDraw: (context: CanvasRenderingContext2D) => void, drawArea: HTMLCanvasElement);
         /**
-        * The canvas that the Scene2d uses as its game area.
+        * Gets the canvas that the Scene2d uses as its game area.
         */
         public DrawArea : HTMLCanvasElement;
         /**
-        * The game camera.
+        * Gets the game camera.
         */
         public Camera : Rendering.Camera2d;
         /**
@@ -1231,33 +1368,27 @@ declare module eg.Input {
         */
         public IsDown : boolean;
         /**
-        * Event: Triggered when a mouse click occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes an IMouseClickEvent event object to bound functions.
+        * Gets an event that is triggered when a mouse click occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public OnClick : eg.EventHandler1<eg.Input.IMouseClickEvent>;
         /**
-        * Event: Triggered when a mouse double click occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes an IMouseClickEvent event object to bound functions.
+        * Gets an event that is triggered when a mouse double click occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public OnDoubleClick : eg.EventHandler1<eg.Input.IMouseClickEvent>;
         /**
-        * Event: Triggered when a mouse down event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes an IMouseClickEvent event object to bound functions.
+        * Gets an event that is triggered when a mouse down event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public OnDown : eg.EventHandler1<eg.Input.IMouseClickEvent>;
         /**
-        * Event: Triggered when a mouse up event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes an IMouseClickEvent event object to bound functions.
+        * Gets an event that is triggered when a mouse up event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public OnUp : eg.EventHandler1<eg.Input.IMouseClickEvent>;
         /**
-        * Event: Triggered when a mouse move event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes an IMouseEvent event object to bound functions.
+        * Gets an event that is triggered when a mouse move event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public OnMove : eg.EventHandler1<eg.Input.IMouseEvent>;
         /**
-        * Event: Triggered when a mouse scroll event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes an IMouseScrollEvent event object to bound functions.
+        * Gets an event that is triggered when a mouse scroll event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public OnScroll : eg.EventHandler1<eg.Input.IMouseScrollEvent>;
         private Wire();
@@ -1406,7 +1537,7 @@ declare module eg.Input.Assets {
         */
         constructor(command: string, action: Function);
         /**
-        * Event: Triggered when a KeyboardCommand has been disposed.  If this KeyboardCommand is used with a KeyboardHandler it will no longer trigger the Action function.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Gets an event that is triggered when a KeyboardCommand has been disposed.  If this KeyboardCommand is used with a KeyboardHandler it will no longer trigger the Action function.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public OnDispose : eg.EventHandler;
         /**
@@ -1433,18 +1564,15 @@ declare module eg.Input {
         */
         constructor();
         /**
-        * Event: Triggered when any key press occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes a KeyboardCommandEvent object to bound functions.
+        * Gets an event that is triggered when any key press occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public OnKeyPress : eg.EventHandler1<eg.Input.KeyboardCommandEvent>;
         /**
-        * Event: Triggered when any key goes down.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes a KeyboardCommandEvent object to bound functions.
+        *Gets an event that is triggered when any key goes down.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public OnKeyDown : eg.EventHandler1<eg.Input.KeyboardCommandEvent>;
         /**
-        * Event: Triggered when any key comes up.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes a KeyboardCommandEvent object to bound functions.
+        * Gets an event that is triggered when any key comes up.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public OnKeyUp : eg.EventHandler1<eg.Input.KeyboardCommandEvent>;
         /**
@@ -1583,16 +1711,11 @@ declare module eg.Sound {
         */
         constructor(source: string[], settings?: Sound.AudioSettings);
         /**
-        * Event: Triggered when the audio clip has completed, will not trigger if the audio clip is repeating.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes the DOM's ended event to bound functions.
+        * Gets an event that is triggered when the audio clip has completed, will not trigger if the audio clip is repeating.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public OnComplete : eg.EventHandler1<Event>;
         /**
-        * Gets the audio clip volume.
-        */
-        /**
-        * Sets the audio clip volume. Expects values 0-100 (%).
-        * @param percent The percent volume to play the audio clip at.
+        * Gets or sets the audio clip volume.
         */
         public Volume : number;
         /**
@@ -2072,43 +2195,23 @@ declare module eg.Graphics.Assets {
         */
         constructor();
         /**
-        * Gets the current font size.
-        */
-        /**
-        * Sets the current font size.  Expects values such as 20px.
-        * @param size The new font size.
+        * Gets or sets the current font size.  Values can be things such as 20px.
         */
         public FontSize : string;
         /**
-        * Gets the current font family.
-        */
-        /**
-        * Sets the current font family.
-        * @param family The new font family.
+        * Gets or sets the font family.
         */
         public FontFamily : Assets.FontFamily;
         /**
-        * Gets the current font variant.
-        */
-        /**
-        * Sets the current font variant.
-        * @param variant The new font variant.
+        * Gets or sets the font variant.
         */
         public FontVariant : Assets.FontVariant;
         /**
-        * Gets the current font weight.
-        */
-        /**
-        * Sets the current font weight.
-        * @param weight The new font weight.
+        * Gets or sets the current font weight.
         */
         public FontWeight : string;
         /**
-        * Gets the current font style.
-        */
-        /**
-        * Sets and gets the current font style.
-        * @param style The new font style.
+        * Gets or sets the current font style.
         */
         public FontStyle : Assets.FontStyle;
         public _BuildFont(): string;
@@ -2141,67 +2244,35 @@ declare module eg.Graphics {
         */
         constructor(x: number, y: number, text: string, color: string);
         /**
-        * Gets the text alignment of the Text2d.
-        */
-        /**
-        * Gets the text alignment of the Text2d.
-        * @param alignment The new textual alignment for the Text2d.  Values are "start", "end", "left", "center", or "right".
+        * Gets or sets the text alignment of the Text2d.  Values can be "start", "end", "left", "center", or "right".
         */
         public Align : string;
         /**
-        * Gets the text baseline of the Text2d.
-        */
-        /**
-        * Gets the text baseline of the Text2d.
-        * @param baseline The new textual baseline for the Text2d.  Values are "top", "hanging", "middle", "alphabetic", "ideographic", and "bottom".
+        * Gets or sets the text baseline of the Text2d.  Values can be "top", "hanging", "middle", "alphabetic", "ideographic", and "bottom".
         */
         public Baseline : string;
         /**
-        * Gets the current text color.
-        */
-        /**
-        * Gets the current text color.
-        * @param color The new color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        * Gets or sets the current text color.  Valid colors are strings like "red" or "rgb(255,0,0)".
         */
         public Color : string;
         /**
-        * Gets the current shadow color.
-        */
-        /**
-        * Sets the current shadow color.
-        * @param color The new shadow color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        * Gets or sets the current shadow color.  Valid colors are strings like "red" or "rgb(255,0,0)".
         */
         public ShadowColor : string;
         /**
-        * Gets the current horizontal shadow position.
-        */
-        /**
-        * Sets the current horizontal shadow position.
-        * @param x The shadows new horizontal position.
+        * Gets or sets the current horizontal shadow position.
         */
         public ShadowX : number;
         /**
-        * Gets the current vertical shadow position.
-        */
-        /**
-        * Sets the current vertical shadow position.
-        * @param y The shadows new vertical position.
+        * Gets or sets the current vertical shadow position.
         */
         public ShadowY : number;
         /**
-        * Gets the current shadow blur.
-        */
-        /**
-        * Sets the current shadow blur.
-        * @param blur The shadows new blur.
+        * Gets or sets the current shadow blur.
         */
         public ShadowBlur : number;
         /**
-        * Gets the current opacity.  Value is between 0 and 1.
-        */
-        /**
-        * Sets the current opacity.
-        * @param alpha New opacity, value is between 0 and 1.
+        * Gets or sets the current opacity.  Value is between 0 and 1.
         */
         public Opacity : number;
         /**
@@ -2209,27 +2280,15 @@ declare module eg.Graphics {
         */
         public FontSettings : Graphics.Assets.FontSettings;
         /**
-        * Gets the current border thickness.
-        */
-        /**
-        * Sets the current border thickness.
-        * @param thickness The new border thickness in pixels.
+        * Gets or sets the current border thickness.
         */
         public BorderThickness : number;
         /**
-        * Gets the current border color.
-        */
-        /**
-        * Sets the current border color.
-        * @param color The new border color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        * Gets or sets the current border color.  Valid colors are strings like "red" or "rgb(255,0,0)".
         */
         public BorderColor : string;
         /**
-        * Gets the current Text2d's text.
-        */
-        /**
-        * Sets and gets the current Text2d's text.
-        * @param text The new text.
+        * Gets or sets the current Text2d's text.
         */
         public Text : string;
         /**
@@ -2315,8 +2374,7 @@ declare module eg.Graphics.Assets {
         */
         constructor(imageLocation: string, width: number, height: number, clipX: number, clipY: number, clipWidth: number, clipHeight: number);
         /**
-        * Event: Triggered when the base image is finished loading.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes the ImageSource to the bound functions.
+        * Gets an event that is triggered when the base image is finished loading.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public OnLoaded : eg.EventHandler1<eg.Graphics.Assets.ImageSource>;
         /**
@@ -2368,11 +2426,7 @@ declare module eg.Graphics {
         */
         constructor(x: number, y: number, image: Graphics.Assets.ImageSource, width: number, height: number);
         /**
-        * Gets the current opacity.  Value is between 0 and 1.
-        */
-        /**
-        * Sets the current opacity.
-        * @param alpha New opacity, value is between 0 and 1.
+        * Gets or sets the current opacity.  Value is between 0 and 1.
         */
         public Opacity : number;
         /**
@@ -2421,14 +2475,11 @@ declare module eg.Graphics {
         */
         constructor(imageSource: Graphics.Assets.ImageSource, fps: number, frameSize: eg.Size2d, frameCount: number, startOffset?: eg.Vector2d);
         /**
-        * Event: Triggered when the animation has completed, will not trigger if the animation is repeating.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Gets an event that is triggered when the animation has completed, will not trigger if the animation is repeating.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public OnComplete : eg.EventHandler;
         /**
-        * Gets the current frames per second.
-        */
-        /**
-        * Sets the current frames per second.
+        * Gets or sets the current frames per second.
         */
         public Fps : number;
         /**
@@ -2500,67 +2551,35 @@ declare module eg.Graphics.Abstractions {
         */
         constructor(position: eg.Vector2d, color: string);
         /**
-        * Gets the current shape color.
-        */
-        /**
-        * Sets the current shape color.
-        * @param color The new color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        * Gets or sets the current shape color.  Valid colors are strings like "red" or "rgb(255,0,0)".
         */
         public Color : string;
         /**
-        * Gets the current border thickness.
-        */
-        /**
-        * Sets the current border thickness.
-        * @param thickness The new border thickness in pixels.
+        * Gets or sets the current border thickness.
         */
         public BorderThickness : number;
         /**
-        * Gets the current border color.
-        */
-        /**
-        * Sets the current border color.
-        * @param color The new border color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        * Gets or sets the current border color.  Valid colors are strings like "red" or "rgb(255,0,0)".
         */
         public BorderColor : string;
         /**
-        * Gets the current shadow color.
-        */
-        /**
-        * Sets the current shadow color.
-        * @param color The new shadow color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        * Gets or sets the current shadow color.  Valid colors are strings like "red" or "rgb(255,0,0)".
         */
         public ShadowColor : string;
         /**
-        * Gets the current horizontal shadow position.
-        */
-        /**
-        * Sets the current horizontal shadow position.
-        * @param x The shadows new horizontal position.
+        * Gets or sets the current horizontal shadow position.
         */
         public ShadowX : number;
         /**
-        * Gets the current vertical shadow position.
-        */
-        /**
-        * Sets the current vertical shadow position.
-        * @param y The shadows new vertical position.
+        * Gets or sets the current vertical shadow position.
         */
         public ShadowY : number;
         /**
-        * Gets the current shadow blur.
-        */
-        /**
-        * Sets the current shadow blur.
-        * @param blur The shadows new blur.
+        * Gets or sets the current shadow blur.
         */
         public ShadowBlur : number;
         /**
-        * Gets the current opacity.  Value is between 0 and 1.
-        */
-        /**
-        * Sets the current opacity.
-        * @param alpha New opacity, value is between 0 and 1.
+        * Gets or sets the current opacity.  Value is between 0 and 1.
         */
         public Opacity : number;
         /**
@@ -2667,6 +2686,9 @@ declare module eg.Graphics {
     }
 }
 declare module eg.Graphics {
+    /**
+    * Defines a drawable 2d line element.
+    */
     class Line2d extends Graphics.Abstractions.Graphic2d {
         public _type: string;
         private _from;
@@ -2702,51 +2724,27 @@ declare module eg.Graphics {
         */
         constructor(fromX: number, fromY: number, toX: number, toY: number, lineWidth: number, color: string);
         /**
-        * Gets the From location of the Line2d.
-        */
-        /**
-        * Sets the From location of the Line2d.
-        * @param newPosition New From location.
+        * Gets or sets the From location of the Line2d.
         */
         public From : eg.Vector2d;
         /**
-        * Gets the To location of the Line2d.
-        */
-        /**
-        * Sets the To location of the Line2d.
-        * @param newPosition New To location.
+        * Gets or sets the To location of the Line2d.
         */
         public To : eg.Vector2d;
         /**
-        * Gets the line color.
-        */
-        /**
-        * Sets the line color.
-        * @param color The new color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        * Gets or sets the line color.  Valid colors are strings like "red" or "rgb(255,0,0)".
         */
         public Color : string;
         /**
-        * Gets the line width.
-        */
-        /**
-        * Sets the line width.
-        * @param width The new line width.
+        * Gets or sets the line width.
         */
         public LineWidth : number;
         /**
-        * Gets the line cap.
-        */
-        /**
-        * Sets the line cap.
-        * @param width The new line cap.  Values can be "butt", "round", "square".
+        * Gets or sets the line cap.  Values can be "butt", "round", "square".
         */
         public LineCap : string;
         /**
-        * Gets the current opacity.  Value is between 0 and 1.
-        */
-        /**
-        * Sets the current opacity.
-        * @param alpha New opacity, value is between 0 and 1.
+        * Gets or sets the current opacity.  Value is between 0 and 1.
         */
         public Opacity : number;
         /**
@@ -2814,11 +2812,7 @@ declare module eg.Graphics {
         */
         constructor(x: number, y: number, rows: number, columns: number, tileWidth: number, tileHeight: number, drawGridLines: boolean, gridLineColor: string);
         /**
-        * Gets the current grid line color.  Grid lines are only drawn of DrawGridLines is set to true.
-        */
-        /**
-        * Sets the current grid line color.  Grid lines are only drawn of DrawGridLines is set to true.
-        * @param color The new grid line color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
+        * Gets or sets the current grid line color.  Grid lines are only drawn of DrawGridLines is set to true.  Valid colors are strings like "red" or "rgb(255,0,0)".
         */
         public GridLineColor : string;
         /**
@@ -2830,19 +2824,15 @@ declare module eg.Graphics {
         */
         public TileSize : eg.Size2d;
         /**
-        * Gets the number of rows
+        * Gets the number of rows.
         */
         public Rows : number;
         /**
-        * Gets the number of columns
+        * Gets the number of columns.
         */
         public Columns : number;
         /**
-        * Gets the current opacity.  Value is between 0 and 1.
-        */
-        /**
-        * Sets the current opacity.
-        * @param alpha New opacity, value is between 0 and 1.
+        * Gets or sets the current opacity.  Value is between 0 and 1.
         */
         public Opacity : number;
         /**
@@ -3209,9 +3199,9 @@ declare module eg.Map {
     }
 }
 declare module eg.Tweening {
-    class Tween {
+    class Tween<T> {
         private _playing;
-        constructor();
+        constructor(from: T, to: T);
         public Playing : boolean;
     }
 }

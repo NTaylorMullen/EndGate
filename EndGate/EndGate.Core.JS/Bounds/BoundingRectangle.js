@@ -39,7 +39,7 @@ var eg;
 
             Object.defineProperty(BoundingRectangle.prototype, "TopLeft", {
                 get: /**
-                * Calculates the top left corner of the BoundingRectangle.
+                * Gets the top left corner of the BoundingRectangle.
                 */
                 function () {
                     if (this.Rotation === 0) {
@@ -54,7 +54,7 @@ var eg;
 
             Object.defineProperty(BoundingRectangle.prototype, "TopRight", {
                 get: /**
-                * Calculates the top right corner of the BoundingRectangle.
+                * Gets the top right corner of the BoundingRectangle.
                 */
                 function () {
                     if (this.Rotation === 0) {
@@ -69,7 +69,7 @@ var eg;
 
             Object.defineProperty(BoundingRectangle.prototype, "BotLeft", {
                 get: /**
-                * Calculates the bottom left corner of the BoundingRectangle.
+                * Gets the bottom left corner of the BoundingRectangle.
                 */
                 function () {
                     if (this.Rotation === 0) {
@@ -84,7 +84,7 @@ var eg;
 
             Object.defineProperty(BoundingRectangle.prototype, "BotRight", {
                 get: /**
-                * Calculates the bottom right corner of the BoundingRectangle.
+                * Gets the bottom right corner of the BoundingRectangle.
                 */
                 function () {
                     if (this.Rotation === 0) {

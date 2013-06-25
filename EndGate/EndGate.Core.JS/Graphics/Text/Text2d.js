@@ -38,155 +38,115 @@ var eg;
             }
             Object.defineProperty(Text2d.prototype, "Align", {
                 get: /**
-                * Gets the text alignment of the Text2d.
+                * Gets or sets the text alignment of the Text2d.  Values can be "start", "end", "left", "center", or "right".
                 */
                 function () {
                     return this._State.TextAlign;
                 },
-                set: /**
-                * Gets the text alignment of the Text2d.
-                * @param alignment The new textual alignment for the Text2d.  Values are "start", "end", "left", "center", or "right".
-                */
-                function (alignment) {
+                set: function (alignment) {
                     this._State.TextAlign = alignment;
                 },
                 enumerable: true,
                 configurable: true
             });
 
-
             Object.defineProperty(Text2d.prototype, "Baseline", {
                 get: /**
-                * Gets the text baseline of the Text2d.
+                * Gets or sets the text baseline of the Text2d.  Values can be "top", "hanging", "middle", "alphabetic", "ideographic", and "bottom".
                 */
                 function () {
                     return this._State.TextBaseline;
                 },
-                set: /**
-                * Gets the text baseline of the Text2d.
-                * @param baseline The new textual baseline for the Text2d.  Values are "top", "hanging", "middle", "alphabetic", "ideographic", and "bottom".
-                */
-                function (baseline) {
+                set: function (baseline) {
                     this._State.TextBaseline = baseline;
                 },
                 enumerable: true,
                 configurable: true
             });
 
-
             Object.defineProperty(Text2d.prototype, "Color", {
                 get: /**
-                * Gets the current text color.
+                * Gets or sets the current text color.  Valid colors are strings like "red" or "rgb(255,0,0)".
                 */
                 function () {
                     return this._State.FillStyle;
                 },
-                set: /**
-                * Gets the current text color.
-                * @param color The new color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-                */
-                function (color) {
+                set: function (color) {
                     this._State.FillStyle = color;
                 },
                 enumerable: true,
                 configurable: true
             });
 
-
             Object.defineProperty(Text2d.prototype, "ShadowColor", {
                 get: /**
-                * Gets the current shadow color.
+                * Gets or sets the current shadow color.  Valid colors are strings like "red" or "rgb(255,0,0)".
                 */
                 function () {
                     return this._State.ShadowColor;
                 },
-                set: /**
-                * Sets the current shadow color.
-                * @param color The new shadow color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-                */
-                function (color) {
+                set: function (color) {
                     this._State.ShadowColor = color;
                 },
                 enumerable: true,
                 configurable: true
             });
 
-
             Object.defineProperty(Text2d.prototype, "ShadowX", {
                 get: /**
-                * Gets the current horizontal shadow position.
+                * Gets or sets the current horizontal shadow position.
                 */
                 function () {
                     return this._State.ShadowOffsetX;
                 },
-                set: /**
-                * Sets the current horizontal shadow position.
-                * @param x The shadows new horizontal position.
-                */
-                function (x) {
+                set: function (x) {
                     this._State.ShadowOffsetX = x;
                 },
                 enumerable: true,
                 configurable: true
             });
 
-
             Object.defineProperty(Text2d.prototype, "ShadowY", {
                 get: /**
-                * Gets the current vertical shadow position.
+                * Gets or sets the current vertical shadow position.
                 */
                 function () {
                     return this._State.ShadowOffsetY;
                 },
-                set: /**
-                * Sets the current vertical shadow position.
-                * @param y The shadows new vertical position.
-                */
-                function (y) {
+                set: function (y) {
                     this._State.ShadowOffsetY = y;
                 },
                 enumerable: true,
                 configurable: true
             });
 
-
             Object.defineProperty(Text2d.prototype, "ShadowBlur", {
                 get: /**
-                * Gets the current shadow blur.
+                * Gets or sets the current shadow blur.
                 */
                 function () {
                     return this._State.ShadowBlur;
                 },
-                set: /**
-                * Sets the current shadow blur.
-                * @param blur The shadows new blur.
-                */
-                function (blur) {
+                set: function (blur) {
                     this._State.ShadowBlur = blur;
                 },
                 enumerable: true,
                 configurable: true
             });
 
-
             Object.defineProperty(Text2d.prototype, "Opacity", {
                 get: /**
-                * Gets the current opacity.  Value is between 0 and 1.
+                * Gets or sets the current opacity.  Value is between 0 and 1.
                 */
                 function () {
                     return this._State.GlobalAlpha;
                 },
-                set: /**
-                * Sets the current opacity.
-                * @param alpha New opacity, value is between 0 and 1.
-                */
-                function (alpha) {
+                set: function (alpha) {
                     this._State.GlobalAlpha = alpha;
                 },
                 enumerable: true,
                 configurable: true
             });
-
 
             Object.defineProperty(Text2d.prototype, "FontSettings", {
                 get: /**
@@ -203,16 +163,12 @@ var eg;
 
             Object.defineProperty(Text2d.prototype, "BorderThickness", {
                 get: /**
-                * Gets the current border thickness.
+                * Gets or sets the current border thickness.
                 */
                 function () {
                     return this._State.LineWidth;
                 },
-                set: /**
-                * Sets the current border thickness.
-                * @param thickness The new border thickness in pixels.
-                */
-                function (thickness) {
+                set: function (thickness) {
                     if (thickness === 0) {
                         this._stroker.Reset();
                     } else {
@@ -225,19 +181,14 @@ var eg;
                 configurable: true
             });
 
-
             Object.defineProperty(Text2d.prototype, "BorderColor", {
                 get: /**
-                * Gets the current border color.
+                * Gets or sets the current border color.  Valid colors are strings like "red" or "rgb(255,0,0)".
                 */
                 function () {
                     return this._State.StrokeStyle;
                 },
-                set: /**
-                * Sets the current border color.
-                * @param color The new border color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-                */
-                function (color) {
+                set: function (color) {
                     this._stroker.Trip();
                     this._State.StrokeStyle = color;
                 },
@@ -245,26 +196,20 @@ var eg;
                 configurable: true
             });
 
-
             Object.defineProperty(Text2d.prototype, "Text", {
                 get: /**
-                * Gets the current Text2d's text.
+                * Gets or sets the current Text2d's text.
                 */
                 function () {
                     return this._text;
                 },
-                set: /**
-                * Sets and gets the current Text2d's text.
-                * @param text The new text.
-                */
-                function (text) {
+                set: function (text) {
                     this._recalculateBoundsSize = true;
                     this._text = text;
                 },
                 enumerable: true,
                 configurable: true
             });
-
 
             Text2d.prototype.Shadow = function (x, y, color, blur) {
                 this.ShadowX = x;

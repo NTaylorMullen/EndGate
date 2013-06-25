@@ -23,8 +23,7 @@ var eg;
             }
             Object.defineProperty(CollisionManager.prototype, "OnCollision", {
                 get: /**
-                * Event: Triggered when a collision happens among two of the monitored objects.  Functions can be bound or unbound to this event to be executed when the event triggers.
-                * Passes two CollisionData objects to bound functions.
+                * Gets an event that is triggered when a collision happens among two of the monitored objects.  Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
                 function () {
                     return this._onCollision;

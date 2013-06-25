@@ -5,6 +5,9 @@
 
 module eg.Graphics {
 
+    /**
+    * Defines a drawable 2d line element.
+    */
     export class Line2d extends Abstractions.Graphic2d {
         public _type: string = "Line2d";
 
@@ -55,93 +58,63 @@ module eg.Graphics {
         }
 
         /**
-        * Gets the From location of the Line2d.
+        * Gets or sets the From location of the Line2d.
         */
         public get From(): Vector2d {
             return this._from;
         }
-
-        /**
-        * Sets the From location of the Line2d.
-        * @param newPosition New From location.
-        */
         public set From(newPosition: Vector2d) {
             this._from = newPosition;
             this.UpdatePosition();
         }
 
         /**
-        * Gets the To location of the Line2d.
+        * Gets or sets the To location of the Line2d.
         */
         public get To(): Vector2d {
             return this._to;
         }
-
-        /**
-        * Sets the To location of the Line2d.
-        * @param newPosition New To location.
-        */
         public set To(newPosition: Vector2d) {
             this._to = newPosition;
             this.UpdatePosition();
         }
 
         /**
-        * Gets the line color.
+        * Gets or sets the line color.  Valid colors are strings like "red" or "rgb(255,0,0)".
         */
         public get Color(): string {
             return this._State.StrokeStyle;
         }
-
-        /**
-        * Sets the line color.
-        * @param color The new color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-        */
         public set Color(color: string) {
             this._State.StrokeStyle = color;
         }
 
         /**
-        * Gets the line width.
+        * Gets or sets the line width.
         */
         public get LineWidth(): number {
             return this._State.LineWidth;
         }
-
-        /**
-        * Sets the line width.
-        * @param width The new line width.
-        */
         public set LineWidth(width: number) {
             this._State.LineWidth = width;
         }
 
         /**
-        * Gets the line cap.
+        * Gets or sets the line cap.  Values can be "butt", "round", "square".
         */
         public get LineCap(): string {
             return this._State.LineCap;
         }
-
-        /**
-        * Sets the line cap.
-        * @param width The new line cap.  Values can be "butt", "round", "square".
-        */
         public set LineCap(cap: string) {
             this._State.LineCap = cap;
         }     
         
         /**
-        * Gets the current opacity.  Value is between 0 and 1.
+        * Gets or sets the current opacity.  Value is between 0 and 1.
         */
         public get Opacity(): number {
             return this._State.GlobalAlpha;
         }
-
-        /**
-        * Sets the current opacity.
-        * @param alpha New opacity, value is between 0 and 1.
-        */
         public set Opacity(alpha: number) {
             this._State.GlobalAlpha = alpha;
         }   

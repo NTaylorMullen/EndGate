@@ -55,16 +55,12 @@ var eg;
             }
             Object.defineProperty(Grid.prototype, "GridLineColor", {
                 get: /**
-                * Gets the current grid line color.  Grid lines are only drawn of DrawGridLines is set to true.
+                * Gets or sets the current grid line color.  Grid lines are only drawn of DrawGridLines is set to true.  Valid colors are strings like "red" or "rgb(255,0,0)".
                 */
                 function () {
                     return this._gridLineColor;
                 },
-                set: /**
-                * Sets the current grid line color.  Grid lines are only drawn of DrawGridLines is set to true.
-                * @param color The new grid line color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-                */
-                function (color) {
+                set: function (color) {
                     this._gridLineColor = color;
 
                     for (var i = 0; i < this._gridLines.length; i++) {
@@ -74,7 +70,6 @@ var eg;
                 enumerable: true,
                 configurable: true
             });
-
 
             Object.defineProperty(Grid.prototype, "Size", {
                 get: /**
@@ -100,7 +95,7 @@ var eg;
 
             Object.defineProperty(Grid.prototype, "Rows", {
                 get: /**
-                * Gets the number of rows
+                * Gets the number of rows.
                 */
                 function () {
                     return this._rows;
@@ -111,7 +106,7 @@ var eg;
 
             Object.defineProperty(Grid.prototype, "Columns", {
                 get: /**
-                * Gets the number of columns
+                * Gets the number of columns.
                 */
                 function () {
                     return this._columns;
@@ -122,22 +117,17 @@ var eg;
 
             Object.defineProperty(Grid.prototype, "Opacity", {
                 get: /**
-                * Gets the current opacity.  Value is between 0 and 1.
+                * Gets or sets the current opacity.  Value is between 0 and 1.
                 */
                 function () {
                     return this._State.GlobalAlpha;
                 },
-                set: /**
-                * Sets the current opacity.
-                * @param alpha New opacity, value is between 0 and 1.
-                */
-                function (alpha) {
+                set: function (alpha) {
                     this._State.GlobalAlpha = alpha;
                 },
                 enumerable: true,
                 configurable: true
             });
-
 
             /**
             * Fills a tile with the provided graphic.

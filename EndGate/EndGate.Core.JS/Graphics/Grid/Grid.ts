@@ -96,16 +96,11 @@ module eg.Graphics {
         }
 
         /**
-        * Gets the current grid line color.  Grid lines are only drawn of DrawGridLines is set to true.
+        * Gets or sets the current grid line color.  Grid lines are only drawn of DrawGridLines is set to true.  Valid colors are strings like "red" or "rgb(255,0,0)".
         */
         public get GridLineColor(): string {
             return this._gridLineColor;
         }
-
-        /**
-        * Sets the current grid line color.  Grid lines are only drawn of DrawGridLines is set to true.
-        * @param color The new grid line color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-        */
         public set GridLineColor(color: string) {
             this._gridLineColor = color;
 
@@ -129,30 +124,25 @@ module eg.Graphics {
         }
 
         /**
-        * Gets the number of rows
+        * Gets the number of rows.
         */
         public get Rows(): number {
             return this._rows;
         }
 
         /**
-        * Gets the number of columns
+        * Gets the number of columns.
         */
         public get Columns(): number {
             return this._columns;
         }
 
         /**
-        * Gets the current opacity.  Value is between 0 and 1.
+        * Gets or sets the current opacity.  Value is between 0 and 1.
         */
         public get Opacity(): number {
             return this._State.GlobalAlpha;
         }
-
-        /**
-        * Sets the current opacity.
-        * @param alpha New opacity, value is between 0 and 1.
-        */
         public set Opacity(alpha: number) {
             this._State.GlobalAlpha = alpha;
         }

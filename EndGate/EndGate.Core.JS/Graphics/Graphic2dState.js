@@ -19,7 +19,6 @@ var eg;
                         configurable: true
                     });
 
-
                     Object.defineProperty(Graphic2dState.prototype, "FillStyle", {
                         get: function () {
                             return this._cachedState["fillStyle"];
@@ -30,7 +29,6 @@ var eg;
                         enumerable: true,
                         configurable: true
                     });
-
 
                     Object.defineProperty(Graphic2dState.prototype, "GlobalAlpha", {
                         get: function () {
@@ -43,7 +41,6 @@ var eg;
                         configurable: true
                     });
 
-
                     Object.defineProperty(Graphic2dState.prototype, "LineWidth", {
                         get: function () {
                             return this._cachedState["lineWidth"];
@@ -54,7 +51,6 @@ var eg;
                         enumerable: true,
                         configurable: true
                     });
-
 
                     Object.defineProperty(Graphic2dState.prototype, "LineCap", {
                         get: function () {
@@ -67,7 +63,6 @@ var eg;
                         configurable: true
                     });
 
-
                     Object.defineProperty(Graphic2dState.prototype, "LineJoin", {
                         get: function () {
                             return this._cachedState["lineJoin"];
@@ -78,7 +73,6 @@ var eg;
                         enumerable: true,
                         configurable: true
                     });
-
 
                     Object.defineProperty(Graphic2dState.prototype, "MiterLimit", {
                         get: function () {
@@ -91,7 +85,6 @@ var eg;
                         configurable: true
                     });
 
-
                     Object.defineProperty(Graphic2dState.prototype, "ShadowOffsetX", {
                         get: function () {
                             return this._cachedState["shadowOffsetX"];
@@ -102,7 +95,6 @@ var eg;
                         enumerable: true,
                         configurable: true
                     });
-
 
                     Object.defineProperty(Graphic2dState.prototype, "ShadowOffsetY", {
                         get: function () {
@@ -115,7 +107,6 @@ var eg;
                         configurable: true
                     });
 
-
                     Object.defineProperty(Graphic2dState.prototype, "ShadowBlur", {
                         get: function () {
                             return this._cachedState["shadowBlur"];
@@ -126,7 +117,6 @@ var eg;
                         enumerable: true,
                         configurable: true
                     });
-
 
                     Object.defineProperty(Graphic2dState.prototype, "ShadowColor", {
                         get: function () {
@@ -139,7 +129,6 @@ var eg;
                         configurable: true
                     });
 
-
                     Object.defineProperty(Graphic2dState.prototype, "GlobalCompositeOperation", {
                         get: function () {
                             return this._cachedState["globalCompositeOperation"];
@@ -150,7 +139,6 @@ var eg;
                         enumerable: true,
                         configurable: true
                     });
-
 
                     Object.defineProperty(Graphic2dState.prototype, "Font", {
                         get: function () {
@@ -163,7 +151,6 @@ var eg;
                         configurable: true
                     });
 
-
                     Object.defineProperty(Graphic2dState.prototype, "TextAlign", {
                         get: function () {
                             return this._cachedState["textAlign"];
@@ -175,7 +162,6 @@ var eg;
                         configurable: true
                     });
 
-
                     Object.defineProperty(Graphic2dState.prototype, "TextBaseline", {
                         get: function () {
                             return this._cachedState["textBaseline"];
@@ -186,7 +172,6 @@ var eg;
                         enumerable: true,
                         configurable: true
                     });
-
 
                     Graphic2dState.prototype.SetContextState = function (context) {
                         for (var key in this._cachedState) {

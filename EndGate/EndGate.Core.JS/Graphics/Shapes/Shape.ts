@@ -34,124 +34,84 @@ module eg.Graphics.Abstractions {
         }
 
         /**
-        * Gets the current shape color.
+        * Gets or sets the current shape color.  Valid colors are strings like "red" or "rgb(255,0,0)".
         */
         public get Color(): string {
             return this._State.FillStyle;
         }
-
-        /**
-        * Sets the current shape color.
-        * @param color The new color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-        */
         public set Color(color: string) {
             this._fill = true;
             this._State.FillStyle = color;
         }
 
         /**
-        * Gets the current border thickness.
+        * Gets or sets the current border thickness.
         */
         public get BorderThickness(): number {
             return this._State.LineWidth;
         }
-
-        /**
-        * Sets the current border thickness.
-        * @param thickness The new border thickness in pixels.
-        */
         public set BorderThickness(thickness: number) {
             this._State.LineWidth = thickness;
         }
 
         /**
-        * Gets the current border color.
+        * Gets or sets the current border color.  Valid colors are strings like "red" or "rgb(255,0,0)".
         */
         public get BorderColor(): string {
             return this._State.StrokeStyle;
         }
-
-        /**
-        * Sets the current border color.
-        * @param color The new border color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-        */
         public set BorderColor(color: string) {
             this._stroke = true;
             this._State.StrokeStyle = color;
         }
 
         /**
-        * Gets the current shadow color.
+        * Gets or sets the current shadow color.  Valid colors are strings like "red" or "rgb(255,0,0)".
         */
         public get ShadowColor(): string {
             return this._State.ShadowColor;
         }
-
-        /**
-        * Sets the current shadow color.
-        * @param color The new shadow color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-        */
         public set ShadowColor(color: string) {
             this._fill = true;
             this._State.ShadowColor = color;
-        }        
+        }
 
         /**
-        * Gets the current horizontal shadow position.
+        * Gets or sets the current horizontal shadow position.
         */
         public get ShadowX(): number {
             return this._State.ShadowOffsetX;
         }
-
-        /**
-        * Sets the current horizontal shadow position.
-        * @param x The shadows new horizontal position.
-        */
         public set ShadowX(x: number) {
             this._State.ShadowOffsetX = x;
         }
 
         /**
-        * Gets the current vertical shadow position.
+        * Gets or sets the current vertical shadow position.
         */
         public get ShadowY(): number {
             return this._State.ShadowOffsetY;
         }
-
-        /**
-        * Sets the current vertical shadow position.
-        * @param y The shadows new vertical position.
-        */
         public set ShadowY(y: number) {
             this._State.ShadowOffsetY = y;
         }
 
         /**
-        * Gets the current shadow blur.
+        * Gets or sets the current shadow blur.
         */
         public get ShadowBlur(): number {
             return this._State.ShadowBlur;
         }
-
-        /**
-        * Sets the current shadow blur.
-        * @param blur The shadows new blur.
-        */
         public set ShadowBlur(blur: number) {
             this._State.ShadowBlur = blur;
         }
 
         /**
-        * Gets the current opacity.  Value is between 0 and 1.
+        * Gets or sets the current opacity.  Value is between 0 and 1.
         */
         public get Opacity(): number {
             return this._State.GlobalAlpha;
         }
-
-        /**
-        * Sets the current opacity.
-        * @param alpha New opacity, value is between 0 and 1.
-        */
         public set Opacity(alpha: number) {
             this._State.GlobalAlpha = alpha;
         }

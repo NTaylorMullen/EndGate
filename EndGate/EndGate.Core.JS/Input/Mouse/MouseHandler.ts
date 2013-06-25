@@ -91,48 +91,42 @@ module eg.Input {
         }
 
         /**
-        * Event: Triggered when a mouse click occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes an IMouseClickEvent event object to bound functions.
+        * Gets an event that is triggered when a mouse click occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public get OnClick(): EventHandler1<IMouseClickEvent> {
             return this._onClick;
         }
 
         /**
-        * Event: Triggered when a mouse double click occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes an IMouseClickEvent event object to bound functions.
+        * Gets an event that is triggered when a mouse double click occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public get OnDoubleClick(): EventHandler1<IMouseClickEvent> {
             return this._onDoubleClick;
         }
 
         /**
-        * Event: Triggered when a mouse down event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes an IMouseClickEvent event object to bound functions.
+        * Gets an event that is triggered when a mouse down event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public get OnDown(): EventHandler1<IMouseClickEvent> {
             return this._onDown;
         }
 
         /**
-        * Event: Triggered when a mouse up event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes an IMouseClickEvent event object to bound functions.
+        * Gets an event that is triggered when a mouse up event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public get OnUp(): EventHandler1<IMouseClickEvent> {
             return this._onUp;
         }
 
         /**
-        * Event: Triggered when a mouse move event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes an IMouseEvent event object to bound functions.
+        * Gets an event that is triggered when a mouse move event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public get OnMove(): EventHandler1<IMouseEvent> {
             return this._onMove;
         }
 
         /**
-        * Event: Triggered when a mouse scroll event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes an IMouseScrollEvent event object to bound functions.
+        * Gets an event that is triggered when a mouse scroll event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public get OnScroll(): EventHandler1<IMouseScrollEvent> {
             return this._onScroll;

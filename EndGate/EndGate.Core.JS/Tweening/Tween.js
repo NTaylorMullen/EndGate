@@ -2,7 +2,7 @@ var eg;
 (function (eg) {
     (function (Tweening) {
         var Tween = (function () {
-            function Tween() {
+            function Tween(from, to) {
             }
             Object.defineProperty(Tween.prototype, "Playing", {
                 get: function () {

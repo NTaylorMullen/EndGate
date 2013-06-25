@@ -34,7 +34,7 @@ var eg;
             }
             Object.defineProperty(Scene2d.prototype, "DrawArea", {
                 get: /**
-                * The canvas that the Scene2d uses as its game area.
+                * Gets the canvas that the Scene2d uses as its game area.
                 */
                 function () {
                     return this._drawArea;
@@ -45,7 +45,7 @@ var eg;
 
             Object.defineProperty(Scene2d.prototype, "Camera", {
                 get: /**
-                * The game camera.
+                * Gets the game camera.
                 */
                 function () {
                     return this._camera;

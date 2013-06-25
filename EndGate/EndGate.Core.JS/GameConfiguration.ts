@@ -18,16 +18,11 @@ module eg {
         }
 
         /**
-        * Gets the current update rate.
+        * Gets or sets the UpdateRate of the game.  Update rates are represented as X many updates per second.
         */
         public get UpdateRate(): number {
             return this._updateRate;
         }
-
-        /**
-        * Sets the update rate.
-        * @param updateRate The new update rate. X many updates per second.
-        */
         public set UpdateRate(updateRate: number) {
             this._updateRate = updateRate;
             this._updateRateSetter(this._updateRate);

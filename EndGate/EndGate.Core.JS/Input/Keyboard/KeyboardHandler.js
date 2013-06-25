@@ -24,8 +24,7 @@ var eg;
             }
             Object.defineProperty(KeyboardHandler.prototype, "OnKeyPress", {
                 get: /**
-                * Event: Triggered when any key press occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
-                * Passes a KeyboardCommandEvent object to bound functions.
+                * Gets an event that is triggered when any key press occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
                 function () {
                     return this._onKeyPress;
@@ -36,8 +35,7 @@ var eg;
 
             Object.defineProperty(KeyboardHandler.prototype, "OnKeyDown", {
                 get: /**
-                * Event: Triggered when any key goes down.  Functions can be bound or unbound to this event to be executed when the event triggers.
-                * Passes a KeyboardCommandEvent object to bound functions.
+                *Gets an event that is triggered when any key goes down.  Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
                 function () {
                     return this._onKeyDown;
@@ -48,8 +46,7 @@ var eg;
 
             Object.defineProperty(KeyboardHandler.prototype, "OnKeyUp", {
                 get: /**
-                * Event: Triggered when any key comes up.  Functions can be bound or unbound to this event to be executed when the event triggers.
-                * Passes a KeyboardCommandEvent object to bound functions.
+                * Gets an event that is triggered when any key comes up.  Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
                 function () {
                     return this._onKeyUp;

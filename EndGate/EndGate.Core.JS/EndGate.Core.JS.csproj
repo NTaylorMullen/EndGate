@@ -60,6 +60,10 @@
   <ItemGroup>
     <TypeScriptCompile Include="Utilities\EventHandler1.ts" />
     <TypeScriptCompile Include="Tweening\Tween.ts" />
+    <TypeScriptCompile Include="Assets\TimeSpan.ts" />
+    <Content Include="Assets\TimeSpan.js">
+      <DependentUpon>TimeSpan.ts</DependentUpon>
+    </Content>
     <Content Include="Tweening\Tween.js">
       <DependentUpon>Tween.ts</DependentUpon>
     </Content>

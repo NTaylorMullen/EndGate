@@ -1,4 +1,5 @@
 /// <reference path="Interfaces/ITyped.ts" />
+/// <reference path="Assets/TimeSpan.ts" />
 
 module eg {
 
@@ -8,45 +9,58 @@ module eg {
     export class GameTime implements _.ITyped {
         public _type: string = "GameTime";
 
-        /**
-        * The current date time at the start of the Update.
-        */
-        public Now: Date;
-        /**
-        * Total amount of milliseconds surpassed since construction.
-        */
-        public Total: number;
-        /**
-        * Elapsed milliseconds since last Update.
-        */
-        public Elapsed: number;
-        /**
-        * Elapsed second since last Update.  It's essentially 1/Elapsed.
-        */
-        public ElapsedSecond: number;
-
-        // Start time in milliseconds
-        private _start: number;
+        // Start date
+        private _start: Date;
+        private _lastUpdate: Date;
+        private _elapsed: TimeSpan;
+        private _elapsedSecond: number;
 
         /**
         * Creates a new instance of the GameTime object.
         */
         constructor() {
-            this.Now = new Date();
-            this._start = this.Now.getTime();
+            this._start = this._lastUpdate = new Date();
+
+            this.Update();
+        }
+
+        /**
+        * Gets the elapsed time since the last update.
+        */
+        public get Elapsed(): TimeSpan {
+            return this._elapsed;
+        }
+
+        /**
+        * Gets the elapsed second since the last Update.  It's essentially Elapsed.Milliseconds / 1000.
+        */
+        public get ElapsedSecond(): number {
+            return this._elapsedSecond;
+        }
+
+        /**
+        * Gets the current date time at the start of the update.
+        */
+        public get Now(): Date {
+            return this._lastUpdate;
+        }
+
+        /**
+        * Gets the total amount of time surpassed since construction.
+        */
+        public get Total(): TimeSpan {
+            return TimeSpan.DateSpan(this._start, new Date());
         }
 
         /**
         * Updates the game time object.  Causes the gameTime to refresh all its components.
         */
         public Update(): void {
-            var now = new Date(),
-                nowMs = now.getTime();
+            var now = new Date();
 
-            this.Elapsed = nowMs - this.Now.getTime();
-            this.ElapsedSecond = this.Elapsed / 1000;
-            this.Total = nowMs - this._start;
-            this.Now = now;
+            this._elapsed = new TimeSpan(now.getTime() - this._lastUpdate.getTime());
+            this._elapsedSecond = this._elapsed.Milliseconds / 1000;
+            this._lastUpdate = now;
         }
     }
 

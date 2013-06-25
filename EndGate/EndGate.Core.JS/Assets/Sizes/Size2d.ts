@@ -49,21 +49,21 @@ module eg {
         }
 
         /**
-        * Returns the radius that encompasses the two dimensional size of this Size2d.
+        * Gets the radius that encompasses the two dimensional size of this Size2d.
         */
         public get Radius(): number {
             return .5 * Math.sqrt(this.Width * this.Width + this.Height * this.Height);
         }
 
         /**
-        * Returns half of the Width component of this Size2d.
+        * Gets half of the Width component of this Size2d.
         */
         public get HalfWidth(): number {
             return this.Width / 2;
         }
 
         /**
-        * Returns half of the Height component of this Size2d.
+        * Gets half of the Height component of this Size2d.
         */
         public get HalfHeight(): number {
             return this.Height / 2;

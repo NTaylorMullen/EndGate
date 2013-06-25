@@ -51,24 +51,18 @@ module eg.Sound {
         }
 
         /**
-        * Event: Triggered when the audio clip has completed, will not trigger if the audio clip is repeating.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes the DOM's ended event to bound functions.
+        * Gets an event that is triggered when the audio clip has completed, will not trigger if the audio clip is repeating.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public get OnComplete(): EventHandler1<Event> {
             return this._onComplete;
         }
 
         /**
-        * Gets the audio clip volume.
+        * Gets or sets the audio clip volume.
         */
         public get Volume(): number {
             return this._settings.Volume;
         }
-
-        /**
-        * Sets the audio clip volume. Expects values 0-100 (%).
-        * @param percent The percent volume to play the audio clip at.
-        */
         public set Volume(percent: number) {
             this._settings.Volume = percent;
             this._audio.volume = Math.max(Math.min(percent / 100, 1), 0);

@@ -44,8 +44,7 @@ var eg;
                 }
                 Object.defineProperty(ImageSource.prototype, "OnLoaded", {
                     get: /**
-                    * Event: Triggered when the base image is finished loading.  Functions can be bound or unbound to this event to be executed when the event triggers.
-                    * Passes the ImageSource to the bound functions.
+                    * Gets an event that is triggered when the base image is finished loading.  Functions can be bound or unbound to this event to be executed when the event triggers.
                     */
                     function () {
                         return this._onLoaded;

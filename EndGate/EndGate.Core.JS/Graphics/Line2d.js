@@ -11,6 +11,9 @@ var eg;
     /// <reference path="../Bounds/BoundingRectangle.ts" />
     /// <reference path="Graphic2d.ts" />
     (function (Graphics) {
+        /**
+        * Defines a drawable 2d line element.
+        */
         var Line2d = (function (_super) {
             __extends(Line2d, _super);
             function Line2d(fromX, fromY, toX, toY, lineWidth, color) {
@@ -29,16 +32,12 @@ var eg;
             }
             Object.defineProperty(Line2d.prototype, "From", {
                 get: /**
-                * Gets the From location of the Line2d.
+                * Gets or sets the From location of the Line2d.
                 */
                 function () {
                     return this._from;
                 },
-                set: /**
-                * Sets the From location of the Line2d.
-                * @param newPosition New From location.
-                */
-                function (newPosition) {
+                set: function (newPosition) {
                     this._from = newPosition;
                     this.UpdatePosition();
                 },
@@ -46,19 +45,14 @@ var eg;
                 configurable: true
             });
 
-
             Object.defineProperty(Line2d.prototype, "To", {
                 get: /**
-                * Gets the To location of the Line2d.
+                * Gets or sets the To location of the Line2d.
                 */
                 function () {
                     return this._to;
                 },
-                set: /**
-                * Sets the To location of the Line2d.
-                * @param newPosition New To location.
-                */
-                function (newPosition) {
+                set: function (newPosition) {
                     this._to = newPosition;
                     this.UpdatePosition();
                 },
@@ -66,82 +60,61 @@ var eg;
                 configurable: true
             });
 
-
             Object.defineProperty(Line2d.prototype, "Color", {
                 get: /**
-                * Gets the line color.
+                * Gets or sets the line color.  Valid colors are strings like "red" or "rgb(255,0,0)".
                 */
                 function () {
                     return this._State.StrokeStyle;
                 },
-                set: /**
-                * Sets the line color.
-                * @param color The new color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-                */
-                function (color) {
+                set: function (color) {
                     this._State.StrokeStyle = color;
                 },
                 enumerable: true,
                 configurable: true
             });
 
-
             Object.defineProperty(Line2d.prototype, "LineWidth", {
                 get: /**
-                * Gets the line width.
+                * Gets or sets the line width.
                 */
                 function () {
                     return this._State.LineWidth;
                 },
-                set: /**
-                * Sets the line width.
-                * @param width The new line width.
-                */
-                function (width) {
+                set: function (width) {
                     this._State.LineWidth = width;
                 },
                 enumerable: true,
                 configurable: true
             });
 
-
             Object.defineProperty(Line2d.prototype, "LineCap", {
                 get: /**
-                * Gets the line cap.
+                * Gets or sets the line cap.  Values can be "butt", "round", "square".
                 */
                 function () {
                     return this._State.LineCap;
                 },
-                set: /**
-                * Sets the line cap.
-                * @param width The new line cap.  Values can be "butt", "round", "square".
-                */
-                function (cap) {
+                set: function (cap) {
                     this._State.LineCap = cap;
                 },
                 enumerable: true,
                 configurable: true
             });
 
-
             Object.defineProperty(Line2d.prototype, "Opacity", {
                 get: /**
-                * Gets the current opacity.  Value is between 0 and 1.
+                * Gets or sets the current opacity.  Value is between 0 and 1.
                 */
                 function () {
                     return this._State.GlobalAlpha;
                 },
-                set: /**
-                * Sets the current opacity.
-                * @param alpha New opacity, value is between 0 and 1.
-                */
-                function (alpha) {
+                set: function (alpha) {
                     this._State.GlobalAlpha = alpha;
                 },
                 enumerable: true,
                 configurable: true
             });
-
 
             /**
             * Draws the line onto the given context.  If this Line2d is part of a scene the Draw function will be called automatically.

@@ -79,8 +79,7 @@ module eg.Graphics.Assets {
         }
 
         /**
-        * Event: Triggered when the base image is finished loading.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes the ImageSource to the bound functions.
+        * Gets an event that is triggered when the base image is finished loading.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public get OnLoaded(): EventHandler1<ImageSource> {
             return this._onLoaded;

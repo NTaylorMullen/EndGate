@@ -35,7 +35,7 @@ var eg;
 
         Object.defineProperty(Size2d.prototype, "Radius", {
             get: /**
-            * Returns the radius that encompasses the two dimensional size of this Size2d.
+            * Gets the radius that encompasses the two dimensional size of this Size2d.
             */
             function () {
                 return .5 * Math.sqrt(this.Width * this.Width + this.Height * this.Height);
@@ -46,7 +46,7 @@ var eg;
 
         Object.defineProperty(Size2d.prototype, "HalfWidth", {
             get: /**
-            * Returns half of the Width component of this Size2d.
+            * Gets half of the Width component of this Size2d.
             */
             function () {
                 return this.Width / 2;
@@ -57,7 +57,7 @@ var eg;
 
         Object.defineProperty(Size2d.prototype, "HalfHeight", {
             get: /**
-            * Returns half of the Height component of this Size2d.
+            * Gets half of the Height component of this Size2d.
             */
             function () {
                 return this.Height / 2;

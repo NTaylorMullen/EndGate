@@ -12,7 +12,6 @@ module eg.Graphics.Assets._ {
         public get StrokeStyle(): string {
             return this._cachedState["strokeStyle"];
         }
-
         public set StrokeStyle(value: string) {
             this._cachedState["strokeStyle"] = value
         }
@@ -20,7 +19,6 @@ module eg.Graphics.Assets._ {
         public get FillStyle(): string {
             return this._cachedState["fillStyle"];
         }
-
         public set FillStyle(value: string) {
             this._cachedState["fillStyle"] = value;
         }
@@ -28,7 +26,6 @@ module eg.Graphics.Assets._ {
         public get GlobalAlpha(): number {
             return this._cachedState["globalAlpha"];
         }
-
         public set GlobalAlpha(value: number) {
             this._cachedState["globalAlpha"] = value;
         }
@@ -36,7 +33,6 @@ module eg.Graphics.Assets._ {
         public get LineWidth(): number {
             return this._cachedState["lineWidth"];
         }
-
         public set LineWidth(value: number) {
             this._cachedState["lineWidth"] = value;
         }
@@ -44,7 +40,6 @@ module eg.Graphics.Assets._ {
         public get LineCap(): string {
             return this._cachedState["lineCap"];
         }
-
         public set LineCap(value: string) {
             this._cachedState["lineCap"] = value;
         }
@@ -52,7 +47,6 @@ module eg.Graphics.Assets._ {
         public get LineJoin(): string {
             return this._cachedState["lineJoin"];
         }
-
         public set LineJoin(value: string) {
             this._cachedState["lineJoin"] = value;
         }
@@ -60,7 +54,6 @@ module eg.Graphics.Assets._ {
         public get MiterLimit(): number {
             return this._cachedState["miterLimit"];
         }
-
         public set MiterLimit(value: number) {
             this._cachedState["miterLimit"] = value;
         }
@@ -68,7 +61,6 @@ module eg.Graphics.Assets._ {
         public get ShadowOffsetX(): number {
             return this._cachedState["shadowOffsetX"];
         }
-
         public set ShadowOffsetX(value: number) {
             this._cachedState["shadowOffsetX"] = value;
         }
@@ -76,7 +68,6 @@ module eg.Graphics.Assets._ {
         public get ShadowOffsetY(): number {
             return this._cachedState["shadowOffsetY"];
         }
-
         public set ShadowOffsetY(value: number) {
             this._cachedState["shadowOffsetY"] = value;
         }
@@ -84,7 +75,6 @@ module eg.Graphics.Assets._ {
         public get ShadowBlur(): number {
             return this._cachedState["shadowBlur"];
         }
-
         public set ShadowBlur(value: number) {
             this._cachedState["shadowBlur"] = value;
         }
@@ -92,7 +82,6 @@ module eg.Graphics.Assets._ {
         public get ShadowColor(): string {
             return this._cachedState["shadowColor"];
         }
-
         public set ShadowColor(value: string) {
             this._cachedState["shadowColor"] = value;
         }
@@ -100,7 +89,6 @@ module eg.Graphics.Assets._ {
         public get GlobalCompositeOperation(): string {
             return this._cachedState["globalCompositeOperation"];
         }
-
         public set GlobalCompositeOperation(value: string) {
             this._cachedState["globalCompositeOperation"] = value;
         }
@@ -108,7 +96,6 @@ module eg.Graphics.Assets._ {
         public get Font(): string {
             return this._cachedState["font"];
         }
-
         public set Font(value: string) {
             this._cachedState["font"] = value;
         }
@@ -116,7 +103,6 @@ module eg.Graphics.Assets._ {
         public get TextAlign(): string {
             return this._cachedState["textAlign"];
         }
-
         public set TextAlign(value: string) {
             this._cachedState["textAlign"] = value;
         }
@@ -124,7 +110,6 @@ module eg.Graphics.Assets._ {
         public get TextBaseline(): string {
             return this._cachedState["textBaseline"];
         }
-
         public set TextBaseline(value: string) {
             this._cachedState["textBaseline"] = value;
         }

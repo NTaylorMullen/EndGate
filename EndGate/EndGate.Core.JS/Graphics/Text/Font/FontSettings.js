@@ -28,16 +28,12 @@ var eg;
                 }
                 Object.defineProperty(FontSettings.prototype, "FontSize", {
                     get: /**
-                    * Gets the current font size.
+                    * Gets or sets the current font size.  Values can be things such as 20px.
                     */
                     function () {
                         return this._cachedState["fontSize"];
                     },
-                    set: /**
-                    * Sets the current font size.  Expects values such as 20px.
-                    * @param size The new font size.
-                    */
-                    function (size) {
+                    set: function (size) {
                         this._refreshCache = true;
                         this._cachedState["fontSize"] = size;
                     },
@@ -45,19 +41,14 @@ var eg;
                     configurable: true
                 });
 
-
                 Object.defineProperty(FontSettings.prototype, "FontFamily", {
                     get: /**
-                    * Gets the current font family.
+                    * Gets or sets the font family.
                     */
                     function () {
                         return this._cachedState["fontFamily"];
                     },
-                    set: /**
-                    * Sets the current font family.
-                    * @param family The new font family.
-                    */
-                    function (family) {
+                    set: function (family) {
                         this._refreshCache = true;
                         this._cachedState["fontFamily"] = family;
                     },
@@ -65,19 +56,14 @@ var eg;
                     configurable: true
                 });
 
-
                 Object.defineProperty(FontSettings.prototype, "FontVariant", {
                     get: /**
-                    * Gets the current font variant.
+                    * Gets or sets the font variant.
                     */
                     function () {
                         return this._cachedState["fontVariant"];
                     },
-                    set: /**
-                    * Sets the current font variant.
-                    * @param variant The new font variant.
-                    */
-                    function (variant) {
+                    set: function (variant) {
                         this._refreshCache = true;
                         this._cachedState["fontVariant"] = variant;
                     },
@@ -85,19 +71,14 @@ var eg;
                     configurable: true
                 });
 
-
                 Object.defineProperty(FontSettings.prototype, "FontWeight", {
                     get: /**
-                    * Gets the current font weight.
+                    * Gets or sets the current font weight.
                     */
                     function () {
                         return this._cachedState["fontWeight"];
                     },
-                    set: /**
-                    * Sets the current font weight.
-                    * @param weight The new font weight.
-                    */
-                    function (weight) {
+                    set: function (weight) {
                         this._refreshCache = true;
                         this._cachedState["fontWeight"] = weight;
                     },
@@ -105,26 +86,20 @@ var eg;
                     configurable: true
                 });
 
-
                 Object.defineProperty(FontSettings.prototype, "FontStyle", {
                     get: /**
-                    * Gets the current font style.
+                    * Gets or sets the current font style.
                     */
                     function () {
                         return this._cachedState["fontStyle"];
                     },
-                    set: /**
-                    * Sets and gets the current font style.
-                    * @param style The new font style.
-                    */
-                    function (style) {
+                    set: function (style) {
                         this._refreshCache = true;
                         this._cachedState["fontStyle"] = style;
                     },
                     enumerable: true,
                     configurable: true
                 });
-
 
                 FontSettings.prototype._BuildFont = function () {
                     var font;

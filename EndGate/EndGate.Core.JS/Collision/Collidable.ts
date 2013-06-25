@@ -38,14 +38,13 @@ module eg.Collision {
         }
 
         /**
-        * Event: Triggered when a collision happens.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes a CollisionData object to bound functions.
+        * Gets an event that is triggered when a collision happens.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public get OnCollision(): EventHandler1<Assets.CollisionData> {
             return this._onCollision;
         }
         /**
-        * Event: Triggered when a Collidable has been disposed.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Gets an event that is triggered when the Collidable has been disposed.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public get OnDisposed(): EventHandler1<Collidable> {
             return this._onDisposed;

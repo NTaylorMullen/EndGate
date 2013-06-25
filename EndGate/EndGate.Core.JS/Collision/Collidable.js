@@ -26,8 +26,7 @@ var eg;
             }
             Object.defineProperty(Collidable.prototype, "OnCollision", {
                 get: /**
-                * Event: Triggered when a collision happens.  Functions can be bound or unbound to this event to be executed when the event triggers.
-                * Passes a CollisionData object to bound functions.
+                * Gets an event that is triggered when a collision happens.  Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
                 function () {
                     return this._onCollision;
@@ -38,7 +37,7 @@ var eg;
 
             Object.defineProperty(Collidable.prototype, "OnDisposed", {
                 get: /**
-                * Event: Triggered when a Collidable has been disposed.  Functions can be bound or unbound to this event to be executed when the event triggers.
+                * Gets an event that is triggered when the Collidable has been disposed.  Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
                 function () {
                     return this._onDisposed;

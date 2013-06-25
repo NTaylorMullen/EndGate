@@ -53,121 +53,81 @@ module eg.Graphics {
         }
 
         /**
-        * Gets the text alignment of the Text2d.
+        * Gets or sets the text alignment of the Text2d.  Values can be "start", "end", "left", "center", or "right".
         */
         public get Align(): string {
             return this._State.TextAlign;
         }
-
-        /**
-        * Gets the text alignment of the Text2d.
-        * @param alignment The new textual alignment for the Text2d.  Values are "start", "end", "left", "center", or "right".
-        */
         public set Align(alignment: string) {
             this._State.TextAlign = alignment;
         }        
 
         /**
-        * Gets the text baseline of the Text2d.
+        * Gets or sets the text baseline of the Text2d.  Values can be "top", "hanging", "middle", "alphabetic", "ideographic", and "bottom".
         */
         public get Baseline(): string {
             return this._State.TextBaseline;
         }
-
-        /**
-        * Gets the text baseline of the Text2d.
-        * @param baseline The new textual baseline for the Text2d.  Values are "top", "hanging", "middle", "alphabetic", "ideographic", and "bottom".
-        */
         public set Baseline(baseline: string) {
             this._State.TextBaseline = baseline;
         }
 
         /**
-        * Gets the current text color.
+        * Gets or sets the current text color.  Valid colors are strings like "red" or "rgb(255,0,0)".
         */
         public get Color(): string {
             return this._State.FillStyle;
         }
-
-        /**
-        * Gets the current text color.
-        * @param color The new color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-        */
         public set Color(color: string) {
             this._State.FillStyle = color;
         }
 
         /**
-        * Gets the current shadow color.
+        * Gets or sets the current shadow color.  Valid colors are strings like "red" or "rgb(255,0,0)".
         */
         public get ShadowColor(): string {
             return this._State.ShadowColor;
         }
-
-        /**
-        * Sets the current shadow color.
-        * @param color The new shadow color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-        */
         public set ShadowColor(color: string) {
             this._State.ShadowColor = color;
         }
 
         /**
-        * Gets the current horizontal shadow position.
+        * Gets or sets the current horizontal shadow position.
         */
         public get ShadowX(): number {
             return this._State.ShadowOffsetX;
         }
-
-        /**
-        * Sets the current horizontal shadow position.
-        * @param x The shadows new horizontal position.
-        */
         public set ShadowX(x: number) {
             this._State.ShadowOffsetX = x;
         }
 
         /**
-        * Gets the current vertical shadow position.
+        * Gets or sets the current vertical shadow position.
         */
         public get ShadowY(): number {
             return this._State.ShadowOffsetY;
         }
-
-        /**
-        * Sets the current vertical shadow position.
-        * @param y The shadows new vertical position.
-        */
         public set ShadowY(y: number) {
             this._State.ShadowOffsetY = y;
         }
 
         /**
-        * Gets the current shadow blur.
+        * Gets or sets the current shadow blur.
         */
         public get ShadowBlur(): number {
             return this._State.ShadowBlur;
         }
-
-        /**
-        * Sets the current shadow blur.
-        * @param blur The shadows new blur.
-        */
         public set ShadowBlur(blur: number) {
             this._State.ShadowBlur = blur;
         }
 
         /**
-        * Gets the current opacity.  Value is between 0 and 1.
+        * Gets or sets the current opacity.  Value is between 0 and 1.
         */
         public get Opacity(): number {
             return this._State.GlobalAlpha;
         }
-
-        /**
-        * Sets the current opacity.
-        * @param alpha New opacity, value is between 0 and 1.
-        */
         public set Opacity(alpha: number) {
             this._State.GlobalAlpha = alpha;
         }
@@ -182,16 +142,11 @@ module eg.Graphics {
         }
 
         /**
-* Gets the current border thickness.
-*/
+        * Gets or sets the current border thickness.
+        */
         public get BorderThickness(): number {
             return this._State.LineWidth;
         }
-
-        /**
-        * Sets the current border thickness.
-        * @param thickness The new border thickness in pixels.
-        */
         public set BorderThickness(thickness: number) {
             if (thickness === 0) {
                 this._stroker.Reset();
@@ -204,32 +159,22 @@ module eg.Graphics {
         }
 
         /**
-        * Gets the current border color.
+        * Gets or sets the current border color.  Valid colors are strings like "red" or "rgb(255,0,0)".
         */
         public get BorderColor(): string {
             return this._State.StrokeStyle;
         }
-
-        /**
-        * Sets the current border color.
-        * @param color The new border color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-        */
         public set BorderColor(color: string) {
             this._stroker.Trip();
             this._State.StrokeStyle = color;
         }
 
         /**
-        * Gets the current Text2d's text.
+        * Gets or sets the current Text2d's text.
         */
         public get Text(): string {
             return this._text;
         }
-
-        /**
-        * Sets and gets the current Text2d's text.
-        * @param text The new text.
-        */
         public set Text(text: string) {
             this._recalculateBoundsSize = true;
             this._text = text;

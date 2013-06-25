@@ -6,19 +6,185 @@ var __extends = this.__extends || function (d, b) {
 };
 var eg;
 (function (eg) {
+    var TimeSpan = (function () {
+        function TimeSpan(milliseconds, seconds, minutes) {
+            if (typeof seconds === "undefined") { seconds = 0; }
+            if (typeof minutes === "undefined") { minutes = 0; }
+            this._type = "TimeSpan";
+            this.Milliseconds = milliseconds + seconds * TimeSpan._secondsMultiplier + minutes * TimeSpan._minutesMultiplier;
+        }
+        Object.defineProperty(TimeSpan.prototype, "Milliseconds", {
+            get: function () {
+                return this._milliseconds;
+            },
+            set: function (val) {
+                this._milliseconds = val;
+                this._seconds = val / TimeSpan._secondsMultiplier;
+                this._minutes = val / TimeSpan._minutesMultiplier;
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        Object.defineProperty(TimeSpan.prototype, "Seconds", {
+            get: function () {
+                return this._seconds;
+            },
+            set: function (val) {
+                this._seconds = val;
+                this._milliseconds = val * TimeSpan._secondsMultiplier;
+                this._minutes = this._milliseconds / TimeSpan._minutesMultiplier;
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        Object.defineProperty(TimeSpan.prototype, "Minutes", {
+            get: function () {
+                return this._seconds;
+            },
+            set: function (val) {
+                this._minutes = val;
+                this._seconds = val * 60;
+                this._milliseconds = this._seconds * TimeSpan._secondsMultiplier;
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        TimeSpan.prototype.Add = function (val) {
+            if (val._type === "TimeSpan") {
+                return new TimeSpan(this.Milliseconds + val.Milliseconds);
+            } else {
+                return new TimeSpan(this.Milliseconds + val);
+            }
+        };
+
+        TimeSpan.prototype.Multiply = function (val) {
+            if (val._type === "TimeSpan") {
+                return new TimeSpan(this.Milliseconds * val.Milliseconds);
+            } else {
+                return new TimeSpan(this.Milliseconds * val);
+            }
+        };
+
+        TimeSpan.prototype.Subtract = function (val) {
+            if (val._type === "TimeSpan") {
+                return new TimeSpan(this.Milliseconds - val.Milliseconds);
+            } else {
+                return new TimeSpan(this.Milliseconds - val);
+            }
+        };
+
+        TimeSpan.prototype.SubtractFrom = function (val) {
+            if (val._type === "TimeSpan") {
+                return new TimeSpan(val.Milliseconds - this.Milliseconds);
+            } else {
+                return new TimeSpan(val - this.Milliseconds);
+            }
+        };
+
+        TimeSpan.prototype.Divide = function (val) {
+            if (val._type === "TimeSpan") {
+                return new TimeSpan(this.Milliseconds / val.Milliseconds);
+            } else {
+                return new TimeSpan(this.Milliseconds / val);
+            }
+        };
+
+        TimeSpan.prototype.DivideFrom = function (val) {
+            if (val._type === "TimeSpan") {
+                return new TimeSpan(val.Milliseconds / this.Milliseconds);
+            } else {
+                return new TimeSpan(val / this.Milliseconds);
+            }
+        };
+
+        TimeSpan.prototype.Equivalent = function (timeSpan) {
+            return this.Milliseconds === timeSpan.Milliseconds;
+        };
+
+        TimeSpan.prototype.Clone = function () {
+            return new TimeSpan(this.Milliseconds);
+        };
+
+        TimeSpan.prototype.toString = function () {
+            return this.Milliseconds + ":" + this.Seconds + ":" + this.Minutes;
+        };
+
+        TimeSpan.FromMilliseconds = function (val) {
+            return new TimeSpan(val);
+        };
+
+        TimeSpan.FromSeconds = function (val) {
+            return new TimeSpan(0, val);
+        };
+
+        TimeSpan.FromMinutes = function (val) {
+            return new TimeSpan(0, 0, val);
+        };
+
+        TimeSpan.Zero = function () {
+            return new TimeSpan(0);
+        };
+
+        TimeSpan.DateSpan = function (from, to) {
+            return new TimeSpan(to.getTime() - from.getTime());
+        };
+        TimeSpan._secondsMultiplier = 1000;
+        TimeSpan._minutesMultiplier = TimeSpan._secondsMultiplier * 60;
+        return TimeSpan;
+    })();
+    eg.TimeSpan = TimeSpan;
+})(eg || (eg = {}));
+
+var eg;
+(function (eg) {
     var GameTime = (function () {
         function GameTime() {
             this._type = "GameTime";
-            this.Now = new Date();
-            this._start = this.Now.getTime();
-        }
-        GameTime.prototype.Update = function () {
-            var now = new Date(), nowMs = now.getTime();
+            this._start = new Date();
 
-            this.Elapsed = nowMs - this.Now.getTime();
-            this.ElapsedSecond = this.Elapsed / 1000;
-            this.Total = nowMs - this._start;
-            this.Now = now;
+            this.Update();
+        }
+        Object.defineProperty(GameTime.prototype, "Elapsed", {
+            get: function () {
+                return this._elapsed;
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        Object.defineProperty(GameTime.prototype, "ElapsedSecond", {
+            get: function () {
+                return this._elapsedSecond;
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        Object.defineProperty(GameTime.prototype, "Now", {
+            get: function () {
+                return this._lastUpdate;
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        Object.defineProperty(GameTime.prototype, "Total", {
+            get: function () {
+                return eg.TimeSpan.DateSpan(this._start, new Date());
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        GameTime.prototype.Update = function () {
+            var now = new Date();
+
+            this._elapsed = new eg.TimeSpan(now.getTime() - this._lastUpdate.getTime());
+            this._elapsedSecond = this._elapsed.Milliseconds / 1000;
+            this._lastUpdate = now;
         };
         return GameTime;
     })();
@@ -694,7 +860,6 @@ var eg;
             enumerable: true,
             configurable: true
         });
-
         return GameConfiguration;
     })();
     eg.GameConfiguration = GameConfiguration;
@@ -932,7 +1097,6 @@ var eg;
                         configurable: true
                     });
 
-
                     Object.defineProperty(Graphic2dState.prototype, "FillStyle", {
                         get: function () {
                             return this._cachedState["fillStyle"];
@@ -943,7 +1107,6 @@ var eg;
                         enumerable: true,
                         configurable: true
                     });
-
 
                     Object.defineProperty(Graphic2dState.prototype, "GlobalAlpha", {
                         get: function () {
@@ -956,7 +1119,6 @@ var eg;
                         configurable: true
                     });
 
-
                     Object.defineProperty(Graphic2dState.prototype, "LineWidth", {
                         get: function () {
                             return this._cachedState["lineWidth"];
@@ -967,7 +1129,6 @@ var eg;
                         enumerable: true,
                         configurable: true
                     });
-
 
                     Object.defineProperty(Graphic2dState.prototype, "LineCap", {
                         get: function () {
@@ -980,7 +1141,6 @@ var eg;
                         configurable: true
                     });
 
-
                     Object.defineProperty(Graphic2dState.prototype, "LineJoin", {
                         get: function () {
                             return this._cachedState["lineJoin"];
@@ -991,7 +1151,6 @@ var eg;
                         enumerable: true,
                         configurable: true
                     });
-
 
                     Object.defineProperty(Graphic2dState.prototype, "MiterLimit", {
                         get: function () {
@@ -1004,7 +1163,6 @@ var eg;
                         configurable: true
                     });
 
-
                     Object.defineProperty(Graphic2dState.prototype, "ShadowOffsetX", {
                         get: function () {
                             return this._cachedState["shadowOffsetX"];
@@ -1015,7 +1173,6 @@ var eg;
                         enumerable: true,
                         configurable: true
                     });
-
 
                     Object.defineProperty(Graphic2dState.prototype, "ShadowOffsetY", {
                         get: function () {
@@ -1028,7 +1185,6 @@ var eg;
                         configurable: true
                     });
 
-
                     Object.defineProperty(Graphic2dState.prototype, "ShadowBlur", {
                         get: function () {
                             return this._cachedState["shadowBlur"];
@@ -1039,7 +1195,6 @@ var eg;
                         enumerable: true,
                         configurable: true
                     });
-
 
                     Object.defineProperty(Graphic2dState.prototype, "ShadowColor", {
                         get: function () {
@@ -1052,7 +1207,6 @@ var eg;
                         configurable: true
                     });
 
-
                     Object.defineProperty(Graphic2dState.prototype, "GlobalCompositeOperation", {
                         get: function () {
                             return this._cachedState["globalCompositeOperation"];
@@ -1063,7 +1217,6 @@ var eg;
                         enumerable: true,
                         configurable: true
                     });
-
 
                     Object.defineProperty(Graphic2dState.prototype, "Font", {
                         get: function () {
@@ -1076,7 +1229,6 @@ var eg;
                         configurable: true
                     });
 
-
                     Object.defineProperty(Graphic2dState.prototype, "TextAlign", {
                         get: function () {
                             return this._cachedState["textAlign"];
@@ -1088,7 +1240,6 @@ var eg;
                         configurable: true
                     });
 
-
                     Object.defineProperty(Graphic2dState.prototype, "TextBaseline", {
                         get: function () {
                             return this._cachedState["textBaseline"];
@@ -1099,7 +1250,6 @@ var eg;
                         enumerable: true,
                         configurable: true
                     });
-
 
                     Graphic2dState.prototype.SetContextState = function (context) {
                         for (var key in this._cachedState) {
@@ -2453,7 +2603,6 @@ var eg;
                 configurable: true
             });
 
-
             AudioClip.prototype.IsPlaying = function () {
                 return !this._audio.paused;
             };
@@ -3017,7 +3166,6 @@ var eg;
                     configurable: true
                 });
 
-
                 Object.defineProperty(FontSettings.prototype, "FontFamily", {
                     get: function () {
                         return this._cachedState["fontFamily"];
@@ -3029,7 +3177,6 @@ var eg;
                     enumerable: true,
                     configurable: true
                 });
-
 
                 Object.defineProperty(FontSettings.prototype, "FontVariant", {
                     get: function () {
@@ -3043,7 +3190,6 @@ var eg;
                     configurable: true
                 });
 
-
                 Object.defineProperty(FontSettings.prototype, "FontWeight", {
                     get: function () {
                         return this._cachedState["fontWeight"];
@@ -3056,7 +3202,6 @@ var eg;
                     configurable: true
                 });
 
-
                 Object.defineProperty(FontSettings.prototype, "FontStyle", {
                     get: function () {
                         return this._cachedState["fontStyle"];
@@ -3068,7 +3213,6 @@ var eg;
                     enumerable: true,
                     configurable: true
                 });
-
 
                 FontSettings.prototype._BuildFont = function () {
                     var font;
@@ -3130,7 +3274,6 @@ var eg;
                 configurable: true
             });
 
-
             Object.defineProperty(Text2d.prototype, "Baseline", {
                 get: function () {
                     return this._State.TextBaseline;
@@ -3141,7 +3284,6 @@ var eg;
                 enumerable: true,
                 configurable: true
             });
-
 
             Object.defineProperty(Text2d.prototype, "Color", {
                 get: function () {
@@ -3154,7 +3296,6 @@ var eg;
                 configurable: true
             });
 
-
             Object.defineProperty(Text2d.prototype, "ShadowColor", {
                 get: function () {
                     return this._State.ShadowColor;
@@ -3165,7 +3306,6 @@ var eg;
                 enumerable: true,
                 configurable: true
             });
-
 
             Object.defineProperty(Text2d.prototype, "ShadowX", {
                 get: function () {
@@ -3178,7 +3318,6 @@ var eg;
                 configurable: true
             });
 
-
             Object.defineProperty(Text2d.prototype, "ShadowY", {
                 get: function () {
                     return this._State.ShadowOffsetY;
@@ -3189,7 +3328,6 @@ var eg;
                 enumerable: true,
                 configurable: true
             });
-
 
             Object.defineProperty(Text2d.prototype, "ShadowBlur", {
                 get: function () {
@@ -3202,7 +3340,6 @@ var eg;
                 configurable: true
             });
 
-
             Object.defineProperty(Text2d.prototype, "Opacity", {
                 get: function () {
                     return this._State.GlobalAlpha;
@@ -3213,7 +3350,6 @@ var eg;
                 enumerable: true,
                 configurable: true
             });
-
 
             Object.defineProperty(Text2d.prototype, "FontSettings", {
                 get: function () {
@@ -3242,7 +3378,6 @@ var eg;
                 configurable: true
             });
 
-
             Object.defineProperty(Text2d.prototype, "BorderColor", {
                 get: function () {
                     return this._State.StrokeStyle;
@@ -3255,7 +3390,6 @@ var eg;
                 configurable: true
             });
 
-
             Object.defineProperty(Text2d.prototype, "Text", {
                 get: function () {
                     return this._text;
@@ -3267,7 +3401,6 @@ var eg;
                 enumerable: true,
                 configurable: true
             });
-
 
             Text2d.prototype.Shadow = function (x, y, color, blur) {
                 this.ShadowX = x;
@@ -3409,7 +3542,6 @@ var eg;
                 configurable: true
             });
 
-
             Sprite2d.prototype.Draw = function (context) {
                 _super.prototype._StartDraw.call(this, context);
 
@@ -3471,7 +3603,6 @@ var eg;
                 enumerable: true,
                 configurable: true
             });
-
 
             SpriteAnimation.prototype.IsPlaying = function () {
                 return this._playing;
@@ -3584,7 +3715,6 @@ var eg;
                     configurable: true
                 });
 
-
                 Object.defineProperty(Shape.prototype, "BorderThickness", {
                     get: function () {
                         return this._State.LineWidth;
@@ -3595,7 +3725,6 @@ var eg;
                     enumerable: true,
                     configurable: true
                 });
-
 
                 Object.defineProperty(Shape.prototype, "BorderColor", {
                     get: function () {
@@ -3609,7 +3738,6 @@ var eg;
                     configurable: true
                 });
 
-
                 Object.defineProperty(Shape.prototype, "ShadowColor", {
                     get: function () {
                         return this._State.ShadowColor;
@@ -3622,7 +3750,6 @@ var eg;
                     configurable: true
                 });
 
-
                 Object.defineProperty(Shape.prototype, "ShadowX", {
                     get: function () {
                         return this._State.ShadowOffsetX;
@@ -3633,7 +3760,6 @@ var eg;
                     enumerable: true,
                     configurable: true
                 });
-
 
                 Object.defineProperty(Shape.prototype, "ShadowY", {
                     get: function () {
@@ -3646,7 +3772,6 @@ var eg;
                     configurable: true
                 });
 
-
                 Object.defineProperty(Shape.prototype, "ShadowBlur", {
                     get: function () {
                         return this._State.ShadowBlur;
@@ -3658,7 +3783,6 @@ var eg;
                     configurable: true
                 });
 
-
                 Object.defineProperty(Shape.prototype, "Opacity", {
                     get: function () {
                         return this._State.GlobalAlpha;
@@ -3669,7 +3793,6 @@ var eg;
                     enumerable: true,
                     configurable: true
                 });
-
 
                 Shape.prototype.Border = function (thickness, color) {
                     this.BorderThickness = thickness;
@@ -3808,7 +3931,6 @@ var eg;
                 configurable: true
             });
 
-
             Object.defineProperty(Line2d.prototype, "To", {
                 get: function () {
                     return this._to;
@@ -3821,7 +3943,6 @@ var eg;
                 configurable: true
             });
 
-
             Object.defineProperty(Line2d.prototype, "Color", {
                 get: function () {
                     return this._State.StrokeStyle;
@@ -3832,7 +3953,6 @@ var eg;
                 enumerable: true,
                 configurable: true
             });
-
 
             Object.defineProperty(Line2d.prototype, "LineWidth", {
                 get: function () {
@@ -3845,7 +3965,6 @@ var eg;
                 configurable: true
             });
 
-
             Object.defineProperty(Line2d.prototype, "LineCap", {
                 get: function () {
                     return this._State.LineCap;
@@ -3857,7 +3976,6 @@ var eg;
                 configurable: true
             });
 
-
             Object.defineProperty(Line2d.prototype, "Opacity", {
                 get: function () {
                     return this._State.GlobalAlpha;
@@ -3868,7 +3986,6 @@ var eg;
                 enumerable: true,
                 configurable: true
             });
-
 
             Line2d.prototype.Draw = function (context) {
                 _super.prototype._StartDraw.call(this, context);
@@ -3972,7 +4089,6 @@ var eg;
                 configurable: true
             });
 
-
             Object.defineProperty(Grid.prototype, "Size", {
                 get: function () {
                     return this._size.Clone();
@@ -4015,7 +4131,6 @@ var eg;
                 enumerable: true,
                 configurable: true
             });
-
 
             Grid.prototype.Fill = function (row, column, graphic) {
                 if (!this.ValidRow(row) || !this.ValidColumn(column)) {
@@ -4479,7 +4594,7 @@ var eg;
 (function (eg) {
     (function (Tweening) {
         var Tween = (function () {
-            function Tween() {
+            function Tween(from, to) {
             }
             Object.defineProperty(Tween.prototype, "Playing", {
                 get: function () {

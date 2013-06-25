@@ -28,16 +28,12 @@ var eg;
                 }
                 Object.defineProperty(Shape.prototype, "Color", {
                     get: /**
-                    * Gets the current shape color.
+                    * Gets or sets the current shape color.  Valid colors are strings like "red" or "rgb(255,0,0)".
                     */
                     function () {
                         return this._State.FillStyle;
                     },
-                    set: /**
-                    * Sets the current shape color.
-                    * @param color The new color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-                    */
-                    function (color) {
+                    set: function (color) {
                         this._fill = true;
                         this._State.FillStyle = color;
                     },
@@ -45,38 +41,28 @@ var eg;
                     configurable: true
                 });
 
-
                 Object.defineProperty(Shape.prototype, "BorderThickness", {
                     get: /**
-                    * Gets the current border thickness.
+                    * Gets or sets the current border thickness.
                     */
                     function () {
                         return this._State.LineWidth;
                     },
-                    set: /**
-                    * Sets the current border thickness.
-                    * @param thickness The new border thickness in pixels.
-                    */
-                    function (thickness) {
+                    set: function (thickness) {
                         this._State.LineWidth = thickness;
                     },
                     enumerable: true,
                     configurable: true
                 });
 
-
                 Object.defineProperty(Shape.prototype, "BorderColor", {
                     get: /**
-                    * Gets the current border color.
+                    * Gets or sets the current border color.  Valid colors are strings like "red" or "rgb(255,0,0)".
                     */
                     function () {
                         return this._State.StrokeStyle;
                     },
-                    set: /**
-                    * Sets the current border color.
-                    * @param color The new border color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-                    */
-                    function (color) {
+                    set: function (color) {
                         this._stroke = true;
                         this._State.StrokeStyle = color;
                     },
@@ -84,19 +70,14 @@ var eg;
                     configurable: true
                 });
 
-
                 Object.defineProperty(Shape.prototype, "ShadowColor", {
                     get: /**
-                    * Gets the current shadow color.
+                    * Gets or sets the current shadow color.  Valid colors are strings like "red" or "rgb(255,0,0)".
                     */
                     function () {
                         return this._State.ShadowColor;
                     },
-                    set: /**
-                    * Sets the current shadow color.
-                    * @param color The new shadow color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-                    */
-                    function (color) {
+                    set: function (color) {
                         this._fill = true;
                         this._State.ShadowColor = color;
                     },
@@ -104,82 +85,61 @@ var eg;
                     configurable: true
                 });
 
-
                 Object.defineProperty(Shape.prototype, "ShadowX", {
                     get: /**
-                    * Gets the current horizontal shadow position.
+                    * Gets or sets the current horizontal shadow position.
                     */
                     function () {
                         return this._State.ShadowOffsetX;
                     },
-                    set: /**
-                    * Sets the current horizontal shadow position.
-                    * @param x The shadows new horizontal position.
-                    */
-                    function (x) {
+                    set: function (x) {
                         this._State.ShadowOffsetX = x;
                     },
                     enumerable: true,
                     configurable: true
                 });
 
-
                 Object.defineProperty(Shape.prototype, "ShadowY", {
                     get: /**
-                    * Gets the current vertical shadow position.
+                    * Gets or sets the current vertical shadow position.
                     */
                     function () {
                         return this._State.ShadowOffsetY;
                     },
-                    set: /**
-                    * Sets the current vertical shadow position.
-                    * @param y The shadows new vertical position.
-                    */
-                    function (y) {
+                    set: function (y) {
                         this._State.ShadowOffsetY = y;
                     },
                     enumerable: true,
                     configurable: true
                 });
 
-
                 Object.defineProperty(Shape.prototype, "ShadowBlur", {
                     get: /**
-                    * Gets the current shadow blur.
+                    * Gets or sets the current shadow blur.
                     */
                     function () {
                         return this._State.ShadowBlur;
                     },
-                    set: /**
-                    * Sets the current shadow blur.
-                    * @param blur The shadows new blur.
-                    */
-                    function (blur) {
+                    set: function (blur) {
                         this._State.ShadowBlur = blur;
                     },
                     enumerable: true,
                     configurable: true
                 });
 
-
                 Object.defineProperty(Shape.prototype, "Opacity", {
                     get: /**
-                    * Gets the current opacity.  Value is between 0 and 1.
+                    * Gets or sets the current opacity.  Value is between 0 and 1.
                     */
                     function () {
                         return this._State.GlobalAlpha;
                     },
-                    set: /**
-                    * Sets the current opacity.
-                    * @param alpha New opacity, value is between 0 and 1.
-                    */
-                    function (alpha) {
+                    set: function (alpha) {
                         this._State.GlobalAlpha = alpha;
                     },
                     enumerable: true,
                     configurable: true
                 });
-
 
                 /**
                 * Sets the current borders thickness and color.

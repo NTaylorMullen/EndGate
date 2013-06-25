@@ -54,14 +54,14 @@ module eg.Rendering {
         }
 
         /**
-        * The canvas that the Scene2d uses as its game area.
+        * Gets the canvas that the Scene2d uses as its game area.
         */
         public get DrawArea(): HTMLCanvasElement {
             return this._drawArea;
         }
 
         /**
-        * The game camera.
+        * Gets the game camera.
         */
         public get Camera(): Camera2d {
             return this._camera;

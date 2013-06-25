@@ -89,8 +89,7 @@ var eg;
 
             Object.defineProperty(MouseHandler.prototype, "OnClick", {
                 get: /**
-                * Event: Triggered when a mouse click occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
-                * Passes an IMouseClickEvent event object to bound functions.
+                * Gets an event that is triggered when a mouse click occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
                 function () {
                     return this._onClick;
@@ -101,8 +100,7 @@ var eg;
 
             Object.defineProperty(MouseHandler.prototype, "OnDoubleClick", {
                 get: /**
-                * Event: Triggered when a mouse double click occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
-                * Passes an IMouseClickEvent event object to bound functions.
+                * Gets an event that is triggered when a mouse double click occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
                 function () {
                     return this._onDoubleClick;
@@ -113,8 +111,7 @@ var eg;
 
             Object.defineProperty(MouseHandler.prototype, "OnDown", {
                 get: /**
-                * Event: Triggered when a mouse down event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
-                * Passes an IMouseClickEvent event object to bound functions.
+                * Gets an event that is triggered when a mouse down event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
                 function () {
                     return this._onDown;
@@ -125,8 +122,7 @@ var eg;
 
             Object.defineProperty(MouseHandler.prototype, "OnUp", {
                 get: /**
-                * Event: Triggered when a mouse up event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
-                * Passes an IMouseClickEvent event object to bound functions.
+                * Gets an event that is triggered when a mouse up event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
                 function () {
                     return this._onUp;
@@ -137,8 +133,7 @@ var eg;
 
             Object.defineProperty(MouseHandler.prototype, "OnMove", {
                 get: /**
-                * Event: Triggered when a mouse move event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
-                * Passes an IMouseEvent event object to bound functions.
+                * Gets an event that is triggered when a mouse move event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
                 function () {
                     return this._onMove;
@@ -149,8 +144,7 @@ var eg;
 
             Object.defineProperty(MouseHandler.prototype, "OnScroll", {
                 get: /**
-                * Event: Triggered when a mouse scroll event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
-                * Passes an IMouseScrollEvent event object to bound functions.
+                * Gets an event that is triggered when a mouse scroll event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
                 function () {
                     return this._onScroll;

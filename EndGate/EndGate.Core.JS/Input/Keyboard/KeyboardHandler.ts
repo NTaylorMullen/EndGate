@@ -34,24 +34,21 @@ module eg.Input {
         }
 
         /**
-        * Event: Triggered when any key press occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes a KeyboardCommandEvent object to bound functions.
+        * Gets an event that is triggered when any key press occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public get OnKeyPress(): EventHandler1<KeyboardCommandEvent> {
             return this._onKeyPress;
         }
 
         /**
-        * Event: Triggered when any key goes down.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes a KeyboardCommandEvent object to bound functions.
+        *Gets an event that is triggered when any key goes down.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public get OnKeyDown(): EventHandler1<KeyboardCommandEvent> {
             return this._onKeyDown;
         }
 
         /**
-        * Event: Triggered when any key comes up.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        * Passes a KeyboardCommandEvent object to bound functions.
+        * Gets an event that is triggered when any key comes up.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public get OnKeyUp(): EventHandler1<KeyboardCommandEvent> {
             return this._onKeyUp;

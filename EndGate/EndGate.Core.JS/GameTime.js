@@ -1,4 +1,5 @@
 /// <reference path="Interfaces/ITyped.ts" />
+/// <reference path="Assets/TimeSpan.ts" />
 var eg;
 (function (eg) {
     /**
@@ -10,19 +11,63 @@ var eg;
         */
         function GameTime() {
             this._type = "GameTime";
-            this.Now = new Date();
-            this._start = this.Now.getTime();
+            this._start = this._lastUpdate = new Date();
+
+            this.Update();
         }
+        Object.defineProperty(GameTime.prototype, "Elapsed", {
+            get: /**
+            * Gets the elapsed time since the last update.
+            */
+            function () {
+                return this._elapsed;
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        Object.defineProperty(GameTime.prototype, "ElapsedSecond", {
+            get: /**
+            * Gets the elapsed second since the last Update.  It's essentially Elapsed.Milliseconds / 1000.
+            */
+            function () {
+                return this._elapsedSecond;
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        Object.defineProperty(GameTime.prototype, "Now", {
+            get: /**
+            * Gets the current date time at the start of the update.
+            */
+            function () {
+                return this._lastUpdate;
+            },
+            enumerable: true,
+            configurable: true
+        });
+
+        Object.defineProperty(GameTime.prototype, "Total", {
+            get: /**
+            * Gets the total amount of time surpassed since construction.
+            */
+            function () {
+                return eg.TimeSpan.DateSpan(this._start, new Date());
+            },
+            enumerable: true,
+            configurable: true
+        });
+
         /**
         * Updates the game time object.  Causes the gameTime to refresh all its components.
         */
         GameTime.prototype.Update = function () {
-            var now = new Date(), nowMs = now.getTime();
+            var now = new Date();
 
-            this.Elapsed = nowMs - this.Now.getTime();
-            this.ElapsedSecond = this.Elapsed / 1000;
-            this.Total = nowMs - this._start;
-            this.Now = now;
+            this._elapsed = new eg.TimeSpan(now.getTime() - this._lastUpdate.getTime());
+            this._elapsedSecond = this._elapsed.Milliseconds / 1000;
+            this._lastUpdate = now;
         };
         return GameTime;
     })();

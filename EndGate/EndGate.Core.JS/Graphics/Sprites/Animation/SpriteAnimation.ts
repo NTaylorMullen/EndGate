@@ -60,22 +60,18 @@ module eg.Graphics {
         }
 
         /**
-        * Event: Triggered when the animation has completed, will not trigger if the animation is repeating.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Gets an event that is triggered when the animation has completed, will not trigger if the animation is repeating.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public get OnComplete(): EventHandler {
             return this._onComplete;
         }
 
         /**
-        * Gets the current frames per second.
+        * Gets or sets the current frames per second.
         */
         public get Fps(): number {
             return this._fps;
         }
-
-        /**
-        * Sets the current frames per second.
-        */
         public set Fps(newFps: number) {
             this._fps = newFps;
             this._stepEvery = 1000 / this._fps;

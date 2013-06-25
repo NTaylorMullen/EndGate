@@ -29,7 +29,7 @@ var eg;
             }
             Object.defineProperty(SpriteAnimation.prototype, "OnComplete", {
                 get: /**
-                * Event: Triggered when the animation has completed, will not trigger if the animation is repeating.  Functions can be bound or unbound to this event to be executed when the event triggers.
+                * Gets an event that is triggered when the animation has completed, will not trigger if the animation is repeating.  Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
                 function () {
                     return this._onComplete;
@@ -40,22 +40,18 @@ var eg;
 
             Object.defineProperty(SpriteAnimation.prototype, "Fps", {
                 get: /**
-                * Gets the current frames per second.
+                * Gets or sets the current frames per second.
                 */
                 function () {
                     return this._fps;
                 },
-                set: /**
-                * Sets the current frames per second.
-                */
-                function (newFps) {
+                set: function (newFps) {
                     this._fps = newFps;
                     this._stepEvery = 1000 / this._fps;
                 },
                 enumerable: true,
                 configurable: true
             });
-
 
             /**
             * Determines if the animation is currently playing.
