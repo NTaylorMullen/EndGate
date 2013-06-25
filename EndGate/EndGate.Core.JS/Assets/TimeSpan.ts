@@ -189,7 +189,7 @@ module eg {
 
         /**
         * Determines whether this TimeSpan represents the same amount of time as the provided TimeSpan.
-        * @param span The TimeSpan to compare the current TimeSpan to.
+        * @param timeSpan The TimeSpan to compare the current TimeSpan to.
         */
         public Equivalent(timeSpan: TimeSpan): bool {
             return this.Milliseconds === timeSpan.Milliseconds;

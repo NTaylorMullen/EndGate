@@ -109,7 +109,7 @@ var eg;
 
         /**
         * Determines whether this TimeSpan represents the same amount of time as the provided TimeSpan.
-        * @param span The TimeSpan to compare the current TimeSpan to.
+        * @param timeSpan The TimeSpan to compare the current TimeSpan to.
         */
         TimeSpan.prototype.Equivalent = function (timeSpan) {
             return this.Milliseconds === timeSpan.Milliseconds;
