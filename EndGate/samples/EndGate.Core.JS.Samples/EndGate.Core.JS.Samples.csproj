@@ -161,6 +161,23 @@
     <Content Include="Content\Samples\Shapes\thumbnail.png" />
     <Content Include="Content\Samples\Sprites\thumbnail.png" />
     <Content Include="Content\Samples\Text\thumbnail.png" />
+    <TypeScriptCompile Include="Content\Samples\Tweening\Main.ts" />
+    <TypeScriptCompile Include="Content\Samples\Tweening\Game.ts" />
+    <Content Include="Content\Samples\Tweening\Game.js">
+      <DependentUpon>Game.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\Tweening\Main.js">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\Tweening\thumbnail.png" />
+    <TypeScriptCompile Include="Content\Samples\Tweening\UI.ts" />
+    <TypeScriptCompile Include="Content\Samples\Tweening\TweenManager.ts" />
+    <Content Include="Content\Samples\Tweening\TweenManager.js">
+      <DependentUpon>TweenManager.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\Tweening\UI.js">
+      <DependentUpon>UI.ts</DependentUpon>
+    </Content>
     <Content Include="Styles\boxrow.css">
       <DependentUpon>boxrow.less</DependentUpon>
     </Content>
@@ -172,6 +189,7 @@
       <DependentUpon>utilities.less</DependentUpon>
     </Content>
     <Content Include="Styles\utilities.less" />
+    <Content Include="Views\Samples\Tweening.cshtml" />
     <TypeScriptCompile Include="Content\Samples\Text\ColorPicker.ts" />
     <Content Include="Content\Samples\Text\ColorPicker.js">
       <DependentUpon>ColorPicker.ts</DependentUpon>

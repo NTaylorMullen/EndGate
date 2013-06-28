@@ -11,6 +11,7 @@ module CollisionInspector {
         private _dragOffset: eg.Vector2d;
         private _currentMousePosition: eg.Vector2d;
         private _decreasingZIndex: number;
+        private _currentTween: eg.Tweening.Vector2dTween;
 
         constructor(canvas: HTMLCanvasElement) {
             super(canvas);
@@ -40,6 +41,17 @@ module CollisionInspector {
 
             // Triggers when any button gets released within the game area
             this.Input.Mouse.OnUp.Bind((clickEvent: eg.Input.IMouseClickEvent) => {
+                var savedObject = this._draggingObject;
+
+                this._currentTween = new eg.Tweening.Vector2dTween(this._draggingObject.Bounds.Position, this._draggingObject.Bounds.Position.Add(new eg.Vector2d(300, 100)), eg.TimeSpan.FromSeconds(1), eg.Tweening.Functions.Back.EaseInOut);
+                this._currentTween.OnChange.Bind((c) => {
+                    savedObject.Graphic.Position = savedObject.Bounds.Position = c;
+                });
+                this._currentTween.OnComplete.Bind((t) => {
+                    console.log(t.Elapsed.Milliseconds);
+                });
+                this._currentTween.Play();
+
                 // Reset all the dragging behaviors
                 this._draggingObject = null;
                 this._dragOffset = null;
@@ -72,11 +84,15 @@ module CollisionInspector {
                 rotateDirection: number,
                 difference: eg.Vector2d;
 
+            if (this._currentTween) {
+                this._currentTween.Update(gameTime);
+            }
+
             // If we're currently dragging an object
             if (this._draggingObject !== null) {
                 this._draggingObject.Move(this._currentMousePosition.Add(this._dragOffset.Negate()));
             }
-                // If we're currently rotating an object
+            // If we're currently rotating an object
             else if (this._rotatingObject !== null) {
                 // Rotate faster the further away the mouse is from the center of the rotating object
                 difference = this._currentMousePosition.Subtract(this._rotatingObject.Bounds.Position);

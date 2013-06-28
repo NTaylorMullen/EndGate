@@ -13,7 +13,7 @@ module eg {
         private _hasBindings: bool;
 
         /**
-        * Creates a new instance of the EventHandler object.
+        * Creates a new instance of the EventHandler2 object.
         */
         constructor() {
             this._actions = [];
@@ -21,8 +21,8 @@ module eg {
         }
 
         /**
-        * Binds the provided action to the EventHandler1.  Trigger will execute all bound functions.
-        * @param action Function to execute on EventHandler Trigger.
+        * Binds the provided action to the EventHandler2.  Trigger will execute all bound functions.
+        * @param action Function to execute on EventHandler2 Trigger.
         */
         public Bind(action: (val1: T, val2: U) => any): void {
             this._actions.push(action);
@@ -30,7 +30,7 @@ module eg {
         }
 
         /**
-        * Unbinds the provided action from the EventHandler1.
+        * Unbinds the provided action from the EventHandler2.
         * @param action Function to unbind.  The action will no longer be executed when the EventHandler gets Triggered.
         */
         public Unbind(action: (val1: T, val2: U) => any): void {
@@ -45,7 +45,7 @@ module eg {
         }
 
         /**
-        * Determines if the EventHandler1 has active bindings.
+        * Determines if the EventHandler2 has active bindings.
         */
         public HasBindings(): bool {
             return this._hasBindings;
@@ -54,6 +54,7 @@ module eg {
         /**
         * Executes all bound functions and passes the provided args to each.
         * @param val1 The first argument to pass to the bound functions.
+        * @param val2 The second argument to pass to the bound functions.
         */
         public Trigger(val1: T, val2: U): void {
             for (var i = 0; i < this._actions.length; i++) {

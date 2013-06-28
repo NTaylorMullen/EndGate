@@ -1,5 +1,6 @@
 var eg;
 (function (eg) {
+    /// <reference path="../Interfaces/ICloneable.ts" />
     (function (Sound) {
         /**
         * Defines a set of settings that are used to play AudioClip's a custom way.

@@ -20,7 +20,22 @@ declare module eg._ {
     }
 
 }
+/* ICloneable.ts */
+declare module eg {
+
+    /**
+    * Represents an object that can be cloned
+    */
+    export interface ICloneable {
+        /**
+        * Duplicates the current element, returning a copy of itself.
+        */
+        Clone(): any;
+    }
+
+}
 /* TimeSpan.ts */
+
 
 
 module eg {
@@ -28,7 +43,7 @@ module eg {
     /**
     * Defines a time interval.
     */
-    export class TimeSpan implements _.ITyped {
+    export class TimeSpan implements _.ITyped, ICloneable {
         public _type: string = "TimeSpan";
 
         private static _secondsMultiplier: number = 1000;
@@ -254,14 +269,7 @@ module eg {
         */
         public static FromMinutes(val: number): TimeSpan {
             return new TimeSpan(0, 0, val);
-        }
-
-        /**
-        * Returns a TimeSpan that represents a 0 millisecond time interval.
-        */
-        public static Zero(): TimeSpan {
-            return new TimeSpan(0);
-        }
+        }        
 
         /**
         * Returns a TimeSpan that represents the time between the two dates.
@@ -270,6 +278,14 @@ module eg {
         */
         public static DateSpan(from: Date, to: Date): TimeSpan {
             return new TimeSpan(to.getTime() - from.getTime());
+        }
+
+
+        /**
+        * Gets a TimeSpan that represents a 0 millisecond time interval.
+        */
+        public static get Zero(): TimeSpan {
+            return new TimeSpan(0);
         }
     }
 
@@ -363,12 +379,13 @@ declare module eg {
 
 
 
+
 module eg {
 
     /**
     * Defines a two dimensional size object which specifies a Width and Height.
     */
-    export class Size2d implements _.ITyped {
+    export class Size2d implements _.ITyped, ICloneable {
         public _type: string = "Size2d";
 
         /**
@@ -658,12 +675,13 @@ Math.roundTo = function (val?: number, decimals?: number): number {
 
 
 
+
 module eg {
 
     /**
     * Defines a two dimensional vector object which specifies an X and Y.
     */
-    export class Vector2d implements _.ITyped {
+    export class Vector2d implements _.ITyped, ICloneable {
         public _type: string = "Vector2d";
 
         /**
@@ -1742,7 +1760,7 @@ module eg {
         private _hasBindings: bool;
 
         /**
-        * Creates a new instance of the EventHandler object.
+        * Creates a new instance of the EventHandler2 object.
         */
         constructor() {
             this._actions = [];
@@ -1750,8 +1768,8 @@ module eg {
         }
 
         /**
-        * Binds the provided action to the EventHandler1.  Trigger will execute all bound functions.
-        * @param action Function to execute on EventHandler Trigger.
+        * Binds the provided action to the EventHandler2.  Trigger will execute all bound functions.
+        * @param action Function to execute on EventHandler2 Trigger.
         */
         public Bind(action: (val1: T, val2: U) => any): void {
             this._actions.push(action);
@@ -1759,7 +1777,7 @@ module eg {
         }
 
         /**
-        * Unbinds the provided action from the EventHandler1.
+        * Unbinds the provided action from the EventHandler2.
         * @param action Function to unbind.  The action will no longer be executed when the EventHandler gets Triggered.
         */
         public Unbind(action: (val1: T, val2: U) => any): void {
@@ -1774,7 +1792,7 @@ module eg {
         }
 
         /**
-        * Determines if the EventHandler1 has active bindings.
+        * Determines if the EventHandler2 has active bindings.
         */
         public HasBindings(): bool {
             return this._hasBindings;
@@ -1783,6 +1801,7 @@ module eg {
         /**
         * Executes all bound functions and passes the provided args to each.
         * @param val1 The first argument to pass to the bound functions.
+        * @param val2 The second argument to pass to the bound functions.
         */
         public Trigger(val1: T, val2: U): void {
             for (var i = 0; i < this._actions.length; i++) {
@@ -3736,12 +3755,14 @@ module eg.Input {
 
 }
 /* AudioSettings.ts */
+
+
 module eg.Sound {
 
     /**
     * Defines a set of settings that are used to play AudioClip's a custom way.
     */
-    export class AudioSettings {
+    export class AudioSettings implements ICloneable {
         /**
         * The default audio settings.
         */
@@ -6457,12 +6478,13 @@ module eg.Graphics {
 
 
 
+
 module eg {
 
     /**
     * Defines a matrix with 2 columns and 2 rows (2x2).
     */
-    export class Matrix2x2 implements _.ITyped {
+    export class Matrix2x2 implements _.ITyped, ICloneable {
         public _type: string = "Matrix2x2";
 
         /**
@@ -6937,17 +6959,1004 @@ module eg.Map {
 
 // NOTE: Should re-alias all methods once the TypeScript .9 bug has been fixed: https://typescript.codeplex.com/workitem/1182
 //import eg = EndGate;
+/* NumberExtensions.ts */
+
+
+interface Number extends eg.ICloneable {}
+
+Number.prototype.Clone = function (): any { return this; };
+/* ITweeningFunction.ts */
+
+
+module eg.Tweening.Functions {
+
+    /**
+    * Defines an ITweeningFunction interface that represents a function that can be used to translate Tween's.
+    */
+    export interface ITweeningFunction {
+        (from: number, to: number, elapsed: TimeSpan, duration: TimeSpan): number;
+    }
+
+}
 /* Tween.ts */
+
+
+
+
+
+
+
 module eg.Tweening {
 
-    export class Tween<T> {
+    /**
+    * Defines a base Tween class that is used to move a value from a start value to an end value.
+    */
+    export class Tween<T extends ICloneable> implements IUpdateable {
+        private _from: T;
+        private _to: T;
+        private _current: T;
+        private _duration: TimeSpan;
+        private _elapsed: TimeSpan;
         private _playing: boolean;
+        private _tweeningFunction: Functions.ITweeningFunction;
+        private _onChange: EventHandler1<T>;
+        private _onComplete: EventHandler1<Tween<T>>;
 
-        constructor(from: T, to: T) {
+        /**
+        * Creates a new instance of the Tween object.  This should only ever be called from derived classes via a super constructor call.
+        * @param from Start value.
+        * @param to End value.
+        * @param duration How fast to move the current value from start to end.
+        * @param tweeningFunction The function to use to translate the current value from start to end.  Different functions result in different translation behavior.
+        */
+        constructor(from: T, to: T, duration: TimeSpan, tweeningFunction: Functions.ITweeningFunction) {
+            this._from = from.Clone();
+            this._to = to.Clone();
+            this._current = this._from.Clone();
+            this._duration = duration;
+            this._elapsed = TimeSpan.Zero;
+            this._playing = false;
+            this._onChange = new EventHandler1<T>();
+            this._onComplete = new EventHandler1<Tween<T>>();
+            this._tweeningFunction = tweeningFunction;
         }
 
-        get Playing(): boolean {
+        /**
+        * Gets an event that is triggered when the tween has changed its Current value, occurs directly after a tween update.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        */
+        public get OnChange(): EventHandler1<T> {
+            return this._onChange;
+        }
+
+        /**
+        * Gets an event that is triggered when the tween has completed transitioning the Current value, once triggered Elapsed will be equivalent to Duration and Current will be equivalent to To.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        */
+        public get OnComplete(): EventHandler1<Tween<T>> {
+            return this._onComplete;
+        }
+
+        /**
+        * Gets or sets the From component of the tween.
+        */
+        public get From(): T {
+            return this._from;
+        }
+        public set From(from: T) {
+            this._from = from;
+        }
+
+        /**
+        * Gets or sets the To component of the tween.
+        */
+        public get To(): T {
+            return this._to;
+        }
+        public set To(to: T) {
+            this._to = to;
+        }
+
+        /**
+        * Gets or sets the Current component of the tween.  The Current is the current value of the tween, the final value of Current will be equivalent to To when the tween has completed.
+        */
+        public get Current(): T {
+            return this._current;
+        }
+        public set Current(current: T) {
+            this._current = current;
+        }
+
+        /**
+        * Gets or sets the Duration component of the tween.  The Duration is how long the tween will take to go From -> To.
+        */
+        public get Duration(): TimeSpan {
+            return this._duration;
+        }
+        public set Duration(duration: TimeSpan) {
+            this._duration = duration;
+        }
+
+        /**
+        * Gets or the Elapsed component of the tween.  Elapsed represents how far along the tween is.  When Elapsed equals Duration the tween is completed.
+        */
+        public get Elapsed(): TimeSpan {
+            return this._elapsed.Clone();
+        }
+
+        /**
+        * Gets or sets the TweeningFunction of the tween.  The TweeningFunction controls how the tween translates the Current value to the To value.
+        */
+        public get TweeningFunction(): Functions.ITweeningFunction {
+            return this._tweeningFunction;
+        }
+        public set TweeningFunction(fn: Functions.ITweeningFunction) {
+            this._tweeningFunction = fn;
+        }
+
+        /**
+        * Determines if the tween is playing.
+        */
+        public IsPlaying(): boolean {
             return this._playing;
         }
+
+        /**
+        * Starts playing the tween.  The tween will only start translating the value if Update is called.
+        */
+        public Play(): void {
+            this._playing = true;
+        }
+
+        /**
+        * Pauses the tween.  Calls to update will not translate the tween when paused.
+        */
+        public Pause(): void {
+            this._playing = false;
+        }
+
+        /**
+        * Resets the tween to the To location and resets the Elapsed time.  This does not stop or start the tween.
+        */
+        public Reset(): void {
+            this._elapsed.Milliseconds = 0;
+            this._current = this._from.Clone();
+        }
+
+        /**
+        * Stops the tween from playing.  This also resets the tween to its To value.
+        */
+        public Stop(): void {
+            this._playing = false;
+            this.Reset();
+        }
+
+        /**
+        * Restarts the tween.  Essentially calls Reset and then Play.
+        */
+        public Restart(): void {
+            this.Reset();
+            this.Play();
+        }
+
+        /**
+        * Reverses the tween from the Current value back to the From value.  This changes the To component to equal the From value and the From value to equal the Current value.
+        */
+        public Reverse(): void {
+            this._elapsed = TimeSpan.Zero;
+            this._to = this._from;
+            this._from = this.Current.Clone();
+        }
+
+        /**
+        * Updates the tweens Current and Elapsed component if the tween is playing.
+        * @param gameTime The global game time object.  Used to represent total time running and used to track update interval elapsed speeds.
+        */
+        public Update(gameTime: GameTime): void {
+            if (!this._playing || (this._elapsed.Equivalent(this._duration)))
+            {
+                return;
+            }
+
+            this._elapsed = this._elapsed.Add(gameTime.Elapsed);
+
+            if (this._elapsed.Milliseconds >= this._duration.Milliseconds) {
+                this._elapsed = this._duration.Clone();
+
+                this._current = this._to.Clone();
+                this._playing = false;
+
+                this._onComplete.Trigger(this);
+            }
+            else
+            {
+                this._UpdateTween();
+                this._onChange.Trigger(this._current.Clone());
+            }
+        }
+
+        public _UpdateTween(): void {
+            // This should be overridden
+        }
     }
+}
+/* NumberTween.ts */
+
+
+
+module eg.Tweening {
+
+    /**
+    * Defines a NumberTween class that is used to move a number from a start value to an end value.
+    */
+    export class NumberTween extends Tween<number> {
+
+        /**
+        * Creates a new instance of the NumberTween object.
+        * @param from Start number.
+        * @param to End number.
+        * @param duration How fast to move the current number from start to end.
+        * @param tweeningFunction The function to use to translate the current number from start to end.  Different functions result in different translation behavior.
+        */
+        constructor(from: number, to: number, duration: TimeSpan, tweeningFunction: Functions.ITweeningFunction) {
+            super(from, to, duration, tweeningFunction);
+        }
+
+        public _UpdateTween(): void {
+            this.Current = this.TweeningFunction(this.From, this.To, this.Elapsed, this.Duration);
+        }
+    }
+
+}
+/* Size2dTween.ts */
+
+
+
+module eg.Tweening {
+
+    /**
+    * Defines a Size2dTween class that is used to move a Size2d from a start value to an end value.
+    */
+    export class Size2dTween extends Tween<Size2d> {
+
+        /**
+        * Creates a new instance of the Size2dTween object.
+        * @param from Start Size2d.
+        * @param to End Size2d.
+        * @param duration How fast to move the current Size2d from start to end.
+        * @param tweeningFunction The function to use to translate the current Size2d from start to end.  Different functions result in different translation behavior.
+        */
+        constructor(from: Size2d, to: Size2d, duration: TimeSpan, tweeningFunction: Functions.ITweeningFunction) {
+            super(from, to, duration, tweeningFunction);
+        }
+
+        public _UpdateTween(): void {
+            this.Current = new Size2d(
+                this.TweeningFunction(this.From.Width, this.To.Width, this.Elapsed, this.Duration),
+                this.TweeningFunction(this.From.Height, this.To.Height, this.Elapsed, this.Duration)
+                );
+        }
+    }
+
+}
+/* Vector2dTween.ts */
+
+
+
+module eg.Tweening {
+
+    /**
+    * Defines a Vector2dTween class that is used to move a Vector2d from a start value to an end value.
+    */
+    export class Vector2dTween extends Tween<Vector2d> {
+
+        /**
+        * Creates a new instance of the Vector2dTween object.
+        * @param from Start Vector2d.
+        * @param to End Vector2d.
+        * @param duration How fast to move the current Vector2d from start to end.
+        * @param tweeningFunction The function to use to translate the current Vector2d from start to end.  Different functions result in different translation behavior.
+        */
+        constructor(from: Vector2d, to: Vector2d, duration: TimeSpan, tweeningFunction: Functions.ITweeningFunction) {
+            super(from, to, duration, tweeningFunction);
+        }
+
+        public _UpdateTween(): void {
+            this.Current = new Vector2d(
+                this.TweeningFunction(this.From.X, this.To.X, this.Elapsed, this.Duration),
+                this.TweeningFunction(this.From.Y, this.To.Y, this.Elapsed, this.Duration));
+        }
+    }
+
+}
+/* Back.ts */
+
+
+module eg.Tweening.Functions {
+
+    /**
+    * Defines a Back tweening function collection that has an EaseIn, EaseOut, and EaseInOut function that can be used with Tween's.
+    */
+    export class Back {
+        private static _easeIn: ITweeningFunction = (from: number, to: number, elapsed: TimeSpan, duration: TimeSpan): number => {
+            var change = to - from,
+                elapsedMilliseconds = elapsed.Milliseconds;
+
+            return change * (elapsedMilliseconds /= duration.Milliseconds) * elapsedMilliseconds * ((1.70158 + 1) * elapsedMilliseconds - 1.70158) + from;
+        };
+        private static _easeOut: ITweeningFunction = (from: number, to: number, elapsed: TimeSpan, duration: TimeSpan): number => {
+            var change = to - from,
+                elapsedMilliseconds = elapsed.Milliseconds;
+
+            return change * ((elapsedMilliseconds = elapsedMilliseconds / duration.Milliseconds - 1) * elapsedMilliseconds * ((1.70158 + 1) * elapsedMilliseconds + 1.70158) + 1) + from;
+        };
+        private static _easeInOut: ITweeningFunction = (from: number, to: number, elapsed: TimeSpan, duration: TimeSpan): number => {
+            var change = to - from,
+                elapsedMilliseconds = elapsed.Milliseconds,
+                constant = 1.70158;
+
+            if ((elapsedMilliseconds /= duration.Milliseconds / 2) < 1)
+            {
+                return change / 2 * (elapsedMilliseconds * elapsedMilliseconds * (((constant *= (1.525)) + 1) * elapsedMilliseconds - constant)) + from;
+            }
+            return change / 2 * ((elapsedMilliseconds -= 2) * elapsedMilliseconds * (((constant *= (1.525)) + 1) * elapsedMilliseconds + constant) + 2) + from;
+        };
+
+        /**
+        * Gets the Back EaseIn function.
+        */
+        public static get EaseIn(): ITweeningFunction {
+            return Back._easeIn;
+        }
+
+        /**
+        * Gets the Back EaseOut function.
+        */
+        public static get EaseOut(): ITweeningFunction {
+            return Back._easeOut;
+        }
+
+        /**
+        * Gets the Back EaseInOut function.
+        */
+        public static get EaseInOut(): ITweeningFunction {
+            return Back._easeInOut;
+        }
+    }
+
+}
+/* Bounce.ts */
+
+
+module eg.Tweening.Functions {
+
+    /**
+    * Defines a Bounce tweening function collection that has an EaseIn, EaseOut, and EaseInOut function that can be used with Tween's.
+    */
+    export class Bounce {
+        private static _easeIn: ITweeningFunction = (from: number, to: number, elapsed: TimeSpan, duration: TimeSpan): number => {
+            var change = to - from;
+
+            return change - Bounce.EaseOut(0, change, duration.Subtract(elapsed), duration) + from;
+        };
+        private static _easeOut: ITweeningFunction = (from: number, to: number, elapsed: TimeSpan, duration: TimeSpan): number => {
+            var change = to - from,
+                elapsedMilliseconds = elapsed.Milliseconds;
+
+            if ((elapsedMilliseconds /= duration.Milliseconds) < (1 / 2.75)) {
+                return change * (7.5625 * elapsedMilliseconds * elapsedMilliseconds) + from;
+            }
+            else if (elapsedMilliseconds < (2 / 2.75)) {
+                return change * (7.5625 * (elapsedMilliseconds -= (1.5 / 2.75)) * elapsedMilliseconds + .75) + from;
+            }
+            else if (elapsedMilliseconds < (2.5 / 2.75))
+            {
+                return change * (7.5625 * (elapsedMilliseconds -= (2.25 / 2.75)) * elapsedMilliseconds + .9375) + from;
+            }
+            else
+            {
+                return change * (7.5625 * (elapsedMilliseconds -= (2.625 / 2.75)) * elapsedMilliseconds + .984375) + from;
+            }
+        };
+        private static _easeInOut: ITweeningFunction = (from: number, to: number, elapsed: TimeSpan, duration: TimeSpan): number => {
+            var change = to - from;
+
+            if (elapsed.Milliseconds < duration.Milliseconds / 2) {
+                return Bounce.EaseIn(0, change, elapsed.Multiply(2), duration) * 0.5 + from;
+            }
+            else {
+                return Bounce.EaseOut(0, change, elapsed.Multiply(2).Subtract(duration), duration) * .5 + change * 0.5 + from;
+            }
+        };
+
+        /**
+        * Gets the Bounce EaseIn function.
+        */
+        public static get EaseIn(): ITweeningFunction {
+            return Bounce._easeIn;
+        }
+
+        /**
+        * Gets the Bounce EaseOut function.
+        */
+        public static get EaseOut(): ITweeningFunction {
+            return Bounce._easeOut;
+        }
+
+        /**
+        * Gets the Bounce EaseInOut function.
+        */
+        public static get EaseInOut(): ITweeningFunction {
+            return Bounce._easeInOut;
+        }
+    }
+
+}
+/* Circular.ts */
+
+
+module eg.Tweening.Functions {
+
+    /**
+    * Defines a Circular tweening function collection that has an EaseIn, EaseOut, and EaseInOut function that can be used with Tween's.
+    */
+    export class Circular {
+        private static _easeIn: ITweeningFunction = (from: number, to: number, elapsed: TimeSpan, duration: TimeSpan): number => {
+            var change = to - from,
+                elapsedMilliseconds = elapsed.Milliseconds;
+
+            return -change * (Math.sqrt(1 - (elapsedMilliseconds /= duration.Milliseconds) * elapsedMilliseconds) - 1) + from;
+        };
+        private static _easeOut: ITweeningFunction = (from: number, to: number, elapsed: TimeSpan, duration: TimeSpan): number => {
+            var change = to - from,
+                elapsedMilliseconds = elapsed.Milliseconds;
+
+            return change * Math.sqrt(1 - (elapsedMilliseconds = elapsedMilliseconds / duration.Milliseconds - 1) * elapsedMilliseconds ) + from;
+        };
+        private static _easeInOut: ITweeningFunction = (from: number, to: number, elapsed: TimeSpan, duration: TimeSpan): number => {
+            var change = to - from,
+                elapsedMilliseconds = elapsed.Milliseconds;
+
+            if ((elapsedMilliseconds /= duration.Milliseconds / 2) < 1) {
+                return -change / 2 * (Math.sqrt(1 - elapsedMilliseconds * elapsedMilliseconds) - 1) + from;
+            }
+            return change / 2 * (Math.sqrt(1 - (elapsedMilliseconds -= 2) * elapsedMilliseconds) + 1) + from;
+        };
+
+        /**
+        * Gets the Circular EaseIn function.
+        */
+        public static get EaseIn(): ITweeningFunction {
+            return Circular._easeIn;
+        }
+
+        /**
+        * Gets the Circular EaseOut function.
+        */
+        public static get EaseOut(): ITweeningFunction {
+            return Circular._easeOut;
+        }
+
+        /**
+        * Gets the Circular EaseInOut function.
+        */
+        public static get EaseInOut(): ITweeningFunction {
+            return Circular._easeInOut;
+        }
+    }
+
+}
+/* Cubic.ts */
+
+
+module eg.Tweening.Functions {
+
+    /**
+    * Defines a Cubic tweening function collection that has an EaseIn, EaseOut, and EaseInOut function that can be used with Tween's.
+    */
+    export class Cubic {
+        private static _easeIn: ITweeningFunction = (from: number, to: number, elapsed: TimeSpan, duration: TimeSpan): number => {
+            var change = to - from,
+                elapsedMilliseconds = elapsed.Milliseconds;
+
+            return change * (elapsedMilliseconds /= duration.Milliseconds) * elapsedMilliseconds * elapsedMilliseconds + from;
+        };
+        private static _easeOut: ITweeningFunction = (from: number, to: number, elapsed: TimeSpan, duration: TimeSpan): number => {
+            var change = to - from,
+                elapsedMilliseconds = elapsed.Milliseconds;
+
+            return change * ((elapsedMilliseconds = elapsedMilliseconds / duration.Milliseconds - 1) * elapsedMilliseconds * elapsedMilliseconds + 1) + from;
+        };
+        private static _easeInOut: ITweeningFunction = (from: number, to: number, elapsed: TimeSpan, duration: TimeSpan): number => {
+            var change = to - from,
+                elapsedMilliseconds = elapsed.Milliseconds;
+
+            if ((elapsedMilliseconds /= duration.Milliseconds / 2) < 1)
+            {
+                return change / 2 * elapsedMilliseconds * elapsedMilliseconds * elapsedMilliseconds + from;
+            }
+            return change / 2 * ((elapsedMilliseconds -= 2) * elapsedMilliseconds * elapsedMilliseconds + 2) + from;
+        };
+
+        /**
+        * Gets the Cubic EaseIn function.
+        */
+        public static get EaseIn(): ITweeningFunction {
+            return Cubic._easeIn;
+        }
+
+        /**
+        * Gets the Cubic EaseOut function.
+        */
+        public static get EaseOut(): ITweeningFunction {
+            return Cubic._easeOut;
+        }
+
+        /**
+        * Gets the Cubic EaseInOut function.
+        */
+        public static get EaseInOut(): ITweeningFunction {
+            return Cubic._easeInOut;
+        }
+    }
+
+}
+/* Elastic.ts */
+
+
+module eg.Tweening.Functions {
+
+    /**
+    * Defines an Elastic tweening function collection that has an EaseIn, EaseOut, and EaseInOut function that can be used with Tween's.
+    */
+    export class Elastic {
+        private static _easeIn: ITweeningFunction = (from: number, to: number, elapsed: TimeSpan, duration: TimeSpan): number => {
+            var change = to - from,
+                elapsedMilliseconds = elapsed.Milliseconds,
+                timePartial,
+                timePartialQuarter;
+
+            if (elapsedMilliseconds === 0) {
+                return from;
+            }
+            if ((elapsedMilliseconds /= duration.Milliseconds) === 1) {
+                return from + change;
+            }
+
+            timePartial = duration.Milliseconds * .3;
+            timePartialQuarter = timePartial / 4;
+
+            return -(change * Math.pow(2, 10 * (elapsedMilliseconds -= 1)) * Math.sin((elapsedMilliseconds * duration.Milliseconds - timePartialQuarter) * (2 * Math.PI) / timePartial)) + from;
+        };
+        private static _easeOut: ITweeningFunction = (from: number, to: number, elapsed: TimeSpan, duration: TimeSpan): number => {
+            var change = to - from,
+                elapsedMilliseconds = elapsed.Milliseconds,
+                timePartial,
+                timePartialQuarter;
+
+            if (elapsedMilliseconds === 0) {
+                return from;
+            }
+
+            if ((elapsedMilliseconds /= duration.Milliseconds) === 1) {
+                return from + change;
+            }
+            
+            timePartial = duration.Milliseconds * .3;
+            timePartialQuarter = timePartial / 4;
+            
+            return (change * Math.pow(2, -10 * elapsedMilliseconds) * Math.sin((elapsedMilliseconds * duration.Milliseconds - timePartialQuarter) * (2 * Math.PI) / timePartial) + change + from);
+        };
+        private static _easeInOut: ITweeningFunction = (from: number, to: number, elapsed: TimeSpan, duration: TimeSpan): number => {
+            var change = to - from,
+                elapsedMilliseconds = elapsed.Milliseconds,
+                timePartial,
+                timePartialQuarter;
+
+            if (elapsedMilliseconds === 0) {
+                return from;
+            }
+
+            if ((elapsedMilliseconds /= duration.Milliseconds / 2) === 2) {
+                return from + change;
+            }
+
+            timePartial = duration.Milliseconds * (.3 * 1.5);
+            timePartialQuarter = timePartial / 4;
+            
+            if (elapsedMilliseconds < 1) {
+                return -.5 * (change * Math.pow(2, 10 * (elapsedMilliseconds -= 1)) * Math.sin((elapsedMilliseconds * duration.Milliseconds - timePartialQuarter) * (2 * Math.PI) / timePartial)) + from;
+            }
+            return (change * Math.pow(2, -10 * (elapsedMilliseconds -= 1)) * Math.sin((elapsedMilliseconds * duration.Milliseconds - timePartialQuarter) * (2 * Math.PI) / timePartial) * .5 + change + from);
+        };
+
+        /**
+        * Gets the Elastic EaseIn function.
+        */
+        public static get EaseIn(): ITweeningFunction {
+            return Elastic._easeIn;
+        }
+
+        /**
+        * Gets the Elastic EaseOut function.
+        */
+        public static get EaseOut(): ITweeningFunction {
+            return Elastic._easeOut;
+        }
+
+        /**
+        * Gets the Elastic EaseInOut function.
+        */
+        public static get EaseInOut(): ITweeningFunction {
+            return Elastic._easeInOut;
+        }
+    }
+
+}
+/* Exponential.ts */
+
+
+module eg.Tweening.Functions {
+
+    /**
+    * Defines an Exponential tweening function collection that has an EaseIn, EaseOut, and EaseInOut function that can be used with Tween's.
+    */
+    export class Exponential {
+        private static _easeIn: ITweeningFunction = (from: number, to: number, elapsed: TimeSpan, duration: TimeSpan): number => {
+            var change = to - from,
+                elapsedMilliseconds = elapsed.Milliseconds;
+
+            return (elapsedMilliseconds == 0) ? from : change * Math.pow(2, 10 * (elapsedMilliseconds / duration.Milliseconds - 1)) + from;
+        };
+        private static _easeOut: ITweeningFunction = (from: number, to: number, elapsed: TimeSpan, duration: TimeSpan): number => {
+            var change = to - from,
+                elapsedMilliseconds = elapsed.Milliseconds;
+
+            return (elapsedMilliseconds == duration.Milliseconds) ? from + change : change * (-Math.pow(2, -10 * elapsedMilliseconds / duration.Milliseconds) + 1) + from;
+        };
+        private static _easeInOut: ITweeningFunction = (from: number, to: number, elapsed: TimeSpan, duration: TimeSpan): number => {
+            var change = to - from,
+                elapsedMilliseconds = elapsed.Milliseconds;
+
+            if (elapsedMilliseconds == 0) {
+                return from;
+            }
+            if (elapsedMilliseconds == duration.Milliseconds) {
+                return from + change;
+            }
+            if ((elapsedMilliseconds /= duration.Milliseconds / 2) < 1) {
+                return change / 2 * Math.pow(2, 10 * (elapsedMilliseconds - 1)) + from;
+            }
+            return change / 2 * (-Math.pow(2, -10 * --elapsedMilliseconds) + 2) + from;
+        };
+
+        /**
+        * Gets the Exponential EaseIn function.
+        */
+        public static get EaseIn(): ITweeningFunction {
+            return Exponential._easeIn;
+        }
+
+        /**
+        * Gets the Exponential EaseOut function.
+        */
+        public static get EaseOut(): ITweeningFunction {
+            return Exponential._easeOut;
+        }
+
+        /**
+        * Gets the Exponential EaseInOut function.
+        */
+        public static get EaseInOut(): ITweeningFunction {
+            return Exponential._easeInOut;
+        }
+    }
+
+}
+/* Linear.ts */
+
+
+module eg.Tweening.Functions {
+
+    /**
+    * Defines a Linear tweening function that has an EaseNone function that can be used with Tween's.
+    */
+    export class Linear {
+        private static _easeNone: ITweeningFunction = (from: number, to: number, elapsed: TimeSpan, duration: TimeSpan): number => {
+            var change = to - from;
+
+            return change * elapsed.Milliseconds / duration.Milliseconds + from;
+        };
+
+        /**
+        * Gets the Linear EaseNone function.
+        */
+        public static get EaseNone(): ITweeningFunction {
+            return Linear._easeNone;
+        }
+    }
+
+}
+/* Quadratic.ts */
+
+
+module eg.Tweening.Functions {
+
+    /**
+    * Defines a Quadratic tweening function collection that has an EaseIn, EaseOut, and EaseInOut function that can be used with Tween's.
+    */
+    export class Quadratic {
+        private static _easeIn: ITweeningFunction = (from: number, to: number, elapsed: TimeSpan, duration: TimeSpan): number => {
+            var change = to - from,
+                elapsedMilliseconds = elapsed.Milliseconds;
+
+            return change * (elapsedMilliseconds /= duration.Milliseconds) * elapsedMilliseconds + from;
+        };
+        private static _easeOut: ITweeningFunction = (from: number, to: number, elapsed: TimeSpan, duration: TimeSpan): number => {
+            var change = to - from,
+                elapsedMilliseconds = elapsed.Milliseconds;
+
+            return -change * (elapsedMilliseconds /= duration.Milliseconds) * (elapsedMilliseconds - 2) + from;
+        };
+        private static _easeInOut: ITweeningFunction = (from: number, to: number, elapsed: TimeSpan, duration: TimeSpan): number => {
+            var change = to - from,
+                elapsedMilliseconds = elapsed.Milliseconds;
+
+            if ((elapsedMilliseconds /= duration.Milliseconds / 2) < 1)
+            {
+                return change / 2 * elapsedMilliseconds * elapsedMilliseconds + from;
+            }
+
+            return -change / 2 * ((--elapsedMilliseconds) * (elapsedMilliseconds - 2) - 1) + from;
+        };
+
+        /**
+        * Gets the Quadratic EaseIn function.
+        */
+        public static get EaseIn(): ITweeningFunction {
+            return Quadratic._easeIn;
+        }
+
+        /**
+        * Gets the Quadratic EaseOut function.
+        */
+        public static get EaseOut(): ITweeningFunction {
+            return Quadratic._easeOut;
+        }
+
+        /**
+        * Gets the Quadratic EaseInOut function.
+        */
+        public static get EaseInOut(): ITweeningFunction {
+            return Quadratic._easeInOut;
+        }
+    }
+
+}
+/* Quartic.ts */
+
+
+module eg.Tweening.Functions {
+
+    /**
+    * Defines a Quartic tweening function collection that has an EaseIn, EaseOut, and EaseInOut function that can be used with Tween's.
+    */
+    export class Quartic {
+        private static _easeIn: ITweeningFunction = (from: number, to: number, elapsed: TimeSpan, duration: TimeSpan): number => {
+            var change = to - from,
+                elapsedMilliseconds = elapsed.Milliseconds;
+
+            return change * (elapsedMilliseconds /= duration.Milliseconds) * elapsedMilliseconds * elapsedMilliseconds * elapsedMilliseconds + from;
+        };
+        private static _easeOut: ITweeningFunction = (from: number, to: number, elapsed: TimeSpan, duration: TimeSpan): number => {
+            var change = to - from,
+                elapsedMilliseconds = elapsed.Milliseconds;
+
+            return -change * ((elapsedMilliseconds = elapsedMilliseconds / duration.Milliseconds - 1) * elapsedMilliseconds * elapsedMilliseconds * elapsedMilliseconds - 1) + from;
+        };
+        private static _easeInOut: ITweeningFunction = (from: number, to: number, elapsed: TimeSpan, duration: TimeSpan): number => {
+            var change = to - from,
+                elapsedMilliseconds = elapsed.Milliseconds;
+
+            if ((elapsedMilliseconds /= duration.Milliseconds / 2) < 1)
+            {
+                return change / 2 * elapsedMilliseconds * elapsedMilliseconds * elapsedMilliseconds * elapsedMilliseconds + from;
+            }
+            return -change / 2 * ((elapsedMilliseconds -= 2) * elapsedMilliseconds * elapsedMilliseconds * elapsedMilliseconds - 2) + from;
+        };
+
+        /**
+        * Gets the Quartic EaseIn function.
+        */
+        public static get EaseIn(): ITweeningFunction {
+            return Quartic._easeIn;
+        }
+
+        /**
+        * Gets the Quartic EaseOut function.
+        */
+        public static get EaseOut(): ITweeningFunction {
+            return Quartic._easeOut;
+        }
+
+        /**
+        * Gets the Quartic EaseInOut function.
+        */
+        public static get EaseInOut(): ITweeningFunction {
+            return Quartic._easeInOut;
+        }
+    }
+
+}
+/* Quintic.ts */
+
+
+module eg.Tweening.Functions {
+
+    /**
+    * Defines a Quintic tweening function collection that has an EaseIn, EaseOut, and EaseInOut function that can be used with Tween's.
+    */
+    export class Quintic {
+        private static _easeIn: ITweeningFunction = (from: number, to: number, elapsed: TimeSpan, duration: TimeSpan): number => {
+            var change = to - from,
+                elapsedMilliseconds = elapsed.Milliseconds;
+
+            return change * (elapsedMilliseconds /= duration.Milliseconds) * elapsedMilliseconds * elapsedMilliseconds * elapsedMilliseconds * elapsedMilliseconds + from;
+        };
+        private static _easeOut: ITweeningFunction = (from: number, to: number, elapsed: TimeSpan, duration: TimeSpan): number => {
+            var change = to - from,
+                elapsedMilliseconds = elapsed.Milliseconds;
+
+            return change * ((elapsedMilliseconds = elapsedMilliseconds / duration.Milliseconds - 1) * elapsedMilliseconds * elapsedMilliseconds * elapsedMilliseconds * elapsedMilliseconds + 1) + from;
+        };
+        private static _easeInOut: ITweeningFunction = (from: number, to: number, elapsed: TimeSpan, duration: TimeSpan): number => {
+            var change = to - from,
+                elapsedMilliseconds = elapsed.Milliseconds;
+
+            if ((elapsedMilliseconds /= duration.Milliseconds / 2) < 1)
+            {
+                return change / 2 * elapsedMilliseconds * elapsedMilliseconds * elapsedMilliseconds * elapsedMilliseconds * elapsedMilliseconds + from;
+            }
+            return change / 2 * ((elapsedMilliseconds -= 2) * elapsedMilliseconds * elapsedMilliseconds * elapsedMilliseconds * elapsedMilliseconds + 2) + from;
+        };
+
+        /**
+        * Gets the Quintic EaseIn function.
+        */
+        public static get EaseIn(): ITweeningFunction {
+            return Quintic._easeIn;
+        }
+
+        /**
+        * Gets the Quintic EaseOut function.
+        */
+        public static get EaseOut(): ITweeningFunction {
+            return Quintic._easeOut;
+        }
+
+        /**
+        * Gets the Quintic EaseInOut function.
+        */
+        public static get EaseInOut(): ITweeningFunction {
+            return Quintic._easeInOut;
+        }
+    }
+
+}
+/* Sinusoidal.ts */
+
+
+module eg.Tweening.Functions {
+
+    /**
+    * Defines a Sinusoidal tweening function collection that has an EaseIn, EaseOut, and EaseInOut function that can be used with Tween's.
+    */
+    export class Sinusoidal {
+        private static _easeIn: ITweeningFunction = (from: number, to: number, elapsed: TimeSpan, duration: TimeSpan): number => {
+            var change = to - from,
+                elapsedMilliseconds = elapsed.Milliseconds;
+
+            return -change * Math.cos(elapsedMilliseconds / duration.Milliseconds * (Math.PI / 2)) + change + from;
+        };
+        private static _easeOut: ITweeningFunction = (from: number, to: number, elapsed: TimeSpan, duration: TimeSpan): number => {
+            var change = to - from,
+                elapsedMilliseconds = elapsed.Milliseconds;
+
+            return change * Math.sin(elapsedMilliseconds / duration.Milliseconds * (Math.PI / 2)) + from;
+        };
+        private static _easeInOut: ITweeningFunction = (from: number, to: number, elapsed: TimeSpan, duration: TimeSpan): number => {
+            var change = to - from,
+                elapsedMilliseconds = elapsed.Milliseconds;
+
+            return -change / 2 * (Math.cos(Math.PI * elapsedMilliseconds / duration.Milliseconds) - 1) + from;
+        };
+
+        /**
+        * Gets the Sinusoidal EaseIn function.
+        */
+        public static get EaseIn(): ITweeningFunction {
+            return Sinusoidal._easeIn;
+        }
+
+        /**
+        * Gets the Sinusoidal EaseOut function.
+        */
+        public static get EaseOut(): ITweeningFunction {
+            return Sinusoidal._easeOut;
+        }
+
+        /**
+        * Gets the Sinusoidal EaseInOut function.
+        */
+        public static get EaseInOut(): ITweeningFunction {
+            return Sinusoidal._easeInOut;
+        }
+    }
+
+}
+/* EventHandler3.ts */
+
+
+
+module eg {
+
+    /**
+    * Defines a type constrained event handler object that can maintain bound functions which take in a value T, U and V and trigger them on demand.
+    */
+    export class EventHandler3<T, U, V> implements _.ITyped {
+        public _type: string = "Event";
+
+        private _actions: Array<(val1: T, val2: U, val3: V) => any>;
+        private _hasBindings: bool;
+
+        /**
+        * Creates a new instance of the EventHandler3 object.
+        */
+        constructor() {
+            this._actions = [];
+            this._hasBindings = false;
+        }
+
+        /**
+        * Binds the provided action to the EventHandler3.  Trigger will execute all bound functions.
+        * @param action Function to execute on EventHandler3 Trigger.
+        */
+        public Bind(action: (val1: T, val2: U, val3: V) => any): void {
+            this._actions.push(action);
+            this._hasBindings = true;
+        }
+
+        /**
+        * Unbinds the provided action from the EventHandler3.
+        * @param action Function to unbind.  The action will no longer be executed when the EventHandler gets Triggered.
+        */
+        public Unbind(action: (val1: T, val2: U, val3: V) => any): void {
+            for (var i = 0; i < this._actions.length; i++) {
+                if (this._actions[i] === action) {
+                    this._actions.splice(i, 1);
+
+                    this._hasBindings = this._actions.length > 0;
+                    return;
+                }
+            }
+        }
+
+        /**
+        * Determines if the EventHandler3 has active bindings.
+        */
+        public HasBindings(): bool {
+            return this._hasBindings;
+        }
+
+        /**
+        * Executes all bound functions and passes the provided args to each.
+        * @param val1 The first argument to pass to the bound functions.
+        * @param val2 The second argument to pass to the bound functions.
+        * @param val3 The third argument to pass to the bound functions.
+        */
+        public Trigger(val1: T, val2: U, val3: V): void {
+            for (var i = 0; i < this._actions.length; i++) {
+                this._actions[i](val1, val2, val3);
+            }
+        }
+    }
+
 }

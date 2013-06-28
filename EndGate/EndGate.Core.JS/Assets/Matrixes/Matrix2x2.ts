@@ -1,4 +1,5 @@
 /// <reference path="../../Interfaces/ITyped.ts" />
+/// <reference path="../../Interfaces/ICloneable.ts" />
 /// <reference path="../Vectors/Vector2d.ts" />
 /// <reference path="../../Extensions/MathExtensions.ts" />
 
@@ -7,7 +8,7 @@ module eg {
     /**
     * Defines a matrix with 2 columns and 2 rows (2x2).
     */
-    export class Matrix2x2 implements _.ITyped {
+    export class Matrix2x2 implements _.ITyped, ICloneable {
         public _type: string = "Matrix2x2";
 
         /**

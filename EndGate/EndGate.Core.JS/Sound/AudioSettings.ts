@@ -1,9 +1,11 @@
+/// <reference path="../Interfaces/ICloneable.ts" />
+
 module eg.Sound {
 
     /**
     * Defines a set of settings that are used to play AudioClip's a custom way.
     */
-    export class AudioSettings {
+    export class AudioSettings implements ICloneable {
         /**
         * The default audio settings.
         */

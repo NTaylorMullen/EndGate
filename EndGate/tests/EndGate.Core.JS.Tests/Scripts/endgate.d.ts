@@ -16,9 +16,20 @@ declare module eg._ {
 }
 declare module eg {
     /**
+    * Represents an object that can be cloned
+    */
+    interface ICloneable {
+        /**
+        * Duplicates the current element, returning a copy of itself.
+        */
+        Clone(): any;
+    }
+}
+declare module eg {
+    /**
     * Defines a time interval.
     */
-    class TimeSpan implements eg._.ITyped {
+    class TimeSpan implements eg._.ITyped, eg.ICloneable {
         public _type: string;
         private static _secondsMultiplier;
         private static _minutesMultiplier;
@@ -117,7 +128,7 @@ declare module eg {
         public DivideFrom(val: number): TimeSpan;
         /**
         * Determines whether this TimeSpan represents the same amount of time as the provided TimeSpan.
-        * @param span The TimeSpan to compare the current TimeSpan to.
+        * @param timeSpan The TimeSpan to compare the current TimeSpan to.
         */
         public Equivalent(timeSpan: TimeSpan): boolean;
         /**
@@ -144,15 +155,15 @@ declare module eg {
         */
         static FromMinutes(val: number): TimeSpan;
         /**
-        * Returns a TimeSpan that represents a 0 millisecond time interval.
-        */
-        static Zero(): TimeSpan;
-        /**
         * Returns a TimeSpan that represents the time between the two dates.
         * @param from The from date.
         * @param to The to date.
         */
         static DateSpan(from: Date, to: Date): TimeSpan;
+        /**
+        * Gets a TimeSpan that represents a 0 millisecond time interval.
+        */
+        static Zero : TimeSpan;
     }
 }
 declare module eg {
@@ -210,7 +221,7 @@ declare module eg {
     /**
     * Defines a two dimensional vector object which specifies an X and Y.
     */
-    class Vector2d implements eg._.ITyped {
+    class Vector2d implements eg._.ITyped, eg.ICloneable {
         public _type: string;
         /**
         * Gets or sets the X component of the vector.
@@ -421,7 +432,7 @@ declare module eg {
     /**
     * Defines a two dimensional size object which specifies a Width and Height.
     */
-    class Size2d implements eg._.ITyped {
+    class Size2d implements eg._.ITyped, eg.ICloneable {
         public _type: string;
         /**
         * Gets or sets the horizontal component of this Size structure.
@@ -984,26 +995,27 @@ declare module eg {
         private _actions;
         private _hasBindings;
         /**
-        * Creates a new instance of the EventHandler object.
+        * Creates a new instance of the EventHandler2 object.
         */
         constructor();
         /**
-        * Binds the provided action to the EventHandler1.  Trigger will execute all bound functions.
-        * @param action Function to execute on EventHandler Trigger.
+        * Binds the provided action to the EventHandler2.  Trigger will execute all bound functions.
+        * @param action Function to execute on EventHandler2 Trigger.
         */
         public Bind(action: (val1: T, val2: U) => any): void;
         /**
-        * Unbinds the provided action from the EventHandler1.
+        * Unbinds the provided action from the EventHandler2.
         * @param action Function to unbind.  The action will no longer be executed when the EventHandler gets Triggered.
         */
         public Unbind(action: (val1: T, val2: U) => any): void;
         /**
-        * Determines if the EventHandler1 has active bindings.
+        * Determines if the EventHandler2 has active bindings.
         */
         public HasBindings(): boolean;
         /**
         * Executes all bound functions and passes the provided args to each.
         * @param val1 The first argument to pass to the bound functions.
+        * @param val2 The second argument to pass to the bound functions.
         */
         public Trigger(val1: T, val2: U): void;
     }
@@ -1623,7 +1635,7 @@ declare module eg.Sound {
     /**
     * Defines a set of settings that are used to play AudioClip's a custom way.
     */
-    class AudioSettings {
+    class AudioSettings implements eg.ICloneable {
         /**
         * The default audio settings.
         */
@@ -2975,7 +2987,7 @@ declare module eg {
     /**
     * Defines a matrix with 2 columns and 2 rows (2x2).
     */
-    class Matrix2x2 implements eg._.ITyped {
+    class Matrix2x2 implements eg._.ITyped, eg.ICloneable {
         public _type: string;
         /**
         * Gets or sets the matrix values.  Represents the current Matrix2x2 as a multi-dimensional array.
@@ -3198,10 +3210,418 @@ declare module eg.Map {
         private FillGridWith(mappings);
     }
 }
+interface Number extends eg.ICloneable {
+}
+declare module eg.Tweening.Functions {
+    /**
+    * Defines an ITweeningFunction interface that represents a function that can be used to translate Tween's.
+    */
+    interface ITweeningFunction {
+        (from: number, to: number, elapsed: eg.TimeSpan, duration: eg.TimeSpan): number;
+    }
+}
 declare module eg.Tweening {
-    class Tween<T> {
+    /**
+    * Defines a base Tween class that is used to move a value from a start value to an end value.
+    */
+    class Tween<T extends eg.ICloneable> implements eg.IUpdateable {
+        private _from;
+        private _to;
+        private _current;
+        private _duration;
+        private _elapsed;
         private _playing;
-        constructor(from: T, to: T);
-        public Playing : boolean;
+        private _tweeningFunction;
+        private _onChange;
+        private _onComplete;
+        /**
+        * Creates a new instance of the Tween object.  This should only ever be called from derived classes via a super constructor call.
+        * @param from Start value.
+        * @param to End value.
+        * @param duration How fast to move the current value from start to end.
+        * @param tweeningFunction The function to use to translate the current value from start to end.  Different functions result in different translation behavior.
+        */
+        constructor(from: T, to: T, duration: eg.TimeSpan, tweeningFunction: Tweening.Functions.ITweeningFunction);
+        /**
+        * Gets an event that is triggered when the tween has changed its Current value, occurs directly after a tween update.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        */
+        public OnChange : eg.EventHandler1<T>;
+        /**
+        * Gets an event that is triggered when the tween has completed transitioning the Current value, once triggered Elapsed will be equivalent to Duration and Current will be equivalent to To.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        */
+        public OnComplete : eg.EventHandler1<eg.Tweening.Tween<T>>;
+        /**
+        * Gets or sets the From component of the tween.
+        */
+        public From : T;
+        /**
+        * Gets or sets the To component of the tween.
+        */
+        public To : T;
+        /**
+        * Gets or sets the Current component of the tween.  The Current is the current value of the tween, the final value of Current will be equivalent to To when the tween has completed.
+        */
+        public Current : T;
+        /**
+        * Gets or sets the Duration component of the tween.  The Duration is how long the tween will take to go From -> To.
+        */
+        public Duration : eg.TimeSpan;
+        /**
+        * Gets or the Elapsed component of the tween.  Elapsed represents how far along the tween is.  When Elapsed equals Duration the tween is completed.
+        */
+        public Elapsed : eg.TimeSpan;
+        /**
+        * Gets or sets the TweeningFunction of the tween.  The TweeningFunction controls how the tween translates the Current value to the To value.
+        */
+        public TweeningFunction : Tweening.Functions.ITweeningFunction;
+        /**
+        * Determines if the tween is playing.
+        */
+        public IsPlaying(): boolean;
+        /**
+        * Starts playing the tween.  The tween will only start translating the value if Update is called.
+        */
+        public Play(): void;
+        /**
+        * Pauses the tween.  Calls to update will not translate the tween when paused.
+        */
+        public Pause(): void;
+        /**
+        * Resets the tween to the To location and resets the Elapsed time.  This does not stop or start the tween.
+        */
+        public Reset(): void;
+        /**
+        * Stops the tween from playing.  This also resets the tween to its To value.
+        */
+        public Stop(): void;
+        /**
+        * Restarts the tween.  Essentially calls Reset and then Play.
+        */
+        public Restart(): void;
+        /**
+        * Reverses the tween from the Current value back to the From value.  This changes the To component to equal the From value and the From value to equal the Current value.
+        */
+        public Reverse(): void;
+        /**
+        * Updates the tweens Current and Elapsed component if the tween is playing.
+        * @param gameTime The global game time object.  Used to represent total time running and used to track update interval elapsed speeds.
+        */
+        public Update(gameTime: eg.GameTime): void;
+        public _UpdateTween(): void;
+    }
+}
+declare module eg.Tweening {
+    /**
+    * Defines a NumberTween class that is used to move a number from a start value to an end value.
+    */
+    class NumberTween extends Tweening.Tween<number> {
+        /**
+        * Creates a new instance of the NumberTween object.
+        * @param from Start number.
+        * @param to End number.
+        * @param duration How fast to move the current number from start to end.
+        * @param tweeningFunction The function to use to translate the current number from start to end.  Different functions result in different translation behavior.
+        */
+        constructor(from: number, to: number, duration: eg.TimeSpan, tweeningFunction: Tweening.Functions.ITweeningFunction);
+        public _UpdateTween(): void;
+    }
+}
+declare module eg.Tweening {
+    /**
+    * Defines a Size2dTween class that is used to move a Size2d from a start value to an end value.
+    */
+    class Size2dTween extends Tweening.Tween<eg.Size2d> {
+        /**
+        * Creates a new instance of the Size2dTween object.
+        * @param from Start Size2d.
+        * @param to End Size2d.
+        * @param duration How fast to move the current Size2d from start to end.
+        * @param tweeningFunction The function to use to translate the current Size2d from start to end.  Different functions result in different translation behavior.
+        */
+        constructor(from: eg.Size2d, to: eg.Size2d, duration: eg.TimeSpan, tweeningFunction: Tweening.Functions.ITweeningFunction);
+        public _UpdateTween(): void;
+    }
+}
+declare module eg.Tweening {
+    /**
+    * Defines a Vector2dTween class that is used to move a Vector2d from a start value to an end value.
+    */
+    class Vector2dTween extends Tweening.Tween<eg.Vector2d> {
+        /**
+        * Creates a new instance of the Vector2dTween object.
+        * @param from Start Vector2d.
+        * @param to End Vector2d.
+        * @param duration How fast to move the current Vector2d from start to end.
+        * @param tweeningFunction The function to use to translate the current Vector2d from start to end.  Different functions result in different translation behavior.
+        */
+        constructor(from: eg.Vector2d, to: eg.Vector2d, duration: eg.TimeSpan, tweeningFunction: Tweening.Functions.ITweeningFunction);
+        public _UpdateTween(): void;
+    }
+}
+declare module eg.Tweening.Functions {
+    /**
+    * Defines a Back tweening function collection that has an EaseIn, EaseOut, and EaseInOut function that can be used with Tween's.
+    */
+    class Back {
+        private static _easeIn;
+        private static _easeOut;
+        private static _easeInOut;
+        /**
+        * Gets the Back EaseIn function.
+        */
+        static EaseIn : Functions.ITweeningFunction;
+        /**
+        * Gets the Back EaseOut function.
+        */
+        static EaseOut : Functions.ITweeningFunction;
+        /**
+        * Gets the Back EaseInOut function.
+        */
+        static EaseInOut : Functions.ITweeningFunction;
+    }
+}
+declare module eg.Tweening.Functions {
+    /**
+    * Defines a Bounce tweening function collection that has an EaseIn, EaseOut, and EaseInOut function that can be used with Tween's.
+    */
+    class Bounce {
+        private static _easeIn;
+        private static _easeOut;
+        private static _easeInOut;
+        /**
+        * Gets the Bounce EaseIn function.
+        */
+        static EaseIn : Functions.ITweeningFunction;
+        /**
+        * Gets the Bounce EaseOut function.
+        */
+        static EaseOut : Functions.ITweeningFunction;
+        /**
+        * Gets the Bounce EaseInOut function.
+        */
+        static EaseInOut : Functions.ITweeningFunction;
+    }
+}
+declare module eg.Tweening.Functions {
+    /**
+    * Defines a Circular tweening function collection that has an EaseIn, EaseOut, and EaseInOut function that can be used with Tween's.
+    */
+    class Circular {
+        private static _easeIn;
+        private static _easeOut;
+        private static _easeInOut;
+        /**
+        * Gets the Circular EaseIn function.
+        */
+        static EaseIn : Functions.ITweeningFunction;
+        /**
+        * Gets the Circular EaseOut function.
+        */
+        static EaseOut : Functions.ITweeningFunction;
+        /**
+        * Gets the Circular EaseInOut function.
+        */
+        static EaseInOut : Functions.ITweeningFunction;
+    }
+}
+declare module eg.Tweening.Functions {
+    /**
+    * Defines a Cubic tweening function collection that has an EaseIn, EaseOut, and EaseInOut function that can be used with Tween's.
+    */
+    class Cubic {
+        private static _easeIn;
+        private static _easeOut;
+        private static _easeInOut;
+        /**
+        * Gets the Cubic EaseIn function.
+        */
+        static EaseIn : Functions.ITweeningFunction;
+        /**
+        * Gets the Cubic EaseOut function.
+        */
+        static EaseOut : Functions.ITweeningFunction;
+        /**
+        * Gets the Cubic EaseInOut function.
+        */
+        static EaseInOut : Functions.ITweeningFunction;
+    }
+}
+declare module eg.Tweening.Functions {
+    /**
+    * Defines an Elastic tweening function collection that has an EaseIn, EaseOut, and EaseInOut function that can be used with Tween's.
+    */
+    class Elastic {
+        private static _easeIn;
+        private static _easeOut;
+        private static _easeInOut;
+        /**
+        * Gets the Elastic EaseIn function.
+        */
+        static EaseIn : Functions.ITweeningFunction;
+        /**
+        * Gets the Elastic EaseOut function.
+        */
+        static EaseOut : Functions.ITweeningFunction;
+        /**
+        * Gets the Elastic EaseInOut function.
+        */
+        static EaseInOut : Functions.ITweeningFunction;
+    }
+}
+declare module eg.Tweening.Functions {
+    /**
+    * Defines an Exponential tweening function collection that has an EaseIn, EaseOut, and EaseInOut function that can be used with Tween's.
+    */
+    class Exponential {
+        private static _easeIn;
+        private static _easeOut;
+        private static _easeInOut;
+        /**
+        * Gets the Exponential EaseIn function.
+        */
+        static EaseIn : Functions.ITweeningFunction;
+        /**
+        * Gets the Exponential EaseOut function.
+        */
+        static EaseOut : Functions.ITweeningFunction;
+        /**
+        * Gets the Exponential EaseInOut function.
+        */
+        static EaseInOut : Functions.ITweeningFunction;
+    }
+}
+declare module eg.Tweening.Functions {
+    /**
+    * Defines a Linear tweening function that has an EaseNone function that can be used with Tween's.
+    */
+    class Linear {
+        private static _easeNone;
+        /**
+        * Gets the Linear EaseNone function.
+        */
+        static EaseNone : Functions.ITweeningFunction;
+    }
+}
+declare module eg.Tweening.Functions {
+    /**
+    * Defines a Quadratic tweening function collection that has an EaseIn, EaseOut, and EaseInOut function that can be used with Tween's.
+    */
+    class Quadratic {
+        private static _easeIn;
+        private static _easeOut;
+        private static _easeInOut;
+        /**
+        * Gets the Quadratic EaseIn function.
+        */
+        static EaseIn : Functions.ITweeningFunction;
+        /**
+        * Gets the Quadratic EaseOut function.
+        */
+        static EaseOut : Functions.ITweeningFunction;
+        /**
+        * Gets the Quadratic EaseInOut function.
+        */
+        static EaseInOut : Functions.ITweeningFunction;
+    }
+}
+declare module eg.Tweening.Functions {
+    /**
+    * Defines a Quartic tweening function collection that has an EaseIn, EaseOut, and EaseInOut function that can be used with Tween's.
+    */
+    class Quartic {
+        private static _easeIn;
+        private static _easeOut;
+        private static _easeInOut;
+        /**
+        * Gets the Quartic EaseIn function.
+        */
+        static EaseIn : Functions.ITweeningFunction;
+        /**
+        * Gets the Quartic EaseOut function.
+        */
+        static EaseOut : Functions.ITweeningFunction;
+        /**
+        * Gets the Quartic EaseInOut function.
+        */
+        static EaseInOut : Functions.ITweeningFunction;
+    }
+}
+declare module eg.Tweening.Functions {
+    /**
+    * Defines a Quintic tweening function collection that has an EaseIn, EaseOut, and EaseInOut function that can be used with Tween's.
+    */
+    class Quintic {
+        private static _easeIn;
+        private static _easeOut;
+        private static _easeInOut;
+        /**
+        * Gets the Quintic EaseIn function.
+        */
+        static EaseIn : Functions.ITweeningFunction;
+        /**
+        * Gets the Quintic EaseOut function.
+        */
+        static EaseOut : Functions.ITweeningFunction;
+        /**
+        * Gets the Quintic EaseInOut function.
+        */
+        static EaseInOut : Functions.ITweeningFunction;
+    }
+}
+declare module eg.Tweening.Functions {
+    /**
+    * Defines a Sinusoidal tweening function collection that has an EaseIn, EaseOut, and EaseInOut function that can be used with Tween's.
+    */
+    class Sinusoidal {
+        private static _easeIn;
+        private static _easeOut;
+        private static _easeInOut;
+        /**
+        * Gets the Sinusoidal EaseIn function.
+        */
+        static EaseIn : Functions.ITweeningFunction;
+        /**
+        * Gets the Sinusoidal EaseOut function.
+        */
+        static EaseOut : Functions.ITweeningFunction;
+        /**
+        * Gets the Sinusoidal EaseInOut function.
+        */
+        static EaseInOut : Functions.ITweeningFunction;
+    }
+}
+declare module eg {
+    /**
+    * Defines a type constrained event handler object that can maintain bound functions which take in a value T, U and V and trigger them on demand.
+    */
+    class EventHandler3<T, U, V> implements eg._.ITyped {
+        public _type: string;
+        private _actions;
+        private _hasBindings;
+        /**
+        * Creates a new instance of the EventHandler3 object.
+        */
+        constructor();
+        /**
+        * Binds the provided action to the EventHandler3.  Trigger will execute all bound functions.
+        * @param action Function to execute on EventHandler3 Trigger.
+        */
+        public Bind(action: (val1: T, val2: U, val3: V) => any): void;
+        /**
+        * Unbinds the provided action from the EventHandler3.
+        * @param action Function to unbind.  The action will no longer be executed when the EventHandler gets Triggered.
+        */
+        public Unbind(action: (val1: T, val2: U, val3: V) => any): void;
+        /**
+        * Determines if the EventHandler3 has active bindings.
+        */
+        public HasBindings(): boolean;
+        /**
+        * Executes all bound functions and passes the provided args to each.
+        * @param val1 The first argument to pass to the bound functions.
+        * @param val2 The second argument to pass to the bound functions.
+        * @param val3 The third argument to pass to the bound functions.
+        */
+        public Trigger(val1: T, val2: U, val3: V): void;
     }
 }

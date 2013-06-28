@@ -124,13 +124,17 @@ var eg;
             return new TimeSpan(0, 0, val);
         };
 
-        TimeSpan.Zero = function () {
-            return new TimeSpan(0);
-        };
-
         TimeSpan.DateSpan = function (from, to) {
             return new TimeSpan(to.getTime() - from.getTime());
         };
+
+        Object.defineProperty(TimeSpan, "Zero", {
+            get: function () {
+                return new TimeSpan(0);
+            },
+            enumerable: true,
+            configurable: true
+        });
         TimeSpan._secondsMultiplier = 1000;
         TimeSpan._minutesMultiplier = TimeSpan._secondsMultiplier * 60;
         return TimeSpan;
@@ -143,7 +147,7 @@ var eg;
     var GameTime = (function () {
         function GameTime() {
             this._type = "GameTime";
-            this._start = new Date();
+            this._start = this._lastUpdate = new Date();
 
             this.Update();
         }
@@ -4590,22 +4594,897 @@ var eg;
     var Map = eg.Map;
 })(eg || (eg = {}));
 
+Number.prototype.Clone = function () {
+    return this;
+};
+
 var eg;
 (function (eg) {
     (function (Tweening) {
         var Tween = (function () {
-            function Tween(from, to) {
+            function Tween(from, to, duration, tweeningFunction) {
+                this._from = from.Clone();
+                this._to = to.Clone();
+                this._current = this._from.Clone();
+                this._duration = duration;
+                this._elapsed = eg.TimeSpan.Zero;
+                this._playing = false;
+                this._onChange = new eg.EventHandler1();
+                this._onComplete = new eg.EventHandler1();
+                this._tweeningFunction = tweeningFunction;
             }
-            Object.defineProperty(Tween.prototype, "Playing", {
+            Object.defineProperty(Tween.prototype, "OnChange", {
                 get: function () {
-                    return this._playing;
+                    return this._onChange;
                 },
                 enumerable: true,
                 configurable: true
             });
+
+            Object.defineProperty(Tween.prototype, "OnComplete", {
+                get: function () {
+                    return this._onComplete;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(Tween.prototype, "From", {
+                get: function () {
+                    return this._from;
+                },
+                set: function (from) {
+                    this._from = from;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(Tween.prototype, "To", {
+                get: function () {
+                    return this._to;
+                },
+                set: function (to) {
+                    this._to = to;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(Tween.prototype, "Current", {
+                get: function () {
+                    return this._current;
+                },
+                set: function (current) {
+                    this._current = current;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(Tween.prototype, "Duration", {
+                get: function () {
+                    return this._duration;
+                },
+                set: function (duration) {
+                    this._duration = duration;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(Tween.prototype, "Elapsed", {
+                get: function () {
+                    return this._elapsed.Clone();
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(Tween.prototype, "TweeningFunction", {
+                get: function () {
+                    return this._tweeningFunction;
+                },
+                set: function (fn) {
+                    this._tweeningFunction = fn;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Tween.prototype.IsPlaying = function () {
+                return this._playing;
+            };
+
+            Tween.prototype.Play = function () {
+                this._playing = true;
+            };
+
+            Tween.prototype.Pause = function () {
+                this._playing = false;
+            };
+
+            Tween.prototype.Reset = function () {
+                this._elapsed.Milliseconds = 0;
+                this._current = this._from.Clone();
+            };
+
+            Tween.prototype.Stop = function () {
+                this._playing = false;
+                this.Reset();
+            };
+
+            Tween.prototype.Restart = function () {
+                this.Reset();
+                this.Play();
+            };
+
+            Tween.prototype.Reverse = function () {
+                this._elapsed = eg.TimeSpan.Zero;
+                this._to = this._from;
+                this._from = this.Current.Clone();
+            };
+
+            Tween.prototype.Update = function (gameTime) {
+                if (!this._playing || (this._elapsed.Equivalent(this._duration))) {
+                    return;
+                }
+
+                this._elapsed = this._elapsed.Add(gameTime.Elapsed);
+
+                if (this._elapsed.Milliseconds >= this._duration.Milliseconds) {
+                    this._elapsed = this._duration.Clone();
+
+                    this._current = this._to.Clone();
+                    this._playing = false;
+
+                    this._onComplete.Trigger(this);
+                } else {
+                    this._UpdateTween();
+                    this._onChange.Trigger(this._current.Clone());
+                }
+            };
+
+            Tween.prototype._UpdateTween = function () {
+            };
             return Tween;
         })();
         Tweening.Tween = Tween;
     })(eg.Tweening || (eg.Tweening = {}));
     var Tweening = eg.Tweening;
+})(eg || (eg = {}));
+
+var eg;
+(function (eg) {
+    (function (Tweening) {
+        var NumberTween = (function (_super) {
+            __extends(NumberTween, _super);
+            function NumberTween(from, to, duration, tweeningFunction) {
+                _super.call(this, from, to, duration, tweeningFunction);
+            }
+            NumberTween.prototype._UpdateTween = function () {
+                this.Current = this.TweeningFunction(this.From, this.To, this.Elapsed, this.Duration);
+            };
+            return NumberTween;
+        })(Tweening.Tween);
+        Tweening.NumberTween = NumberTween;
+    })(eg.Tweening || (eg.Tweening = {}));
+    var Tweening = eg.Tweening;
+})(eg || (eg = {}));
+
+var eg;
+(function (eg) {
+    (function (Tweening) {
+        var Size2dTween = (function (_super) {
+            __extends(Size2dTween, _super);
+            function Size2dTween(from, to, duration, tweeningFunction) {
+                _super.call(this, from, to, duration, tweeningFunction);
+            }
+            Size2dTween.prototype._UpdateTween = function () {
+                this.Current = new eg.Size2d(this.TweeningFunction(this.From.Width, this.To.Width, this.Elapsed, this.Duration), this.TweeningFunction(this.From.Height, this.To.Height, this.Elapsed, this.Duration));
+            };
+            return Size2dTween;
+        })(Tweening.Tween);
+        Tweening.Size2dTween = Size2dTween;
+    })(eg.Tweening || (eg.Tweening = {}));
+    var Tweening = eg.Tweening;
+})(eg || (eg = {}));
+
+var eg;
+(function (eg) {
+    (function (Tweening) {
+        var Vector2dTween = (function (_super) {
+            __extends(Vector2dTween, _super);
+            function Vector2dTween(from, to, duration, tweeningFunction) {
+                _super.call(this, from, to, duration, tweeningFunction);
+            }
+            Vector2dTween.prototype._UpdateTween = function () {
+                this.Current = new eg.Vector2d(this.TweeningFunction(this.From.X, this.To.X, this.Elapsed, this.Duration), this.TweeningFunction(this.From.Y, this.To.Y, this.Elapsed, this.Duration));
+            };
+            return Vector2dTween;
+        })(Tweening.Tween);
+        Tweening.Vector2dTween = Vector2dTween;
+    })(eg.Tweening || (eg.Tweening = {}));
+    var Tweening = eg.Tweening;
+})(eg || (eg = {}));
+
+var eg;
+(function (eg) {
+    (function (Tweening) {
+        (function (Functions) {
+            var Back = (function () {
+                function Back() {
+                }
+                Object.defineProperty(Back, "EaseIn", {
+                    get: function () {
+                        return Back._easeIn;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+
+                Object.defineProperty(Back, "EaseOut", {
+                    get: function () {
+                        return Back._easeOut;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+
+                Object.defineProperty(Back, "EaseInOut", {
+                    get: function () {
+                        return Back._easeInOut;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Back._easeIn = function (from, to, elapsed, duration) {
+                    var change = to - from, elapsedMilliseconds = elapsed.Milliseconds;
+
+                    return change * (elapsedMilliseconds /= duration.Milliseconds) * elapsedMilliseconds * ((1.70158 + 1) * elapsedMilliseconds - 1.70158) + from;
+                };
+                Back._easeOut = function (from, to, elapsed, duration) {
+                    var change = to - from, elapsedMilliseconds = elapsed.Milliseconds;
+
+                    return change * ((elapsedMilliseconds = elapsedMilliseconds / duration.Milliseconds - 1) * elapsedMilliseconds * ((1.70158 + 1) * elapsedMilliseconds + 1.70158) + 1) + from;
+                };
+                Back._easeInOut = function (from, to, elapsed, duration) {
+                    var change = to - from, elapsedMilliseconds = elapsed.Milliseconds, constant = 1.70158;
+
+                    if ((elapsedMilliseconds /= duration.Milliseconds / 2) < 1) {
+                        return change / 2 * (elapsedMilliseconds * elapsedMilliseconds * (((constant *= (1.525)) + 1) * elapsedMilliseconds - constant)) + from;
+                    }
+                    return change / 2 * ((elapsedMilliseconds -= 2) * elapsedMilliseconds * (((constant *= (1.525)) + 1) * elapsedMilliseconds + constant) + 2) + from;
+                };
+                return Back;
+            })();
+            Functions.Back = Back;
+        })(Tweening.Functions || (Tweening.Functions = {}));
+        var Functions = Tweening.Functions;
+    })(eg.Tweening || (eg.Tweening = {}));
+    var Tweening = eg.Tweening;
+})(eg || (eg = {}));
+
+var eg;
+(function (eg) {
+    (function (Tweening) {
+        (function (Functions) {
+            var Bounce = (function () {
+                function Bounce() {
+                }
+                Object.defineProperty(Bounce, "EaseIn", {
+                    get: function () {
+                        return Bounce._easeIn;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+
+                Object.defineProperty(Bounce, "EaseOut", {
+                    get: function () {
+                        return Bounce._easeOut;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+
+                Object.defineProperty(Bounce, "EaseInOut", {
+                    get: function () {
+                        return Bounce._easeInOut;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Bounce._easeIn = function (from, to, elapsed, duration) {
+                    var change = to - from;
+
+                    return change - Bounce.EaseOut(0, change, duration.Subtract(elapsed), duration) + from;
+                };
+                Bounce._easeOut = function (from, to, elapsed, duration) {
+                    var change = to - from, elapsedMilliseconds = elapsed.Milliseconds;
+
+                    if ((elapsedMilliseconds /= duration.Milliseconds) < (1 / 2.75)) {
+                        return change * (7.5625 * elapsedMilliseconds * elapsedMilliseconds) + from;
+                    } else if (elapsedMilliseconds < (2 / 2.75)) {
+                        return change * (7.5625 * (elapsedMilliseconds -= (1.5 / 2.75)) * elapsedMilliseconds + .75) + from;
+                    } else if (elapsedMilliseconds < (2.5 / 2.75)) {
+                        return change * (7.5625 * (elapsedMilliseconds -= (2.25 / 2.75)) * elapsedMilliseconds + .9375) + from;
+                    } else {
+                        return change * (7.5625 * (elapsedMilliseconds -= (2.625 / 2.75)) * elapsedMilliseconds + .984375) + from;
+                    }
+                };
+                Bounce._easeInOut = function (from, to, elapsed, duration) {
+                    var change = to - from;
+
+                    if (elapsed.Milliseconds < duration.Milliseconds / 2) {
+                        return Bounce.EaseIn(0, change, elapsed.Multiply(2), duration) * 0.5 + from;
+                    } else {
+                        return Bounce.EaseOut(0, change, elapsed.Multiply(2).Subtract(duration), duration) * .5 + change * 0.5 + from;
+                    }
+                };
+                return Bounce;
+            })();
+            Functions.Bounce = Bounce;
+        })(Tweening.Functions || (Tweening.Functions = {}));
+        var Functions = Tweening.Functions;
+    })(eg.Tweening || (eg.Tweening = {}));
+    var Tweening = eg.Tweening;
+})(eg || (eg = {}));
+
+var eg;
+(function (eg) {
+    (function (Tweening) {
+        (function (Functions) {
+            var Circular = (function () {
+                function Circular() {
+                }
+                Object.defineProperty(Circular, "EaseIn", {
+                    get: function () {
+                        return Circular._easeIn;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+
+                Object.defineProperty(Circular, "EaseOut", {
+                    get: function () {
+                        return Circular._easeOut;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+
+                Object.defineProperty(Circular, "EaseInOut", {
+                    get: function () {
+                        return Circular._easeInOut;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Circular._easeIn = function (from, to, elapsed, duration) {
+                    var change = to - from, elapsedMilliseconds = elapsed.Milliseconds;
+
+                    return -change * (Math.sqrt(1 - (elapsedMilliseconds /= duration.Milliseconds) * elapsedMilliseconds) - 1) + from;
+                };
+                Circular._easeOut = function (from, to, elapsed, duration) {
+                    var change = to - from, elapsedMilliseconds = elapsed.Milliseconds;
+
+                    return change * Math.sqrt(1 - (elapsedMilliseconds = elapsedMilliseconds / duration.Milliseconds - 1) * elapsedMilliseconds) + from;
+                };
+                Circular._easeInOut = function (from, to, elapsed, duration) {
+                    var change = to - from, elapsedMilliseconds = elapsed.Milliseconds;
+
+                    if ((elapsedMilliseconds /= duration.Milliseconds / 2) < 1) {
+                        return -change / 2 * (Math.sqrt(1 - elapsedMilliseconds * elapsedMilliseconds) - 1) + from;
+                    }
+                    return change / 2 * (Math.sqrt(1 - (elapsedMilliseconds -= 2) * elapsedMilliseconds) + 1) + from;
+                };
+                return Circular;
+            })();
+            Functions.Circular = Circular;
+        })(Tweening.Functions || (Tweening.Functions = {}));
+        var Functions = Tweening.Functions;
+    })(eg.Tweening || (eg.Tweening = {}));
+    var Tweening = eg.Tweening;
+})(eg || (eg = {}));
+
+var eg;
+(function (eg) {
+    (function (Tweening) {
+        (function (Functions) {
+            var Cubic = (function () {
+                function Cubic() {
+                }
+                Object.defineProperty(Cubic, "EaseIn", {
+                    get: function () {
+                        return Cubic._easeIn;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+
+                Object.defineProperty(Cubic, "EaseOut", {
+                    get: function () {
+                        return Cubic._easeOut;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+
+                Object.defineProperty(Cubic, "EaseInOut", {
+                    get: function () {
+                        return Cubic._easeInOut;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Cubic._easeIn = function (from, to, elapsed, duration) {
+                    var change = to - from, elapsedMilliseconds = elapsed.Milliseconds;
+
+                    return change * (elapsedMilliseconds /= duration.Milliseconds) * elapsedMilliseconds * elapsedMilliseconds + from;
+                };
+                Cubic._easeOut = function (from, to, elapsed, duration) {
+                    var change = to - from, elapsedMilliseconds = elapsed.Milliseconds;
+
+                    return change * ((elapsedMilliseconds = elapsedMilliseconds / duration.Milliseconds - 1) * elapsedMilliseconds * elapsedMilliseconds + 1) + from;
+                };
+                Cubic._easeInOut = function (from, to, elapsed, duration) {
+                    var change = to - from, elapsedMilliseconds = elapsed.Milliseconds;
+
+                    if ((elapsedMilliseconds /= duration.Milliseconds / 2) < 1) {
+                        return change / 2 * elapsedMilliseconds * elapsedMilliseconds * elapsedMilliseconds + from;
+                    }
+                    return change / 2 * ((elapsedMilliseconds -= 2) * elapsedMilliseconds * elapsedMilliseconds + 2) + from;
+                };
+                return Cubic;
+            })();
+            Functions.Cubic = Cubic;
+        })(Tweening.Functions || (Tweening.Functions = {}));
+        var Functions = Tweening.Functions;
+    })(eg.Tweening || (eg.Tweening = {}));
+    var Tweening = eg.Tweening;
+})(eg || (eg = {}));
+
+var eg;
+(function (eg) {
+    (function (Tweening) {
+        (function (Functions) {
+            var Elastic = (function () {
+                function Elastic() {
+                }
+                Object.defineProperty(Elastic, "EaseIn", {
+                    get: function () {
+                        return Elastic._easeIn;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+
+                Object.defineProperty(Elastic, "EaseOut", {
+                    get: function () {
+                        return Elastic._easeOut;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+
+                Object.defineProperty(Elastic, "EaseInOut", {
+                    get: function () {
+                        return Elastic._easeInOut;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Elastic._easeIn = function (from, to, elapsed, duration) {
+                    var change = to - from, elapsedMilliseconds = elapsed.Milliseconds, timePartial, timePartialQuarter;
+
+                    if (elapsedMilliseconds === 0) {
+                        return from;
+                    }
+                    if ((elapsedMilliseconds /= duration.Milliseconds) === 1) {
+                        return from + change;
+                    }
+
+                    timePartial = duration.Milliseconds * .3;
+                    timePartialQuarter = timePartial / 4;
+
+                    return -(change * Math.pow(2, 10 * (elapsedMilliseconds -= 1)) * Math.sin((elapsedMilliseconds * duration.Milliseconds - timePartialQuarter) * (2 * Math.PI) / timePartial)) + from;
+                };
+                Elastic._easeOut = function (from, to, elapsed, duration) {
+                    var change = to - from, elapsedMilliseconds = elapsed.Milliseconds, timePartial, timePartialQuarter;
+
+                    if (elapsedMilliseconds === 0) {
+                        return from;
+                    }
+
+                    if ((elapsedMilliseconds /= duration.Milliseconds) === 1) {
+                        return from + change;
+                    }
+
+                    timePartial = duration.Milliseconds * .3;
+                    timePartialQuarter = timePartial / 4;
+
+                    return (change * Math.pow(2, -10 * elapsedMilliseconds) * Math.sin((elapsedMilliseconds * duration.Milliseconds - timePartialQuarter) * (2 * Math.PI) / timePartial) + change + from);
+                };
+                Elastic._easeInOut = function (from, to, elapsed, duration) {
+                    var change = to - from, elapsedMilliseconds = elapsed.Milliseconds, timePartial, timePartialQuarter;
+
+                    if (elapsedMilliseconds === 0) {
+                        return from;
+                    }
+
+                    if ((elapsedMilliseconds /= duration.Milliseconds / 2) === 2) {
+                        return from + change;
+                    }
+
+                    timePartial = duration.Milliseconds * (.3 * 1.5);
+                    timePartialQuarter = timePartial / 4;
+
+                    if (elapsedMilliseconds < 1) {
+                        return -.5 * (change * Math.pow(2, 10 * (elapsedMilliseconds -= 1)) * Math.sin((elapsedMilliseconds * duration.Milliseconds - timePartialQuarter) * (2 * Math.PI) / timePartial)) + from;
+                    }
+                    return (change * Math.pow(2, -10 * (elapsedMilliseconds -= 1)) * Math.sin((elapsedMilliseconds * duration.Milliseconds - timePartialQuarter) * (2 * Math.PI) / timePartial) * .5 + change + from);
+                };
+                return Elastic;
+            })();
+            Functions.Elastic = Elastic;
+        })(Tweening.Functions || (Tweening.Functions = {}));
+        var Functions = Tweening.Functions;
+    })(eg.Tweening || (eg.Tweening = {}));
+    var Tweening = eg.Tweening;
+})(eg || (eg = {}));
+
+var eg;
+(function (eg) {
+    (function (Tweening) {
+        (function (Functions) {
+            var Exponential = (function () {
+                function Exponential() {
+                }
+                Object.defineProperty(Exponential, "EaseIn", {
+                    get: function () {
+                        return Exponential._easeIn;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+
+                Object.defineProperty(Exponential, "EaseOut", {
+                    get: function () {
+                        return Exponential._easeOut;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+
+                Object.defineProperty(Exponential, "EaseInOut", {
+                    get: function () {
+                        return Exponential._easeInOut;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Exponential._easeIn = function (from, to, elapsed, duration) {
+                    var change = to - from, elapsedMilliseconds = elapsed.Milliseconds;
+
+                    return (elapsedMilliseconds == 0) ? from : change * Math.pow(2, 10 * (elapsedMilliseconds / duration.Milliseconds - 1)) + from;
+                };
+                Exponential._easeOut = function (from, to, elapsed, duration) {
+                    var change = to - from, elapsedMilliseconds = elapsed.Milliseconds;
+
+                    return (elapsedMilliseconds == duration.Milliseconds) ? from + change : change * (-Math.pow(2, -10 * elapsedMilliseconds / duration.Milliseconds) + 1) + from;
+                };
+                Exponential._easeInOut = function (from, to, elapsed, duration) {
+                    var change = to - from, elapsedMilliseconds = elapsed.Milliseconds;
+
+                    if (elapsedMilliseconds == 0) {
+                        return from;
+                    }
+                    if (elapsedMilliseconds == duration.Milliseconds) {
+                        return from + change;
+                    }
+                    if ((elapsedMilliseconds /= duration.Milliseconds / 2) < 1) {
+                        return change / 2 * Math.pow(2, 10 * (elapsedMilliseconds - 1)) + from;
+                    }
+                    return change / 2 * (-Math.pow(2, -10 * --elapsedMilliseconds) + 2) + from;
+                };
+                return Exponential;
+            })();
+            Functions.Exponential = Exponential;
+        })(Tweening.Functions || (Tweening.Functions = {}));
+        var Functions = Tweening.Functions;
+    })(eg.Tweening || (eg.Tweening = {}));
+    var Tweening = eg.Tweening;
+})(eg || (eg = {}));
+
+var eg;
+(function (eg) {
+    (function (Tweening) {
+        (function (Functions) {
+            var Linear = (function () {
+                function Linear() {
+                }
+                Object.defineProperty(Linear, "EaseNone", {
+                    get: function () {
+                        return Linear._easeNone;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Linear._easeNone = function (from, to, elapsed, duration) {
+                    var change = to - from;
+
+                    return change * elapsed.Milliseconds / duration.Milliseconds + from;
+                };
+                return Linear;
+            })();
+            Functions.Linear = Linear;
+        })(Tweening.Functions || (Tweening.Functions = {}));
+        var Functions = Tweening.Functions;
+    })(eg.Tweening || (eg.Tweening = {}));
+    var Tweening = eg.Tweening;
+})(eg || (eg = {}));
+
+var eg;
+(function (eg) {
+    (function (Tweening) {
+        (function (Functions) {
+            var Quadratic = (function () {
+                function Quadratic() {
+                }
+                Object.defineProperty(Quadratic, "EaseIn", {
+                    get: function () {
+                        return Quadratic._easeIn;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+
+                Object.defineProperty(Quadratic, "EaseOut", {
+                    get: function () {
+                        return Quadratic._easeOut;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+
+                Object.defineProperty(Quadratic, "EaseInOut", {
+                    get: function () {
+                        return Quadratic._easeInOut;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Quadratic._easeIn = function (from, to, elapsed, duration) {
+                    var change = to - from, elapsedMilliseconds = elapsed.Milliseconds;
+
+                    return change * (elapsedMilliseconds /= duration.Milliseconds) * elapsedMilliseconds + from;
+                };
+                Quadratic._easeOut = function (from, to, elapsed, duration) {
+                    var change = to - from, elapsedMilliseconds = elapsed.Milliseconds;
+
+                    return -change * (elapsedMilliseconds /= duration.Milliseconds) * (elapsedMilliseconds - 2) + from;
+                };
+                Quadratic._easeInOut = function (from, to, elapsed, duration) {
+                    var change = to - from, elapsedMilliseconds = elapsed.Milliseconds;
+
+                    if ((elapsedMilliseconds /= duration.Milliseconds / 2) < 1) {
+                        return change / 2 * elapsedMilliseconds * elapsedMilliseconds + from;
+                    }
+
+                    return -change / 2 * ((--elapsedMilliseconds) * (elapsedMilliseconds - 2) - 1) + from;
+                };
+                return Quadratic;
+            })();
+            Functions.Quadratic = Quadratic;
+        })(Tweening.Functions || (Tweening.Functions = {}));
+        var Functions = Tweening.Functions;
+    })(eg.Tweening || (eg.Tweening = {}));
+    var Tweening = eg.Tweening;
+})(eg || (eg = {}));
+
+var eg;
+(function (eg) {
+    (function (Tweening) {
+        (function (Functions) {
+            var Quartic = (function () {
+                function Quartic() {
+                }
+                Object.defineProperty(Quartic, "EaseIn", {
+                    get: function () {
+                        return Quartic._easeIn;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+
+                Object.defineProperty(Quartic, "EaseOut", {
+                    get: function () {
+                        return Quartic._easeOut;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+
+                Object.defineProperty(Quartic, "EaseInOut", {
+                    get: function () {
+                        return Quartic._easeInOut;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Quartic._easeIn = function (from, to, elapsed, duration) {
+                    var change = to - from, elapsedMilliseconds = elapsed.Milliseconds;
+
+                    return change * (elapsedMilliseconds /= duration.Milliseconds) * elapsedMilliseconds * elapsedMilliseconds * elapsedMilliseconds + from;
+                };
+                Quartic._easeOut = function (from, to, elapsed, duration) {
+                    var change = to - from, elapsedMilliseconds = elapsed.Milliseconds;
+
+                    return -change * ((elapsedMilliseconds = elapsedMilliseconds / duration.Milliseconds - 1) * elapsedMilliseconds * elapsedMilliseconds * elapsedMilliseconds - 1) + from;
+                };
+                Quartic._easeInOut = function (from, to, elapsed, duration) {
+                    var change = to - from, elapsedMilliseconds = elapsed.Milliseconds;
+
+                    if ((elapsedMilliseconds /= duration.Milliseconds / 2) < 1) {
+                        return change / 2 * elapsedMilliseconds * elapsedMilliseconds * elapsedMilliseconds * elapsedMilliseconds + from;
+                    }
+                    return -change / 2 * ((elapsedMilliseconds -= 2) * elapsedMilliseconds * elapsedMilliseconds * elapsedMilliseconds - 2) + from;
+                };
+                return Quartic;
+            })();
+            Functions.Quartic = Quartic;
+        })(Tweening.Functions || (Tweening.Functions = {}));
+        var Functions = Tweening.Functions;
+    })(eg.Tweening || (eg.Tweening = {}));
+    var Tweening = eg.Tweening;
+})(eg || (eg = {}));
+
+var eg;
+(function (eg) {
+    (function (Tweening) {
+        (function (Functions) {
+            var Quintic = (function () {
+                function Quintic() {
+                }
+                Object.defineProperty(Quintic, "EaseIn", {
+                    get: function () {
+                        return Quintic._easeIn;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+
+                Object.defineProperty(Quintic, "EaseOut", {
+                    get: function () {
+                        return Quintic._easeOut;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+
+                Object.defineProperty(Quintic, "EaseInOut", {
+                    get: function () {
+                        return Quintic._easeInOut;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Quintic._easeIn = function (from, to, elapsed, duration) {
+                    var change = to - from, elapsedMilliseconds = elapsed.Milliseconds;
+
+                    return change * (elapsedMilliseconds /= duration.Milliseconds) * elapsedMilliseconds * elapsedMilliseconds * elapsedMilliseconds * elapsedMilliseconds + from;
+                };
+                Quintic._easeOut = function (from, to, elapsed, duration) {
+                    var change = to - from, elapsedMilliseconds = elapsed.Milliseconds;
+
+                    return change * ((elapsedMilliseconds = elapsedMilliseconds / duration.Milliseconds - 1) * elapsedMilliseconds * elapsedMilliseconds * elapsedMilliseconds * elapsedMilliseconds + 1) + from;
+                };
+                Quintic._easeInOut = function (from, to, elapsed, duration) {
+                    var change = to - from, elapsedMilliseconds = elapsed.Milliseconds;
+
+                    if ((elapsedMilliseconds /= duration.Milliseconds / 2) < 1) {
+                        return change / 2 * elapsedMilliseconds * elapsedMilliseconds * elapsedMilliseconds * elapsedMilliseconds * elapsedMilliseconds + from;
+                    }
+                    return change / 2 * ((elapsedMilliseconds -= 2) * elapsedMilliseconds * elapsedMilliseconds * elapsedMilliseconds * elapsedMilliseconds + 2) + from;
+                };
+                return Quintic;
+            })();
+            Functions.Quintic = Quintic;
+        })(Tweening.Functions || (Tweening.Functions = {}));
+        var Functions = Tweening.Functions;
+    })(eg.Tweening || (eg.Tweening = {}));
+    var Tweening = eg.Tweening;
+})(eg || (eg = {}));
+
+var eg;
+(function (eg) {
+    (function (Tweening) {
+        (function (Functions) {
+            var Sinusoidal = (function () {
+                function Sinusoidal() {
+                }
+                Object.defineProperty(Sinusoidal, "EaseIn", {
+                    get: function () {
+                        return Sinusoidal._easeIn;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+
+                Object.defineProperty(Sinusoidal, "EaseOut", {
+                    get: function () {
+                        return Sinusoidal._easeOut;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+
+                Object.defineProperty(Sinusoidal, "EaseInOut", {
+                    get: function () {
+                        return Sinusoidal._easeInOut;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Sinusoidal._easeIn = function (from, to, elapsed, duration) {
+                    var change = to - from, elapsedMilliseconds = elapsed.Milliseconds;
+
+                    return -change * Math.cos(elapsedMilliseconds / duration.Milliseconds * (Math.PI / 2)) + change + from;
+                };
+                Sinusoidal._easeOut = function (from, to, elapsed, duration) {
+                    var change = to - from, elapsedMilliseconds = elapsed.Milliseconds;
+
+                    return change * Math.sin(elapsedMilliseconds / duration.Milliseconds * (Math.PI / 2)) + from;
+                };
+                Sinusoidal._easeInOut = function (from, to, elapsed, duration) {
+                    var change = to - from, elapsedMilliseconds = elapsed.Milliseconds;
+
+                    return -change / 2 * (Math.cos(Math.PI * elapsedMilliseconds / duration.Milliseconds) - 1) + from;
+                };
+                return Sinusoidal;
+            })();
+            Functions.Sinusoidal = Sinusoidal;
+        })(Tweening.Functions || (Tweening.Functions = {}));
+        var Functions = Tweening.Functions;
+    })(eg.Tweening || (eg.Tweening = {}));
+    var Tweening = eg.Tweening;
+})(eg || (eg = {}));
+
+var eg;
+(function (eg) {
+    var EventHandler3 = (function () {
+        function EventHandler3() {
+            this._type = "Event";
+            this._actions = [];
+            this._hasBindings = false;
+        }
+        EventHandler3.prototype.Bind = function (action) {
+            this._actions.push(action);
+            this._hasBindings = true;
+        };
+
+        EventHandler3.prototype.Unbind = function (action) {
+            for (var i = 0; i < this._actions.length; i++) {
+                if (this._actions[i] === action) {
+                    this._actions.splice(i, 1);
+
+                    this._hasBindings = this._actions.length > 0;
+                    return;
+                }
+            }
+        };
+
+        EventHandler3.prototype.HasBindings = function () {
+            return this._hasBindings;
+        };
+
+        EventHandler3.prototype.Trigger = function (val1, val2, val3) {
+            for (var i = 0; i < this._actions.length; i++) {
+                this._actions[i](val1, val2, val3);
+            }
+        };
+        return EventHandler3;
+    })();
+    eg.EventHandler3 = EventHandler3;
 })(eg || (eg = {}));

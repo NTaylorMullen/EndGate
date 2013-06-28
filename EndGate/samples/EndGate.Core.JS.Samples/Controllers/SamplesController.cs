@@ -90,5 +90,10 @@ namespace EndGate.Core.JS.Samples.Controllers
         {
             return View();
         }
+
+        public ActionResult Tweening()
+        {
+            return View();
+        }
     }
 }

@@ -1,0 +1,46 @@
+﻿@{
+    ViewBag.SampleName = "Tweening";
+    Layout = "~/Views/Shared/_SamplesLayout.cshtml";
+}
+
+@section styles {
+    <style>
+        select,
+        input[type="text"] {
+            margin-bottom:0px;
+        } 
+    </style>
+}
+
+<div class="page-header section_header">
+    <h3>@ViewBag.SampleName</h3>
+    <p>Demonstrates how to use tweens to animate objects.</p>
+</div>
+
+<div class="row ">Tween
+    <select id="tweenType">
+        <option value="Position">Position</option>
+        <option value="Size">Size</option>
+        <option value="Rotation">Rotation</option>
+        <option value="Opacity">Opacity</option>
+    </select>
+    with tweening function
+    <select id="tweenFunction">
+    </select>
+    over
+    <input type="text" id="tweenDuration" class="input-mini" value="1" />
+    second(s)
+    <button class="btn default" id="tweenPlay">Play</button>
+</div>
+
+<div class="row">
+    <div id="gameHolder" class="form-vertical well" style="height: 400px;">
+    </div>
+</div>
+
+@section scripts {
+    <script data-typescript="true" src="~/Content/Samples/Tweening/TweenManager.js"></script>
+    <script data-typescript="true" src="~/Content/Samples/Tweening/UI.js"></script>
+    <script data-typescript="true" src="~/Content/Samples/Tweening/Game.js"></script>
+    <script data-typescript="true" src="~/Content/Samples/Tweening/Main.js"></script>
+}

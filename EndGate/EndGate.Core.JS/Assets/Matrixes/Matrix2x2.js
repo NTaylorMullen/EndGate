@@ -1,4 +1,5 @@
 /// <reference path="../../Interfaces/ITyped.ts" />
+/// <reference path="../../Interfaces/ICloneable.ts" />
 /// <reference path="../Vectors/Vector2d.ts" />
 /// <reference path="../../Extensions/MathExtensions.ts" />
 var eg;

@@ -1,4 +1,5 @@
 /// <reference path="../Vectors/Vector2d.ts" />
+/// <reference path="../../Interfaces/ICloneable.ts" />
 /// <reference path="../../Interfaces/ITyped.ts" />
 var eg;
 (function (eg) {

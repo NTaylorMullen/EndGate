@@ -64,8 +64,76 @@
     <Content Include="Assets\TimeSpan.js">
       <DependentUpon>TimeSpan.ts</DependentUpon>
     </Content>
+    <TypeScriptCompile Include="Tweening\Functions\Linear.ts" />
+    <TypeScriptCompile Include="Tweening\Functions\ITweeningFunction.ts" />
+    <TypeScriptCompile Include="Interfaces\ICloneable.ts" />
+    <TypeScriptCompile Include="Extensions\NumberExtensions.ts" />
+    <Content Include="Extensions\NumberExtensions.js">
+      <DependentUpon>NumberExtensions.ts</DependentUpon>
+    </Content>
+    <Content Include="Interfaces\ICloneable.js">
+      <DependentUpon>ICloneable.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Tweening\Functions\Back.ts" />
+    <Content Include="Tweening\Functions\Back.js">
+      <DependentUpon>Back.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Tweening\Functions\Cubic.ts" />
+    <TypeScriptCompile Include="Tweening\Functions\Circular.ts" />
+    <TypeScriptCompile Include="Tweening\Functions\Bounce.ts" />
+    <Content Include="Tweening\Functions\Bounce.js">
+      <DependentUpon>Bounce.ts</DependentUpon>
+    </Content>
+    <Content Include="Tweening\Functions\Circular.js">
+      <DependentUpon>Circular.ts</DependentUpon>
+    </Content>
+    <Content Include="Tweening\Functions\Cubic.js">
+      <DependentUpon>Cubic.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Tweening\Functions\Exponential.ts" />
+    <TypeScriptCompile Include="Tweening\Functions\Elastic.ts" />
+    <Content Include="Tweening\Functions\Elastic.js">
+      <DependentUpon>Elastic.ts</DependentUpon>
+    </Content>
+    <Content Include="Tweening\Functions\Exponential.js">
+      <DependentUpon>Exponential.ts</DependentUpon>
+    </Content>
+    <Content Include="Tweening\Functions\ITweeningFunction.js">
+      <DependentUpon>ITweeningFunction.ts</DependentUpon>
+    </Content>
+    <Content Include="Tweening\Functions\Linear.js">
+      <DependentUpon>Linear.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Tweening\Functions\Quadratic.ts" />
+    <Content Include="Tweening\Functions\Quadratic.js">
+      <DependentUpon>Quadratic.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Tweening\Functions\Quartic.ts" />
+    <Content Include="Tweening\Functions\Quartic.js">
+      <DependentUpon>Quartic.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Tweening\Functions\Quintic.ts" />
+    <Content Include="Tweening\Functions\Quintic.js">
+      <DependentUpon>Quintic.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Tweening\Functions\Sinusoidal.ts" />
+    <Content Include="Tweening\Functions\Sinusoidal.js">
+      <DependentUpon>Sinusoidal.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Tweening\NumberTween.ts" />
+    <Content Include="Tweening\NumberTween.js">
+      <DependentUpon>NumberTween.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Tweening\Size2dTween.ts" />
+    <Content Include="Tweening\Size2dTween.js">
+      <DependentUpon>Size2dTween.ts</DependentUpon>
+    </Content>
     <Content Include="Tweening\Tween.js">
       <DependentUpon>Tween.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Tweening\Vector2dTween.ts" />
+    <Content Include="Tweening\Vector2dTween.js">
+      <DependentUpon>Vector2dTween.ts</DependentUpon>
     </Content>
     <Content Include="Utilities\EventHandler1.js">
       <DependentUpon>EventHandler1.ts</DependentUpon>
@@ -380,6 +448,10 @@
     <Content Include="Utilities\EventHandler2.js">
       <DependentUpon>EventHandler2.ts</DependentUpon>
     </Content>
+    <TypeScriptCompile Include="Utilities\EventHandler3.ts" />
+    <Content Include="Utilities\EventHandler3.js">
+      <DependentUpon>EventHandler3.ts</DependentUpon>
+    </Content>
     <Content Include="Utilities\NoopTripInvoker.js">
       <DependentUpon>NoopTripInvoker.ts</DependentUpon>
     </Content>
@@ -390,6 +462,7 @@
   <ItemGroup>
     <Content Include="build.ps1" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets')" />
   <Target Name="BeforeBuild">
     <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass .\build.ps1" WorkingDirectory="$(ProjectDir)" Condition=" '$(OS)' == 'Windows_NT'" />

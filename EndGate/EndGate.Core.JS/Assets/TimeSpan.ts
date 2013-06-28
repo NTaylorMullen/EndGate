@@ -1,11 +1,12 @@
 /// <reference path="../Interfaces/ITyped.ts" />
+/// <reference path="../Interfaces/ICloneable.ts" />
 
 module eg {
 
     /**
     * Defines a time interval.
     */
-    export class TimeSpan implements _.ITyped {
+    export class TimeSpan implements _.ITyped, ICloneable {
         public _type: string = "TimeSpan";
 
         private static _secondsMultiplier: number = 1000;
@@ -231,14 +232,7 @@ module eg {
         */
         public static FromMinutes(val: number): TimeSpan {
             return new TimeSpan(0, 0, val);
-        }
-
-        /**
-        * Returns a TimeSpan that represents a 0 millisecond time interval.
-        */
-        public static Zero(): TimeSpan {
-            return new TimeSpan(0);
-        }
+        }        
 
         /**
         * Returns a TimeSpan that represents the time between the two dates.
@@ -247,6 +241,14 @@ module eg {
         */
         public static DateSpan(from: Date, to: Date): TimeSpan {
             return new TimeSpan(to.getTime() - from.getTime());
+        }
+
+
+        /**
+        * Gets a TimeSpan that represents a 0 millisecond time interval.
+        */
+        public static get Zero(): TimeSpan {
+            return new TimeSpan(0);
         }
     }
 

@@ -39,6 +39,17 @@ var CollisionInspector;
 
             // Triggers when any button gets released within the game area
             this.Input.Mouse.OnUp.Bind(function (clickEvent) {
+                var savedObject = _this._draggingObject;
+
+                _this._currentTween = new eg.Tweening.Vector2dTween(_this._draggingObject.Bounds.Position, _this._draggingObject.Bounds.Position.Add(new eg.Vector2d(300, 100)), eg.TimeSpan.FromSeconds(1), eg.Tweening.Functions.Back.EaseInOut);
+                _this._currentTween.OnChange.Bind(function (c) {
+                    savedObject.Graphic.Position = savedObject.Bounds.Position = c;
+                });
+                _this._currentTween.OnComplete.Bind(function (t) {
+                    console.log(t.Elapsed.Milliseconds);
+                });
+                _this._currentTween.Play();
+
                 // Reset all the dragging behaviors
                 _this._draggingObject = null;
                 _this._dragOffset = null;
@@ -68,6 +79,10 @@ var CollisionInspector;
 
         Game.prototype.Update = function (gameTime) {
             var rotateSpeed, rotateDirection, difference;
+
+            if (this._currentTween) {
+                this._currentTween.Update(gameTime);
+            }
 
             if (this._draggingObject !== null) {
                 this._draggingObject.Move(this._currentMousePosition.Add(this._dragOffset.Negate()));

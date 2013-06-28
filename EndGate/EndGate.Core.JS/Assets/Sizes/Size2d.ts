@@ -1,4 +1,5 @@
 /// <reference path="../Vectors/Vector2d.ts" />
+/// <reference path="../../Interfaces/ICloneable.ts" />
 /// <reference path="../../Interfaces/ITyped.ts" />
 
 module eg {
@@ -6,7 +7,7 @@ module eg {
     /**
     * Defines a two dimensional size object which specifies a Width and Height.
     */
-    export class Size2d implements _.ITyped {
+    export class Size2d implements _.ITyped, ICloneable {
         public _type: string = "Size2d";
 
         /**

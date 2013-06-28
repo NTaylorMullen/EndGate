@@ -1,4 +1,5 @@
 /// <reference path="../Interfaces/ITyped.ts" />
+/// <reference path="../Interfaces/ICloneable.ts" />
 var eg;
 (function (eg) {
     /**
@@ -153,13 +154,6 @@ var eg;
             return new TimeSpan(0, 0, val);
         };
 
-        TimeSpan.Zero = /**
-        * Returns a TimeSpan that represents a 0 millisecond time interval.
-        */
-        function () {
-            return new TimeSpan(0);
-        };
-
         TimeSpan.DateSpan = /**
         * Returns a TimeSpan that represents the time between the two dates.
         * @param from The from date.
@@ -168,6 +162,17 @@ var eg;
         function (from, to) {
             return new TimeSpan(to.getTime() - from.getTime());
         };
+
+        Object.defineProperty(TimeSpan, "Zero", {
+            get: /**
+            * Gets a TimeSpan that represents a 0 millisecond time interval.
+            */
+            function () {
+                return new TimeSpan(0);
+            },
+            enumerable: true,
+            configurable: true
+        });
         TimeSpan._secondsMultiplier = 1000;
         TimeSpan._minutesMultiplier = TimeSpan._secondsMultiplier * 60;
         return TimeSpan;
