@@ -24,7 +24,7 @@ declare module eg._ {
 declare module eg {
 
     /**
-    * Represents an object that can be cloned
+    * Represents an object that can be cloned.
     */
     export interface ICloneable {
         /**

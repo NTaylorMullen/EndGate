@@ -16,7 +16,7 @@ declare module eg._ {
 }
 declare module eg {
     /**
-    * Represents an object that can be cloned
+    * Represents an object that can be cloned.
     */
     interface ICloneable {
         /**
@@ -965,11 +965,11 @@ declare module eg.Collision {
         /**
         * Gets an event that is triggered when a collision happens.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
-        public OnCollision : eg.EventHandler1<eg.Collision.Assets.CollisionData>;
+        public OnCollision : eg.EventHandler1<Collision.Assets.CollisionData>;
         /**
         * Gets an event that is triggered when the Collidable has been disposed.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
-        public OnDisposed : eg.EventHandler1<eg.Collision.Collidable>;
+        public OnDisposed : eg.EventHandler1<Collidable>;
         /**
         * Determines if the provided collidable is colliding with this Collidable.
         * @param other Collidable to check collision with.
@@ -1036,7 +1036,7 @@ declare module eg.Collision {
         /**
         * Gets an event that is triggered when a collision happens among two of the monitored objects.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
-        public OnCollision : eg.EventHandler2<eg.Collision.Collidable, eg.Collision.Collidable>;
+        public OnCollision : eg.EventHandler2<Collision.Collidable, Collision.Collidable>;
         /**
         * Monitors the provided collidable and will trigger its Collided function and OnCollision event whenever a collision occurs with it and another Collidable.
         * If the provided collidable gets disposed it will automatically become unmonitored.
@@ -1382,27 +1382,27 @@ declare module eg.Input {
         /**
         * Gets an event that is triggered when a mouse click occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
-        public OnClick : eg.EventHandler1<eg.Input.IMouseClickEvent>;
+        public OnClick : eg.EventHandler1<Input.IMouseClickEvent>;
         /**
         * Gets an event that is triggered when a mouse double click occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
-        public OnDoubleClick : eg.EventHandler1<eg.Input.IMouseClickEvent>;
+        public OnDoubleClick : eg.EventHandler1<Input.IMouseClickEvent>;
         /**
         * Gets an event that is triggered when a mouse down event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
-        public OnDown : eg.EventHandler1<eg.Input.IMouseClickEvent>;
+        public OnDown : eg.EventHandler1<Input.IMouseClickEvent>;
         /**
         * Gets an event that is triggered when a mouse up event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
-        public OnUp : eg.EventHandler1<eg.Input.IMouseClickEvent>;
+        public OnUp : eg.EventHandler1<Input.IMouseClickEvent>;
         /**
         * Gets an event that is triggered when a mouse move event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
-        public OnMove : eg.EventHandler1<eg.Input.IMouseEvent>;
+        public OnMove : eg.EventHandler1<Input.IMouseEvent>;
         /**
         * Gets an event that is triggered when a mouse scroll event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
-        public OnScroll : eg.EventHandler1<eg.Input.IMouseScrollEvent>;
+        public OnScroll : eg.EventHandler1<Input.IMouseScrollEvent>;
         private Wire();
         private BuildEvent<T>(eventHandler, mouseEventBuilder, returnValue?);
         private BuildMouseScrollEvent(event);
@@ -1578,15 +1578,15 @@ declare module eg.Input {
         /**
         * Gets an event that is triggered when any key press occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
-        public OnKeyPress : eg.EventHandler1<eg.Input.KeyboardCommandEvent>;
+        public OnKeyPress : eg.EventHandler1<Input.KeyboardCommandEvent>;
         /**
         *Gets an event that is triggered when any key goes down.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
-        public OnKeyDown : eg.EventHandler1<eg.Input.KeyboardCommandEvent>;
+        public OnKeyDown : eg.EventHandler1<Input.KeyboardCommandEvent>;
         /**
         * Gets an event that is triggered when any key comes up.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
-        public OnKeyUp : eg.EventHandler1<eg.Input.KeyboardCommandEvent>;
+        public OnKeyUp : eg.EventHandler1<Input.KeyboardCommandEvent>;
         /**
         * Binds function to be called when the keyCommand is pressed.  To unbind the function, dispose of the returned KeyboardCommand.
         * @param keyCommand The command string required to execute the action.
@@ -2075,7 +2075,7 @@ declare module eg.MovementControllers {
         * Event: Triggered when a the movement controller starts or stops a movement.  Functions can be bound or unbound to this event to be executed when the event triggers.
         * Passes an IMoveEvent to bound functions.
         */
-        public OnMove: eg.EventHandler1<eg.MovementControllers.IMoveEvent>;
+        public OnMove: eg.EventHandler1<MovementControllers.IMoveEvent>;
         /**
         * Determines if the movement controller is moving in the provided direction.
         * @param direction The direction to check.
@@ -2388,7 +2388,7 @@ declare module eg.Graphics.Assets {
         /**
         * Gets an event that is triggered when the base image is finished loading.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
-        public OnLoaded : eg.EventHandler1<eg.Graphics.Assets.ImageSource>;
+        public OnLoaded : eg.EventHandler1<ImageSource>;
         /**
         * Returns the base Size of the image source.
         */
@@ -3249,7 +3249,7 @@ declare module eg.Tweening {
         /**
         * Gets an event that is triggered when the tween has completed transitioning the Current value, once triggered Elapsed will be equivalent to Duration and Current will be equivalent to To.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
-        public OnComplete : eg.EventHandler1<eg.Tweening.Tween<T>>;
+        public OnComplete : eg.EventHandler1<Tween<T>>;
         /**
         * Gets or sets the From component of the tween.
         */
