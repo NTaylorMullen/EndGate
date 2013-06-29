@@ -49,7 +49,7 @@ var Texts;
         };
 
         TextAnimator.prototype.Position = function (text, gameTime) {
-            var incrementor = TextAnimator.AnimationSpeed * gameTime.ElapsedSecond, direction = text.Position.Subtract(this._defaultPosition).Abs().Sign();
+            var incrementor = TextAnimator.AnimationSpeed * gameTime.Elapsed.Seconds, direction = text.Position.Subtract(this._defaultPosition).Abs().Sign();
 
             if (direction.Magnitude() === 0) {
                 direction = eg.Vector2d.One;
@@ -59,19 +59,19 @@ var Texts;
         };
 
         TextAnimator.prototype.Rotation = function (text, gameTime) {
-            var incrementor = TextAnimator.RotationSpeed * gameTime.ElapsedSecond, direction = 1;
+            var incrementor = TextAnimator.RotationSpeed * gameTime.Elapsed.Seconds, direction = 1;
 
             text.Rotation += direction * this.Direction * incrementor;
         };
 
         TextAnimator.prototype.Size = function (text, gameTime) {
-            var incrementor = (TextAnimator.AnimationSpeed / 2) * gameTime.ElapsedSecond;
+            var incrementor = (TextAnimator.AnimationSpeed / 2) * gameTime.Elapsed.Seconds;
 
             text.FontSettings.FontSize = parseFloat(text.FontSettings.FontSize) + this.Direction * incrementor + "pt";
         };
 
         TextAnimator.prototype.Opacity = function (text, gameTime) {
-            var incrementor = .33 * gameTime.ElapsedSecond;
+            var incrementor = .33 * gameTime.Elapsed.Seconds;
 
             text.Opacity += incrementor * this.Direction;
 

@@ -55,11 +55,11 @@ module Camera {
         public Update(gameTime: eg.GameTime): void {
             var cameraPosition: eg.Vector2d,
                 // Calculate how far we can zoom or move
-                // ElapsedSecond represents the fraction of the second that has surpassed since the last Update.
+                // Elapsed.Seconds represents the fraction of the second that has surpassed since the last Update.
                 // By multiplying the move speed by the elapsed second we can ensure that over a time span of 1
                 // second that we move this._cameraMoveSpeed in distance.
-                movementIncrementor = gameTime.ElapsedSecond * this._cameraMoveSpeed,
-                zoomIncrementor = gameTime.ElapsedSecond * this._cameraZoomSpeed;
+                movementIncrementor = gameTime.Elapsed.Seconds * this._cameraMoveSpeed,
+                zoomIncrementor = gameTime.Elapsed.Seconds * this._cameraZoomSpeed;
 
             // Handle movement directions, these flags are controlled by the user based on what keys they press
             if (this._movingDirection.Up) {

@@ -94,7 +94,7 @@ var CollisionInspector;
                 // Will rotate different directions based on what side of the axis the X is on
                 rotateDirection = difference.Sign().X;
 
-                this._rotatingObject.Rotate(rotateSpeed * gameTime.ElapsedSecond * rotateDirection);
+                this._rotatingObject.Rotate(rotateSpeed * gameTime.Elapsed.Seconds * rotateDirection);
             }
 
             for (var i = 0; i < this._collidableShapes.length; i++) {

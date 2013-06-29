@@ -50,7 +50,7 @@ var Shapes;
         };
 
         ShapeAnimator.prototype.Position = function (shape, gameTime) {
-            var incrementor = ShapeAnimator.AnimationSpeed * gameTime.ElapsedSecond, direction = shape.Position.Subtract(this._defaultPosition).Abs().Sign();
+            var incrementor = ShapeAnimator.AnimationSpeed * gameTime.Elapsed.Seconds, direction = shape.Position.Subtract(this._defaultPosition).Abs().Sign();
 
             if (direction.Magnitude() === 0) {
                 direction = eg.Vector2d.One;
@@ -60,7 +60,7 @@ var Shapes;
         };
 
         ShapeAnimator.prototype.Size = function (shape, gameTime) {
-            var incrementor = ShapeAnimator.AnimationSpeed * gameTime.ElapsedSecond;
+            var incrementor = ShapeAnimator.AnimationSpeed * gameTime.Elapsed.Seconds;
 
             if (shape._type === "Circle") {
                 shape.Radius += this.Direction * incrementor;
@@ -70,13 +70,13 @@ var Shapes;
         };
 
         ShapeAnimator.prototype.Rotation = function (shape, gameTime) {
-            var incrementor = ShapeAnimator.RotationSpeed * gameTime.ElapsedSecond, direction = 1;
+            var incrementor = ShapeAnimator.RotationSpeed * gameTime.Elapsed.Seconds, direction = 1;
 
             shape.Rotation += direction * this.Direction * incrementor;
         };
 
         ShapeAnimator.prototype.Opacity = function (shape, gameTime) {
-            var incrementor = .33 * gameTime.ElapsedSecond;
+            var incrementor = .33 * gameTime.Elapsed.Seconds;
 
             shape.Opacity = shape.Opacity + incrementor * this.Direction;
 

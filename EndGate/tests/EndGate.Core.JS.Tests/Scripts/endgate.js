@@ -159,14 +159,6 @@ var EndGate;
             configurable: true
         });
 
-        Object.defineProperty(GameTime.prototype, "ElapsedSecond", {
-            get: function () {
-                return this._elapsedSecond;
-            },
-            enumerable: true,
-            configurable: true
-        });
-
         Object.defineProperty(GameTime.prototype, "Now", {
             get: function () {
                 return this._lastUpdate;
@@ -187,7 +179,6 @@ var EndGate;
             var now = new Date();
 
             this._elapsed = new EndGate.TimeSpan(now.getTime() - this._lastUpdate.getTime());
-            this._elapsedSecond = this._elapsed.Milliseconds / 1000;
             this._lastUpdate = now;
         };
         return GameTime;
@@ -2954,7 +2945,7 @@ var EndGate;
 
             LinearMovementController.prototype.Update = function (gameTime) {
                 if (!this._frozen) {
-                    this.Position = this.Position.Add(this.Velocity.Multiply(gameTime.ElapsedSecond));
+                    this.Position = this.Position.Add(this.Velocity.Multiply(gameTime.Elapsed.Seconds));
 
                     _super.prototype.Update.call(this, gameTime);
                 }

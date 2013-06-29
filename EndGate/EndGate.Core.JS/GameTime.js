@@ -26,17 +26,6 @@ var EndGate;
             configurable: true
         });
 
-        Object.defineProperty(GameTime.prototype, "ElapsedSecond", {
-            get: /**
-            * Gets the elapsed second since the last Update.  It's essentially Elapsed.Milliseconds / 1000.
-            */
-            function () {
-                return this._elapsedSecond;
-            },
-            enumerable: true,
-            configurable: true
-        });
-
         Object.defineProperty(GameTime.prototype, "Now", {
             get: /**
             * Gets the current date time at the start of the update.
@@ -66,7 +55,6 @@ var EndGate;
             var now = new Date();
 
             this._elapsed = new EndGate.TimeSpan(now.getTime() - this._lastUpdate.getTime());
-            this._elapsedSecond = this._elapsed.Milliseconds / 1000;
             this._lastUpdate = now;
         };
         return GameTime;

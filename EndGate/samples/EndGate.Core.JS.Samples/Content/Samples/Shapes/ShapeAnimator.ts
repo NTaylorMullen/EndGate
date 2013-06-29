@@ -55,7 +55,7 @@ module Shapes {
         }
 
         private Position(shape: eg.Graphics.Abstractions.Shape, gameTime: eg.GameTime): void {
-            var incrementor = ShapeAnimator.AnimationSpeed * gameTime.ElapsedSecond,
+            var incrementor = ShapeAnimator.AnimationSpeed * gameTime.Elapsed.Seconds,
                 direction = shape.Position.Subtract(this._defaultPosition).Abs().Sign();
 
             if (direction.Magnitude() === 0) {
@@ -66,7 +66,7 @@ module Shapes {
         }
 
         private Size(shape: any, gameTime: eg.GameTime): void {
-            var incrementor = ShapeAnimator.AnimationSpeed * gameTime.ElapsedSecond;
+            var incrementor = ShapeAnimator.AnimationSpeed * gameTime.Elapsed.Seconds;
 
             if (shape._type === "Circle") {
                 shape.Radius += this.Direction * incrementor;
@@ -77,14 +77,14 @@ module Shapes {
         }
 
         private Rotation(shape: eg.Graphics.Abstractions.Shape, gameTime: eg.GameTime): void {
-            var incrementor = ShapeAnimator.RotationSpeed * gameTime.ElapsedSecond,
+            var incrementor = ShapeAnimator.RotationSpeed * gameTime.Elapsed.Seconds,
                 direction = 1;
 
             shape.Rotation += direction * this.Direction * incrementor;
         }
 
         private Opacity(shape: eg.Graphics.Abstractions.Shape, gameTime: eg.GameTime): void {
-            var incrementor = .33 * gameTime.ElapsedSecond;
+            var incrementor = .33 * gameTime.Elapsed.Seconds;
 
             shape.Opacity = shape.Opacity + incrementor * this.Direction;
 

@@ -55,7 +55,7 @@ module Sprites {
         }
 
         private Position(sprite: eg.Graphics.Sprite2d, gameTime: eg.GameTime): void {
-            var incrementor = SpriteAnimator.AnimationSpeed * gameTime.ElapsedSecond,
+            var incrementor = SpriteAnimator.AnimationSpeed * gameTime.Elapsed.Seconds,
                 direction = sprite.Position.Subtract(this._defaultPosition).Abs().Sign();
 
             if (direction.Magnitude() === 0) {
@@ -66,20 +66,20 @@ module Sprites {
         }
 
         private Size(sprite: eg.Graphics.Sprite2d, gameTime: eg.GameTime): void {
-            var incrementor = SpriteAnimator.AnimationSpeed * gameTime.ElapsedSecond;
+            var incrementor = SpriteAnimator.AnimationSpeed * gameTime.Elapsed.Seconds;
 
             sprite.Size = sprite.Size.Add(this.Direction * incrementor);
         }
 
         private Rotation(sprite: eg.Graphics.Sprite2d, gameTime: eg.GameTime): void {
-            var incrementor = SpriteAnimator.RotationSpeed * gameTime.ElapsedSecond,
+            var incrementor = SpriteAnimator.RotationSpeed * gameTime.Elapsed.Seconds,
                 direction = 1;
 
             sprite.Rotation += direction * this.Direction * incrementor;
         }
 
         private Opacity(sprite: eg.Graphics.Sprite2d, gameTime: eg.GameTime): void {
-            var incrementor = .33 * gameTime.ElapsedSecond;
+            var incrementor = .33 * gameTime.Elapsed.Seconds;
 
             sprite.Opacity += incrementor * this.Direction;
 

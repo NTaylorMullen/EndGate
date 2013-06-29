@@ -112,7 +112,7 @@ module EndGate.MovementControllers {
         */
         public Update(gameTime: GameTime): void {
             if (!this._frozen) {
-                this.Position = this.Position.Add(this.Velocity.Multiply(gameTime.ElapsedSecond));
+                this.Position = this.Position.Add(this.Velocity.Multiply(gameTime.Elapsed.Seconds));
 
                 super.Update(gameTime);
             }

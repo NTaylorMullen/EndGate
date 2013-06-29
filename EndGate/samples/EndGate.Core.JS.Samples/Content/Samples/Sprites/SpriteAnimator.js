@@ -50,7 +50,7 @@ var Sprites;
         };
 
         SpriteAnimator.prototype.Position = function (sprite, gameTime) {
-            var incrementor = SpriteAnimator.AnimationSpeed * gameTime.ElapsedSecond, direction = sprite.Position.Subtract(this._defaultPosition).Abs().Sign();
+            var incrementor = SpriteAnimator.AnimationSpeed * gameTime.Elapsed.Seconds, direction = sprite.Position.Subtract(this._defaultPosition).Abs().Sign();
 
             if (direction.Magnitude() === 0) {
                 direction = eg.Vector2d.One;
@@ -60,19 +60,19 @@ var Sprites;
         };
 
         SpriteAnimator.prototype.Size = function (sprite, gameTime) {
-            var incrementor = SpriteAnimator.AnimationSpeed * gameTime.ElapsedSecond;
+            var incrementor = SpriteAnimator.AnimationSpeed * gameTime.Elapsed.Seconds;
 
             sprite.Size = sprite.Size.Add(this.Direction * incrementor);
         };
 
         SpriteAnimator.prototype.Rotation = function (sprite, gameTime) {
-            var incrementor = SpriteAnimator.RotationSpeed * gameTime.ElapsedSecond, direction = 1;
+            var incrementor = SpriteAnimator.RotationSpeed * gameTime.Elapsed.Seconds, direction = 1;
 
             sprite.Rotation += direction * this.Direction * incrementor;
         };
 
         SpriteAnimator.prototype.Opacity = function (sprite, gameTime) {
-            var incrementor = .33 * gameTime.ElapsedSecond;
+            var incrementor = .33 * gameTime.Elapsed.Seconds;
 
             sprite.Opacity += incrementor * this.Direction;
 

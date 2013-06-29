@@ -13,7 +13,6 @@ module EndGate {
         private _start: Date;
         private _lastUpdate: Date;
         private _elapsed: TimeSpan;
-        private _elapsedSecond: number;
 
         /**
         * Creates a new instance of the GameTime object.
@@ -29,13 +28,6 @@ module EndGate {
         */
         public get Elapsed(): TimeSpan {
             return this._elapsed;
-        }
-
-        /**
-        * Gets the elapsed second since the last Update.  It's essentially Elapsed.Milliseconds / 1000.
-        */
-        public get ElapsedSecond(): number {
-            return this._elapsedSecond;
         }
 
         /**
@@ -59,7 +51,6 @@ module EndGate {
             var now = new Date();
 
             this._elapsed = new TimeSpan(now.getTime() - this._lastUpdate.getTime());
-            this._elapsedSecond = this._elapsed.Milliseconds / 1000;
             this._lastUpdate = now;
         }
     }

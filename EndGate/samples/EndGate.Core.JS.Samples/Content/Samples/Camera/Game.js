@@ -51,7 +51,7 @@ var Camera;
             this.BindKeys(this._zoomOutKeys, "OnCommandUp", "ZoomingOut", false);
         }
         Game.prototype.Update = function (gameTime) {
-            var cameraPosition, movementIncrementor = gameTime.ElapsedSecond * this._cameraMoveSpeed, zoomIncrementor = gameTime.ElapsedSecond * this._cameraZoomSpeed;
+            var cameraPosition, movementIncrementor = gameTime.Elapsed.Seconds * this._cameraMoveSpeed, zoomIncrementor = gameTime.Elapsed.Seconds * this._cameraZoomSpeed;
 
             if (this._movingDirection.Up) {
                 this.Scene.Camera.Position.Y -= movementIncrementor;

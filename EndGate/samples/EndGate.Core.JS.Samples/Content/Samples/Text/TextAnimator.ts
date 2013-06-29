@@ -55,7 +55,7 @@ module Texts {
         }
 
         private Position(text: eg.Graphics.Text2d, gameTime: eg.GameTime): void {
-            var incrementor = TextAnimator.AnimationSpeed * gameTime.ElapsedSecond,
+            var incrementor = TextAnimator.AnimationSpeed * gameTime.Elapsed.Seconds,
                 direction = text.Position.Subtract(this._defaultPosition).Abs().Sign();
 
             if (direction.Magnitude() === 0) {
@@ -66,20 +66,20 @@ module Texts {
         }
 
         private Rotation(text: eg.Graphics.Text2d, gameTime: eg.GameTime): void {
-            var incrementor = TextAnimator.RotationSpeed * gameTime.ElapsedSecond,
+            var incrementor = TextAnimator.RotationSpeed * gameTime.Elapsed.Seconds,
                 direction = 1;
 
             text.Rotation += direction * this.Direction * incrementor;
         }
 
         private Size(text: eg.Graphics.Text2d, gameTime: eg.GameTime): void {
-            var incrementor = (TextAnimator.AnimationSpeed / 2) * gameTime.ElapsedSecond;
+            var incrementor = (TextAnimator.AnimationSpeed / 2) * gameTime.Elapsed.Seconds;
 
             text.FontSettings.FontSize = parseFloat(text.FontSettings.FontSize) + this.Direction * incrementor + "pt";
         }
 
         private Opacity(text: eg.Graphics.Text2d, gameTime: eg.GameTime): void {
-            var incrementor = .33 * gameTime.ElapsedSecond;
+            var incrementor = .33 * gameTime.Elapsed.Seconds;
 
             text.Opacity += incrementor * this.Direction;
 

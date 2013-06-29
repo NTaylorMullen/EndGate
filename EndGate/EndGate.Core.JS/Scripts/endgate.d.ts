@@ -175,7 +175,6 @@ declare module EndGate {
         private _start;
         private _lastUpdate;
         private _elapsed;
-        private _elapsedSecond;
         /**
         * Creates a new instance of the GameTime object.
         */
@@ -184,10 +183,6 @@ declare module EndGate {
         * Gets the elapsed time since the last update.
         */
         public Elapsed : EndGate.TimeSpan;
-        /**
-        * Gets the elapsed second since the last Update.  It's essentially Elapsed.Milliseconds / 1000.
-        */
-        public ElapsedSecond : number;
         /**
         * Gets the current date time at the start of the update.
         */

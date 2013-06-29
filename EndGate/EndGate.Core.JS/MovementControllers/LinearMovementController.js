@@ -79,7 +79,7 @@ var EndGate;
             */
             LinearMovementController.prototype.Update = function (gameTime) {
                 if (!this._frozen) {
-                    this.Position = this.Position.Add(this.Velocity.Multiply(gameTime.ElapsedSecond));
+                    this.Position = this.Position.Add(this.Velocity.Multiply(gameTime.Elapsed.Seconds));
 
                     _super.prototype.Update.call(this, gameTime);
                 }
