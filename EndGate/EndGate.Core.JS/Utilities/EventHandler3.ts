@@ -1,7 +1,7 @@
 /// <reference path="../Interfaces/IDisposable.ts" />
 /// <reference path="../Interfaces/ITyped.ts" />
 
-module eg {
+module EndGate {
 
     /**
     * Defines a type constrained event handler object that can maintain bound functions which take in a value T, U and V and trigger them on demand.

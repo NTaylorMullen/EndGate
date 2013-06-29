@@ -1,7 +1,7 @@
 /// <reference path="../Utilities/EventHandler1.ts" />
 /// <reference path="AudioSettings.ts" />
 
-module eg.Sound {
+module EndGate.Sound {
 
     var supportedAudioTypes = {
         mp3: 'audio/mpeg',

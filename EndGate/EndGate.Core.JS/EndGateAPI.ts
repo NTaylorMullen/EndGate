@@ -34,7 +34,4 @@
 
 // When this file is compiled into a declaration file it does not include this line,
 // therefore in the build.ps1 we have to append this aliasing module.
-
-
-// NOTE: Should re-alias all methods once the TypeScript .9 bug has been fixed: https://typescript.codeplex.com/workitem/1182
-//import eg = EndGate;
+import eg = EndGate;

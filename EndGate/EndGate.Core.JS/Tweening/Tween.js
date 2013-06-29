@@ -1,5 +1,5 @@
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     /// <reference path="Functions/ITweeningFunction.ts" />
     /// <reference path="../Assets/TimeSpan.ts" />
     /// <reference path="../Utilities/EventHandler1.ts" />
@@ -23,10 +23,10 @@ var eg;
                 this._to = to.Clone();
                 this._current = this._from.Clone();
                 this._duration = duration;
-                this._elapsed = eg.TimeSpan.Zero;
+                this._elapsed = EndGate.TimeSpan.Zero;
                 this._playing = false;
-                this._onChange = new eg.EventHandler1();
-                this._onComplete = new eg.EventHandler1();
+                this._onChange = new EndGate.EventHandler1();
+                this._onComplete = new EndGate.EventHandler1();
                 this._tweeningFunction = tweeningFunction;
             }
             Object.defineProperty(Tween.prototype, "OnChange", {
@@ -181,7 +181,7 @@ var eg;
             * Reverses the tween from the Current value back to the From value.  This changes the To component to equal the From value and the From value to equal the Current value.
             */
             Tween.prototype.Reverse = function () {
-                this._elapsed = eg.TimeSpan.Zero;
+                this._elapsed = EndGate.TimeSpan.Zero;
                 this._to = this._from;
                 this._from = this.Current.Clone();
             };
@@ -215,6 +215,6 @@ var eg;
             return Tween;
         })();
         Tweening.Tween = Tween;
-    })(eg.Tweening || (eg.Tweening = {}));
-    var Tweening = eg.Tweening;
-})(eg || (eg = {}));
+    })(EndGate.Tweening || (EndGate.Tweening = {}));
+    var Tweening = EndGate.Tweening;
+})(EndGate || (EndGate = {}));

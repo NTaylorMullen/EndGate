@@ -3,7 +3,7 @@
 /// <reference path="../../Assets/Sizes/Size2d.ts" />
 /// <reference path="Camera2dCanvasContextBuilder.ts" />
 
-module eg.Rendering {
+module EndGate.Rendering {
 
     /**
     * Defines a camera rendering object that when used in conjunction with a Camera2d draws all objects in a camera relative position.

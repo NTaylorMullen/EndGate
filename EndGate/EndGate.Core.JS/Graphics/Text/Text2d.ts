@@ -4,7 +4,7 @@
 /// <reference path="../../Bounds/BoundingRectangle.ts" />
 /// <reference path="Font/FontSettings.ts" />
 
-module eg.Graphics {
+module EndGate.Graphics {
 
     /**
     * Defines a drawable text element.

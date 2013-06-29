@@ -1,7 +1,7 @@
 /// <reference path="../../Assets/Vectors/Vector2d.ts" />
 /// <reference path="../Graphic2d.ts" />
 
-module eg.Graphics.Abstractions {
+module EndGate.Graphics.Abstractions {
 
     /**
     * Abstract drawable shape type that is used create customizable drawable graphics.

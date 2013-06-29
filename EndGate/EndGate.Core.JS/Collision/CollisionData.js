@@ -1,5 +1,5 @@
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     (function (Collision) {
         /// <reference path="../Assets/Vectors/Vector2d.ts" />
         /// <reference path="Collidable.ts" />
@@ -22,6 +22,6 @@ var eg;
             Assets.CollisionData = CollisionData;
         })(Collision.Assets || (Collision.Assets = {}));
         var Assets = Collision.Assets;
-    })(eg.Collision || (eg.Collision = {}));
-    var Collision = eg.Collision;
-})(eg || (eg = {}));
+    })(EndGate.Collision || (EndGate.Collision = {}));
+    var Collision = EndGate.Collision;
+})(EndGate || (EndGate = {}));

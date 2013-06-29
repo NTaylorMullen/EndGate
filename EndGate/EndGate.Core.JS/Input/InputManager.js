@@ -1,5 +1,5 @@
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     /// <reference path="Mouse/MouseHandler.ts" />
     /// <reference path="Keyboard/KeyboardHandler.ts" />
     (function (Input) {
@@ -18,6 +18,6 @@ var eg;
             return InputManager;
         })();
         Input.InputManager = InputManager;
-    })(eg.Input || (eg.Input = {}));
-    var Input = eg.Input;
-})(eg || (eg = {}));
+    })(EndGate.Input || (EndGate.Input = {}));
+    var Input = EndGate.Input;
+})(EndGate || (EndGate = {}));

@@ -1,6 +1,6 @@
 /// <reference path="../../Assets/Vectors/Vector2d.ts" />
 
-declare module eg.Input {
+declare module EndGate.Input {
 
     /**
     * Represents a mouse event being triggered on the Game area.

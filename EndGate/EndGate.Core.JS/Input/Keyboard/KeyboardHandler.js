@@ -1,5 +1,5 @@
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     /// <reference path="KeyboardCommand.ts" />
     /// <reference path="KeyboardCommandEvent.ts" />
     /// <reference path="../../Utilities/EventHandler1.ts" />
@@ -16,9 +16,9 @@ var eg;
                 this._onDownCommands = ({});
                 this._onUpCommands = ({});
 
-                this._onKeyPress = new eg.EventHandler1();
-                this._onKeyDown = new eg.EventHandler1();
-                this._onKeyUp = new eg.EventHandler1();
+                this._onKeyPress = new EndGate.EventHandler1();
+                this._onKeyDown = new EndGate.EventHandler1();
+                this._onKeyUp = new EndGate.EventHandler1();
 
                 this.Wire();
             }
@@ -150,6 +150,6 @@ var eg;
             return KeyboardHandler;
         })();
         Input.KeyboardHandler = KeyboardHandler;
-    })(eg.Input || (eg.Input = {}));
-    var Input = eg.Input;
-})(eg || (eg = {}));
+    })(EndGate.Input || (EndGate.Input = {}));
+    var Input = EndGate.Input;
+})(EndGate || (EndGate = {}));

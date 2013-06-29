@@ -1,4 +1,4 @@
-declare module eg {
+declare module EndGate {
 
     /**
     * Represents an object that can be cloned.

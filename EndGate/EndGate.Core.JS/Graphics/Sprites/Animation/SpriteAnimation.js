@@ -1,5 +1,5 @@
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     /// <reference path="../../../Utilities/EventHandler.ts" />
     /// <reference path="../../../Assets/Vectors/Vector2d.ts" />
     /// <reference path="../../../Assets/Sizes/Size2d.ts" />
@@ -12,7 +12,7 @@ var eg;
         */
         var SpriteAnimation = (function () {
             function SpriteAnimation(imageSource, fps, frameSize, frameCount, startOffset) {
-                if (typeof startOffset === "undefined") { startOffset = eg.Vector2d.Zero; }
+                if (typeof startOffset === "undefined") { startOffset = EndGate.Vector2d.Zero; }
                 this._imageSource = imageSource;
                 this._frameSize = frameSize;
                 this._frameCount = frameCount;
@@ -23,7 +23,7 @@ var eg;
                 this._framesPerRow = Math.min(Math.floor((imageSource.ClipSize.Width - startOffset.X) / frameSize.Width), frameCount);
                 this._lastStepAt = 0;
 
-                this._onComplete = new eg.EventHandler();
+                this._onComplete = new EndGate.EventHandler();
 
                 this.Fps = fps;
             }
@@ -144,6 +144,6 @@ var eg;
             return SpriteAnimation;
         })();
         Graphics.SpriteAnimation = SpriteAnimation;
-    })(eg.Graphics || (eg.Graphics = {}));
-    var Graphics = eg.Graphics;
-})(eg || (eg = {}));
+    })(EndGate.Graphics || (EndGate.Graphics = {}));
+    var Graphics = EndGate.Graphics;
+})(EndGate || (EndGate = {}));

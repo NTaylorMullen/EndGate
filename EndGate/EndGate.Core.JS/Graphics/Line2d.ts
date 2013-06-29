@@ -3,7 +3,7 @@
 /// <reference path="../Bounds/BoundingRectangle.ts" />
 /// <reference path="Graphic2d.ts" />
 
-module eg.Graphics {
+module EndGate.Graphics {
 
     /**
     * Defines a drawable 2d line element.

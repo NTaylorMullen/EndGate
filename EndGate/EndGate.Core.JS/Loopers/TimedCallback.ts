@@ -1,7 +1,7 @@
 /// <reference path="LooperCallback.ts" />
 /// <reference path="../Interfaces/ITyped.ts" />
 
-module eg._.Loopers {
+module EndGate._.Loopers {
 
     export class TimedCallback extends LooperCallback implements ITyped {
         public _type: string = "TimedCallback";

@@ -1,4 +1,4 @@
-declare module eg._ {
+declare module EndGate._ {
 
     export interface ITyped {
         _type: string;

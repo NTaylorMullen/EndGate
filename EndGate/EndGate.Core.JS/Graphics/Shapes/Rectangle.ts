@@ -3,7 +3,7 @@
 /// <reference path="../../Bounds/BoundingRectangle.ts" />
 /// <reference path="Shape.ts" />
 
-module eg.Graphics {
+module EndGate.Graphics {
 
     /**
     * Defines a drawable rectangle.

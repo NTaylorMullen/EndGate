@@ -1,5 +1,5 @@
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     /// <reference path="AudioPlayer.ts" />
     /// <reference path="AudioSettings.ts" />
     (function (Sound) {
@@ -46,6 +46,6 @@ var eg;
             return AudioManager;
         })();
         Sound.AudioManager = AudioManager;
-    })(eg.Sound || (eg.Sound = {}));
-    var Sound = eg.Sound;
-})(eg || (eg = {}));
+    })(EndGate.Sound || (EndGate.Sound = {}));
+    var Sound = EndGate.Sound;
+})(EndGate || (EndGate = {}));

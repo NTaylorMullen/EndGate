@@ -1,4 +1,4 @@
-module eg {
+module EndGate {
 
     /**
     * Defines a GameConfiguration object that is used to represent the current state of a Game object.

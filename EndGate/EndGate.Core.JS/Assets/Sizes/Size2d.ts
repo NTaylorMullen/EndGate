@@ -2,7 +2,7 @@
 /// <reference path="../../Interfaces/ICloneable.ts" />
 /// <reference path="../../Interfaces/ITyped.ts" />
 
-module eg {
+module EndGate {
 
     /**
     * Defines a two dimensional size object which specifies a Width and Height.

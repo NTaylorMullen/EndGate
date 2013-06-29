@@ -2,8 +2,8 @@
 /// <reference path="../../Interfaces/ICloneable.ts" />
 /// <reference path="../Vectors/Vector2d.ts" />
 /// <reference path="../../Extensions/MathExtensions.ts" />
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     /**
     * Defines a matrix with 2 columns and 2 rows (2x2).
     */
@@ -116,7 +116,7 @@ var eg;
         * @param vector The vector to transform.
         */
         Matrix2x2.prototype.Transform = function (vector) {
-            return new eg.Vector2d(this.Values[0][0] * vector.X + this.Values[0][1] * vector.Y, this.Values[1][0] * vector.X + this.Values[1][1] * vector.Y);
+            return new EndGate.Vector2d(this.Values[0][0] * vector.X + this.Values[0][1] * vector.Y, this.Values[1][0] * vector.X + this.Values[1][1] * vector.Y);
         };
 
         /**
@@ -171,5 +171,5 @@ var eg;
         };
         return Matrix2x2;
     })();
-    eg.Matrix2x2 = Matrix2x2;
-})(eg || (eg = {}));
+    EndGate.Matrix2x2 = Matrix2x2;
+})(EndGate || (EndGate = {}));

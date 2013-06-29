@@ -1,5 +1,5 @@
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     /// <reference path="../Interfaces/IDisposable.ts" />
     /// <reference path="../Interfaces/ITyped.ts" />
     /// <reference path="../Bounds/Bounds2d.ts" />
@@ -21,8 +21,8 @@ var eg;
                 this.Bounds = bounds;
                 this._id = Collidable._collidableIDs++;
 
-                this._onCollision = new eg.EventHandler1();
-                this._onDisposed = new eg.EventHandler1();
+                this._onCollision = new EndGate.EventHandler1();
+                this._onDisposed = new EndGate.EventHandler1();
             }
             Object.defineProperty(Collidable.prototype, "OnCollision", {
                 get: /**
@@ -77,6 +77,6 @@ var eg;
             return Collidable;
         })();
         Collision.Collidable = Collidable;
-    })(eg.Collision || (eg.Collision = {}));
-    var Collision = eg.Collision;
-})(eg || (eg = {}));
+    })(EndGate.Collision || (EndGate.Collision = {}));
+    var Collision = EndGate.Collision;
+})(EndGate || (EndGate = {}));

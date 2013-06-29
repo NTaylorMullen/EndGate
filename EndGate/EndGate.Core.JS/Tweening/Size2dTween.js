@@ -4,8 +4,8 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     /// <reference path="Tween.ts" />
     /// <reference path="../Assets/Sizes/Size2d.ts" />
     (function (Tweening) {
@@ -25,11 +25,11 @@ var eg;
                 _super.call(this, from, to, duration, tweeningFunction);
             }
             Size2dTween.prototype._UpdateTween = function () {
-                this.Current = new eg.Size2d(this.TweeningFunction(this.From.Width, this.To.Width, this.Elapsed, this.Duration), this.TweeningFunction(this.From.Height, this.To.Height, this.Elapsed, this.Duration));
+                this.Current = new EndGate.Size2d(this.TweeningFunction(this.From.Width, this.To.Width, this.Elapsed, this.Duration), this.TweeningFunction(this.From.Height, this.To.Height, this.Elapsed, this.Duration));
             };
             return Size2dTween;
         })(Tweening.Tween);
         Tweening.Size2dTween = Size2dTween;
-    })(eg.Tweening || (eg.Tweening = {}));
-    var Tweening = eg.Tweening;
-})(eg || (eg = {}));
+    })(EndGate.Tweening || (EndGate.Tweening = {}));
+    var Tweening = EndGate.Tweening;
+})(EndGate || (EndGate = {}));

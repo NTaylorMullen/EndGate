@@ -1,5 +1,5 @@
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     (function (Graphics) {
         /// <reference path="../../Assets/Vectors/Vector2d.ts" />
         /// <reference path="../../Assets/Sizes/Size2d.ts" />
@@ -18,15 +18,15 @@ var eg;
                     var setSize = typeof width !== "undefined";
 
                     this._loaded = false;
-                    this._onLoaded = new eg.EventHandler1();
+                    this._onLoaded = new EndGate.EventHandler1();
                     this.Source = new Image();
 
                     this.Source.onload = function () {
                         _this._loaded = true;
 
                         if (!setSize) {
-                            _this._size = new eg.Size2d(_this.Source.width, _this.Source.height);
-                            _this.ClipLocation = eg.Vector2d.Zero;
+                            _this._size = new EndGate.Size2d(_this.Source.width, _this.Source.height);
+                            _this.ClipLocation = EndGate.Vector2d.Zero;
                             _this.ClipSize = _this._size.Clone();
                         }
 
@@ -37,9 +37,9 @@ var eg;
                     this._imageLocation = imageLocation;
 
                     if (setSize) {
-                        this._size = new eg.Size2d(width, height);
-                        this.ClipLocation = new eg.Vector2d(clipX, clipY);
-                        this.ClipSize = new eg.Size2d(clipWidth, clipHeight);
+                        this._size = new EndGate.Size2d(width, height);
+                        this.ClipLocation = new EndGate.Vector2d(clipX, clipY);
+                        this.ClipSize = new EndGate.Size2d(clipWidth, clipHeight);
                     }
                 }
                 Object.defineProperty(ImageSource.prototype, "OnLoaded", {
@@ -86,6 +86,6 @@ var eg;
             Assets.ImageSource = ImageSource;
         })(Graphics.Assets || (Graphics.Assets = {}));
         var Assets = Graphics.Assets;
-    })(eg.Graphics || (eg.Graphics = {}));
-    var Graphics = eg.Graphics;
-})(eg || (eg = {}));
+    })(EndGate.Graphics || (EndGate.Graphics = {}));
+    var Graphics = EndGate.Graphics;
+})(EndGate || (EndGate = {}));

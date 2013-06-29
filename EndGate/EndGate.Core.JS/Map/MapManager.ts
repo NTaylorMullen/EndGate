@@ -2,7 +2,7 @@
 /// <reference path="Scenery/SceneryHandler.ts" />
 /// <reference path="../Rendering/Scene2d.ts" />
 
-module eg.Map {
+module EndGate.Map {
 
     /**
     * Defines a map manager that is used to manage Scenery.  Will eventually be expanded to handle obstacles.

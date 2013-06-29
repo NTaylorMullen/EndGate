@@ -4,8 +4,8 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     /// <reference path="../Assets/Vectors/Vector2d.ts" />
     /// <reference path="../Interfaces/IMoveable.ts" />
     /// <reference path="../Utilities/NoopTripInvoker.ts" />
@@ -29,8 +29,8 @@ var eg;
 
                 this._moveSpeed = moveSpeed;
                 this._moving = new MovementControllers.Assets.LinearDirections();
-                this.OnMove = new eg.EventHandler1();
-                this._rotationUpdater = new eg._.Utilities.NoopTripInvoker(function () {
+                this.OnMove = new EndGate.EventHandler1();
+                this._rotationUpdater = new EndGate._.Utilities.NoopTripInvoker(function () {
                     _this.UpdateRotation();
                 }, rotateWithMovements);
 
@@ -105,7 +105,7 @@ var eg;
             };
 
             LinearMovementController.prototype.UpdateVelocityNoMultiDirection = function () {
-                var velocity = eg.Vector2d.Zero;
+                var velocity = EndGate.Vector2d.Zero;
 
                 if (velocity.IsZero()) {
                     if (this._moving.Up) {
@@ -129,7 +129,7 @@ var eg;
             };
 
             LinearMovementController.prototype.UpdateVelocityWithMultiDirection = function () {
-                var velocity = eg.Vector2d.Zero;
+                var velocity = EndGate.Vector2d.Zero;
 
                 if (this._moving.Up) {
                     velocity.Y -= this._moveSpeed;
@@ -155,6 +155,6 @@ var eg;
             return LinearMovementController;
         })(MovementControllers.Abstractions.MovementController);
         MovementControllers.LinearMovementController = LinearMovementController;
-    })(eg.MovementControllers || (eg.MovementControllers = {}));
-    var MovementControllers = eg.MovementControllers;
-})(eg || (eg = {}));
+    })(EndGate.MovementControllers || (EndGate.MovementControllers = {}));
+    var MovementControllers = EndGate.MovementControllers;
+})(EndGate || (EndGate = {}));

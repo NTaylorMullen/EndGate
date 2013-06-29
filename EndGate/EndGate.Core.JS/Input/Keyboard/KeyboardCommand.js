@@ -1,5 +1,5 @@
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     (function (Input) {
         /// <reference path="../../Interfaces/IDisposable.ts" />
         /// <reference path="../../Utilities/EventHandler.ts" />
@@ -22,8 +22,8 @@ var eg;
                     this.Modifiers = Input.Assets.KeyboardModifiers.BuildFromCommandString(command);
                     this.Key = Input._.KeyboardCommandHelper.ParseKey(command);
 
-                    this._onDisposed = new eg.EventHandler();
-                    this._onDisposeInvoker = new eg._.Utilities.NoopTripInvoker(function () {
+                    this._onDisposed = new EndGate.EventHandler();
+                    this._onDisposeInvoker = new EndGate._.Utilities.NoopTripInvoker(function () {
                         _this._onDisposed.Trigger();
                     }, true);
                 }
@@ -49,6 +49,6 @@ var eg;
             Assets.KeyboardCommand = KeyboardCommand;
         })(Input.Assets || (Input.Assets = {}));
         var Assets = Input.Assets;
-    })(eg.Input || (eg.Input = {}));
-    var Input = eg.Input;
-})(eg || (eg = {}));
+    })(EndGate.Input || (EndGate.Input = {}));
+    var Input = EndGate.Input;
+})(EndGate || (EndGate = {}));

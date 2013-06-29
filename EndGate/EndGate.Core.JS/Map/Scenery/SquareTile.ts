@@ -1,7 +1,7 @@
 /// <reference path="../../Graphics/Sprites/ImageSource.ts" />
 /// <reference path="../../Graphics/Sprites/Sprite2d.ts" />
 
-module eg.Map {
+module EndGate.Map {
 
     /**
     * Defines a SquareTile that is used by the SquareTileMap.  Represents one tile within the tile map.

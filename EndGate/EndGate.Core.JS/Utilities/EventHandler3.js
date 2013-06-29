@@ -1,7 +1,7 @@
 /// <reference path="../Interfaces/IDisposable.ts" />
 /// <reference path="../Interfaces/ITyped.ts" />
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     /**
     * Defines a type constrained event handler object that can maintain bound functions which take in a value T, U and V and trigger them on demand.
     */
@@ -58,5 +58,5 @@ var eg;
         };
         return EventHandler3;
     })();
-    eg.EventHandler3 = EventHandler3;
-})(eg || (eg = {}));
+    EndGate.EventHandler3 = EventHandler3;
+})(EndGate || (EndGate = {}));

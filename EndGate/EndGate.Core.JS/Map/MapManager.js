@@ -1,5 +1,5 @@
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     /// <reference path="../Rendering/Camera/Camera2d.ts" />
     /// <reference path="Scenery/SceneryHandler.ts" />
     /// <reference path="../Rendering/Scene2d.ts" />
@@ -18,6 +18,6 @@ var eg;
             return MapManager;
         })();
         Map.MapManager = MapManager;
-    })(eg.Map || (eg.Map = {}));
-    var Map = eg.Map;
-})(eg || (eg = {}));
+    })(EndGate.Map || (EndGate.Map = {}));
+    var Map = EndGate.Map;
+})(EndGate || (EndGate = {}));

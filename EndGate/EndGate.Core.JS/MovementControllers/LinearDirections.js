@@ -1,5 +1,5 @@
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     (function (MovementControllers) {
         (function (Assets) {
             /**
@@ -20,6 +20,6 @@ var eg;
             Assets.LinearDirections = LinearDirections;
         })(MovementControllers.Assets || (MovementControllers.Assets = {}));
         var Assets = MovementControllers.Assets;
-    })(eg.MovementControllers || (eg.MovementControllers = {}));
-    var MovementControllers = eg.MovementControllers;
-})(eg || (eg = {}));
+    })(EndGate.MovementControllers || (EndGate.MovementControllers = {}));
+    var MovementControllers = EndGate.MovementControllers;
+})(EndGate || (EndGate = {}));

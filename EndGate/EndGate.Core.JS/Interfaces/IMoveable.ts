@@ -1,6 +1,6 @@
 /// <reference path="../Assets/Vectors/Vector2d.ts" />
 
-declare module eg {
+declare module EndGate {
 
     /**
     * Represents an object that has a position and rotation.

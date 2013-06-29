@@ -4,8 +4,8 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     (function (Graphics) {
         /// <reference path="../../Assets/Vectors/Vector2d.ts" />
         /// <reference path="../Graphic2d.ts" />
@@ -195,6 +195,6 @@ var eg;
             Abstractions.Shape = Shape;
         })(Graphics.Abstractions || (Graphics.Abstractions = {}));
         var Abstractions = Graphics.Abstractions;
-    })(eg.Graphics || (eg.Graphics = {}));
-    var Graphics = eg.Graphics;
-})(eg || (eg = {}));
+    })(EndGate.Graphics || (EndGate.Graphics = {}));
+    var Graphics = EndGate.Graphics;
+})(EndGate || (EndGate = {}));

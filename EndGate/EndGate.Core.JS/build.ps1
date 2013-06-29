@@ -119,8 +119,7 @@ Clear-Content $outputDeclarationPath
 tsc --comments --out $outputDeclarationPath --declaration $allFilesStr --target ES5
 
 # Since TypeScript will not push imports into declaration files I need to append the alias via the build step
-# Commented this piece out for now until https://typescript.codeplex.com/workitem/1182 has been fixed.
-#Add-Content $outputDeclarationPath "import eg = EndGate;"
+Add-Content $outputDeclarationPath "import eg = EndGate;"
 Write-Host "done" -ForegroundColor Green
 
 ######  TYPESCRIPT FILE  ######

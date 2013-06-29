@@ -1,7 +1,7 @@
 /// <reference path="../Vector2d.ts" />
 /// <reference path="MinMax.ts" />
 
-module eg._ {
+module EndGate._ {
 
     export class Vector2dHelpers {
         public static GetMinMaxProjections(axis: Vector2d, vertices: Vector2d[]): MinMax

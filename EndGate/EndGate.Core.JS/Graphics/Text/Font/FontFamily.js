@@ -1,5 +1,5 @@
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     (function (Graphics) {
         (function (Assets) {
             /**
@@ -35,6 +35,6 @@ var eg;
             ;
         })(Graphics.Assets || (Graphics.Assets = {}));
         var Assets = Graphics.Assets;
-    })(eg.Graphics || (eg.Graphics = {}));
-    var Graphics = eg.Graphics;
-})(eg || (eg = {}));
+    })(EndGate.Graphics || (EndGate.Graphics = {}));
+    var Graphics = EndGate.Graphics;
+})(EndGate || (EndGate = {}));

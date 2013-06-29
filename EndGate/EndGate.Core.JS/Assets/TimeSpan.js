@@ -1,7 +1,7 @@
 /// <reference path="../Interfaces/ITyped.ts" />
 /// <reference path="../Interfaces/ICloneable.ts" />
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     /**
     * Defines a time interval.
     */
@@ -177,5 +177,5 @@ var eg;
         TimeSpan._minutesMultiplier = TimeSpan._secondsMultiplier * 60;
         return TimeSpan;
     })();
-    eg.TimeSpan = TimeSpan;
-})(eg || (eg = {}));
+    EndGate.TimeSpan = TimeSpan;
+})(EndGate || (EndGate = {}));

@@ -2,7 +2,7 @@
 /// <reference path="../../Graphics/Graphic2d.ts" />
 /// <reference path="../../Graphics/Sprites/ImageSource.ts" />
 
-module eg.Map {
+module EndGate.Map {
 
     /**
     * Defines an abstract class TileMap that takes an array of resources to be mapped to tiles.

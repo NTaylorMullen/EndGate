@@ -10,7 +10,7 @@
 /// <reference path="Sound/AudioManager.ts" />
 /// <reference path="Map/MapManager.ts" />
 
-module eg {
+module EndGate {
 
     /**
     * Defines a virtual Game object that is meant to be derived from.  Games contain a multitude of management objects to control every aspect of the game.

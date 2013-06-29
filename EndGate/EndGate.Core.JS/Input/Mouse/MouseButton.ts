@@ -1,4 +1,4 @@
-module eg.Input._ {
+module EndGate.Input._ {
 
     export class MouseButton {
         public static Left: string = "Left";

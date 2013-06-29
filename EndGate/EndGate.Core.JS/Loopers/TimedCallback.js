@@ -4,8 +4,8 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     (function (_) {
         /// <reference path="LooperCallback.ts" />
         /// <reference path="../Interfaces/ITyped.ts" />
@@ -25,6 +25,6 @@ var eg;
             Loopers.TimedCallback = TimedCallback;
         })(_.Loopers || (_.Loopers = {}));
         var Loopers = _.Loopers;
-    })(eg._ || (eg._ = {}));
-    var _ = eg._;
-})(eg || (eg = {}));
+    })(EndGate._ || (EndGate._ = {}));
+    var _ = EndGate._;
+})(EndGate || (EndGate = {}));

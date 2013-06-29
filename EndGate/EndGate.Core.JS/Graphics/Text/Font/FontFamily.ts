@@ -1,4 +1,4 @@
-module eg.Graphics.Assets {
+module EndGate.Graphics.Assets {
 
     /**
     * Defines valid FontFamilies that can be used to display Text2d's differently.

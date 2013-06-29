@@ -5,7 +5,7 @@
 /// <reference path="../Utilities/EventHandler2.ts" />
 /// <reference path="../GameTime.ts" />
 
-module eg.Collision {
+module EndGate.Collision {
 
     /**
     * Defines a manager that will check for collisions between objects that it is monitoring.

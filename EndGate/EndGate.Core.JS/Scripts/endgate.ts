@@ -1,5 +1,5 @@
 /* IDisposable.ts */
-declare module eg {
+declare module EndGate {
 
     /**
     * Represents a Disposable object with a Dispose method.
@@ -13,7 +13,7 @@ declare module eg {
 
 }
 /* ITyped.ts */
-declare module eg._ {
+declare module EndGate._ {
 
     export interface ITyped {
         _type: string;
@@ -21,7 +21,7 @@ declare module eg._ {
 
 }
 /* ICloneable.ts */
-declare module eg {
+declare module EndGate {
 
     /**
     * Represents an object that can be cloned.
@@ -38,7 +38,7 @@ declare module eg {
 
 
 
-module eg {
+module EndGate {
 
     /**
     * Defines a time interval.
@@ -294,7 +294,7 @@ module eg {
 
 
 
-module eg {
+module EndGate {
 
     /**
     * Defines a game time class that is used to manage update timing execution as well as total game time.
@@ -361,7 +361,7 @@ module eg {
 /* IUpdateable.ts */
 
 
-declare module eg {
+declare module EndGate {
 
     /**
     * Represents an object that can be updated.
@@ -371,7 +371,7 @@ declare module eg {
         * Updates the object.
         * @param gameTime The current game time object.
         */
-        Update(gameTime: eg.GameTime): void;
+        Update(gameTime: EndGate.GameTime): void;
     }
 
 }
@@ -380,7 +380,7 @@ declare module eg {
 
 
 
-module eg {
+module EndGate {
 
     /**
     * Defines a two dimensional size object which specifies a Width and Height.
@@ -676,7 +676,7 @@ Math.roundTo = function (val?: number, decimals?: number): number {
 
 
 
-module eg {
+module EndGate {
 
     /**
     * Defines a two dimensional vector object which specifies an X and Y.
@@ -1044,7 +1044,7 @@ module eg {
 /* IMoveable.ts */
 
 
-declare module eg {
+declare module EndGate {
 
     /**
     * Represents an object that has a position and rotation.
@@ -1067,7 +1067,7 @@ declare module eg {
 
 
 
-module eg.Bounds.Abstractions {
+module EndGate.Bounds.Abstractions {
 
     /**
     * Abstract bounds type that is used to detect intersections.
@@ -1165,7 +1165,7 @@ module eg.Bounds.Abstractions {
 /* IRenderable.ts */
 
 
-declare module eg.Rendering {
+declare module EndGate.Rendering {
 
     /**
     * Represents a renderable object that can be drawn to a canvas.
@@ -1194,7 +1194,7 @@ declare module eg.Rendering {
 /* LooperCallback.ts */
 
 
-module eg._.Loopers {
+module EndGate._.Loopers {
 
     export class LooperCallback implements ITyped {
         public _type: string = "LooperCallback";
@@ -1215,7 +1215,7 @@ module eg._.Loopers {
 
 
 
-declare module eg._.Loopers {
+declare module EndGate._.Loopers {
 
     export interface ILooper extends IDisposable, ITyped {
         Start(): void;
@@ -1228,7 +1228,7 @@ declare module eg._.Loopers {
 
 
 
-module eg._.Loopers {
+module EndGate._.Loopers {
 
     export class TimedCallback extends LooperCallback implements ITyped {
         public _type: string = "TimedCallback";
@@ -1252,7 +1252,7 @@ module eg._.Loopers {
 
 
 
-module eg._.Loopers {
+module EndGate._.Loopers {
 
     export class Looper implements ILooper {
         public _type: string = "Looper";
@@ -1350,7 +1350,7 @@ window.OnRepaintCompleted = () => {
 
 
 
-module eg._.Loopers {
+module EndGate._.Loopers {
 
     // This looper uses the request animation frame to run its internal loop
     // The method has been aliased as "OnRepaintCompleted" via the WindowExtensions
@@ -1426,7 +1426,7 @@ module eg._.Loopers {
 
 
 
-module eg._ {    
+module EndGate._ {    
 
     export class GameRunner implements ITyped {
         public _type: string = "GameRunner";
@@ -1528,9 +1528,9 @@ module eg._ {
     }
 }
 
-var GameRunnerInstance: eg._.GameRunner = new eg._.GameRunner();
+var GameRunnerInstance: EndGate._.GameRunner = new EndGate._.GameRunner();
 /* GameConfiguration.ts */
-module eg {
+module EndGate {
 
     /**
     * Defines a GameConfiguration object that is used to represent the current state of a Game object.
@@ -1566,7 +1566,7 @@ module eg {
 
 
 
-module eg {
+module EndGate {
 
     /**
     * Defines a type constrained event handler object that can maintain bound functions which take in a value T and trigger them on demand.
@@ -1632,7 +1632,7 @@ module eg {
 
 
 
-module eg.Collision.Assets {
+module EndGate.Collision.Assets {
 
     /**
     * Defines a data object that is used to describe a collision event.
@@ -1668,7 +1668,7 @@ module eg.Collision.Assets {
 
 
 
-module eg.Collision {
+module EndGate.Collision {
 
     /**
     * Defines a collidable object that can be used to detect collisions with other objects.
@@ -1748,7 +1748,7 @@ module eg.Collision {
 
 
 
-module eg {
+module EndGate {
 
     /**
     * Defines a type constrained event handler object that can maintain bound functions which take in a value T and U and trigger them on demand.
@@ -1819,7 +1819,7 @@ module eg {
 
 
 
-module eg.Collision {
+module EndGate.Collision {
 
     /**
     * Defines a manager that will check for collisions between objects that it is monitoring.
@@ -1906,7 +1906,7 @@ module eg.Collision {
 /* Graphic2dState.ts */
 
 
-module eg.Graphics.Assets._ {
+module EndGate.Graphics.Assets._ {
 
     export class Graphic2dState {
         private _cachedState: { [property: string]: any; };
@@ -2037,7 +2037,7 @@ module eg.Graphics.Assets._ {
 
 
 
-module eg.Graphics.Abstractions {
+module EndGate.Graphics.Abstractions {
 
     /**
     * Abstract drawable graphic type that is used create the base for graphics.
@@ -2148,7 +2148,7 @@ module eg.Graphics.Abstractions {
 
 }
 /* MinMax.ts */
-module eg._ {
+module EndGate._ {
 
     export class MinMax {
         public Min: number;
@@ -2165,7 +2165,7 @@ module eg._ {
 
 
 
-module eg._ {
+module EndGate._ {
 
     export class Vector2dHelpers {
         public static GetMinMaxProjections(axis: Vector2d, vertices: Vector2d[]): MinMax
@@ -2196,7 +2196,7 @@ module eg._ {
 
 
 
-module eg.Bounds {
+module EndGate.Bounds {
 
     /**
     * Defines a circle that can be used to detect intersections.
@@ -2291,7 +2291,7 @@ module eg.Bounds {
 
 
 
-module eg.Bounds {
+module EndGate.Bounds {
 
     /**
     * Defines a rectangle that can be used to detect intersections.
@@ -2404,8 +2404,8 @@ module eg.Bounds {
 
                 for (var i: number = 0; i < axisList.length; i++) {
                     var axi = axisList[i];
-                    var myProjections = eg._.Vector2dHelpers.GetMinMaxProjections(axi, myVertices);
-                    var theirProjections = eg._.Vector2dHelpers.GetMinMaxProjections(axi, theirVertices);
+                    var myProjections = EndGate._.Vector2dHelpers.GetMinMaxProjections(axi, myVertices);
+                    var theirProjections = EndGate._.Vector2dHelpers.GetMinMaxProjections(axi, theirVertices);
 
                     // No collision
                     if (theirProjections.Max < myProjections.Min || myProjections.Max < theirProjections.Min) {
@@ -2446,7 +2446,7 @@ module eg.Bounds {
 
 
 
-module eg.Rendering {
+module EndGate.Rendering {
 
     /**
     * Defines a camera that is used to define a viewport.  Should be used in conjunction with a Camera2dRenderer to render graphics as if being viewed through a camera.
@@ -2497,7 +2497,7 @@ module eg.Rendering {
 
 
 
-declare module eg.Rendering._ {
+declare module EndGate.Rendering._ {
 
     export interface IRenderer extends IDisposable {
         Render(renderables: IRenderable[]): CanvasRenderingContext2D;
@@ -2510,7 +2510,7 @@ declare module eg.Rendering._ {
 
 
 
-module eg.Rendering {
+module EndGate.Rendering {
 
     /**
     * Defines a 2d renderer that uses a double buffer to draw graphics.
@@ -2608,7 +2608,7 @@ module eg.Rendering {
 
 
 
-module eg.Rendering._ {
+module EndGate.Rendering._ {
 
     /**
     * Defines a builder that is used to build a camera sensitive CanvasRenderingContext2d so that anything drawn to it becomes relative to the Camera2d.
@@ -2743,7 +2743,7 @@ module eg.Rendering._ {
 
 
 
-module eg.Rendering {
+module EndGate.Rendering {
 
     /**
     * Defines a camera rendering object that when used in conjunction with a Camera2d draws all objects in a camera relative position.
@@ -2824,7 +2824,7 @@ module eg.Rendering {
 
 
 
-module eg.Rendering {
+module EndGate.Rendering {
 
     /**
     * Defines a scene object that is used to maintain a list of renderable objects that are rendered onto a joint game area.
@@ -2948,7 +2948,7 @@ module eg.Rendering {
 
 }
 /* MouseButton.ts */
-module eg.Input._ {
+module EndGate.Input._ {
 
     export class MouseButton {
         public static Left: string = "Left";
@@ -2960,7 +2960,7 @@ module eg.Input._ {
 /* IMouseEvent.ts */
 
 
-declare module eg.Input {
+declare module EndGate.Input {
 
     /**
     * Represents a mouse event being triggered on the Game area.
@@ -2977,7 +2977,7 @@ declare module eg.Input {
 
 
 
-declare module eg.Input {
+declare module EndGate.Input {
 
     /**
     * Represents a mouse click event being triggered on the Game area.
@@ -2994,7 +2994,7 @@ declare module eg.Input {
 
 
 
-declare module eg.Input {
+declare module EndGate.Input {
 
     /**
     * Represents a mouse scroll event being triggered on the Game area.
@@ -3015,7 +3015,7 @@ declare module eg.Input {
 
 
 
-module eg.Input {
+module EndGate.Input {
 
     /**
     * Defines a handler that will monitor mouse events over a specified area and will execute appropriate functions based on the events.
@@ -3226,7 +3226,7 @@ module eg.Input {
 
 
 
-module eg {
+module EndGate {
 
     /**
     * Defines an event handler object that can maintain bound functions and trigger them on demand.
@@ -3290,7 +3290,7 @@ module eg {
 
 }
 /* NoopTripInvoker.ts */
-module eg._.Utilities {
+module EndGate._.Utilities {
 
     export class NoopTripInvoker {
         private static _noop: Function = () => { };
@@ -3328,7 +3328,7 @@ module eg._.Utilities {
 /* KeyboardModifiers.ts */
 
 
-module eg.Input.Assets {
+module EndGate.Input.Assets {
 
     /**
     * Defines an object that is used to represent a keyboard modifier state to determine if Ctrl, Alt, or Shift is being pressed.
@@ -3385,7 +3385,7 @@ module eg.Input.Assets {
 
 
 
-module eg.Input {
+module EndGate.Input {
     var shiftValues: { [unmodified: string]: string; } = {
         "~": "`",
         "!": "1",
@@ -3494,7 +3494,7 @@ module eg.Input {
 
 
 
-module eg.Input._ {
+module EndGate.Input._ {
     
     export class KeyboardCommandHelper {
         public static ParseKey(command: string): string {
@@ -3516,7 +3516,7 @@ module eg.Input._ {
 
 
 
-module eg.Input.Assets {
+module EndGate.Input.Assets {
 
     /**
     * Defines a class that is used to represent a keyboard command.
@@ -3535,7 +3535,7 @@ module eg.Input.Assets {
         */
         public Modifiers: Assets.KeyboardModifiers;
 
-        private _onDisposeInvoker: eg._.Utilities.NoopTripInvoker;
+        private _onDisposeInvoker: EndGate._.Utilities.NoopTripInvoker;
         private _onDisposed: EventHandler;
 
         /**
@@ -3549,7 +3549,7 @@ module eg.Input.Assets {
             this.Key = _.KeyboardCommandHelper.ParseKey(command);
 
             this._onDisposed = new EventHandler();
-            this._onDisposeInvoker = new eg._.Utilities.NoopTripInvoker(() => {
+            this._onDisposeInvoker = new EndGate._.Utilities.NoopTripInvoker(() => {
                 this._onDisposed.Trigger();
             }, true);
         }
@@ -3575,7 +3575,7 @@ module eg.Input.Assets {
 
 
 
-module eg.Input {
+module EndGate.Input {
 
     /**
     * Defines a handler that will check for keyboard commands and execute appropriate functions.
@@ -3728,7 +3728,7 @@ module eg.Input {
 
 
 
-module eg.Input {
+module EndGate.Input {
 
     /**
     * Defines an all around Input handler which manages mouse and keyboard events.
@@ -3757,7 +3757,7 @@ module eg.Input {
 /* AudioSettings.ts */
 
 
-module eg.Sound {
+module EndGate.Sound {
 
     /**
     * Defines a set of settings that are used to play AudioClip's a custom way.
@@ -3835,7 +3835,7 @@ module eg.Sound {
 
 
 
-module eg.Sound {
+module EndGate.Sound {
 
     var supportedAudioTypes = {
         mp3: 'audio/mpeg',
@@ -4000,7 +4000,7 @@ module eg.Sound {
 
 
 
-module eg.Sound {
+module EndGate.Sound {
 
     /**
     * Defines an AudioPlayer that is mapped to a specific source.  Ultimately used to play the same sound simultaneously.
@@ -4045,7 +4045,7 @@ module eg.Sound {
 
 
 
-module eg.Sound {
+module EndGate.Sound {
 
     /**
     * Defines an audio manager that is used to preload AudioClip's that can be played at any time.
@@ -4122,7 +4122,7 @@ module eg.Sound {
 
 
 
-module eg.Map {
+module EndGate.Map {
 
     /**
     * Defines a SceneryHandler which specializes in drawing large background type layers to depict scenery.
@@ -4190,7 +4190,7 @@ module eg.Map {
 
 
 
-module eg.Map {
+module EndGate.Map {
 
     /**
     * Defines a map manager that is used to manage Scenery.  Will eventually be expanded to handle obstacles.
@@ -4224,7 +4224,7 @@ module eg.Map {
 
 
 
-module eg {
+module EndGate {
 
     /**
     * Defines a virtual Game object that is meant to be derived from.  Games contain a multitude of management objects to control every aspect of the game.
@@ -4324,7 +4324,7 @@ module eg {
 
 }
 /* LinearDirections.ts */
-module eg.MovementControllers.Assets {
+module EndGate.MovementControllers.Assets {
 
     /**
     * Defines a direction management object that represents directional state.
@@ -4360,7 +4360,7 @@ module eg.MovementControllers.Assets {
 
 }
 /* IMoveEvent.ts */
-declare module eg.MovementControllers {
+declare module EndGate.MovementControllers {
 
     /**
     * Represents a move event object that is used to depict a movement, specifically a direction and whether or not the move started or stopped.
@@ -4383,7 +4383,7 @@ declare module eg.MovementControllers {
 
 
 
-module eg.MovementControllers.Abstractions {
+module EndGate.MovementControllers.Abstractions {
     
     /**
     * Abstract class that holds moveable objects and synchronizes positions across them.
@@ -4463,7 +4463,7 @@ module eg.MovementControllers.Abstractions {
 
 
 
-module eg.MovementControllers {
+module EndGate.MovementControllers {
 
     /**
     * Defines a LinearMovementController that can move objects Up, Right, Left, Down or a combination.
@@ -4471,7 +4471,7 @@ module eg.MovementControllers {
     export class LinearMovementController extends Abstractions.MovementController {
         private _moveSpeed: number;
         private _moving: Assets.LinearDirections;
-        private _rotationUpdater: eg._.Utilities.NoopTripInvoker;
+        private _rotationUpdater: EndGate._.Utilities.NoopTripInvoker;
         private _velocityUpdater: Function;
 
         /**
@@ -4501,7 +4501,7 @@ module eg.MovementControllers {
             this._moveSpeed = moveSpeed;
             this._moving = new Assets.LinearDirections();
             this.OnMove = new EventHandler1<IMoveEvent>();
-            this._rotationUpdater = new eg._.Utilities.NoopTripInvoker(() => {
+            this._rotationUpdater = new EndGate._.Utilities.NoopTripInvoker(() => {
                 this.UpdateRotation();
             }, rotateWithMovements);
 
@@ -4648,7 +4648,7 @@ module eg.MovementControllers {
 
 
 
-module eg.InputControllers {
+module EndGate.InputControllers {
 
     /**
     * Defines a DirectionalInputController that will monitor Up, Right, Left, and Down movement attempts.
@@ -4703,7 +4703,7 @@ module eg.InputControllers {
 
 }
 /* FontFamily.ts */
-module eg.Graphics.Assets {
+module EndGate.Graphics.Assets {
 
     /**
     * Defines valid FontFamilies that can be used to display Text2d's differently.
@@ -4736,7 +4736,7 @@ module eg.Graphics.Assets {
 
 }
 /* FontVariant.ts */
-module eg.Graphics.Assets {
+module EndGate.Graphics.Assets {
 
     /**
     * Defines valid FontVariant's that can be used to change the appearance of Text2d's.
@@ -4748,7 +4748,7 @@ module eg.Graphics.Assets {
 
 }
 /* FontStyle.ts */
-module eg.Graphics.Assets {
+module EndGate.Graphics.Assets {
 
     /**
     * Defines valid FontStyles that can be used to modify the font's style for Text2d's.
@@ -4765,7 +4765,7 @@ module eg.Graphics.Assets {
 
 
 
-module eg.Graphics.Assets {
+module EndGate.Graphics.Assets {
 
     /**
     * Defines a set of font settings that are used to modify the appearance of text that is drawn via Text2d's.
@@ -4873,7 +4873,7 @@ module eg.Graphics.Assets {
 
 
 
-module eg.Graphics {
+module EndGate.Graphics {
 
     /**
     * Defines a drawable text element.
@@ -5128,7 +5128,7 @@ module eg.Graphics {
 
 
 
-module eg.Graphics.Assets {
+module EndGate.Graphics.Assets {
 
     /**
     * Defines an image resource that can be used within Sprite's, SpriteAnimation's and other drawable graphics.
@@ -5244,7 +5244,7 @@ module eg.Graphics.Assets {
 
 
 
-module eg.Graphics {
+module EndGate.Graphics {
 
     /**
     * Defines a drawable sprite.  Sprites are used to draw images to the game screen.
@@ -5327,7 +5327,7 @@ module eg.Graphics {
 
 
 
-module eg.Graphics {
+module EndGate.Graphics {
 
     /**
     * Defines an animation that can be drawn to the screen.
@@ -5521,7 +5521,7 @@ module eg.Graphics {
 
 
 
-module eg.Graphics.Abstractions {
+module EndGate.Graphics.Abstractions {
 
     /**
     * Abstract drawable shape type that is used create customizable drawable graphics.
@@ -5715,7 +5715,7 @@ module eg.Graphics.Abstractions {
 
 
 
-module eg.Graphics {
+module EndGate.Graphics {
 
     /**
     * Defines a drawable circle.
@@ -5771,7 +5771,7 @@ module eg.Graphics {
 
 
 
-module eg.Graphics {
+module EndGate.Graphics {
 
     /**
     * Defines a drawable rectangle.
@@ -5830,7 +5830,7 @@ module eg.Graphics {
 
 
 
-module eg.Graphics {
+module EndGate.Graphics {
 
     /**
     * Defines a drawable 2d line element.
@@ -6002,7 +6002,7 @@ module eg.Graphics {
 
 
 
-module eg.Graphics {
+module EndGate.Graphics {
 
     /**
     * Defines a drawable grid that can be used to store other graphics in a grid like structure.
@@ -6479,7 +6479,7 @@ module eg.Graphics {
 
 
 
-module eg {
+module EndGate {
 
     /**
     * Defines a matrix with 2 columns and 2 rows (2x2).
@@ -6729,7 +6729,7 @@ module eg {
 
 
 
-module eg.Map {
+module EndGate.Map {
 
     /**
     * Defines an abstract class TileMap that takes an array of resources to be mapped to tiles.
@@ -6755,7 +6755,7 @@ module eg.Map {
 
 
 
-module eg.Map {
+module EndGate.Map {
 
     /**
     * Defines a SquareTile that is used by the SquareTileMap.  Represents one tile within the tile map.
@@ -6780,7 +6780,7 @@ module eg.Map {
 
 
 
-module eg.Map {
+module EndGate.Map {
 
     /**
     * Defines a structure that is proficient at creating diverse tile maps based off of a resource image.  Best drawn via a SceneryHandler.
@@ -6955,20 +6955,17 @@ module eg.Map {
 
 // When this file is compiled into a declaration file it does not include this line,
 // therefore in the build.ps1 we have to append this aliasing module.
-
-
-// NOTE: Should re-alias all methods once the TypeScript .9 bug has been fixed: https://typescript.codeplex.com/workitem/1182
-//import eg = EndGate;
+import eg = EndGate;
 /* NumberExtensions.ts */
 
 
-interface Number extends eg.ICloneable {}
+interface Number extends EndGate.ICloneable {}
 
 Number.prototype.Clone = function (): any { return this; };
 /* ITweeningFunction.ts */
 
 
-module eg.Tweening.Functions {
+module EndGate.Tweening.Functions {
 
     /**
     * Defines an ITweeningFunction interface that represents a function that can be used to translate Tween's.
@@ -6986,7 +6983,7 @@ module eg.Tweening.Functions {
 
 
 
-module eg.Tweening {
+module EndGate.Tweening {
 
     /**
     * Defines a base Tween class that is used to move a value from a start value to an end value.
@@ -7182,7 +7179,7 @@ module eg.Tweening {
 
 
 
-module eg.Tweening {
+module EndGate.Tweening {
 
     /**
     * Defines a NumberTween class that is used to move a number from a start value to an end value.
@@ -7210,7 +7207,7 @@ module eg.Tweening {
 
 
 
-module eg.Tweening {
+module EndGate.Tweening {
 
     /**
     * Defines a Size2dTween class that is used to move a Size2d from a start value to an end value.
@@ -7241,7 +7238,7 @@ module eg.Tweening {
 
 
 
-module eg.Tweening {
+module EndGate.Tweening {
 
     /**
     * Defines a Vector2dTween class that is used to move a Vector2d from a start value to an end value.
@@ -7270,7 +7267,7 @@ module eg.Tweening {
 /* Back.ts */
 
 
-module eg.Tweening.Functions {
+module EndGate.Tweening.Functions {
 
     /**
     * Defines a Back tweening function collection that has an EaseIn, EaseOut, and EaseInOut function that can be used with Tween's.
@@ -7326,7 +7323,7 @@ module eg.Tweening.Functions {
 /* Bounce.ts */
 
 
-module eg.Tweening.Functions {
+module EndGate.Tweening.Functions {
 
     /**
     * Defines a Bounce tweening function collection that has an EaseIn, EaseOut, and EaseInOut function that can be used with Tween's.
@@ -7393,7 +7390,7 @@ module eg.Tweening.Functions {
 /* Circular.ts */
 
 
-module eg.Tweening.Functions {
+module EndGate.Tweening.Functions {
 
     /**
     * Defines a Circular tweening function collection that has an EaseIn, EaseOut, and EaseInOut function that can be used with Tween's.
@@ -7447,7 +7444,7 @@ module eg.Tweening.Functions {
 /* Cubic.ts */
 
 
-module eg.Tweening.Functions {
+module EndGate.Tweening.Functions {
 
     /**
     * Defines a Cubic tweening function collection that has an EaseIn, EaseOut, and EaseInOut function that can be used with Tween's.
@@ -7502,7 +7499,7 @@ module eg.Tweening.Functions {
 /* Elastic.ts */
 
 
-module eg.Tweening.Functions {
+module EndGate.Tweening.Functions {
 
     /**
     * Defines an Elastic tweening function collection that has an EaseIn, EaseOut, and EaseInOut function that can be used with Tween's.
@@ -7594,7 +7591,7 @@ module eg.Tweening.Functions {
 /* Exponential.ts */
 
 
-module eg.Tweening.Functions {
+module EndGate.Tweening.Functions {
 
     /**
     * Defines an Exponential tweening function collection that has an EaseIn, EaseOut, and EaseInOut function that can be used with Tween's.
@@ -7654,7 +7651,7 @@ module eg.Tweening.Functions {
 /* Linear.ts */
 
 
-module eg.Tweening.Functions {
+module EndGate.Tweening.Functions {
 
     /**
     * Defines a Linear tweening function that has an EaseNone function that can be used with Tween's.
@@ -7678,7 +7675,7 @@ module eg.Tweening.Functions {
 /* Quadratic.ts */
 
 
-module eg.Tweening.Functions {
+module EndGate.Tweening.Functions {
 
     /**
     * Defines a Quadratic tweening function collection that has an EaseIn, EaseOut, and EaseInOut function that can be used with Tween's.
@@ -7734,7 +7731,7 @@ module eg.Tweening.Functions {
 /* Quartic.ts */
 
 
-module eg.Tweening.Functions {
+module EndGate.Tweening.Functions {
 
     /**
     * Defines a Quartic tweening function collection that has an EaseIn, EaseOut, and EaseInOut function that can be used with Tween's.
@@ -7789,7 +7786,7 @@ module eg.Tweening.Functions {
 /* Quintic.ts */
 
 
-module eg.Tweening.Functions {
+module EndGate.Tweening.Functions {
 
     /**
     * Defines a Quintic tweening function collection that has an EaseIn, EaseOut, and EaseInOut function that can be used with Tween's.
@@ -7844,7 +7841,7 @@ module eg.Tweening.Functions {
 /* Sinusoidal.ts */
 
 
-module eg.Tweening.Functions {
+module EndGate.Tweening.Functions {
 
     /**
     * Defines a Sinusoidal tweening function collection that has an EaseIn, EaseOut, and EaseInOut function that can be used with Tween's.
@@ -7896,7 +7893,7 @@ module eg.Tweening.Functions {
 
 
 
-module eg {
+module EndGate {
 
     /**
     * Defines a type constrained event handler object that can maintain bound functions which take in a value T, U and V and trigger them on demand.

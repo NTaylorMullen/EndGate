@@ -4,8 +4,8 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     /// <reference path="../../Assets/Vectors/Vector2d.ts" />
     /// <reference path="../Graphic2d.ts" />
     /// <reference path="../../Utilities/NoopTripInvoker.ts" />
@@ -20,15 +20,15 @@ var eg;
             function Text2d(x, y, text, color) {
                 if (typeof color === "undefined") { color = "black"; }
                 var _this = this;
-                _super.call(this, new eg.Vector2d(x, y));
+                _super.call(this, new EndGate.Vector2d(x, y));
                 this._type = "Text2d";
 
                 this._text = text;
-                this._stroker = new eg._.Utilities.NoopTripInvoker(function (context) {
+                this._stroker = new EndGate._.Utilities.NoopTripInvoker(function (context) {
                     context.strokeText(_this._text, 0, 0);
                 });
 
-                this._drawBounds = new eg.Bounds.BoundingRectangle(this.Position, eg.Size2d.One);
+                this._drawBounds = new EndGate.Bounds.BoundingRectangle(this.Position, EndGate.Size2d.One);
                 this._recalculateBoundsSize = true;
 
                 this._fontSettings = new Graphics.Assets.FontSettings();
@@ -264,6 +264,6 @@ var eg;
             return Text2d;
         })(Graphics.Abstractions.Graphic2d);
         Graphics.Text2d = Text2d;
-    })(eg.Graphics || (eg.Graphics = {}));
-    var Graphics = eg.Graphics;
-})(eg || (eg = {}));
+    })(EndGate.Graphics || (EndGate.Graphics = {}));
+    var Graphics = EndGate.Graphics;
+})(EndGate || (EndGate = {}));

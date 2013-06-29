@@ -1,5 +1,5 @@
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     /// <reference path="../Input/Keyboard/KeyboardHandler.ts" />
     /// <reference path="../MovementControllers/LinearDirections.ts" />
     (function (InputControllers) {
@@ -14,7 +14,7 @@ var eg;
                 if (typeof leftKeys === "undefined") { leftKeys = ["a", "Left"]; }
                 this._keyboard = keyboard;
                 this._onMove = onMove;
-                this._directions = new eg.MovementControllers.Assets.LinearDirections();
+                this._directions = new EndGate.MovementControllers.Assets.LinearDirections();
 
                 this.BindKeys(upKeys, "OnCommandDown", "Up", true);
                 this.BindKeys(rightKeys, "OnCommandDown", "Right", true);
@@ -39,6 +39,6 @@ var eg;
             return DirectionalInputController;
         })();
         InputControllers.DirectionalInputController = DirectionalInputController;
-    })(eg.InputControllers || (eg.InputControllers = {}));
-    var InputControllers = eg.InputControllers;
-})(eg || (eg = {}));
+    })(EndGate.InputControllers || (EndGate.InputControllers = {}));
+    var InputControllers = EndGate.InputControllers;
+})(EndGate || (EndGate = {}));

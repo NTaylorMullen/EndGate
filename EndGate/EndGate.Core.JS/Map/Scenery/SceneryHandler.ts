@@ -4,7 +4,7 @@
 /// <reference path="../../Rendering/IRenderer.ts" />
 /// <reference path="../../Graphics/Graphic2d.ts" />
 
-module eg.Map {
+module EndGate.Map {
 
     /**
     * Defines a SceneryHandler which specializes in drawing large background type layers to depict scenery.

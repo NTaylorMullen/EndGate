@@ -1,5 +1,5 @@
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     (function (_) {
         /// <reference path="../Interfaces/ITyped.ts" />
         (function (Loopers) {
@@ -15,6 +15,6 @@ var eg;
             Loopers.LooperCallback = LooperCallback;
         })(_.Loopers || (_.Loopers = {}));
         var Loopers = _.Loopers;
-    })(eg._ || (eg._ = {}));
-    var _ = eg._;
-})(eg || (eg = {}));
+    })(EndGate._ || (EndGate._ = {}));
+    var _ = EndGate._;
+})(EndGate || (EndGate = {}));

@@ -1,5 +1,5 @@
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     /// <reference path="../Vector2d.ts" />
     /// <reference path="MinMax.ts" />
     (function (_) {
@@ -26,6 +26,6 @@ var eg;
             return Vector2dHelpers;
         })();
         _.Vector2dHelpers = Vector2dHelpers;
-    })(eg._ || (eg._ = {}));
-    var _ = eg._;
-})(eg || (eg = {}));
+    })(EndGate._ || (EndGate._ = {}));
+    var _ = EndGate._;
+})(EndGate || (EndGate = {}));

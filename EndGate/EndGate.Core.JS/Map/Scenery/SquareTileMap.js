@@ -4,8 +4,8 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     /// <reference path="../../Assets/Sizes/Size2d.ts" />
     /// <reference path="../../Graphics/Sprites/ImageSource.ts" />
     /// <reference path="../../Graphics/Grid/Grid.ts" />
@@ -22,7 +22,7 @@ var eg;
                 if (typeof drawGridLines === "undefined") { drawGridLines = false; }
                 _super.call(this, x, y, resources);
 
-                this._grid = new eg.Graphics.Grid(0, 0, mappings.length, mappings[0].length, tileWidth, tileHeight, drawGridLines);
+                this._grid = new EndGate.Graphics.Grid(0, 0, mappings.length, mappings[0].length, tileWidth, tileHeight, drawGridLines);
                 this._staticMap = staticMap;
 
                 this.FillGridWith(mappings);
@@ -84,7 +84,7 @@ var eg;
                 this._mapCache.height = size.Height;
 
                 // Draw the grid onto the cached map
-                this._grid.Position = new eg.Vector2d(size.HalfWidth, size.HalfHeight);
+                this._grid.Position = new EndGate.Vector2d(size.HalfWidth, size.HalfHeight);
                 this._grid.Draw(this._mapCache.getContext("2d"));
                 this._grid.Position = originalPosition;
             };
@@ -108,6 +108,6 @@ var eg;
             return SquareTileMap;
         })(Map.TileMap);
         Map.SquareTileMap = SquareTileMap;
-    })(eg.Map || (eg.Map = {}));
-    var Map = eg.Map;
-})(eg || (eg = {}));
+    })(EndGate.Map || (EndGate.Map = {}));
+    var Map = EndGate.Map;
+})(EndGate || (EndGate = {}));

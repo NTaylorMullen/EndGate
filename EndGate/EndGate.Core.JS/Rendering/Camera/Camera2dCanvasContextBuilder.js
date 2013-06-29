@@ -1,5 +1,5 @@
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     (function (Rendering) {
         /// <reference path="../../Assets/Vectors/Vector2d.ts" />
         /// <reference path="../../Assets/Sizes/Size2d.ts" />
@@ -121,6 +121,6 @@ var eg;
             _.Camera2dCanvasContextBuilder = Camera2dCanvasContextBuilder;
         })(Rendering._ || (Rendering._ = {}));
         var _ = Rendering._;
-    })(eg.Rendering || (eg.Rendering = {}));
-    var Rendering = eg.Rendering;
-})(eg || (eg = {}));
+    })(EndGate.Rendering || (EndGate.Rendering = {}));
+    var Rendering = EndGate.Rendering;
+})(EndGate || (EndGate = {}));

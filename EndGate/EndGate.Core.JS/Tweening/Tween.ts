@@ -5,7 +5,7 @@
 /// <reference path="../Interfaces/IUpdateable.ts" />
 /// <reference path="../GameTime.ts" />
 
-module eg.Tweening {
+module EndGate.Tweening {
 
     /**
     * Defines a base Tween class that is used to move a value from a start value to an end value.

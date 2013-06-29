@@ -2,7 +2,7 @@
 /// <reference path="FontVariant.ts" />
 /// <reference path="FontStyle.ts" />
 
-module eg.Graphics.Assets {
+module EndGate.Graphics.Assets {
 
     /**
     * Defines a set of font settings that are used to modify the appearance of text that is drawn via Text2d's.

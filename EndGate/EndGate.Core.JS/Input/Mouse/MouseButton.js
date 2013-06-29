@@ -1,5 +1,5 @@
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     (function (Input) {
         (function (_) {
             var MouseButton = (function () {
@@ -13,6 +13,6 @@ var eg;
             _.MouseButton = MouseButton;
         })(Input._ || (Input._ = {}));
         var _ = Input._;
-    })(eg.Input || (eg.Input = {}));
-    var Input = eg.Input;
-})(eg || (eg = {}));
+    })(EndGate.Input || (EndGate.Input = {}));
+    var Input = EndGate.Input;
+})(EndGate || (EndGate = {}));

@@ -4,7 +4,7 @@
 /// <reference path="KeyboardCommandHelper.ts" />
 /// <reference path="KeyboardModifiers.ts" />
 
-module eg.Input.Assets {
+module EndGate.Input.Assets {
 
     /**
     * Defines a class that is used to represent a keyboard command.
@@ -23,7 +23,7 @@ module eg.Input.Assets {
         */
         public Modifiers: Assets.KeyboardModifiers;
 
-        private _onDisposeInvoker: eg._.Utilities.NoopTripInvoker;
+        private _onDisposeInvoker: EndGate._.Utilities.NoopTripInvoker;
         private _onDisposed: EventHandler;
 
         /**
@@ -37,7 +37,7 @@ module eg.Input.Assets {
             this.Key = _.KeyboardCommandHelper.ParseKey(command);
 
             this._onDisposed = new EventHandler();
-            this._onDisposeInvoker = new eg._.Utilities.NoopTripInvoker(() => {
+            this._onDisposeInvoker = new EndGate._.Utilities.NoopTripInvoker(() => {
                 this._onDisposed.Trigger();
             }, true);
         }

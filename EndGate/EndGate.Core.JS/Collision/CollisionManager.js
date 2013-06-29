@@ -1,5 +1,5 @@
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     /// <reference path="../Interfaces/IUpdateable.ts" />
     /// <reference path="../Interfaces/ITyped.ts" />
     /// <reference path="Collidable.ts" />
@@ -19,7 +19,7 @@ var eg;
                 this._collidables = [];
                 this._enabled = false;
 
-                this._onCollision = new eg.EventHandler2();
+                this._onCollision = new EndGate.EventHandler2();
             }
             Object.defineProperty(CollisionManager.prototype, "OnCollision", {
                 get: /**
@@ -88,6 +88,6 @@ var eg;
             return CollisionManager;
         })();
         Collision.CollisionManager = CollisionManager;
-    })(eg.Collision || (eg.Collision = {}));
-    var Collision = eg.Collision;
-})(eg || (eg = {}));
+    })(EndGate.Collision || (EndGate.Collision = {}));
+    var Collision = EndGate.Collision;
+})(EndGate || (EndGate = {}));

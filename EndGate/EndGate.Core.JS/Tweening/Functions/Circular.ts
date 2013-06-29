@@ -1,6 +1,6 @@
 /// <reference path="ITweeningFunction.ts" />
 
-module eg.Tweening.Functions {
+module EndGate.Tweening.Functions {
 
     /**
     * Defines a Circular tweening function collection that has an EaseIn, EaseOut, and EaseInOut function that can be used with Tween's.

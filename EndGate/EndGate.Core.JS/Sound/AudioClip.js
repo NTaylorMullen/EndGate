@@ -1,5 +1,5 @@
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     /// <reference path="../Utilities/EventHandler1.ts" />
     /// <reference path="AudioSettings.ts" />
     (function (Sound) {
@@ -22,7 +22,7 @@ var eg;
                 this.SetAudioSource(source);
                 this.ApplySettings();
 
-                this._onComplete = new eg.EventHandler1();
+                this._onComplete = new EndGate.EventHandler1();
             }
             Object.defineProperty(AudioClip.prototype, "OnComplete", {
                 get: /**
@@ -143,6 +143,6 @@ var eg;
             return AudioClip;
         })();
         Sound.AudioClip = AudioClip;
-    })(eg.Sound || (eg.Sound = {}));
-    var Sound = eg.Sound;
-})(eg || (eg = {}));
+    })(EndGate.Sound || (EndGate.Sound = {}));
+    var Sound = EndGate.Sound;
+})(EndGate || (EndGate = {}));

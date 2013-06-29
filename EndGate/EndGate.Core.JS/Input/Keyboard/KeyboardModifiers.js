@@ -1,5 +1,5 @@
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     (function (Input) {
         /// <reference path="KeyboardCommand.ts" />
         (function (Assets) {
@@ -40,6 +40,6 @@ var eg;
             Assets.KeyboardModifiers = KeyboardModifiers;
         })(Input.Assets || (Input.Assets = {}));
         var Assets = Input.Assets;
-    })(eg.Input || (eg.Input = {}));
-    var Input = eg.Input;
-})(eg || (eg = {}));
+    })(EndGate.Input || (EndGate.Input = {}));
+    var Input = EndGate.Input;
+})(EndGate || (EndGate = {}));

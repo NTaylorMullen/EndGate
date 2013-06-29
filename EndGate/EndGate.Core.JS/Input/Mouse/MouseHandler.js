@@ -1,5 +1,5 @@
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     /// <reference path="../../Assets/Vectors/Vector2d.ts" />
     /// <reference path="../../Utilities/EventHandler1.ts" />
     /// <reference path="MouseButton.ts" />
@@ -19,12 +19,12 @@ var eg;
                 var _this = this;
                 this._target = target;
 
-                this._onClick = new eg.EventHandler1();
-                this._onDoubleClick = new eg.EventHandler1();
-                this._onDown = new eg.EventHandler1();
-                this._onUp = new eg.EventHandler1();
-                this._onMove = new eg.EventHandler1();
-                this._onScroll = new eg.EventHandler1();
+                this._onClick = new EndGate.EventHandler1();
+                this._onDoubleClick = new EndGate.EventHandler1();
+                this._onDown = new EndGate.EventHandler1();
+                this._onUp = new EndGate.EventHandler1();
+                this._onMove = new EndGate.EventHandler1();
+                this._onScroll = new EndGate.EventHandler1();
 
                 // Generic flags to check mouse state
                 this._leftIsDown = false;
@@ -212,7 +212,7 @@ var eg;
             };
 
             MouseHandler.prototype.GetMousePosition = function (event) {
-                return new eg.Vector2d(event.offsetX ? (event.offsetX) : event.pageX - this._target.offsetLeft, event.offsetY ? (event.offsetY) : event.pageY - this._target.offsetTop);
+                return new EndGate.Vector2d(event.offsetX ? (event.offsetX) : event.pageX - this._target.offsetLeft, event.offsetY ? (event.offsetY) : event.pageY - this._target.offsetTop);
             };
 
             MouseHandler.prototype.GetMouseButton = function (event) {
@@ -224,12 +224,12 @@ var eg;
             };
 
             MouseHandler.prototype.GetMouseScrollDierction = function (event) {
-                return new eg.Vector2d(-Math.max(-1, Math.min(1, event.wheelDeltaX)), -Math.max(-1, Math.min(1, event.wheelDeltaY)));
+                return new EndGate.Vector2d(-Math.max(-1, Math.min(1, event.wheelDeltaX)), -Math.max(-1, Math.min(1, event.wheelDeltaY)));
             };
             MouseHandler.MouseButtonArray = [null, Input._.MouseButton.Left, Input._.MouseButton.Middle, Input._.MouseButton.Right];
             return MouseHandler;
         })();
         Input.MouseHandler = MouseHandler;
-    })(eg.Input || (eg.Input = {}));
-    var Input = eg.Input;
-})(eg || (eg = {}));
+    })(EndGate.Input || (EndGate.Input = {}));
+    var Input = EndGate.Input;
+})(EndGate || (EndGate = {}));

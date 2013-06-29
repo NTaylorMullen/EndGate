@@ -2,7 +2,7 @@
 /// <reference path="../Interfaces/ITyped.ts" />
 /// <reference path="LooperCallback.ts" />
 
-declare module eg._.Loopers {
+declare module EndGate._.Loopers {
 
     export interface ILooper extends IDisposable, ITyped {
         Start(): void;

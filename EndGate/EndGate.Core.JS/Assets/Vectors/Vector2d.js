@@ -2,8 +2,8 @@
 /// <reference path="../../Interfaces/ICloneable.ts" />
 /// <reference path="../Sizes/Size2d.ts" />
 /// <reference path="../../Extensions/MathExtensions.ts" />
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     /**
     * Defines a two dimensional vector object which specifies an X and Y.
     */
@@ -236,5 +236,5 @@ var eg;
         };
         return Vector2d;
     })();
-    eg.Vector2d = Vector2d;
-})(eg || (eg = {}));
+    EndGate.Vector2d = Vector2d;
+})(EndGate || (EndGate = {}));

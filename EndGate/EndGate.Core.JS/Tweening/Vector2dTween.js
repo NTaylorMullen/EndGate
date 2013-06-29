@@ -4,8 +4,8 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     /// <reference path="Tween.ts" />
     /// <reference path="../Assets/Vectors/Vector2d.ts" />
     (function (Tweening) {
@@ -25,11 +25,11 @@ var eg;
                 _super.call(this, from, to, duration, tweeningFunction);
             }
             Vector2dTween.prototype._UpdateTween = function () {
-                this.Current = new eg.Vector2d(this.TweeningFunction(this.From.X, this.To.X, this.Elapsed, this.Duration), this.TweeningFunction(this.From.Y, this.To.Y, this.Elapsed, this.Duration));
+                this.Current = new EndGate.Vector2d(this.TweeningFunction(this.From.X, this.To.X, this.Elapsed, this.Duration), this.TweeningFunction(this.From.Y, this.To.Y, this.Elapsed, this.Duration));
             };
             return Vector2dTween;
         })(Tweening.Tween);
         Tweening.Vector2dTween = Vector2dTween;
-    })(eg.Tweening || (eg.Tweening = {}));
-    var Tweening = eg.Tweening;
-})(eg || (eg = {}));
+    })(EndGate.Tweening || (EndGate.Tweening = {}));
+    var Tweening = EndGate.Tweening;
+})(EndGate || (EndGate = {}));

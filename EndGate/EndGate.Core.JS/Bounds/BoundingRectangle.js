@@ -4,8 +4,8 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     /// <reference path="../Assets/Vectors/Helpers/Vector2dHelpers.ts" />
     /// <reference path="../Assets/Sizes/Size2d.ts" />
     /// <reference path="BoundingCircle.ts" />
@@ -43,10 +43,10 @@ var eg;
                 */
                 function () {
                     if (this.Rotation === 0) {
-                        return new eg.Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);
+                        return new EndGate.Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);
                     }
 
-                    return new eg.Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight).RotateAround(this.Position, this.Rotation);
+                    return new EndGate.Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight).RotateAround(this.Position, this.Rotation);
                 },
                 enumerable: true,
                 configurable: true
@@ -58,10 +58,10 @@ var eg;
                 */
                 function () {
                     if (this.Rotation === 0) {
-                        return new eg.Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);
+                        return new EndGate.Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);
                     }
 
-                    return new eg.Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight).RotateAround(this.Position, this.Rotation);
+                    return new EndGate.Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight).RotateAround(this.Position, this.Rotation);
                 },
                 enumerable: true,
                 configurable: true
@@ -73,10 +73,10 @@ var eg;
                 */
                 function () {
                     if (this.Rotation === 0) {
-                        return new eg.Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);
+                        return new EndGate.Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);
                     }
 
-                    return new eg.Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight).RotateAround(this.Position, this.Rotation);
+                    return new EndGate.Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight).RotateAround(this.Position, this.Rotation);
                 },
                 enumerable: true,
                 configurable: true
@@ -88,10 +88,10 @@ var eg;
                 */
                 function () {
                     if (this.Rotation === 0) {
-                        return new eg.Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);
+                        return new EndGate.Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);
                     }
 
-                    return new eg.Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight).RotateAround(this.Position, this.Rotation);
+                    return new EndGate.Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight).RotateAround(this.Position, this.Rotation);
                 },
                 enumerable: true,
                 configurable: true
@@ -128,8 +128,8 @@ var eg;
 
                     for (var i = 0; i < axisList.length; i++) {
                         var axi = axisList[i];
-                        var myProjections = eg._.Vector2dHelpers.GetMinMaxProjections(axi, myVertices);
-                        var theirProjections = eg._.Vector2dHelpers.GetMinMaxProjections(axi, theirVertices);
+                        var myProjections = EndGate._.Vector2dHelpers.GetMinMaxProjections(axi, myVertices);
+                        var theirProjections = EndGate._.Vector2dHelpers.GetMinMaxProjections(axi, theirVertices);
 
                         if (theirProjections.Max < myProjections.Min || myProjections.Max < theirProjections.Min) {
                             return false;
@@ -163,6 +163,6 @@ var eg;
             return BoundingRectangle;
         })(Bounds.Abstractions.Bounds2d);
         Bounds.BoundingRectangle = BoundingRectangle;
-    })(eg.Bounds || (eg.Bounds = {}));
-    var Bounds = eg.Bounds;
-})(eg || (eg = {}));
+    })(EndGate.Bounds || (EndGate.Bounds = {}));
+    var Bounds = EndGate.Bounds;
+})(EndGate || (EndGate = {}));

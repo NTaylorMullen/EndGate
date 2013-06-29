@@ -1,7 +1,7 @@
 /// <reference path="Tween.ts" />
 /// <reference path="../Extensions/NumberExtensions.ts" />
 
-module eg.Tweening {
+module EndGate.Tweening {
 
     /**
     * Defines a NumberTween class that is used to move a number from a start value to an end value.

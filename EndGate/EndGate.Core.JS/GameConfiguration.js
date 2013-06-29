@@ -1,5 +1,5 @@
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     /**
     * Defines a GameConfiguration object that is used to represent the current state of a Game object.
     */
@@ -29,5 +29,5 @@ var eg;
         });
         return GameConfiguration;
     })();
-    eg.GameConfiguration = GameConfiguration;
-})(eg || (eg = {}));
+    EndGate.GameConfiguration = GameConfiguration;
+})(EndGate || (EndGate = {}));

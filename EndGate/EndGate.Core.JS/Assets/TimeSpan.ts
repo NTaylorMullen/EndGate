@@ -1,7 +1,7 @@
 /// <reference path="../Interfaces/ITyped.ts" />
 /// <reference path="../Interfaces/ICloneable.ts" />
 
-module eg {
+module EndGate {
 
     /**
     * Defines a time interval.

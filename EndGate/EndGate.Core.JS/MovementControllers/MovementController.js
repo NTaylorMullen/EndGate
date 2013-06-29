@@ -1,5 +1,5 @@
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     (function (MovementControllers) {
         /// <reference path="../Assets/Vectors/Vector2d.ts" />
         /// <reference path="../Interfaces/IMoveable.ts" />
@@ -15,8 +15,8 @@ var eg;
                 * @param moveables Moveable objects to synchronize.
                 */
                 function MovementController(moveables) {
-                    this.Position = eg.Vector2d.Zero;
-                    this.Velocity = eg.Vector2d.Zero;
+                    this.Position = EndGate.Vector2d.Zero;
+                    this.Velocity = EndGate.Vector2d.Zero;
                     this.Rotation = 0;
                     this._frozen = false;
 
@@ -58,6 +58,6 @@ var eg;
             Abstractions.MovementController = MovementController;
         })(MovementControllers.Abstractions || (MovementControllers.Abstractions = {}));
         var Abstractions = MovementControllers.Abstractions;
-    })(eg.MovementControllers || (eg.MovementControllers = {}));
-    var MovementControllers = eg.MovementControllers;
-})(eg || (eg = {}));
+    })(EndGate.MovementControllers || (EndGate.MovementControllers = {}));
+    var MovementControllers = EndGate.MovementControllers;
+})(EndGate || (EndGate = {}));

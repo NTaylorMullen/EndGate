@@ -1,6 +1,6 @@
 /// <reference path="../Interfaces/ICloneable.ts" />
 
-module eg.Sound {
+module EndGate.Sound {
 
     /**
     * Defines a set of settings that are used to play AudioClip's a custom way.

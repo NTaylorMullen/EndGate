@@ -3,7 +3,7 @@
 /// <reference path="../Sizes/Size2d.ts" />
 /// <reference path="../../Extensions/MathExtensions.ts" />
 
-module eg {
+module EndGate {
 
     /**
     * Defines a two dimensional vector object which specifies an X and Y.

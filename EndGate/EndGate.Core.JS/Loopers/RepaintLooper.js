@@ -1,5 +1,5 @@
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     (function (_) {
         /// <reference path="ILooper.ts" />
         /// <reference path="../Extensions/WindowExtensions.ts" />
@@ -68,6 +68,6 @@ var eg;
             Loopers.RepaintLooper = RepaintLooper;
         })(_.Loopers || (_.Loopers = {}));
         var Loopers = _.Loopers;
-    })(eg._ || (eg._ = {}));
-    var _ = eg._;
-})(eg || (eg = {}));
+    })(EndGate._ || (EndGate._ = {}));
+    var _ = EndGate._;
+})(EndGate || (EndGate = {}));

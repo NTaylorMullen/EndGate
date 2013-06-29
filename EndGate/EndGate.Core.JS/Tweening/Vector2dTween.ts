@@ -1,7 +1,7 @@
 /// <reference path="Tween.ts" />
 /// <reference path="../Assets/Vectors/Vector2d.ts" />
 
-module eg.Tweening {
+module EndGate.Tweening {
 
     /**
     * Defines a Vector2dTween class that is used to move a Vector2d from a start value to an end value.

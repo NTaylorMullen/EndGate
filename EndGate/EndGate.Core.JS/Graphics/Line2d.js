@@ -4,8 +4,8 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     /// <reference path="../Assets/Sizes/Size2d.ts" />
     /// <reference path="../Assets/Vectors/Vector2d.ts" />
     /// <reference path="../Bounds/BoundingRectangle.ts" />
@@ -18,11 +18,11 @@ var eg;
             __extends(Line2d, _super);
             function Line2d(fromX, fromY, toX, toY, lineWidth, color) {
                 if (typeof lineWidth === "undefined") { lineWidth = 1; }
-                _super.call(this, eg.Vector2d.Zero);
+                _super.call(this, EndGate.Vector2d.Zero);
                 this._type = "Line2d";
 
-                this._from = new eg.Vector2d(fromX, fromY);
-                this._to = new eg.Vector2d(toX, toY);
+                this._from = new EndGate.Vector2d(fromX, fromY);
+                this._to = new EndGate.Vector2d(toX, toY);
                 this.LineWidth = lineWidth;
                 this.UpdatePosition();
 
@@ -140,7 +140,7 @@ var eg;
             * The bounding area that represents where the Line2d will draw.
             */
             Line2d.prototype.GetDrawBounds = function () {
-                var bounds = new eg.Bounds.BoundingRectangle(this.Position, new eg.Size2d(this._boundsWidth, this.LineWidth));
+                var bounds = new EndGate.Bounds.BoundingRectangle(this.Position, new EndGate.Size2d(this._boundsWidth, this.LineWidth));
 
                 bounds.Rotation = Math.atan2(this._difference.Y, this._difference.X) + this.Rotation;
 
@@ -165,6 +165,6 @@ var eg;
             return Line2d;
         })(Graphics.Abstractions.Graphic2d);
         Graphics.Line2d = Line2d;
-    })(eg.Graphics || (eg.Graphics = {}));
-    var Graphics = eg.Graphics;
-})(eg || (eg = {}));
+    })(EndGate.Graphics || (EndGate.Graphics = {}));
+    var Graphics = EndGate.Graphics;
+})(EndGate || (EndGate = {}));

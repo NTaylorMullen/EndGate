@@ -4,8 +4,8 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     /// <reference path="../../Assets/Sizes/Size2d.ts" />
     /// <reference path="../../Assets/Vectors/Vector2d.ts" />
     /// <reference path="../../Bounds/BoundingRectangle.ts" />
@@ -44,8 +44,8 @@ var eg;
             };
             Camera2d.DefaultDistance = 1000;
             return Camera2d;
-        })(eg.Bounds.BoundingRectangle);
+        })(EndGate.Bounds.BoundingRectangle);
         Rendering.Camera2d = Camera2d;
-    })(eg.Rendering || (eg.Rendering = {}));
-    var Rendering = eg.Rendering;
-})(eg || (eg = {}));
+    })(EndGate.Rendering || (EndGate.Rendering = {}));
+    var Rendering = EndGate.Rendering;
+})(EndGate || (EndGate = {}));

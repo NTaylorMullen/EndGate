@@ -1,5 +1,5 @@
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     (function (_) {
         (function (Utilities) {
             var NoopTripInvoker = (function () {
@@ -43,6 +43,6 @@ var eg;
             Utilities.NoopTripInvoker = NoopTripInvoker;
         })(_.Utilities || (_.Utilities = {}));
         var Utilities = _.Utilities;
-    })(eg._ || (eg._ = {}));
-    var _ = eg._;
-})(eg || (eg = {}));
+    })(EndGate._ || (EndGate._ = {}));
+    var _ = EndGate._;
+})(EndGate || (EndGate = {}));

@@ -1,7 +1,7 @@
 /// <reference path="Tween.ts" />
 /// <reference path="../Assets/Sizes/Size2d.ts" />
 
-module eg.Tweening {
+module EndGate.Tweening {
 
     /**
     * Defines a Size2dTween class that is used to move a Size2d from a start value to an end value.

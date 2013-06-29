@@ -4,8 +4,8 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     /// <reference path="Tween.ts" />
     /// <reference path="../Extensions/NumberExtensions.ts" />
     (function (Tweening) {
@@ -30,6 +30,6 @@ var eg;
             return NumberTween;
         })(Tweening.Tween);
         Tweening.NumberTween = NumberTween;
-    })(eg.Tweening || (eg.Tweening = {}));
-    var Tweening = eg.Tweening;
-})(eg || (eg = {}));
+    })(EndGate.Tweening || (EndGate.Tweening = {}));
+    var Tweening = EndGate.Tweening;
+})(EndGate || (EndGate = {}));

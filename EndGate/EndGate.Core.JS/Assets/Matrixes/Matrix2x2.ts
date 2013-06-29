@@ -3,7 +3,7 @@
 /// <reference path="../Vectors/Vector2d.ts" />
 /// <reference path="../../Extensions/MathExtensions.ts" />
 
-module eg {
+module EndGate {
 
     /**
     * Defines a matrix with 2 columns and 2 rows (2x2).

@@ -1,5 +1,5 @@
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     (function (Graphics) {
         /// <reference path="FontFamily.ts" />
         /// <reference path="FontVariant.ts" />
@@ -122,6 +122,6 @@ var eg;
             Assets.FontSettings = FontSettings;
         })(Graphics.Assets || (Graphics.Assets = {}));
         var Assets = Graphics.Assets;
-    })(eg.Graphics || (eg.Graphics = {}));
-    var Graphics = eg.Graphics;
-})(eg || (eg = {}));
+    })(EndGate.Graphics || (EndGate.Graphics = {}));
+    var Graphics = EndGate.Graphics;
+})(EndGate || (EndGate = {}));

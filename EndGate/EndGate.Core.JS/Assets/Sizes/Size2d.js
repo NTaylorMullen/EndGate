@@ -1,8 +1,8 @@
 /// <reference path="../Vectors/Vector2d.ts" />
 /// <reference path="../../Interfaces/ICloneable.ts" />
 /// <reference path="../../Interfaces/ITyped.ts" />
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     /**
     * Defines a two dimensional size object which specifies a Width and Height.
     */
@@ -175,5 +175,5 @@ var eg;
         };
         return Size2d;
     })();
-    eg.Size2d = Size2d;
-})(eg || (eg = {}));
+    EndGate.Size2d = Size2d;
+})(EndGate || (EndGate = {}));

@@ -1,7 +1,7 @@
 /// <reference path="AudioClip.ts" />
 /// <reference path="AudioSettings.ts" />
 
-module eg.Sound {
+module EndGate.Sound {
 
     /**
     * Defines an AudioPlayer that is mapped to a specific source.  Ultimately used to play the same sound simultaneously.

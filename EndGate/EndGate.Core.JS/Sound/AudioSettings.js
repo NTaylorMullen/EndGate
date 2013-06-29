@@ -1,5 +1,5 @@
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     /// <reference path="../Interfaces/ICloneable.ts" />
     (function (Sound) {
         /**
@@ -26,6 +26,6 @@ var eg;
             return AudioSettings;
         })();
         Sound.AudioSettings = AudioSettings;
-    })(eg.Sound || (eg.Sound = {}));
-    var Sound = eg.Sound;
-})(eg || (eg = {}));
+    })(EndGate.Sound || (EndGate.Sound = {}));
+    var Sound = EndGate.Sound;
+})(EndGate || (EndGate = {}));

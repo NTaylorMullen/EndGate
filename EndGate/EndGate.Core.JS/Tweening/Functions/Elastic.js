@@ -1,5 +1,5 @@
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     (function (Tweening) {
         /// <reference path="ITweeningFunction.ts" />
         (function (Functions) {
@@ -96,6 +96,6 @@ var eg;
             Functions.Elastic = Elastic;
         })(Tweening.Functions || (Tweening.Functions = {}));
         var Functions = Tweening.Functions;
-    })(eg.Tweening || (eg.Tweening = {}));
-    var Tweening = eg.Tweening;
-})(eg || (eg = {}));
+    })(EndGate.Tweening || (EndGate.Tweening = {}));
+    var Tweening = EndGate.Tweening;
+})(EndGate || (EndGate = {}));

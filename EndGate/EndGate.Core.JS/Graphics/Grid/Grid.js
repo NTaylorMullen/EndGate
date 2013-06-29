@@ -4,8 +4,8 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     /// <reference path="../../Assets/Vectors/Vector2d.ts" />
     /// <reference path="../../Assets/Sizes/Size2d.ts" />
     /// <reference path="../Graphic2d.ts" />
@@ -19,12 +19,12 @@ var eg;
             function Grid(x, y, rows, columns, tileWidth, tileHeight, drawGridLines, gridLineColor) {
                 if (typeof drawGridLines === "undefined") { drawGridLines = false; }
                 if (typeof gridLineColor === "undefined") { gridLineColor = "gray"; }
-                _super.call(this, new eg.Vector2d(x, y));
+                _super.call(this, new EndGate.Vector2d(x, y));
                 this._type = "Grid";
                 var halfSize, topLeft, bottomRight;
 
-                this._size = new eg.Size2d(tileWidth * columns, tileHeight * rows);
-                this._tileSize = new eg.Size2d(tileWidth, tileHeight);
+                this._size = new EndGate.Size2d(tileWidth * columns, tileHeight * rows);
+                this._tileSize = new EndGate.Size2d(tileWidth, tileHeight);
                 this._grid = [];
                 this._rows = rows;
                 this._columns = columns;
@@ -32,8 +32,8 @@ var eg;
                 this._gridLines = [];
 
                 halfSize = this._size.Multiply(.5);
-                topLeft = new eg.Vector2d(-halfSize.Width, -halfSize.Height);
-                bottomRight = new eg.Vector2d(halfSize.Width, halfSize.Height);
+                topLeft = new EndGate.Vector2d(-halfSize.Width, -halfSize.Height);
+                bottomRight = new EndGate.Vector2d(halfSize.Width, halfSize.Height);
 
                 for (var i = 0; i < rows; i++) {
                     this._grid[i] = [];
@@ -351,7 +351,7 @@ var eg;
             * The bounding area that represents where the grid will draw.
             */
             Grid.prototype.GetDrawBounds = function () {
-                var bounds = new eg.Bounds.BoundingRectangle(this.Position, this._size);
+                var bounds = new EndGate.Bounds.BoundingRectangle(this.Position, this._size);
 
                 bounds.Rotation = this.Rotation;
 
@@ -375,7 +375,7 @@ var eg;
             };
 
             Grid.prototype.GetInsideGridPosition = function (row, column) {
-                return new eg.Vector2d(column * this._tileSize.Width - this._size.HalfWidth + this._tileSize.HalfWidth, row * this._tileSize.Height - this._size.HalfHeight + this._tileSize.HalfHeight);
+                return new EndGate.Vector2d(column * this._tileSize.Width - this._size.HalfWidth + this._tileSize.HalfWidth, row * this._tileSize.Height - this._size.HalfHeight + this._tileSize.HalfHeight);
             };
 
             Grid.prototype.ValidRow = function (row) {
@@ -388,6 +388,6 @@ var eg;
             return Grid;
         })(Graphics.Abstractions.Graphic2d);
         Graphics.Grid = Grid;
-    })(eg.Graphics || (eg.Graphics = {}));
-    var Graphics = eg.Graphics;
-})(eg || (eg = {}));
+    })(EndGate.Graphics || (EndGate.Graphics = {}));
+    var Graphics = EndGate.Graphics;
+})(EndGate || (EndGate = {}));

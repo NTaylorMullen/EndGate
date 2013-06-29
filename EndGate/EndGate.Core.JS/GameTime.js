@@ -1,7 +1,7 @@
 /// <reference path="Interfaces/ITyped.ts" />
 /// <reference path="Assets/TimeSpan.ts" />
-var eg;
-(function (eg) {
+var EndGate;
+(function (EndGate) {
     /**
     * Defines a game time class that is used to manage update timing execution as well as total game time.
     */
@@ -53,7 +53,7 @@ var eg;
             * Gets the total amount of time surpassed since construction.
             */
             function () {
-                return eg.TimeSpan.DateSpan(this._start, new Date());
+                return EndGate.TimeSpan.DateSpan(this._start, new Date());
             },
             enumerable: true,
             configurable: true
@@ -65,11 +65,11 @@ var eg;
         GameTime.prototype.Update = function () {
             var now = new Date();
 
-            this._elapsed = new eg.TimeSpan(now.getTime() - this._lastUpdate.getTime());
+            this._elapsed = new EndGate.TimeSpan(now.getTime() - this._lastUpdate.getTime());
             this._elapsedSecond = this._elapsed.Milliseconds / 1000;
             this._lastUpdate = now;
         };
         return GameTime;
     })();
-    eg.GameTime = GameTime;
-})(eg || (eg = {}));
+    EndGate.GameTime = GameTime;
+})(EndGate || (EndGate = {}));

@@ -1,7 +1,7 @@
 /// <reference path="KeyboardModifiers.ts" />
 /// <reference path="KeyboardCommand.ts" />
 
-module eg.Input {
+module EndGate.Input {
     var shiftValues: { [unmodified: string]: string; } = {
         "~": "`",
         "!": "1",
