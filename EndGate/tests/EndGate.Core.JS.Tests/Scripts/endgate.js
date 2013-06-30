@@ -2864,7 +2864,7 @@ var EndGate;
         (function (Abstractions) {
             var MovementController = (function () {
                 function MovementController(moveables) {
-                    this.Position = EndGate.Vector2d.Zero;
+                    this.Position = moveables.length > 0 ? moveables[0].Position : EndGate.Vector2d.Zero;
                     this.Velocity = EndGate.Vector2d.Zero;
                     this.Rotation = 0;
                     this._frozen = false;

@@ -29,7 +29,7 @@ module EndGate.MovementControllers.Abstractions {
         * @param moveables Moveable objects to synchronize.
         */
         constructor(moveables: IMoveable[]) {
-            this.Position = Vector2d.Zero;
+            this.Position = moveables.length > 0 ? moveables[0].Position : Vector2d.Zero;
             this.Velocity = Vector2d.Zero;
             this.Rotation = 0;
             this._frozen = false;
