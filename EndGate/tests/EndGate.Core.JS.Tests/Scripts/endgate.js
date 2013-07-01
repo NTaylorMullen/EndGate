@@ -1276,6 +1276,7 @@ var EndGate;
                     this._State = new Graphics.Assets._.Graphic2dState();
                     this._children = [];
                     this._disposed = false;
+                    this._onDisposed = new EndGate.EventHandler1();
                 }
                 Object.defineProperty(Graphic2d.prototype, "OnDisposed", {
                     get: function () {

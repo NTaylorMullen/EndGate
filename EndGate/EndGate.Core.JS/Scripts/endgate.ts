@@ -2071,6 +2071,7 @@ module EndGate.Graphics.Abstractions {
             this._State = new Assets._.Graphic2dState();
             this._children = [];
             this._disposed = false;
+            this._onDisposed = new EventHandler1<Graphic2d>();
         }
 
         /**
