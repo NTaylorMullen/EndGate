@@ -11,7 +11,7 @@ module EndGate.Graphics.Abstractions {
     /**
     * Abstract drawable graphic type that is used create the base for graphics.
     */
-    export class Graphic2d implements _.ITyped, Rendering.IRenderable, IMoveable {
+    export class Graphic2d implements _.ITyped, Rendering.IRenderable, IMoveable, IDisposable {
         public _type: string = "Graphic2d";
 
         /**
@@ -38,6 +38,8 @@ module EndGate.Graphics.Abstractions {
         public static _zindexSort: (a: Graphic2d, b: Graphic2d) => number = (a: Graphic2d, b: Graphic2d) => { return a.ZIndex - b.ZIndex; };
 
         private _children: Graphic2d[];
+        private _onDisposed: EventHandler1<Graphic2d>;
+        private _disposed: boolean;
 
         constructor(position: Vector2d) {
             this.Position = position;
@@ -46,6 +48,14 @@ module EndGate.Graphics.Abstractions {
             this.Visible = true;
             this._State = new Assets._.Graphic2dState();
             this._children = [];
+            this._disposed = false;
+        }
+
+        /**
+        * Gets an event that is triggered when the Graphic2d has been disposed.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        */
+        public get OnDisposed(): EventHandler1<Graphic2d> {
+            return this._onDisposed;
         }
 
         /**
@@ -112,6 +122,19 @@ module EndGate.Graphics.Abstractions {
         */
         public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
             throw new Error("GetDrawBounds is abstract, it must be implemented.");
+        }
+
+        /**
+        * Triggers the OnDisposed event.  If this Graphic2d is used with a Scene2d it will be removed from the scene when disposed.
+        */
+        public Dispose(): void {
+            if (!this._disposed) {
+                this._disposed = true;
+                this.OnDisposed.Trigger(this);
+            }
+            else {
+                throw new Error("Cannot dispose graphic more than once.");
+            }
         }
     }
 

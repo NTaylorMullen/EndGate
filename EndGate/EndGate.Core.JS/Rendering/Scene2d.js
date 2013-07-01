@@ -59,6 +59,11 @@ var EndGate;
             * @param actor The graphic to add to the scene.
             */
             Scene2d.prototype.Add = function (actor) {
+                var _this = this;
+                actor.OnDisposed.Bind(function (graphic) {
+                    _this.Remove(graphic);
+                });
+
                 this._actors.push(actor);
             };
 

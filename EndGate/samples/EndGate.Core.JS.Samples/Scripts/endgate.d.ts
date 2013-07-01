@@ -1077,7 +1077,7 @@ declare module EndGate.Graphics.Abstractions {
     /**
     * Abstract drawable graphic type that is used create the base for graphics.
     */
-    class Graphic2d implements EndGate._.ITyped, EndGate.Rendering.IRenderable, EndGate.IMoveable {
+    class Graphic2d implements EndGate._.ITyped, EndGate.Rendering.IRenderable, EndGate.IMoveable, EndGate.IDisposable {
         public _type: string;
         /**
         * Gets or sets the ZIndex of the Graphic2d.  The ZIndex is used to control draw order.  Higher ZIndexes appear above lower ZIndexed graphics.
@@ -1098,7 +1098,13 @@ declare module EndGate.Graphics.Abstractions {
         public _State: Graphics.Assets._.Graphic2dState;
         static _zindexSort: (a: Graphic2d, b: Graphic2d) => number;
         private _children;
+        private _onDisposed;
+        private _disposed;
         constructor(position: EndGate.Vector2d);
+        /**
+        * Gets an event that is triggered when the Graphic2d has been disposed.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        */
+        public OnDisposed : EndGate.EventHandler1<Graphic2d>;
         /**
         * Adds a child to the Graphic2d.  Children are drawn with relative positions to the parent Graphic2d.  Children
         * of a Graphic2d should not be added to the Scene, parent Graphic2d's are responsible for drawing their children.
@@ -1125,6 +1131,10 @@ declare module EndGate.Graphics.Abstractions {
         * Abstract: Should be overridden to return the bounding area that represents where the graphic will draw.
         */
         public GetDrawBounds(): EndGate.Bounds.Abstractions.Bounds2d;
+        /**
+        * Triggers the OnDisposed event.  If this Graphic2d is used with a Scene2d it will be removed from the scene when disposed.
+        */
+        public Dispose(): void;
     }
 }
 declare module EndGate.Rendering {

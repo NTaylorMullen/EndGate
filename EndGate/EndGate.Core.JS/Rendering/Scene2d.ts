@@ -72,6 +72,10 @@ module EndGate.Rendering {
         * @param actor The graphic to add to the scene.
         */
         public Add(actor: Graphics.Abstractions.Graphic2d): void {
+            actor.OnDisposed.Bind((graphic: Graphics.Abstractions.Graphic2d) => {
+                this.Remove(graphic);
+            });
+
             this._actors.push(actor);
         }
 

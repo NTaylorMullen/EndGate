@@ -1275,7 +1275,16 @@ var EndGate;
                     this.Visible = true;
                     this._State = new Graphics.Assets._.Graphic2dState();
                     this._children = [];
+                    this._disposed = false;
                 }
+                Object.defineProperty(Graphic2d.prototype, "OnDisposed", {
+                    get: function () {
+                        return this._onDisposed;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+
                 Graphic2d.prototype.AddChild = function (graphic) {
                     this._children.push(graphic);
                     this._children.sort(Graphic2d._zindexSort);
@@ -1321,6 +1330,15 @@ var EndGate;
 
                 Graphic2d.prototype.GetDrawBounds = function () {
                     throw new Error("GetDrawBounds is abstract, it must be implemented.");
+                };
+
+                Graphic2d.prototype.Dispose = function () {
+                    if (!this._disposed) {
+                        this._disposed = true;
+                        this.OnDisposed.Trigger(this);
+                    } else {
+                        throw new Error("Cannot dispose graphic more than once.");
+                    }
                 };
                 Graphic2d._zindexSort = function (a, b) {
                     return a.ZIndex - b.ZIndex;
@@ -1867,6 +1885,11 @@ var EndGate;
             });
 
             Scene2d.prototype.Add = function (actor) {
+                var _this = this;
+                actor.OnDisposed.Bind(function (graphic) {
+                    _this.Remove(graphic);
+                });
+
                 this._actors.push(actor);
             };
 

@@ -21,7 +21,19 @@ var EndGate;
                     this.Visible = true;
                     this._State = new Graphics.Assets._.Graphic2dState();
                     this._children = [];
+                    this._disposed = false;
                 }
+                Object.defineProperty(Graphic2d.prototype, "OnDisposed", {
+                    get: /**
+                    * Gets an event that is triggered when the Graphic2d has been disposed.  Functions can be bound or unbound to this event to be executed when the event triggers.
+                    */
+                    function () {
+                        return this._onDisposed;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+
                 /**
                 * Adds a child to the Graphic2d.  Children are drawn with relative positions to the parent Graphic2d.  Children
                 * of a Graphic2d should not be added to the Scene, parent Graphic2d's are responsible for drawing their children.
@@ -86,6 +98,18 @@ var EndGate;
                 */
                 Graphic2d.prototype.GetDrawBounds = function () {
                     throw new Error("GetDrawBounds is abstract, it must be implemented.");
+                };
+
+                /**
+                * Triggers the OnDisposed event.  If this Graphic2d is used with a Scene2d it will be removed from the scene when disposed.
+                */
+                Graphic2d.prototype.Dispose = function () {
+                    if (!this._disposed) {
+                        this._disposed = true;
+                        this.OnDisposed.Trigger(this);
+                    } else {
+                        throw new Error("Cannot dispose graphic more than once.");
+                    }
                 };
                 Graphic2d._zindexSort = function (a, b) {
                     return a.ZIndex - b.ZIndex;
