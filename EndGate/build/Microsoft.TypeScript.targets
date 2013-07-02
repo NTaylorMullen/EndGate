@@ -1,0 +1,60 @@
+﻿<!--
+***********************************************************************************************
+Microsoft.TypeScript.targets
+
+WARNING:  DO NOT MODIFY this file unless you are knowledgeable about MSBuild and have
+          created a backup copy.  Incorrect changes to this file will make it
+          impossible to load or build your web deploy projects from the command-line or the IDE.
+
+This file defines the steps in the standard build process for TypeScript files.
+
+Copyright (C) Microsoft Corporation. All rights reserved.
+***********************************************************************************************
+-->
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <CompileDependsOn>
+      CompileTypeScript;
+      $(CompileDependsOn);
+    </CompileDependsOn>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptIncludeComments)' == 'true'">$(TypeScriptBuildConfigurations) --comments</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptGeneratesDeclarations)' == 'true'">$(TypeScriptBuildConfigurations) --declaration</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptModuleKind)' != ''">$(TypeScriptBuildConfigurations) --module $(TypeScriptModuleKind)</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptIncludeDefaultLib)' == 'false'">$(TypeScriptBuildConfigurations) --nolib</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptOutFile)' != ''">$(TypeScriptBuildConfigurations) --out $(TypeScriptOutFile)</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptSourceMap)' == 'true'">$(TypeScriptBuildConfigurations) --sourcemap</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptTarget)' != ''">$(TypeScriptBuildConfigurations) --target $(TypeScriptTarget)</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptAdditionalFlags)' != ''">$(TypeScriptBuildConfigurations) $(TypeScriptAdditionalFlags)</TypeScriptBuildConfigurations>
+    <TypeScriptCompileOnSaveEnabled Condition="'$(TypeScriptEnableCompileOnSave)' != 'false' and '$(TypeScriptOutFile)' == ''">true</TypeScriptCompileOnSaveEnabled>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PropertyPageSchema Include="$(MSBuildThisFileDirectory)\$(LangName)\TypeScriptProjectProperties.xaml;">
+      <Context>Project;BrowseObject</Context>
+    </PropertyPageSchema>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectCapability Include="TypeScript" />
+  </ItemGroup>
+  
+  <PropertyGroup>
+    <TypeScriptOptions>$(TypeScriptBuildConfigurations)</TypeScriptOptions>
+    <TypeScriptFiles>@(TypeScriptCompile ->'&quot;%(fullpath)&quot;', ' ')</TypeScriptFiles>
+    <TypeScriptCommandLine>$(TypeScriptOptions);$(TypeScriptFiles)</TypeScriptCommandLine>
+    <TypeScriptArgsFile>__typeScriptArgs.txt</TypeScriptArgsFile>
+  </PropertyGroup>  
+
+  <Target Name="CompileTypeScript">
+    <Message Text="Compiling TypeScript files..." />
+    <Delete Files="$(TypeScriptArgsFile)" />
+    <WriteLinesToFile File="$(TypeScriptArgsFile)" Lines="$(TypeScriptCommandLine)" />
+    <Exec Command="tsc %40$(TypeScriptArgsFile)"/>
+    <Delete Files="$(TypeScriptArgsFile)" />
+  </Target>
+  
+</Project>

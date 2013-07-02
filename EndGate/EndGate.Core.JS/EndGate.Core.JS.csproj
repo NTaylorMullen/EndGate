@@ -463,7 +463,7 @@
     <Content Include="build.ps1" />
   </ItemGroup>
   <ItemGroup />
-  <Import Project="$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets')" />
+  <Import Project="$(SolutionDir)\build\Microsoft.TypeScript.targets" Condition="Exists('$(SolutionDir)\build\Microsoft.TypeScript.targets')" />
   <Target Name="BeforeBuild">
     <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass .\build.ps1" WorkingDirectory="$(ProjectDir)" Condition=" '$(OS)' == 'Windows_NT'" />
   </Target>
