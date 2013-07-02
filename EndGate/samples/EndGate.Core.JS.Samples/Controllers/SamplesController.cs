@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace EndGate.Core.JS.Samples.Controllers
 {
+    [OutputCache(CacheProfile = "controllerCaching")]
     public class SamplesController : Controller
     {
         //
