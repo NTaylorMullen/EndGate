@@ -62,7 +62,9 @@ module MapCreator {
                     parent.appendChild(copyCanvas);
 
                     tempGame = new eg.Game(copyCanvas);
-                    tempGame.Scene.Add(mapBuilder.LayerManager.SelectedLayer.Layer);
+                    for (var i = 0; i < mapBuilder.LayerManager.Layers.length; i++) {
+                        tempGame.Scene.Add(mapBuilder.LayerManager.Layers[i].Layer);
+                    }
                     tempGame.Scene.Camera.Position = mapBuilder.LayerManager.SelectedLayer.Layer.Position;
 
                     tempGame.Scene.Draw();
