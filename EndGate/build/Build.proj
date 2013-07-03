@@ -60,15 +60,6 @@
                 LogStandardErrorAsError="true" />
   </Target>
 
-  <Target Name="ForceGenerateNuspecs">
-    <ItemGroup>
-      <NuspecsArtifacts Include="$(NuspecsArtifactsDir)\*.nuspec" ></NuspecsArtifacts>
-    </ItemGroup>
-    
-    <Exec Command="&quot;$(NuGetExePath)&quot; pack &quot;%(NuspecsArtifacts.Identity)&quot; -o &quot;$(PackagesArtifactsDir)&quot; -basePath &quot;$(PackageSrcDir)&quot;"
-                LogStandardErrorAsError="true" />
-  </Target>
-
   <Target Name="CopyArtifacts" DependsOnTargets="Build">
     <ItemGroup>
       <Artifacts Include="$(NuspecsSourceDir)\*.nuspec">
@@ -78,10 +69,19 @@
 
     <Copy SourceFiles="$(ProjectArtifactsDir)\EndGate.Core.JS\Scripts\endgate.d.ts" DestinationFiles="$(PackageSrcDir)\endgate-$(EndGateVersion).d.ts" />
     <Copy SourceFiles="$(ProjectArtifactsDir)\EndGate.Core.JS\Scripts\endgate.js" DestinationFiles="$(PackageSrcDir)\endgate-$(EndGateVersion).js" />
-    
-    <Exec Command="java -jar &quot;$(ClosureCompilerPath)&quot; --js $(PackageSrcDir)\endgate-$(EndGateVersion).js --create_source_map $(PackageSrcDir)\endgate-$(EndGateVersion).min.js.map --source_map_format=V3 --js_output_file $(PackageSrcDir)\endgate-$(EndGateVersion).min.js" WorkingDirectory="$(ProjectRoot)" Condition=" '$(OS)' == 'Windows_NT'" />
 
     <FileUpdate Files="$(PackageSrcDir)\endgate-$(EndGateVersion).d.ts" Regex="\r\n\s+((public )|(private )|(public static )|(private static )|(static ))?_[^\r\n]+" ReplacementText=" " />
+    <FileUpdate Files="$(PackageSrcDir)\endgate-$(EndGateVersion).d.ts" Regex="\r\n\s+private [^\r\n]+" ReplacementText=" " />
+    <FileUpdate Files="$(PackageSrcDir)\endgate-$(EndGateVersion).d.ts" Regex="declare module [^\r\n\s]+_[^\r\n\s]* {[^\^]+?declare module" ReplacementText="declare module" />
+    <FileUpdate Files="$(PackageSrcDir)\endgate-$(EndGateVersion).d.ts" Regex="declare module [^\r\n\s]+_[^\r\n\s]* {[^\^]+?declare module" ReplacementText="declare module" />
+    <FileUpdate Files="$(PackageSrcDir)\endgate-$(EndGateVersion).d.ts" Regex="declare module [^\r\n\s]+_[^\r\n\s]* {[^\^]+?declare module" ReplacementText="declare module" />
+    <FileUpdate Files="$(PackageSrcDir)\endgate-$(EndGateVersion).d.ts" Regex="declare module [^\r\n\s]+_[^\r\n\s]* {[^\^]+?declare module" ReplacementText="declare module" />
+    <FileUpdate Files="$(PackageSrcDir)\endgate-$(EndGateVersion).d.ts" Regex="declare module [^\r\n\s]+_[^\r\n\s]* {[^\^]+?declare module" ReplacementText="declare module" />
+    <FileUpdate Files="$(PackageSrcDir)\endgate-$(EndGateVersion).d.ts" Regex=" [^\s\r\n]+_[^\r\n]*?, " ReplacementText=" " />
+    <FileUpdate Files="$(PackageSrcDir)\endgate-$(EndGateVersion).d.ts" Regex=", [^\s\r\n]+_[^\r\n]*? " ReplacementText=" " />
+    <FileUpdate Files="$(PackageSrcDir)\endgate-$(EndGateVersion).d.ts" Regex=" implements [^\s\r\n]+_[^\r\n]*? " ReplacementText=" " />
+
+    <Exec Command="java -jar &quot;$(ClosureCompilerPath)&quot; --js $(PackageSrcDir)\endgate-$(EndGateVersion).js --create_source_map $(PackageSrcDir)\endgate-$(EndGateVersion).min.js.map --source_map_format=V3 --js_output_file $(PackageSrcDir)\endgate-$(EndGateVersion).min.js" WorkingDirectory="$(ProjectRoot)" Condition=" '$(OS)' == 'Windows_NT'" />    
 
     <FileUpdate Files="$(PackageSrcDir)\endgate-$(EndGateVersion).min.js.map" Regex="&quot;file&quot;:&quot;((.|\r|\n)*?)&quot;," ReplacementText="&quot;file&quot;:&quot;endgate-$(EndGateVersion).min.js&quot;," />
     <FileUpdate Files="$(PackageSrcDir)\endgate-$(EndGateVersion).min.js.map" Regex="&quot;sources&quot;:\[&quot;((.|\r|\n)*?)&quot;\]," ReplacementText="&quot;sources&quot;:[&quot;endgate-$(EndGateVersion).js&quot;]," />
@@ -94,5 +94,4 @@
     <!-- Setup Nuspecs within artifacts directory -->
     <Copy SourceFiles="@(Artifacts)" DestinationFiles="@(Artifacts->'%(Destination)\%(RecursiveDir)%(Filename)%(Extension)')" />
   </Target>
-
 </Project>
