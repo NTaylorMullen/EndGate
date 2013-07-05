@@ -11,7 +11,7 @@
 
 For all this and more you can always visit the EndGate [homepage] (http://endgate.net).
 
-## A Brief Look
+## A brief look
 **1**. Create a custom game object.
 
 ```TypeScript
@@ -65,7 +65,7 @@ var game = new MyGame();
 /// <reference path="Scripts/endgate-0.1.0.d.ts" />
 ```
 
-## Building Source Requirements
+## Building source requirements
 * PowerShell
 * Visual Studio 2012+
 * Latest TypeScript. You can download it [here] (http://www.microsoft.com/en-us/download/details.aspx?id=34790)
