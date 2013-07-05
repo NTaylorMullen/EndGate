@@ -10,9 +10,12 @@ var MapCreator;
             this._defaultGrid = _defaultGrid;
             this._layersSelect = _layersSelect;
             this._onLayerChange = _onLayerChange;
+            this._currentZIndex = -1000;
             // Build default layer for map builder
             this.Layers = [{ Name: "Background", Layer: new eg.Graphics.Grid(_defaultGrid.Position.X, _defaultGrid.Position.Y, _defaultGrid.Rows, _defaultGrid.Columns, _defaultGrid.TileSize.Width, _defaultGrid.TileSize.Height) }];
             this.SelectedLayer = this.Layers[0];
+
+            this.SelectedLayer.Layer.ZIndex = this._currentZIndex++;
 
             _layersSelect.change(function () {
                 _this.SelectedLayer = _this.Layers[parseInt(_layersSelect.val())];
@@ -33,6 +36,8 @@ var MapCreator;
                 Name: layerName,
                 Layer: new eg.Graphics.Grid(this._defaultGrid.Position.X, this._defaultGrid.Position.Y, this._defaultGrid.Rows, this._defaultGrid.Columns, this._defaultGrid.TileSize.Width, this._defaultGrid.TileSize.Height)
             };
+
+            addedLayer.Layer.ZIndex = this._currentZIndex++;
 
             // Add layer to the list of layers that we're maintaining
             this.Layers.push(addedLayer);
