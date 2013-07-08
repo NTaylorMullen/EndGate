@@ -75,8 +75,8 @@ module EndGate {
         public _PrepareUpdate(): void {
             this._gameTime.Update();
 
-            this.CollisionManager.Update(this._gameTime);
             this.Update(this._gameTime);
+            this.CollisionManager.Update(this._gameTime);
         }
 
         /**
