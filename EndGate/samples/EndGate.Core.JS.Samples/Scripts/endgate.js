@@ -3436,14 +3436,12 @@ var EndGate;
             Text2d.prototype.Draw = function (context) {
                 var textSize;
 
-                _super.prototype._StartDraw.call(this, context);
-
                 this._State.Font = this._fontSettings._BuildFont();
+
+                _super.prototype._StartDraw.call(this, context);
 
                 context.fillText(this._text, 0, 0);
                 this._stroker.Invoke(context);
-
-                _super.prototype._EndDraw.call(this, context);
 
                 if (this._recalculateBoundsSize) {
                     this._recalculateBoundsSize = false;
@@ -3451,6 +3449,8 @@ var EndGate;
                     this._drawBounds.Size.Width = textSize.width;
                     this._drawBounds.Size.Height = parseInt(this._fontSettings.FontSize) * 1.5;
                 }
+
+                _super.prototype._EndDraw.call(this, context);
             };
 
             Text2d.prototype.GetDrawBounds = function () {
