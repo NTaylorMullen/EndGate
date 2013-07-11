@@ -110,6 +110,8 @@
     QUnit.test("Can clone a TimeSpan", function () {
         var timeSpan1 = new EndGate.TimeSpan(1, 2, 3);
         QUnit.ok(timeSpan1.Equivalent(timeSpan1.Clone()));
+        QUnit.notEqual(timeSpan1, timeSpan1.Clone());
+
     });
 
     QUnit.test("FromMilliseconds creates a TimeSpan", function () {
@@ -132,7 +134,7 @@
         QUnit.equal(timeSpan1.Milliseconds, 10);
     });
 
-    QUnit.test("DateSpan creates a zero TimeSpan", function () {
+    QUnit.test("TimeSpan returns a zero TimeSpan", function () {
         var timeSpan1 = EndGate.TimeSpan.Zero;
         QUnit.equal(timeSpan1.Milliseconds, 0);
     });
