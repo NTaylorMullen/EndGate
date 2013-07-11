@@ -8,15 +8,15 @@
         QUnit.equal(timeSpan1.Seconds, 1 / 1000);
         QUnit.equal(timeSpan1.Minutes, (1 / 1000) / 60);
 
-        var timeSpan2 = new EndGate.TimeSpan(1, 1);
-        QUnit.equal(timeSpan2.Milliseconds, 1001);
-        QUnit.equal(timeSpan2.Seconds, 1001 / 1000);
-        QUnit.equal(timeSpan2.Minutes, (1001 / 1000) / 60);
+        var timeSpan2 = new EndGate.TimeSpan(1000, 1);
+        QUnit.equal(timeSpan2.Milliseconds, 2000);
+        QUnit.equal(timeSpan2.Seconds, 2000 / 1000);
+        QUnit.equal(timeSpan2.Minutes, (2000 / 1000) / 60);
 
-        var timeSpan3 = new EndGate.TimeSpan(1, 1, 1);
-        QUnit.equal(timeSpan3.Milliseconds, 61001);
-        QUnit.equal(timeSpan3.Seconds, 61001 / 1000);
-        QUnit.equal(timeSpan3.Minutes, (61001 / 1000) / 60);
+        var timeSpan3 = new EndGate.TimeSpan(60000, 60, 1);
+        QUnit.equal(timeSpan3.Milliseconds, 180000);
+        QUnit.equal(timeSpan3.Seconds, 180000 / 1000);
+        QUnit.equal(timeSpan3.Minutes, (180000 / 1000) / 60);
 
     });
 
