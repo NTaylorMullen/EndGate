@@ -13,7 +13,8 @@
                 GetDrawBounds: function () {
                     return new eg.Bounds.BoundingCircle(eg.Vector2d.Zero, 5);
                 },
-                Visible: true
+                Visible: true,
+                OnDisposed : new EndGate.EventHandler1()
             },
             renderable2 = {
                 Draw: function (context) {
@@ -22,7 +23,8 @@
                 GetDrawBounds: function () {
                     return new eg.Bounds.BoundingCircle(eg.Vector2d.Zero, 5);
                 },
-                Visible: true
+                Visible: true,
+                OnDisposed: new EndGate.EventHandler1()
             };
 
         scene.Add(renderable1);
@@ -64,7 +66,8 @@
                 GetDrawBounds: function () {
                     return new eg.Bounds.BoundingCircle(eg.Vector2d.Zero, 5);
                 },
-                Visible: true
+                Visible: true,
+                OnDisposed: new EndGate.EventHandler1()
             },
             renderable2 = {
                 Draw: function (context) {
@@ -73,7 +76,8 @@
                 GetDrawBounds: function () {
                     return new eg.Bounds.BoundingCircle(eg.Vector2d.Zero, 5);
                 },
-                Visible: true
+                Visible: true,
+                OnDisposed: new EndGate.EventHandler1()
             };
 
         scene.Add(renderable1);
