@@ -13,10 +13,14 @@ module MapCreator {
         public SelectedLayer: ILayer;
         public Layers: ILayer[];
 
+        private _currentZIndex: number = -1000;
+
         constructor(private _gameScene: eg.Rendering.Scene2d, private _defaultGrid: eg.Graphics.Grid, private _layersSelect: JQuery, addLayerButton: JQuery, layerName: JQuery, private _onLayerChange: (layer: ILayer) => void ) {
             // Build default layer for map builder
             this.Layers = [{ Name: "Background", Layer: new eg.Graphics.Grid(_defaultGrid.Position.X, _defaultGrid.Position.Y, _defaultGrid.Rows, _defaultGrid.Columns, _defaultGrid.TileSize.Width, _defaultGrid.TileSize.Height) }];
             this.SelectedLayer = this.Layers[0];
+
+            this.SelectedLayer.Layer.ZIndex = this._currentZIndex++;
 
             _layersSelect.change(() => {
                 this.SelectedLayer = this.Layers[parseInt(_layersSelect.val())];
@@ -38,6 +42,8 @@ module MapCreator {
                 Name: layerName,
                 Layer: new eg.Graphics.Grid(this._defaultGrid.Position.X, this._defaultGrid.Position.Y, this._defaultGrid.Rows, this._defaultGrid.Columns, this._defaultGrid.TileSize.Width, this._defaultGrid.TileSize.Height)
             };
+
+            addedLayer.Layer.ZIndex = this._currentZIndex++;
 
             // Add layer to the list of layers that we're maintaining
             this.Layers.push(addedLayer);
