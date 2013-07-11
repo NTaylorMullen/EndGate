@@ -224,15 +224,13 @@ module EndGate.Graphics {
         */
         public Draw(context: CanvasRenderingContext2D): void {
             var textSize;
+            
+            this._State.Font = this._fontSettings._BuildFont();
 
             super._StartDraw(context);
 
-            this._State.Font = this._fontSettings._BuildFont();
-
             context.fillText(this._text, 0, 0);
             this._stroker.Invoke(context);
-
-            super._EndDraw(context);
 
             // Only recalculate bounds if the text or font has changed since the last draw.
             if (this._recalculateBoundsSize) {
@@ -241,6 +239,8 @@ module EndGate.Graphics {
                 this._drawBounds.Size.Width = textSize.width;
                 this._drawBounds.Size.Height = parseInt(this._fontSettings.FontSize) * 1.5;
             }
+
+            super._EndDraw(context);            
         }
 
         /**
