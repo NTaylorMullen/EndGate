@@ -83,6 +83,7 @@
     </Content>
     <Content Include="Tests\Assets\Matrixes\Matrix2x2Facts.js" />
     <Content Include="Tests\Assets\Sizes\Size2dFacts.js" />
+    <Content Include="Tests\Assets\TimeSpanFacts.js" />
     <Content Include="Tests\Assets\Vectors\Vector2dFacts.js" />
     <Content Include="Tests\Assets\Vectors\Vector2dHelperFacts.js" />
     <Content Include="Tests\BoundingObject\BoundingCircleFacts.js" />
