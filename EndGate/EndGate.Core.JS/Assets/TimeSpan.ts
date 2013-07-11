@@ -66,7 +66,7 @@ module EndGate {
         * Gets or sets the number of minutes the TimeSpan represents.
         */
         public get Minutes(): number {
-            return this._seconds;
+            return this._minutes;
         }
         public set Minutes(val: number) {
             this._minutes = val;

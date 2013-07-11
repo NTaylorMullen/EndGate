@@ -49,7 +49,7 @@ var EndGate;
             * Gets or sets the number of minutes the TimeSpan represents.
             */
             function () {
-                return this._seconds;
+                return this._minutes;
             },
             set: function (val) {
                 this._minutes = val;
