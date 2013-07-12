@@ -1,0 +1,29 @@
+{
+  "name": "EndGate",
+  "version": "0.1.1",
+  "description": "EndGate is a TypeScript powered game framework which was created for the sole purpose of making HTML5 game development maintainable, fun and easy.",
+  "main": "endgate.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NTaylorMullen/EndGate.git"
+  },
+  "keywords": [
+    "typescript",
+    "game",
+    "engine"
+  ],
+  "author": "N. Taylor Mullen",
+  "license": "MIT",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-typescript": "~0.2.0",
+    "grunt-contrib-qunit": "~0.2.0",
+	"grunt-contrib-copy":"~0.4.0"
+   }
+}
