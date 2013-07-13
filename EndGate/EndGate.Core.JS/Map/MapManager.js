@@ -3,6 +3,7 @@ var EndGate;
     /// <reference path="../Rendering/Camera/Camera2d.ts" />
     /// <reference path="Scenery/SceneryHandler.ts" />
     /// <reference path="../Rendering/Scene2d.ts" />
+    /// <reference path="../Interfaces/IDisposable.ts" />
     (function (Map) {
         /**
         * Defines a map manager that is used to manage Scenery.  Will eventually be expanded to handle obstacles.
@@ -15,6 +16,12 @@ var EndGate;
             function MapManager(scene) {
                 this.Scenery = new Map.SceneryHandler(scene);
             }
+            /**
+            * Destroys the games map assets.
+            */
+            MapManager.prototype.Dispose = function () {
+                this.Scenery.Dispose();
+            };
             return MapManager;
         })();
         Map.MapManager = MapManager;

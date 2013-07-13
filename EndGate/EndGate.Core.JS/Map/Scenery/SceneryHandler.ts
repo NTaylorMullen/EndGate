@@ -14,6 +14,7 @@ module EndGate.Map {
         private _camera: Rendering.Camera2d;
         private _layers: Graphics.Abstractions.Graphic2d[];
         private _renderer: Rendering.Camera2dRenderer;
+        private _disposed: boolean;
 
         /**
         * Creates a new instance of the SceneryHandler object.
@@ -23,7 +24,8 @@ module EndGate.Map {
             this._camera = scene.Camera;
             this._layers = [];            
             this._sceneryCanvas = this.BuildSceneryCanvas(scene.DrawArea);
-            this._renderer = new Rendering.Camera2dRenderer(this._sceneryCanvas,this._camera);
+            this._renderer = new Rendering.Camera2dRenderer(this._sceneryCanvas, this._camera);
+            this._disposed = false;
         }
 
         /**
@@ -49,6 +51,20 @@ module EndGate.Map {
             this._layers.sort(Graphics.Abstractions.Graphic2d._zindexSort);
 
             this._renderer.Render(this._layers);
+        }
+
+        /**
+        * Destroys the games map canvas and the Scenery layers.
+        */
+        public Dispose(): void {
+            if (!this._disposed) {
+                this._disposed = true;
+                this._layers = [];
+                this._renderer.Dispose();
+            }
+            else {
+                throw new Error("Scene2d cannot be disposed more than once");
+            }
         }
 
         private BuildSceneryCanvas(foreground: HTMLCanvasElement): HTMLCanvasElement {

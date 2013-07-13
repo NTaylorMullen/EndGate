@@ -1845,6 +1845,7 @@ declare module EndGate.Map {
         private _camera;
         private _layers;
         private _renderer;
+        private _disposed;
         /**
         * Creates a new instance of the SceneryHandler object.
         * @param scene The primary scene that this SceneryHandler will play behind.
@@ -1864,6 +1865,10 @@ declare module EndGate.Map {
         * Draws all layers onto the given context.  If this is used via a MapManager object, Draw will automatically be called.
         */
         public Draw(): void;
+        /**
+        * Destroys the games map canvas and the Scenery layers.
+        */
+        public Dispose(): void;
         private BuildSceneryCanvas(foreground);
     }
 }
@@ -1871,7 +1876,7 @@ declare module EndGate.Map {
     /**
     * Defines a map manager that is used to manage Scenery.  Will eventually be expanded to handle obstacles.
     */
-    class MapManager {
+    class MapManager implements EndGate.IDisposable {
         /**
         * Used to draw larger images that are used to depict backgrounds or other scenery.
         */
@@ -1881,6 +1886,10 @@ declare module EndGate.Map {
         * @param scene The Scene2d that is used to draw smaller objects within the game (the foreground scene).
         */
         constructor(scene: EndGate.Rendering.Scene2d);
+        /**
+        * Destroys the games map assets.
+        */
+        public Dispose(): void;
     }
 }
 declare module EndGate {

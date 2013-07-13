@@ -1,13 +1,14 @@
 /// <reference path="../Rendering/Camera/Camera2d.ts" />
 /// <reference path="Scenery/SceneryHandler.ts" />
 /// <reference path="../Rendering/Scene2d.ts" />
+/// <reference path="../Interfaces/IDisposable.ts" />
 
 module EndGate.Map {
 
     /**
     * Defines a map manager that is used to manage Scenery.  Will eventually be expanded to handle obstacles.
     */
-    export class MapManager {
+    export class MapManager implements IDisposable{
         /**
         * Used to draw larger images that are used to depict backgrounds or other scenery.
         */
@@ -19,6 +20,13 @@ module EndGate.Map {
         */
         constructor(scene: Rendering.Scene2d) {
             this.Scenery = new SceneryHandler(scene);
+        }
+
+        /**
+        * Destroys the games map assets.
+        */
+        public Dispose(): void {
+            this.Scenery.Dispose();
         }
     }
 
