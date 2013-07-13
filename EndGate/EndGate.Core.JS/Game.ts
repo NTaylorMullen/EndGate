@@ -104,6 +104,7 @@ module EndGate {
         public Dispose()
         {
             this.Scene.Dispose();
+            this.Map.Dispose();
             GameRunnerInstance.Unregister(this);
         }
     }

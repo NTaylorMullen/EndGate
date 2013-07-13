@@ -4153,6 +4153,7 @@ module EndGate.Map {
         private _camera: Rendering.Camera2d;
         private _layers: Graphics.Abstractions.Graphic2d[];
         private _renderer: Rendering.Camera2dRenderer;
+        private _disposed: boolean;
 
         /**
         * Creates a new instance of the SceneryHandler object.
@@ -4162,7 +4163,8 @@ module EndGate.Map {
             this._camera = scene.Camera;
             this._layers = [];            
             this._sceneryCanvas = this.BuildSceneryCanvas(scene.DrawArea);
-            this._renderer = new Rendering.Camera2dRenderer(this._sceneryCanvas,this._camera);
+            this._renderer = new Rendering.Camera2dRenderer(this._sceneryCanvas, this._camera);
+            this._disposed = false;
         }
 
         /**
@@ -4190,6 +4192,20 @@ module EndGate.Map {
             this._renderer.Render(this._layers);
         }
 
+        /**
+        * Destroys the games map canvas and the Scenery layers.
+        */
+        public Dispose(): void {
+            if (!this._disposed) {
+                this._disposed = true;
+                this._layers = [];
+                this._renderer.Dispose();
+            }
+            else {
+                throw new Error("Scene2d cannot be disposed more than once");
+            }
+        }
+
         private BuildSceneryCanvas(foreground: HTMLCanvasElement): HTMLCanvasElement {
             var sceneryCanvas = < HTMLCanvasElement > document.createElement("canvas"),
                 baseElement: any = foreground;
@@ -4211,12 +4227,13 @@ module EndGate.Map {
 
 
 
+
 module EndGate.Map {
 
     /**
     * Defines a map manager that is used to manage Scenery.  Will eventually be expanded to handle obstacles.
     */
-    export class MapManager {
+    export class MapManager implements IDisposable{
         /**
         * Used to draw larger images that are used to depict backgrounds or other scenery.
         */
@@ -4228,6 +4245,13 @@ module EndGate.Map {
         */
         constructor(scene: Rendering.Scene2d) {
             this.Scenery = new SceneryHandler(scene);
+        }
+
+        /**
+        * Destroys the games map assets.
+        */
+        public Dispose(): void {
+            this.Scenery.Dispose();
         }
     }
 
@@ -4339,6 +4363,7 @@ module EndGate {
         public Dispose()
         {
             this.Scene.Dispose();
+            this.Map.Dispose();
             GameRunnerInstance.Unregister(this);
         }
     }

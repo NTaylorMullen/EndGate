@@ -2769,6 +2769,7 @@ var EndGate;
                 this._layers = [];
                 this._sceneryCanvas = this.BuildSceneryCanvas(scene.DrawArea);
                 this._renderer = new EndGate.Rendering.Camera2dRenderer(this._sceneryCanvas, this._camera);
+                this._disposed = false;
             }
             SceneryHandler.prototype.AddLayer = function (layer) {
                 this._layers.push(layer);
@@ -2782,6 +2783,16 @@ var EndGate;
                 this._layers.sort(EndGate.Graphics.Abstractions.Graphic2d._zindexSort);
 
                 this._renderer.Render(this._layers);
+            };
+
+            SceneryHandler.prototype.Dispose = function () {
+                if (!this._disposed) {
+                    this._disposed = true;
+                    this._layers = [];
+                    this._renderer.Dispose();
+                } else {
+                    throw new Error("Scene2d cannot be disposed more than once");
+                }
             };
 
             SceneryHandler.prototype.BuildSceneryCanvas = function (foreground) {
@@ -2810,6 +2821,9 @@ var EndGate;
             function MapManager(scene) {
                 this.Scenery = new Map.SceneryHandler(scene);
             }
+            MapManager.prototype.Dispose = function () {
+                this.Scenery.Dispose();
+            };
             return MapManager;
         })();
         Map.MapManager = MapManager;
@@ -2856,6 +2870,7 @@ var EndGate;
 
         Game.prototype.Dispose = function () {
             this.Scene.Dispose();
+            this.Map.Dispose();
             GameRunnerInstance.Unregister(this);
         };
         Game._gameIds = 0;

@@ -61,6 +61,7 @@ var EndGate;
         */
         Game.prototype.Dispose = function () {
             this.Scene.Dispose();
+            this.Map.Dispose();
             GameRunnerInstance.Unregister(this);
         };
         Game._gameIds = 0;
