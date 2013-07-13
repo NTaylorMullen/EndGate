@@ -1,14 +1,3 @@
-declare module EndGate {
-    /**
-    * Represents a Disposable object with a Dispose method.
-    */
-    interface IDisposable {
-        /**
-        * Disposes the object.  Dispose should only be called once.
-        */
-        Dispose(): void;
-    }
-}
 declare module EndGate._ {
     interface ITyped {
         _type: string;
@@ -27,186 +16,166 @@ declare module EndGate {
 }
 declare module EndGate {
     /**
-    * Defines a time interval.
+    * Defines a two dimensional size object which specifies a Width and Height.
     */
-    class TimeSpan implements EndGate._.ITyped, EndGate.ICloneable {
+    class Size2d implements EndGate._.ITyped, EndGate.ICloneable {
         public _type: string;
-        private static _secondsMultiplier;
-        private static _minutesMultiplier;
-        private _milliseconds;
-        private _seconds;
-        private _minutes;
         /**
-        * Creates a new instance of TimeSpan based on the provided milliseconds.
-        * @param milliseconds Number of milliseconds.
+        * Gets or sets the horizontal component of this Size structure.
         */
-        constructor(milliseconds: number);
+        public Width: number;
         /**
-        * Creates a new instance of TimeSpan based on the provided milliseconds, seconds and minutes.
-        * @param milliseconds Number of milliseconds.
-        * @param seconds Number of seconds.
+        * Gets or sets the vertical component of this Size structure.
         */
-        constructor(milliseconds: number, seconds: number);
+        public Height: number;
         /**
-        * Creates a new instance of TimeSpan based on the provided milliseconds, seconds and minutes.
-        * @param milliseconds Number of milliseconds.
-        * @param seconds Number of seconds.
-        * @param minutes Number of minutes.
+        * Creates a new instance of Size2d.
+        * @param size Initial value of the Width and Height components of Size2d.
         */
-        constructor(milliseconds: number, seconds: number, minutes: number);
+        constructor(size: number);
         /**
-        * Gets or sets the number of milliseconds the TimeSpan represents.
+        * Creates a new instance of Size2d.
+        * @param width Initial value of the Width component of Size2d.
+        * @param height Initial value of the Height component of Size2d.
         */
-        public Milliseconds : number;
+        constructor(width: number, height: number);
         /**
-        * Gets or sets the number of seconds the TimeSpan represents.
+        * Returns a Size2d with all its components set to zero.
         */
-        public Seconds : number;
+        static Zero : Size2d;
         /**
-        * Gets or sets the number of minutes the TimeSpan represents.
+        * Returns a Size2d with all its components set to one.
         */
-        public Minutes : number;
+        static One : Size2d;
         /**
-        * Returns a TimeSpan that represents the addition of the current TimeSpan's milliseconds to the provided TimeSpan's milliseconds.
-        * @param val The TimeSpan to add.
+        * Gets the radius that encompasses the two dimensional size of this Size2d.
         */
-        public Add(val: TimeSpan): TimeSpan;
+        public Radius : number;
         /**
-        * Returns a TimeSpan that represents the addition of the current TimeSpan's milliseconds to the provided milliseconds.
-        * @param val The number of milliseconds to add.
+        * Gets half of the Width component of this Size2d.
         */
-        public Add(val: number): TimeSpan;
+        public HalfWidth : number;
         /**
-        * Returns a TimeSpan that represents the multiplication of the current TimeSpan's milliseconds by the provided TimeSpan's milliseconds.
-        * @param val The TimeSpan to multiply.
+        * Gets half of the Height component of this Size2d.
         */
-        public Multiply(val: TimeSpan): TimeSpan;
+        public HalfHeight : number;
         /**
-        * Returns a TimeSpan that represents the multiplication of the current TimeSpan's milliseconds by the provided milliseconds.
-        * @param val The number of milliseconds to multiply.
+        * Executes the action with the Width and Height of this Size2d and sets the Width and Height to the corresponding return values.
+        * @param action The function used to modify the Width and Height.
         */
-        public Multiply(val: number): TimeSpan;
+        public Apply(action: (val: number) => number): void;
         /**
-        * Returns a TimeSpan that represents the subtraction of the current TimeSpan's milliseconds by the provided TimeSpan's milliseconds.
-        * @param val The TimeSpan to subtract by.
+        * Executes the action with the Width and Height of this Size2d.
+        * @param action The function to pass the Width and Height components to.
         */
-        public Subtract(val: TimeSpan): TimeSpan;
+        public Trigger(action: (val: number) => void): void;
         /**
-        * Returns a TimeSpan that represents the subtraction of the current TimeSpan's milliseconds by the provided milliseconds.
-        * @param val The number of milliseconds to subtract by.
+        * Returns a Size2d that is the result of adding the Width and Height of this Size2d to the Width and Height of a Size2d.
+        * @param val The Size2d to add.
         */
-        public Subtract(val: number): TimeSpan;
+        public Add(val: Size2d): Size2d;
         /**
-        * Returns a TimeSpan that represents the subtraction of the current TimeSpan's milliseconds from the provided TimeSpan's milliseconds.
-        * @param val The TimeSpan to subtract from.
+        * Returns a Size2d that is the result of adding the Width and Height of this Size2d to the X and Y of a Vector2d.
+        * @param val The Vector2d to add.
         */
-        public SubtractFrom(val: TimeSpan): TimeSpan;
+        public Add(val: EndGate.Vector2d): Size2d;
         /**
-        * Returns a TimeSpan that represents the subtraction of the current TimeSpan's milliseconds from the provided milliseconds.
-        * @param val The number of milliseconds to subtract from.
+        * Returns a Size2d that is the result of adding the Width and Height of this Size2d to a number.
+        * @param val The number to add.
         */
-        public SubtractFrom(val: number): TimeSpan;
+        public Add(val: number): Size2d;
         /**
-        * Returns a TimeSpan that represents the division of the current TimeSpan's milliseconds by the provided TimeSpan's milliseconds.
-        * @param val The TimeSpan to divide by.
+        * Returns a Size2d that is the result of multiplying the Width and Height of this Size2d by the Width and Height of a Size2d.
+        * @param val The Size2d to multiply.
         */
-        public Divide(val: TimeSpan): TimeSpan;
+        public Multiply(val: Size2d): Size2d;
         /**
-        * Returns a TimeSpan that represents the division of the current TimeSpan's milliseconds by the provided milliseconds.
-        * @param val The number of milliseconds to divide by.
+        * Returns a Size2d that is the result of multiplying the Width and Height of this Size2d by the X and Y of a Vector2d.
+        * @param val The Vector2d to multiply.
         */
-        public Divide(val: number): TimeSpan;
+        public Multiply(val: EndGate.Vector2d): Size2d;
         /**
-        * Returns a TimeSpan that represents the division of the current TimeSpan's milliseconds from the provided TimeSpan's milliseconds.
-        * @param val The TimeSpan to divide from.
+        * Returns a Size2d that is the result of multiplying the Width and Height of this Size2d by a number.
+        * @param val The number to multiply.
         */
-        public DivideFrom(val: TimeSpan): TimeSpan;
+        public Multiply(val: number): Size2d;
         /**
-        * Returns a TimeSpan that represents the division of the current TimeSpan's milliseconds from the provided milliseconds.
-        * @param val The number of milliseconds to divide from.
+        * Returns a Size2d that is the result of subtracting the Width and Height of this Size2d by the Width and Height of a Size2d.
+        * @param val The Size2d to subtract.
         */
-        public DivideFrom(val: number): TimeSpan;
+        public Subtract(val: Size2d): Size2d;
         /**
-        * Determines whether this TimeSpan represents the same amount of time as the provided TimeSpan.
-        * @param timeSpan The TimeSpan to compare the current TimeSpan to.
+        * Returns a Size2d that is the result of subtracting the Width and Height of this Size2d by the X and Y of a Vector2d.
+        * @param val The Vector2d to subtract.
         */
-        public Equivalent(timeSpan: TimeSpan): boolean;
+        public Subtract(val: EndGate.Vector2d): Size2d;
         /**
-        * Returns a TimeSpan that represents the same time interval.
+        * Returns a Size2d that is the result of subtracting the Width and Height of this Size2d by a number.
+        * @param val The number to subtract.
         */
-        public Clone(): TimeSpan;
+        public Subtract(val: number): Size2d;
         /**
-        * Overridden toString method to display TimeSpan in the ms:s:m format.
+        * Returns a Size2d that is the result of subtracting the Width and Height of this Size2d from the Width and Height of a Size2d.
+        * @param val The Size2d to subtract from.
+        */
+        public SubtractFrom(val: Size2d): Size2d;
+        /**
+        * Returns a Size2d that is the result of subtracting the Width and Height of this Size2d from the X and Y of a Vector2d.
+        * @param val The Vector2d to subtract from.
+        */
+        public SubtractFrom(val: EndGate.Vector2d): Size2d;
+        /**
+        * Returns a Size2d that is the result of subtracting the Width and Height of this Size2d from a number.
+        * @param val The number to subtract from.
+        */
+        public SubtractFrom(val: number): Size2d;
+        /**
+        * Returns a Size2d that is the result of dividing the Width and Height of this Size2d by the Width and Height of a Size2d.
+        * @param val The Size2d to divide.
+        */
+        public Divide(val: Size2d): Size2d;
+        /**
+        * Returns a Size2d that is the result of dividing the Width and Height of this Size2d by the X and Y of a Vector2d.
+        * @param val The Vector2d to divide.
+        */
+        public Divide(val: EndGate.Vector2d): Size2d;
+        /**
+        * Returns a Size2d that is the result of dividing the Width and Height of this Size2d by a number.
+        * @param val The number to divide.
+        */
+        public Divide(val: number): Size2d;
+        /**
+        * Returns a Size2d that is the result of dividing the Width and Height of this Size2d from the Width and Height of a Size2d.
+        * @param val The Size2d to divide from.
+        */
+        public DivideFrom(val: Size2d): Size2d;
+        /**
+        * Returns a Size2d that is the result of dividing the Width and Height of this Size2d from the X and Y of a Vector2d.
+        * @param val The Vector2d to divide from.
+        */
+        public DivideFrom(val: EndGate.Vector2d): Size2d;
+        /**
+        * Returns a Size2d that is the result of dividing the Width and Height of this Size2d from a number.
+        * @param val The number to divide from.
+        */
+        public DivideFrom(val: number): Size2d;
+        /**
+        * Returns a Size2d that is the negated version of this Size2d.
+        */
+        public Negate(): Size2d;
+        /**
+        * Determines whether this Size2d has the same Width and Height of another Size2d.
+        * @param size The Size2d to compare the current Size2d to.
+        */
+        public Equivalent(size: Size2d): boolean;
+        /**
+        * Returns a Size2d that has identical Width's and Height's as the current Size2d.
+        */
+        public Clone(): Size2d;
+        /**
+        * Overridden toString method to display Size2d in the (Width, Height) format.
         */
         public toString(): string;
-        /**
-        * Returns a TimeSpan that represents the specified number of milliseconds.
-        * @param val Number of milliseconds.
-        */
-        static FromMilliseconds(val: number): TimeSpan;
-        /**
-        * Returns a TimeSpan that represents the specified number of seconds.
-        * @param val Number of seconds.
-        */
-        static FromSeconds(val: number): TimeSpan;
-        /**
-        * Returns a TimeSpan that represents the specified number of minutes.
-        * @param val Number of minutes.
-        */
-        static FromMinutes(val: number): TimeSpan;
-        /**
-        * Returns a TimeSpan that represents the time between the two dates.
-        * @param from The from date.
-        * @param to The to date.
-        */
-        static DateSpan(from: Date, to: Date): TimeSpan;
-        /**
-        * Gets a TimeSpan that represents a 0 millisecond time interval.
-        */
-        static Zero : TimeSpan;
-    }
-}
-declare module EndGate {
-    /**
-    * Defines a game time class that is used to manage update timing execution as well as total game time.
-    */
-    class GameTime implements EndGate._.ITyped {
-        public _type: string;
-        private _start;
-        private _lastUpdate;
-        private _elapsed;
-        /**
-        * Creates a new instance of the GameTime object.
-        */
-        constructor();
-        /**
-        * Gets the elapsed time since the last update.
-        */
-        public Elapsed : EndGate.TimeSpan;
-        /**
-        * Gets the current date time at the start of the update.
-        */
-        public Now : Date;
-        /**
-        * Gets the total amount of time surpassed since construction.
-        */
-        public Total : EndGate.TimeSpan;
-        /**
-        * Updates the game time object.  Causes the gameTime to refresh all its components.
-        */
-        public Update(): void;
-    }
-}
-declare module EndGate {
-    /**
-    * Represents an object that can be updated.
-    */
-    interface IUpdateable {
-        /**
-        * Updates the object.
-        * @param gameTime The current game time object.
-        */
-        Update(gameTime: EndGate.GameTime): void;
     }
 }
 interface Math {
@@ -425,166 +394,292 @@ declare module EndGate {
 }
 declare module EndGate {
     /**
-    * Defines a two dimensional size object which specifies a Width and Height.
+    * Defines a matrix with 2 columns and 2 rows (2x2).
     */
-    class Size2d implements EndGate._.ITyped, EndGate.ICloneable {
+    class Matrix2x2 implements EndGate._.ITyped, EndGate.ICloneable {
         public _type: string;
         /**
-        * Gets or sets the horizontal component of this Size structure.
+        * Gets or sets the matrix values.  Represents the current Matrix2x2 as a multi-dimensional array.
         */
-        public Width: number;
+        public Values: number[][];
         /**
-        * Gets or sets the vertical component of this Size structure.
+        * Creates a new instance of Matrix2x2 with all rows and columns initialized to 0.
         */
-        public Height: number;
+        constructor();
         /**
-        * Creates a new instance of Size2d.
-        * @param size Initial value of the Width and Height components of Size2d.
+        * Creates a new instance of Matrix2x2.
+        * @param topLeft The row 0 column 0 initial value.
+        * @param topRight The row 0 column 1 initial value.
+        * @param botLeft The row 1 column 0 initial value.
+        * @param botRight The row 1 column 1 initial value.
         */
-        constructor(size: number);
+        constructor(topLeft: number, topRight: number, botLeft: number, botRight: number);
         /**
-        * Creates a new instance of Size2d.
-        * @param width Initial value of the Width component of Size2d.
-        * @param height Initial value of the Height component of Size2d.
+        * Creates a Matrix2x2 with all its rows and columns initialized to 0.
         */
-        constructor(width: number, height: number);
+        static Zero : Matrix2x2;
         /**
-        * Returns a Size2d with all its components set to zero.
+        * Returns the identity matrix for a 2x2.
         */
-        static Zero : Size2d;
+        static Identity : Matrix2x2;
         /**
-        * Returns a Size2d with all its components set to one.
-        */
-        static One : Size2d;
-        /**
-        * Gets the radius that encompasses the two dimensional size of this Size2d.
-        */
-        public Radius : number;
-        /**
-        * Gets half of the Width component of this Size2d.
-        */
-        public HalfWidth : number;
-        /**
-        * Gets half of the Height component of this Size2d.
-        */
-        public HalfHeight : number;
-        /**
-        * Executes the action with the Width and Height of this Size2d and sets the Width and Height to the corresponding return values.
-        * @param action The function used to modify the Width and Height.
+        * Executes the action with each row and column item of this Matrix2x2 and modifies their values.
+        * @param action The function used to modify each row and column items.
         */
         public Apply(action: (val: number) => number): void;
         /**
-        * Executes the action with the Width and Height of this Size2d.
-        * @param action The function to pass the Width and Height components to.
+        * Executes the action with each row and column item of this Matrix2x2.
+        * @param action The function to pass the row column item to.
         */
         public Trigger(action: (val: number) => void): void;
         /**
-        * Returns a Size2d that is the result of adding the Width and Height of this Size2d to the Width and Height of a Size2d.
-        * @param val The Size2d to add.
+        * Returns a Matrix2x2 that is the result of adding the current Matrix2x2 to the provided Matrix2x2.
+        * @param val The Matrix2x2 to add.
         */
-        public Add(val: Size2d): Size2d;
+        public Add(val: Matrix2x2): Matrix2x2;
         /**
-        * Returns a Size2d that is the result of adding the Width and Height of this Size2d to the X and Y of a Vector2d.
-        * @param val The Vector2d to add.
-        */
-        public Add(val: EndGate.Vector2d): Size2d;
-        /**
-        * Returns a Size2d that is the result of adding the Width and Height of this Size2d to a number.
+        * Returns a Matrix2x2 that is the result of adding the current Matrix2x2 to the provided number.
         * @param val The number to add.
         */
-        public Add(val: number): Size2d;
+        public Add(val: number): Matrix2x2;
         /**
-        * Returns a Size2d that is the result of multiplying the Width and Height of this Size2d by the Width and Height of a Size2d.
-        * @param val The Size2d to multiply.
+        * Returns a Matrix2x2 that is the result of multiplying the current Matrix2x2 by the provided Matrix2x2.
+        * @param val The Matrix2x2 to multiply.
         */
-        public Multiply(val: Size2d): Size2d;
+        public Multiply(val: Matrix2x2): Matrix2x2;
         /**
-        * Returns a Size2d that is the result of multiplying the Width and Height of this Size2d by the X and Y of a Vector2d.
-        * @param val The Vector2d to multiply.
-        */
-        public Multiply(val: EndGate.Vector2d): Size2d;
-        /**
-        * Returns a Size2d that is the result of multiplying the Width and Height of this Size2d by a number.
+        * Returns a Matrix2x2 that is the result of multiplying the current Matrix2x2 by the provided number.
         * @param val The number to multiply.
         */
-        public Multiply(val: number): Size2d;
+        public Multiply(val: number): Matrix2x2;
         /**
-        * Returns a Size2d that is the result of subtracting the Width and Height of this Size2d by the Width and Height of a Size2d.
-        * @param val The Size2d to subtract.
+        * Returns a Matrix2x2 that is the result of subtracting the current Matrix2x2 by the provided Matrix2x2.
+        * @param val The Matrix2x2 to subtract.
         */
-        public Subtract(val: Size2d): Size2d;
+        public Subtract(val: Matrix2x2): Matrix2x2;
         /**
-        * Returns a Size2d that is the result of subtracting the Width and Height of this Size2d by the X and Y of a Vector2d.
-        * @param val The Vector2d to subtract.
-        */
-        public Subtract(val: EndGate.Vector2d): Size2d;
-        /**
-        * Returns a Size2d that is the result of subtracting the Width and Height of this Size2d by a number.
+        * Returns a Matrix2x2 that is the result of subtracting the current Matrix2x2 by the provided number.
         * @param val The number to subtract.
         */
-        public Subtract(val: number): Size2d;
+        public Subtract(val: number): Matrix2x2;
         /**
-        * Returns a Size2d that is the result of subtracting the Width and Height of this Size2d from the Width and Height of a Size2d.
-        * @param val The Size2d to subtract from.
+        * Returns a Matrix2x2 that is the result of subtracting the current Matrix2x2 from the provided Matrix2x2.
+        * @param val The Matrix2x2 to subtract from.
         */
-        public SubtractFrom(val: Size2d): Size2d;
+        public SubtractFrom(val: Matrix2x2): Matrix2x2;
         /**
-        * Returns a Size2d that is the result of subtracting the Width and Height of this Size2d from the X and Y of a Vector2d.
-        * @param val The Vector2d to subtract from.
-        */
-        public SubtractFrom(val: EndGate.Vector2d): Size2d;
-        /**
-        * Returns a Size2d that is the result of subtracting the Width and Height of this Size2d from a number.
+        * Returns a Matrix2x2 that is the result of subtracting the current Matrix2x2 from the provided number.
         * @param val The number to subtract from.
         */
-        public SubtractFrom(val: number): Size2d;
+        public SubtractFrom(val: number): Matrix2x2;
         /**
-        * Returns a Size2d that is the result of dividing the Width and Height of this Size2d by the Width and Height of a Size2d.
-        * @param val The Size2d to divide.
+        * Returns a Matrix2x2 that is the result of dividing the current Matrix2x2 by the provided Matrix2x2.
+        * @param val The Matrix2x2 to divide.
         */
-        public Divide(val: Size2d): Size2d;
+        public Divide(val: Matrix2x2): Matrix2x2;
         /**
-        * Returns a Size2d that is the result of dividing the Width and Height of this Size2d by the X and Y of a Vector2d.
-        * @param val The Vector2d to divide.
-        */
-        public Divide(val: EndGate.Vector2d): Size2d;
-        /**
-        * Returns a Size2d that is the result of dividing the Width and Height of this Size2d by a number.
+        * Returns a Matrix2x2 that is the result of dividing the current Matrix2x2 by the provided number.
         * @param val The number to divide.
         */
-        public Divide(val: number): Size2d;
+        public Divide(val: number): Matrix2x2;
         /**
-        * Returns a Size2d that is the result of dividing the Width and Height of this Size2d from the Width and Height of a Size2d.
-        * @param val The Size2d to divide from.
+        * Returns a Matrix2x2 that is the result of dividing the current Matrix2x2 from the provided Matrix2x2.
+        * @param val The Matrix2x2 to divide from.
         */
-        public DivideFrom(val: Size2d): Size2d;
+        public DivideFrom(val: Matrix2x2): Matrix2x2;
         /**
-        * Returns a Size2d that is the result of dividing the Width and Height of this Size2d from the X and Y of a Vector2d.
-        * @param val The Vector2d to divide from.
-        */
-        public DivideFrom(val: EndGate.Vector2d): Size2d;
-        /**
-        * Returns a Size2d that is the result of dividing the Width and Height of this Size2d from a number.
+        * Returns a Matrix2x2 that is the result of dividing the current Matrix2x2 from the provided number.
         * @param val The number to divide from.
         */
-        public DivideFrom(val: number): Size2d;
+        public DivideFrom(val: number): Matrix2x2;
         /**
-        * Returns a Size2d that is the negated version of this Size2d.
+        * Returns a Vector2d that has been transformed by the current Matrix2x2.
+        * @param vector The vector to transform.
         */
-        public Negate(): Size2d;
+        public Transform(vector: EndGate.Vector2d): EndGate.Vector2d;
         /**
-        * Determines whether this Size2d has the same Width and Height of another Size2d.
-        * @param size The Size2d to compare the current Size2d to.
+        * Returns the transpose of the current Matrix2x2.
         */
-        public Equivalent(size: Size2d): boolean;
+        public Transpose(): Matrix2x2;
         /**
-        * Returns a Size2d that has identical Width's and Height's as the current Size2d.
+        * Returns the determinant of the current Matrix2x2.
         */
-        public Clone(): Size2d;
+        public Determinant(): number;
         /**
-        * Overridden toString method to display Size2d in the (Width, Height) format.
+        * Returns the inverse of the current Matrix2x2.
+        */
+        public Inverse(): Matrix2x2;
+        /**
+        * Returns a Matrix2x2 that has identical rows and columns as the current Matrix2x2.
+        */
+        public Clone(): Matrix2x2;
+        /**
+        * Determines whether this Matrix2x2 has the same row and column values as the provided Matrix2x2.
+        * @param matrix The Matrix2x2 to compare the current Matrix2x2 to.
+        */
+        public Equivalent(matrix: Matrix2x2): boolean;
+        /**
+        * Overridden toString method to display Matrix2x2 in easy to read format: "[topLeft, topRight] [botLeft, botRight]"
         */
         public toString(): string;
+        /**
+        * Creates a scaling matrix based off the provided Vector2d.
+        * @param vector The vector used to determine the X and Y scaling values.
+        */
+        static Scale(vector: EndGate.Vector2d): Matrix2x2;
+    }
+}
+declare module EndGate {
+    /**
+    * Defines a time interval.
+    */
+    class TimeSpan implements EndGate._.ITyped, EndGate.ICloneable {
+        public _type: string;
+        private static _secondsMultiplier;
+        private static _minutesMultiplier;
+        private _milliseconds;
+        private _seconds;
+        private _minutes;
+        /**
+        * Creates a new instance of TimeSpan based on the provided milliseconds.
+        * @param milliseconds Number of milliseconds.
+        */
+        constructor(milliseconds: number);
+        /**
+        * Creates a new instance of TimeSpan based on the provided milliseconds, seconds and minutes.
+        * @param milliseconds Number of milliseconds.
+        * @param seconds Number of seconds.
+        */
+        constructor(milliseconds: number, seconds: number);
+        /**
+        * Creates a new instance of TimeSpan based on the provided milliseconds, seconds and minutes.
+        * @param milliseconds Number of milliseconds.
+        * @param seconds Number of seconds.
+        * @param minutes Number of minutes.
+        */
+        constructor(milliseconds: number, seconds: number, minutes: number);
+        /**
+        * Gets or sets the number of milliseconds the TimeSpan represents.
+        */
+        public Milliseconds : number;
+        /**
+        * Gets or sets the number of seconds the TimeSpan represents.
+        */
+        public Seconds : number;
+        /**
+        * Gets or sets the number of minutes the TimeSpan represents.
+        */
+        public Minutes : number;
+        /**
+        * Returns a TimeSpan that represents the addition of the current TimeSpan's milliseconds to the provided TimeSpan's milliseconds.
+        * @param val The TimeSpan to add.
+        */
+        public Add(val: TimeSpan): TimeSpan;
+        /**
+        * Returns a TimeSpan that represents the addition of the current TimeSpan's milliseconds to the provided milliseconds.
+        * @param val The number of milliseconds to add.
+        */
+        public Add(val: number): TimeSpan;
+        /**
+        * Returns a TimeSpan that represents the multiplication of the current TimeSpan's milliseconds by the provided TimeSpan's milliseconds.
+        * @param val The TimeSpan to multiply.
+        */
+        public Multiply(val: TimeSpan): TimeSpan;
+        /**
+        * Returns a TimeSpan that represents the multiplication of the current TimeSpan's milliseconds by the provided milliseconds.
+        * @param val The number of milliseconds to multiply.
+        */
+        public Multiply(val: number): TimeSpan;
+        /**
+        * Returns a TimeSpan that represents the subtraction of the current TimeSpan's milliseconds by the provided TimeSpan's milliseconds.
+        * @param val The TimeSpan to subtract by.
+        */
+        public Subtract(val: TimeSpan): TimeSpan;
+        /**
+        * Returns a TimeSpan that represents the subtraction of the current TimeSpan's milliseconds by the provided milliseconds.
+        * @param val The number of milliseconds to subtract by.
+        */
+        public Subtract(val: number): TimeSpan;
+        /**
+        * Returns a TimeSpan that represents the subtraction of the current TimeSpan's milliseconds from the provided TimeSpan's milliseconds.
+        * @param val The TimeSpan to subtract from.
+        */
+        public SubtractFrom(val: TimeSpan): TimeSpan;
+        /**
+        * Returns a TimeSpan that represents the subtraction of the current TimeSpan's milliseconds from the provided milliseconds.
+        * @param val The number of milliseconds to subtract from.
+        */
+        public SubtractFrom(val: number): TimeSpan;
+        /**
+        * Returns a TimeSpan that represents the division of the current TimeSpan's milliseconds by the provided TimeSpan's milliseconds.
+        * @param val The TimeSpan to divide by.
+        */
+        public Divide(val: TimeSpan): TimeSpan;
+        /**
+        * Returns a TimeSpan that represents the division of the current TimeSpan's milliseconds by the provided milliseconds.
+        * @param val The number of milliseconds to divide by.
+        */
+        public Divide(val: number): TimeSpan;
+        /**
+        * Returns a TimeSpan that represents the division of the current TimeSpan's milliseconds from the provided TimeSpan's milliseconds.
+        * @param val The TimeSpan to divide from.
+        */
+        public DivideFrom(val: TimeSpan): TimeSpan;
+        /**
+        * Returns a TimeSpan that represents the division of the current TimeSpan's milliseconds from the provided milliseconds.
+        * @param val The number of milliseconds to divide from.
+        */
+        public DivideFrom(val: number): TimeSpan;
+        /**
+        * Determines whether this TimeSpan represents the same amount of time as the provided TimeSpan.
+        * @param timeSpan The TimeSpan to compare the current TimeSpan to.
+        */
+        public Equivalent(timeSpan: TimeSpan): boolean;
+        /**
+        * Returns a TimeSpan that represents the same time interval.
+        */
+        public Clone(): TimeSpan;
+        /**
+        * Overridden toString method to display TimeSpan in the ms:s:m format.
+        */
+        public toString(): string;
+        /**
+        * Returns a TimeSpan that represents the specified number of milliseconds.
+        * @param val Number of milliseconds.
+        */
+        static FromMilliseconds(val: number): TimeSpan;
+        /**
+        * Returns a TimeSpan that represents the specified number of seconds.
+        * @param val Number of seconds.
+        */
+        static FromSeconds(val: number): TimeSpan;
+        /**
+        * Returns a TimeSpan that represents the specified number of minutes.
+        * @param val Number of minutes.
+        */
+        static FromMinutes(val: number): TimeSpan;
+        /**
+        * Returns a TimeSpan that represents the time between the two dates.
+        * @param from The from date.
+        * @param to The to date.
+        */
+        static DateSpan(from: Date, to: Date): TimeSpan;
+        /**
+        * Gets a TimeSpan that represents a 0 millisecond time interval.
+        */
+        static Zero : TimeSpan;
+    }
+}
+declare module EndGate._ {
+    class MinMax {
+        public Min: number;
+        public Max: number;
+        constructor(min: number, max: number);
+    }
+}
+declare module EndGate._ {
+    class Vector2dHelpers {
+        static GetMinMaxProjections(axis: EndGate.Vector2d, vertices: EndGate.Vector2d[]): _.MinMax;
     }
 }
 declare module EndGate {
@@ -600,125 +695,6 @@ declare module EndGate {
         * Gets or sets the rotation of the moveable object.
         */
         Rotation: number;
-    }
-}
-declare module EndGate._ {
-    class MinMax {
-        public Min: number;
-        public Max: number;
-        constructor(min: number, max: number);
-    }
-}
-declare module EndGate._ {
-    class Vector2dHelpers {
-        static GetMinMaxProjections(axis: EndGate.Vector2d, vertices: EndGate.Vector2d[]): _.MinMax;
-    }
-}
-declare module EndGate.Bounds {
-    /**
-    * Defines a circle that can be used to detect intersections.
-    */
-    class BoundingCircle extends Bounds.Abstractions.Bounds2d implements EndGate._.ITyped {
-        public _type: string;
-        public _boundsType: string;
-        /**
-        * Gets or sets the Radius of the circle.
-        */
-        public Radius: number;
-        /**
-        * Creates a new instance of BoundingCircle.
-        * @param position Initial Position of the BoundingCircle.
-        * @param radius Initial Radius of the BoundingCircle.
-        */
-        constructor(position: EndGate.Vector2d, radius: number);
-        /**
-        * Scales the radius of the BoundingCircle.
-        * @param scale Value to multiply the radius by.
-        */
-        public Scale(scale: number): void;
-        /**
-        * Calculates the area of the BoundingCircle.
-        */
-        public Area(): number;
-        /**
-        * Calculates the circumference of the BoundingCircle.
-        */
-        public Circumference(): number;
-        /**
-        * Determines if the current BoundingCircle is intersecting the provided BoundingCircle.
-        * @param circle BoundingCircle to check intersection with.
-        */
-        public IntersectsCircle(circle: BoundingCircle): boolean;
-        /**
-        * Determines if the current BoundingCircle is intersecting the provided BoundingRectangle.
-        * @param rectangle BoundingRectangle to check intersection with.
-        */
-        public IntersectsRectangle(rectangle: Bounds.BoundingRectangle): boolean;
-        /**
-        * Determines if the current BoundingCircle contains the provided Vector2d.
-        * @param point A point.
-        */
-        public ContainsPoint(point: EndGate.Vector2d): boolean;
-    }
-}
-declare module EndGate.Bounds {
-    /**
-    * Defines a rectangle that can be used to detect intersections.
-    */
-    class BoundingRectangle extends Bounds.Abstractions.Bounds2d implements EndGate._.ITyped {
-        public _type: string;
-        public _boundsType: string;
-        /**
-        * Gets or sets the Size of the rectangle.
-        */
-        public Size: EndGate.Size2d;
-        /**
-        * Creates a new instance of BoundingRectangle.
-        * @param position Initial Position of the BoundingRectangle.
-        * @param size Initial Size of the BoundingRectangle.
-        */
-        constructor(position: EndGate.Vector2d, size: EndGate.Size2d);
-        /**
-        * Scales the width and height of the BoundingRectangle.
-        * @param x Value to multiply the width by.
-        * @param y Value to multiply the height by.
-        */
-        public Scale(x: number, y: number): void;
-        /**
-        * Gets the top left corner of the BoundingRectangle.
-        */
-        public TopLeft : EndGate.Vector2d;
-        /**
-        * Gets the top right corner of the BoundingRectangle.
-        */
-        public TopRight : EndGate.Vector2d;
-        /**
-        * Gets the bottom left corner of the BoundingRectangle.
-        */
-        public BotLeft : EndGate.Vector2d;
-        /**
-        * Gets the bottom right corner of the BoundingRectangle.
-        */
-        public BotRight : EndGate.Vector2d;
-        /**
-        * Returns a list of vertices that are the locations of each corner of the BoundingRectangle. Format: [TopLeft, TopRight, BotLeft, BotRight].
-        */
-        public Corners(): EndGate.Vector2d[];
-        /**
-        * Determines if the current BoundingRectangle is intersecting the provided BoundingCircle.
-        * @param circle BoundingCircle to check intersection with.
-        */
-        public IntersectsCircle(circle: Bounds.BoundingCircle): boolean;
-        /**
-        * Determines if the current BoundingRectangle is intersecting the provided BoundingRectangle.
-        * @param rectangle BoundingRectangle to check intersection with.
-        */
-        public IntersectsRectangle(rectangle: BoundingRectangle): boolean;
-        /**
-        * Determines if the current BoundingRectangle contains the provided Vector2d.
-        * @param point A point.
-        */
-        public ContainsPoint(point: EndGate.Vector2d): boolean;
     }
 }
 declare module EndGate.Bounds.Abstractions {
@@ -784,103 +760,122 @@ declare module EndGate.Bounds.Abstractions {
         public IntersectsRectangle(rectangle: Bounds.BoundingRectangle): boolean;
     }
 }
-declare module EndGate.Rendering {
+declare module EndGate.Bounds {
     /**
-    * Represents a renderable object that can be drawn to a canvas.
+    * Defines a rectangle that can be used to detect intersections.
     */
-    interface IRenderable {
-        /**
-        * Gets or sets the ZIndex property.  The ZIndex is used to control draw order.  Higher ZIndexes appear above lower ZIndexed renderables.
-        */
-        ZIndex: number;
-        /**
-        * Gets or sets the Visible property.  The Visible property determines whether the renderable will be drawn to the game screen.
-        */
-        Visible: boolean;
-        /**
-        * Draws the renderable to the provided canvas context
-        * @param context The canvas context to draw the renderable onto.
-        */
-        Draw(context: CanvasRenderingContext2D): void;
-        /**
-        * Returns the bounding area that represents where the renderable will draw.
-        */
-        GetDrawBounds(): EndGate.Bounds.Abstractions.Bounds2d;
-    }
-}
-declare module EndGate._.Loopers {
-    class LooperCallback implements _.ITyped {
+    class BoundingRectangle extends Bounds.Abstractions.Bounds2d implements EndGate._.ITyped {
         public _type: string;
-        private static _ids;
-        constructor(callback: Function);
-        public Callback: Function;
-        public ID: number;
+        public _boundsType: string;
+        /**
+        * Gets or sets the Size of the rectangle.
+        */
+        public Size: EndGate.Size2d;
+        /**
+        * Creates a new instance of BoundingRectangle.
+        * @param position Initial Position of the BoundingRectangle.
+        * @param size Initial Size of the BoundingRectangle.
+        */
+        constructor(position: EndGate.Vector2d, size: EndGate.Size2d);
+        /**
+        * Scales the width and height of the BoundingRectangle.
+        * @param x Value to multiply the width by.
+        * @param y Value to multiply the height by.
+        */
+        public Scale(x: number, y: number): void;
+        /**
+        * Gets the top left corner of the BoundingRectangle.
+        */
+        public TopLeft : EndGate.Vector2d;
+        /**
+        * Gets the top right corner of the BoundingRectangle.
+        */
+        public TopRight : EndGate.Vector2d;
+        /**
+        * Gets the bottom left corner of the BoundingRectangle.
+        */
+        public BotLeft : EndGate.Vector2d;
+        /**
+        * Gets the bottom right corner of the BoundingRectangle.
+        */
+        public BotRight : EndGate.Vector2d;
+        /**
+        * Returns a list of vertices that are the locations of each corner of the BoundingRectangle. Format: [TopLeft, TopRight, BotLeft, BotRight].
+        */
+        public Corners(): EndGate.Vector2d[];
+        /**
+        * Determines if the current BoundingRectangle is intersecting the provided BoundingCircle.
+        * @param circle BoundingCircle to check intersection with.
+        */
+        public IntersectsCircle(circle: Bounds.BoundingCircle): boolean;
+        /**
+        * Determines if the current BoundingRectangle is intersecting the provided BoundingRectangle.
+        * @param rectangle BoundingRectangle to check intersection with.
+        */
+        public IntersectsRectangle(rectangle: BoundingRectangle): boolean;
+        /**
+        * Determines if the current BoundingRectangle contains the provided Vector2d.
+        * @param point A point.
+        */
+        public ContainsPoint(point: EndGate.Vector2d): boolean;
     }
 }
-declare module EndGate._.Loopers {
-    interface ILooper extends EndGate.IDisposable, _.ITyped {
-        Start(): void;
-        AddCallback(callback: Loopers.LooperCallback): void;
-        RemoveCallback(callback: Loopers.LooperCallback): void;
-    }
-}
-declare module EndGate._.Loopers {
-    class TimedCallback extends Loopers.LooperCallback implements _.ITyped {
+declare module EndGate.Bounds {
+    /**
+    * Defines a circle that can be used to detect intersections.
+    */
+    class BoundingCircle extends Bounds.Abstractions.Bounds2d implements EndGate._.ITyped {
         public _type: string;
-        constructor(fps: number, callback: Function);
-        public Fps: number;
-        public TimeoutID: number;
-        public Active: boolean;
-    }
-}
-declare module EndGate._.Loopers {
-    class Looper implements Loopers.ILooper {
-        public _type: string;
-        private _running;
-        private _callbacks;
-        constructor();
-        public AddCallback(timedCallback: Loopers.TimedCallback): void;
-        public RemoveCallback(timedCallback: Loopers.TimedCallback): void;
-        public Start(): void;
-        private Run();
-        private Loop(timedCallback);
-        public Dispose(): void;
-    }
-}
-interface Window {
-    OnRepaintCompleted(callback: Function): void;
-}
-declare module EndGate._.Loopers {
-    class RepaintLooper implements Loopers.ILooper {
-        public _type: string;
-        private _running;
-        private _callbacksModified;
-        private _callbacks;
-        constructor();
-        public Start(): void;
-        private Run();
-        public AddCallback(looperCallback: Loopers.LooperCallback): void;
-        public RemoveCallback(looperCallback: Loopers.LooperCallback): void;
-        public Dispose(): void;
+        public _boundsType: string;
+        /**
+        * Gets or sets the Radius of the circle.
+        */
+        public Radius: number;
+        /**
+        * Creates a new instance of BoundingCircle.
+        * @param position Initial Position of the BoundingCircle.
+        * @param radius Initial Radius of the BoundingCircle.
+        */
+        constructor(position: EndGate.Vector2d, radius: number);
+        /**
+        * Scales the radius of the BoundingCircle.
+        * @param scale Value to multiply the radius by.
+        */
+        public Scale(scale: number): void;
+        /**
+        * Calculates the area of the BoundingCircle.
+        */
+        public Area(): number;
+        /**
+        * Calculates the circumference of the BoundingCircle.
+        */
+        public Circumference(): number;
+        /**
+        * Determines if the current BoundingCircle is intersecting the provided BoundingCircle.
+        * @param circle BoundingCircle to check intersection with.
+        */
+        public IntersectsCircle(circle: BoundingCircle): boolean;
+        /**
+        * Determines if the current BoundingCircle is intersecting the provided BoundingRectangle.
+        * @param rectangle BoundingRectangle to check intersection with.
+        */
+        public IntersectsRectangle(rectangle: Bounds.BoundingRectangle): boolean;
+        /**
+        * Determines if the current BoundingCircle contains the provided Vector2d.
+        * @param point A point.
+        */
+        public ContainsPoint(point: EndGate.Vector2d): boolean;
     }
 }
 declare module EndGate {
     /**
-    * Defines a GameConfiguration object that is used to represent the current state of a Game object.
+    * Represents a Disposable object with a Dispose method.
     */
-    class GameConfiguration {
-        private _defaultUpdateRate;
-        private _updateRateSetter;
-        private _updateRate;
+    interface IDisposable {
         /**
-        * Creates a new instance of the GameConfiguration object.
-        * @param updateRateSetter A function that updates the rate of "Update" execution.
+        * Disposes the object.  Dispose should only be called once.
         */
-        constructor(updateRateSetter: (updateRate: number) => void);
-        /**
-        * Gets or sets the UpdateRate of the game.  Update rates are represented as X many updates per second.
-        */
-        public UpdateRate : number;
+        Dispose(): void;
     }
 }
 declare module EndGate {
@@ -983,6 +978,49 @@ declare module EndGate.Collision {
 }
 declare module EndGate {
     /**
+    * Defines a game time class that is used to manage update timing execution as well as total game time.
+    */
+    class GameTime implements EndGate._.ITyped {
+        public _type: string;
+        private _start;
+        private _lastUpdate;
+        private _elapsed;
+        /**
+        * Creates a new instance of the GameTime object.
+        */
+        constructor();
+        /**
+        * Gets the elapsed time since the last update.
+        */
+        public Elapsed : EndGate.TimeSpan;
+        /**
+        * Gets the current date time at the start of the update.
+        */
+        public Now : Date;
+        /**
+        * Gets the total amount of time surpassed since construction.
+        */
+        public Total : EndGate.TimeSpan;
+        /**
+        * Updates the game time object.  Causes the gameTime to refresh all its components.
+        */
+        public Update(): void;
+    }
+}
+declare module EndGate {
+    /**
+    * Represents an object that can be updated.
+    */
+    interface IUpdateable {
+        /**
+        * Updates the object.
+        * @param gameTime The current game time object.
+        */
+        Update(gameTime: EndGate.GameTime): void;
+    }
+}
+declare module EndGate {
+    /**
     * Defines a type constrained event handler object that can maintain bound functions which take in a value T and U and trigger them on demand.
     */
     class EventHandler2<T, U> implements EndGate._.ITyped {
@@ -1049,6 +1087,124 @@ declare module EndGate.Collision {
         * @param gameTime The current game time object.
         */
         public Update(gameTime: EndGate.GameTime): void;
+    }
+}
+declare module EndGate.Rendering {
+    /**
+    * Represents a renderable object that can be drawn to a canvas.
+    */
+    interface IRenderable {
+        /**
+        * Gets or sets the ZIndex property.  The ZIndex is used to control draw order.  Higher ZIndexes appear above lower ZIndexed renderables.
+        */
+        ZIndex: number;
+        /**
+        * Gets or sets the Visible property.  The Visible property determines whether the renderable will be drawn to the game screen.
+        */
+        Visible: boolean;
+        /**
+        * Draws the renderable to the provided canvas context
+        * @param context The canvas context to draw the renderable onto.
+        */
+        Draw(context: CanvasRenderingContext2D): void;
+        /**
+        * Returns the bounding area that represents where the renderable will draw.
+        */
+        GetDrawBounds(): EndGate.Bounds.Abstractions.Bounds2d;
+    }
+}
+declare module EndGate._.Loopers {
+    class LooperCallback implements _.ITyped {
+        public _type: string;
+        private static _ids;
+        constructor(callback: Function);
+        public Callback: Function;
+        public ID: number;
+    }
+}
+declare module EndGate._.Loopers {
+    interface ILooper extends EndGate.IDisposable, _.ITyped {
+        Start(): void;
+        AddCallback(callback: Loopers.LooperCallback): void;
+        RemoveCallback(callback: Loopers.LooperCallback): void;
+    }
+}
+declare module EndGate._.Loopers {
+    class TimedCallback extends Loopers.LooperCallback implements _.ITyped {
+        public _type: string;
+        constructor(fps: number, callback: Function);
+        public Fps: number;
+        public TimeoutID: number;
+        public Active: boolean;
+    }
+}
+declare module EndGate._.Loopers {
+    class Looper implements Loopers.ILooper {
+        public _type: string;
+        private _running;
+        private _callbacks;
+        constructor();
+        public AddCallback(timedCallback: Loopers.TimedCallback): void;
+        public RemoveCallback(timedCallback: Loopers.TimedCallback): void;
+        public Start(): void;
+        private Run();
+        private Loop(timedCallback);
+        public Dispose(): void;
+    }
+}
+interface Window {
+    OnRepaintCompleted(callback: Function): void;
+}
+declare module EndGate._.Loopers {
+    class RepaintLooper implements Loopers.ILooper {
+        public _type: string;
+        private _running;
+        private _callbacksModified;
+        private _callbacks;
+        constructor();
+        public Start(): void;
+        private Run();
+        public AddCallback(looperCallback: Loopers.LooperCallback): void;
+        public RemoveCallback(looperCallback: Loopers.LooperCallback): void;
+        public Dispose(): void;
+    }
+}
+declare module EndGate._ {
+    class GameRunner implements _.ITyped {
+        public _type: string;
+        private _updateCallbacks;
+        private _drawCallbacks;
+        private _updateLoop;
+        private _drawLoop;
+        private _callbackCount;
+        constructor();
+        public Register(game: EndGate.Game): (updateRate: number) => void;
+        public Unregister(game: EndGate.Game): void;
+        private TryLoopStart();
+        private TryLoopStop();
+        private CreateAndCacheUpdateCallback(game);
+        private CreateAndCacheDrawCallback(game);
+        private CreateUpdateRateSetter(callback);
+    }
+}
+declare var GameRunnerInstance: EndGate._.GameRunner;
+declare module EndGate {
+    /**
+    * Defines a GameConfiguration object that is used to represent the current state of a Game object.
+    */
+    class GameConfiguration {
+        private _defaultUpdateRate;
+        private _updateRateSetter;
+        private _updateRate;
+        /**
+        * Creates a new instance of the GameConfiguration object.
+        * @param updateRateSetter A function that updates the rate of "Update" execution.
+        */
+        constructor(updateRateSetter: (updateRate: number) => void);
+        /**
+        * Gets or sets the UpdateRate of the game.  Update rates are represented as X many updates per second.
+        */
+        public UpdateRate : number;
     }
 }
 declare module EndGate.Graphics.Assets._ {
@@ -1951,25 +2107,6 @@ declare module EndGate {
         public Dispose(): void;
     }
 }
-declare module EndGate._ {
-    class GameRunner implements _.ITyped {
-        public _type: string;
-        private _updateCallbacks;
-        private _drawCallbacks;
-        private _updateLoop;
-        private _drawLoop;
-        private _callbackCount;
-        constructor();
-        public Register(game: EndGate.Game): (updateRate: number) => void;
-        public Unregister(game: EndGate.Game): void;
-        private TryLoopStart();
-        private TryLoopStop();
-        private CreateAndCacheUpdateCallback(game);
-        private CreateAndCacheDrawCallback(game);
-        private CreateUpdateRateSetter(callback);
-    }
-}
-declare var GameRunnerInstance: EndGate._.GameRunner;
 declare module EndGate.MovementControllers.Assets {
     /**
     * Defines a direction management object that represents directional state.
@@ -2997,143 +3134,6 @@ declare module EndGate.Graphics {
         private ValidColumn(column);
     }
 }
-declare module EndGate {
-    /**
-    * Defines a matrix with 2 columns and 2 rows (2x2).
-    */
-    class Matrix2x2 implements EndGate._.ITyped, EndGate.ICloneable {
-        public _type: string;
-        /**
-        * Gets or sets the matrix values.  Represents the current Matrix2x2 as a multi-dimensional array.
-        */
-        public Values: number[][];
-        /**
-        * Creates a new instance of Matrix2x2 with all rows and columns initialized to 0.
-        */
-        constructor();
-        /**
-        * Creates a new instance of Matrix2x2.
-        * @param topLeft The row 0 column 0 initial value.
-        * @param topRight The row 0 column 1 initial value.
-        * @param botLeft The row 1 column 0 initial value.
-        * @param botRight The row 1 column 1 initial value.
-        */
-        constructor(topLeft: number, topRight: number, botLeft: number, botRight: number);
-        /**
-        * Creates a Matrix2x2 with all its rows and columns initialized to 0.
-        */
-        static Zero : Matrix2x2;
-        /**
-        * Returns the identity matrix for a 2x2.
-        */
-        static Identity : Matrix2x2;
-        /**
-        * Executes the action with each row and column item of this Matrix2x2 and modifies their values.
-        * @param action The function used to modify each row and column items.
-        */
-        public Apply(action: (val: number) => number): void;
-        /**
-        * Executes the action with each row and column item of this Matrix2x2.
-        * @param action The function to pass the row column item to.
-        */
-        public Trigger(action: (val: number) => void): void;
-        /**
-        * Returns a Matrix2x2 that is the result of adding the current Matrix2x2 to the provided Matrix2x2.
-        * @param val The Matrix2x2 to add.
-        */
-        public Add(val: Matrix2x2): Matrix2x2;
-        /**
-        * Returns a Matrix2x2 that is the result of adding the current Matrix2x2 to the provided number.
-        * @param val The number to add.
-        */
-        public Add(val: number): Matrix2x2;
-        /**
-        * Returns a Matrix2x2 that is the result of multiplying the current Matrix2x2 by the provided Matrix2x2.
-        * @param val The Matrix2x2 to multiply.
-        */
-        public Multiply(val: Matrix2x2): Matrix2x2;
-        /**
-        * Returns a Matrix2x2 that is the result of multiplying the current Matrix2x2 by the provided number.
-        * @param val The number to multiply.
-        */
-        public Multiply(val: number): Matrix2x2;
-        /**
-        * Returns a Matrix2x2 that is the result of subtracting the current Matrix2x2 by the provided Matrix2x2.
-        * @param val The Matrix2x2 to subtract.
-        */
-        public Subtract(val: Matrix2x2): Matrix2x2;
-        /**
-        * Returns a Matrix2x2 that is the result of subtracting the current Matrix2x2 by the provided number.
-        * @param val The number to subtract.
-        */
-        public Subtract(val: number): Matrix2x2;
-        /**
-        * Returns a Matrix2x2 that is the result of subtracting the current Matrix2x2 from the provided Matrix2x2.
-        * @param val The Matrix2x2 to subtract from.
-        */
-        public SubtractFrom(val: Matrix2x2): Matrix2x2;
-        /**
-        * Returns a Matrix2x2 that is the result of subtracting the current Matrix2x2 from the provided number.
-        * @param val The number to subtract from.
-        */
-        public SubtractFrom(val: number): Matrix2x2;
-        /**
-        * Returns a Matrix2x2 that is the result of dividing the current Matrix2x2 by the provided Matrix2x2.
-        * @param val The Matrix2x2 to divide.
-        */
-        public Divide(val: Matrix2x2): Matrix2x2;
-        /**
-        * Returns a Matrix2x2 that is the result of dividing the current Matrix2x2 by the provided number.
-        * @param val The number to divide.
-        */
-        public Divide(val: number): Matrix2x2;
-        /**
-        * Returns a Matrix2x2 that is the result of dividing the current Matrix2x2 from the provided Matrix2x2.
-        * @param val The Matrix2x2 to divide from.
-        */
-        public DivideFrom(val: Matrix2x2): Matrix2x2;
-        /**
-        * Returns a Matrix2x2 that is the result of dividing the current Matrix2x2 from the provided number.
-        * @param val The number to divide from.
-        */
-        public DivideFrom(val: number): Matrix2x2;
-        /**
-        * Returns a Vector2d that has been transformed by the current Matrix2x2.
-        * @param vector The vector to transform.
-        */
-        public Transform(vector: EndGate.Vector2d): EndGate.Vector2d;
-        /**
-        * Returns the transpose of the current Matrix2x2.
-        */
-        public Transpose(): Matrix2x2;
-        /**
-        * Returns the determinant of the current Matrix2x2.
-        */
-        public Determinant(): number;
-        /**
-        * Returns the inverse of the current Matrix2x2.
-        */
-        public Inverse(): Matrix2x2;
-        /**
-        * Returns a Matrix2x2 that has identical rows and columns as the current Matrix2x2.
-        */
-        public Clone(): Matrix2x2;
-        /**
-        * Determines whether this Matrix2x2 has the same row and column values as the provided Matrix2x2.
-        * @param matrix The Matrix2x2 to compare the current Matrix2x2 to.
-        */
-        public Equivalent(matrix: Matrix2x2): boolean;
-        /**
-        * Overridden toString method to display Matrix2x2 in easy to read format: "[topLeft, topRight] [botLeft, botRight]"
-        */
-        public toString(): string;
-        /**
-        * Creates a scaling matrix based off the provided Vector2d.
-        * @param vector The vector used to determine the X and Y scaling values.
-        */
-        static Scale(vector: EndGate.Vector2d): Matrix2x2;
-    }
-}
 declare module EndGate.Map {
     /**
     * Defines an abstract class TileMap that takes an array of resources to be mapped to tiles.
@@ -3232,144 +3232,6 @@ declare module EndGate.Tweening.Functions {
     */
     interface ITweeningFunction {
         (from: number, to: number, elapsed: EndGate.TimeSpan, duration: EndGate.TimeSpan): number;
-    }
-}
-declare module EndGate.Tweening {
-    /**
-    * Defines a base Tween class that is used to move a value from a start value to an end value.
-    */
-    class Tween<T extends EndGate.ICloneable> implements EndGate.IUpdateable {
-        private _from;
-        private _to;
-        private _current;
-        private _duration;
-        private _elapsed;
-        private _playing;
-        private _tweeningFunction;
-        private _onChange;
-        private _onComplete;
-        /**
-        * Creates a new instance of the Tween object.  This should only ever be called from derived classes via a super constructor call.
-        * @param from Start value.
-        * @param to End value.
-        * @param duration How fast to move the current value from start to end.
-        * @param tweeningFunction The function to use to translate the current value from start to end.  Different functions result in different translation behavior.
-        */
-        constructor(from: T, to: T, duration: EndGate.TimeSpan, tweeningFunction: Tweening.Functions.ITweeningFunction);
-        /**
-        * Gets an event that is triggered when the tween has changed its Current value, occurs directly after a tween update.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        */
-        public OnChange : EndGate.EventHandler1<T>;
-        /**
-        * Gets an event that is triggered when the tween has completed transitioning the Current value, once triggered Elapsed will be equivalent to Duration and Current will be equivalent to To.  Functions can be bound or unbound to this event to be executed when the event triggers.
-        */
-        public OnComplete : EndGate.EventHandler1<Tween<T>>;
-        /**
-        * Gets or sets the From component of the tween.
-        */
-        public From : T;
-        /**
-        * Gets or sets the To component of the tween.
-        */
-        public To : T;
-        /**
-        * Gets or sets the Current component of the tween.  The Current is the current value of the tween, the final value of Current will be equivalent to To when the tween has completed.
-        */
-        public Current : T;
-        /**
-        * Gets or sets the Duration component of the tween.  The Duration is how long the tween will take to go From -> To.
-        */
-        public Duration : EndGate.TimeSpan;
-        /**
-        * Gets or the Elapsed component of the tween.  Elapsed represents how far along the tween is.  When Elapsed equals Duration the tween is completed.
-        */
-        public Elapsed : EndGate.TimeSpan;
-        /**
-        * Gets or sets the TweeningFunction of the tween.  The TweeningFunction controls how the tween translates the Current value to the To value.
-        */
-        public TweeningFunction : Tweening.Functions.ITweeningFunction;
-        /**
-        * Determines if the tween is playing.
-        */
-        public IsPlaying(): boolean;
-        /**
-        * Starts playing the tween.  The tween will only start translating the value if Update is called.
-        */
-        public Play(): void;
-        /**
-        * Pauses the tween.  Calls to update will not translate the tween when paused.
-        */
-        public Pause(): void;
-        /**
-        * Resets the tween to the To location and resets the Elapsed time.  This does not stop or start the tween.
-        */
-        public Reset(): void;
-        /**
-        * Stops the tween from playing.  This also resets the tween to its To value.
-        */
-        public Stop(): void;
-        /**
-        * Restarts the tween.  Essentially calls Reset and then Play.
-        */
-        public Restart(): void;
-        /**
-        * Reverses the tween from the Current value back to the From value.  This changes the To component to equal the From value and the From value to equal the Current value.
-        */
-        public Reverse(): void;
-        /**
-        * Updates the tweens Current and Elapsed component if the tween is playing.
-        * @param gameTime The global game time object.  Used to represent total time running and used to track update interval elapsed speeds.
-        */
-        public Update(gameTime: EndGate.GameTime): void;
-        public _UpdateTween(): void;
-    }
-}
-declare module EndGate.Tweening {
-    /**
-    * Defines a NumberTween class that is used to move a number from a start value to an end value.
-    */
-    class NumberTween extends Tweening.Tween<number> {
-        /**
-        * Creates a new instance of the NumberTween object.
-        * @param from Start number.
-        * @param to End number.
-        * @param duration How fast to move the current number from start to end.
-        * @param tweeningFunction The function to use to translate the current number from start to end.  Different functions result in different translation behavior.
-        */
-        constructor(from: number, to: number, duration: EndGate.TimeSpan, tweeningFunction: Tweening.Functions.ITweeningFunction);
-        public _UpdateTween(): void;
-    }
-}
-declare module EndGate.Tweening {
-    /**
-    * Defines a Size2dTween class that is used to move a Size2d from a start value to an end value.
-    */
-    class Size2dTween extends Tweening.Tween<EndGate.Size2d> {
-        /**
-        * Creates a new instance of the Size2dTween object.
-        * @param from Start Size2d.
-        * @param to End Size2d.
-        * @param duration How fast to move the current Size2d from start to end.
-        * @param tweeningFunction The function to use to translate the current Size2d from start to end.  Different functions result in different translation behavior.
-        */
-        constructor(from: EndGate.Size2d, to: EndGate.Size2d, duration: EndGate.TimeSpan, tweeningFunction: Tweening.Functions.ITweeningFunction);
-        public _UpdateTween(): void;
-    }
-}
-declare module EndGate.Tweening {
-    /**
-    * Defines a Vector2dTween class that is used to move a Vector2d from a start value to an end value.
-    */
-    class Vector2dTween extends Tweening.Tween<EndGate.Vector2d> {
-        /**
-        * Creates a new instance of the Vector2dTween object.
-        * @param from Start Vector2d.
-        * @param to End Vector2d.
-        * @param duration How fast to move the current Vector2d from start to end.
-        * @param tweeningFunction The function to use to translate the current Vector2d from start to end.  Different functions result in different translation behavior.
-        */
-        constructor(from: EndGate.Vector2d, to: EndGate.Vector2d, duration: EndGate.TimeSpan, tweeningFunction: Tweening.Functions.ITweeningFunction);
-        public _UpdateTween(): void;
     }
 }
 declare module EndGate.Tweening.Functions {
@@ -3604,6 +3466,144 @@ declare module EndGate.Tweening.Functions {
         static EaseInOut : Functions.ITweeningFunction;
     }
 }
+declare module EndGate.Tweening {
+    /**
+    * Defines a base Tween class that is used to move a value from a start value to an end value.
+    */
+    class Tween<T extends EndGate.ICloneable> implements EndGate.IUpdateable {
+        private _from;
+        private _to;
+        private _current;
+        private _duration;
+        private _elapsed;
+        private _playing;
+        private _tweeningFunction;
+        private _onChange;
+        private _onComplete;
+        /**
+        * Creates a new instance of the Tween object.  This should only ever be called from derived classes via a super constructor call.
+        * @param from Start value.
+        * @param to End value.
+        * @param duration How fast to move the current value from start to end.
+        * @param tweeningFunction The function to use to translate the current value from start to end.  Different functions result in different translation behavior.
+        */
+        constructor(from: T, to: T, duration: EndGate.TimeSpan, tweeningFunction: Tweening.Functions.ITweeningFunction);
+        /**
+        * Gets an event that is triggered when the tween has changed its Current value, occurs directly after a tween update.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        */
+        public OnChange : EndGate.EventHandler1<T>;
+        /**
+        * Gets an event that is triggered when the tween has completed transitioning the Current value, once triggered Elapsed will be equivalent to Duration and Current will be equivalent to To.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        */
+        public OnComplete : EndGate.EventHandler1<Tween<T>>;
+        /**
+        * Gets or sets the From component of the tween.
+        */
+        public From : T;
+        /**
+        * Gets or sets the To component of the tween.
+        */
+        public To : T;
+        /**
+        * Gets or sets the Current component of the tween.  The Current is the current value of the tween, the final value of Current will be equivalent to To when the tween has completed.
+        */
+        public Current : T;
+        /**
+        * Gets or sets the Duration component of the tween.  The Duration is how long the tween will take to go From -> To.
+        */
+        public Duration : EndGate.TimeSpan;
+        /**
+        * Gets or the Elapsed component of the tween.  Elapsed represents how far along the tween is.  When Elapsed equals Duration the tween is completed.
+        */
+        public Elapsed : EndGate.TimeSpan;
+        /**
+        * Gets or sets the TweeningFunction of the tween.  The TweeningFunction controls how the tween translates the Current value to the To value.
+        */
+        public TweeningFunction : Tweening.Functions.ITweeningFunction;
+        /**
+        * Determines if the tween is playing.
+        */
+        public IsPlaying(): boolean;
+        /**
+        * Starts playing the tween.  The tween will only start translating the value if Update is called.
+        */
+        public Play(): void;
+        /**
+        * Pauses the tween.  Calls to update will not translate the tween when paused.
+        */
+        public Pause(): void;
+        /**
+        * Resets the tween to the To location and resets the Elapsed time.  This does not stop or start the tween.
+        */
+        public Reset(): void;
+        /**
+        * Stops the tween from playing.  This also resets the tween to its To value.
+        */
+        public Stop(): void;
+        /**
+        * Restarts the tween.  Essentially calls Reset and then Play.
+        */
+        public Restart(): void;
+        /**
+        * Reverses the tween from the Current value back to the From value.  This changes the To component to equal the From value and the From value to equal the Current value.
+        */
+        public Reverse(): void;
+        /**
+        * Updates the tweens Current and Elapsed component if the tween is playing.
+        * @param gameTime The global game time object.  Used to represent total time running and used to track update interval elapsed speeds.
+        */
+        public Update(gameTime: EndGate.GameTime): void;
+        public _UpdateTween(): void;
+    }
+}
+declare module EndGate.Tweening {
+    /**
+    * Defines a NumberTween class that is used to move a number from a start value to an end value.
+    */
+    class NumberTween extends Tweening.Tween<number> {
+        /**
+        * Creates a new instance of the NumberTween object.
+        * @param from Start number.
+        * @param to End number.
+        * @param duration How fast to move the current number from start to end.
+        * @param tweeningFunction The function to use to translate the current number from start to end.  Different functions result in different translation behavior.
+        */
+        constructor(from: number, to: number, duration: EndGate.TimeSpan, tweeningFunction: Tweening.Functions.ITweeningFunction);
+        public _UpdateTween(): void;
+    }
+}
+declare module EndGate.Tweening {
+    /**
+    * Defines a Size2dTween class that is used to move a Size2d from a start value to an end value.
+    */
+    class Size2dTween extends Tweening.Tween<EndGate.Size2d> {
+        /**
+        * Creates a new instance of the Size2dTween object.
+        * @param from Start Size2d.
+        * @param to End Size2d.
+        * @param duration How fast to move the current Size2d from start to end.
+        * @param tweeningFunction The function to use to translate the current Size2d from start to end.  Different functions result in different translation behavior.
+        */
+        constructor(from: EndGate.Size2d, to: EndGate.Size2d, duration: EndGate.TimeSpan, tweeningFunction: Tweening.Functions.ITweeningFunction);
+        public _UpdateTween(): void;
+    }
+}
+declare module EndGate.Tweening {
+    /**
+    * Defines a Vector2dTween class that is used to move a Vector2d from a start value to an end value.
+    */
+    class Vector2dTween extends Tweening.Tween<EndGate.Vector2d> {
+        /**
+        * Creates a new instance of the Vector2dTween object.
+        * @param from Start Vector2d.
+        * @param to End Vector2d.
+        * @param duration How fast to move the current Vector2d from start to end.
+        * @param tweeningFunction The function to use to translate the current Vector2d from start to end.  Different functions result in different translation behavior.
+        */
+        constructor(from: EndGate.Vector2d, to: EndGate.Vector2d, duration: EndGate.TimeSpan, tweeningFunction: Tweening.Functions.ITweeningFunction);
+        public _UpdateTween(): void;
+    }
+}
 declare module EndGate {
     /**
     * Defines a type constrained event handler object that can maintain bound functions which take in a value T, U and V and trigger them on demand.
@@ -3639,4 +3639,3 @@ declare module EndGate {
         public Trigger(val1: T, val2: U, val3: V): void;
     }
 }
-import eg = EndGate;
