@@ -41,7 +41,7 @@ var EndGate;
 
         Object.defineProperty(TimeSpan.prototype, "Minutes", {
             get: function () {
-                return this._seconds;
+                return this._minutes;
             },
             set: function (val) {
                 this._minutes = val;
@@ -1319,7 +1319,9 @@ var EndGate;
 
                 Graphic2d.prototype._EndDraw = function (context) {
                     for (var i = 0; i < this._children.length; i++) {
-                        this._children[i].Draw(context);
+                        if (this._children[i].Visible) {
+                            this._children[i].Draw(context);
+                        }
                     }
 
                     context.restore();
@@ -2837,8 +2839,8 @@ var EndGate;
         Game.prototype._PrepareUpdate = function () {
             this._gameTime.Update();
 
-            this.CollisionManager.Update(this._gameTime);
             this.Update(this._gameTime);
+            this.CollisionManager.Update(this._gameTime);
         };
 
         Game.prototype.Update = function (gameTime) {

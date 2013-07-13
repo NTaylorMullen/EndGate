@@ -34,8 +34,8 @@ var EndGate;
         Game.prototype._PrepareUpdate = function () {
             this._gameTime.Update();
 
-            this.CollisionManager.Update(this._gameTime);
             this.Update(this._gameTime);
+            this.CollisionManager.Update(this._gameTime);
         };
 
         /**

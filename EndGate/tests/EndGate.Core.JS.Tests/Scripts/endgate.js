@@ -41,7 +41,7 @@ var EndGate;
 
         Object.defineProperty(TimeSpan.prototype, "Minutes", {
             get: function () {
-                return this._seconds;
+                return this._minutes;
             },
             set: function (val) {
                 this._minutes = val;
@@ -1319,7 +1319,9 @@ var EndGate;
 
                 Graphic2d.prototype._EndDraw = function (context) {
                     for (var i = 0; i < this._children.length; i++) {
-                        this._children[i].Draw(context);
+                        if (this._children[i].Visible) {
+                            this._children[i].Draw(context);
+                        }
                     }
 
                     context.restore();
@@ -2837,8 +2839,8 @@ var EndGate;
         Game.prototype._PrepareUpdate = function () {
             this._gameTime.Update();
 
-            this.CollisionManager.Update(this._gameTime);
             this.Update(this._gameTime);
+            this.CollisionManager.Update(this._gameTime);
         };
 
         Game.prototype.Update = function (gameTime) {
@@ -3436,14 +3438,12 @@ var EndGate;
             Text2d.prototype.Draw = function (context) {
                 var textSize;
 
-                _super.prototype._StartDraw.call(this, context);
-
                 this._State.Font = this._fontSettings._BuildFont();
+
+                _super.prototype._StartDraw.call(this, context);
 
                 context.fillText(this._text, 0, 0);
                 this._stroker.Invoke(context);
-
-                _super.prototype._EndDraw.call(this, context);
 
                 if (this._recalculateBoundsSize) {
                     this._recalculateBoundsSize = false;
@@ -3451,6 +3451,8 @@ var EndGate;
                     this._drawBounds.Size.Width = textSize.width;
                     this._drawBounds.Size.Height = parseInt(this._fontSettings.FontSize) * 1.5;
                 }
+
+                _super.prototype._EndDraw.call(this, context);
             };
 
             Text2d.prototype.GetDrawBounds = function () {

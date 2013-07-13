@@ -104,7 +104,9 @@ module EndGate.Graphics.Abstractions {
 
         public _EndDraw(context: CanvasRenderingContext2D): void {
             for (var i = 0; i < this._children.length; i++) {
-                this._children[i].Draw(context);
+                if (this._children[i].Visible) {
+                    this._children[i].Draw(context);
+                }
             }
 
             context.restore();
