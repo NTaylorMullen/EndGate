@@ -4757,6 +4757,7 @@ var EndGate;
                     this._current = this._to.Clone();
                     this._playing = false;
 
+                    this._onChange.Trigger(this._current.Clone());
                     this._onComplete.Trigger(this);
                 } else {
                     this._UpdateTween();
