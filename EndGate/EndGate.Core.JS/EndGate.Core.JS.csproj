@@ -75,6 +75,7 @@
       <DependentUpon>ICloneable.ts</DependentUpon>
     </Content>
     <TypeScriptCompile Include="Tweening\Functions\Back.ts" />
+    <Content Include="Scripts\endgate.js" />
     <Content Include="Tweening\Functions\Back.js">
       <DependentUpon>Back.ts</DependentUpon>
     </Content>
@@ -417,12 +418,6 @@
     <Content Include="Scripts\endgate.d.ts">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\endgate.js">
-      <DependentUpon>endgate.ts</DependentUpon>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\endgate.ts" />
-    <Content Include="Scripts\_references.js" />
     <CodeAnalysisDictionary Include="Sound\AudioClip.ts" />
     <Content Include="Sound\AudioClip.js">
       <DependentUpon>AudioClip.ts</DependentUpon>

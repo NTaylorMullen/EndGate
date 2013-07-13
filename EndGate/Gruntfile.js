@@ -10,7 +10,7 @@ module.exports = function (grunt) {
                 options: {
                     target: 'ES5',
                     module: 'amd',
-                    comments: false,
+                    comments: true,
                     declaration: true
                 }
             }
@@ -24,13 +24,16 @@ module.exports = function (grunt) {
         },
         qunit: {
             all: ['tests/EndGate.Core.JS.Tests/index.html']
-        }
+        },
+        clean: ["EndGate.Core.JS/scripts"]
+
     });
 
     grunt.loadNpmTasks('grunt-typescript');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-qunit');
+    grunt.loadNpmTasks('grunt-contrib-clean');
 
-    grunt.registerTask('compile', ['typescript', 'copy']);
-    grunt.registerTask('test', ['typescript', 'copy','qunit']);
+    grunt.registerTask('compile', ['clean','typescript', 'copy']);
+    grunt.registerTask('test', ['clean','typescript', 'copy','qunit']);
 };

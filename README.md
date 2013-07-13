@@ -66,6 +66,12 @@ var game = new MyGame();
 ```
 
 ## Building source requirements
-* PowerShell
+* PowerShell or Node.js
 * Visual Studio 2012+
 * Latest TypeScript. You can download it [here] (http://www.microsoft.com/en-us/download/details.aspx?id=34790)
+
+## Building with Node.js
+Node.js build utilizes Grunt > 0.4. To generate the compiled library
+first run ```npm install`` in the solution root to fetch all the dependencies for Grunt (this step is needed once).
+Then run ```grunt compile``` to generate the artifact and the declaration files in the _EndGate/EndGate.Core.JS/Scripts_ directory.
+You can run ```grunt test``` to compile the sources and run the test suite.
