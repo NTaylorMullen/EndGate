@@ -22,7 +22,7 @@ var EndGate;
                     this._State = new Graphics.Assets._.Graphic2dState();
                     this._children = [];
                     this._disposed = false;
-                    this._onDisposed = new EndGate.EventHandler1();
+                    this._onDisposed = new EventHandler1();
                 }
                 Object.defineProperty(Graphic2d.prototype, "OnDisposed", {
                     get: /**
@@ -80,7 +80,9 @@ var EndGate;
 
                 Graphic2d.prototype._EndDraw = function (context) {
                     for (var i = 0; i < this._children.length; i++) {
-                        this._children[i].Draw(context);
+                        if (this._children[i].Visible) {
+                            this._children[i].Draw(context);
+                        }
                     }
 
                     context.restore();

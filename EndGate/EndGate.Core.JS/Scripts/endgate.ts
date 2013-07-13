@@ -103,7 +103,7 @@ module EndGate {
         * Gets or sets the number of minutes the TimeSpan represents.
         */
         public get Minutes(): number {
-            return this._seconds;
+            return this._minutes;
         }
         public set Minutes(val: number) {
             this._minutes = val;
@@ -2126,7 +2126,9 @@ module EndGate.Graphics.Abstractions {
 
         public _EndDraw(context: CanvasRenderingContext2D): void {
             for (var i = 0; i < this._children.length; i++) {
-                this._children[i].Draw(context);
+                if (this._children[i].Visible) {
+                    this._children[i].Draw(context);
+                }
             }
 
             context.restore();
@@ -4308,8 +4310,8 @@ module EndGate {
         public _PrepareUpdate(): void {
             this._gameTime.Update();
 
-            this.CollisionManager.Update(this._gameTime);
             this.Update(this._gameTime);
+            this.CollisionManager.Update(this._gameTime);
         }
 
         /**
