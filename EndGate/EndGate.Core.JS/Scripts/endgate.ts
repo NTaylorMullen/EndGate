@@ -737,15 +737,15 @@ module EndGate {
         * @param point Point to rotate around.
         * @param angle How far to rotate around the point.
         */
-        public RotateAround(point: Vector2d, angle: number);
+        public RotateAround(point: Vector2d, angle: number): Vector2d;
         /**
         * Returns a Vector2d that represents the current Vector2d rotated around the provided point and angle.
         * @param point Point to rotate around.
         * @param angle How far to rotate around the point.
         * @param precision The precision of the resulting Vector2d's X and Y components.
         */
-        public RotateAround(point: Vector2d, angle: number, precision: number);
-        public RotateAround(point: Vector2d, angle: number, precision: number = 2) {
+        public RotateAround(point: Vector2d, angle: number, precision: number): Vector2d;
+        public RotateAround(point: Vector2d, angle: number, precision: number = 2): Vector2d {
             var ca = Math.cos(angle);
             var sa = Math.sin(angle);
 
