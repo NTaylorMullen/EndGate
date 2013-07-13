@@ -1,8 +1,23 @@
-﻿/// <reference path="Assets.js" />
+﻿/// <reference path="../Scripts/endgate.js" />
+/// <reference path="Assets.js" />
 
 (function (window) {
 
     QUnit.module("Game Facts");
+
+    QUnit.test("Game dispose removes all canvases from holder.", function () {
+        var canvas = document.createElement("canvas"),
+            holder = document.createElement("div"),
+            game;
+
+        holder.appendChild(canvas);
+
+        game = new eg.Game(canvas);
+
+        QUnit.equal(holder.children.length, 2);
+        game.Dispose();
+        QUnit.equal(holder.children.length, 0);
+    });
 
     QUnit.asyncTimeoutTest("Classes inheriting game have update called.", 10000, function (end, assert, testName) {
         var onComplete,
