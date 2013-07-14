@@ -12,9 +12,5 @@
 
     // Create our game
     game = new InputControllers.Game(canvas);
-
-    setTimeout(function () {
-        game.Dispose();
-    }, 2000);
 })($, window);
 //@ sourceMappingURL=Main.js.map
