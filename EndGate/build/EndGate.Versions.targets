@@ -3,7 +3,7 @@
   <PropertyGroup>
     <MajorVersion>0</MajorVersion>
     <MinorVersion>1</MinorVersion>
-    <PatchVersion>1</PatchVersion>
+    <PatchVersion>2</PatchVersion>
     <VersionQuality></VersionQuality>
 
     <QualityEnding Condition="$(BuildQuality) != ''">-$(VersionQuality)</QualityEnding>
