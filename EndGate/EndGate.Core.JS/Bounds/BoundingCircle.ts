@@ -88,6 +88,30 @@ module EndGate.Bounds {
         public ContainsPoint(point: Vector2d): bool {
             return this.Position.Distance(point).Magnitude() < this.Radius;
         }
+
+        /**
+        * Determines if the current BoundingCircle completely contains the provided BoundingCircle.
+        * @param point A circle to check containment on.
+        */
+        public ContainsCircle(circle: BoundingCircle): boolean {
+            return circle.Position.Distance(this.Position).Length() + circle.Radius <= this.Radius;
+        }
+
+        /**
+        * Determines if the current BoundingCircle completely contains the provided BoundingRectangle.
+        * @param point A rectangle to check containment on.
+        */
+        public ContainsRectangle(rectangle: BoundingRectangle): boolean {
+            var corners = rectangle.Corners();
+
+            for (var i = 0; i < corners.length; i++) {
+                if (!this.ContainsPoint(corners[i])) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
     }
 
 }

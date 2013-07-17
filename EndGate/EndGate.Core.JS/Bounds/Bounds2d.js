@@ -32,13 +32,41 @@ var EndGate;
                     throw new Error("This method is abstract!");
                 };
 
+                /**
+                * Abstract: Determines if the current bounded object completely contains the provided BoundingCircle.
+                * @param point A circle to check containment on.
+                */
+                Bounds2d.prototype.ContainsCircle = function (circle) {
+                    throw new Error("This method is abstract!");
+                };
+
+                /**
+                * Abstract: Determines if the current bounded object completely contains the provided BoundingRectangle.
+                * @param point A rectangle to check containment on.
+                */
+                Bounds2d.prototype.ContainsRectangle = function (rectangle) {
+                    throw new Error("This method is abstract!");
+                };
+
+                Bounds2d.prototype.Contains = function (obj) {
+                    if (obj._boundsType === "BoundingCircle") {
+                        return this.ContainsCircle(obj);
+                    } else if (obj._boundsType === "BoundingRectangle") {
+                        return this.ContainsRectangle(obj);
+                    } else if (obj._type === "Vector2d") {
+                        return this.ContainsPoint(obj);
+                    } else {
+                        throw new Error("Cannot try and check contains with an unidentifiable object, must be a Vector2d, BoundingCircle or BoundingRectangle.");
+                    }
+                };
+
                 Bounds2d.prototype.Intersects = function (obj) {
                     if (obj._boundsType === "BoundingCircle") {
                         return this.IntersectsCircle(obj);
                     } else if (obj._boundsType === "BoundingRectangle") {
                         return this.IntersectsRectangle(obj);
                     } else {
-                        throw new Error("Cannot intersect with unidentifiable object, must be BoundingCircle or BoundingRectangle");
+                        throw new Error("Cannot intersect with unidentifiable object, must be BoundingCircle or BoundingRectangle.");
                     }
                 };
 
