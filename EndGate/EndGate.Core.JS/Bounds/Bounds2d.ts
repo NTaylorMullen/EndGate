@@ -54,20 +54,51 @@ module EndGate.Bounds.Abstractions {
         }
 
         /**
+        * Abstract: Determines if the current bounded object completely contains the provided BoundingCircle.
+        * @param point A circle to check containment on.
+        */
+        public ContainsCircle(circle: BoundingCircle): bool {
+            throw new Error("This method is abstract!");
+        }
+
+        /**
+        * Abstract: Determines if the current bounded object completely contains the provided BoundingRectangle.
+        * @param point A rectangle to check containment on.
+        */
+        public ContainsRectangle(rectangle: BoundingRectangle): bool {
+            throw new Error("This method is abstract!");
+        }
+
+        /**
+        * Abstract: Determines if the current bounded object contains the provided Vector2d.
+        * @param point A point to check containment on.
+        */
+        public Contains(point: Vector2d): boolean;
+        /**
+        * Abstract: Determines if the current bounded object completely contains another bounded object.
+        * @param point A bounded object to check containment on.
+        */
+        public Contains(obj: Bounds2d): boolean;
+        public Contains(obj: any): boolean {
+            if (obj._boundsType === "BoundingCircle") {
+                return this.ContainsCircle(obj);
+            }
+            else if (obj._boundsType === "BoundingRectangle") {
+                return this.ContainsRectangle(obj);
+            }
+            else if(obj._type === "Vector2d") {
+                return this.ContainsPoint(obj);
+            }
+            else {
+                throw new Error("Cannot try and check contains with an unidentifiable object, must be a Vector2d, BoundingCircle or BoundingRectangle.");
+            }
+        }
+
+        /**
         * Determines if the current bounded object intersects another bounded object.
         * @param obj Bounding object to check collision with.
         */
-        public Intersects(obj: Bounds2d): bool;
-        /**
-        * Determines if the current bounded object is intersecting the provided BoundingCircle.
-        * @param circle BoundingCircle to check intersection with.
-        */
-        public Intersects(circle: BoundingCircle): bool;
-        /**
-        * Determines if the current bounded object is intersecting the provided BoundingRectangle.
-        * @param rectangle BoundingRectangle to check intersection with.
-        */
-        public Intersects(rectangle: BoundingRectangle): bool;
+        public Intersects(obj: Bounds2d): bool;        
         public Intersects(obj: any): bool {
             if (obj._boundsType === "BoundingCircle") {
                 return this.IntersectsCircle(obj);
@@ -76,7 +107,7 @@ module EndGate.Bounds.Abstractions {
                 return this.IntersectsRectangle(obj);
             }
             else {
-                throw new Error("Cannot intersect with unidentifiable object, must be BoundingCircle or BoundingRectangle");
+                throw new Error("Cannot intersect with unidentifiable object, must be BoundingCircle or BoundingRectangle.");
             }
         }
 

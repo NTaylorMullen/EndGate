@@ -160,6 +160,30 @@ var EndGate;
 
                 return point.X <= myBotRight.X && point.X >= myTopLeft.X && point.Y <= myBotRight.Y && point.Y >= myTopLeft.Y;
             };
+
+            /**
+            * Determines if the current BoundingRectangle completely contains the provided BoundingCircle.
+            * @param point A circle to check containment on.
+            */
+            BoundingRectangle.prototype.ContainsCircle = function (circle) {
+                return this.ContainsPoint(new EndGate.Vector2d(circle.Position.X - circle.Radius, circle.Position.Y)) && this.ContainsPoint(new EndGate.Vector2d(circle.Position.X, circle.Position.Y - circle.Radius)) && this.ContainsPoint(new EndGate.Vector2d(circle.Position.X + circle.Radius, circle.Position.Y)) && this.ContainsPoint(new EndGate.Vector2d(circle.Position.X, circle.Position.Y + circle.Radius));
+            };
+
+            /**
+            * Determines if the current BoundingCircle completely contains the provided BoundingRectangle.
+            * @param point A rectangle to check containment on.
+            */
+            BoundingRectangle.prototype.ContainsRectangle = function (rectangle) {
+                var corners = rectangle.Corners();
+
+                for (var i = 0; i < corners.length; i++) {
+                    if (!this.ContainsPoint(corners[i])) {
+                        return false;
+                    }
+                }
+
+                return true;
+            };
             return BoundingRectangle;
         })(Bounds.Abstractions.Bounds2d);
         Bounds.BoundingRectangle = BoundingRectangle;

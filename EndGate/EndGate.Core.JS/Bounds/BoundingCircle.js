@@ -94,6 +94,30 @@ var EndGate;
             BoundingCircle.prototype.ContainsPoint = function (point) {
                 return this.Position.Distance(point).Magnitude() < this.Radius;
             };
+
+            /**
+            * Determines if the current BoundingCircle completely contains the provided BoundingCircle.
+            * @param point A circle to check containment on.
+            */
+            BoundingCircle.prototype.ContainsCircle = function (circle) {
+                return circle.Position.Distance(this.Position).Length() + circle.Radius <= this.Radius;
+            };
+
+            /**
+            * Determines if the current BoundingCircle completely contains the provided BoundingRectangle.
+            * @param point A rectangle to check containment on.
+            */
+            BoundingCircle.prototype.ContainsRectangle = function (rectangle) {
+                var corners = rectangle.Corners();
+
+                for (var i = 0; i < corners.length; i++) {
+                    if (!this.ContainsPoint(corners[i])) {
+                        return false;
+                    }
+                }
+
+                return true;
+            };
             return BoundingCircle;
         })(Bounds.Abstractions.Bounds2d);
         Bounds.BoundingCircle = BoundingCircle;

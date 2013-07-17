@@ -35,7 +35,7 @@ module EndGate.Bounds {
         public Scale(x: number, y: number): void {
             this.Size.Width *= x;
             this.Size.Height *= y;
-        }        
+        }
 
         /** 
         * Gets the top left corner of the BoundingRectangle.
@@ -149,6 +149,33 @@ module EndGate.Bounds {
             this.Rotation = savedRotation;
 
             return point.X <= myBotRight.X && point.X >= myTopLeft.X && point.Y <= myBotRight.Y && point.Y >= myTopLeft.Y;
+        }
+
+        /**
+        * Determines if the current BoundingRectangle completely contains the provided BoundingCircle.
+        * @param point A circle to check containment on.
+        */
+        public ContainsCircle(circle: BoundingCircle): boolean {
+            return this.ContainsPoint(new Vector2d(circle.Position.X - circle.Radius, circle.Position.Y)) &&
+                this.ContainsPoint(new Vector2d(circle.Position.X, circle.Position.Y - circle.Radius)) &&
+                this.ContainsPoint(new Vector2d(circle.Position.X + circle.Radius, circle.Position.Y)) &&
+                this.ContainsPoint(new Vector2d(circle.Position.X, circle.Position.Y + circle.Radius));
+        }
+
+        /**
+        * Determines if the current BoundingCircle completely contains the provided BoundingRectangle.
+        * @param point A rectangle to check containment on.
+        */
+        public ContainsRectangle(rectangle: BoundingRectangle): boolean {
+            var corners = rectangle.Corners();
+
+            for (var i = 0; i < corners.length; i++) {
+                if (!this.ContainsPoint(corners[i])) {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 
