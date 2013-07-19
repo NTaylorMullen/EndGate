@@ -1686,6 +1686,11 @@ module EndGate {
     * Defines a GameConfiguration object that is used to represent the current state of a Game object.
     */
     export class GameConfiguration {
+        /**
+        * Indicates whether the game will only draw after an update.  If there are graphic modifications outside of the game update loop this should be set to 'false' to ensure the latest data is always drawn to the game screen.
+        */
+        public DrawOnlyAfterUpdate: boolean;
+
         private _defaultUpdateRate: number = 40;
         private _updateRateSetter: (updateRate: number) => void;
         private _updateRate: number;
@@ -1695,10 +1700,12 @@ module EndGate {
         * Creates a new instance of the GameConfiguration object.
         * @param updateRateSetter A function that updates the rate of "Update" execution.
         */
-        constructor(updateRateSetter: (updateRate: number) => void, initialQuadTreeSize: Size2d) {
+        constructor(updateRateSetter: (updateRate: number) => void , initialQuadTreeSize: Size2d) {
+            this.DrawOnlyAfterUpdate = true;
+
             this._updateRateSetter = updateRateSetter;
             this._updateRate = this._defaultUpdateRate;
-            this._collisionConfiguration = new Collision.CollisionConfiguration(initialQuadTreeSize);
+            this._collisionConfiguration = new Collision.CollisionConfiguration(initialQuadTreeSize);            
         }
 
         /**
@@ -4797,7 +4804,7 @@ module EndGate {
     * Defines a virtual Game object that is meant to be derived from.  Games contain a multitude of management objects to control every aspect of the game.
     */
     export class Game implements _.ITyped, IUpdateable, IDisposable {
-        public _type: string = "Game";
+        public _type: string = "Game";        
 
         /**
         * The games configuration.  Used to modify settings such as the game update rate.
@@ -4828,6 +4835,7 @@ module EndGate {
 
         private static _gameIds: number = 0;
         private _gameTime: GameTime;
+        private _updateRequired: boolean;
 
         /**
         * Creates a new instance of the Game object.  A default canvas will be created that fills the DOM body.
@@ -4842,6 +4850,7 @@ module EndGate {
             var initialQuadTreeSize: Size2d,
                 defaultMinQuadTreeSize: Size2d = Collision.CollisionConfiguration._DefaultMinQuadTreeNodeSize;
 
+            this._updateRequired = true;
             this._gameTime = new GameTime();
             this._ID = Game._gameIds++;
 
@@ -4872,6 +4881,7 @@ module EndGate {
 
             this.Update(this._gameTime);
             this.CollisionManager.Update(this._gameTime);
+            this._updateRequired = false;
         }
 
         /**
@@ -4882,8 +4892,13 @@ module EndGate {
         }
 
         public _PrepareDraw(): void {
+            if (this.Configuration.DrawOnlyAfterUpdate && this._updateRequired) {
+                return;
+            }
+
             this.Map.Scenery.Draw();
             this.Scene.Draw();
+            this._updateRequired = true;
         }
 
         /**

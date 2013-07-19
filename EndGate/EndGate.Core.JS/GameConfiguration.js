@@ -12,6 +12,8 @@ var EndGate;
         */
         function GameConfiguration(updateRateSetter, initialQuadTreeSize) {
             this._defaultUpdateRate = 40;
+            this.DrawOnlyAfterUpdate = true;
+
             this._updateRateSetter = updateRateSetter;
             this._updateRate = this._defaultUpdateRate;
             this._collisionConfiguration = new EndGate.Collision.CollisionConfiguration(initialQuadTreeSize);

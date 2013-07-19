@@ -7,6 +7,11 @@ module EndGate {
     * Defines a GameConfiguration object that is used to represent the current state of a Game object.
     */
     export class GameConfiguration {
+        /**
+        * Indicates whether the game will only draw after an update.  If there are graphic modifications outside of the game update loop this should be set to 'false' to ensure the latest data is always drawn to the game screen.
+        */
+        public DrawOnlyAfterUpdate: boolean;
+
         private _defaultUpdateRate: number = 40;
         private _updateRateSetter: (updateRate: number) => void;
         private _updateRate: number;
@@ -16,10 +21,12 @@ module EndGate {
         * Creates a new instance of the GameConfiguration object.
         * @param updateRateSetter A function that updates the rate of "Update" execution.
         */
-        constructor(updateRateSetter: (updateRate: number) => void, initialQuadTreeSize: Size2d) {
+        constructor(updateRateSetter: (updateRate: number) => void , initialQuadTreeSize: Size2d) {
+            this.DrawOnlyAfterUpdate = true;
+
             this._updateRateSetter = updateRateSetter;
             this._updateRate = this._defaultUpdateRate;
-            this._collisionConfiguration = new Collision.CollisionConfiguration(initialQuadTreeSize);
+            this._collisionConfiguration = new Collision.CollisionConfiguration(initialQuadTreeSize);            
         }
 
         /**

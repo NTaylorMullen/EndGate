@@ -951,6 +951,10 @@ declare module EndGate {
     * Defines a GameConfiguration object that is used to represent the current state of a Game object.
     */
     class GameConfiguration {
+        /**
+        * Indicates whether the game will only draw after an update.  If there are graphic modifications outside of the game update loop this should be set to 'false' to ensure the latest data is always drawn to the game screen.
+        */
+        public DrawOnlyAfterUpdate: boolean;
         private _defaultUpdateRate;
         private _updateRateSetter;
         private _updateRate;
@@ -2030,6 +2034,7 @@ declare module EndGate {
         public _ID: number;
         private static _gameIds;
         private _gameTime;
+        private _updateRequired;
         /**
         * Creates a new instance of the Game object.  A default canvas will be created that fills the DOM body.
         */
