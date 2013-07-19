@@ -18,6 +18,8 @@ var EndGate;
         function Game(gameCanvas) {
             var _this = this;
             this._type = "Game";
+            var initialQuadTreeSize, defaultMinQuadTreeSize = EndGate.Collision.CollisionConfiguration._DefaultMinQuadTreeNodeSize;
+
             this._gameTime = new EndGate.GameTime();
             this._ID = Game._gameIds++;
 
@@ -27,9 +29,20 @@ var EndGate;
 
             this.Input = new EndGate.Input.InputManager(this.Scene.DrawArea);
             this.Audio = new EndGate.Sound.AudioManager();
-            this.CollisionManager = new EndGate.Collision.CollisionManager();
-            this.Configuration = new EndGate.GameConfiguration(GameRunnerInstance.Register(this));
+
+            initialQuadTreeSize = this.Scene.Camera.Size;
+
+            if (initialQuadTreeSize.Width % defaultMinQuadTreeSize.Width !== 0) {
+                initialQuadTreeSize = new EndGate.Size2d(initialQuadTreeSize.Width % defaultMinQuadTreeSize.Width + initialQuadTreeSize.Width);
+            }
+
+            this.Configuration = new EndGate.GameConfiguration(GameRunnerInstance.Register(this), initialQuadTreeSize);
+            this.CollisionManager = new EndGate.Collision.CollisionManager(this.Configuration.CollisionConfiguration);
             this.Map = new EndGate.Map.MapManager(this.Scene);
+
+            this.Configuration.CollisionConfiguration._OnChange.Bind(function () {
+                _this.CollisionManager = new EndGate.Collision.CollisionManager(_this.Configuration.CollisionConfiguration);
+            });
         }
         Game.prototype._PrepareUpdate = function () {
             this._gameTime.Update();

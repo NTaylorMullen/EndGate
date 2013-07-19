@@ -1109,20 +1109,51 @@ module EndGate.Bounds.Abstractions {
         }
 
         /**
+        * Abstract: Determines if the current bounded object completely contains the provided BoundingCircle.
+        * @param point A circle to check containment on.
+        */
+        public ContainsCircle(circle: BoundingCircle): bool {
+            throw new Error("This method is abstract!");
+        }
+
+        /**
+        * Abstract: Determines if the current bounded object completely contains the provided BoundingRectangle.
+        * @param point A rectangle to check containment on.
+        */
+        public ContainsRectangle(rectangle: BoundingRectangle): bool {
+            throw new Error("This method is abstract!");
+        }
+
+        /**
+        * Abstract: Determines if the current bounded object contains the provided Vector2d.
+        * @param point A point to check containment on.
+        */
+        public Contains(point: Vector2d): boolean;
+        /**
+        * Abstract: Determines if the current bounded object completely contains another bounded object.
+        * @param point A bounded object to check containment on.
+        */
+        public Contains(obj: Bounds2d): boolean;
+        public Contains(obj: any): boolean {
+            if (obj._boundsType === "BoundingCircle") {
+                return this.ContainsCircle(obj);
+            }
+            else if (obj._boundsType === "BoundingRectangle") {
+                return this.ContainsRectangle(obj);
+            }
+            else if(obj._type === "Vector2d") {
+                return this.ContainsPoint(obj);
+            }
+            else {
+                throw new Error("Cannot try and check contains with an unidentifiable object, must be a Vector2d, BoundingCircle or BoundingRectangle.");
+            }
+        }
+
+        /**
         * Determines if the current bounded object intersects another bounded object.
         * @param obj Bounding object to check collision with.
         */
-        public Intersects(obj: Bounds2d): bool;
-        /**
-        * Determines if the current bounded object is intersecting the provided BoundingCircle.
-        * @param circle BoundingCircle to check intersection with.
-        */
-        public Intersects(circle: BoundingCircle): bool;
-        /**
-        * Determines if the current bounded object is intersecting the provided BoundingRectangle.
-        * @param rectangle BoundingRectangle to check intersection with.
-        */
-        public Intersects(rectangle: BoundingRectangle): bool;
+        public Intersects(obj: Bounds2d): bool;        
         public Intersects(obj: any): bool {
             if (obj._boundsType === "BoundingCircle") {
                 return this.IntersectsCircle(obj);
@@ -1131,7 +1162,7 @@ module EndGate.Bounds.Abstractions {
                 return this.IntersectsRectangle(obj);
             }
             else {
-                throw new Error("Cannot intersect with unidentifiable object, must be BoundingCircle or BoundingRectangle");
+                throw new Error("Cannot intersect with unidentifiable object, must be BoundingCircle or BoundingRectangle.");
             }
         }
 
@@ -1520,7 +1551,135 @@ module EndGate._ {
 }
 
 var GameRunnerInstance: EndGate._.GameRunner = new EndGate._.GameRunner();
+/* EventHandler.ts */
+
+
+
+module EndGate {
+
+    /**
+    * Defines an event handler object that can maintain bound functions and trigger them on demand.
+    */
+    export class EventHandler implements _.ITyped {
+        public _type: string = "Event";
+
+        private _actions: Array<Function>;
+        private _hasBindings: bool;
+
+        /**
+        * Creates a new instance of the EventHandler object.
+        */
+        constructor() {
+            this._actions = [];
+            this._hasBindings = false;
+        }
+
+        /**
+        * Binds the provided action to the EventHandler.  Trigger will execute all bound functions.
+        * @param action Function to execute on EventHandler Trigger.
+        */
+        public Bind(action: Function): void {
+            this._actions.push(action);
+            this._hasBindings = true;
+        }
+
+        /**
+        * Unbinds the provided action from the EventHandler.
+        * @param action Function to unbind.  The action will no longer be executed when the EventHandler gets Triggered.
+        */
+        public Unbind(action: Function): void {
+            var foo = this._actions[i];
+
+            for (var i = 0; i < this._actions.length; i++) {
+                if (this._actions[i] === action) {
+                    this._actions.splice(i, 1);
+
+                    this._hasBindings = this._actions.length > 0;
+                    return;
+                }
+            }
+        }
+
+        /**
+        * Determines if the EventHandler has active bindings.
+        */
+        public HasBindings(): bool {
+            return this._hasBindings;
+        }
+
+        /**
+        * Executes all bound functions and passes the provided args to each.
+        */
+        public Trigger(): void {
+            for (var i = 0; i < this._actions.length; i++) {
+                this._actions[i]();
+            }
+        }
+    }
+
+}
+/* CollisionConfiguration.ts */
+
+
+
+module EndGate.Collision {
+
+    /**
+    * Defines a CollisionConfiguration object that is used to configure and optimize the collision manager.
+    */
+    export class CollisionConfiguration {
+        public static _DefaultMinQuadTreeNodeSize: Size2d = new Size2d(32);
+
+        private _minQuadTreeNodeSize: Size2d;
+        private _initialQuadTreeSize: Size2d;
+
+        constructor(initialQuadTreeSize: Size2d) {
+            this._initialQuadTreeSize = initialQuadTreeSize;
+            this._minQuadTreeNodeSize = CollisionConfiguration._DefaultMinQuadTreeNodeSize;
+            this._OnChange = new EventHandler();
+        }
+
+        public _OnChange: EventHandler;
+
+        /**
+        * Gets or sets the minimum quad tree node size.  For best performance this value should be equivalent to the smallest collidable object that will be monitored by the CollisionManager.  Changing this value re-creates the collision manager.  Values must represent a square.
+        */
+        public get MinQuadTreeNodeSize(): Size2d {
+            return this._minQuadTreeNodeSize.Clone();
+        }
+        public set MinQuadTreeNodeSize(newSize: Size2d) {
+            if (newSize.Width !== newSize.Height) {
+                throw new Error("MinQuadTreeNodeSize must be a square.  Width and height must be identical.");
+            }
+
+            this._minQuadTreeNodeSize = newSize;
+            this._OnChange.Trigger();
+        }
+
+        /**
+        * Gets or sets the initial quad tree size.  The quad tree used for collision detection will dynamically grow in size if items drift outside of its boundaries.  If this property is set it will re-instantiate a new quad tree.  Values must be divisible by the MinQuadTreeNodeSize and must represent a square.
+        */
+        public get InitialQuadTreeSize(): Size2d {
+            return this._initialQuadTreeSize;
+        }
+        public set InitialQuadTreeSize(newSize: Size2d) {
+            if (newSize.Width !== newSize.Height) {
+                throw new Error("InitialQuadTreeSize must be a square.  Width and height must be identical.");
+            }
+            else if (newSize.Width % this._minQuadTreeNodeSize.Width !== 0) {
+                throw new Error("InitialQuadTreeSize must be divisible by the MinQuadTreeNodeSize.");
+            }
+
+            this._initialQuadTreeSize = newSize;
+            this._OnChange.Trigger();
+        }
+    }
+
+}
 /* GameConfiguration.ts */
+
+
+
 module EndGate {
 
     /**
@@ -1530,14 +1689,16 @@ module EndGate {
         private _defaultUpdateRate: number = 40;
         private _updateRateSetter: (updateRate: number) => void;
         private _updateRate: number;
+        private _collisionConfiguration: Collision.CollisionConfiguration;
 
         /**
         * Creates a new instance of the GameConfiguration object.
         * @param updateRateSetter A function that updates the rate of "Update" execution.
         */
-        constructor(updateRateSetter: (updateRate: number) => void ) {
+        constructor(updateRateSetter: (updateRate: number) => void, initialQuadTreeSize: Size2d) {
             this._updateRateSetter = updateRateSetter;
             this._updateRate = this._defaultUpdateRate;
+            this._collisionConfiguration = new Collision.CollisionConfiguration(initialQuadTreeSize);
         }
 
         /**
@@ -1549,6 +1710,358 @@ module EndGate {
         public set UpdateRate(updateRate: number) {
             this._updateRate = updateRate;
             this._updateRateSetter(this._updateRate);
+        }
+
+        /**
+        * Gets the CollisionConfiguration of the game.  These configurations are used to optimize the collision management performance.
+        */
+        public get CollisionConfiguration(): Collision.CollisionConfiguration {
+            return this._collisionConfiguration;
+        }
+    }
+
+}
+/* MinMax.ts */
+module EndGate._ {
+
+    export class MinMax {
+        public Min: number;
+        public Max: number;
+
+        constructor(min: number, max: number) {
+            this.Min = min;
+            this.Max = max;
+        }
+    }
+
+}
+/* Vector2dHelpers.ts */
+
+
+
+module EndGate._ {
+
+    export class Vector2dHelpers {
+        public static GetMinMaxProjections(axis: Vector2d, vertices: Vector2d[]): MinMax
+        {
+            var min: number = vertices[0].ProjectOnto(axis).Dot(axis);
+            var max: number = min;
+
+            for (var i: number = 1; i < vertices.length; i++)
+            {
+                var vertex: Vector2d = vertices[i];
+                var value: number = vertex.ProjectOnto(axis).Dot(axis);
+
+                if (value < min) {
+                    min = value;
+                }
+                else if (value > max) {
+                    max = value;
+                }
+            }
+
+            return new MinMax(min, max);
+        }
+    }
+
+}
+/* BoundingCircle.ts */
+
+
+
+
+module EndGate.Bounds {
+
+    /**
+    * Defines a circle that can be used to detect intersections.
+    */
+    export class BoundingCircle extends Abstractions.Bounds2d implements _.ITyped {
+        public _type: string = "BoundingCircle";
+        public _boundsType: string = "BoundingCircle";
+
+        /**
+        * Gets or sets the Radius of the circle.
+        */
+        public Radius: number;
+
+        /**
+        * Creates a new instance of BoundingCircle.
+        * @param position Initial Position of the BoundingCircle.
+        * @param radius Initial Radius of the BoundingCircle.
+        */
+        constructor(position: Vector2d, radius: number) {
+            super(position);
+
+            this.Radius = radius;
+        }
+
+        /**
+        * Scales the radius of the BoundingCircle.
+        * @param scale Value to multiply the radius by.
+        */
+        public Scale(scale: number): void {
+            // This is an overloaded version of Bounds2d Scale but we don't care
+            // about the second parameter within a BoundingCircle
+            this.Radius *= scale;
+        }
+
+        /**
+        * Calculates the area of the BoundingCircle.
+        */
+        public Area(): number {
+            return Math.PI * this.Radius * this.Radius;
+        }
+
+        /**
+        * Calculates the circumference of the BoundingCircle.
+        */
+        public Circumference(): number {
+            return 2 * Math.PI * this.Radius;
+        }
+
+        /**
+        * Determines if the current BoundingCircle is intersecting the provided BoundingCircle.
+        * @param circle BoundingCircle to check intersection with.
+        */
+        public IntersectsCircle(circle: BoundingCircle): bool {
+            return this.Position.Distance(circle.Position).Length() < this.Radius + circle.Radius;
+        }
+
+        /**
+        * Determines if the current BoundingCircle is intersecting the provided BoundingRectangle.
+        * @param rectangle BoundingRectangle to check intersection with.
+        */
+        public IntersectsRectangle(rectangle: BoundingRectangle): bool {
+            var translated = (rectangle.Rotation === 0)
+                                  ? this.Position
+                                  : this.Position.RotateAround(rectangle.Position, -rectangle.Rotation);
+
+            var circleDistance = translated.Distance(rectangle.Position);
+
+            if (circleDistance.X > (rectangle.Size.HalfWidth + this.Radius)) { return false; }
+            if (circleDistance.Y > (rectangle.Size.HalfHeight + this.Radius)) { return false; }
+
+            if (circleDistance.X <= (rectangle.Size.HalfWidth)) { return true; }
+            if (circleDistance.Y <= (rectangle.Size.HalfHeight)) { return true; }
+
+            var cornerDistance_sq = Math.pow(circleDistance.X - rectangle.Size.HalfWidth, 2) + Math.pow(circleDistance.Y - rectangle.Size.HalfHeight, 2);
+
+            return (cornerDistance_sq <= (this.Radius * this.Radius));
+        }
+
+        /**
+        * Determines if the current BoundingCircle contains the provided Vector2d.
+        * @param point A point.
+        */
+        public ContainsPoint(point: Vector2d): bool {
+            return this.Position.Distance(point).Magnitude() < this.Radius;
+        }
+
+        /**
+        * Determines if the current BoundingCircle completely contains the provided BoundingCircle.
+        * @param point A circle to check containment on.
+        */
+        public ContainsCircle(circle: BoundingCircle): boolean {
+            return circle.Position.Distance(this.Position).Length() + circle.Radius <= this.Radius;
+        }
+
+        /**
+        * Determines if the current BoundingCircle completely contains the provided BoundingRectangle.
+        * @param point A rectangle to check containment on.
+        */
+        public ContainsRectangle(rectangle: BoundingRectangle): boolean {
+            var corners = rectangle.Corners();
+
+            for (var i = 0; i < corners.length; i++) {
+                if (!this.ContainsPoint(corners[i])) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+    }
+
+}
+/* BoundingRectangle.ts */
+
+
+
+
+
+module EndGate.Bounds {
+
+    /**
+    * Defines a rectangle that can be used to detect intersections.
+    */
+    export class BoundingRectangle extends Abstractions.Bounds2d implements _.ITyped {
+        public _type: string = "BoundingRectangle";
+        public _boundsType: string = "BoundingRectangle";
+
+        /**
+        * Gets or sets the Size of the rectangle.
+        */
+        public Size: Size2d;
+
+        /**
+        * Creates a new instance of BoundingRectangle.
+        * @param position Initial Position of the BoundingRectangle.
+        * @param size Initial Size of the BoundingRectangle.
+        */
+        constructor(position: Vector2d, size: Size2d) {
+            super(position);
+            this.Size = size;
+        }
+
+        /**
+        * Scales the width and height of the BoundingRectangle.
+        * @param x Value to multiply the width by.
+        * @param y Value to multiply the height by.
+        */
+        public Scale(x: number, y: number): void {
+            this.Size.Width *= x;
+            this.Size.Height *= y;
+        }
+
+        /** 
+        * Gets the top left corner of the BoundingRectangle.
+        */
+        public get TopLeft(): Vector2d {
+            if (this.Rotation === 0) {
+                return new Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);
+            }
+
+            return new Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight).RotateAround(this.Position, this.Rotation);
+        }
+
+        /** 
+        * Gets the top right corner of the BoundingRectangle.
+        */
+        public get TopRight(): Vector2d {
+            if (this.Rotation === 0) {
+                return new Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);
+            }
+
+            return new Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight).RotateAround(this.Position, this.Rotation);
+        }
+
+        /** 
+        * Gets the bottom left corner of the BoundingRectangle.
+        */
+        public get BotLeft(): Vector2d {
+            if (this.Rotation === 0) {
+                return new Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);
+            }
+
+            return new Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight).RotateAround(this.Position, this.Rotation);
+        }
+
+        /** 
+        * Gets the bottom right corner of the BoundingRectangle.
+        */
+        public get BotRight(): Vector2d {
+            if (this.Rotation === 0) {
+                return new Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);
+            }
+
+            return new Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight).RotateAround(this.Position, this.Rotation);
+        }
+
+        /**
+        * Returns a list of vertices that are the locations of each corner of the BoundingRectangle. Format: [TopLeft, TopRight, BotLeft, BotRight].
+        */
+        public Corners(): Vector2d[] {
+            return [this.TopLeft, this.TopRight, this.BotLeft, this.BotRight];
+        }
+
+        /**
+        * Determines if the current BoundingRectangle is intersecting the provided BoundingCircle.
+        * @param circle BoundingCircle to check intersection with.
+        */
+        public IntersectsCircle(circle: BoundingCircle): bool {
+            return circle.IntersectsRectangle(this);
+        }
+
+        /**
+        * Determines if the current BoundingRectangle is intersecting the provided BoundingRectangle.
+        * @param rectangle BoundingRectangle to check intersection with.
+        */
+        public IntersectsRectangle(rectangle: BoundingRectangle): bool {
+            if (this.Rotation === 0 && rectangle.Rotation === 0) {
+                var myTopLeft = this.TopLeft,
+                    myBotRight = this.BotRight,
+                    theirTopLeft = rectangle.TopLeft,
+                    theirBotRight = rectangle.BotRight;
+
+                return theirTopLeft.X <= myBotRight.X && theirBotRight.X >= myTopLeft.X && theirTopLeft.Y <= myBotRight.Y && theirBotRight.Y >= myTopLeft.Y;
+            }
+            else if (rectangle.Position.Distance(this.Position).Magnitude() <= rectangle.Size.Radius + this.Size.Radius) {// Check if we're somewhat close to the rectangle ect that we might be colliding with
+                var axisList: Vector2d[] = [this.TopRight.Subtract(this.TopLeft), this.TopRight.Subtract(this.BotRight), rectangle.TopLeft.Subtract(rectangle.BotLeft), rectangle.TopLeft.Subtract(rectangle.TopRight)];
+                var myVertices = this.Corners();
+                var theirVertices = rectangle.Corners();
+
+                for (var i: number = 0; i < axisList.length; i++) {
+                    var axi = axisList[i];
+                    var myProjections = EndGate._.Vector2dHelpers.GetMinMaxProjections(axi, myVertices);
+                    var theirProjections = EndGate._.Vector2dHelpers.GetMinMaxProjections(axi, theirVertices);
+
+                    // No collision
+                    if (theirProjections.Max < myProjections.Min || myProjections.Max < theirProjections.Min) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        /**
+        * Determines if the current BoundingRectangle contains the provided Vector2d.
+        * @param point A point.
+        */
+        public ContainsPoint(point: Vector2d): bool {
+            var savedRotation: number = this.Rotation;
+
+            if (this.Rotation !== 0) {
+                this.Rotation = 0;
+                point = point.RotateAround(this.Position, -savedRotation);
+            }
+
+            var myTopLeft = this.TopLeft,
+                myBotRight = this.BotRight;
+
+            this.Rotation = savedRotation;
+
+            return point.X <= myBotRight.X && point.X >= myTopLeft.X && point.Y <= myBotRight.Y && point.Y >= myTopLeft.Y;
+        }
+
+        /**
+        * Determines if the current BoundingRectangle completely contains the provided BoundingCircle.
+        * @param point A circle to check containment on.
+        */
+        public ContainsCircle(circle: BoundingCircle): boolean {
+            return this.ContainsPoint(new Vector2d(circle.Position.X - circle.Radius, circle.Position.Y)) &&
+                this.ContainsPoint(new Vector2d(circle.Position.X, circle.Position.Y - circle.Radius)) &&
+                this.ContainsPoint(new Vector2d(circle.Position.X + circle.Radius, circle.Position.Y)) &&
+                this.ContainsPoint(new Vector2d(circle.Position.X, circle.Position.Y + circle.Radius));
+        }
+
+        /**
+        * Determines if the current BoundingCircle completely contains the provided BoundingRectangle.
+        * @param point A rectangle to check containment on.
+        */
+        public ContainsRectangle(rectangle: BoundingRectangle): boolean {
+            var corners = rectangle.Corners();
+
+            for (var i = 0; i < corners.length; i++) {
+                if (!this.ContainsPoint(corners[i])) {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 
@@ -1630,22 +2143,15 @@ module EndGate.Collision.Assets {
     */
     export class CollisionData {
         /**
-        * Where the collision occurred.
-        */
-        public At: Vector2d;
-
-        /**
         * Who collided with you.
         */
         public With: Collidable;
 
         /**
         * Creates a new instance of the CollisionData object.
-        * @param at Initial value of the At component of CollisionData.
         * @param w Initial value of the With component of CollisionData.
         */
-        constructor(at: Vector2d, w: Collidable) {
-            this.At = at;
+        constructor(w: Collidable) {
             this.With = w;
         }
     }
@@ -1664,7 +2170,7 @@ module EndGate.Collision {
     /**
     * Defines a collidable object that can be used to detect collisions with other objects.
     */
-    export class Collidable implements IDisposable, _.ITyped {
+    export class Collidable implements IDisposable, EndGate._.ITyped {
         public _type: string = "Collidable";
         public _id: number;
 
@@ -1727,6 +2233,332 @@ module EndGate.Collision {
             if (!this._disposed) {
                 this._disposed = true;
                 this.OnDisposed.Trigger(this);
+            }
+            else {
+                throw new Error("Cannot dispose collidable more than once.");
+            }
+        }
+    }
+
+}
+/* QuadTreeNode.ts */
+
+
+
+
+
+module EndGate.Collision.Assets._ {
+
+    export class QuadTreeNode extends Collidable {
+        public Contents: Array<Collidable>;
+        public Parent: QuadTreeNode;
+
+        private _minNodeSize: Size2d;
+        private _children: Array<QuadTreeNode>;
+        private _partitioned: boolean;
+
+        constructor(position: Vector2d, size: Size2d, minNodeSize: Size2d, parent: QuadTreeNode) {
+            super(new Bounds.BoundingRectangle(position, size));
+            this._minNodeSize = minNodeSize;
+            this._children = new Array<QuadTreeNode>();
+            this.Contents = new Array<Collidable>();
+            this.Parent = parent;
+            this._partitioned = false;
+        }
+
+        public get Children(): Array<QuadTreeNode> {
+            return this._children;
+        }
+
+        public get TopLeftChild(): QuadTreeNode {
+            return this._children[0];
+        }
+        public set TopLeftChild(newChild: QuadTreeNode) {
+            this._children[0] = newChild;
+        }
+
+        public get TopRightChild(): QuadTreeNode {
+            return this._children[1];
+        }
+        public set TopRightChild(newChild: QuadTreeNode) {
+            this._children[1] = newChild;
+        }
+
+        public get BotLeftChild(): QuadTreeNode {
+            return this._children[2];
+        }
+        public set BotLeftChild(newChild: QuadTreeNode) {
+            this._children[2] = newChild;
+        }
+
+        public get BotRightChild(): QuadTreeNode {
+            return this._children[3];
+        }
+        public set BotRightChild(newChild: QuadTreeNode) {
+            this._children[3] = newChild;
+        }
+
+        public IsPartitioned(): boolean {
+            return this._partitioned;
+        }
+
+        public Partition(): void {
+            var partitionedSize = new Size2d(Math.round((<Bounds.BoundingRectangle>this.Bounds).Size.Width * .5)),
+                boundsPosition = this.Bounds.Position;
+
+            this._partitioned = true;
+
+            if (partitionedSize.Width < this._minNodeSize.Width)
+            {
+                return;
+            }
+
+            this._children.push(new QuadTreeNode(boundsPosition.Subtract(partitionedSize.Multiply(.5)), partitionedSize, this._minNodeSize, this));
+            this._children.push(new QuadTreeNode(new Vector2d(boundsPosition.X + partitionedSize.Width / 2, boundsPosition.Y - partitionedSize.Height / 2), partitionedSize, this._minNodeSize, this));
+            this._children.push(new QuadTreeNode(new Vector2d(boundsPosition.X - partitionedSize.Width / 2, boundsPosition.Y + partitionedSize.Height / 2), partitionedSize, this._minNodeSize, this));
+            this._children.push(new QuadTreeNode(boundsPosition.Add(partitionedSize.Multiply(.5)), partitionedSize, this._minNodeSize, this));
+        }
+
+        public Insert(obj: Collidable): QuadTreeNode {
+            if (!this._partitioned) {
+                this.Partition();
+            }
+
+            for (var i = 0; i < this._children.length; i++) {
+                if (this._children[i].Bounds.Contains(obj.Bounds)) {
+                    return this._children[i].Insert(obj);
+                }
+            }
+
+            this.Contents.push(obj);
+
+            return this;
+        }
+
+        public ReverseInsert(obj: Collidable): QuadTreeNode {
+            // Check if object has left the bounds of this node then go up another level
+            if (!this.Bounds.Contains(obj.Bounds))
+            {
+                if (this.Parent != null)
+                {
+                    return this.Parent.ReverseInsert(obj);
+                }
+            }
+            
+            return this.Insert(obj);
+        }
+
+        public Query(queryArea: Bounds.BoundingRectangle): Array<Collidable> {
+            var results = new Array<Collidable>(),
+                child: QuadTreeNode;
+
+            // Check if some of the items in this quadrant are partially contained within the query area
+            for (var i = 0; i < this.Contents.length; i++) {
+                if (queryArea.Intersects(this.Contents[i].Bounds)) {
+                    results.push(this.Contents[i]);
+                }
+            }
+
+            for (var i = 0; i < this._children.length; i++) {
+                child = this._children[i];
+
+                // If child fully contains the query area then we need to
+                // drill down until we find all of the query items
+                if (child.Bounds.Contains(queryArea))
+                {
+                    results = results.concat(child.Query(queryArea));
+                    break;
+                }
+                
+                // If the queryArea fully contains the node then everything
+                // underneath it belongs to the query
+                if (queryArea.Contains(child.Bounds))
+                {
+                    results = results.concat(child.GetSubTreeContents());
+                    continue;
+                }
+
+                // If a sub-node intersects partially with the query then we
+                // need to query its children to find valid nodes
+                if (child.Bounds.Intersects(queryArea))
+                {
+                    results = results.concat(child.Query(queryArea));
+                }
+            }
+
+            return results;
+        }
+
+        public Remove(obj: Collidable): void {
+            var index = this.Contents.indexOf(obj);
+
+            if (index >= 0) {
+                this.Contents.splice(index, 1);
+            }
+        }
+
+        public GetSubTreeContents(): Array<Collidable> {
+            var results = new Array<Collidable>();
+
+            for (var i = 0; i < this._children.length; i++) {
+                results = results.concat(this._children[i].GetSubTreeContents());
+            }
+
+            results = results.concat(this.Contents);
+
+            return results;
+        }
+    }
+
+}
+/* QuadTree.ts */
+
+
+
+
+
+
+
+
+
+module EndGate.Collision.Assets._ {
+
+    export interface ICollidableMap {
+        Node: QuadTreeNode;
+        Collidable: Collidable;
+        StaticPosition: boolean;
+    }
+
+    export class QuadTree implements IDisposable, IUpdateable {
+        private _disposed: boolean;
+        private _minNodeSize: Size2d;
+        private _root: QuadTreeNode;
+        private _collidableMap: { [id: number]: ICollidableMap };
+        private _updateableCollidableMap: { [id: number]: ICollidableMap };
+
+        constructor(configuration: CollisionConfiguration) {
+            this._disposed = false;
+            this._minNodeSize = configuration.MinQuadTreeNodeSize;
+            this._collidableMap = {};
+            this._updateableCollidableMap = {};
+
+            this._root = new QuadTreeNode(new Vector2d(configuration.InitialQuadTreeSize.HalfWidth, configuration.InitialQuadTreeSize.HalfHeight), configuration.InitialQuadTreeSize, configuration.MinQuadTreeNodeSize, null);
+        }
+
+        public Insert(obj: Collidable, staticPosition: boolean = false): void {
+            if (!this._root.Bounds.Contains(obj.Bounds)) {
+                this.Expand(obj);
+            }
+
+            this._collidableMap[obj._id] = {
+                Node: this._root.Insert(obj),
+                Collidable: obj,
+                StaticPosition: staticPosition
+            };
+
+            if (!staticPosition) {
+                this._updateableCollidableMap[obj._id] = this._collidableMap[obj._id];
+            }
+        }
+
+        public Remove(obj: Collidable): void {
+            var node = this._collidableMap[obj._id].Node;
+
+            delete this._collidableMap[obj._id];
+            delete this._updateableCollidableMap[obj._id];
+
+            node.Remove(obj);
+        }
+
+        public CollisionCandidates(obj: Collidable): Array<Collidable> {
+            var node: QuadTreeNode = this._collidableMap[obj._id].Node,
+                results: Array<Collidable> = node.GetSubTreeContents();
+
+            // Collect parent contents
+            while (node.Parent !== null) {
+                results = results.concat(node.Parent.Contents);
+
+                node = node.Parent;
+            }
+
+            return results;
+        }
+
+        public Query(queryArea: Bounds.BoundingRectangle): Array<Collidable> {
+            return this._root.Query(queryArea);
+        }
+
+        public Expand(cause: Collidable): void {
+            var rootBounds: Bounds.BoundingRectangle = (<Bounds.BoundingRectangle>this._root.Bounds),
+                topLeftDistance = rootBounds.TopLeft.Distance(cause.Bounds.Position).Length(),
+                topRightDistance = rootBounds.TopRight.Distance(cause.Bounds.Position).Length(),
+                botLeftDistance = rootBounds.BotLeft.Distance(cause.Bounds.Position).Length(),
+                botRightDistance = rootBounds.BotRight.Distance(cause.Bounds.Position).Length(),
+                closestCornerDistance = Math.min(topLeftDistance, topRightDistance, botLeftDistance, botRightDistance),
+                newSize = rootBounds.Size.Multiply(2),
+                newRoot: QuadTreeNode;
+
+            if (closestCornerDistance === topLeftDistance) { // Current root will be bottom right of expanded quad tree because we need to expand to the top left
+                newRoot = new QuadTreeNode(rootBounds.TopLeft, newSize, this._minNodeSize, null);
+                newRoot.Partition();
+                newRoot.BotRightChild = this._root;
+            }
+            else if (closestCornerDistance === topRightDistance) { // Current root will be bottom left of expanded quad tree because we need to expand to the top right
+                newRoot = new QuadTreeNode(rootBounds.TopRight, newSize, this._minNodeSize, null);
+                newRoot.Partition();
+                newRoot.BotLeftChild = this._root;
+            }
+            else if (closestCornerDistance === botLeftDistance) { // Current root will be top right of expanded quad tree because we need to expand to the bottom left
+                newRoot = new QuadTreeNode(rootBounds.BotLeft, newSize, this._minNodeSize, null);
+                newRoot.Partition();
+                newRoot.TopRightChild = this._root;
+            }
+            else if (closestCornerDistance === botRightDistance) { // Current root will be top left of expanded quad tree because we need to expand to the bottom right
+                newRoot = new QuadTreeNode(rootBounds.BotRight, newSize, this._minNodeSize, null);
+                newRoot.Partition();
+                newRoot.TopLeftChild = this._root;
+            }
+
+            this._root.Parent = newRoot;
+            this._root = newRoot;
+        }
+
+        public Update(gameTime: GameTime): void {
+            var node: QuadTreeNode, lookup: ICollidableMap, collidable: Collidable, newNode: QuadTreeNode;
+
+            for (var id in this._updateableCollidableMap) {
+                lookup = this._updateableCollidableMap[id];
+                node = lookup.Node;
+                collidable = lookup.Collidable;
+
+                node.Remove(collidable);
+
+                // If one of the collidables has drifted outside the root bounds, expand the quad tree
+                if (!this._root.Bounds.Contains(collidable.Bounds)) {
+                    this.Expand(collidable);
+                    newNode = this._root.Insert(collidable);
+                }
+                else {
+                    // Check if object has left the bounds of this node and is not root
+                    if (!node.Bounds.Contains(collidable.Bounds) && node.Parent != null)
+                    {
+                        // We now belong to a parent
+                        newNode = node.Parent.ReverseInsert(collidable);
+                    }
+                    else // We're within the same node, but could be in children, must insert
+                    {
+                        newNode = node.Insert(collidable);
+                    }
+                }
+
+                // This will update the _collidableMap as well since its referencing the same object.
+                this._updateableCollidableMap[id].Node = newNode;
+            }
+        }
+
+        public Dispose(): void {
+            if (!this._disposed) {
+                this._disposed = true;
             }
             else {
                 throw new Error("Cannot dispose collidable more than once.");
@@ -1810,24 +2642,29 @@ module EndGate {
 
 
 
+
+
 module EndGate.Collision {
 
     /**
     * Defines a manager that will check for collisions between objects that it is monitoring.
     */
-    export class CollisionManager implements IUpdateable, _.ITyped {
+    export class CollisionManager implements IUpdateable, EndGate._.ITyped {
         public _type: string = "CollisionManager";
         private _collidables: Collidable[];
+        private _nonStaticCollidables: Collidable[];
+        public _quadTree: Assets._.QuadTree;
         private _onCollision: EventHandler2<Collidable, Collidable>;
         private _enabled: bool;
 
         /**
         * Creates a new instance of CollisionManager.
         */
-        constructor() {
+        constructor(configuration: CollisionConfiguration) {
             this._collidables = [];
+            this._nonStaticCollidables = [];
+            this._quadTree = new Assets._.QuadTree(configuration);
             this._enabled = false;
-
             this._onCollision = new EventHandler2<Collidable, Collidable>();
         }
 
@@ -1843,7 +2680,16 @@ module EndGate.Collision {
         * If the provided collidable gets disposed it will automatically become unmonitored.
         * @param obj Collidable to monitor.
         */
-        public Monitor(obj: Collidable): void {
+        public Monitor(obj: Collidable): void;
+        /**
+        * Monitors the provided collidable and will trigger its Collided function and OnCollision event whenever a collision occurs with it and another Collidable.
+        * If the provided collidable gets disposed it will automatically become unmonitored.
+        * Note: staticPosition'd collidable's will not collide with each other.
+        * @param obj Collidable to monitor.
+        * @param staticPosition Whether the Collidable will be stationary.  This value defaults to false.
+        */
+        public Monitor(obj: Collidable, staticPosition: boolean): void;
+        public Monitor(obj: Collidable, staticPosition: boolean = false): void {
             this._enabled = true;
 
             obj.OnDisposed.Bind(() => {
@@ -1851,6 +2697,12 @@ module EndGate.Collision {
             });
 
             this._collidables.push(obj);
+
+            if (!staticPosition) {
+                this._nonStaticCollidables.push(obj);
+            }
+
+            this._quadTree.Insert(obj);
         }
 
         /**
@@ -1859,12 +2711,19 @@ module EndGate.Collision {
         * @param obj Collidable to unmonitor.
         */
         public Unmonitor(obj: Collidable): void {
-            for (var i = 0; i < this._collidables.length; i++) {
-                if (this._collidables[i]._id === obj._id) {
-                    this._collidables.splice(i, 1);
-                    break;
-                }
+            var index = this._collidables.indexOf(obj);
+            
+            if (index >= 0) {
+                this._collidables.splice(index, 1);
             }
+
+            index = this._nonStaticCollidables.indexOf(obj);
+
+            if (index >= 0) {
+                this._nonStaticCollidables.splice(index, 1);
+            }
+
+            this._quadTree.Remove(obj);
         }
 
         /**
@@ -1872,25 +2731,49 @@ module EndGate.Collision {
         * @param gameTime The current game time object.
         */
         public Update(gameTime: GameTime): void {
-            var first: Collidable,
-                second: Collidable;
+            var collidable: Collidable,
+                hash: string,
+                candidates: Array<Collidable>,
+                cacheMap: { [ids: string]: boolean; } = {},
+                colliding: Array<Array<Collidable>> = new Array<Array<Collidable>>();
 
             if (this._enabled) {
-                for (var i = 0; i < this._collidables.length; i++) {
-                    first = this._collidables[i];
+                // Update the structure of the quad tree, this accounts for moving objects
+                this._quadTree.Update(gameTime);
 
-                    for (var j = i + 1; j < this._collidables.length; j++) {
-                        second = this._collidables[j];
+                // Determine colliding objects
+                for (var i = 0; i < this._nonStaticCollidables.length; i++) {
+                    collidable = this._nonStaticCollidables[i];
+                    candidates = this._quadTree.CollisionCandidates(collidable);
 
-                        if (first.IsCollidingWith(second)) {
-                            first.Collided(new Assets.CollisionData(first.Bounds.Position.Clone(), second));
-                            second.Collided(new Assets.CollisionData(second.Bounds.Position.Clone(), first));
-                            this.OnCollision.Trigger(first, second);
+                    for (var j = 0; j < candidates.length; j++) {
+                        // If we're colliding with someone else
+                        if (collidable._id !== candidates[j]._id && collidable.IsCollidingWith(candidates[j])) {
+                            colliding.push([collidable, candidates[j]]);
                         }
+                    }
+                }
+
+                // Dispatch collision events
+                for (var i = 0; i < colliding.length; i++) {
+                    hash = this.HashIds(colliding[i][0], colliding[i][1]);
+
+                    if (!cacheMap[hash]) {
+                        cacheMap[hash] = true;
+
+                        colliding[i][0].Collided(new Assets.CollisionData(colliding[i][1]));
+                        colliding[i][1].Collided(new Assets.CollisionData(colliding[i][0]));
+
+                        this.OnCollision.Trigger(colliding[i][0], colliding[i][1]);
                     }
                 }
             }
         }
+
+        private HashIds(c1: Collidable, c2: Collidable): string {
+            return Math.min(c1._id, c2._id).toString() + Math.max(c2._id, c1._id).toString();
+        }
+
     }
 
 }
@@ -2160,300 +3043,6 @@ module EndGate.Graphics.Abstractions {
             else {
                 throw new Error("Cannot dispose graphic more than once.");
             }
-        }
-    }
-
-}
-/* MinMax.ts */
-module EndGate._ {
-
-    export class MinMax {
-        public Min: number;
-        public Max: number;
-
-        constructor(min: number, max: number) {
-            this.Min = min;
-            this.Max = max;
-        }
-    }
-
-}
-/* Vector2dHelpers.ts */
-
-
-
-module EndGate._ {
-
-    export class Vector2dHelpers {
-        public static GetMinMaxProjections(axis: Vector2d, vertices: Vector2d[]): MinMax
-        {
-            var min: number = vertices[0].ProjectOnto(axis).Dot(axis);
-            var max: number = min;
-
-            for (var i: number = 1; i < vertices.length; i++)
-            {
-                var vertex: Vector2d = vertices[i];
-                var value: number = vertex.ProjectOnto(axis).Dot(axis);
-
-                if (value < min) {
-                    min = value;
-                }
-                else if (value > max) {
-                    max = value;
-                }
-            }
-
-            return new MinMax(min, max);
-        }
-    }
-
-}
-/* BoundingCircle.ts */
-
-
-
-
-module EndGate.Bounds {
-
-    /**
-    * Defines a circle that can be used to detect intersections.
-    */
-    export class BoundingCircle extends Abstractions.Bounds2d implements _.ITyped {
-        public _type: string = "BoundingCircle";
-        public _boundsType: string = "BoundingCircle";
-
-        /**
-        * Gets or sets the Radius of the circle.
-        */
-        public Radius: number;
-
-        /**
-        * Creates a new instance of BoundingCircle.
-        * @param position Initial Position of the BoundingCircle.
-        * @param radius Initial Radius of the BoundingCircle.
-        */
-        constructor(position: Vector2d, radius: number) {
-            super(position);
-
-            this.Radius = radius;
-        }
-
-        /**
-        * Scales the radius of the BoundingCircle.
-        * @param scale Value to multiply the radius by.
-        */
-        public Scale(scale: number): void {
-            // This is an overloaded version of Bounds2d Scale but we don't care
-            // about the second parameter within a BoundingCircle
-            this.Radius *= scale;
-        }
-
-        /**
-        * Calculates the area of the BoundingCircle.
-        */
-        public Area(): number {
-            return Math.PI * this.Radius * this.Radius;
-        }
-
-        /**
-        * Calculates the circumference of the BoundingCircle.
-        */
-        public Circumference(): number {
-            return 2 * Math.PI * this.Radius;
-        }
-
-        /**
-        * Determines if the current BoundingCircle is intersecting the provided BoundingCircle.
-        * @param circle BoundingCircle to check intersection with.
-        */
-        public IntersectsCircle(circle: BoundingCircle): bool {
-            return this.Position.Distance(circle.Position).Length() < this.Radius + circle.Radius;
-        }
-
-        /**
-        * Determines if the current BoundingCircle is intersecting the provided BoundingRectangle.
-        * @param rectangle BoundingRectangle to check intersection with.
-        */
-        public IntersectsRectangle(rectangle: BoundingRectangle): bool {
-            var translated = (rectangle.Rotation === 0)
-                                  ? this.Position
-                                  : this.Position.RotateAround(rectangle.Position, -rectangle.Rotation);
-
-            var circleDistance = translated.Distance(rectangle.Position);
-
-            if (circleDistance.X > (rectangle.Size.HalfWidth + this.Radius)) { return false; }
-            if (circleDistance.Y > (rectangle.Size.HalfHeight + this.Radius)) { return false; }
-
-            if (circleDistance.X <= (rectangle.Size.HalfWidth)) { return true; }
-            if (circleDistance.Y <= (rectangle.Size.HalfHeight)) { return true; }
-
-            var cornerDistance_sq = Math.pow(circleDistance.X - rectangle.Size.HalfWidth, 2) + Math.pow(circleDistance.Y - rectangle.Size.HalfHeight, 2);
-
-            return (cornerDistance_sq <= (this.Radius * this.Radius));
-        }
-
-        /**
-        * Determines if the current BoundingCircle contains the provided Vector2d.
-        * @param point A point.
-        */
-        public ContainsPoint(point: Vector2d): bool {
-            return this.Position.Distance(point).Magnitude() < this.Radius;
-        }
-    }
-
-}
-/* BoundingRectangle.ts */
-
-
-
-
-
-module EndGate.Bounds {
-
-    /**
-    * Defines a rectangle that can be used to detect intersections.
-    */
-    export class BoundingRectangle extends Abstractions.Bounds2d implements _.ITyped {
-        public _type: string = "BoundingRectangle";
-        public _boundsType: string = "BoundingRectangle";
-
-        /**
-        * Gets or sets the Size of the rectangle.
-        */
-        public Size: Size2d;
-
-        /**
-        * Creates a new instance of BoundingRectangle.
-        * @param position Initial Position of the BoundingRectangle.
-        * @param size Initial Size of the BoundingRectangle.
-        */
-        constructor(position: Vector2d, size: Size2d) {
-            super(position);
-            this.Size = size;
-        }
-
-        /**
-        * Scales the width and height of the BoundingRectangle.
-        * @param x Value to multiply the width by.
-        * @param y Value to multiply the height by.
-        */
-        public Scale(x: number, y: number): void {
-            this.Size.Width *= x;
-            this.Size.Height *= y;
-        }        
-
-        /** 
-        * Gets the top left corner of the BoundingRectangle.
-        */
-        public get TopLeft(): Vector2d {
-            if (this.Rotation === 0) {
-                return new Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);
-            }
-
-            return new Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight).RotateAround(this.Position, this.Rotation);
-        }
-
-        /** 
-        * Gets the top right corner of the BoundingRectangle.
-        */
-        public get TopRight(): Vector2d {
-            if (this.Rotation === 0) {
-                return new Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);
-            }
-
-            return new Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight).RotateAround(this.Position, this.Rotation);
-        }
-
-        /** 
-        * Gets the bottom left corner of the BoundingRectangle.
-        */
-        public get BotLeft(): Vector2d {
-            if (this.Rotation === 0) {
-                return new Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);
-            }
-
-            return new Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight).RotateAround(this.Position, this.Rotation);
-        }
-
-        /** 
-        * Gets the bottom right corner of the BoundingRectangle.
-        */
-        public get BotRight(): Vector2d {
-            if (this.Rotation === 0) {
-                return new Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);
-            }
-
-            return new Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight).RotateAround(this.Position, this.Rotation);
-        }
-
-        /**
-        * Returns a list of vertices that are the locations of each corner of the BoundingRectangle. Format: [TopLeft, TopRight, BotLeft, BotRight].
-        */
-        public Corners(): Vector2d[] {
-            return [this.TopLeft, this.TopRight, this.BotLeft, this.BotRight];
-        }
-
-        /**
-        * Determines if the current BoundingRectangle is intersecting the provided BoundingCircle.
-        * @param circle BoundingCircle to check intersection with.
-        */
-        public IntersectsCircle(circle: BoundingCircle): bool {
-            return circle.IntersectsRectangle(this);
-        }
-
-        /**
-        * Determines if the current BoundingRectangle is intersecting the provided BoundingRectangle.
-        * @param rectangle BoundingRectangle to check intersection with.
-        */
-        public IntersectsRectangle(rectangle: BoundingRectangle): bool {
-            if (this.Rotation === 0 && rectangle.Rotation === 0) {
-                var myTopLeft = this.TopLeft,
-                    myBotRight = this.BotRight,
-                    theirTopLeft = rectangle.TopLeft,
-                    theirBotRight = rectangle.BotRight;
-
-                return theirTopLeft.X <= myBotRight.X && theirBotRight.X >= myTopLeft.X && theirTopLeft.Y <= myBotRight.Y && theirBotRight.Y >= myTopLeft.Y;
-            }
-            else if (rectangle.Position.Distance(this.Position).Magnitude() <= rectangle.Size.Radius + this.Size.Radius) {// Check if we're somewhat close to the rectangle ect that we might be colliding with
-                var axisList: Vector2d[] = [this.TopRight.Subtract(this.TopLeft), this.TopRight.Subtract(this.BotRight), rectangle.TopLeft.Subtract(rectangle.BotLeft), rectangle.TopLeft.Subtract(rectangle.TopRight)];
-                var myVertices = this.Corners();
-                var theirVertices = rectangle.Corners();
-
-                for (var i: number = 0; i < axisList.length; i++) {
-                    var axi = axisList[i];
-                    var myProjections = EndGate._.Vector2dHelpers.GetMinMaxProjections(axi, myVertices);
-                    var theirProjections = EndGate._.Vector2dHelpers.GetMinMaxProjections(axi, theirVertices);
-
-                    // No collision
-                    if (theirProjections.Max < myProjections.Min || myProjections.Max < theirProjections.Min) {
-                        return false;
-                    }
-                }
-
-                return true;
-            }
-
-            return false;
-        }
-
-        /**
-        * Determines if the current BoundingRectangle contains the provided Vector2d.
-        * @param point A point.
-        */
-        public ContainsPoint(point: Vector2d): bool {
-            var savedRotation: number = this.Rotation;
-
-            if (this.Rotation !== 0) {
-                this.Rotation = 0;
-                point = point.RotateAround(this.Position, -savedRotation);
-            }
-
-            var myTopLeft = this.TopLeft,
-                myBotRight = this.BotRight;
-
-            this.Rotation = savedRotation;
-
-            return point.X <= myBotRight.X && point.X >= myTopLeft.X && point.Y <= myBotRight.Y && point.Y >= myTopLeft.Y;
         }
     }
 
@@ -3239,73 +3828,6 @@ module EndGate.Input {
 
         private GetMouseScrollDierction(event: any): Vector2d{
             return new Vector2d(-Math.max(-1, Math.min(1, event.wheelDeltaX)), -Math.max(-1, Math.min(1, event.wheelDeltaY)));
-        }
-    }
-
-}
-/* EventHandler.ts */
-
-
-
-module EndGate {
-
-    /**
-    * Defines an event handler object that can maintain bound functions and trigger them on demand.
-    */
-    export class EventHandler implements _.ITyped {
-        public _type: string = "Event";
-
-        private _actions: Array<Function>;
-        private _hasBindings: bool;
-
-        /**
-        * Creates a new instance of the EventHandler object.
-        */
-        constructor() {
-            this._actions = [];
-            this._hasBindings = false;
-        }
-
-        /**
-        * Binds the provided action to the EventHandler.  Trigger will execute all bound functions.
-        * @param action Function to execute on EventHandler Trigger.
-        */
-        public Bind(action: Function): void {
-            this._actions.push(action);
-            this._hasBindings = true;
-        }
-
-        /**
-        * Unbinds the provided action from the EventHandler.
-        * @param action Function to unbind.  The action will no longer be executed when the EventHandler gets Triggered.
-        */
-        public Unbind(action: Function): void {
-            var foo = this._actions[i];
-
-            for (var i = 0; i < this._actions.length; i++) {
-                if (this._actions[i] === action) {
-                    this._actions.splice(i, 1);
-
-                    this._hasBindings = this._actions.length > 0;
-                    return;
-                }
-            }
-        }
-
-        /**
-        * Determines if the EventHandler has active bindings.
-        */
-        public HasBindings(): bool {
-            return this._hasBindings;
-        }
-
-        /**
-        * Executes all bound functions and passes the provided args to each.
-        */
-        public Trigger(): void {
-            for (var i = 0; i < this._actions.length; i++) {
-                this._actions[i]();
-            }
         }
     }
 
@@ -4276,7 +4798,7 @@ module EndGate {
     */
     export class Game implements _.ITyped, IUpdateable, IDisposable {
         public _type: string = "Game";
-        
+
         /**
         * The games configuration.  Used to modify settings such as the game update rate.
         */
@@ -4316,7 +4838,10 @@ module EndGate {
         * @param gameCanvas The canvas to utilize as the game area.
         */
         constructor(gameCanvas: HTMLCanvasElement);
-        constructor(gameCanvas?:HTMLCanvasElement) {
+        constructor(gameCanvas?: HTMLCanvasElement) {
+            var initialQuadTreeSize: Size2d,
+                defaultMinQuadTreeSize: Size2d = Collision.CollisionConfiguration._DefaultMinQuadTreeNodeSize;
+
             this._gameTime = new GameTime();
             this._ID = Game._gameIds++;
 
@@ -4326,9 +4851,20 @@ module EndGate {
 
             this.Input = new Input.InputManager(this.Scene.DrawArea);
             this.Audio = new Sound.AudioManager();
-            this.CollisionManager = new Collision.CollisionManager();
-            this.Configuration = new GameConfiguration(GameRunnerInstance.Register(this))
+            
+            initialQuadTreeSize = this.Scene.Camera.Size;
+
+            if (initialQuadTreeSize.Width % defaultMinQuadTreeSize.Width !== 0) {
+                initialQuadTreeSize = new Size2d(initialQuadTreeSize.Width % defaultMinQuadTreeSize.Width + initialQuadTreeSize.Width);
+            }
+            
+            this.Configuration = new GameConfiguration(GameRunnerInstance.Register(this), initialQuadTreeSize)
+            this.CollisionManager = new Collision.CollisionManager(this.Configuration.CollisionConfiguration);
             this.Map = new Map.MapManager(this.Scene);
+
+            this.Configuration.CollisionConfiguration._OnChange.Bind(() => {
+                this.CollisionManager = new Collision.CollisionManager(this.Configuration.CollisionConfiguration);
+            });
         }
 
         public _PrepareUpdate(): void {
@@ -4360,8 +4896,7 @@ module EndGate {
         /**
         * Removes game canvas and disposes all tracked objects.
         */
-        public Dispose()
-        {
+        public Dispose(): void {
             this.Scene.Dispose();
             this.Map.Dispose();
             GameRunnerInstance.Unregister(this);

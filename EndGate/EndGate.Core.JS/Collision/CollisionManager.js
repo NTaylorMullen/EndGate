@@ -2,6 +2,8 @@ var EndGate;
 (function (EndGate) {
     /// <reference path="../Interfaces/IUpdateable.ts" />
     /// <reference path="../Interfaces/ITyped.ts" />
+    /// <reference path="Assets/QuadTree.ts" />
+    /// <reference path="CollisionConfiguration.ts" />
     /// <reference path="Collidable.ts" />
     /// <reference path="CollisionData.ts" />
     /// <reference path="../Utilities/EventHandler2.ts" />
@@ -14,11 +16,12 @@ var EndGate;
             /**
             * Creates a new instance of CollisionManager.
             */
-            function CollisionManager() {
+            function CollisionManager(configuration) {
                 this._type = "CollisionManager";
                 this._collidables = [];
+                this._nonStaticCollidables = [];
+                this._quadTree = new Collision.Assets._.QuadTree(configuration);
                 this._enabled = false;
-
                 this._onCollision = new EndGate.EventHandler2();
             }
             Object.defineProperty(CollisionManager.prototype, "OnCollision", {
@@ -32,12 +35,8 @@ var EndGate;
                 configurable: true
             });
 
-            /**
-            * Monitors the provided collidable and will trigger its Collided function and OnCollision event whenever a collision occurs with it and another Collidable.
-            * If the provided collidable gets disposed it will automatically become unmonitored.
-            * @param obj Collidable to monitor.
-            */
-            CollisionManager.prototype.Monitor = function (obj) {
+            CollisionManager.prototype.Monitor = function (obj, staticPosition) {
+                if (typeof staticPosition === "undefined") { staticPosition = false; }
                 var _this = this;
                 this._enabled = true;
 
@@ -46,6 +45,12 @@ var EndGate;
                 });
 
                 this._collidables.push(obj);
+
+                if (!staticPosition) {
+                    this._nonStaticCollidables.push(obj);
+                }
+
+                this._quadTree.Insert(obj);
             };
 
             /**
@@ -54,12 +59,19 @@ var EndGate;
             * @param obj Collidable to unmonitor.
             */
             CollisionManager.prototype.Unmonitor = function (obj) {
-                for (var i = 0; i < this._collidables.length; i++) {
-                    if (this._collidables[i]._id === obj._id) {
-                        this._collidables.splice(i, 1);
-                        break;
-                    }
+                var index = this._collidables.indexOf(obj);
+
+                if (index >= 0) {
+                    this._collidables.splice(index, 1);
                 }
+
+                index = this._nonStaticCollidables.indexOf(obj);
+
+                if (index >= 0) {
+                    this._nonStaticCollidables.splice(index, 1);
+                }
+
+                this._quadTree.Remove(obj);
             };
 
             /**
@@ -67,23 +79,40 @@ var EndGate;
             * @param gameTime The current game time object.
             */
             CollisionManager.prototype.Update = function (gameTime) {
-                var first, second;
+                var collidable, hash, candidates, cacheMap = {}, colliding = new Array();
 
                 if (this._enabled) {
-                    for (var i = 0; i < this._collidables.length; i++) {
-                        first = this._collidables[i];
+                    // Update the structure of the quad tree, this accounts for moving objects
+                    this._quadTree.Update(gameTime);
 
-                        for (var j = i + 1; j < this._collidables.length; j++) {
-                            second = this._collidables[j];
+                    for (var i = 0; i < this._nonStaticCollidables.length; i++) {
+                        collidable = this._nonStaticCollidables[i];
+                        candidates = this._quadTree.CollisionCandidates(collidable);
 
-                            if (first.IsCollidingWith(second)) {
-                                first.Collided(new Collision.Assets.CollisionData(first.Bounds.Position.Clone(), second));
-                                second.Collided(new Collision.Assets.CollisionData(second.Bounds.Position.Clone(), first));
-                                this.OnCollision.Trigger(first, second);
+                        for (var j = 0; j < candidates.length; j++) {
+                            if (collidable._id !== candidates[j]._id && collidable.IsCollidingWith(candidates[j])) {
+                                colliding.push([collidable, candidates[j]]);
                             }
                         }
                     }
+
+                    for (var i = 0; i < colliding.length; i++) {
+                        hash = this.HashIds(colliding[i][0], colliding[i][1]);
+
+                        if (!cacheMap[hash]) {
+                            cacheMap[hash] = true;
+
+                            colliding[i][0].Collided(new Collision.Assets.CollisionData(colliding[i][1]));
+                            colliding[i][1].Collided(new Collision.Assets.CollisionData(colliding[i][0]));
+
+                            this.OnCollision.Trigger(colliding[i][0], colliding[i][1]);
+                        }
+                    }
                 }
+            };
+
+            CollisionManager.prototype.HashIds = function (c1, c2) {
+                return Math.min(c1._id, c2._id).toString() + Math.max(c2._id, c1._id).toString();
             };
             return CollisionManager;
         })();

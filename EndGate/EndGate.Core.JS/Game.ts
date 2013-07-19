@@ -17,7 +17,7 @@ module EndGate {
     */
     export class Game implements _.ITyped, IUpdateable, IDisposable {
         public _type: string = "Game";
-        
+
         /**
         * The games configuration.  Used to modify settings such as the game update rate.
         */
@@ -57,7 +57,10 @@ module EndGate {
         * @param gameCanvas The canvas to utilize as the game area.
         */
         constructor(gameCanvas: HTMLCanvasElement);
-        constructor(gameCanvas?:HTMLCanvasElement) {
+        constructor(gameCanvas?: HTMLCanvasElement) {
+            var initialQuadTreeSize: Size2d,
+                defaultMinQuadTreeSize: Size2d = Collision.CollisionConfiguration._DefaultMinQuadTreeNodeSize;
+
             this._gameTime = new GameTime();
             this._ID = Game._gameIds++;
 
@@ -67,9 +70,20 @@ module EndGate {
 
             this.Input = new Input.InputManager(this.Scene.DrawArea);
             this.Audio = new Sound.AudioManager();
-            this.CollisionManager = new Collision.CollisionManager();
-            this.Configuration = new GameConfiguration(GameRunnerInstance.Register(this))
+            
+            initialQuadTreeSize = this.Scene.Camera.Size;
+
+            if (initialQuadTreeSize.Width % defaultMinQuadTreeSize.Width !== 0) {
+                initialQuadTreeSize = new Size2d(initialQuadTreeSize.Width % defaultMinQuadTreeSize.Width + initialQuadTreeSize.Width);
+            }
+            
+            this.Configuration = new GameConfiguration(GameRunnerInstance.Register(this), initialQuadTreeSize)
+            this.CollisionManager = new Collision.CollisionManager(this.Configuration.CollisionConfiguration);
             this.Map = new Map.MapManager(this.Scene);
+
+            this.Configuration.CollisionConfiguration._OnChange.Bind(() => {
+                this.CollisionManager = new Collision.CollisionManager(this.Configuration.CollisionConfiguration);
+            });
         }
 
         public _PrepareUpdate(): void {
@@ -101,8 +115,7 @@ module EndGate {
         /**
         * Removes game canvas and disposes all tracked objects.
         */
-        public Dispose()
-        {
+        public Dispose(): void {
             this.Scene.Dispose();
             this.Map.Dispose();
             GameRunnerInstance.Unregister(this);

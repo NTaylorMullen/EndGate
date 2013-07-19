@@ -10,7 +10,7 @@ module EndGate.Collision {
     /**
     * Defines a collidable object that can be used to detect collisions with other objects.
     */
-    export class Collidable implements IDisposable, _.ITyped {
+    export class Collidable implements IDisposable, EndGate._.ITyped {
         public _type: string = "Collidable";
         public _id: number;
 

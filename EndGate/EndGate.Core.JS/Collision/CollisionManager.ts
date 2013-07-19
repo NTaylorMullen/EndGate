@@ -1,5 +1,7 @@
 /// <reference path="../Interfaces/IUpdateable.ts" />
 /// <reference path="../Interfaces/ITyped.ts" />
+/// <reference path="Assets/QuadTree.ts" />
+/// <reference path="CollisionConfiguration.ts" />
 /// <reference path="Collidable.ts" />
 /// <reference path="CollisionData.ts" />
 /// <reference path="../Utilities/EventHandler2.ts" />
@@ -10,19 +12,22 @@ module EndGate.Collision {
     /**
     * Defines a manager that will check for collisions between objects that it is monitoring.
     */
-    export class CollisionManager implements IUpdateable, _.ITyped {
+    export class CollisionManager implements IUpdateable, EndGate._.ITyped {
         public _type: string = "CollisionManager";
         private _collidables: Collidable[];
+        private _nonStaticCollidables: Collidable[];
+        public _quadTree: Assets._.QuadTree;
         private _onCollision: EventHandler2<Collidable, Collidable>;
         private _enabled: bool;
 
         /**
         * Creates a new instance of CollisionManager.
         */
-        constructor() {
+        constructor(configuration: CollisionConfiguration) {
             this._collidables = [];
+            this._nonStaticCollidables = [];
+            this._quadTree = new Assets._.QuadTree(configuration);
             this._enabled = false;
-
             this._onCollision = new EventHandler2<Collidable, Collidable>();
         }
 
@@ -38,7 +43,16 @@ module EndGate.Collision {
         * If the provided collidable gets disposed it will automatically become unmonitored.
         * @param obj Collidable to monitor.
         */
-        public Monitor(obj: Collidable): void {
+        public Monitor(obj: Collidable): void;
+        /**
+        * Monitors the provided collidable and will trigger its Collided function and OnCollision event whenever a collision occurs with it and another Collidable.
+        * If the provided collidable gets disposed it will automatically become unmonitored.
+        * Note: staticPosition'd collidable's will not collide with each other.
+        * @param obj Collidable to monitor.
+        * @param staticPosition Whether the Collidable will be stationary.  This value defaults to false.
+        */
+        public Monitor(obj: Collidable, staticPosition: boolean): void;
+        public Monitor(obj: Collidable, staticPosition: boolean = false): void {
             this._enabled = true;
 
             obj.OnDisposed.Bind(() => {
@@ -46,6 +60,12 @@ module EndGate.Collision {
             });
 
             this._collidables.push(obj);
+
+            if (!staticPosition) {
+                this._nonStaticCollidables.push(obj);
+            }
+
+            this._quadTree.Insert(obj);
         }
 
         /**
@@ -54,12 +74,19 @@ module EndGate.Collision {
         * @param obj Collidable to unmonitor.
         */
         public Unmonitor(obj: Collidable): void {
-            for (var i = 0; i < this._collidables.length; i++) {
-                if (this._collidables[i]._id === obj._id) {
-                    this._collidables.splice(i, 1);
-                    break;
-                }
+            var index = this._collidables.indexOf(obj);
+            
+            if (index >= 0) {
+                this._collidables.splice(index, 1);
             }
+
+            index = this._nonStaticCollidables.indexOf(obj);
+
+            if (index >= 0) {
+                this._nonStaticCollidables.splice(index, 1);
+            }
+
+            this._quadTree.Remove(obj);
         }
 
         /**
@@ -67,25 +94,49 @@ module EndGate.Collision {
         * @param gameTime The current game time object.
         */
         public Update(gameTime: GameTime): void {
-            var first: Collidable,
-                second: Collidable;
+            var collidable: Collidable,
+                hash: string,
+                candidates: Array<Collidable>,
+                cacheMap: { [ids: string]: boolean; } = {},
+                colliding: Array<Array<Collidable>> = new Array<Array<Collidable>>();
 
             if (this._enabled) {
-                for (var i = 0; i < this._collidables.length; i++) {
-                    first = this._collidables[i];
+                // Update the structure of the quad tree, this accounts for moving objects
+                this._quadTree.Update(gameTime);
 
-                    for (var j = i + 1; j < this._collidables.length; j++) {
-                        second = this._collidables[j];
+                // Determine colliding objects
+                for (var i = 0; i < this._nonStaticCollidables.length; i++) {
+                    collidable = this._nonStaticCollidables[i];
+                    candidates = this._quadTree.CollisionCandidates(collidable);
 
-                        if (first.IsCollidingWith(second)) {
-                            first.Collided(new Assets.CollisionData(first.Bounds.Position.Clone(), second));
-                            second.Collided(new Assets.CollisionData(second.Bounds.Position.Clone(), first));
-                            this.OnCollision.Trigger(first, second);
+                    for (var j = 0; j < candidates.length; j++) {
+                        // If we're colliding with someone else
+                        if (collidable._id !== candidates[j]._id && collidable.IsCollidingWith(candidates[j])) {
+                            colliding.push([collidable, candidates[j]]);
                         }
+                    }
+                }
+
+                // Dispatch collision events
+                for (var i = 0; i < colliding.length; i++) {
+                    hash = this.HashIds(colliding[i][0], colliding[i][1]);
+
+                    if (!cacheMap[hash]) {
+                        cacheMap[hash] = true;
+
+                        colliding[i][0].Collided(new Assets.CollisionData(colliding[i][1]));
+                        colliding[i][1].Collided(new Assets.CollisionData(colliding[i][0]));
+
+                        this.OnCollision.Trigger(colliding[i][0], colliding[i][1]);
                     }
                 }
             }
         }
+
+        private HashIds(c1: Collidable, c2: Collidable): string {
+            return Math.min(c1._id, c2._id).toString() + Math.max(c2._id, c1._id).toString();
+        }
+
     }
 
 }

@@ -659,6 +659,16 @@ declare module EndGate.Bounds {
         * @param point A point.
         */
         public ContainsPoint(point: EndGate.Vector2d): boolean;
+        /**
+        * Determines if the current BoundingCircle completely contains the provided BoundingCircle.
+        * @param point A circle to check containment on.
+        */
+        public ContainsCircle(circle: BoundingCircle): boolean;
+        /**
+        * Determines if the current BoundingCircle completely contains the provided BoundingRectangle.
+        * @param point A rectangle to check containment on.
+        */
+        public ContainsRectangle(rectangle: Bounds.BoundingRectangle): boolean;
     }
 }
 declare module EndGate.Bounds {
@@ -719,6 +729,16 @@ declare module EndGate.Bounds {
         * @param point A point.
         */
         public ContainsPoint(point: EndGate.Vector2d): boolean;
+        /**
+        * Determines if the current BoundingRectangle completely contains the provided BoundingCircle.
+        * @param point A circle to check containment on.
+        */
+        public ContainsCircle(circle: Bounds.BoundingCircle): boolean;
+        /**
+        * Determines if the current BoundingCircle completely contains the provided BoundingRectangle.
+        * @param point A rectangle to check containment on.
+        */
+        public ContainsRectangle(rectangle: BoundingRectangle): boolean;
     }
 }
 declare module EndGate.Bounds.Abstractions {
@@ -758,20 +778,30 @@ declare module EndGate.Bounds.Abstractions {
         */
         public ContainsPoint(point: EndGate.Vector2d): boolean;
         /**
+        * Abstract: Determines if the current bounded object completely contains the provided BoundingCircle.
+        * @param point A circle to check containment on.
+        */
+        public ContainsCircle(circle: Bounds.BoundingCircle): boolean;
+        /**
+        * Abstract: Determines if the current bounded object completely contains the provided BoundingRectangle.
+        * @param point A rectangle to check containment on.
+        */
+        public ContainsRectangle(rectangle: Bounds.BoundingRectangle): boolean;
+        /**
+        * Abstract: Determines if the current bounded object contains the provided Vector2d.
+        * @param point A point to check containment on.
+        */
+        public Contains(point: EndGate.Vector2d): boolean;
+        /**
+        * Abstract: Determines if the current bounded object completely contains another bounded object.
+        * @param point A bounded object to check containment on.
+        */
+        public Contains(obj: Bounds2d): boolean;
+        /**
         * Determines if the current bounded object intersects another bounded object.
         * @param obj Bounding object to check collision with.
         */
         public Intersects(obj: Bounds2d): boolean;
-        /**
-        * Determines if the current bounded object is intersecting the provided BoundingCircle.
-        * @param circle BoundingCircle to check intersection with.
-        */
-        public Intersects(circle: Bounds.BoundingCircle): boolean;
-        /**
-        * Determines if the current bounded object is intersecting the provided BoundingRectangle.
-        * @param rectangle BoundingRectangle to check intersection with.
-        */
-        public Intersects(rectangle: Bounds.BoundingRectangle): boolean;
         /**
         * Abstract: Determines if the current bounded object is intersecting the provided BoundingCircle.
         * @param circle BoundingCircle to check intersection with.
@@ -866,21 +896,78 @@ declare module EndGate._.Loopers {
 }
 declare module EndGate {
     /**
+    * Defines an event handler object that can maintain bound functions and trigger them on demand.
+    */
+    class EventHandler implements EndGate._.ITyped {
+        public _type: string;
+        private _actions;
+        private _hasBindings;
+        /**
+        * Creates a new instance of the EventHandler object.
+        */
+        constructor();
+        /**
+        * Binds the provided action to the EventHandler.  Trigger will execute all bound functions.
+        * @param action Function to execute on EventHandler Trigger.
+        */
+        public Bind(action: Function): void;
+        /**
+        * Unbinds the provided action from the EventHandler.
+        * @param action Function to unbind.  The action will no longer be executed when the EventHandler gets Triggered.
+        */
+        public Unbind(action: Function): void;
+        /**
+        * Determines if the EventHandler has active bindings.
+        */
+        public HasBindings(): boolean;
+        /**
+        * Executes all bound functions and passes the provided args to each.
+        */
+        public Trigger(): void;
+    }
+}
+declare module EndGate.Collision {
+    /**
+    * Defines a CollisionConfiguration object that is used to configure and optimize the collision manager.
+    */
+    class CollisionConfiguration {
+        static _DefaultMinQuadTreeNodeSize: EndGate.Size2d;
+        private _minQuadTreeNodeSize;
+        private _initialQuadTreeSize;
+        constructor(initialQuadTreeSize: EndGate.Size2d);
+        public _OnChange: EndGate.EventHandler;
+        /**
+        * Gets or sets the minimum quad tree node size.  For best performance this value should be equivalent to the smallest collidable object that will be monitored by the CollisionManager.  Changing this value re-creates the collision manager.  Values must represent a square.
+        */
+        public MinQuadTreeNodeSize : EndGate.Size2d;
+        /**
+        * Gets or sets the initial quad tree size.  The quad tree used for collision detection will dynamically grow in size if items drift outside of its boundaries.  If this property is set it will re-instantiate a new quad tree.  Values must be divisible by the MinQuadTreeNodeSize and must represent a square.
+        */
+        public InitialQuadTreeSize : EndGate.Size2d;
+    }
+}
+declare module EndGate {
+    /**
     * Defines a GameConfiguration object that is used to represent the current state of a Game object.
     */
     class GameConfiguration {
         private _defaultUpdateRate;
         private _updateRateSetter;
         private _updateRate;
+        private _collisionConfiguration;
         /**
         * Creates a new instance of the GameConfiguration object.
         * @param updateRateSetter A function that updates the rate of "Update" execution.
         */
-        constructor(updateRateSetter: (updateRate: number) => void);
+        constructor(updateRateSetter: (updateRate: number) => void, initialQuadTreeSize: EndGate.Size2d);
         /**
         * Gets or sets the UpdateRate of the game.  Update rates are represented as X many updates per second.
         */
         public UpdateRate : number;
+        /**
+        * Gets the CollisionConfiguration of the game.  These configurations are used to optimize the collision management performance.
+        */
+        public CollisionConfiguration : EndGate.Collision.CollisionConfiguration;
     }
 }
 declare module EndGate {
@@ -922,19 +1009,14 @@ declare module EndGate.Collision.Assets {
     */
     class CollisionData {
         /**
-        * Where the collision occurred.
-        */
-        public At: EndGate.Vector2d;
-        /**
         * Who collided with you.
         */
         public With: Collision.Collidable;
         /**
         * Creates a new instance of the CollisionData object.
-        * @param at Initial value of the At component of CollisionData.
         * @param w Initial value of the With component of CollisionData.
         */
-        constructor(at: EndGate.Vector2d, w: Collision.Collidable);
+        constructor(w: Collision.Collidable);
     }
 }
 declare module EndGate.Collision {
@@ -981,6 +1063,50 @@ declare module EndGate.Collision {
         public Dispose(): void;
     }
 }
+declare module EndGate.Collision.Assets._ {
+    class QuadTreeNode extends Collision.Collidable {
+        public Contents: Collision.Collidable[];
+        public Parent: QuadTreeNode;
+        private _minNodeSize;
+        private _children;
+        private _partitioned;
+        constructor(position: EndGate.Vector2d, size: EndGate.Size2d, minNodeSize: EndGate.Size2d, parent: QuadTreeNode);
+        public Children : QuadTreeNode[];
+        public TopLeftChild : QuadTreeNode;
+        public TopRightChild : QuadTreeNode;
+        public BotLeftChild : QuadTreeNode;
+        public BotRightChild : QuadTreeNode;
+        public IsPartitioned(): boolean;
+        public Partition(): void;
+        public Insert(obj: Collision.Collidable): QuadTreeNode;
+        public ReverseInsert(obj: Collision.Collidable): QuadTreeNode;
+        public Query(queryArea: EndGate.Bounds.BoundingRectangle): Collision.Collidable[];
+        public Remove(obj: Collision.Collidable): void;
+        public GetSubTreeContents(): Collision.Collidable[];
+    }
+}
+declare module EndGate.Collision.Assets._ {
+    interface ICollidableMap {
+        Node: _.QuadTreeNode;
+        Collidable: Collision.Collidable;
+        StaticPosition: boolean;
+    }
+    class QuadTree implements EndGate.IDisposable, EndGate.IUpdateable {
+        private _disposed;
+        private _minNodeSize;
+        private _root;
+        private _collidableMap;
+        private _updateableCollidableMap;
+        constructor(configuration: Collision.CollisionConfiguration);
+        public Insert(obj: Collision.Collidable, staticPosition?: boolean): void;
+        public Remove(obj: Collision.Collidable): void;
+        public CollisionCandidates(obj: Collision.Collidable): Collision.Collidable[];
+        public Query(queryArea: EndGate.Bounds.BoundingRectangle): Collision.Collidable[];
+        public Expand(cause: Collision.Collidable): void;
+        public Update(gameTime: EndGate.GameTime): void;
+        public Dispose(): void;
+    }
+}
 declare module EndGate {
     /**
     * Defines a type constrained event handler object that can maintain bound functions which take in a value T and U and trigger them on demand.
@@ -1022,12 +1148,14 @@ declare module EndGate.Collision {
     class CollisionManager implements EndGate.IUpdateable, EndGate._.ITyped {
         public _type: string;
         private _collidables;
+        private _nonStaticCollidables;
+        public _quadTree: Collision.Assets._.QuadTree;
         private _onCollision;
         private _enabled;
         /**
         * Creates a new instance of CollisionManager.
         */
-        constructor();
+        constructor(configuration: Collision.CollisionConfiguration);
         /**
         * Gets an event that is triggered when a collision happens among two of the monitored objects.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
@@ -1039,6 +1167,14 @@ declare module EndGate.Collision {
         */
         public Monitor(obj: Collision.Collidable): void;
         /**
+        * Monitors the provided collidable and will trigger its Collided function and OnCollision event whenever a collision occurs with it and another Collidable.
+        * If the provided collidable gets disposed it will automatically become unmonitored.
+        * Note: staticPosition'd collidable's will not collide with each other.
+        * @param obj Collidable to monitor.
+        * @param staticPosition Whether the Collidable will be stationary.  This value defaults to false.
+        */
+        public Monitor(obj: Collision.Collidable, staticPosition: boolean): void;
+        /**
         * Unmonitors the provided collidable.  The Collided function and OnCollision event will no longer be triggered when an actual collision may have occurred.
         * Disposing a monitored collidable will automatically be unmonitored
         * @param obj Collidable to unmonitor.
@@ -1049,6 +1185,7 @@ declare module EndGate.Collision {
         * @param gameTime The current game time object.
         */
         public Update(gameTime: EndGate.GameTime): void;
+        private HashIds(c1, c2);
     }
 }
 declare module EndGate.Graphics.Assets._ {
@@ -1416,38 +1553,6 @@ declare module EndGate.Input {
         private GetMousePosition(event);
         private GetMouseButton(event);
         private GetMouseScrollDierction(event);
-    }
-}
-declare module EndGate {
-    /**
-    * Defines an event handler object that can maintain bound functions and trigger them on demand.
-    */
-    class EventHandler implements EndGate._.ITyped {
-        public _type: string;
-        private _actions;
-        private _hasBindings;
-        /**
-        * Creates a new instance of the EventHandler object.
-        */
-        constructor();
-        /**
-        * Binds the provided action to the EventHandler.  Trigger will execute all bound functions.
-        * @param action Function to execute on EventHandler Trigger.
-        */
-        public Bind(action: Function): void;
-        /**
-        * Unbinds the provided action from the EventHandler.
-        * @param action Function to unbind.  The action will no longer be executed when the EventHandler gets Triggered.
-        */
-        public Unbind(action: Function): void;
-        /**
-        * Determines if the EventHandler has active bindings.
-        */
-        public HasBindings(): boolean;
-        /**
-        * Executes all bound functions and passes the provided args to each.
-        */
-        public Trigger(): void;
     }
 }
 declare module EndGate._.Utilities {

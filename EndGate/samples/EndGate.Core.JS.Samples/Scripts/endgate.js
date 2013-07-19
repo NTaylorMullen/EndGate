@@ -521,13 +521,33 @@ var EndGate;
                     throw new Error("This method is abstract!");
                 };
 
+                Bounds2d.prototype.ContainsCircle = function (circle) {
+                    throw new Error("This method is abstract!");
+                };
+
+                Bounds2d.prototype.ContainsRectangle = function (rectangle) {
+                    throw new Error("This method is abstract!");
+                };
+
+                Bounds2d.prototype.Contains = function (obj) {
+                    if (obj._boundsType === "BoundingCircle") {
+                        return this.ContainsCircle(obj);
+                    } else if (obj._boundsType === "BoundingRectangle") {
+                        return this.ContainsRectangle(obj);
+                    } else if (obj._type === "Vector2d") {
+                        return this.ContainsPoint(obj);
+                    } else {
+                        throw new Error("Cannot try and check contains with an unidentifiable object, must be a Vector2d, BoundingCircle or BoundingRectangle.");
+                    }
+                };
+
                 Bounds2d.prototype.Intersects = function (obj) {
                     if (obj._boundsType === "BoundingCircle") {
                         return this.IntersectsCircle(obj);
                     } else if (obj._boundsType === "BoundingRectangle") {
                         return this.IntersectsRectangle(obj);
                     } else {
-                        throw new Error("Cannot intersect with unidentifiable object, must be BoundingCircle or BoundingRectangle");
+                        throw new Error("Cannot intersect with unidentifiable object, must be BoundingCircle or BoundingRectangle.");
                     }
                 };
 
@@ -838,11 +858,102 @@ var GameRunnerInstance = new EndGate._.GameRunner();
 
 var EndGate;
 (function (EndGate) {
+    var EventHandler = (function () {
+        function EventHandler() {
+            this._type = "Event";
+            this._actions = [];
+            this._hasBindings = false;
+        }
+        EventHandler.prototype.Bind = function (action) {
+            this._actions.push(action);
+            this._hasBindings = true;
+        };
+
+        EventHandler.prototype.Unbind = function (action) {
+            var foo = this._actions[i];
+
+            for (var i = 0; i < this._actions.length; i++) {
+                if (this._actions[i] === action) {
+                    this._actions.splice(i, 1);
+
+                    this._hasBindings = this._actions.length > 0;
+                    return;
+                }
+            }
+        };
+
+        EventHandler.prototype.HasBindings = function () {
+            return this._hasBindings;
+        };
+
+        EventHandler.prototype.Trigger = function () {
+            for (var i = 0; i < this._actions.length; i++) {
+                this._actions[i]();
+            }
+        };
+        return EventHandler;
+    })();
+    EndGate.EventHandler = EventHandler;
+})(EndGate || (EndGate = {}));
+
+var EndGate;
+(function (EndGate) {
+    (function (Collision) {
+        var CollisionConfiguration = (function () {
+            function CollisionConfiguration(initialQuadTreeSize) {
+                this._initialQuadTreeSize = initialQuadTreeSize;
+                this._minQuadTreeNodeSize = CollisionConfiguration._DefaultMinQuadTreeNodeSize;
+                this._OnChange = new EndGate.EventHandler();
+            }
+            Object.defineProperty(CollisionConfiguration.prototype, "MinQuadTreeNodeSize", {
+                get: function () {
+                    return this._minQuadTreeNodeSize.Clone();
+                },
+                set: function (newSize) {
+                    if (newSize.Width !== newSize.Height) {
+                        throw new Error("MinQuadTreeNodeSize must be a square.  Width and height must be identical.");
+                    }
+
+                    this._minQuadTreeNodeSize = newSize;
+                    this._OnChange.Trigger();
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(CollisionConfiguration.prototype, "InitialQuadTreeSize", {
+                get: function () {
+                    return this._initialQuadTreeSize;
+                },
+                set: function (newSize) {
+                    if (newSize.Width !== newSize.Height) {
+                        throw new Error("InitialQuadTreeSize must be a square.  Width and height must be identical.");
+                    } else if (newSize.Width % this._minQuadTreeNodeSize.Width !== 0) {
+                        throw new Error("InitialQuadTreeSize must be divisible by the MinQuadTreeNodeSize.");
+                    }
+
+                    this._initialQuadTreeSize = newSize;
+                    this._OnChange.Trigger();
+                },
+                enumerable: true,
+                configurable: true
+            });
+            CollisionConfiguration._DefaultMinQuadTreeNodeSize = new EndGate.Size2d(32);
+            return CollisionConfiguration;
+        })();
+        Collision.CollisionConfiguration = CollisionConfiguration;
+    })(EndGate.Collision || (EndGate.Collision = {}));
+    var Collision = EndGate.Collision;
+})(EndGate || (EndGate = {}));
+
+var EndGate;
+(function (EndGate) {
     var GameConfiguration = (function () {
-        function GameConfiguration(updateRateSetter) {
+        function GameConfiguration(updateRateSetter, initialQuadTreeSize) {
             this._defaultUpdateRate = 40;
             this._updateRateSetter = updateRateSetter;
             this._updateRate = this._defaultUpdateRate;
+            this._collisionConfiguration = new EndGate.Collision.CollisionConfiguration(initialQuadTreeSize);
         }
         Object.defineProperty(GameConfiguration.prototype, "UpdateRate", {
             get: function () {
@@ -855,9 +966,275 @@ var EndGate;
             enumerable: true,
             configurable: true
         });
+
+        Object.defineProperty(GameConfiguration.prototype, "CollisionConfiguration", {
+            get: function () {
+                return this._collisionConfiguration;
+            },
+            enumerable: true,
+            configurable: true
+        });
         return GameConfiguration;
     })();
     EndGate.GameConfiguration = GameConfiguration;
+})(EndGate || (EndGate = {}));
+
+var EndGate;
+(function (EndGate) {
+    (function (_) {
+        var MinMax = (function () {
+            function MinMax(min, max) {
+                this.Min = min;
+                this.Max = max;
+            }
+            return MinMax;
+        })();
+        _.MinMax = MinMax;
+    })(EndGate._ || (EndGate._ = {}));
+    var _ = EndGate._;
+})(EndGate || (EndGate = {}));
+
+var EndGate;
+(function (EndGate) {
+    (function (_) {
+        var Vector2dHelpers = (function () {
+            function Vector2dHelpers() {
+            }
+            Vector2dHelpers.GetMinMaxProjections = function (axis, vertices) {
+                var min = vertices[0].ProjectOnto(axis).Dot(axis);
+                var max = min;
+
+                for (var i = 1; i < vertices.length; i++) {
+                    var vertex = vertices[i];
+                    var value = vertex.ProjectOnto(axis).Dot(axis);
+
+                    if (value < min) {
+                        min = value;
+                    } else if (value > max) {
+                        max = value;
+                    }
+                }
+
+                return new _.MinMax(min, max);
+            };
+            return Vector2dHelpers;
+        })();
+        _.Vector2dHelpers = Vector2dHelpers;
+    })(EndGate._ || (EndGate._ = {}));
+    var _ = EndGate._;
+})(EndGate || (EndGate = {}));
+
+var EndGate;
+(function (EndGate) {
+    (function (Bounds) {
+        var BoundingCircle = (function (_super) {
+            __extends(BoundingCircle, _super);
+            function BoundingCircle(position, radius) {
+                _super.call(this, position);
+                this._type = "BoundingCircle";
+                this._boundsType = "BoundingCircle";
+
+                this.Radius = radius;
+            }
+            BoundingCircle.prototype.Scale = function (scale) {
+                this.Radius *= scale;
+            };
+
+            BoundingCircle.prototype.Area = function () {
+                return Math.PI * this.Radius * this.Radius;
+            };
+
+            BoundingCircle.prototype.Circumference = function () {
+                return 2 * Math.PI * this.Radius;
+            };
+
+            BoundingCircle.prototype.IntersectsCircle = function (circle) {
+                return this.Position.Distance(circle.Position).Length() < this.Radius + circle.Radius;
+            };
+
+            BoundingCircle.prototype.IntersectsRectangle = function (rectangle) {
+                var translated = (rectangle.Rotation === 0) ? this.Position : this.Position.RotateAround(rectangle.Position, -rectangle.Rotation);
+
+                var circleDistance = translated.Distance(rectangle.Position);
+
+                if (circleDistance.X > (rectangle.Size.HalfWidth + this.Radius)) {
+                    return false;
+                }
+                if (circleDistance.Y > (rectangle.Size.HalfHeight + this.Radius)) {
+                    return false;
+                }
+
+                if (circleDistance.X <= (rectangle.Size.HalfWidth)) {
+                    return true;
+                }
+                if (circleDistance.Y <= (rectangle.Size.HalfHeight)) {
+                    return true;
+                }
+
+                var cornerDistance_sq = Math.pow(circleDistance.X - rectangle.Size.HalfWidth, 2) + Math.pow(circleDistance.Y - rectangle.Size.HalfHeight, 2);
+
+                return (cornerDistance_sq <= (this.Radius * this.Radius));
+            };
+
+            BoundingCircle.prototype.ContainsPoint = function (point) {
+                return this.Position.Distance(point).Magnitude() < this.Radius;
+            };
+
+            BoundingCircle.prototype.ContainsCircle = function (circle) {
+                return circle.Position.Distance(this.Position).Length() + circle.Radius <= this.Radius;
+            };
+
+            BoundingCircle.prototype.ContainsRectangle = function (rectangle) {
+                var corners = rectangle.Corners();
+
+                for (var i = 0; i < corners.length; i++) {
+                    if (!this.ContainsPoint(corners[i])) {
+                        return false;
+                    }
+                }
+
+                return true;
+            };
+            return BoundingCircle;
+        })(Bounds.Abstractions.Bounds2d);
+        Bounds.BoundingCircle = BoundingCircle;
+    })(EndGate.Bounds || (EndGate.Bounds = {}));
+    var Bounds = EndGate.Bounds;
+})(EndGate || (EndGate = {}));
+
+var EndGate;
+(function (EndGate) {
+    (function (Bounds) {
+        var BoundingRectangle = (function (_super) {
+            __extends(BoundingRectangle, _super);
+            function BoundingRectangle(position, size) {
+                _super.call(this, position);
+                this._type = "BoundingRectangle";
+                this._boundsType = "BoundingRectangle";
+                this.Size = size;
+            }
+            BoundingRectangle.prototype.Scale = function (x, y) {
+                this.Size.Width *= x;
+                this.Size.Height *= y;
+            };
+
+            Object.defineProperty(BoundingRectangle.prototype, "TopLeft", {
+                get: function () {
+                    if (this.Rotation === 0) {
+                        return new EndGate.Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);
+                    }
+
+                    return new EndGate.Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight).RotateAround(this.Position, this.Rotation);
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(BoundingRectangle.prototype, "TopRight", {
+                get: function () {
+                    if (this.Rotation === 0) {
+                        return new EndGate.Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);
+                    }
+
+                    return new EndGate.Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight).RotateAround(this.Position, this.Rotation);
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(BoundingRectangle.prototype, "BotLeft", {
+                get: function () {
+                    if (this.Rotation === 0) {
+                        return new EndGate.Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);
+                    }
+
+                    return new EndGate.Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight).RotateAround(this.Position, this.Rotation);
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(BoundingRectangle.prototype, "BotRight", {
+                get: function () {
+                    if (this.Rotation === 0) {
+                        return new EndGate.Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);
+                    }
+
+                    return new EndGate.Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight).RotateAround(this.Position, this.Rotation);
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            BoundingRectangle.prototype.Corners = function () {
+                return [this.TopLeft, this.TopRight, this.BotLeft, this.BotRight];
+            };
+
+            BoundingRectangle.prototype.IntersectsCircle = function (circle) {
+                return circle.IntersectsRectangle(this);
+            };
+
+            BoundingRectangle.prototype.IntersectsRectangle = function (rectangle) {
+                if (this.Rotation === 0 && rectangle.Rotation === 0) {
+                    var myTopLeft = this.TopLeft, myBotRight = this.BotRight, theirTopLeft = rectangle.TopLeft, theirBotRight = rectangle.BotRight;
+
+                    return theirTopLeft.X <= myBotRight.X && theirBotRight.X >= myTopLeft.X && theirTopLeft.Y <= myBotRight.Y && theirBotRight.Y >= myTopLeft.Y;
+                } else if (rectangle.Position.Distance(this.Position).Magnitude() <= rectangle.Size.Radius + this.Size.Radius) {
+                    var axisList = [this.TopRight.Subtract(this.TopLeft), this.TopRight.Subtract(this.BotRight), rectangle.TopLeft.Subtract(rectangle.BotLeft), rectangle.TopLeft.Subtract(rectangle.TopRight)];
+                    var myVertices = this.Corners();
+                    var theirVertices = rectangle.Corners();
+
+                    for (var i = 0; i < axisList.length; i++) {
+                        var axi = axisList[i];
+                        var myProjections = EndGate._.Vector2dHelpers.GetMinMaxProjections(axi, myVertices);
+                        var theirProjections = EndGate._.Vector2dHelpers.GetMinMaxProjections(axi, theirVertices);
+
+                        if (theirProjections.Max < myProjections.Min || myProjections.Max < theirProjections.Min) {
+                            return false;
+                        }
+                    }
+
+                    return true;
+                }
+
+                return false;
+            };
+
+            BoundingRectangle.prototype.ContainsPoint = function (point) {
+                var savedRotation = this.Rotation;
+
+                if (this.Rotation !== 0) {
+                    this.Rotation = 0;
+                    point = point.RotateAround(this.Position, -savedRotation);
+                }
+
+                var myTopLeft = this.TopLeft, myBotRight = this.BotRight;
+
+                this.Rotation = savedRotation;
+
+                return point.X <= myBotRight.X && point.X >= myTopLeft.X && point.Y <= myBotRight.Y && point.Y >= myTopLeft.Y;
+            };
+
+            BoundingRectangle.prototype.ContainsCircle = function (circle) {
+                return this.ContainsPoint(new EndGate.Vector2d(circle.Position.X - circle.Radius, circle.Position.Y)) && this.ContainsPoint(new EndGate.Vector2d(circle.Position.X, circle.Position.Y - circle.Radius)) && this.ContainsPoint(new EndGate.Vector2d(circle.Position.X + circle.Radius, circle.Position.Y)) && this.ContainsPoint(new EndGate.Vector2d(circle.Position.X, circle.Position.Y + circle.Radius));
+            };
+
+            BoundingRectangle.prototype.ContainsRectangle = function (rectangle) {
+                var corners = rectangle.Corners();
+
+                for (var i = 0; i < corners.length; i++) {
+                    if (!this.ContainsPoint(corners[i])) {
+                        return false;
+                    }
+                }
+
+                return true;
+            };
+            return BoundingRectangle;
+        })(Bounds.Abstractions.Bounds2d);
+        Bounds.BoundingRectangle = BoundingRectangle;
+    })(EndGate.Bounds || (EndGate.Bounds = {}));
+    var Bounds = EndGate.Bounds;
 })(EndGate || (EndGate = {}));
 
 var EndGate;
@@ -903,8 +1280,7 @@ var EndGate;
     (function (Collision) {
         (function (Assets) {
             var CollisionData = (function () {
-                function CollisionData(at, w) {
-                    this.At = at;
+                function CollisionData(w) {
                     this.With = w;
                 }
                 return CollisionData;
@@ -971,6 +1347,302 @@ var EndGate;
 
 var EndGate;
 (function (EndGate) {
+    (function (Collision) {
+        (function (Assets) {
+            (function (_) {
+                var QuadTreeNode = (function (_super) {
+                    __extends(QuadTreeNode, _super);
+                    function QuadTreeNode(position, size, minNodeSize, parent) {
+                        _super.call(this, new EndGate.Bounds.BoundingRectangle(position, size));
+                        this._minNodeSize = minNodeSize;
+                        this._children = new Array();
+                        this.Contents = new Array();
+                        this.Parent = parent;
+                        this._partitioned = false;
+                    }
+                    Object.defineProperty(QuadTreeNode.prototype, "Children", {
+                        get: function () {
+                            return this._children;
+                        },
+                        enumerable: true,
+                        configurable: true
+                    });
+
+                    Object.defineProperty(QuadTreeNode.prototype, "TopLeftChild", {
+                        get: function () {
+                            return this._children[0];
+                        },
+                        set: function (newChild) {
+                            this._children[0] = newChild;
+                        },
+                        enumerable: true,
+                        configurable: true
+                    });
+
+                    Object.defineProperty(QuadTreeNode.prototype, "TopRightChild", {
+                        get: function () {
+                            return this._children[1];
+                        },
+                        set: function (newChild) {
+                            this._children[1] = newChild;
+                        },
+                        enumerable: true,
+                        configurable: true
+                    });
+
+                    Object.defineProperty(QuadTreeNode.prototype, "BotLeftChild", {
+                        get: function () {
+                            return this._children[2];
+                        },
+                        set: function (newChild) {
+                            this._children[2] = newChild;
+                        },
+                        enumerable: true,
+                        configurable: true
+                    });
+
+                    Object.defineProperty(QuadTreeNode.prototype, "BotRightChild", {
+                        get: function () {
+                            return this._children[3];
+                        },
+                        set: function (newChild) {
+                            this._children[3] = newChild;
+                        },
+                        enumerable: true,
+                        configurable: true
+                    });
+
+                    QuadTreeNode.prototype.IsPartitioned = function () {
+                        return this._partitioned;
+                    };
+
+                    QuadTreeNode.prototype.Partition = function () {
+                        var partitionedSize = new EndGate.Size2d(Math.round((this.Bounds).Size.Width * .5)), boundsPosition = this.Bounds.Position;
+
+                        this._partitioned = true;
+
+                        if (partitionedSize.Width < this._minNodeSize.Width) {
+                            return;
+                        }
+
+                        this._children.push(new QuadTreeNode(boundsPosition.Subtract(partitionedSize.Multiply(.5)), partitionedSize, this._minNodeSize, this));
+                        this._children.push(new QuadTreeNode(new EndGate.Vector2d(boundsPosition.X + partitionedSize.Width / 2, boundsPosition.Y - partitionedSize.Height / 2), partitionedSize, this._minNodeSize, this));
+                        this._children.push(new QuadTreeNode(new EndGate.Vector2d(boundsPosition.X - partitionedSize.Width / 2, boundsPosition.Y + partitionedSize.Height / 2), partitionedSize, this._minNodeSize, this));
+                        this._children.push(new QuadTreeNode(boundsPosition.Add(partitionedSize.Multiply(.5)), partitionedSize, this._minNodeSize, this));
+                    };
+
+                    QuadTreeNode.prototype.Insert = function (obj) {
+                        if (!this._partitioned) {
+                            this.Partition();
+                        }
+
+                        for (var i = 0; i < this._children.length; i++) {
+                            if (this._children[i].Bounds.Contains(obj.Bounds)) {
+                                return this._children[i].Insert(obj);
+                            }
+                        }
+
+                        this.Contents.push(obj);
+
+                        return this;
+                    };
+
+                    QuadTreeNode.prototype.ReverseInsert = function (obj) {
+                        if (!this.Bounds.Contains(obj.Bounds)) {
+                            if (this.Parent != null) {
+                                return this.Parent.ReverseInsert(obj);
+                            }
+                        }
+
+                        return this.Insert(obj);
+                    };
+
+                    QuadTreeNode.prototype.Query = function (queryArea) {
+                        var results = new Array(), child;
+
+                        for (var i = 0; i < this.Contents.length; i++) {
+                            if (queryArea.Intersects(this.Contents[i].Bounds)) {
+                                results.push(this.Contents[i]);
+                            }
+                        }
+
+                        for (var i = 0; i < this._children.length; i++) {
+                            child = this._children[i];
+
+                            if (child.Bounds.Contains(queryArea)) {
+                                results = results.concat(child.Query(queryArea));
+                                break;
+                            }
+
+                            if (queryArea.Contains(child.Bounds)) {
+                                results = results.concat(child.GetSubTreeContents());
+                                continue;
+                            }
+
+                            if (child.Bounds.Intersects(queryArea)) {
+                                results = results.concat(child.Query(queryArea));
+                            }
+                        }
+
+                        return results;
+                    };
+
+                    QuadTreeNode.prototype.Remove = function (obj) {
+                        var index = this.Contents.indexOf(obj);
+
+                        if (index >= 0) {
+                            this.Contents.splice(index, 1);
+                        }
+                    };
+
+                    QuadTreeNode.prototype.GetSubTreeContents = function () {
+                        var results = new Array();
+
+                        for (var i = 0; i < this._children.length; i++) {
+                            results = results.concat(this._children[i].GetSubTreeContents());
+                        }
+
+                        results = results.concat(this.Contents);
+
+                        return results;
+                    };
+                    return QuadTreeNode;
+                })(Collision.Collidable);
+                _.QuadTreeNode = QuadTreeNode;
+            })(Assets._ || (Assets._ = {}));
+            var _ = Assets._;
+        })(Collision.Assets || (Collision.Assets = {}));
+        var Assets = Collision.Assets;
+    })(EndGate.Collision || (EndGate.Collision = {}));
+    var Collision = EndGate.Collision;
+})(EndGate || (EndGate = {}));
+
+var EndGate;
+(function (EndGate) {
+    (function (Collision) {
+        (function (Assets) {
+            (function (_) {
+                var QuadTree = (function () {
+                    function QuadTree(configuration) {
+                        this._disposed = false;
+                        this._minNodeSize = configuration.MinQuadTreeNodeSize;
+                        this._collidableMap = {};
+                        this._updateableCollidableMap = {};
+
+                        this._root = new _.QuadTreeNode(new EndGate.Vector2d(configuration.InitialQuadTreeSize.HalfWidth, configuration.InitialQuadTreeSize.HalfHeight), configuration.InitialQuadTreeSize, configuration.MinQuadTreeNodeSize, null);
+                    }
+                    QuadTree.prototype.Insert = function (obj, staticPosition) {
+                        if (typeof staticPosition === "undefined") { staticPosition = false; }
+                        if (!this._root.Bounds.Contains(obj.Bounds)) {
+                            this.Expand(obj);
+                        }
+
+                        this._collidableMap[obj._id] = {
+                            Node: this._root.Insert(obj),
+                            Collidable: obj,
+                            StaticPosition: staticPosition
+                        };
+
+                        if (!staticPosition) {
+                            this._updateableCollidableMap[obj._id] = this._collidableMap[obj._id];
+                        }
+                    };
+
+                    QuadTree.prototype.Remove = function (obj) {
+                        var node = this._collidableMap[obj._id].Node;
+
+                        delete this._collidableMap[obj._id];
+                        delete this._updateableCollidableMap[obj._id];
+
+                        node.Remove(obj);
+                    };
+
+                    QuadTree.prototype.CollisionCandidates = function (obj) {
+                        var node = this._collidableMap[obj._id].Node, results = node.GetSubTreeContents();
+
+                        while (node.Parent !== null) {
+                            results = results.concat(node.Parent.Contents);
+
+                            node = node.Parent;
+                        }
+
+                        return results;
+                    };
+
+                    QuadTree.prototype.Query = function (queryArea) {
+                        return this._root.Query(queryArea);
+                    };
+
+                    QuadTree.prototype.Expand = function (cause) {
+                        var rootBounds = (this._root.Bounds), topLeftDistance = rootBounds.TopLeft.Distance(cause.Bounds.Position).Length(), topRightDistance = rootBounds.TopRight.Distance(cause.Bounds.Position).Length(), botLeftDistance = rootBounds.BotLeft.Distance(cause.Bounds.Position).Length(), botRightDistance = rootBounds.BotRight.Distance(cause.Bounds.Position).Length(), closestCornerDistance = Math.min(topLeftDistance, topRightDistance, botLeftDistance, botRightDistance), newSize = rootBounds.Size.Multiply(2), newRoot;
+
+                        if (closestCornerDistance === topLeftDistance) {
+                            newRoot = new _.QuadTreeNode(rootBounds.TopLeft, newSize, this._minNodeSize, null);
+                            newRoot.Partition();
+                            newRoot.BotRightChild = this._root;
+                        } else if (closestCornerDistance === topRightDistance) {
+                            newRoot = new _.QuadTreeNode(rootBounds.TopRight, newSize, this._minNodeSize, null);
+                            newRoot.Partition();
+                            newRoot.BotLeftChild = this._root;
+                        } else if (closestCornerDistance === botLeftDistance) {
+                            newRoot = new _.QuadTreeNode(rootBounds.BotLeft, newSize, this._minNodeSize, null);
+                            newRoot.Partition();
+                            newRoot.TopRightChild = this._root;
+                        } else if (closestCornerDistance === botRightDistance) {
+                            newRoot = new _.QuadTreeNode(rootBounds.BotRight, newSize, this._minNodeSize, null);
+                            newRoot.Partition();
+                            newRoot.TopLeftChild = this._root;
+                        }
+
+                        this._root.Parent = newRoot;
+                        this._root = newRoot;
+                    };
+
+                    QuadTree.prototype.Update = function (gameTime) {
+                        var node, lookup, collidable, newNode;
+
+                        for (var id in this._updateableCollidableMap) {
+                            lookup = this._updateableCollidableMap[id];
+                            node = lookup.Node;
+                            collidable = lookup.Collidable;
+
+                            node.Remove(collidable);
+
+                            if (!this._root.Bounds.Contains(collidable.Bounds)) {
+                                this.Expand(collidable);
+                                newNode = this._root.Insert(collidable);
+                            } else {
+                                if (!node.Bounds.Contains(collidable.Bounds) && node.Parent != null) {
+                                    newNode = node.Parent.ReverseInsert(collidable);
+                                } else {
+                                    newNode = node.Insert(collidable);
+                                }
+                            }
+
+                            this._updateableCollidableMap[id].Node = newNode;
+                        }
+                    };
+
+                    QuadTree.prototype.Dispose = function () {
+                        if (!this._disposed) {
+                            this._disposed = true;
+                        } else {
+                            throw new Error("Cannot dispose collidable more than once.");
+                        }
+                    };
+                    return QuadTree;
+                })();
+                _.QuadTree = QuadTree;
+            })(Assets._ || (Assets._ = {}));
+            var _ = Assets._;
+        })(Collision.Assets || (Collision.Assets = {}));
+        var Assets = Collision.Assets;
+    })(EndGate.Collision || (EndGate.Collision = {}));
+    var Collision = EndGate.Collision;
+})(EndGate || (EndGate = {}));
+
+var EndGate;
+(function (EndGate) {
     var EventHandler2 = (function () {
         function EventHandler2() {
             this._type = "Event";
@@ -1011,11 +1683,12 @@ var EndGate;
 (function (EndGate) {
     (function (Collision) {
         var CollisionManager = (function () {
-            function CollisionManager() {
+            function CollisionManager(configuration) {
                 this._type = "CollisionManager";
                 this._collidables = [];
+                this._nonStaticCollidables = [];
+                this._quadTree = new Collision.Assets._.QuadTree(configuration);
                 this._enabled = false;
-
                 this._onCollision = new EndGate.EventHandler2();
             }
             Object.defineProperty(CollisionManager.prototype, "OnCollision", {
@@ -1026,7 +1699,8 @@ var EndGate;
                 configurable: true
             });
 
-            CollisionManager.prototype.Monitor = function (obj) {
+            CollisionManager.prototype.Monitor = function (obj, staticPosition) {
+                if (typeof staticPosition === "undefined") { staticPosition = false; }
                 var _this = this;
                 this._enabled = true;
 
@@ -1035,35 +1709,64 @@ var EndGate;
                 });
 
                 this._collidables.push(obj);
+
+                if (!staticPosition) {
+                    this._nonStaticCollidables.push(obj);
+                }
+
+                this._quadTree.Insert(obj);
             };
 
             CollisionManager.prototype.Unmonitor = function (obj) {
-                for (var i = 0; i < this._collidables.length; i++) {
-                    if (this._collidables[i]._id === obj._id) {
-                        this._collidables.splice(i, 1);
-                        break;
+                var index = this._collidables.indexOf(obj);
+
+                if (index >= 0) {
+                    this._collidables.splice(index, 1);
+                }
+
+                index = this._nonStaticCollidables.indexOf(obj);
+
+                if (index >= 0) {
+                    this._nonStaticCollidables.splice(index, 1);
+                }
+
+                this._quadTree.Remove(obj);
+            };
+
+            CollisionManager.prototype.Update = function (gameTime) {
+                var collidable, hash, candidates, cacheMap = {}, colliding = new Array();
+
+                if (this._enabled) {
+                    this._quadTree.Update(gameTime);
+
+                    for (var i = 0; i < this._nonStaticCollidables.length; i++) {
+                        collidable = this._nonStaticCollidables[i];
+                        candidates = this._quadTree.CollisionCandidates(collidable);
+
+                        for (var j = 0; j < candidates.length; j++) {
+                            if (collidable._id !== candidates[j]._id && collidable.IsCollidingWith(candidates[j])) {
+                                colliding.push([collidable, candidates[j]]);
+                            }
+                        }
+                    }
+
+                    for (var i = 0; i < colliding.length; i++) {
+                        hash = this.HashIds(colliding[i][0], colliding[i][1]);
+
+                        if (!cacheMap[hash]) {
+                            cacheMap[hash] = true;
+
+                            colliding[i][0].Collided(new Collision.Assets.CollisionData(colliding[i][1]));
+                            colliding[i][1].Collided(new Collision.Assets.CollisionData(colliding[i][0]));
+
+                            this.OnCollision.Trigger(colliding[i][0], colliding[i][1]);
+                        }
                     }
                 }
             };
 
-            CollisionManager.prototype.Update = function (gameTime) {
-                var first, second;
-
-                if (this._enabled) {
-                    for (var i = 0; i < this._collidables.length; i++) {
-                        first = this._collidables[i];
-
-                        for (var j = i + 1; j < this._collidables.length; j++) {
-                            second = this._collidables[j];
-
-                            if (first.IsCollidingWith(second)) {
-                                first.Collided(new Collision.Assets.CollisionData(first.Bounds.Position.Clone(), second));
-                                second.Collided(new Collision.Assets.CollisionData(second.Bounds.Position.Clone(), first));
-                                this.OnCollision.Trigger(first, second);
-                            }
-                        }
-                    }
-                }
+            CollisionManager.prototype.HashIds = function (c1, c2) {
+                return Math.min(c1._id, c2._id).toString() + Math.max(c2._id, c1._id).toString();
             };
             return CollisionManager;
         })();
@@ -1353,232 +2056,6 @@ var EndGate;
         var Abstractions = Graphics.Abstractions;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
     var Graphics = EndGate.Graphics;
-})(EndGate || (EndGate = {}));
-
-var EndGate;
-(function (EndGate) {
-    (function (_) {
-        var MinMax = (function () {
-            function MinMax(min, max) {
-                this.Min = min;
-                this.Max = max;
-            }
-            return MinMax;
-        })();
-        _.MinMax = MinMax;
-    })(EndGate._ || (EndGate._ = {}));
-    var _ = EndGate._;
-})(EndGate || (EndGate = {}));
-
-var EndGate;
-(function (EndGate) {
-    (function (_) {
-        var Vector2dHelpers = (function () {
-            function Vector2dHelpers() {
-            }
-            Vector2dHelpers.GetMinMaxProjections = function (axis, vertices) {
-                var min = vertices[0].ProjectOnto(axis).Dot(axis);
-                var max = min;
-
-                for (var i = 1; i < vertices.length; i++) {
-                    var vertex = vertices[i];
-                    var value = vertex.ProjectOnto(axis).Dot(axis);
-
-                    if (value < min) {
-                        min = value;
-                    } else if (value > max) {
-                        max = value;
-                    }
-                }
-
-                return new _.MinMax(min, max);
-            };
-            return Vector2dHelpers;
-        })();
-        _.Vector2dHelpers = Vector2dHelpers;
-    })(EndGate._ || (EndGate._ = {}));
-    var _ = EndGate._;
-})(EndGate || (EndGate = {}));
-
-var EndGate;
-(function (EndGate) {
-    (function (Bounds) {
-        var BoundingCircle = (function (_super) {
-            __extends(BoundingCircle, _super);
-            function BoundingCircle(position, radius) {
-                _super.call(this, position);
-                this._type = "BoundingCircle";
-                this._boundsType = "BoundingCircle";
-
-                this.Radius = radius;
-            }
-            BoundingCircle.prototype.Scale = function (scale) {
-                this.Radius *= scale;
-            };
-
-            BoundingCircle.prototype.Area = function () {
-                return Math.PI * this.Radius * this.Radius;
-            };
-
-            BoundingCircle.prototype.Circumference = function () {
-                return 2 * Math.PI * this.Radius;
-            };
-
-            BoundingCircle.prototype.IntersectsCircle = function (circle) {
-                return this.Position.Distance(circle.Position).Length() < this.Radius + circle.Radius;
-            };
-
-            BoundingCircle.prototype.IntersectsRectangle = function (rectangle) {
-                var translated = (rectangle.Rotation === 0) ? this.Position : this.Position.RotateAround(rectangle.Position, -rectangle.Rotation);
-
-                var circleDistance = translated.Distance(rectangle.Position);
-
-                if (circleDistance.X > (rectangle.Size.HalfWidth + this.Radius)) {
-                    return false;
-                }
-                if (circleDistance.Y > (rectangle.Size.HalfHeight + this.Radius)) {
-                    return false;
-                }
-
-                if (circleDistance.X <= (rectangle.Size.HalfWidth)) {
-                    return true;
-                }
-                if (circleDistance.Y <= (rectangle.Size.HalfHeight)) {
-                    return true;
-                }
-
-                var cornerDistance_sq = Math.pow(circleDistance.X - rectangle.Size.HalfWidth, 2) + Math.pow(circleDistance.Y - rectangle.Size.HalfHeight, 2);
-
-                return (cornerDistance_sq <= (this.Radius * this.Radius));
-            };
-
-            BoundingCircle.prototype.ContainsPoint = function (point) {
-                return this.Position.Distance(point).Magnitude() < this.Radius;
-            };
-            return BoundingCircle;
-        })(Bounds.Abstractions.Bounds2d);
-        Bounds.BoundingCircle = BoundingCircle;
-    })(EndGate.Bounds || (EndGate.Bounds = {}));
-    var Bounds = EndGate.Bounds;
-})(EndGate || (EndGate = {}));
-
-var EndGate;
-(function (EndGate) {
-    (function (Bounds) {
-        var BoundingRectangle = (function (_super) {
-            __extends(BoundingRectangle, _super);
-            function BoundingRectangle(position, size) {
-                _super.call(this, position);
-                this._type = "BoundingRectangle";
-                this._boundsType = "BoundingRectangle";
-                this.Size = size;
-            }
-            BoundingRectangle.prototype.Scale = function (x, y) {
-                this.Size.Width *= x;
-                this.Size.Height *= y;
-            };
-
-            Object.defineProperty(BoundingRectangle.prototype, "TopLeft", {
-                get: function () {
-                    if (this.Rotation === 0) {
-                        return new EndGate.Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);
-                    }
-
-                    return new EndGate.Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight).RotateAround(this.Position, this.Rotation);
-                },
-                enumerable: true,
-                configurable: true
-            });
-
-            Object.defineProperty(BoundingRectangle.prototype, "TopRight", {
-                get: function () {
-                    if (this.Rotation === 0) {
-                        return new EndGate.Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);
-                    }
-
-                    return new EndGate.Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight).RotateAround(this.Position, this.Rotation);
-                },
-                enumerable: true,
-                configurable: true
-            });
-
-            Object.defineProperty(BoundingRectangle.prototype, "BotLeft", {
-                get: function () {
-                    if (this.Rotation === 0) {
-                        return new EndGate.Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);
-                    }
-
-                    return new EndGate.Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight).RotateAround(this.Position, this.Rotation);
-                },
-                enumerable: true,
-                configurable: true
-            });
-
-            Object.defineProperty(BoundingRectangle.prototype, "BotRight", {
-                get: function () {
-                    if (this.Rotation === 0) {
-                        return new EndGate.Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);
-                    }
-
-                    return new EndGate.Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight).RotateAround(this.Position, this.Rotation);
-                },
-                enumerable: true,
-                configurable: true
-            });
-
-            BoundingRectangle.prototype.Corners = function () {
-                return [this.TopLeft, this.TopRight, this.BotLeft, this.BotRight];
-            };
-
-            BoundingRectangle.prototype.IntersectsCircle = function (circle) {
-                return circle.IntersectsRectangle(this);
-            };
-
-            BoundingRectangle.prototype.IntersectsRectangle = function (rectangle) {
-                if (this.Rotation === 0 && rectangle.Rotation === 0) {
-                    var myTopLeft = this.TopLeft, myBotRight = this.BotRight, theirTopLeft = rectangle.TopLeft, theirBotRight = rectangle.BotRight;
-
-                    return theirTopLeft.X <= myBotRight.X && theirBotRight.X >= myTopLeft.X && theirTopLeft.Y <= myBotRight.Y && theirBotRight.Y >= myTopLeft.Y;
-                } else if (rectangle.Position.Distance(this.Position).Magnitude() <= rectangle.Size.Radius + this.Size.Radius) {
-                    var axisList = [this.TopRight.Subtract(this.TopLeft), this.TopRight.Subtract(this.BotRight), rectangle.TopLeft.Subtract(rectangle.BotLeft), rectangle.TopLeft.Subtract(rectangle.TopRight)];
-                    var myVertices = this.Corners();
-                    var theirVertices = rectangle.Corners();
-
-                    for (var i = 0; i < axisList.length; i++) {
-                        var axi = axisList[i];
-                        var myProjections = EndGate._.Vector2dHelpers.GetMinMaxProjections(axi, myVertices);
-                        var theirProjections = EndGate._.Vector2dHelpers.GetMinMaxProjections(axi, theirVertices);
-
-                        if (theirProjections.Max < myProjections.Min || myProjections.Max < theirProjections.Min) {
-                            return false;
-                        }
-                    }
-
-                    return true;
-                }
-
-                return false;
-            };
-
-            BoundingRectangle.prototype.ContainsPoint = function (point) {
-                var savedRotation = this.Rotation;
-
-                if (this.Rotation !== 0) {
-                    this.Rotation = 0;
-                    point = point.RotateAround(this.Position, -savedRotation);
-                }
-
-                var myTopLeft = this.TopLeft, myBotRight = this.BotRight;
-
-                this.Rotation = savedRotation;
-
-                return point.X <= myBotRight.X && point.X >= myTopLeft.X && point.Y <= myBotRight.Y && point.Y >= myTopLeft.Y;
-            };
-            return BoundingRectangle;
-        })(Bounds.Abstractions.Bounds2d);
-        Bounds.BoundingRectangle = BoundingRectangle;
-    })(EndGate.Bounds || (EndGate.Bounds = {}));
-    var Bounds = EndGate.Bounds;
 })(EndGate || (EndGate = {}));
 
 var EndGate;
@@ -2153,46 +2630,6 @@ var EndGate;
         Input.MouseHandler = MouseHandler;
     })(EndGate.Input || (EndGate.Input = {}));
     var Input = EndGate.Input;
-})(EndGate || (EndGate = {}));
-
-var EndGate;
-(function (EndGate) {
-    var EventHandler = (function () {
-        function EventHandler() {
-            this._type = "Event";
-            this._actions = [];
-            this._hasBindings = false;
-        }
-        EventHandler.prototype.Bind = function (action) {
-            this._actions.push(action);
-            this._hasBindings = true;
-        };
-
-        EventHandler.prototype.Unbind = function (action) {
-            var foo = this._actions[i];
-
-            for (var i = 0; i < this._actions.length; i++) {
-                if (this._actions[i] === action) {
-                    this._actions.splice(i, 1);
-
-                    this._hasBindings = this._actions.length > 0;
-                    return;
-                }
-            }
-        };
-
-        EventHandler.prototype.HasBindings = function () {
-            return this._hasBindings;
-        };
-
-        EventHandler.prototype.Trigger = function () {
-            for (var i = 0; i < this._actions.length; i++) {
-                this._actions[i]();
-            }
-        };
-        return EventHandler;
-    })();
-    EndGate.EventHandler = EventHandler;
 })(EndGate || (EndGate = {}));
 
 var EndGate;
@@ -2837,6 +3274,8 @@ var EndGate;
         function Game(gameCanvas) {
             var _this = this;
             this._type = "Game";
+            var initialQuadTreeSize, defaultMinQuadTreeSize = EndGate.Collision.CollisionConfiguration._DefaultMinQuadTreeNodeSize;
+
             this._gameTime = new EndGate.GameTime();
             this._ID = Game._gameIds++;
 
@@ -2846,9 +3285,20 @@ var EndGate;
 
             this.Input = new EndGate.Input.InputManager(this.Scene.DrawArea);
             this.Audio = new EndGate.Sound.AudioManager();
-            this.CollisionManager = new EndGate.Collision.CollisionManager();
-            this.Configuration = new EndGate.GameConfiguration(GameRunnerInstance.Register(this));
+
+            initialQuadTreeSize = this.Scene.Camera.Size;
+
+            if (initialQuadTreeSize.Width % defaultMinQuadTreeSize.Width !== 0) {
+                initialQuadTreeSize = new EndGate.Size2d(initialQuadTreeSize.Width % defaultMinQuadTreeSize.Width + initialQuadTreeSize.Width);
+            }
+
+            this.Configuration = new EndGate.GameConfiguration(GameRunnerInstance.Register(this), initialQuadTreeSize);
+            this.CollisionManager = new EndGate.Collision.CollisionManager(this.Configuration.CollisionConfiguration);
             this.Map = new EndGate.Map.MapManager(this.Scene);
+
+            this.Configuration.CollisionConfiguration._OnChange.Bind(function () {
+                _this.CollisionManager = new EndGate.Collision.CollisionManager(_this.Configuration.CollisionConfiguration);
+            });
         }
         Game.prototype._PrepareUpdate = function () {
             this._gameTime.Update();
