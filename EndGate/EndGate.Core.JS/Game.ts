@@ -16,7 +16,7 @@ module EndGate {
     * Defines a virtual Game object that is meant to be derived from.  Games contain a multitude of management objects to control every aspect of the game.
     */
     export class Game implements _.ITyped, IUpdateable, IDisposable {
-        public _type: string = "Game";
+        public _type: string = "Game";        
 
         /**
         * The games configuration.  Used to modify settings such as the game update rate.
@@ -47,6 +47,7 @@ module EndGate {
 
         private static _gameIds: number = 0;
         private _gameTime: GameTime;
+        private _updateRequired: boolean;
 
         /**
         * Creates a new instance of the Game object.  A default canvas will be created that fills the DOM body.
@@ -61,6 +62,7 @@ module EndGate {
             var initialQuadTreeSize: Size2d,
                 defaultMinQuadTreeSize: Size2d = Collision.CollisionConfiguration._DefaultMinQuadTreeNodeSize;
 
+            this._updateRequired = true;
             this._gameTime = new GameTime();
             this._ID = Game._gameIds++;
 
@@ -91,6 +93,7 @@ module EndGate {
 
             this.Update(this._gameTime);
             this.CollisionManager.Update(this._gameTime);
+            this._updateRequired = false;
         }
 
         /**
@@ -101,8 +104,13 @@ module EndGate {
         }
 
         public _PrepareDraw(): void {
+            if (this.Configuration.DrawOnlyAfterUpdate && this._updateRequired) {
+                return;
+            }
+
             this.Map.Scenery.Draw();
             this.Scene.Draw();
+            this._updateRequired = true;
         }
 
         /**
