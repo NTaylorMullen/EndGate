@@ -20,7 +20,7 @@ module EndGate.Collision {
         public Bounds: Bounds.Abstractions.Bounds2d;
 
         private static _collidableIDs: number = 0;
-        private _disposed: bool;
+        private _disposed: boolean;
         private _onCollision: EventHandler1<Assets.CollisionData>;
         private _onDisposed: EventHandler1<Collidable>;
 
@@ -54,7 +54,7 @@ module EndGate.Collision {
         * Determines if the provided collidable is colliding with this Collidable.
         * @param other Collidable to check collision with.
         */
-        public IsCollidingWith(other: Collidable): bool {
+        public IsCollidingWith(other: Collidable): boolean {
             return this.Bounds.Intersects(other.Bounds);
         }
 

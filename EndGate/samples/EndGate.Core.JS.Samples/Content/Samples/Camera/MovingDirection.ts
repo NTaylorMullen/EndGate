@@ -2,12 +2,12 @@
 module Camera {
 
     export class MovingDirection {
-        public Up: bool = false;
-        public Right: bool = false;
-        public Down: bool = false;
-        public Left: bool = false;
-        public ZoomingIn: bool = false;
-        public ZoomingOut: bool = false;
+        public Up: boolean = false;
+        public Right: boolean = false;
+        public Down: boolean = false;
+        public Left: boolean = false;
+        public ZoomingIn: boolean = false;
+        public ZoomingOut: boolean = false;
     }
 
 }

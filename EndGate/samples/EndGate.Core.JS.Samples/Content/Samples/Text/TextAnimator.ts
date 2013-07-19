@@ -9,7 +9,7 @@ module Texts {
         public static RotationSpeed: number = Math.PI / 4;
         public static ChangeDirectionEvery: number = 3000;
         public Direction: number = 1;
-        public CurrentAnimations: { [animation: string]: bool; } = {
+        public CurrentAnimations: { [animation: string]: boolean; } = {
             Position: false,
             Rotation: false,
             Size: false,

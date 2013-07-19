@@ -951,6 +951,8 @@ var EndGate;
     var GameConfiguration = (function () {
         function GameConfiguration(updateRateSetter, initialQuadTreeSize) {
             this._defaultUpdateRate = 40;
+            this.DrawOnlyAfterUpdate = true;
+
             this._updateRateSetter = updateRateSetter;
             this._updateRate = this._defaultUpdateRate;
             this._collisionConfiguration = new EndGate.Collision.CollisionConfiguration(initialQuadTreeSize);
@@ -3276,6 +3278,7 @@ var EndGate;
             this._type = "Game";
             var initialQuadTreeSize, defaultMinQuadTreeSize = EndGate.Collision.CollisionConfiguration._DefaultMinQuadTreeNodeSize;
 
+            this._updateRequired = true;
             this._gameTime = new EndGate.GameTime();
             this._ID = Game._gameIds++;
 
@@ -3305,14 +3308,20 @@ var EndGate;
 
             this.Update(this._gameTime);
             this.CollisionManager.Update(this._gameTime);
+            this._updateRequired = false;
         };
 
         Game.prototype.Update = function (gameTime) {
         };
 
         Game.prototype._PrepareDraw = function () {
+            if (this.Configuration.DrawOnlyAfterUpdate && this._updateRequired) {
+                return;
+            }
+
             this.Map.Scenery.Draw();
             this.Scene.Draw();
+            this._updateRequired = true;
         };
 
         Game.prototype.Draw = function (context) {

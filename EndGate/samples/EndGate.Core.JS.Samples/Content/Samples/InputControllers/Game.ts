@@ -22,7 +22,7 @@ module InputControllers {
             // Update the MovementControllers position to match the characters position
             this._characterMovementController.Position = this._character.Position;
             // Wire up the Input Controller to trigger appropriate flags on the movement controller
-            this._characterInputController = new eg.InputControllers.DirectionalInputController(this.Input.Keyboard, (direction: string, startMoving: bool) => {
+            this._characterInputController = new eg.InputControllers.DirectionalInputController(this.Input.Keyboard, (direction: string, startMoving: boolean) => {
                 this._characterMovementController.Move(direction, startMoving);
             });
 

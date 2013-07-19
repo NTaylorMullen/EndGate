@@ -13,7 +13,7 @@ declare module EndGate.Rendering {
         /**
         * Gets or sets the Visible property.  The Visible property determines whether the renderable will be drawn to the game screen.
         */
-        Visible: bool;
+        Visible: boolean;
         /**
         * Draws the renderable to the provided canvas context
         * @param context The canvas context to draw the renderable onto.

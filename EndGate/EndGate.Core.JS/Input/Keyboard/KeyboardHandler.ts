@@ -102,7 +102,7 @@ module EndGate.Input {
             document.addEventListener("keyup", this.BuildKeyEvent(this._onUpCommands, this.OnKeyUp), false);
         }
 
-        private FocusingTextArea(ke: KeyboardEvent): bool {
+        private FocusingTextArea(ke: KeyboardEvent): boolean {
             var element;
 
             if (ke.target) {
@@ -126,7 +126,7 @@ module EndGate.Input {
         private BuildKeyEvent(store: { [id: number]: Assets.KeyboardCommand; }, eventHandler: EventHandler1<KeyboardCommandEvent>): (ke: KeyboardEvent) => void {
             return (ke: KeyboardEvent) => {
                 var keyboardCommandEvent: KeyboardCommandEvent,
-                    propogate: bool = true;
+                    propogate: boolean = true;
 
                 //Don't enable shortcut keys in Input, Text area fields
                 if (this.FocusingTextArea(ke)) {

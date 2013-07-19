@@ -100,7 +100,7 @@ module EndGate.Input {
         * Determines if the KeyboardCommand matches the KeyboardCommandEvent
         * @param command The KeyboardCommand to check.
         */
-        public Matches(command: Assets.KeyboardCommand): bool {
+        public Matches(command: Assets.KeyboardCommand): boolean {
             return this.Key.toLowerCase() === command.Key.toLowerCase() && command.Modifiers.Equivalent(this.Modifiers);
         }
     }

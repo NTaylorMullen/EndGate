@@ -92,7 +92,7 @@ module EndGate.Bounds {
         * Determines if the current BoundingRectangle is intersecting the provided BoundingCircle.
         * @param circle BoundingCircle to check intersection with.
         */
-        public IntersectsCircle(circle: BoundingCircle): bool {
+        public IntersectsCircle(circle: BoundingCircle): boolean {
             return circle.IntersectsRectangle(this);
         }
 
@@ -100,7 +100,7 @@ module EndGate.Bounds {
         * Determines if the current BoundingRectangle is intersecting the provided BoundingRectangle.
         * @param rectangle BoundingRectangle to check intersection with.
         */
-        public IntersectsRectangle(rectangle: BoundingRectangle): bool {
+        public IntersectsRectangle(rectangle: BoundingRectangle): boolean {
             if (this.Rotation === 0 && rectangle.Rotation === 0) {
                 var myTopLeft = this.TopLeft,
                     myBotRight = this.BotRight,
@@ -135,7 +135,7 @@ module EndGate.Bounds {
         * Determines if the current BoundingRectangle contains the provided Vector2d.
         * @param point A point.
         */
-        public ContainsPoint(point: Vector2d): bool {
+        public ContainsPoint(point: Vector2d): boolean {
             var savedRotation: number = this.Rotation;
 
             if (this.Rotation !== 0) {

@@ -7,19 +7,19 @@ module EndGate.MovementControllers.Assets {
         /**
         * Indicates whether the object is moving left.
         */
-        public Left: bool;
+        public Left: boolean;
         /**
         * Indicates whether the object is moving right.
         */
-        public Right: bool;
+        public Right: boolean;
         /**
         * Indicates whether the object is moving up.
         */
-        public Up: bool;
+        public Up: boolean;
         /**
         * Indicates whether the object is moving down.
         */
-        public Down: bool;
+        public Down: boolean;
 
         /**
         * Creates a new instance of the LinearDirection object with all directions= indicators initially set to false.

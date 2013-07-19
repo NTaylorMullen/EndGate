@@ -49,7 +49,7 @@ module MovementControllers {
         }
 
         // Helper function to bind keyboard controls to trigger the appropriate movement controller bindings
-        private BindKeys(keyList: string[], bindingAction: string, direction: string, directionValue: bool): void {
+        private BindKeys(keyList: string[], bindingAction: string, direction: string, directionValue: boolean): void {
             for (var i = 0; i < keyList.length; i++) {
                 this.Input.Keyboard[bindingAction](keyList[i], () => {
                     if (directionValue) {

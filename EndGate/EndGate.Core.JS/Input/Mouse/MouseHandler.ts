@@ -160,7 +160,7 @@ module EndGate.Input {
             }
         }
 
-        private BuildEvent<T>(eventHandler: EventHandler1<T>, mouseEventBuilder: (mouseEvent: MouseEvent) => IMouseEvent, returnValue: bool = false): (e: MouseEvent) => void {
+        private BuildEvent<T>(eventHandler: EventHandler1<T>, mouseEventBuilder: (mouseEvent: MouseEvent) => IMouseEvent, returnValue: boolean = false): (e: MouseEvent) => void {
             return (e: MouseEvent) => {
                 if (eventHandler.HasBindings()) {
                     eventHandler.Trigger(mouseEventBuilder.call(this, e));

@@ -22,7 +22,7 @@ module EndGate.Graphics.Assets {
         public Source: HTMLImageElement;
 
         private _size: Size2d;
-        private _loaded: bool;
+        private _loaded: boolean;
         private _imageLocation;
         private _onLoaded: EventHandler1<ImageSource>;
 
@@ -95,7 +95,7 @@ module EndGate.Graphics.Assets {
         /**
         * Determines if the ImageSource has been loaded.
         */
-        public Loaded(): bool {
+        public Loaded(): boolean {
             return this._loaded;
         }
 

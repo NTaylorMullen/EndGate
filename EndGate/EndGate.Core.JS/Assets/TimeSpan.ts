@@ -192,7 +192,7 @@ module EndGate {
         * Determines whether this TimeSpan represents the same amount of time as the provided TimeSpan.
         * @param timeSpan The TimeSpan to compare the current TimeSpan to.
         */
-        public Equivalent(timeSpan: TimeSpan): bool {
+        public Equivalent(timeSpan: TimeSpan): boolean {
             return this.Milliseconds === timeSpan.Milliseconds;
         }
 

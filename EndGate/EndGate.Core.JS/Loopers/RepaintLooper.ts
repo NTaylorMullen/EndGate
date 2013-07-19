@@ -9,8 +9,8 @@ module EndGate._.Loopers {
     export class RepaintLooper implements ILooper {
         public _type: string = "RepaintLooper";
 
-        private _running: bool;
-        private _callbacksModified: bool;
+        private _running: boolean;
+        private _callbacksModified: boolean;
         private _callbacks: LooperCallback[];
 
         constructor() {

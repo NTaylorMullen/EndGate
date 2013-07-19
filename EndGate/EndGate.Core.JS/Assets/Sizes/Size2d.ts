@@ -261,7 +261,7 @@ module EndGate {
         * Determines whether this Size2d has the same Width and Height of another Size2d.
         * @param size The Size2d to compare the current Size2d to.
         */
-        public Equivalent(size: Size2d): bool {
+        public Equivalent(size: Size2d): boolean {
             return this.Width === size.Width && this.Height === size.Height;
         }
 

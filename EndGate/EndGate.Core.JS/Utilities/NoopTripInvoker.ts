@@ -5,7 +5,7 @@ module EndGate._.Utilities {
         private _invoker: Function;
         private _action: Function;
 
-        constructor(action: Function, tripped: bool = false) {
+        constructor(action: Function, tripped: boolean = false) {
             this._invoker = NoopTripInvoker._noop;
             this._action = action;
 

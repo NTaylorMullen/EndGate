@@ -8,8 +8,8 @@ module EndGate.Graphics.Abstractions {
     */
     export class Shape extends Graphic2d {
         public _type: string = "Shape";
-        private _fill: bool;
-        private _stroke: bool;
+        private _fill: boolean;
+        private _stroke: boolean;
 
         /**
         * Should only ever be called by derived classes.
