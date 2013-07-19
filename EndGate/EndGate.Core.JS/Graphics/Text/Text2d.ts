@@ -15,7 +15,7 @@ module EndGate.Graphics {
         private _fontSettings: Assets.FontSettings;
         private _text: string;
         private _stroker: _.Utilities.NoopTripInvoker;
-        private _recalculateBoundsSize: bool;
+        private _recalculateBoundsSize: boolean;
 
         // For GetDrawBounds
         private _drawBounds: Bounds.BoundingRectangle;

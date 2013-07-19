@@ -228,7 +228,7 @@ module EndGate {
         * Determines whether this Matrix2x2 has the same row and column values as the provided Matrix2x2.
         * @param matrix The Matrix2x2 to compare the current Matrix2x2 to.
         */
-        public Equivalent(matrix: Matrix2x2): bool {
+        public Equivalent(matrix: Matrix2x2): boolean {
             return this.Values[0][0] === matrix.Values[0][0] && this.Values[0][1] === matrix.Values[0][1] && this.Values[1][0] === matrix.Values[1][0] && this.Values[1][1] === matrix.Values[1][1];
         }
 

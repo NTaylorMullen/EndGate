@@ -12,7 +12,7 @@ module AudioHandling {
         private _spriteSheet: eg.Graphics.Assets.ImageSource;
         private _animation: eg.Graphics.SpriteAnimation;
 
-        constructor(imageSrc: string, x: number, y: number, spriteSheetWidth: number, spriteSheetHeight: number, frameWidth: number, frameHeight: number, fps: number, frameCount: number, onComplete: Function, repeat: bool = true, rotateRandomly: bool = false) {
+        constructor(imageSrc: string, x: number, y: number, spriteSheetWidth: number, spriteSheetHeight: number, frameWidth: number, frameHeight: number, fps: number, frameCount: number, onComplete: Function, repeat: boolean = true, rotateRandomly: boolean = false) {
             this._spriteSheet = new eg.Graphics.Assets.ImageSource(imageSrc, spriteSheetWidth, spriteSheetHeight);
 
             // To create our animation, we pass in our sprite sheet that we want to use for the animation, the fps (frames per second), 

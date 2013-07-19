@@ -4,9 +4,9 @@
 module MapCreator {
 
     export class CameraDragController {
-        public Active: bool;
+        public Active: boolean;
 
-        private _dragging: bool;
+        private _dragging: boolean;
         private _downAt: eg.Vector2d;
         private _cameraStartPosition: eg.Vector2d;
 

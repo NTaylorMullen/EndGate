@@ -10,7 +10,7 @@ module EndGate {
         public _type: string = "Event";
 
         private _actions: Array<(val: T) => any>;
-        private _hasBindings: bool;
+        private _hasBindings: boolean;
 
         /**
         * Creates a new instance of the EventHandler object.
@@ -47,7 +47,7 @@ module EndGate {
         /**
         * Determines if the EventHandler1 has active bindings.
         */
-        public HasBindings(): bool {
+        public HasBindings(): boolean {
             return this._hasBindings;
         }
 

@@ -11,7 +11,7 @@ declare module EndGate.MovementControllers {
         /**
         * Whether or not the move started or stopped.
         */
-        StartMoving: bool;
+        StartMoving: boolean;
     }
 
 }

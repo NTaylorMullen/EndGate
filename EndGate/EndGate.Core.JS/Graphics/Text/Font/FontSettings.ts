@@ -10,7 +10,7 @@ module EndGate.Graphics.Assets {
     export class FontSettings {
         private _cachedState: { [property: string]: any; };
         private _cachedFont: string;
-        private _refreshCache: bool;
+        private _refreshCache: boolean;
 
         /**
         * Creates a new instance of the FontSettings object with the following default values.

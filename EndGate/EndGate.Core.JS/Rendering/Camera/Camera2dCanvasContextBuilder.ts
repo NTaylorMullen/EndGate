@@ -10,7 +10,7 @@ module EndGate.Rendering._ {
     export class Camera2dCanvasContextBuilder {
         private _camera: Camera2d;
         private _canvasCenter: Vector2d;
-        private _translated: bool;
+        private _translated: boolean;
         private _translationState: any[];
 
         /**

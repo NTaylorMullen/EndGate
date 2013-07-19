@@ -16,8 +16,8 @@ module EndGate.Graphics {
         private _frameSize: Size2d;
         private _frameCount: number;
         private _startOffset: Vector2d;
-        private _playing: bool;
-        private _repeating: bool;
+        private _playing: boolean;
+        private _repeating: boolean;
         private _currentFrame: number;
         private _framesPerRow: number;
         // The last frame time (in ms)
@@ -80,7 +80,7 @@ module EndGate.Graphics {
         /**
         * Determines if the animation is currently playing.
         */
-        public IsPlaying(): bool {
+        public IsPlaying(): boolean {
             return this._playing;
         }
 
@@ -92,8 +92,8 @@ module EndGate.Graphics {
         * Plays the animation.
         * @param repeat Whether to play the animation on repeat.
         */
-        public Play(repeat: bool): void;
-        public Play(repeat: bool = false): void {
+        public Play(repeat: boolean): void;
+        public Play(repeat: boolean = false): void {
             this._lastStepAt = new Date().getTime();
             this._repeating = repeat;
             this._playing = true;
@@ -143,8 +143,8 @@ module EndGate.Graphics {
         * Stops the animation.
         * @param resetFrame Whether to reset the current animation frame to 0.
         */
-        public Stop(resetFrame: bool): void;
-        public Stop(resetFrame: bool = true): void {
+        public Stop(resetFrame: boolean): void;
+        public Stop(resetFrame: boolean = true): void {
             this._playing = false;
             if (resetFrame) {
                 this.Reset();

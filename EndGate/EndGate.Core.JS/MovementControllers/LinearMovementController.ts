@@ -31,7 +31,7 @@ module EndGate.MovementControllers {
         * @param moveSpeed How fast the movement controller will move.
         * @param rotateWithMovements Whether the movables should rotate to face their moving direction, default is true (this cannot change after construction).
         */
-        constructor(movables: IMoveable[], moveSpeed: number, rotateWithMovements: bool);
+        constructor(movables: IMoveable[], moveSpeed: number, rotateWithMovements: boolean);
         /**
         * Creates a new instance of the LinearMovementController object..
         * @param movables Array of moveable objects that will be moved when the movement controller moves (this cannot change after construction).
@@ -39,8 +39,8 @@ module EndGate.MovementControllers {
         * @param rotateWithMovements Whether the movables should rotate to face their moving direction.  Default is true (this cannot change after construction).
         * @param multiDirectional Whether multiple movements can occur simultaneously, resulting in diagonal movements. Default is true (this cannot change after construction).
         */
-        constructor(movables: IMoveable[], moveSpeed: number, rotateWithMovements: bool, multiDirectional: bool);
-        constructor(movables: IMoveable[], moveSpeed: number, rotateWithMovements: bool = true, multiDirectional: bool = true) {
+        constructor(movables: IMoveable[], moveSpeed: number, rotateWithMovements: boolean, multiDirectional: boolean);
+        constructor(movables: IMoveable[], moveSpeed: number, rotateWithMovements: boolean = true, multiDirectional: boolean = true) {
             super(movables);
 
             this._moveSpeed = moveSpeed;
@@ -68,7 +68,7 @@ module EndGate.MovementControllers {
         * Determines if the movement controller is moving in the provided direction.
         * @param direction The direction to check.
         */
-        public IsMovingInDirection(direction: string): bool {
+        public IsMovingInDirection(direction: string): boolean {
             return this._moving[direction] || false;
         }
 
@@ -123,7 +123,7 @@ module EndGate.MovementControllers {
         * @param direction The direction to start or stop moving.
         * @param startMoving Whether the movement is starting or stopping.
         */
-        public Move(direction: string, startMoving: bool): void {
+        public Move(direction: string, startMoving: boolean): void {
             if (typeof this._moving[direction] !== "undefined") {
                 this._moving[direction] = startMoving;
                 this._velocityUpdater();

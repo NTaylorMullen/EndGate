@@ -229,7 +229,7 @@ module EndGate {
         * Determines whether this TimeSpan represents the same amount of time as the provided TimeSpan.
         * @param timeSpan The TimeSpan to compare the current TimeSpan to.
         */
-        public Equivalent(timeSpan: TimeSpan): bool {
+        public Equivalent(timeSpan: TimeSpan): boolean {
             return this.Milliseconds === timeSpan.Milliseconds;
         }
 
@@ -630,7 +630,7 @@ module EndGate {
         * Determines whether this Size2d has the same Width and Height of another Size2d.
         * @param size The Size2d to compare the current Size2d to.
         */
-        public Equivalent(size: Size2d): bool {
+        public Equivalent(size: Size2d): boolean {
             return this.Width === size.Width && this.Height === size.Height;
         }
 
@@ -998,7 +998,7 @@ module EndGate {
         /**
         * Determines whether this Vector2d's X and Y components are zero.
         */
-        public IsZero(): bool {
+        public IsZero(): boolean {
             return this.X === 0 && this.Y === 0;
         }
 
@@ -1013,7 +1013,7 @@ module EndGate {
         * Determines whether this Vector2d has the same X and Y of the provided Vector2d.
         * @param vector The Vector2d to compare the current Vector2d to.
         */
-        public Equivalent(vector: Vector2d): bool {
+        public Equivalent(vector: Vector2d): boolean {
             return this.X === vector.X && this.Y === vector.Y;
         }
 
@@ -1104,7 +1104,7 @@ module EndGate.Bounds.Abstractions {
         * Abstract: Determines if the current bounded object contains the provided Vector2d.
         * @param point A point.
         */
-        public ContainsPoint(point: Vector2d): bool {
+        public ContainsPoint(point: Vector2d): boolean {
             throw new Error("This method is abstract!");
         }
 
@@ -1112,7 +1112,7 @@ module EndGate.Bounds.Abstractions {
         * Abstract: Determines if the current bounded object completely contains the provided BoundingCircle.
         * @param point A circle to check containment on.
         */
-        public ContainsCircle(circle: BoundingCircle): bool {
+        public ContainsCircle(circle: BoundingCircle): boolean {
             throw new Error("This method is abstract!");
         }
 
@@ -1120,7 +1120,7 @@ module EndGate.Bounds.Abstractions {
         * Abstract: Determines if the current bounded object completely contains the provided BoundingRectangle.
         * @param point A rectangle to check containment on.
         */
-        public ContainsRectangle(rectangle: BoundingRectangle): bool {
+        public ContainsRectangle(rectangle: BoundingRectangle): boolean {
             throw new Error("This method is abstract!");
         }
 
@@ -1153,8 +1153,8 @@ module EndGate.Bounds.Abstractions {
         * Determines if the current bounded object intersects another bounded object.
         * @param obj Bounding object to check collision with.
         */
-        public Intersects(obj: Bounds2d): bool;        
-        public Intersects(obj: any): bool {
+        public Intersects(obj: Bounds2d): boolean;        
+        public Intersects(obj: any): boolean {
             if (obj._boundsType === "BoundingCircle") {
                 return this.IntersectsCircle(obj);
             }
@@ -1170,7 +1170,7 @@ module EndGate.Bounds.Abstractions {
         * Abstract: Determines if the current bounded object is intersecting the provided BoundingCircle.
         * @param circle BoundingCircle to check intersection with.
         */
-        public IntersectsCircle(circle: BoundingCircle): bool {
+        public IntersectsCircle(circle: BoundingCircle): boolean {
             throw new Error("This method is abstract!");
         }
 
@@ -1178,7 +1178,7 @@ module EndGate.Bounds.Abstractions {
         * Abstract: Determines if the current bounded object is intersecting the provided BoundingRectangle.
         * @param rectangle BoundingRectangle to check intersection with.
         */
-        public IntersectsRectangle(rectangle: BoundingRectangle): bool {
+        public IntersectsRectangle(rectangle: BoundingRectangle): boolean {
             throw new Error("This method is abstract!");
         }
     }
@@ -1200,7 +1200,7 @@ declare module EndGate.Rendering {
         /**
         * Gets or sets the Visible property.  The Visible property determines whether the renderable will be drawn to the game screen.
         */
-        Visible: bool;
+        Visible: boolean;
         /**
         * Draws the renderable to the provided canvas context
         * @param context The canvas context to draw the renderable onto.
@@ -1265,7 +1265,7 @@ module EndGate._.Loopers {
 
         public Fps: number;
         public TimeoutID: number;
-        public Active: bool;
+        public Active: boolean;
     }
 
 }
@@ -1279,7 +1279,7 @@ module EndGate._.Loopers {
     export class Looper implements ILooper {
         public _type: string = "Looper";
 
-        private _running: bool;
+        private _running: boolean;
         private _callbacks: TimedCallback[];
 
         constructor() {
@@ -1379,8 +1379,8 @@ module EndGate._.Loopers {
     export class RepaintLooper implements ILooper {
         public _type: string = "RepaintLooper";
 
-        private _running: bool;
-        private _callbacksModified: bool;
+        private _running: boolean;
+        private _callbacksModified: boolean;
         private _callbacks: LooperCallback[];
 
         constructor() {
@@ -1564,7 +1564,7 @@ module EndGate {
         public _type: string = "Event";
 
         private _actions: Array<Function>;
-        private _hasBindings: bool;
+        private _hasBindings: boolean;
 
         /**
         * Creates a new instance of the EventHandler object.
@@ -1603,7 +1603,7 @@ module EndGate {
         /**
         * Determines if the EventHandler has active bindings.
         */
-        public HasBindings(): bool {
+        public HasBindings(): boolean {
             return this._hasBindings;
         }
 
@@ -1830,7 +1830,7 @@ module EndGate.Bounds {
         * Determines if the current BoundingCircle is intersecting the provided BoundingCircle.
         * @param circle BoundingCircle to check intersection with.
         */
-        public IntersectsCircle(circle: BoundingCircle): bool {
+        public IntersectsCircle(circle: BoundingCircle): boolean {
             return this.Position.Distance(circle.Position).Length() < this.Radius + circle.Radius;
         }
 
@@ -1838,7 +1838,7 @@ module EndGate.Bounds {
         * Determines if the current BoundingCircle is intersecting the provided BoundingRectangle.
         * @param rectangle BoundingRectangle to check intersection with.
         */
-        public IntersectsRectangle(rectangle: BoundingRectangle): bool {
+        public IntersectsRectangle(rectangle: BoundingRectangle): boolean {
             var translated = (rectangle.Rotation === 0)
                                   ? this.Position
                                   : this.Position.RotateAround(rectangle.Position, -rectangle.Rotation);
@@ -1860,7 +1860,7 @@ module EndGate.Bounds {
         * Determines if the current BoundingCircle contains the provided Vector2d.
         * @param point A point.
         */
-        public ContainsPoint(point: Vector2d): bool {
+        public ContainsPoint(point: Vector2d): boolean {
             return this.Position.Distance(point).Magnitude() < this.Radius;
         }
 
@@ -1985,7 +1985,7 @@ module EndGate.Bounds {
         * Determines if the current BoundingRectangle is intersecting the provided BoundingCircle.
         * @param circle BoundingCircle to check intersection with.
         */
-        public IntersectsCircle(circle: BoundingCircle): bool {
+        public IntersectsCircle(circle: BoundingCircle): boolean {
             return circle.IntersectsRectangle(this);
         }
 
@@ -1993,7 +1993,7 @@ module EndGate.Bounds {
         * Determines if the current BoundingRectangle is intersecting the provided BoundingRectangle.
         * @param rectangle BoundingRectangle to check intersection with.
         */
-        public IntersectsRectangle(rectangle: BoundingRectangle): bool {
+        public IntersectsRectangle(rectangle: BoundingRectangle): boolean {
             if (this.Rotation === 0 && rectangle.Rotation === 0) {
                 var myTopLeft = this.TopLeft,
                     myBotRight = this.BotRight,
@@ -2028,7 +2028,7 @@ module EndGate.Bounds {
         * Determines if the current BoundingRectangle contains the provided Vector2d.
         * @param point A point.
         */
-        public ContainsPoint(point: Vector2d): bool {
+        public ContainsPoint(point: Vector2d): boolean {
             var savedRotation: number = this.Rotation;
 
             if (this.Rotation !== 0) {
@@ -2086,7 +2086,7 @@ module EndGate {
         public _type: string = "Event";
 
         private _actions: Array<(val: T) => any>;
-        private _hasBindings: bool;
+        private _hasBindings: boolean;
 
         /**
         * Creates a new instance of the EventHandler object.
@@ -2123,7 +2123,7 @@ module EndGate {
         /**
         * Determines if the EventHandler1 has active bindings.
         */
-        public HasBindings(): bool {
+        public HasBindings(): boolean {
             return this._hasBindings;
         }
 
@@ -2187,7 +2187,7 @@ module EndGate.Collision {
         public Bounds: Bounds.Abstractions.Bounds2d;
 
         private static _collidableIDs: number = 0;
-        private _disposed: bool;
+        private _disposed: boolean;
         private _onCollision: EventHandler1<Assets.CollisionData>;
         private _onDisposed: EventHandler1<Collidable>;
 
@@ -2221,7 +2221,7 @@ module EndGate.Collision {
         * Determines if the provided collidable is colliding with this Collidable.
         * @param other Collidable to check collision with.
         */
-        public IsCollidingWith(other: Collidable): bool {
+        public IsCollidingWith(other: Collidable): boolean {
             return this.Bounds.Intersects(other.Bounds);
         }
 
@@ -2587,7 +2587,7 @@ module EndGate {
         public _type: string = "Event";
 
         private _actions: Array<(val1: T, val2: U) => any>;
-        private _hasBindings: bool;
+        private _hasBindings: boolean;
 
         /**
         * Creates a new instance of the EventHandler2 object.
@@ -2624,7 +2624,7 @@ module EndGate {
         /**
         * Determines if the EventHandler2 has active bindings.
         */
-        public HasBindings(): bool {
+        public HasBindings(): boolean {
             return this._hasBindings;
         }
 
@@ -2662,7 +2662,7 @@ module EndGate.Collision {
         private _nonStaticCollidables: Collidable[];
         public _quadTree: Assets._.QuadTree;
         private _onCollision: EventHandler2<Collidable, Collidable>;
-        private _enabled: bool;
+        private _enabled: boolean;
 
         /**
         * Creates a new instance of CollisionManager.
@@ -2934,7 +2934,7 @@ module EndGate.Graphics.Abstractions {
         /**
         * Gets or sets the Visible property.  The Visible property determines whether the renderable will be drawn to the game screen.
         */
-        public Visible: bool;
+        public Visible: boolean;
 
         /**
         * Gets or sets the Position of the Graphic2d.  The Position determines where the graphic will be drawn on the screen.
@@ -2985,7 +2985,7 @@ module EndGate.Graphics.Abstractions {
         * Removes a child from the Graphic2d.  Returns a Boolean value indicating whether or not the child was able to be removed.
         * @param graphic Child to remove.
         */
-        public RemoveChild(graphic: Graphic2d): bool {
+        public RemoveChild(graphic: Graphic2d): boolean {
             var index = this._children.indexOf(graphic);
 
             if (index >= 0) {
@@ -3137,7 +3137,7 @@ module EndGate.Rendering {
         // These essentially are used to create a double buffer for rendering
         private _visibleCanvas: HTMLCanvasElement;
         private _visibleContext: CanvasRenderingContext2D;
-        private _disposed: bool;
+        private _disposed: boolean;
         private _onRendererSizeChange: EventHandler1<Size2d>;
 
         /**
@@ -3229,7 +3229,7 @@ module EndGate.Rendering._ {
     export class Camera2dCanvasContextBuilder {
         private _camera: Camera2d;
         private _canvasCenter: Vector2d;
-        private _translated: bool;
+        private _translated: boolean;
         private _translationState: any[];
 
         /**
@@ -3446,7 +3446,7 @@ module EndGate.Rendering {
         private _actors: Graphics.Abstractions.Graphic2d[];
         private _renderer: _.IRenderer;
         private _onDraw: (context: CanvasRenderingContext2D) => void;
-        private _disposed: bool;
+        private _disposed: boolean;
         private _camera: Camera2d;
         private _drawArea: HTMLCanvasElement;
 
@@ -3787,7 +3787,7 @@ module EndGate.Input {
             }
         }
 
-        private BuildEvent<T>(eventHandler: EventHandler1<T>, mouseEventBuilder: (mouseEvent: MouseEvent) => IMouseEvent, returnValue: bool = false): (e: MouseEvent) => void {
+        private BuildEvent<T>(eventHandler: EventHandler1<T>, mouseEventBuilder: (mouseEvent: MouseEvent) => IMouseEvent, returnValue: boolean = false): (e: MouseEvent) => void {
             return (e: MouseEvent) => {
                 if (eventHandler.HasBindings()) {
                     eventHandler.Trigger(mouseEventBuilder.call(this, e));
@@ -3847,7 +3847,7 @@ module EndGate._.Utilities {
         private _invoker: Function;
         private _action: Function;
 
-        constructor(action: Function, tripped: bool = false) {
+        constructor(action: Function, tripped: boolean = false) {
             this._invoker = NoopTripInvoker._noop;
             this._action = action;
 
@@ -3887,15 +3887,15 @@ module EndGate.Input.Assets {
         /**
         * Gets or sets the Ctrl component.  Represents if a Ctrl key is down.
         */
-        public Ctrl: bool;
+        public Ctrl: boolean;
         /**
         * Gets or sets the Alt component.  Represents if an Alt key is down.
         */
-        public Alt: bool;
+        public Alt: boolean;
         /**
         * Gets or sets the Shift component.  Represents if a Shift key is down.
         */
-        public Shift: bool;
+        public Shift: boolean;
 
         /**
         * Creates a new instance of the KeyboardModifiers object.
@@ -3903,7 +3903,7 @@ module EndGate.Input.Assets {
         * @param alt The initial value of the Alt component.
         * @param shift The initial value of the Shift component.
         */
-        constructor(ctrl: bool, alt: bool, shift: bool) {
+        constructor(ctrl: boolean, alt: boolean, shift: boolean) {
             this.Ctrl = ctrl;
             this.Alt = alt;
             this.Shift = shift;
@@ -3913,7 +3913,7 @@ module EndGate.Input.Assets {
         * Determines whether this KeyboardModifiers object has the same ctrl, alt, and shift states as the provided KeyboardModifiers.
         * @param modifier The KeyboardModifiers to compare the current modifiers to.
         */
-        public Equivalent(modifier: KeyboardModifiers): bool {
+        public Equivalent(modifier: KeyboardModifiers): boolean {
             return this.Ctrl === modifier.Ctrl && this.Alt === modifier.Alt && this.Shift === modifier.Shift;
         }
 
@@ -4034,7 +4034,7 @@ module EndGate.Input {
         * Determines if the KeyboardCommand matches the KeyboardCommandEvent
         * @param command The KeyboardCommand to check.
         */
-        public Matches(command: Assets.KeyboardCommand): bool {
+        public Matches(command: Assets.KeyboardCommand): boolean {
             return this.Key.toLowerCase() === command.Key.toLowerCase() && command.Modifiers.Equivalent(this.Modifiers);
         }
     }
@@ -4225,7 +4225,7 @@ module EndGate.Input {
             document.addEventListener("keyup", this.BuildKeyEvent(this._onUpCommands, this.OnKeyUp), false);
         }
 
-        private FocusingTextArea(ke: KeyboardEvent): bool {
+        private FocusingTextArea(ke: KeyboardEvent): boolean {
             var element;
 
             if (ke.target) {
@@ -4249,7 +4249,7 @@ module EndGate.Input {
         private BuildKeyEvent(store: { [id: number]: Assets.KeyboardCommand; }, eventHandler: EventHandler1<KeyboardCommandEvent>): (ke: KeyboardEvent) => void {
             return (ke: KeyboardEvent) => {
                 var keyboardCommandEvent: KeyboardCommandEvent,
-                    propogate: bool = true;
+                    propogate: boolean = true;
 
                 //Don't enable shortcut keys in Input, Text area fields
                 if (this.FocusingTextArea(ke)) {
@@ -4321,7 +4321,7 @@ module EndGate.Sound {
         /**
         * Gets or sets the repeat function of the AudioClip.
         */
-        public Repeat: bool;
+        public Repeat: boolean;
         /**
         * Gets or sets the volume level of the AudioClip. Value between 0-100.
         */
@@ -4329,7 +4329,7 @@ module EndGate.Sound {
         /**
         * Gets or sets the auto play functionality of the AudioClip.
         */
-        public AutoPlay: bool;
+        public AutoPlay: boolean;
         /**
         * Gets or sets the preload functionality of the AudioClip.  Values can be "auto", "metadata", or "none".
         */
@@ -4343,20 +4343,20 @@ module EndGate.Sound {
         * Creates a new instance of the AudioSettings object.
         * @param repeat Initial value of the repeat component.
         */
-        constructor(repeat: bool);
+        constructor(repeat: boolean);
         /**
         * Creates a new instance of the AudioSettings object.
         * @param repeat Initial value of the repeat component.
         * @param volume Initial value of the volume component. Value between 0-100.
         */
-        constructor(repeat: bool, volume: number);
+        constructor(repeat: boolean, volume: number);
         /**
         * Creates a new instance of the AudioSettings object.
         * @param repeat Initial value of the repeat component.
         * @param volume Initial value of the volume component. Value between 0-100.
         * @param autoplay Initial value of the auto play component.
         */
-        constructor(repeat: bool, volume: number, autoplay: bool);
+        constructor(repeat: boolean, volume: number, autoplay: boolean);
         /**
         * Creates a new instance of the AudioSettings object.
         * @param repeat Initial value of the repeat component.
@@ -4364,8 +4364,8 @@ module EndGate.Sound {
         * @param autoplay Initial value of the auto play component.
         * @param preload Initial value of the preload component.  Values can be "auto", "metadata", or "none".
         */
-        constructor(repeat: bool, volume: number, autoplay: bool, preload: string);
-        constructor(repeat: bool = false, volume: number = 100, autoplay: bool = false, preload: string = "auto") {
+        constructor(repeat: boolean, volume: number, autoplay: boolean, preload: string);
+        constructor(repeat: boolean = false, volume: number = 100, autoplay: boolean = false, preload: string = "auto") {
             this.Repeat = repeat;
             this.Volume = volume;
             this.AutoPlay = autoplay;
@@ -4455,14 +4455,14 @@ module EndGate.Sound {
         /**
         * Determines if the AudioClip is currently playing.
         */
-        public IsPlaying(): bool {
+        public IsPlaying(): boolean {
             return !this._audio.paused;
         }
 
         /**
         * Determines if the AudioClip has completed.
         */
-        public IsComplete(): bool {
+        public IsComplete(): boolean {
             return this._audio.ended;
         }
 
@@ -4929,19 +4929,19 @@ module EndGate.MovementControllers.Assets {
         /**
         * Indicates whether the object is moving left.
         */
-        public Left: bool;
+        public Left: boolean;
         /**
         * Indicates whether the object is moving right.
         */
-        public Right: bool;
+        public Right: boolean;
         /**
         * Indicates whether the object is moving up.
         */
-        public Up: bool;
+        public Up: boolean;
         /**
         * Indicates whether the object is moving down.
         */
-        public Down: bool;
+        public Down: boolean;
 
         /**
         * Creates a new instance of the LinearDirection object with all directions= indicators initially set to false.
@@ -4969,7 +4969,7 @@ declare module EndGate.MovementControllers {
         /**
         * Whether or not the move started or stopped.
         */
-        StartMoving: bool;
+        StartMoving: boolean;
     }
 
 }
@@ -4997,7 +4997,7 @@ module EndGate.MovementControllers.Abstractions {
         * Gets or sets the rotation of the MovementController
         */
         public Rotation: number;
-        public _frozen: bool;
+        public _frozen: boolean;
         private _moveables: IMoveable[];
 
         /**
@@ -5030,7 +5030,7 @@ module EndGate.MovementControllers.Abstractions {
         /**
         * Determines if the MovementController is moving.  Frozen MovementControllers are not considered moving.
         */
-        public IsMoving(): bool {
+        public IsMoving(): boolean {
             return !this._frozen && !this.Velocity.IsZero();
         }
 
@@ -5082,7 +5082,7 @@ module EndGate.MovementControllers {
         * @param moveSpeed How fast the movement controller will move.
         * @param rotateWithMovements Whether the movables should rotate to face their moving direction, default is true (this cannot change after construction).
         */
-        constructor(movables: IMoveable[], moveSpeed: number, rotateWithMovements: bool);
+        constructor(movables: IMoveable[], moveSpeed: number, rotateWithMovements: boolean);
         /**
         * Creates a new instance of the LinearMovementController object..
         * @param movables Array of moveable objects that will be moved when the movement controller moves (this cannot change after construction).
@@ -5090,8 +5090,8 @@ module EndGate.MovementControllers {
         * @param rotateWithMovements Whether the movables should rotate to face their moving direction.  Default is true (this cannot change after construction).
         * @param multiDirectional Whether multiple movements can occur simultaneously, resulting in diagonal movements. Default is true (this cannot change after construction).
         */
-        constructor(movables: IMoveable[], moveSpeed: number, rotateWithMovements: bool, multiDirectional: bool);
-        constructor(movables: IMoveable[], moveSpeed: number, rotateWithMovements: bool = true, multiDirectional: bool = true) {
+        constructor(movables: IMoveable[], moveSpeed: number, rotateWithMovements: boolean, multiDirectional: boolean);
+        constructor(movables: IMoveable[], moveSpeed: number, rotateWithMovements: boolean = true, multiDirectional: boolean = true) {
             super(movables);
 
             this._moveSpeed = moveSpeed;
@@ -5119,7 +5119,7 @@ module EndGate.MovementControllers {
         * Determines if the movement controller is moving in the provided direction.
         * @param direction The direction to check.
         */
-        public IsMovingInDirection(direction: string): bool {
+        public IsMovingInDirection(direction: string): boolean {
             return this._moving[direction] || false;
         }
 
@@ -5174,7 +5174,7 @@ module EndGate.MovementControllers {
         * @param direction The direction to start or stop moving.
         * @param startMoving Whether the movement is starting or stopping.
         */
-        public Move(direction: string, startMoving: bool): void {
+        public Move(direction: string, startMoving: boolean): void {
             if (typeof this._moving[direction] !== "undefined") {
                 this._moving[direction] = startMoving;
                 this._velocityUpdater();
@@ -5251,7 +5251,7 @@ module EndGate.InputControllers {
     */
     export class DirectionalInputController {
         private _keyboard: Input.KeyboardHandler;
-        private _onMove: (direction: string, startMoving: bool) => void;
+        private _onMove: (direction: string, startMoving: boolean) => void;
         private _directions: MovementControllers.Assets.LinearDirections;
 
         /**
@@ -5259,7 +5259,7 @@ module EndGate.InputControllers {
         * @param keyboard A keyboard handler in order to bind directional events.
         * @param onMove The function to trigger when the user attempts to perform a move.  Passes the direction ("Left", "Right", "Up", "Down") and whether the movement was started or stopped.
         */
-        constructor(keyboard: Input.KeyboardHandler, onMove: (direction: string, startMoving: bool) => void);
+        constructor(keyboard: Input.KeyboardHandler, onMove: (direction: string, startMoving: boolean) => void);
         /**
         * Creates a new instance of the DirectionalInputController object with custom key controls.
         * @param keyboard A keyboard handler in order to bind directional events.
@@ -5269,8 +5269,8 @@ module EndGate.InputControllers {
         * @param downKeys Array of keys to trigger a "Down" movement.  Default is ["s", "Down"].
         * @param leftKeys Array of keys to trigger a "Left" movement.  Default is ["a", "Left"].
         */
-        constructor(keyboard: Input.KeyboardHandler, onMove: (direction: string, startMoving: bool) => void , upKeys: string[], rightKeys: string[], downKeys: string[], leftKeys: string[]);
-        constructor(keyboard: Input.KeyboardHandler, onMove: (direction: string, startMoving: bool) => void, upKeys: string[] = ["w", "Up"], rightKeys: string[] = ["d", "Right"], downKeys: string[] = ["s", "Down"], leftKeys: string[] = ["a", "Left"]) {
+        constructor(keyboard: Input.KeyboardHandler, onMove: (direction: string, startMoving: boolean) => void , upKeys: string[], rightKeys: string[], downKeys: string[], leftKeys: string[]);
+        constructor(keyboard: Input.KeyboardHandler, onMove: (direction: string, startMoving: boolean) => void, upKeys: string[] = ["w", "Up"], rightKeys: string[] = ["d", "Right"], downKeys: string[] = ["s", "Down"], leftKeys: string[] = ["a", "Left"]) {
             this._keyboard = keyboard;
             this._onMove = onMove;
             this._directions = new MovementControllers.Assets.LinearDirections();
@@ -5285,7 +5285,7 @@ module EndGate.InputControllers {
             this.BindKeys(leftKeys, "OnCommandUp", "Left", false);
         }
 
-        private BindKeys(keyList: string[], bindingAction: string, direction: string, startMoving: bool): void {
+        private BindKeys(keyList: string[], bindingAction: string, direction: string, startMoving: boolean): void {
             for (var i = 0; i < keyList.length; i++) {
                 this._keyboard[bindingAction](keyList[i], () => {
                     if (this._directions[direction] != startMoving) {
@@ -5369,7 +5369,7 @@ module EndGate.Graphics.Assets {
     export class FontSettings {
         private _cachedState: { [property: string]: any; };
         private _cachedFont: string;
-        private _refreshCache: bool;
+        private _refreshCache: boolean;
 
         /**
         * Creates a new instance of the FontSettings object with the following default values.
@@ -5480,7 +5480,7 @@ module EndGate.Graphics {
         private _fontSettings: Assets.FontSettings;
         private _text: string;
         private _stroker: _.Utilities.NoopTripInvoker;
-        private _recalculateBoundsSize: bool;
+        private _recalculateBoundsSize: boolean;
 
         // For GetDrawBounds
         private _drawBounds: Bounds.BoundingRectangle;
@@ -5744,7 +5744,7 @@ module EndGate.Graphics.Assets {
         public Source: HTMLImageElement;
 
         private _size: Size2d;
-        private _loaded: bool;
+        private _loaded: boolean;
         private _imageLocation;
         private _onLoaded: EventHandler1<ImageSource>;
 
@@ -5817,7 +5817,7 @@ module EndGate.Graphics.Assets {
         /**
         * Determines if the ImageSource has been loaded.
         */
-        public Loaded(): bool {
+        public Loaded(): boolean {
             return this._loaded;
         }
 
@@ -5934,8 +5934,8 @@ module EndGate.Graphics {
         private _frameSize: Size2d;
         private _frameCount: number;
         private _startOffset: Vector2d;
-        private _playing: bool;
-        private _repeating: bool;
+        private _playing: boolean;
+        private _repeating: boolean;
         private _currentFrame: number;
         private _framesPerRow: number;
         // The last frame time (in ms)
@@ -5998,7 +5998,7 @@ module EndGate.Graphics {
         /**
         * Determines if the animation is currently playing.
         */
-        public IsPlaying(): bool {
+        public IsPlaying(): boolean {
             return this._playing;
         }
 
@@ -6010,8 +6010,8 @@ module EndGate.Graphics {
         * Plays the animation.
         * @param repeat Whether to play the animation on repeat.
         */
-        public Play(repeat: bool): void;
-        public Play(repeat: bool = false): void {
+        public Play(repeat: boolean): void;
+        public Play(repeat: boolean = false): void {
             this._lastStepAt = new Date().getTime();
             this._repeating = repeat;
             this._playing = true;
@@ -6061,8 +6061,8 @@ module EndGate.Graphics {
         * Stops the animation.
         * @param resetFrame Whether to reset the current animation frame to 0.
         */
-        public Stop(resetFrame: bool): void;
-        public Stop(resetFrame: bool = true): void {
+        public Stop(resetFrame: boolean): void;
+        public Stop(resetFrame: boolean = true): void {
             this._playing = false;
             if (resetFrame) {
                 this.Reset();
@@ -6124,8 +6124,8 @@ module EndGate.Graphics.Abstractions {
     */
     export class Shape extends Graphic2d {
         public _type: string = "Shape";
-        private _fill: bool;
-        private _stroke: bool;
+        private _fill: boolean;
+        private _stroke: boolean;
 
         /**
         * Should only ever be called by derived classes.
@@ -6609,7 +6609,7 @@ module EndGate.Graphics {
         /**
         * Gets or sets the DrawGridLines property.  Indicates whether the grids column and row lines will be drawn.
         */
-        public DrawGridLines: bool;
+        public DrawGridLines: boolean;
 
         private _size: Size2d;
         private _tileSize: Size2d;
@@ -6640,7 +6640,7 @@ module EndGate.Graphics {
         * @param tileHeight The height of the grid tiles (this cannot change after construction).
         * @param drawGridLines Initial value for DrawGridLines.
         */
-        constructor(x: number, y: number, rows: number, columns: number, tileWidth: number, tileHeight: number, drawGridLines: bool);
+        constructor(x: number, y: number, rows: number, columns: number, tileWidth: number, tileHeight: number, drawGridLines: boolean);
         /**
         * Creates a new instance of the Grid object.
         * @param x Initial horizontal location of the grid.
@@ -6652,8 +6652,8 @@ module EndGate.Graphics {
         * @param drawGridLines Initial value for DrawGridLines.
         * @param gridLineColor Initial grid line color (only useful if drawGridLines is true); 
         */
-        constructor(x: number, y: number, rows: number, columns: number, tileWidth: number, tileHeight: number, drawGridLines: bool, gridLineColor: string);
-        constructor(x: number, y: number, rows: number, columns: number, tileWidth: number, tileHeight: number, drawGridLines: bool = false, gridLineColor: string = "gray") {
+        constructor(x: number, y: number, rows: number, columns: number, tileWidth: number, tileHeight: number, drawGridLines: boolean, gridLineColor: string);
+        constructor(x: number, y: number, rows: number, columns: number, tileWidth: number, tileHeight: number, drawGridLines: boolean = false, gridLineColor: string = "gray") {
             super(new Vector2d(x, y));
             var halfSize: Size2d,
                 topLeft: Vector2d,
@@ -7059,11 +7059,11 @@ module EndGate.Graphics {
             return new Vector2d(column * this._tileSize.Width - this._size.HalfWidth + this._tileSize.HalfWidth, row * this._tileSize.Height - this._size.HalfHeight + this._tileSize.HalfHeight);
         }
 
-        private ValidRow(row: number): bool {
+        private ValidRow(row: number): boolean {
             return row >= 0 && row < this._rows;
         }
 
-        private ValidColumn(column: number): bool {
+        private ValidColumn(column: number): boolean {
             return column >= 0 && column < this._columns;
         }
     }
@@ -7300,7 +7300,7 @@ module EndGate {
         * Determines whether this Matrix2x2 has the same row and column values as the provided Matrix2x2.
         * @param matrix The Matrix2x2 to compare the current Matrix2x2 to.
         */
-        public Equivalent(matrix: Matrix2x2): bool {
+        public Equivalent(matrix: Matrix2x2): boolean {
             return this.Values[0][0] === matrix.Values[0][0] && this.Values[0][1] === matrix.Values[0][1] && this.Values[1][0] === matrix.Values[1][0] && this.Values[1][1] === matrix.Values[1][1];
         }
 
@@ -7383,7 +7383,7 @@ module EndGate.Map {
     */
     export class SquareTileMap extends TileMap {
         private _grid: Graphics.Grid;
-        private _staticMap: bool;
+        private _staticMap: boolean;
         private _mapCache: HTMLCanvasElement;
 
         /**
@@ -7406,7 +7406,7 @@ module EndGate.Map {
         * @param mappings A two dimensional array numbers that map directly to the resources array to define the square tile map (this cannot change after construction).
         * @param staticMap Whether or not image tiles will change throughout the SquareTileMap's lifetime, defaults to true and cannot change after construction.
         */
-        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.Assets.ImageSource[], mappings: number[][], staticMap: bool);
+        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.Assets.ImageSource[], mappings: number[][], staticMap: boolean);
         /**
         * Creates a new instance of the SquareTileMap object.
         * @param x Initial horizontal location of the tile map.
@@ -7418,8 +7418,8 @@ module EndGate.Map {
         * @param staticMap Whether or not image tiles will change throughout the SquareTileMap's lifetime, defaults to true and cannot change after construction.
         * @param drawGridLines Whether or not to draw the tile maps grid lines. Useful when trying to pinpoint specific tiles (this cannot change after construction).
         */
-        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.Assets.ImageSource[], mappings: number[][], staticMap: bool, drawGridLines: bool);
-        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.Assets.ImageSource[], mappings: number[][], staticMap: bool = true, drawGridLines: bool = false) {
+        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.Assets.ImageSource[], mappings: number[][], staticMap: boolean, drawGridLines: boolean);
+        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.Assets.ImageSource[], mappings: number[][], staticMap: boolean = true, drawGridLines: boolean = false) {
             super(x, y, resources);
 
             this._grid = new Graphics.Grid(0, 0, mappings.length, mappings[0].length, tileWidth, tileHeight,drawGridLines);
@@ -8499,7 +8499,7 @@ module EndGate {
         public _type: string = "Event";
 
         private _actions: Array<(val1: T, val2: U, val3: V) => any>;
-        private _hasBindings: bool;
+        private _hasBindings: boolean;
 
         /**
         * Creates a new instance of the EventHandler3 object.
@@ -8536,7 +8536,7 @@ module EndGate {
         /**
         * Determines if the EventHandler3 has active bindings.
         */
-        public HasBindings(): bool {
+        public HasBindings(): boolean {
             return this._hasBindings;
         }
 

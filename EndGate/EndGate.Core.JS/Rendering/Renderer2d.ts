@@ -17,7 +17,7 @@ module EndGate.Rendering {
         // These essentially are used to create a double buffer for rendering
         private _visibleCanvas: HTMLCanvasElement;
         private _visibleContext: CanvasRenderingContext2D;
-        private _disposed: bool;
+        private _disposed: boolean;
         private _onRendererSizeChange: EventHandler1<Size2d>;
 
         /**

@@ -21,7 +21,7 @@ module EndGate.MovementControllers.Abstractions {
         * Gets or sets the rotation of the MovementController
         */
         public Rotation: number;
-        public _frozen: bool;
+        public _frozen: boolean;
         private _moveables: IMoveable[];
 
         /**
@@ -54,7 +54,7 @@ module EndGate.MovementControllers.Abstractions {
         /**
         * Determines if the MovementController is moving.  Frozen MovementControllers are not considered moving.
         */
-        public IsMoving(): bool {
+        public IsMoving(): boolean {
             return !this._frozen && !this.Velocity.IsZero();
         }
 

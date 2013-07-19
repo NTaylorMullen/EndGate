@@ -22,7 +22,7 @@ module EndGate.Graphics.Abstractions {
         /**
         * Gets or sets the Visible property.  The Visible property determines whether the renderable will be drawn to the game screen.
         */
-        public Visible: bool;
+        public Visible: boolean;
 
         /**
         * Gets or sets the Position of the Graphic2d.  The Position determines where the graphic will be drawn on the screen.
@@ -73,7 +73,7 @@ module EndGate.Graphics.Abstractions {
         * Removes a child from the Graphic2d.  Returns a Boolean value indicating whether or not the child was able to be removed.
         * @param graphic Child to remove.
         */
-        public RemoveChild(graphic: Graphic2d): bool {
+        public RemoveChild(graphic: Graphic2d): boolean {
             var index = this._children.indexOf(graphic);
 
             if (index >= 0) {

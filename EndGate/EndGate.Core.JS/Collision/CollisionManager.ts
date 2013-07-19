@@ -18,7 +18,7 @@ module EndGate.Collision {
         private _nonStaticCollidables: Collidable[];
         public _quadTree: Assets._.QuadTree;
         private _onCollision: EventHandler2<Collidable, Collidable>;
-        private _enabled: bool;
+        private _enabled: boolean;
 
         /**
         * Creates a new instance of CollisionManager.

@@ -96,7 +96,7 @@ module Camera {
         }
 
         // Helper function to bind keys to the moving direction flags
-        private BindKeys(keyList: string[], bindingAction: string, direction: string, directionValue: bool): void {
+        private BindKeys(keyList: string[], bindingAction: string, direction: string, directionValue: boolean): void {
             for (var i = 0; i < keyList.length; i++) {
                 this.Input.Keyboard[bindingAction](keyList[i], () => {
                     this._movingDirection[direction] = directionValue;

@@ -14,7 +14,7 @@ module EndGate.Graphics {
         /**
         * Gets or sets the DrawGridLines property.  Indicates whether the grids column and row lines will be drawn.
         */
-        public DrawGridLines: bool;
+        public DrawGridLines: boolean;
 
         private _size: Size2d;
         private _tileSize: Size2d;
@@ -45,7 +45,7 @@ module EndGate.Graphics {
         * @param tileHeight The height of the grid tiles (this cannot change after construction).
         * @param drawGridLines Initial value for DrawGridLines.
         */
-        constructor(x: number, y: number, rows: number, columns: number, tileWidth: number, tileHeight: number, drawGridLines: bool);
+        constructor(x: number, y: number, rows: number, columns: number, tileWidth: number, tileHeight: number, drawGridLines: boolean);
         /**
         * Creates a new instance of the Grid object.
         * @param x Initial horizontal location of the grid.
@@ -57,8 +57,8 @@ module EndGate.Graphics {
         * @param drawGridLines Initial value for DrawGridLines.
         * @param gridLineColor Initial grid line color (only useful if drawGridLines is true); 
         */
-        constructor(x: number, y: number, rows: number, columns: number, tileWidth: number, tileHeight: number, drawGridLines: bool, gridLineColor: string);
-        constructor(x: number, y: number, rows: number, columns: number, tileWidth: number, tileHeight: number, drawGridLines: bool = false, gridLineColor: string = "gray") {
+        constructor(x: number, y: number, rows: number, columns: number, tileWidth: number, tileHeight: number, drawGridLines: boolean, gridLineColor: string);
+        constructor(x: number, y: number, rows: number, columns: number, tileWidth: number, tileHeight: number, drawGridLines: boolean = false, gridLineColor: string = "gray") {
             super(new Vector2d(x, y));
             var halfSize: Size2d,
                 topLeft: Vector2d,
@@ -464,11 +464,11 @@ module EndGate.Graphics {
             return new Vector2d(column * this._tileSize.Width - this._size.HalfWidth + this._tileSize.HalfWidth, row * this._tileSize.Height - this._size.HalfHeight + this._tileSize.HalfHeight);
         }
 
-        private ValidRow(row: number): bool {
+        private ValidRow(row: number): boolean {
             return row >= 0 && row < this._rows;
         }
 
-        private ValidColumn(column: number): bool {
+        private ValidColumn(column: number): boolean {
             return column >= 0 && column < this._columns;
         }
     }

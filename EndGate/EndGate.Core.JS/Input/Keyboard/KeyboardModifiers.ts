@@ -9,15 +9,15 @@ module EndGate.Input.Assets {
         /**
         * Gets or sets the Ctrl component.  Represents if a Ctrl key is down.
         */
-        public Ctrl: bool;
+        public Ctrl: boolean;
         /**
         * Gets or sets the Alt component.  Represents if an Alt key is down.
         */
-        public Alt: bool;
+        public Alt: boolean;
         /**
         * Gets or sets the Shift component.  Represents if a Shift key is down.
         */
-        public Shift: bool;
+        public Shift: boolean;
 
         /**
         * Creates a new instance of the KeyboardModifiers object.
@@ -25,7 +25,7 @@ module EndGate.Input.Assets {
         * @param alt The initial value of the Alt component.
         * @param shift The initial value of the Shift component.
         */
-        constructor(ctrl: bool, alt: bool, shift: bool) {
+        constructor(ctrl: boolean, alt: boolean, shift: boolean) {
             this.Ctrl = ctrl;
             this.Alt = alt;
             this.Shift = shift;
@@ -35,7 +35,7 @@ module EndGate.Input.Assets {
         * Determines whether this KeyboardModifiers object has the same ctrl, alt, and shift states as the provided KeyboardModifiers.
         * @param modifier The KeyboardModifiers to compare the current modifiers to.
         */
-        public Equivalent(modifier: KeyboardModifiers): bool {
+        public Equivalent(modifier: KeyboardModifiers): boolean {
             return this.Ctrl === modifier.Ctrl && this.Alt === modifier.Alt && this.Shift === modifier.Shift;
         }
 

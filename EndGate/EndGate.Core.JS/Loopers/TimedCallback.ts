@@ -16,7 +16,7 @@ module EndGate._.Loopers {
 
         public Fps: number;
         public TimeoutID: number;
-        public Active: bool;
+        public Active: boolean;
     }
 
 }

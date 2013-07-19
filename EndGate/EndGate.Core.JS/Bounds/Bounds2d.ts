@@ -49,7 +49,7 @@ module EndGate.Bounds.Abstractions {
         * Abstract: Determines if the current bounded object contains the provided Vector2d.
         * @param point A point.
         */
-        public ContainsPoint(point: Vector2d): bool {
+        public ContainsPoint(point: Vector2d): boolean {
             throw new Error("This method is abstract!");
         }
 
@@ -57,7 +57,7 @@ module EndGate.Bounds.Abstractions {
         * Abstract: Determines if the current bounded object completely contains the provided BoundingCircle.
         * @param point A circle to check containment on.
         */
-        public ContainsCircle(circle: BoundingCircle): bool {
+        public ContainsCircle(circle: BoundingCircle): boolean {
             throw new Error("This method is abstract!");
         }
 
@@ -65,7 +65,7 @@ module EndGate.Bounds.Abstractions {
         * Abstract: Determines if the current bounded object completely contains the provided BoundingRectangle.
         * @param point A rectangle to check containment on.
         */
-        public ContainsRectangle(rectangle: BoundingRectangle): bool {
+        public ContainsRectangle(rectangle: BoundingRectangle): boolean {
             throw new Error("This method is abstract!");
         }
 
@@ -98,8 +98,8 @@ module EndGate.Bounds.Abstractions {
         * Determines if the current bounded object intersects another bounded object.
         * @param obj Bounding object to check collision with.
         */
-        public Intersects(obj: Bounds2d): bool;        
-        public Intersects(obj: any): bool {
+        public Intersects(obj: Bounds2d): boolean;        
+        public Intersects(obj: any): boolean {
             if (obj._boundsType === "BoundingCircle") {
                 return this.IntersectsCircle(obj);
             }
@@ -115,7 +115,7 @@ module EndGate.Bounds.Abstractions {
         * Abstract: Determines if the current bounded object is intersecting the provided BoundingCircle.
         * @param circle BoundingCircle to check intersection with.
         */
-        public IntersectsCircle(circle: BoundingCircle): bool {
+        public IntersectsCircle(circle: BoundingCircle): boolean {
             throw new Error("This method is abstract!");
         }
 
@@ -123,7 +123,7 @@ module EndGate.Bounds.Abstractions {
         * Abstract: Determines if the current bounded object is intersecting the provided BoundingRectangle.
         * @param rectangle BoundingRectangle to check intersection with.
         */
-        public IntersectsRectangle(rectangle: BoundingRectangle): bool {
+        public IntersectsRectangle(rectangle: BoundingRectangle): boolean {
             throw new Error("This method is abstract!");
         }
     }

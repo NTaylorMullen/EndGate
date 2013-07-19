@@ -334,7 +334,7 @@ module EndGate {
         /**
         * Determines whether this Vector2d's X and Y components are zero.
         */
-        public IsZero(): bool {
+        public IsZero(): boolean {
             return this.X === 0 && this.Y === 0;
         }
 
@@ -349,7 +349,7 @@ module EndGate {
         * Determines whether this Vector2d has the same X and Y of the provided Vector2d.
         * @param vector The Vector2d to compare the current Vector2d to.
         */
-        public Equivalent(vector: Vector2d): bool {
+        public Equivalent(vector: Vector2d): boolean {
             return this.X === vector.X && this.Y === vector.Y;
         }
 

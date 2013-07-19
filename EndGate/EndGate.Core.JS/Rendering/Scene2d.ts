@@ -17,7 +17,7 @@ module EndGate.Rendering {
         private _actors: Graphics.Abstractions.Graphic2d[];
         private _renderer: _.IRenderer;
         private _onDraw: (context: CanvasRenderingContext2D) => void;
-        private _disposed: bool;
+        private _disposed: boolean;
         private _camera: Camera2d;
         private _drawArea: HTMLCanvasElement;
 

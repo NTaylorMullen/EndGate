@@ -7,7 +7,7 @@ module EndGate._.Loopers {
     export class Looper implements ILooper {
         public _type: string = "Looper";
 
-        private _running: bool;
+        private _running: boolean;
         private _callbacks: TimedCallback[];
 
         constructor() {

@@ -71,14 +71,14 @@ module EndGate.Sound {
         /**
         * Determines if the AudioClip is currently playing.
         */
-        public IsPlaying(): bool {
+        public IsPlaying(): boolean {
             return !this._audio.paused;
         }
 
         /**
         * Determines if the AudioClip has completed.
         */
-        public IsComplete(): bool {
+        public IsComplete(): boolean {
             return this._audio.ended;
         }
 
