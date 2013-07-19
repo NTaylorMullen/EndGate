@@ -68,6 +68,18 @@
     <TypeScriptCompile Include="Tweening\Functions\ITweeningFunction.ts" />
     <TypeScriptCompile Include="Interfaces\ICloneable.ts" />
     <TypeScriptCompile Include="Extensions\NumberExtensions.ts" />
+    <TypeScriptCompile Include="Collision\Assets\QuadTree.ts" />
+    <Content Include="Collision\Assets\QuadTree.js">
+      <DependentUpon>QuadTree.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Collision\CollisionConfiguration.ts" />
+    <TypeScriptCompile Include="Collision\Assets\QuadTreeNode.ts" />
+    <Content Include="Collision\Assets\QuadTreeNode.js">
+      <DependentUpon>QuadTreeNode.ts</DependentUpon>
+    </Content>
+    <Content Include="Collision\CollisionConfiguration.js">
+      <DependentUpon>CollisionConfiguration.ts</DependentUpon>
+    </Content>
     <Content Include="Extensions\NumberExtensions.js">
       <DependentUpon>NumberExtensions.ts</DependentUpon>
     </Content>
