@@ -10,11 +10,9 @@ var EndGate;
             var CollisionData = (function () {
                 /**
                 * Creates a new instance of the CollisionData object.
-                * @param at Initial value of the At component of CollisionData.
                 * @param w Initial value of the With component of CollisionData.
                 */
-                function CollisionData(at, w) {
-                    this.At = at;
+                function CollisionData(w) {
                     this.With = w;
                 }
                 return CollisionData;
