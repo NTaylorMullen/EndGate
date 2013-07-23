@@ -107,17 +107,7 @@ module EndGate.Graphics {
         }
         public set LineCap(cap: string) {
             this._State.LineCap = cap;
-        }     
-        
-        /**
-        * Gets or sets the current opacity.  Value is between 0 and 1.
-        */
-        public get Opacity(): number {
-            return this._State.GlobalAlpha;
         }
-        public set Opacity(alpha: number) {
-            this._State.GlobalAlpha = alpha;
-        }   
 
         /**
         * Draws the line onto the given context.  If this Line2d is part of a scene the Draw function will be called automatically.

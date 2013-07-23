@@ -25,20 +25,6 @@ var EndGate;
                 this.Image = image;
                 this.Size = new EndGate.Size2d(width, height);
             }
-            Object.defineProperty(Sprite2d.prototype, "Opacity", {
-                get: /**
-                * Gets or sets the current opacity.  Value is between 0 and 1.
-                */
-                function () {
-                    return this._State.GlobalAlpha;
-                },
-                set: function (alpha) {
-                    this._State.GlobalAlpha = alpha;
-                },
-                enumerable: true,
-                configurable: true
-            });
-
             /**
             * Draws the sprite onto the given context.  If this sprite is part of a scene the Draw function will be called automatically.
             * @param context The canvas context to draw the sprite onto.

@@ -123,16 +123,6 @@ module EndGate.Graphics {
         }
 
         /**
-        * Gets or sets the current opacity.  Value is between 0 and 1.
-        */
-        public get Opacity(): number {
-            return this._State.GlobalAlpha;
-        }
-        public set Opacity(alpha: number) {
-            this._State.GlobalAlpha = alpha;
-        }
-
-        /**
         * Gets the Text2d's FontSetting's.
         */
         public get FontSettings(): Assets.FontSettings {

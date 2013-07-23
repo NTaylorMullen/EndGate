@@ -136,16 +136,6 @@ module EndGate.Graphics {
         public get Columns(): number {
             return this._columns;
         }
-
-        /**
-        * Gets or sets the current opacity.  Value is between 0 and 1.
-        */
-        public get Opacity(): number {
-            return this._State.GlobalAlpha;
-        }
-        public set Opacity(alpha: number) {
-            this._State.GlobalAlpha = alpha;
-        }
         
         /**
         * Fills a tile with the provided graphic.

@@ -1,9 +1,11 @@
 /// <reference path="../Interfaces/ITyped.ts" />
 /// <reference path="../Interfaces/IMoveable.ts" />
+/// <reference path="../Interfaces/IDisposable.ts" />
 /// <reference path="../Rendering/IRenderable.ts" />
 /// <reference path="../Assets/Sizes/Size2d.ts" />
 /// <reference path="../Assets/Vectors/Vector2d.ts" />
 /// <reference path="../Bounds/Bounds2d.ts" />
+/// <reference path="../Utilities/EventHandler1.ts" />
 /// <reference path="Graphic2dState.ts" />
 
 module EndGate.Graphics.Abstractions {
@@ -57,6 +59,16 @@ module EndGate.Graphics.Abstractions {
         */
         public get OnDisposed(): EventHandler1<Graphic2d> {
             return this._onDisposed;
+        }
+
+        /**
+        * Gets or sets the current opacity.  Value is between 0 and 1.
+        */
+        public get Opacity(): number {
+            return this._State.GlobalAlpha;
+        }
+        public set Opacity(alpha: number) {
+            this._State.GlobalAlpha = alpha;
         }
 
         /**

@@ -102,20 +102,6 @@ var EndGate;
                 configurable: true
             });
 
-            Object.defineProperty(Line2d.prototype, "Opacity", {
-                get: /**
-                * Gets or sets the current opacity.  Value is between 0 and 1.
-                */
-                function () {
-                    return this._State.GlobalAlpha;
-                },
-                set: function (alpha) {
-                    this._State.GlobalAlpha = alpha;
-                },
-                enumerable: true,
-                configurable: true
-            });
-
             /**
             * Draws the line onto the given context.  If this Line2d is part of a scene the Draw function will be called automatically.
             * @param context The canvas context to draw the line onto.

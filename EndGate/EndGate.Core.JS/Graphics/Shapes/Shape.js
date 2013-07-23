@@ -127,20 +127,6 @@ var EndGate;
                     configurable: true
                 });
 
-                Object.defineProperty(Shape.prototype, "Opacity", {
-                    get: /**
-                    * Gets or sets the current opacity.  Value is between 0 and 1.
-                    */
-                    function () {
-                        return this._State.GlobalAlpha;
-                    },
-                    set: function (alpha) {
-                        this._State.GlobalAlpha = alpha;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-
                 /**
                 * Sets the current borders thickness and color.
                 * @param thickness The new border thickness in pixels.
