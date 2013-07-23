@@ -1247,6 +1247,10 @@ declare module EndGate.Graphics.Abstractions {
         */
         public OnDisposed : EndGate.EventHandler1<Graphic2d>;
         /**
+        * Gets or sets the current opacity.  Value is between 0 and 1.
+        */
+        public Opacity : number;
+        /**
         * Adds a child to the Graphic2d.  Children are drawn with relative positions to the parent Graphic2d.  Children
         * of a Graphic2d should not be added to the Scene, parent Graphic2d's are responsible for drawing their children.
         * @param graphic Child to add.
@@ -2408,10 +2412,6 @@ declare module EndGate.Graphics {
         */
         public ShadowBlur : number;
         /**
-        * Gets or sets the current opacity.  Value is between 0 and 1.
-        */
-        public Opacity : number;
-        /**
         * Gets the Text2d's FontSetting's.
         */
         public FontSettings : Graphics.Assets.FontSettings;
@@ -2562,10 +2562,6 @@ declare module EndGate.Graphics {
         */
         constructor(x: number, y: number, image: Graphics.Assets.ImageSource, width: number, height: number);
         /**
-        * Gets or sets the current opacity.  Value is between 0 and 1.
-        */
-        public Opacity : number;
-        /**
         * Draws the sprite onto the given context.  If this sprite is part of a scene the Draw function will be called automatically.
         * @param context The canvas context to draw the sprite onto.
         */
@@ -2714,10 +2710,6 @@ declare module EndGate.Graphics.Abstractions {
         * Gets or sets the current shadow blur.
         */
         public ShadowBlur : number;
-        /**
-        * Gets or sets the current opacity.  Value is between 0 and 1.
-        */
-        public Opacity : number;
         /**
         * Sets the current borders thickness and color.
         * @param thickness The new border thickness in pixels.
@@ -2880,10 +2872,6 @@ declare module EndGate.Graphics {
         */
         public LineCap : string;
         /**
-        * Gets or sets the current opacity.  Value is between 0 and 1.
-        */
-        public Opacity : number;
-        /**
         * Draws the line onto the given context.  If this Line2d is part of a scene the Draw function will be called automatically.
         * @param context The canvas context to draw the line onto.
         */
@@ -2967,10 +2955,6 @@ declare module EndGate.Graphics {
         * Gets the number of columns.
         */
         public Columns : number;
-        /**
-        * Gets or sets the current opacity.  Value is between 0 and 1.
-        */
-        public Opacity : number;
         /**
         * Fills a tile with the provided graphic.
         * @param row The row.
@@ -3335,6 +3319,114 @@ declare module EndGate.Map {
     }
 }
 interface Number extends EndGate.ICloneable {
+}
+declare module EndGate.Map.Loaders {
+    /**
+    * Defines an object that contains all the information needed to create a scenic map.
+    */
+    interface IMapLoadedResult {
+        /**
+        * Gets or sets the layers that will represent the scenery of the game.  Each layer should be added to the scenery in order to draw the layers.
+        */
+        Layers: Map.TileMap[];
+    }
+}
+declare module EndGate.Map.Loaders {
+    /**
+    * Defines an object that can load data and output a result asynchronously.
+    */
+    interface IMapLoader {
+        /**
+        * Loads the provided data then calls the onComplete function once valid map data has been created.
+        * @param data The base data that will be transformed into the IMapLoadedResult format.
+        * @param onComplete The function to trigger when the data has been converted into a valid IMapLoadedResult.
+        */
+        Load(data: any, onComplete: (result: Loaders.IMapLoadedResult) => any): void;
+    }
+}
+declare module EndGate.Map.Loaders {
+    /**
+    * Defines supported JSON formats for map loading.
+    */
+    enum JSONFormat {
+        TMX,
+    }
+}
+declare module EndGate.Map.Loaders._.TMX {
+    interface ITMXLayer {
+        name: string;
+        data: number[];
+        opacity: number;
+        type: string;
+        visible: boolean;
+        width: number;
+        height: number;
+        x: number;
+        y: number;
+    }
+}
+declare module EndGate.Map.Loaders._.TMX {
+    interface ITMXTileset {
+        firstgid: number;
+        image: string;
+        imageheight: number;
+        imagewidth: number;
+        margin: number;
+        name: string;
+        properties: any;
+        spacing: number;
+        tilewidth: number;
+        tileheight: number;
+    }
+}
+declare module EndGate.Map.Loaders._.TMX {
+    interface ITMX {
+        version: number;
+        width: number;
+        height: number;
+        tilewidth: number;
+        tileheight: number;
+        orientation: string;
+        properties: any;
+        layers: TMX.ITMXLayer[];
+        tilesets: TMX.ITMXTileset[];
+    }
+}
+declare module EndGate.Map.Loaders._.TMX {
+    class OrthogonalLoader implements Loaders.IMapLoader {
+        public Load(data: TMX.ITMX, onComplete: (result: Loaders.IMapLoadedResult) => any): void;
+        private LoadTilesetSources(tilesets, onComplete);
+        private ExtractTilesetTiles(tilesets, tilesetSources);
+        private NormalizeLayerData(data, columns);
+    }
+}
+declare module EndGate.Map.Loaders._.TMX {
+    class TMXLoader implements Loaders.IMapLoader {
+        private _orientationLoaders;
+        constructor();
+        public Load(data: TMX.ITMX, onComplete: (result: Loaders.IMapLoadedResult) => any): void;
+    }
+}
+declare module EndGate.Map.Loaders {
+    /**
+    * Defines a JSON loader that is used to load maps.
+    */
+    class JSONLoader {
+        private static _loaders;
+        /**
+        * Loads the provided tmx formatted json object then calls the onComplete function once the json has been transformed.
+        * @param json The JSON data that represents the map.
+        * @param onComplete The function to trigger when the json has been converted into a valid IMapLoadedResult.
+        */
+        static Load(json: Object, onComplete: (result: Loaders.IMapLoadedResult) => any): void;
+        /**
+        * Loads the provided json object then calls the onComplete function once the json has been transformed.
+        * @param json The JSON data that represents the map.
+        * @param onComplete The function to trigger when the json has been converted into a valid IMapLoadedResult.
+        * @param format The format of the JSON object.  Defaults to the tmx format.
+        */
+        static Load(json: Object, onComplete: (result: Loaders.IMapLoadedResult) => any, format: Loaders.JSONFormat): void;
+    }
 }
 declare module EndGate.Tweening.Functions {
     /**

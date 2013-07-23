@@ -1,0 +1,38 @@
+﻿@{
+    ViewBag.SampleName = "Map Loading";
+    ViewBag.SEODescription = "View an EndGate sample that showcases how to load maps.";
+    Layout = "~/Views/Shared/_SamplesLayout.cshtml";
+}
+
+@section styles {
+    <style>
+        canvas {
+            border:1px solid black;
+        }
+        #mapUrl {
+            margin-bottom: 0;
+            margin-right: 10px;
+        }
+    </style>
+}
+
+<div class="page-header section_header">
+    <h3>@ViewBag.SampleName</h3>
+    <p>Demonstrates how to load maps described by JSON.</p>
+</div>
+<p class="row">Move your mouse around the canvas to explore the loaded map.</p>
+<p class="row ">JSON maps should be exports from the <a href="https://github.com/bjorn/tiled/wiki/TMX-Map-Format">tmx</a> format.  More formats will be supported in the future. JSON maps can be created with ease via this <a href="http://www.mapeditor.org/">open source general purpose map editor</a>.  Once your map has been created just export it and select the .json export type.</p>
+<p class="row "><strong>JSON Map: </strong><input type="text" id="mapUrl" value="/Content/Samples/MapLoading/map.json" /><button class="btn btn-primary" id="loadMap">Load</button></p>
+
+<div class="row">        
+    <div id="gameHolder" class="form-vertical well" style="height:400px;">
+    </div>
+</div>
+
+<p class="row">Image <a href="http://endgate.net/Attributions/MapLoading/attribution.txt" target="_blank">attribution</a>.</p>
+
+@section scripts {
+    <script data-typescript="true" src="~/Content/Samples/MapLoading/CameraController.js"></script>
+    <script data-typescript="true" src="~/Content/Samples/MapLoading/Game.js"></script>
+    <script data-typescript="true" src="~/Content/Samples/MapLoading/Main.js"></script>
+}

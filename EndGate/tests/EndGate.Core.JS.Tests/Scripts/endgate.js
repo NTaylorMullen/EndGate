@@ -1991,6 +1991,17 @@ var EndGate;
                     configurable: true
                 });
 
+                Object.defineProperty(Graphic2d.prototype, "Opacity", {
+                    get: function () {
+                        return this._State.GlobalAlpha;
+                    },
+                    set: function (alpha) {
+                        this._State.GlobalAlpha = alpha;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+
                 Graphic2d.prototype.AddChild = function (graphic) {
                     this._children.push(graphic);
                     this._children.sort(Graphic2d._zindexSort);
@@ -3835,17 +3846,6 @@ var EndGate;
                 configurable: true
             });
 
-            Object.defineProperty(Text2d.prototype, "Opacity", {
-                get: function () {
-                    return this._State.GlobalAlpha;
-                },
-                set: function (alpha) {
-                    this._State.GlobalAlpha = alpha;
-                },
-                enumerable: true,
-                configurable: true
-            });
-
             Object.defineProperty(Text2d.prototype, "FontSettings", {
                 get: function () {
                     this._recalculateBoundsSize = true;
@@ -4026,17 +4026,6 @@ var EndGate;
                 this.Image = image;
                 this.Size = new EndGate.Size2d(width, height);
             }
-            Object.defineProperty(Sprite2d.prototype, "Opacity", {
-                get: function () {
-                    return this._State.GlobalAlpha;
-                },
-                set: function (alpha) {
-                    this._State.GlobalAlpha = alpha;
-                },
-                enumerable: true,
-                configurable: true
-            });
-
             Sprite2d.prototype.Draw = function (context) {
                 _super.prototype._StartDraw.call(this, context);
 
@@ -4278,17 +4267,6 @@ var EndGate;
                     configurable: true
                 });
 
-                Object.defineProperty(Shape.prototype, "Opacity", {
-                    get: function () {
-                        return this._State.GlobalAlpha;
-                    },
-                    set: function (alpha) {
-                        this._State.GlobalAlpha = alpha;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-
                 Shape.prototype.Border = function (thickness, color) {
                     this.BorderThickness = thickness;
                     this.BorderColor = color;
@@ -4471,17 +4449,6 @@ var EndGate;
                 configurable: true
             });
 
-            Object.defineProperty(Line2d.prototype, "Opacity", {
-                get: function () {
-                    return this._State.GlobalAlpha;
-                },
-                set: function (alpha) {
-                    this._State.GlobalAlpha = alpha;
-                },
-                enumerable: true,
-                configurable: true
-            });
-
             Line2d.prototype.Draw = function (context) {
                 _super.prototype._StartDraw.call(this, context);
 
@@ -4611,17 +4578,6 @@ var EndGate;
             Object.defineProperty(Grid.prototype, "Columns", {
                 get: function () {
                     return this._columns;
-                },
-                enumerable: true,
-                configurable: true
-            });
-
-            Object.defineProperty(Grid.prototype, "Opacity", {
-                get: function () {
-                    return this._State.GlobalAlpha;
-                },
-                set: function (alpha) {
-                    this._State.GlobalAlpha = alpha;
                 },
                 enumerable: true,
                 configurable: true
@@ -5090,6 +5046,164 @@ var eg = EndGate;
 Number.prototype.Clone = function () {
     return this;
 };
+
+var EndGate;
+(function (EndGate) {
+    (function (Map) {
+        (function (Loaders) {
+            (function (JSONFormat) {
+                JSONFormat[JSONFormat["TMX"] = 0] = "TMX";
+            })(Loaders.JSONFormat || (Loaders.JSONFormat = {}));
+            var JSONFormat = Loaders.JSONFormat;
+        })(Map.Loaders || (Map.Loaders = {}));
+        var Loaders = Map.Loaders;
+    })(EndGate.Map || (EndGate.Map = {}));
+    var Map = EndGate.Map;
+})(EndGate || (EndGate = {}));
+
+var EndGate;
+(function (EndGate) {
+    (function (Map) {
+        (function (Loaders) {
+            (function (_) {
+                (function (TMX) {
+                    var OrthogonalLoader = (function () {
+                        function OrthogonalLoader() {
+                        }
+                        OrthogonalLoader.prototype.Load = function (data, onComplete) {
+                            var _this = this;
+                            this.LoadTilesetSources(data.tilesets, function (tilesetSources) {
+                                var resources = _this.ExtractTilesetTiles(data.tilesets, tilesetSources), mappings, layer, layers = new Array();
+
+                                for (var i = 0; i < data.layers.length; i++) {
+                                    if (data.layers[i].type !== "tilelayer") {
+                                        throw new Error("Invalid layer type.  The layer type '" + data.layers[i].type + "' is not supported.");
+                                    }
+
+                                    mappings = _this.NormalizeLayerData(data.layers[i].data, data.width);
+
+                                    layer = new Map.SquareTileMap(data.layers[i].x, data.layers[i].y, data.tilewidth, data.tileheight, resources, mappings);
+                                    layer.ZIndex = i;
+                                    layer.Visible = data.layers[i].visible;
+                                    layer.Opacity = data.layers[i].opacity;
+                                    layers.push(layer);
+                                }
+
+                                onComplete({
+                                    Layers: layers
+                                });
+                            });
+                        };
+
+                        OrthogonalLoader.prototype.LoadTilesetSources = function (tilesets, onComplete) {
+                            var tilesetSources = {}, loadedCount = 0, onLoaded = function (source) {
+                                if (++loadedCount === tilesets.length) {
+                                    onComplete(tilesetSources);
+                                }
+                            };
+
+                            for (var i = 0; i < tilesets.length; i++) {
+                                tilesetSources[tilesets[i].name] = new EndGate.Graphics.Assets.ImageSource(tilesets[i].image, tilesets[i].imagewidth, tilesets[i].imageheight);
+                                tilesetSources[tilesets[i].name].OnLoaded.Bind(onLoaded);
+                            }
+                        };
+
+                        OrthogonalLoader.prototype.ExtractTilesetTiles = function (tilesets, tilesetSources) {
+                            var tilesetTiles = new Array();
+
+                            tilesets.sort(function (a, b) {
+                                return a.firstgid - b.firstgid;
+                            });
+
+                            for (var i = 0; i < tilesets.length; i++) {
+                                tilesetTiles = tilesetTiles.concat(Map.SquareTileMap.ExtractTiles(tilesetSources[tilesets[i].name], tilesets[i].tilewidth, tilesets[i].tileheight));
+                            }
+
+                            return tilesetTiles;
+                        };
+
+                        OrthogonalLoader.prototype.NormalizeLayerData = function (data, columns) {
+                            var normalized = new Array(), index;
+
+                            for (var i = 0; i < data.length; i++) {
+                                index = Math.floor(i / columns);
+
+                                if (!(normalized[index] instanceof Array)) {
+                                    normalized[index] = new Array();
+                                }
+
+                                normalized[index].push(data[i] - 1);
+                            }
+
+                            return normalized;
+                        };
+                        return OrthogonalLoader;
+                    })();
+                    TMX.OrthogonalLoader = OrthogonalLoader;
+                })(_.TMX || (_.TMX = {}));
+                var TMX = _.TMX;
+            })(Loaders._ || (Loaders._ = {}));
+            var _ = Loaders._;
+        })(Map.Loaders || (Map.Loaders = {}));
+        var Loaders = Map.Loaders;
+    })(EndGate.Map || (EndGate.Map = {}));
+    var Map = EndGate.Map;
+})(EndGate || (EndGate = {}));
+
+var EndGate;
+(function (EndGate) {
+    (function (Map) {
+        (function (Loaders) {
+            (function (_) {
+                (function (TMX) {
+                    var TMXLoader = (function () {
+                        function TMXLoader() {
+                            this._orientationLoaders = {
+                                orthogonal: new TMX.OrthogonalLoader()
+                            };
+                        }
+                        TMXLoader.prototype.Load = function (data, onComplete) {
+                            if (!this._orientationLoaders[data.orientation]) {
+                                throw new Error("Invalid orientation.  The orientation '" + data.orientation + "' is not supported.");
+                            }
+
+                            this._orientationLoaders[data.orientation].Load(data, onComplete);
+                        };
+                        return TMXLoader;
+                    })();
+                    TMX.TMXLoader = TMXLoader;
+                })(_.TMX || (_.TMX = {}));
+                var TMX = _.TMX;
+            })(Loaders._ || (Loaders._ = {}));
+            var _ = Loaders._;
+        })(Map.Loaders || (Map.Loaders = {}));
+        var Loaders = Map.Loaders;
+    })(EndGate.Map || (EndGate.Map = {}));
+    var Map = EndGate.Map;
+})(EndGate || (EndGate = {}));
+
+var EndGate;
+(function (EndGate) {
+    (function (Map) {
+        (function (Loaders) {
+            var JSONLoader = (function () {
+                function JSONLoader() {
+                }
+                JSONLoader.Load = function (json, onComplete, format) {
+                    if (typeof format === "undefined") { format = Loaders.JSONFormat.TMX; }
+                    JSONLoader._loaders[Loaders.JSONFormat[format]].Load(json, onComplete);
+                };
+                JSONLoader._loaders = {
+                    TMX: new Loaders._.TMX.TMXLoader()
+                };
+                return JSONLoader;
+            })();
+            Loaders.JSONLoader = JSONLoader;
+        })(Map.Loaders || (Map.Loaders = {}));
+        var Loaders = Map.Loaders;
+    })(EndGate.Map || (EndGate.Map = {}));
+    var Map = EndGate.Map;
+})(EndGate || (EndGate = {}));
 
 var EndGate;
 (function (EndGate) {

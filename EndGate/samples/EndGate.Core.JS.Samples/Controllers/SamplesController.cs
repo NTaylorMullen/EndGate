@@ -62,6 +62,11 @@ namespace EndGate.Core.JS.Samples.Controllers
             return View();
         }
 
+        public ActionResult MapLoading()
+        {
+            return View();
+        }
+
         public ActionResult MouseInput()
         {
             return View();
