@@ -107,16 +107,6 @@ module EndGate.Graphics.Abstractions {
         }
 
         /**
-        * Gets or sets the current opacity.  Value is between 0 and 1.
-        */
-        public get Opacity(): number {
-            return this._State.GlobalAlpha;
-        }
-        public set Opacity(alpha: number) {
-            this._State.GlobalAlpha = alpha;
-        }
-
-        /**
         * Sets the current borders thickness and color.
         * @param thickness The new border thickness in pixels.
         * @param color The new border color.  Can be valid color strings, like "red" or "rgb(255,0,0)".

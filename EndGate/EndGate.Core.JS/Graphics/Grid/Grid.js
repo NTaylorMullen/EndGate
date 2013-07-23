@@ -115,20 +115,6 @@ var EndGate;
                 configurable: true
             });
 
-            Object.defineProperty(Grid.prototype, "Opacity", {
-                get: /**
-                * Gets or sets the current opacity.  Value is between 0 and 1.
-                */
-                function () {
-                    return this._State.GlobalAlpha;
-                },
-                set: function (alpha) {
-                    this._State.GlobalAlpha = alpha;
-                },
-                enumerable: true,
-                configurable: true
-            });
-
             /**
             * Fills a tile with the provided graphic.
             * @param row The row.

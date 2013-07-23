@@ -134,20 +134,6 @@ var EndGate;
                 configurable: true
             });
 
-            Object.defineProperty(Text2d.prototype, "Opacity", {
-                get: /**
-                * Gets or sets the current opacity.  Value is between 0 and 1.
-                */
-                function () {
-                    return this._State.GlobalAlpha;
-                },
-                set: function (alpha) {
-                    this._State.GlobalAlpha = alpha;
-                },
-                enumerable: true,
-                configurable: true
-            });
-
             Object.defineProperty(Text2d.prototype, "FontSettings", {
                 get: /**
                 * Gets the Text2d's FontSetting's.
