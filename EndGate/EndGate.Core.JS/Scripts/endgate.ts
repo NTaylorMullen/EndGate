@@ -2918,6 +2918,8 @@ module EndGate.Graphics.Assets._ {
 
 
 
+
+
 module EndGate.Graphics.Abstractions {
 
     /**
@@ -2969,6 +2971,16 @@ module EndGate.Graphics.Abstractions {
         */
         public get OnDisposed(): EventHandler1<Graphic2d> {
             return this._onDisposed;
+        }
+
+        /**
+        * Gets or sets the current opacity.  Value is between 0 and 1.
+        */
+        public get Opacity(): number {
+            return this._State.GlobalAlpha;
+        }
+        public set Opacity(alpha: number) {
+            this._State.GlobalAlpha = alpha;
         }
 
         /**
@@ -5588,16 +5600,6 @@ module EndGate.Graphics {
         }
 
         /**
-        * Gets or sets the current opacity.  Value is between 0 and 1.
-        */
-        public get Opacity(): number {
-            return this._State.GlobalAlpha;
-        }
-        public set Opacity(alpha: number) {
-            this._State.GlobalAlpha = alpha;
-        }
-
-        /**
         * Gets the Text2d's FontSetting's.
         */
         public get FontSettings(): Assets.FontSettings {
@@ -5878,17 +5880,7 @@ module EndGate.Graphics {
 
             this.Image = image;
             this.Size = new Size2d(width, height);
-        }
-
-        /**
-        * Gets or sets the current opacity.  Value is between 0 and 1.
-        */
-        public get Opacity(): number {
-            return this._State.GlobalAlpha;
-        }
-        public set Opacity(alpha: number) {
-            this._State.GlobalAlpha = alpha;
-        }
+        }        
 
         /**
         * Draws the sprite onto the given context.  If this sprite is part of a scene the Draw function will be called automatically.
@@ -6223,16 +6215,6 @@ module EndGate.Graphics.Abstractions {
         }
 
         /**
-        * Gets or sets the current opacity.  Value is between 0 and 1.
-        */
-        public get Opacity(): number {
-            return this._State.GlobalAlpha;
-        }
-        public set Opacity(alpha: number) {
-            this._State.GlobalAlpha = alpha;
-        }
-
-        /**
         * Sets the current borders thickness and color.
         * @param thickness The new border thickness in pixels.
         * @param color The new border color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
@@ -6530,17 +6512,7 @@ module EndGate.Graphics {
         }
         public set LineCap(cap: string) {
             this._State.LineCap = cap;
-        }     
-        
-        /**
-        * Gets or sets the current opacity.  Value is between 0 and 1.
-        */
-        public get Opacity(): number {
-            return this._State.GlobalAlpha;
         }
-        public set Opacity(alpha: number) {
-            this._State.GlobalAlpha = alpha;
-        }   
 
         /**
         * Draws the line onto the given context.  If this Line2d is part of a scene the Draw function will be called automatically.
@@ -6730,16 +6702,6 @@ module EndGate.Graphics {
         */
         public get Columns(): number {
             return this._columns;
-        }
-
-        /**
-        * Gets or sets the current opacity.  Value is between 0 and 1.
-        */
-        public get Opacity(): number {
-            return this._State.GlobalAlpha;
-        }
-        public set Opacity(alpha: number) {
-            this._State.GlobalAlpha = alpha;
         }
         
         /**
@@ -7558,6 +7520,259 @@ import eg = EndGate;
 interface Number extends EndGate.ICloneable {}
 
 Number.prototype.Clone = function (): any { return this; };
+/* IMapLoadedResult.ts */
+
+
+declare module EndGate.Map.Loaders {
+
+    /**
+    * Defines an object that contains all the information needed to create a scenic map.
+    */
+    export interface IMapLoadedResult {
+        /**
+        * Gets or sets the layers that will represent the scenery of the game.  Each layer should be added to the scenery in order to draw the layers.
+        */
+        Layers: Array<TileMap>;
+    }
+
+}
+/* IMapLoader.ts */
+
+
+declare module EndGate.Map.Loaders {
+
+    /**
+    * Defines an object that can load data and output a result asynchronously.
+    */
+    export interface IMapLoader {
+        /**
+        * Loads the provided data then calls the onComplete function once valid map data has been created.
+        * @param data The base data that will be transformed into the IMapLoadedResult format.
+        * @param onComplete The function to trigger when the data has been converted into a valid IMapLoadedResult.
+        */
+        Load(data: any, onComplete: (result: IMapLoadedResult) => any): void;
+    }
+
+}
+/* JSONFormat.ts */
+module EndGate.Map.Loaders {
+
+    /**
+    * Defines supported JSON formats for map loading.
+    */
+    export enum JSONFormat {
+        TMX
+    }
+
+}
+/* ITMXLayer.ts */
+declare module EndGate.Map.Loaders._.TMX {
+
+    export interface ITMXLayer {
+        name: string;
+        data: Array<number>;        
+        opacity: number;
+        type: string;
+        visible: boolean;
+        width: number;
+        height: number;
+        x: number;
+        y: number;
+    }
+
+}
+/* ITMXTileset.ts */
+declare module EndGate.Map.Loaders._.TMX {
+
+    export interface ITMXTileset {
+        firstgid: number;
+        image: string;
+        imageheight: number;
+        imagewidth: number;
+        margin: number;
+        name: string;
+        properties: any;
+        spacing: number;
+        tilewidth: number;
+        tileheight: number;
+    }
+
+}
+/* ITMX.ts */
+
+
+
+declare module EndGate.Map.Loaders._.TMX {
+
+    export interface ITMX {
+        version: number;
+        width: number;
+        height: number;
+        tilewidth: number;
+        tileheight: number;
+        orientation: string;
+        properties: any;
+        layers: Array<ITMXLayer>;
+        tilesets: Array<ITMXTileset>;
+    }
+
+}
+/* OrthogonalLoader.ts */
+
+
+
+
+
+
+
+module EndGate.Map.Loaders._.TMX {
+
+    export class OrthogonalLoader implements IMapLoader {
+        public Load(data: ITMX, onComplete: (result: IMapLoadedResult) => any): void {
+            // Load all the sources referenced within the data
+            this.LoadTilesetSources(data.tilesets, (tilesetSources: { [tilesetName: string]: Graphics.Assets.ImageSource }) => {
+                // Triggered once all the sources have completed loading
+
+                // All the tiles extracted represent our resource list
+                var resources: Array<Graphics.Assets.ImageSource> = this.ExtractTilesetTiles(data.tilesets, tilesetSources),
+                    mappings: Array<Array<number>>,
+                    layer: SquareTileMap,
+                    layers: Array<SquareTileMap> = new Array<SquareTileMap>();
+
+                for (var i = 0; i < data.layers.length; i++) {
+                    if (data.layers[i].type !== "tilelayer") {
+                        throw new Error("Invalid layer type.  The layer type '" + data.layers[i].type + "' is not supported.");
+                    }
+
+                    // Convert the layer data to a 2 dimensional array and subtract 1 from all the data points (to make it 0 based)
+                    mappings = this.NormalizeLayerData(data.layers[i].data, data.width);
+
+                    layer = new SquareTileMap(data.layers[i].x, data.layers[i].y, data.tilewidth, data.tileheight, resources, mappings);
+                    layer.ZIndex = i;
+                    layer.Visible = data.layers[i].visible;
+                    layer.Opacity = data.layers[i].opacity;
+                    layers.push(layer);
+                }
+
+                onComplete({
+                    Layers: layers
+                });
+            });
+        }
+
+        private LoadTilesetSources(tilesets: Array<ITMXTileset>, onComplete: (tilesetSources: { [tilesetName: string]: Graphics.Assets.ImageSource }) => any): void {
+            var tilesetSources: { [tilesetName: string]: Graphics.Assets.ImageSource } = {},
+                loadedCount: number = 0,
+                onLoaded = (source: Graphics.Assets.ImageSource) => {
+                    // If everything has loaded
+                    if (++loadedCount === tilesets.length) {
+                        onComplete(tilesetSources);
+                    }
+                };
+
+            for (var i = 0; i < tilesets.length; i++) {
+                tilesetSources[tilesets[i].name] = new Graphics.Assets.ImageSource(tilesets[i].image, tilesets[i].imagewidth, tilesets[i].imageheight);
+                tilesetSources[tilesets[i].name].OnLoaded.Bind(onLoaded);
+            }
+        }
+
+        private ExtractTilesetTiles(tilesets: Array<ITMXTileset>, tilesetSources: { [tilesetName: string]: Graphics.Assets.ImageSource }): Array<Graphics.Assets.ImageSource> {
+            var tilesetTiles: Array<Graphics.Assets.ImageSource> = new Array<Graphics.Assets.ImageSource>();
+
+            tilesets.sort((a: ITMXTileset, b: ITMXTileset) => { return a.firstgid - b.firstgid; });
+
+            for (var i = 0; i < tilesets.length; i++) {
+                tilesetTiles = tilesetTiles.concat(SquareTileMap.ExtractTiles(tilesetSources[tilesets[i].name], tilesets[i].tilewidth, tilesets[i].tileheight));
+            }
+
+            return tilesetTiles;
+        }
+
+        private NormalizeLayerData(data: Array<number>, columns: number): Array<Array<number>> {
+            var normalized: Array<Array<number>> = new Array<Array<number>>(),
+                index: number;
+
+            for (var i = 0; i < data.length; i++) {
+                index = Math.floor(i / columns);
+
+                if (!(normalized[index] instanceof Array)) {
+                    normalized[index] = new Array<number>();
+                }
+                
+                // Subtract 1 because TMX format starts at 1
+                normalized[index].push(data[i] - 1);
+            }
+
+            return normalized;
+        }
+    }
+
+}
+/* TMXLoader.ts */
+
+
+
+
+
+
+module EndGate.Map.Loaders._.TMX {
+
+    export class TMXLoader implements IMapLoader {
+        private _orientationLoaders: { [orientation: string]: IMapLoader };
+
+        constructor() {
+            this._orientationLoaders = {
+                orthogonal: new OrthogonalLoader()
+            };
+        }
+
+        public Load(data: ITMX, onComplete: (result: IMapLoadedResult) => any): void {
+            if (!this._orientationLoaders[data.orientation]) {
+                throw new Error("Invalid orientation.  The orientation '" + data.orientation + "' is not supported.");
+            }
+
+            this._orientationLoaders[data.orientation].Load(data, onComplete);
+        }
+    }
+
+}
+/* JSONLoader.ts */
+
+
+
+
+
+
+
+module EndGate.Map.Loaders {
+
+    /**
+    * Defines a JSON loader that is used to load maps.
+    */
+    export class JSONLoader {
+        private static _loaders: { [format: string]: IMapLoader } = {
+            TMX: new _.TMX.TMXLoader()
+        };
+
+        /**
+        * Loads the provided tmx formatted json object then calls the onComplete function once the json has been transformed.
+        * @param json The JSON data that represents the map.
+        * @param onComplete The function to trigger when the json has been converted into a valid IMapLoadedResult.
+        */
+        public static Load(json: Object, onComplete: (result: IMapLoadedResult) => any): void;
+        /**
+        * Loads the provided json object then calls the onComplete function once the json has been transformed.
+        * @param json The JSON data that represents the map.
+        * @param onComplete The function to trigger when the json has been converted into a valid IMapLoadedResult.
+        * @param format The format of the JSON object.  Defaults to the tmx format.
+        */
+        public static Load(json: Object, onComplete: (result: IMapLoadedResult) => any, format: JSONFormat): void;
+        public static Load(json: Object, onComplete: (result: IMapLoadedResult) => any, format: JSONFormat = JSONFormat.TMX): void {
+            JSONLoader._loaders[JSONFormat[format]].Load(json, onComplete);
+        }
+    }
+
+}
 /* ITweeningFunction.ts */
 
 

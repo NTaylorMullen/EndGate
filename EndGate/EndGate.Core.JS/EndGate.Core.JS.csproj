@@ -87,6 +87,42 @@
       <DependentUpon>ICloneable.ts</DependentUpon>
     </Content>
     <TypeScriptCompile Include="Tweening\Functions\Back.ts" />
+    <TypeScriptCompile Include="Map\Loaders\JSON\JSONLoader.ts" />
+    <TypeScriptCompile Include="Map\Loaders\JSON\JSONFormat.ts" />
+    <TypeScriptCompile Include="Map\Loaders\JSON\TMX\ITMX.ts" />
+    <TypeScriptCompile Include="Map\Loaders\IMapLoader.ts" />
+    <TypeScriptCompile Include="Map\Loaders\IMapLoadedResult.ts" />
+    <Content Include="Map\Loaders\IMapLoadedResult.js">
+      <DependentUpon>IMapLoadedResult.ts</DependentUpon>
+    </Content>
+    <Content Include="Map\Loaders\IMapLoader.js">
+      <DependentUpon>IMapLoader.ts</DependentUpon>
+    </Content>
+    <Content Include="Map\Loaders\JSON\TMX\ITMX.js">
+      <DependentUpon>ITMX.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Map\Loaders\JSON\TMX\ITMXLayer.ts" />
+    <Content Include="Map\Loaders\JSON\TMX\ITMXLayer.js">
+      <DependentUpon>ITMXLayer.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Map\Loaders\JSON\TMX\ITMXTileset.ts" />
+    <Content Include="Map\Loaders\JSON\TMX\ITMXTileset.js">
+      <DependentUpon>ITMXTileset.ts</DependentUpon>
+    </Content>
+    <Content Include="Map\Loaders\JSON\JSONFormat.js">
+      <DependentUpon>JSONFormat.ts</DependentUpon>
+    </Content>
+    <Content Include="Map\Loaders\JSON\JSONLoader.js">
+      <DependentUpon>JSONLoader.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Map\Loaders\JSON\TMX\TMXLoader.ts" />
+    <TypeScriptCompile Include="Map\Loaders\JSON\TMX\OrthogonalLoader.ts" />
+    <Content Include="Map\Loaders\JSON\TMX\OrthogonalLoader.js">
+      <DependentUpon>OrthogonalLoader.ts</DependentUpon>
+    </Content>
+    <Content Include="Map\Loaders\JSON\TMX\TMXLoader.js">
+      <DependentUpon>TMXLoader.ts</DependentUpon>
+    </Content>
     <Content Include="Tweening\Functions\Back.js">
       <DependentUpon>Back.ts</DependentUpon>
     </Content>
@@ -370,16 +406,16 @@
     <Content Include="Map\Scenery\SceneryHandler.js">
       <DependentUpon>SceneryHandler.ts</DependentUpon>
     </Content>
-    <CodeAnalysisDictionary Include="Map\Scenery\SquareTileMap.ts" />
-    <TypeScriptCompile Include="Map\Scenery\SquareTile.ts" />
-    <Content Include="Map\Scenery\SquareTile.js">
+    <CodeAnalysisDictionary Include="Map\TileMaps\SquareTileMap.ts" />
+    <TypeScriptCompile Include="Map\TileMaps\SquareTile.ts" />
+    <Content Include="Map\TileMaps\SquareTile.js">
       <DependentUpon>SquareTile.ts</DependentUpon>
     </Content>
-    <Content Include="Map\Scenery\SquareTileMap.js">
+    <Content Include="Map\TileMaps\SquareTileMap.js">
       <DependentUpon>SquareTileMap.ts</DependentUpon>
     </Content>
-    <CodeAnalysisDictionary Include="Map\Scenery\TileMap.ts" />
-    <Content Include="Map\Scenery\TileMap.js">
+    <CodeAnalysisDictionary Include="Map\TileMaps\TileMap.ts" />
+    <Content Include="Map\TileMaps\TileMap.js">
       <DependentUpon>TileMap.ts</DependentUpon>
     </Content>
     <CodeAnalysisDictionary Include="MovementControllers\LinearDirections.ts" />

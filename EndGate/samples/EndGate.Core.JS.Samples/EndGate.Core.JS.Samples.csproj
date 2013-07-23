@@ -155,6 +155,20 @@
     <Content Include="Content\Samples\KeyboardInput\thumbnail.png" />
     <Content Include="Content\Samples\Layering\thumbnail.png" />
     <Content Include="Content\Samples\MapCreator\thumbnail.png" />
+    <TypeScriptCompile Include="Content\Samples\MapLoading\CameraController.ts" />
+    <Content Include="Content\Samples\MapLoading\CameraController.js">
+      <DependentUpon>CameraController.ts</DependentUpon>
+    </Content>
+    <Content Include="Views\Samples\MapLoading.cshtml" />
+    <TypeScriptCompile Include="Content\Samples\MapLoading\Main.ts" />
+    <TypeScriptCompile Include="Content\Samples\MapLoading\Game.ts" />
+    <Content Include="Content\Samples\MapLoading\Game.js">
+      <DependentUpon>Game.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\MapLoading\Main.js">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\MapLoading\thumbnail.png" />
     <Content Include="Content\Samples\MouseInput\thumbnail.png" />
     <Content Include="Content\Samples\MovementControllers\thumbnail.png" />
     <Content Include="Content\Samples\RawRPG\thumbnail.png" />
@@ -799,6 +813,7 @@
     <Content Include="Content\Samples\Text\TextAnimator.js.map">
       <DependentUpon>TextAnimator.ts</DependentUpon>
     </Content>
+    <Content Include="Content\Samples\MapLoading\map.json" />
     <None Include="Scripts\jquery-2.0.0.intellisense.js" />
     <Content Include="Scripts\jquery-2.0.0.js" />
     <Content Include="Scripts\jquery-2.0.0.min.js" />
