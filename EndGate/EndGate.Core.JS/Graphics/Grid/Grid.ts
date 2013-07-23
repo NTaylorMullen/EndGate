@@ -11,11 +11,6 @@ module EndGate.Graphics {
     export class Grid extends Abstractions.Graphic2d {
         public _type: string = "Grid";
 
-        /**
-        * Gets or sets the DrawGridLines property.  Indicates whether the grids column and row lines will be drawn.
-        */
-        public DrawGridLines: boolean;
-
         private _size: Size2d;
         private _tileSize: Size2d;
         private _grid: Abstractions.Graphic2d[][];
@@ -24,6 +19,7 @@ module EndGate.Graphics {
         private _rows: number;
         private _columns: number;
         private _gridLineColor: string;
+        private _drawGridLines: boolean;
 
         /**
         * Creates a new instance of the Grid object.
@@ -60,39 +56,38 @@ module EndGate.Graphics {
         constructor(x: number, y: number, rows: number, columns: number, tileWidth: number, tileHeight: number, drawGridLines: boolean, gridLineColor: string);
         constructor(x: number, y: number, rows: number, columns: number, tileWidth: number, tileHeight: number, drawGridLines: boolean = false, gridLineColor: string = "gray") {
             super(new Vector2d(x, y));
-            var halfSize: Size2d,
-                topLeft: Vector2d,
-                bottomRight: Vector2d;
 
             this._size = new Size2d(tileWidth * columns, tileHeight * rows);
             this._tileSize = new Size2d(tileWidth, tileHeight);
             this._grid = [];
             this._rows = rows;
             this._columns = columns;
-            this.DrawGridLines = drawGridLines;
             this._gridLines = [];
+            this.GridLineColor = gridLineColor;
+            this.DrawGridLines = drawGridLines;
 
-            halfSize = this._size.Multiply(.5);
-            topLeft = new Vector2d(-halfSize.Width, -halfSize.Height);
-            bottomRight = new Vector2d(halfSize.Width, halfSize.Height);
-
-            for (var i = 0; i < rows; i++) {
+            // Initialize our grid
+            for (var i = 0; i < this._rows; i++) {
                 this._grid[i] = [];
-                this._gridLines.push(new Line2d(topLeft.X, topLeft.Y + i * this._tileSize.Height, bottomRight.X, topLeft.Y + i * this._tileSize.Height, 1));
 
-                for (var j = 0; j < columns; j++) {
-                    if (i === 0) {
-                        this._gridLines.push(new Line2d(topLeft.X + j * this._tileSize.Width, topLeft.Y, topLeft.X + j * this._tileSize.Width, bottomRight.Y, 1));
-                    }
-
+                for (var j = 0; j < this._columns; j++) {
                     this._grid[i].push(null);
                 }
             }
+        }
 
-            this._gridLines.push(new Line2d(topLeft.X, bottomRight.Y, bottomRight.X, bottomRight.Y, 1));
-            this._gridLines.push(new Line2d(bottomRight.X, topLeft.Y, bottomRight.X, bottomRight.Y, 1));
+        /**
+        * Gets or sets the DrawGridLines property.  Indicates whether the grids column and row lines will be drawn.
+        */
+        public get DrawGridLines(): boolean {
+            return this._drawGridLines;
+        }
+        public set DrawGridLines(shouldDraw: boolean) {
+            if (shouldDraw && this._gridLines.length === 0) {
+                this.BuildGridLines();
+            }
 
-            this.GridLineColor = gridLineColor;
+            this._drawGridLines = shouldDraw;
         }
 
         /**
@@ -107,7 +102,7 @@ module EndGate.Graphics {
             for (var i = 0; i < this._gridLines.length; i++) {
                 this._gridLines[i].Color = color;
             }
-        }        
+        }
 
         /**
         * Gets the size of the grid.
@@ -136,7 +131,7 @@ module EndGate.Graphics {
         public get Columns(): number {
             return this._columns;
         }
-        
+
         /**
         * Fills a tile with the provided graphic.
         * @param row The row.
@@ -448,6 +443,25 @@ module EndGate.Graphics {
         */
         public ConvertToColumn(x: number): number {
             return Math.floor((x - (this.Position.X - this._size.HalfWidth)) / this._tileSize.Width);
+        }
+
+        private BuildGridLines(): void {
+            var halfSize: Size2d = this._size.Multiply(.5),
+                topLeft: Vector2d = new Vector2d(-halfSize.Width, -halfSize.Height),
+                bottomRight: Vector2d = new Vector2d(halfSize.Width, halfSize.Height);
+
+            for (var i = 0; i < this._rows; i++) {
+                this._gridLines.push(new Line2d(topLeft.X, topLeft.Y + i * this._tileSize.Height, bottomRight.X, topLeft.Y + i * this._tileSize.Height, 1, this._gridLineColor));
+
+                if (i === 0) {
+                    for (var j = 0; j < this._columns; j++) {
+                        this._gridLines.push(new Line2d(topLeft.X + j * this._tileSize.Width, topLeft.Y, topLeft.X + j * this._tileSize.Width, bottomRight.Y, 1, this._gridLineColor));
+                    }
+                }
+            }
+
+            this._gridLines.push(new Line2d(topLeft.X, bottomRight.Y, bottomRight.X, bottomRight.Y, 1));
+            this._gridLines.push(new Line2d(bottomRight.X, topLeft.Y, bottomRight.X, bottomRight.Y, 1));
         }
 
         private GetInsideGridPosition(row: number, column: number): Vector2d {
