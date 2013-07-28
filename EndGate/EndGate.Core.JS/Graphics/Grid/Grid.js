@@ -126,7 +126,7 @@ var EndGate;
             * @param graphic The graphic to fill the tile with.
             */
             Grid.prototype.Fill = function (row, column, graphic) {
-                if (!this.ValidRow(row) || !this.ValidColumn(column)) {
+                if (!graphic || !this.ValidRow(row) || !this.ValidColumn(column)) {
                     return;
                 }
 

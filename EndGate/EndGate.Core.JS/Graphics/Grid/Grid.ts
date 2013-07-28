@@ -139,7 +139,7 @@ module EndGate.Graphics {
         * @param graphic The graphic to fill the tile with.
         */
         public Fill(row: number, column: number, graphic: Abstractions.Graphic2d): void {
-            if (!this.ValidRow(row) || !this.ValidColumn(column)) {
+            if (!graphic || !this.ValidRow(row) || !this.ValidColumn(column)) {
                 return;
             }
 
