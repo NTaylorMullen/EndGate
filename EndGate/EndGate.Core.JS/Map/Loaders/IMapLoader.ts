@@ -1,4 +1,5 @@
 /// <reference path="../TileMaps/TileMap.ts" />
+/// <reference path="IMapPreloadInfo.ts" />
 
 declare module EndGate.Map.Loaders {
 
@@ -11,7 +12,7 @@ declare module EndGate.Map.Loaders {
         * @param data The base data that will be transformed into the IMapLoadedResult format.
         * @param onComplete The function to trigger when the data has been converted into a valid IMapLoadedResult.
         */
-        Load(data: any, onComplete: (result: IMapLoadedResult) => any): void;
+        Load(data: any, onComplete: (result: IMapLoadedResult) => any): IMapPreloadInfo;
     }
 
 }

@@ -80,6 +80,10 @@
     <Content Include="Collision\CollisionConfiguration.js">
       <DependentUpon>CollisionConfiguration.ts</DependentUpon>
     </Content>
+    <TypeScriptCompile Include="Extensions\Helpers.ts" />
+    <Content Include="Extensions\Helpers.js">
+      <DependentUpon>Helpers.ts</DependentUpon>
+    </Content>
     <Content Include="Extensions\NumberExtensions.js">
       <DependentUpon>NumberExtensions.ts</DependentUpon>
     </Content>
@@ -97,6 +101,10 @@
     </Content>
     <Content Include="Map\Loaders\IMapLoader.js">
       <DependentUpon>IMapLoader.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Map\Loaders\IMapPreloadInfo.ts" />
+    <Content Include="Map\Loaders\IMapPreloadInfo.js">
+      <DependentUpon>IMapPreloadInfo.ts</DependentUpon>
     </Content>
     <Content Include="Map\Loaders\JSON\TMX\ITMX.js">
       <DependentUpon>ITMX.ts</DependentUpon>
