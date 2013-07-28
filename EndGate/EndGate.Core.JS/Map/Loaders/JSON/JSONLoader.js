@@ -4,6 +4,7 @@ var EndGate;
         /// <reference path="JSONFormat.ts" />
         /// <reference path="TMX/TMXLoader.ts" />
         /// <reference path="../IMapLoader.ts" />
+        /// <reference path="../IMapPreloadInfo.ts" />
         /// <reference path="../IMapLoadedResult.ts" />
         /// <reference path="../../TileMaps/TileMap.ts" />
         /// <reference path="../../TileMaps/SquareTileMap.ts" />
@@ -16,7 +17,7 @@ var EndGate;
                 }
                 JSONLoader.Load = function (json, onComplete, format) {
                     if (typeof format === "undefined") { format = Loaders.JSONFormat.TMX; }
-                    JSONLoader._loaders[Loaders.JSONFormat[format]].Load(json, onComplete);
+                    return JSONLoader._loaders[Loaders.JSONFormat[format]].Load(json, onComplete);
                 };
                 JSONLoader._loaders = {
                     TMX: new Loaders._.TMX.TMXLoader()

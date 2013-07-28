@@ -1,5 +1,6 @@
 /// <reference path="../../IMapLoader.ts" />
 /// <reference path="../../IMapLoadedResult.ts" />
+/// <reference path="../../IMapPreloadInfo.ts" />
 /// <reference path="../../../TileMaps/TileMap.ts" />
 /// <reference path="ITMX.ts" />
 /// <reference path="OrthogonalLoader.ts" />
@@ -15,12 +16,12 @@ module EndGate.Map.Loaders._.TMX {
             };
         }
 
-        public Load(data: ITMX, onComplete: (result: IMapLoadedResult) => any): void {
+        public Load(data: ITMX, onComplete: (result: IMapLoadedResult) => any): IMapPreloadInfo {
             if (!this._orientationLoaders[data.orientation]) {
                 throw new Error("Invalid orientation.  The orientation '" + data.orientation + "' is not supported.");
             }
 
-            this._orientationLoaders[data.orientation].Load(data, onComplete);
+            return this._orientationLoaders[data.orientation].Load(data, onComplete);
         }
     }
 
