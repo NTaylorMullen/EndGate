@@ -7,11 +7,21 @@
 @section styles {
     <style>
         canvas {
-            border:1px solid black;
+            border: 1px solid black;
         }
+
         #mapUrl {
             margin-bottom: 0;
             margin-right: 10px;
+        }
+
+        #loadDialogHolder {
+            margin: 20px 0;
+        }
+
+        #loadDialog {
+            width: 400px;
+            margin: 0 auto;
         }
     </style>
 }
@@ -22,16 +32,38 @@
 </div>
 <p class="row">Move your mouse around the canvas to explore the loaded map.</p>
 <p class="row ">JSON maps should be exports from the <a href="https://github.com/bjorn/tiled/wiki/TMX-Map-Format">tmx</a> format.  More formats will be supported in the future. JSON maps can be created with ease via this <a href="http://www.mapeditor.org/">open source general purpose map editor</a>.  Once your map has been created just export it and select the .json export type.</p>
-<p class="row "><strong>JSON Map: </strong><input type="text" id="mapUrl" value="/Content/Samples/MapLoading/map.json" /><button class="btn btn-primary" id="loadMap">Load</button></p>
+<p class="row ">
+    <strong>JSON Map: </strong>
+    <input type="text" id="mapUrl" value="/Content/Samples/MapLoading/map.json" />
+    <button class="btn btn-primary" id="loadMap">Load</button>
+</p>
 
-<div class="row">        
-    <div id="gameHolder" class="form-vertical well" style="height:400px;">
+<div class="row" style="position: relative;">
+    <div id="loadDialogHolder" class="display:none;">
+        <div id="loadDialog" class="well">
+            <fieldset>
+                <legend>Map Information</legend>
+                <p><strong>Tiles: </strong><span id="totalTiles"></span></p>
+                <p><strong>Layers: </strong><span id="totalLayers"></span></p>
+                <p><strong>Resource Sheets: </strong><span id="totalResources"></span></p>
+                <div>
+                    <div class="progress progress-info progress-striped active pull-left" style="width: 85%; margin-bottom: 0px;">
+                        <div id="percentLoadedBar" class="bar" style="width: 0%"></div>
+                    </div>
+                    <div class="pull-left" style="width: 12%; margin-left: 10px;"><span id="percentLoaded"></span>%</div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+
+    <div id="gameHolder" class="form-vertical well" style="height: 400px;">
     </div>
 </div>
 
 <p class="row">Image <a href="http://endgate.net/Attributions/MapLoading/attribution.txt" target="_blank">attribution</a>.</p>
 
 @section scripts {
+    <script data-typescript="true" src="~/Content/Samples/MapLoading/LoadHandler.js"></script>
     <script data-typescript="true" src="~/Content/Samples/MapLoading/CameraController.js"></script>
     <script data-typescript="true" src="~/Content/Samples/MapLoading/Game.js"></script>
     <script data-typescript="true" src="~/Content/Samples/MapLoading/Main.js"></script>

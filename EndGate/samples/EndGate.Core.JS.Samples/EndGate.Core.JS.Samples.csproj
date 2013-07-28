@@ -159,6 +159,10 @@
     <Content Include="Content\Samples\MapLoading\CameraController.js">
       <DependentUpon>CameraController.ts</DependentUpon>
     </Content>
+    <TypeScriptCompile Include="Content\Samples\MapLoading\LoadHandler.ts" />
+    <Content Include="Content\Samples\MapLoading\LoadHandler.js">
+      <DependentUpon>LoadHandler.ts</DependentUpon>
+    </Content>
     <Content Include="Views\Samples\MapLoading.cshtml" />
     <TypeScriptCompile Include="Content\Samples\MapLoading\Main.ts" />
     <TypeScriptCompile Include="Content\Samples\MapLoading\Game.ts" />
