@@ -7,34 +7,46 @@ var __extends = this.__extends || function (d, b) {
 /// <reference path="../../../Scripts/jquery.d.ts" />
 /// <reference path="../../../Scripts/endgate.d.ts" />
 /// <reference path="CameraController.ts" />
+/// <reference path="LoadHandler.ts" />
 // Wrap in module to keep code out of global scope
 var MapLoading;
 (function (MapLoading) {
     var Game = (function (_super) {
         __extends(Game, _super);
-        function Game(canvas, mapUrlInput, loadMapButton) {
+        function Game(canvas, mapUrlInput, _loadMapButton, _gameHolder, _loadDialog) {
             var _this = this;
             _super.call(this, canvas);
+            this._loadMapButton = _loadMapButton;
+            this._gameHolder = _gameHolder;
+            this._loadDialog = _loadDialog;
 
-            this._mapLayers = new Array();
+            this._loading = false;
+            this._loadHandler = new MapLoading.LoadHandler(this, this._loadDialog);
 
-            loadMapButton.click(function () {
-                // Casting to any because the jquery declaration is wrong here
-                // We use jquery to retrieve the map json from a url location
-                ($.getJSON(mapUrlInput.val(), function (mapJson) {
-                    // Use the JSONLoader to load the map json
-                    eg.Map.Loaders.JSONLoader.Load(mapJson, function (result) {
-                        // We get an array of square tile maps that we then need to add to the scene
-                        // Note that the ZIndexes of the layers are already set from 0 - (layers.length-1)
-                        _this.LoadLayers(result.Layers);
+            this._loadMapButton.click(function () {
+                if (!_this._loading) {
+                    _this._loading = true;
+
+                    // Show the loading dialog
+                    _this.ShowLoadDialog();
+
+                    // Use our custom load handler to load the map and to display the info.
+                    _this._loadHandler.Load(mapUrlInput.val(), function () {
+                        // Delay the show game so the loading can seem complete
+                        setTimeout(function () {
+                            // Triggered when the map has finished loading
+                            // Show the game
+                            _this.ShowGame();
+
+                            // Allow other loads
+                            _this._loading = false;
+                        }, 500);
                     });
-                })).fail(function () {
-                    alert("Unable to retrieve map data from the provided url.");
-                });
+                }
             });
 
             // Pre-load the scene with the initial json map
-            loadMapButton.click();
+            this._loadMapButton.click();
 
             // This camera controller is what makes the camera move around the game map.
             this._cameraController = new MapLoading.CameraController(this.Scene.Camera, this.Input.Mouse);
@@ -43,22 +55,16 @@ var MapLoading;
             this._cameraController.Update(gameTime);
         };
 
-        Game.prototype.LoadLayers = function (layers) {
-            for (var i = 0; i < this._mapLayers.length; i++) {
-                this.Map.Scenery.RemoveLayer(this._mapLayers[i]);
-            }
+        Game.prototype.ShowLoadDialog = function () {
+            this._loadMapButton.addClass("disabled");
+            this._gameHolder.hide();
+            this._loadDialog.show();
+        };
 
-            if (layers) {
-                this._mapLayers = layers;
-            }
-
-            for (var i = 0; i < this._mapLayers.length; i++) {
-                this.Map.Scenery.AddLayer(this._mapLayers[i]);
-            }
-
-            if (this._mapLayers.length > 0) {
-                this.Scene.Camera.Position = this._mapLayers[0].Position;
-            }
+        Game.prototype.ShowGame = function () {
+            this._loadDialog.hide();
+            this._gameHolder.show();
+            this._loadMapButton.removeClass("disabled");
         };
         return Game;
     })(eg.Game);
