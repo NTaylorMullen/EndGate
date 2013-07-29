@@ -5,6 +5,7 @@
 /// <reference path="../../Utilities/EventHandler2.ts" />
 /// <reference path="../../Utilities/EventHandler.ts" />
 /// <reference path="../../Extensions/Helpers.ts" />
+/// <reference path="ITileDetails.ts" />
 /// <reference path="TileMap.ts" />
 /// <reference path="SquareTile.ts" />
 
@@ -27,7 +28,7 @@ module EndGate.Map {
         private _staticMap: boolean;
         private _mapCache: HTMLCanvasElement;
         private _mapCacheContext: CanvasRenderingContext2D;
-        private _onTileLoad: EventHandler2<SquareTile, number>;
+        private _onTileLoad: EventHandler2<ITileDetails, number>;
         private _onLoaded: EventHandler;
         private _loaded: boolean;
         private _tilesBuilt: number;
@@ -71,7 +72,7 @@ module EndGate.Map {
 
             this._grid = new Graphics.Grid(0, 0, mappings.length, mappings[0].length, tileWidth, tileHeight, drawGridLines);
             this._staticMap = staticMap;
-            this._onTileLoad = new EventHandler2<SquareTile, number>();
+            this._onTileLoad = new EventHandler2<ITileDetails, number>();
             this._onLoaded = new EventHandler();
             this._loaded = false;
             this._tilesBuilt = 0;
@@ -93,9 +94,9 @@ module EndGate.Map {
         }
 
         /**
-        * Gets an event that is triggered when a tile has been loaded, first argument is the tile that was loaded, second is the percent complete.  Once this SquareTileMap has been created and all tiles loaded this event will no longer be triggered. Functions can be bound or unbound to this event to be executed when the event triggers.
+        * Gets an event that is triggered when a tile has been loaded, first argument is the tile details for the loaded tile, second is the percent complete.  Once this SquareTileMap has been created and all tiles loaded this event will no longer be triggered. Functions can be bound or unbound to this event to be executed when the event triggers.
         */
-        public get OnTileLoad(): EventHandler2<SquareTile, number> {
+        public get OnTileLoad(): EventHandler2<ITileDetails, number> {
             return this._onTileLoad;
         }
 
@@ -187,19 +188,26 @@ module EndGate.Map {
             });
         }
 
-        private AsyncBuildGridTile(row: number, column: number, tileGraphic: Graphics.Assets.ImageSource, onComplete: (tile: SquareTile) => any): void {
+        private AsyncBuildGridTile(row: number, column: number, resourceIndex: number, onComplete: (tile: SquareTile) => any): void {
             var action = () => {
-                var tile: SquareTile;
+                var tile: SquareTile,
+                    tileGraphic: Graphics.Assets.ImageSource = this._Resources[resourceIndex];
 
                 tile = new SquareTile(tileGraphic, this._grid.TileSize.Width, this._grid.TileSize.Height);
 
-                this._grid.Fill(row, column, tile);
+                this._grid.Fill(row, column, tile);                
+
+                this.OnTileLoad.Trigger({
+                    Tile: tile,
+                    Row: row,
+                    Column: column,
+                    ResourceIndex: resourceIndex,
+                    Parent: this
+                }, this._tilesBuilt / this._totalTiles);
 
                 if (this._staticMap) {
                     this.CacheTile(tile);
                 }
-
-                this.OnTileLoad.Trigger(tile, this._tilesBuilt / this._totalTiles);
 
                 onComplete(tile);
             };
@@ -219,7 +227,7 @@ module EndGate.Map {
                         this._tilesBuilt++;
 
                         if (mappings[rowIndex][tilesLoaded] >= 0) {
-                            this.AsyncBuildGridTile(rowIndex, tilesLoaded, this._Resources[mappings[rowIndex][tilesLoaded]], (tile: SquareTile) => {
+                            this.AsyncBuildGridTile(rowIndex, tilesLoaded, mappings[rowIndex][tilesLoaded], (tile: SquareTile) => {
                                 next();
                             });
                         }

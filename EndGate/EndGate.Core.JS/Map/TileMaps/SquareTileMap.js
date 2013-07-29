@@ -13,6 +13,7 @@ var EndGate;
     /// <reference path="../../Utilities/EventHandler2.ts" />
     /// <reference path="../../Utilities/EventHandler.ts" />
     /// <reference path="../../Extensions/Helpers.ts" />
+    /// <reference path="ITileDetails.ts" />
     /// <reference path="TileMap.ts" />
     /// <reference path="SquareTile.ts" />
     (function (Map) {
@@ -51,7 +52,7 @@ var EndGate;
             }
             Object.defineProperty(SquareTileMap.prototype, "OnTileLoad", {
                 get: /**
-                * Gets an event that is triggered when a tile has been loaded, first argument is the tile that was loaded, second is the percent complete.  Once this SquareTileMap has been created and all tiles loaded this event will no longer be triggered. Functions can be bound or unbound to this event to be executed when the event triggers.
+                * Gets an event that is triggered when a tile has been loaded, first argument is the tile details for the loaded tile, second is the percent complete.  Once this SquareTileMap has been created and all tiles loaded this event will no longer be triggered. Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
                 function () {
                     return this._onTileLoad;
@@ -149,20 +150,26 @@ var EndGate;
                 });
             };
 
-            SquareTileMap.prototype.AsyncBuildGridTile = function (row, column, tileGraphic, onComplete) {
+            SquareTileMap.prototype.AsyncBuildGridTile = function (row, column, resourceIndex, onComplete) {
                 var _this = this;
                 var action = function () {
-                    var tile;
+                    var tile, tileGraphic = _this._Resources[resourceIndex];
 
                     tile = new Map.SquareTile(tileGraphic, _this._grid.TileSize.Width, _this._grid.TileSize.Height);
 
                     _this._grid.Fill(row, column, tile);
 
+                    _this.OnTileLoad.Trigger({
+                        Tile: tile,
+                        Row: row,
+                        Column: column,
+                        ResourceIndex: resourceIndex,
+                        Parent: _this
+                    }, _this._tilesBuilt / _this._totalTiles);
+
                     if (_this._staticMap) {
                         _this.CacheTile(tile);
                     }
-
-                    _this.OnTileLoad.Trigger(tile, _this._tilesBuilt / _this._totalTiles);
 
                     onComplete(tile);
                 };
@@ -182,7 +189,7 @@ var EndGate;
                         _this._tilesBuilt++;
 
                         if (mappings[rowIndex][tilesLoaded] >= 0) {
-                            _this.AsyncBuildGridTile(rowIndex, tilesLoaded, _this._Resources[mappings[rowIndex][tilesLoaded]], function (tile) {
+                            _this.AsyncBuildGridTile(rowIndex, tilesLoaded, mappings[rowIndex][tilesLoaded], function (tile) {
                                 next();
                             });
                         } else {

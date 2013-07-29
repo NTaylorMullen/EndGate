@@ -7,7 +7,9 @@ var EndGate;
                 /// <reference path="../../IMapLoader.ts" />
                 /// <reference path="../../IMapLoadedResult.ts" />
                 /// <reference path="../../IMapPreloadInfo.ts" />
+                /// <reference path="../../IHookFunction.ts" />
                 /// <reference path="../../../TileMaps/SquareTileMap.ts" />
+                /// <reference path="../../../TileMaps/ITileDetails.ts" />
                 /// <reference path="../../../../Assets/TimeSpan.ts" />
                 /// <reference path="../../../../Extensions/Helpers.ts" />
                 /// <reference path="../../../../Utilities/EventHandler1.ts" />
@@ -17,7 +19,7 @@ var EndGate;
                     var OrthogonalLoader = (function () {
                         function OrthogonalLoader() {
                         }
-                        OrthogonalLoader.prototype.Load = function (data, onComplete) {
+                        OrthogonalLoader.prototype.Load = function (data, propertyHooks, onComplete) {
                             var _this = this;
                             // We're initially at 0%.
                             var percent = 0, tileCount = 0, onPartialLoad = new EndGate.EventHandler1();
@@ -30,7 +32,7 @@ var EndGate;
                             }, function (tilesetSources) {
                                 // Triggered once all the sources have completed loading
                                 // All the tiles extracted represent our resource list
-                                var resources = _this.ExtractTilesetTiles(data.tilesets, tilesetSources), mappings, layers = new Array(), layerPercentValue = (1 - OrthogonalLoader._imagePercentMax) / data.layers.length;
+                                var resources = _this.ExtractTilesetTiles(data.tilesets, tilesetSources, propertyHooks), mappings, layers = new Array(), layerPercentValue = (1 - OrthogonalLoader._imagePercentMax) / data.layers.length;
 
                                 percent = OrthogonalLoader._imagePercentMax;
 
@@ -39,7 +41,7 @@ var EndGate;
                                         throw new Error("Invalid layer type.  The layer type '" + data.layers[i].type + "' is not supported.");
                                     }
 
-                                    _this.AsyncBuildLayer(data, i, resources, function (tile, percentLoaded) {
+                                    _this.AsyncBuildLayer(data, i, propertyHooks, resources, function (details, percentLoaded) {
                                         onPartialLoad.Trigger(percent + percentLoaded * layerPercentValue);
                                     }, function (layer) {
                                         percent += layerPercentValue;
@@ -85,26 +87,62 @@ var EndGate;
                             }
                         };
 
-                        OrthogonalLoader.prototype.ExtractTilesetTiles = function (tilesets, tilesetSources) {
-                            var tilesetTiles = new Array();
+                        OrthogonalLoader.prototype.ExtractTilesetTiles = function (tilesets, tilesetSources, propertyHooks) {
+                            var tilesetTiles = new Array(), resourceHooks = new Array(), sources, index;
 
                             tilesets.sort(function (a, b) {
                                 return a.firstgid - b.firstgid;
                             });
 
                             for (var i = 0; i < tilesets.length; i++) {
-                                tilesetTiles = tilesetTiles.concat(Map.SquareTileMap.ExtractTiles(tilesetSources[tilesets[i].name], tilesets[i].tilewidth, tilesets[i].tileheight));
+                                sources = Map.SquareTileMap.ExtractTiles(tilesetSources[tilesets[i].name], tilesets[i].tilewidth, tilesets[i].tileheight);
+
+                                for (var property in tilesets[i].properties) {
+                                    if (typeof propertyHooks.ResourceSheetHooks[property] !== "undefined") {
+                                        for (var j = tilesets[i].firstgid - 1; j < tilesets[i].firstgid - 1 + sources.length; j++) {
+                                            if (typeof resourceHooks[j] === "undefined") {
+                                                resourceHooks[j] = new Array();
+                                            }
+
+                                            resourceHooks[j].push(this.BuildHookerFunction(tilesets[i].properties[property], propertyHooks.ResourceSheetHooks[property]));
+                                        }
+                                    }
+                                }
+
+                                for (var tileIndex in tilesets[i].tileproperties) {
+                                    for (var property in tilesets[i].tileproperties[tileIndex])
+                                        if (typeof propertyHooks.ResourceTileHooks[property] !== "undefined") {
+                                            index = parseInt(tileIndex) + tilesets[i].firstgid - 1;
+
+                                            if (typeof resourceHooks[index] === "undefined") {
+                                                resourceHooks[index] = new Array();
+                                            }
+
+                                            resourceHooks[index].push(this.BuildHookerFunction(tilesets[i].tileproperties[tileIndex][property], propertyHooks.ResourceTileHooks[property]));
+                                        }
+                                }
+
+                                tilesetTiles = tilesetTiles.concat(sources);
                             }
 
-                            return tilesetTiles;
+                            return {
+                                Resources: tilesetTiles,
+                                ResourceHooks: resourceHooks
+                            };
                         };
 
                         // Not true async but it frees up the DOM
-                        OrthogonalLoader.prototype.AsyncBuildLayer = function (tmxData, layerIndex, resources, onTileLoad, onComplete) {
+                        OrthogonalLoader.prototype.AsyncBuildLayer = function (tmxData, layerIndex, propertyHooks, resources, onTileLoad, onComplete) {
                             var _this = this;
                             setTimeout(function () {
                                 // Convert the layer data to a 2 dimensional array and subtract 1 from all the data points (to make it 0 based)
-                                var tmxLayer = tmxData.layers[layerIndex], mappings = _this.NormalizeLayerData(tmxLayer.data, tmxData.width), layer = new Map.SquareTileMap(tmxLayer.x, tmxLayer.y, tmxData.tilewidth, tmxData.tileheight, resources, mappings);
+                                var tmxLayer = tmxData.layers[layerIndex], mappings = _this.NormalizeLayerData(tmxLayer.data, tmxData.width), layer = new Map.SquareTileMap(tmxLayer.x, tmxLayer.y, tmxData.tilewidth, tmxData.tileheight, resources.Resources, mappings), layerHooks = new Array();
+
+                                for (var property in tmxLayer.properties) {
+                                    if (typeof propertyHooks.LayerHooks[property] !== "undefined") {
+                                        layerHooks.push(_this.BuildHookerFunction(tmxLayer.properties[property], propertyHooks.LayerHooks[property]));
+                                    }
+                                }
 
                                 layer.ZIndex = layerIndex;
                                 layer.Visible = tmxLayer.visible;
@@ -113,14 +151,30 @@ var EndGate;
                                 // Enough delay to ensure that the page doesn't freeze
                                 layer.RowLoadDelay = EndGate.TimeSpan.FromMilliseconds(5);
 
-                                layer.OnTileLoad.Bind(function (tile, percentComplete) {
-                                    onTileLoad(tile, percentComplete);
+                                layer.OnTileLoad.Bind(function (details, percentComplete) {
+                                    if (resources.ResourceHooks[details.ResourceIndex]) {
+                                        for (var i = 0; i < resources.ResourceHooks[details.ResourceIndex].length; i++) {
+                                            resources.ResourceHooks[details.ResourceIndex][i](details);
+                                        }
+                                    }
+
+                                    for (var i = 0; i < layerHooks.length; i++) {
+                                        layerHooks[i](details);
+                                    }
+
+                                    onTileLoad(details, percentComplete);
                                 });
 
                                 layer.OnLoaded.Bind(function () {
                                     onComplete(layer);
                                 });
                             }, 0);
+                        };
+
+                        OrthogonalLoader.prototype.BuildHookerFunction = function (propertyValue, fn) {
+                            return function (details) {
+                                return fn(details, propertyValue);
+                            };
                         };
 
                         OrthogonalLoader.prototype.NormalizeLayerData = function (data, columns) {
