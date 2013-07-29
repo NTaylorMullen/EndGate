@@ -133,7 +133,7 @@ module EndGate.Graphics {
         /**
         * The bounding area that represents where the Line2d will draw.
         */
-        public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
+        public GetDrawBounds(): Bounds.Bounds2d {
             var bounds = new Bounds.BoundingRectangle(this.Position, new Size2d(this._boundsWidth, this.LineWidth));
 
             bounds.Rotation = Math.atan2(this._difference.Y, this._difference.X) + this.Rotation;

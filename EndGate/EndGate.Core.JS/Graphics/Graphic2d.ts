@@ -135,7 +135,7 @@ module EndGate.Graphics {
         /**
         * Abstract: Should be overridden to return the bounding area that represents where the graphic will draw.
         */
-        public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
+        public GetDrawBounds(): Bounds.Bounds2d {
             throw new Error("GetDrawBounds is abstract, it must be implemented.");
         }
 

@@ -17,7 +17,7 @@ module EndGate.Collision {
         /**
         * Gets or sets the Bounds of the collidable.
         */
-        public Bounds: Bounds.Abstractions.Bounds2d;
+        public Bounds: Bounds.Bounds2d;
 
         private static _collidableIDs: number = 0;
         private _disposed: boolean;
@@ -28,7 +28,7 @@ module EndGate.Collision {
         * Creates a new instance of Collidable.
         * @param bounds Initial bounds for the Collidable.
         */
-        constructor(bounds: Bounds.Abstractions.Bounds2d) {
+        constructor(bounds: Bounds.Bounds2d) {
             this._disposed = false;
             this.Bounds = bounds;
             this._id = Collidable._collidableIDs++;

@@ -22,7 +22,7 @@ declare module EndGate.Rendering {
         /**
         * Returns the bounding area that represents where the renderable will draw.
         */
-        GetDrawBounds(): Bounds.Abstractions.Bounds2d;
+        GetDrawBounds(): Bounds.Bounds2d;
     }
 
 }

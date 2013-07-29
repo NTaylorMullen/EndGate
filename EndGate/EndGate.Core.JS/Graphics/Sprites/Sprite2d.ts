@@ -58,7 +58,7 @@ module EndGate.Graphics {
         /**
         * The bounding area that represents where the Sprite2d will draw.
         */
-        public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
+        public GetDrawBounds(): Bounds.Bounds2d {
             var bounds = new Bounds.BoundingRectangle(this.Position, this.Size);
 
             bounds.Rotation = this.Rotation;

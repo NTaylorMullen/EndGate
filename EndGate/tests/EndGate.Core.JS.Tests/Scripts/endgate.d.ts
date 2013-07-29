@@ -618,7 +618,7 @@ declare module EndGate.Bounds {
     /**
     * Defines a circle that can be used to detect intersections.
     */
-    class BoundingCircle extends Bounds.Abstractions.Bounds2d implements EndGate._.ITyped {
+    class BoundingCircle extends Bounds.Bounds2d implements EndGate._.ITyped {
         public _type: string;
         public _boundsType: string;
         /**
@@ -675,7 +675,7 @@ declare module EndGate.Bounds {
     /**
     * Defines a rectangle that can be used to detect intersections.
     */
-    class BoundingRectangle extends Bounds.Abstractions.Bounds2d implements EndGate._.ITyped {
+    class BoundingRectangle extends Bounds.Bounds2d implements EndGate._.ITyped {
         public _type: string;
         public _boundsType: string;
         /**
@@ -741,7 +741,7 @@ declare module EndGate.Bounds {
         public ContainsRectangle(rectangle: BoundingRectangle): boolean;
     }
 }
-declare module EndGate.Bounds.Abstractions {
+declare module EndGate.Bounds {
     /**
     * Abstract bounds type that is used to detect intersections.
     */
@@ -835,7 +835,7 @@ declare module EndGate.Rendering {
         /**
         * Returns the bounding area that represents where the renderable will draw.
         */
-        GetDrawBounds(): EndGate.Bounds.Abstractions.Bounds2d;
+        GetDrawBounds(): EndGate.Bounds.Bounds2d;
     }
 }
 declare module EndGate._.Loopers {
@@ -1033,7 +1033,7 @@ declare module EndGate.Collision {
         /**
         * Gets or sets the Bounds of the collidable.
         */
-        public Bounds: EndGate.Bounds.Abstractions.Bounds2d;
+        public Bounds: EndGate.Bounds.Bounds2d;
         private static _collidableIDs;
         private _disposed;
         private _onCollision;
@@ -1042,7 +1042,7 @@ declare module EndGate.Collision {
         * Creates a new instance of Collidable.
         * @param bounds Initial bounds for the Collidable.
         */
-        constructor(bounds: EndGate.Bounds.Abstractions.Bounds2d);
+        constructor(bounds: EndGate.Bounds.Bounds2d);
         /**
         * Gets an event that is triggered when a collision happens.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
@@ -1275,7 +1275,7 @@ declare module EndGate.Graphics {
         /**
         * Abstract: Should be overridden to return the bounding area that represents where the graphic will draw.
         */
-        public GetDrawBounds(): EndGate.Bounds.Abstractions.Bounds2d;
+        public GetDrawBounds(): EndGate.Bounds.Bounds2d;
         /**
         * Triggers the OnDisposed event.  If this Graphic2d is used with a Scene2d it will be removed from the scene when disposed.
         */
@@ -2462,7 +2462,7 @@ declare module EndGate.Graphics {
         /**
         * The bounding area that represents where the Text2d will draw.
         */
-        public GetDrawBounds(): EndGate.Bounds.Abstractions.Bounds2d;
+        public GetDrawBounds(): EndGate.Bounds.Bounds2d;
     }
 }
 declare module EndGate.Graphics {
@@ -2569,7 +2569,7 @@ declare module EndGate.Graphics {
         /**
         * The bounding area that represents where the Sprite2d will draw.
         */
-        public GetDrawBounds(): EndGate.Bounds.Abstractions.Bounds2d;
+        public GetDrawBounds(): EndGate.Bounds.Bounds2d;
     }
 }
 declare module EndGate.Graphics {
@@ -2775,7 +2775,7 @@ declare module EndGate.Graphics {
         /**
         * The bounding area that represents where the Circle will draw.
         */
-        public GetDrawBounds(): EndGate.Bounds.Abstractions.Bounds2d;
+        public GetDrawBounds(): EndGate.Bounds.Bounds2d;
         public _BuildPath(context: CanvasRenderingContext2D): void;
     }
 }
@@ -2809,7 +2809,7 @@ declare module EndGate.Graphics {
         /**
         * The bounding area that represents where the Rectangle will draw.
         */
-        public GetDrawBounds(): EndGate.Bounds.Abstractions.Bounds2d;
+        public GetDrawBounds(): EndGate.Bounds.Bounds2d;
         public _BuildPath(context: CanvasRenderingContext2D): void;
     }
 }
@@ -2879,7 +2879,7 @@ declare module EndGate.Graphics {
         /**
         * The bounding area that represents where the Line2d will draw.
         */
-        public GetDrawBounds(): EndGate.Bounds.Abstractions.Bounds2d;
+        public GetDrawBounds(): EndGate.Bounds.Bounds2d;
         private UpdatePosition();
         private RefreshCache();
     }
@@ -3076,7 +3076,7 @@ declare module EndGate.Graphics {
         /**
         * The bounding area that represents where the grid will draw.
         */
-        public GetDrawBounds(): EndGate.Bounds.Abstractions.Bounds2d;
+        public GetDrawBounds(): EndGate.Bounds.Bounds2d;
         /**
         * Converts the provided vertical coordinate to a row number that is based on the current grid.
         * @param y The vertical coordinate to convert to a row.
@@ -3369,7 +3369,7 @@ declare module EndGate.Map {
         /**
         * The bounding area that represents where the SquareTileMap will draw.
         */
-        public GetDrawBounds(): EndGate.Bounds.Abstractions.Bounds2d;
+        public GetDrawBounds(): EndGate.Bounds.Bounds2d;
         private BuildCache();
         private CacheTile(tile);
         private FillGridWith(mappings, onComplete);

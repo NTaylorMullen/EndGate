@@ -1058,7 +1058,7 @@ declare module EndGate {
 
 
 
-module EndGate.Bounds.Abstractions {
+module EndGate.Bounds {
 
     /**
     * Abstract bounds type that is used to detect intersections.
@@ -1209,7 +1209,7 @@ declare module EndGate.Rendering {
         /**
         * Returns the bounding area that represents where the renderable will draw.
         */
-        GetDrawBounds(): Bounds.Abstractions.Bounds2d;
+        GetDrawBounds(): Bounds.Bounds2d;
     }
 
 }
@@ -1782,7 +1782,7 @@ module EndGate.Bounds {
     /**
     * Defines a circle that can be used to detect intersections.
     */
-    export class BoundingCircle extends Abstractions.Bounds2d implements _.ITyped {
+    export class BoundingCircle extends Bounds2d implements _.ITyped {
         public _type: string = "BoundingCircle";
         public _boundsType: string = "BoundingCircle";
 
@@ -1901,7 +1901,7 @@ module EndGate.Bounds {
     /**
     * Defines a rectangle that can be used to detect intersections.
     */
-    export class BoundingRectangle extends Abstractions.Bounds2d implements _.ITyped {
+    export class BoundingRectangle extends Bounds2d implements _.ITyped {
         public _type: string = "BoundingRectangle";
         public _boundsType: string = "BoundingRectangle";
 
@@ -2184,7 +2184,7 @@ module EndGate.Collision {
         /**
         * Gets or sets the Bounds of the collidable.
         */
-        public Bounds: Bounds.Abstractions.Bounds2d;
+        public Bounds: Bounds.Bounds2d;
 
         private static _collidableIDs: number = 0;
         private _disposed: boolean;
@@ -2195,7 +2195,7 @@ module EndGate.Collision {
         * Creates a new instance of Collidable.
         * @param bounds Initial bounds for the Collidable.
         */
-        constructor(bounds: Bounds.Abstractions.Bounds2d) {
+        constructor(bounds: Bounds.Bounds2d) {
             this._disposed = false;
             this.Bounds = bounds;
             this._id = Collidable._collidableIDs++;
@@ -3047,7 +3047,7 @@ module EndGate.Graphics {
         /**
         * Abstract: Should be overridden to return the bounding area that represents where the graphic will draw.
         */
-        public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
+        public GetDrawBounds(): Bounds.Bounds2d {
             throw new Error("GetDrawBounds is abstract, it must be implemented.");
         }
 
@@ -5713,7 +5713,7 @@ module EndGate.Graphics {
         /**
         * The bounding area that represents where the Text2d will draw.
         */
-        public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
+        public GetDrawBounds(): Bounds.Bounds2d {
             this._drawBounds.Rotation = this.Rotation;
             this._drawBounds.Position = this.Position;
 
@@ -5897,7 +5897,7 @@ module EndGate.Graphics {
         /**
         * The bounding area that represents where the Sprite2d will draw.
         */
-        public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
+        public GetDrawBounds(): Bounds.Bounds2d {
             var bounds = new Bounds.BoundingRectangle(this.Position, this.Size);
 
             bounds.Rotation = this.Rotation;
@@ -6330,7 +6330,7 @@ module EndGate.Graphics {
         /**
         * The bounding area that represents where the Circle will draw.
         */
-        public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
+        public GetDrawBounds(): Bounds.Bounds2d {
             var bounds = new Bounds.BoundingCircle(this.Position, this.Radius);
 
             bounds.Rotation = this.Rotation;
@@ -6388,7 +6388,7 @@ module EndGate.Graphics {
         /**
         * The bounding area that represents where the Rectangle will draw.
         */
-        public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
+        public GetDrawBounds(): Bounds.Bounds2d {
             var bounds = new Bounds.BoundingRectangle(this.Position, this.Size);
 
             bounds.Rotation = this.Rotation;
@@ -6538,7 +6538,7 @@ module EndGate.Graphics {
         /**
         * The bounding area that represents where the Line2d will draw.
         */
-        public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
+        public GetDrawBounds(): Bounds.Bounds2d {
             var bounds = new Bounds.BoundingRectangle(this.Position, new Size2d(this._boundsWidth, this.LineWidth));
 
             bounds.Rotation = Math.atan2(this._difference.Y, this._difference.X) + this.Rotation;
@@ -6988,7 +6988,7 @@ module EndGate.Graphics {
         /**
         * The bounding area that represents where the grid will draw.
         */
-        public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
+        public GetDrawBounds(): Bounds.Bounds2d {
             var bounds = new Bounds.BoundingRectangle(this.Position, this._size);
 
             bounds.Rotation = this.Rotation;
@@ -7553,7 +7553,7 @@ module EndGate.Map {
         /**
         * The bounding area that represents where the SquareTileMap will draw.
         */
-        public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
+        public GetDrawBounds(): Bounds.Bounds2d {
             var bounds = this._grid.GetDrawBounds();
 
             bounds.Position = this.Position;

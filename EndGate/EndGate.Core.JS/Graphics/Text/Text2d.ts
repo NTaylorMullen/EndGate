@@ -236,7 +236,7 @@ module EndGate.Graphics {
         /**
         * The bounding area that represents where the Text2d will draw.
         */
-        public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
+        public GetDrawBounds(): Bounds.Bounds2d {
             this._drawBounds.Rotation = this.Rotation;
             this._drawBounds.Position = this.Position;
 

@@ -421,7 +421,7 @@ module EndGate.Graphics {
         /**
         * The bounding area that represents where the grid will draw.
         */
-        public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
+        public GetDrawBounds(): Bounds.Bounds2d {
             var bounds = new Bounds.BoundingRectangle(this.Position, this._size);
 
             bounds.Rotation = this.Rotation;

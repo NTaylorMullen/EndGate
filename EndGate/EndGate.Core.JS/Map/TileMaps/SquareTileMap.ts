@@ -154,7 +154,7 @@ module EndGate.Map {
         /**
         * The bounding area that represents where the SquareTileMap will draw.
         */
-        public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
+        public GetDrawBounds(): Bounds.Bounds2d {
             var bounds = this._grid.GetDrawBounds();
 
             bounds.Position = this.Position;

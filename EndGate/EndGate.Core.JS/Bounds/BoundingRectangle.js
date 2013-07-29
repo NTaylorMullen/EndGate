@@ -185,7 +185,7 @@ var EndGate;
                 return true;
             };
             return BoundingRectangle;
-        })(Bounds.Abstractions.Bounds2d);
+        })(Bounds.Bounds2d);
         Bounds.BoundingRectangle = BoundingRectangle;
     })(EndGate.Bounds || (EndGate.Bounds = {}));
     var Bounds = EndGate.Bounds;
