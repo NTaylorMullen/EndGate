@@ -2890,10 +2890,6 @@ declare module EndGate.Graphics {
     */
     class Grid extends Graphics.Abstractions.Graphic2d {
         public _type: string;
-        /**
-        * Gets or sets the DrawGridLines property.  Indicates whether the grids column and row lines will be drawn.
-        */
-        public DrawGridLines: boolean;
         private _size;
         private _tileSize;
         private _grid;
@@ -2902,6 +2898,7 @@ declare module EndGate.Graphics {
         private _rows;
         private _columns;
         private _gridLineColor;
+        private _drawGridLines;
         /**
         * Creates a new instance of the Grid object.
         * @param x Initial horizontal location of the grid.
@@ -2935,6 +2932,10 @@ declare module EndGate.Graphics {
         * @param gridLineColor Initial grid line color (only useful if drawGridLines is true);
         */
         constructor(x: number, y: number, rows: number, columns: number, tileWidth: number, tileHeight: number, drawGridLines: boolean, gridLineColor: string);
+        /**
+        * Gets or sets the DrawGridLines property.  Indicates whether the grids column and row lines will be drawn.
+        */
+        public DrawGridLines : boolean;
         /**
         * Gets or sets the current grid line color.  Grid lines are only drawn of DrawGridLines is set to true.  Valid colors are strings like "red" or "rgb(255,0,0)".
         */
@@ -3086,6 +3087,7 @@ declare module EndGate.Graphics {
         * @param x The horizontal component to convert to a column.
         */
         public ConvertToColumn(x: number): number;
+        private BuildGridLines();
         private GetInsideGridPosition(row, column);
         private ValidRow(row);
         private ValidColumn(column);
@@ -3228,6 +3230,7 @@ declare module EndGate {
         static Scale(vector: EndGate.Vector2d): Matrix2x2;
     }
 }
+declare function asyncLoop(action: (next: () => void, index: number) => void, count: number, onComplete?: () => void): void;
 declare module EndGate.Map {
     /**
     * Defines an abstract class TileMap that takes an array of resources to be mapped to tiles.
@@ -3241,6 +3244,33 @@ declare module EndGate.Map {
         * @param resources A one dimensional array of image resources that make up the tile map (this cannot change after construction).
         */
         constructor(x: number, y: number, resources: EndGate.Graphics.Assets.ImageSource[]);
+    }
+}
+declare module EndGate.Map {
+    /**
+    * Defines an object that is used to fully describe a loaded tile.
+    */
+    interface ITileDetails {
+        /**
+        * The Tile that will be on the map.
+        */
+        Tile: EndGate.Graphics.Sprite2d;
+        /**
+        * The resource index that was used to build the tile.
+        */
+        ResourceIndex: number;
+        /**
+        * The row that the tile occupies.
+        */
+        Row: number;
+        /**
+        * The column that the tile occupies.
+        */
+        Column: number;
+        /**
+        * The TileMap that contains the Tile.  This can be used to determine the absolute position of the Tile by adding the Parent and Tile's position.
+        */
+        Parent: Map.TileMap;
     }
 }
 declare module EndGate.Map {
@@ -3262,9 +3292,23 @@ declare module EndGate.Map {
     * Defines a structure that is proficient at creating diverse tile maps based off of a resource image.  Best drawn via a SceneryHandler.
     */
     class SquareTileMap extends Map.TileMap {
+        /**
+        * Gets or sets the tile load delay component.  This can be used to slowly load a square tile map to prevent the browser from freezing by adding a delay between tile loads to allow time for the DOM to update.  Defaults to TimeSpan.Zero.
+        */
+        public TileLoadDelay: EndGate.TimeSpan;
+        /**
+        * Gets or sets the row load delay component.  This can be used to slowly load a square tile map to prevent the browser from freezing by adding a delay between row loads to allow time for the DOM to update.  Defaults to TimeSpan.Zero.
+        */
+        public RowLoadDelay: EndGate.TimeSpan;
         private _grid;
         private _staticMap;
         private _mapCache;
+        private _mapCacheContext;
+        private _onTileLoad;
+        private _onLoaded;
+        private _loaded;
+        private _tilesBuilt;
+        private _totalTiles;
         /**
         * Creates a new instance of the SquareTileMap object.
         * @param x Initial horizontal location of the tile map.
@@ -3299,12 +3343,24 @@ declare module EndGate.Map {
         */
         constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: EndGate.Graphics.Assets.ImageSource[], mappings: number[][], staticMap: boolean, drawGridLines: boolean);
         /**
+        * Gets an event that is triggered when a tile has been loaded, first argument is the tile details for the loaded tile, second is the percent complete.  Once this SquareTileMap has been created and all tiles loaded this event will no longer be triggered. Functions can be bound or unbound to this event to be executed when the event triggers.
+        */
+        public OnTileLoad : EndGate.EventHandler2<Map.ITileDetails, number>;
+        /**
+        * Gets an event that is triggered when the square tile map has been loaded.  Once this SquareTileMap has been created and all tiles loaded this event will no longer be triggered. Functions can be bound or unbound to this event to be executed when the event triggers.
+        */
+        public OnLoaded : EndGate.EventHandler;
+        /**
         * Helper function used to take a SpriteSheet image and create a one dimensional resource tile array.
         * @param imageSource The sprite sheet to extract the tile resources from.
         * @param tileWidth The width of the sprite sheet tiles.
         * @param tileHeight The height of the sprite sheet tiles.
         */
         static ExtractTiles(imageSource: EndGate.Graphics.Assets.ImageSource, tileWidth: number, tileHeight: number): EndGate.Graphics.Assets.ImageSource[];
+        /**
+        * Determines if the current SquareTileMap is loaded.
+        */
+        public IsLoaded(): boolean;
         /**
         * Draws the SquareTileMap onto the given context.  If the SquareTileMap is part of a Scene2d or SceneryHandler the Draw function will be called automatically.
         * @param context The canvas context to draw the SquareTileMap onto.
@@ -3315,10 +3371,21 @@ declare module EndGate.Map {
         */
         public GetDrawBounds(): EndGate.Bounds.Abstractions.Bounds2d;
         private BuildCache();
-        private FillGridWith(mappings);
+        private CacheTile(tile);
+        private FillGridWith(mappings, onComplete);
+        private AsyncBuildGridTile(row, column, resourceIndex, onComplete);
+        private AsyncBuildGridRow(rowIndex, mappings, onComplete);
     }
 }
 interface Number extends EndGate.ICloneable {
+}
+declare module EndGate.Map.Loaders {
+    /**
+    * Defines an IHookFunction that represents a function that can be used to hook into map loading tiles.
+    */
+    interface IHookFunction {
+        (details: Map.ITileDetails, propertyValue: string): any;
+    }
 }
 declare module EndGate.Map.Loaders {
     /**
@@ -3333,15 +3400,64 @@ declare module EndGate.Map.Loaders {
 }
 declare module EndGate.Map.Loaders {
     /**
+    * Defines an object that contains some immediately available information about the map that is about to be loaded.
+    */
+    interface IMapPreloadInfo {
+        /**
+        * The total number of layers the map contains.
+        */
+        LayerCount: number;
+        /**
+        * The total number of tile resource sheets that are used to represent the map.
+        */
+        ResourceSheetCount: number;
+        /**
+        * The total number of tiles within the map (empty or not).
+        */
+        TileCount: number;
+        /**
+        * Gets an event that is triggered when the percent loaded value has changed, first argument is the percent loaded (0-1).  Functions can be bound or unbound to this event to be executed when the event triggers.
+        */
+        OnPercentLoaded: EndGate.EventHandler1<number>;
+    }
+}
+declare module EndGate.Map.Loaders {
+    /**
+    * Defines an object that can be used to provide hooks to adjust tiles as they are built.
+    */
+    interface IPropertyHooks {
+        /**
+        * Hooks to trigger when a resource tile with the specified property is used when loading a map.  Passes in the created tile and the property value for the hook.
+        */
+        ResourceTileHooks?: {
+            [property: string]: Loaders.IHookFunction;
+        };
+        /**
+        * Hooks to trigger when a resource sheet with the specified property is used when loading a map.  Passes in created tiles from the resource sheet and the property value for the hook.
+        */
+        ResourceSheetHooks?: {
+            [property: string]: Loaders.IHookFunction;
+        };
+        /**
+        * Hooks to trigger when a layer with the specified property is used when loading a map.  Passes in created tiles from the layer and the property value for the hook.
+        */
+        LayerHooks?: {
+            [property: string]: Loaders.IHookFunction;
+        };
+    }
+}
+declare module EndGate.Map.Loaders {
+    /**
     * Defines an object that can load data and output a result asynchronously.
     */
     interface IMapLoader {
         /**
         * Loads the provided data then calls the onComplete function once valid map data has been created.
         * @param data The base data that will be transformed into the IMapLoadedResult format.
+        * @param propertyHooks Property hooks that can be used to modify tiles while they're loading.
         * @param onComplete The function to trigger when the data has been converted into a valid IMapLoadedResult.
         */
-        Load(data: any, onComplete: (result: Loaders.IMapLoadedResult) => any): void;
+        Load(data: any, propertyHooks: Loaders.IPropertyHooks, onComplete: (result: Loaders.IMapLoadedResult) => any): Loaders.IMapPreloadInfo;
     }
 }
 declare module EndGate.Map.Loaders {
@@ -3363,6 +3479,9 @@ declare module EndGate.Map.Loaders._.TMX {
         height: number;
         x: number;
         y: number;
+        properties: {
+            [property: string]: string;
+        };
     }
 }
 declare module EndGate.Map.Loaders._.TMX {
@@ -3373,10 +3492,17 @@ declare module EndGate.Map.Loaders._.TMX {
         imagewidth: number;
         margin: number;
         name: string;
-        properties: any;
+        properties: {
+            [property: string]: string;
+        };
         spacing: number;
         tilewidth: number;
         tileheight: number;
+        tileproperties: {
+            [tileIndex: string]: {
+                [property: string]: string;
+            };
+        };
     }
 }
 declare module EndGate.Map.Loaders._.TMX {
@@ -3394,9 +3520,12 @@ declare module EndGate.Map.Loaders._.TMX {
 }
 declare module EndGate.Map.Loaders._.TMX {
     class OrthogonalLoader implements Loaders.IMapLoader {
-        public Load(data: TMX.ITMX, onComplete: (result: Loaders.IMapLoadedResult) => any): void;
-        private LoadTilesetSources(tilesets, onComplete);
-        private ExtractTilesetTiles(tilesets, tilesetSources);
+        private static _imagePercentMax;
+        public Load(data: TMX.ITMX, propertyHooks: Loaders.IPropertyHooks, onComplete: (result: Loaders.IMapLoadedResult) => any): Loaders.IMapPreloadInfo;
+        private LoadTilesetSources(tilesets, onTilesetLoad, onComplete);
+        private ExtractTilesetTiles(tilesets, tilesetSources, propertyHooks);
+        private AsyncBuildLayer(tmxData, layerIndex, propertyHooks, resources, onTileLoad, onComplete);
+        private BuildHookerFunction(propertyValue, fn);
         private NormalizeLayerData(data, columns);
     }
 }
@@ -3404,7 +3533,7 @@ declare module EndGate.Map.Loaders._.TMX {
     class TMXLoader implements Loaders.IMapLoader {
         private _orientationLoaders;
         constructor();
-        public Load(data: TMX.ITMX, onComplete: (result: Loaders.IMapLoadedResult) => any): void;
+        public Load(data: TMX.ITMX, propertyHooks: Loaders.IPropertyHooks, onComplete: (result: Loaders.IMapLoadedResult) => any): Loaders.IMapPreloadInfo;
     }
 }
 declare module EndGate.Map.Loaders {
@@ -3418,14 +3547,22 @@ declare module EndGate.Map.Loaders {
         * @param json The JSON data that represents the map.
         * @param onComplete The function to trigger when the json has been converted into a valid IMapLoadedResult.
         */
-        static Load(json: Object, onComplete: (result: Loaders.IMapLoadedResult) => any): void;
+        static Load(json: Object, onComplete: (result: Loaders.IMapLoadedResult) => any): Loaders.IMapPreloadInfo;
         /**
         * Loads the provided json object then calls the onComplete function once the json has been transformed.
         * @param json The JSON data that represents the map.
         * @param onComplete The function to trigger when the json has been converted into a valid IMapLoadedResult.
+        * @param propertyHooks Property hooks that can be used to modify tiles while they're loading.  All maps that are loaded are static square tile maps, therefore modified tiles will only be drawn once.
+        */
+        static Load(json: Object, onComplete: (result: Loaders.IMapLoadedResult) => any, propertyHooks: Loaders.IPropertyHooks): Loaders.IMapPreloadInfo;
+        /**
+        * Loads the provided json object then calls the onComplete function once the json has been transformed.
+        * @param json The JSON data that represents the map.
+        * @param onComplete The function to trigger when the json has been converted into a valid IMapLoadedResult.
+        * @param propertyHooks Property hooks that can be used to modify tiles while they're loading.  All maps that are loaded are static square tile maps, therefore modified tiles will only be drawn once.
         * @param format The format of the JSON object.  Defaults to the tmx format.
         */
-        static Load(json: Object, onComplete: (result: Loaders.IMapLoadedResult) => any, format: Loaders.JSONFormat): void;
+        static Load(json: Object, onComplete: (result: Loaders.IMapLoadedResult) => any, propertyHooks: Loaders.IPropertyHooks, format: Loaders.JSONFormat): Loaders.IMapPreloadInfo;
     }
 }
 declare module EndGate.Tweening.Functions {
