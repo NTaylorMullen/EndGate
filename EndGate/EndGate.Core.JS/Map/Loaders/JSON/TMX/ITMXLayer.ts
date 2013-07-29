@@ -10,6 +10,7 @@ declare module EndGate.Map.Loaders._.TMX {
         height: number;
         x: number;
         y: number;
+        properties: { [property: string]: string };
     }
 
 }

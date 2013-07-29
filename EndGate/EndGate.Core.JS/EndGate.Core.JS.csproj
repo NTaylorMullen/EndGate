@@ -96,6 +96,10 @@
     <TypeScriptCompile Include="Map\Loaders\JSON\TMX\ITMX.ts" />
     <TypeScriptCompile Include="Map\Loaders\IMapLoader.ts" />
     <TypeScriptCompile Include="Map\Loaders\IMapLoadedResult.ts" />
+    <TypeScriptCompile Include="Map\Loaders\IHookFunction.ts" />
+    <Content Include="Map\Loaders\IHookFunction.js">
+      <DependentUpon>IHookFunction.ts</DependentUpon>
+    </Content>
     <Content Include="Map\Loaders\IMapLoadedResult.js">
       <DependentUpon>IMapLoadedResult.ts</DependentUpon>
     </Content>
@@ -105,6 +109,10 @@
     <TypeScriptCompile Include="Map\Loaders\IMapPreloadInfo.ts" />
     <Content Include="Map\Loaders\IMapPreloadInfo.js">
       <DependentUpon>IMapPreloadInfo.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Map\Loaders\IPropertyHooks.ts" />
+    <Content Include="Map\Loaders\IPropertyHooks.js">
+      <DependentUpon>IPropertyHooks.ts</DependentUpon>
     </Content>
     <Content Include="Map\Loaders\JSON\TMX\ITMX.js">
       <DependentUpon>ITMX.ts</DependentUpon>
@@ -130,6 +138,10 @@
     </Content>
     <Content Include="Map\Loaders\JSON\TMX\TMXLoader.js">
       <DependentUpon>TMXLoader.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Map\TileMaps\ITileDetails.ts" />
+    <Content Include="Map\TileMaps\ITileDetails.js">
+      <DependentUpon>ITileDetails.ts</DependentUpon>
     </Content>
     <Content Include="Tweening\Functions\Back.js">
       <DependentUpon>Back.ts</DependentUpon>

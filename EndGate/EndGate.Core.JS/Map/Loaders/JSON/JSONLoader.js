@@ -6,6 +6,7 @@ var EndGate;
         /// <reference path="../IMapLoader.ts" />
         /// <reference path="../IMapPreloadInfo.ts" />
         /// <reference path="../IMapLoadedResult.ts" />
+        /// <reference path="../IPropertyHooks.ts" />
         /// <reference path="../../TileMaps/TileMap.ts" />
         /// <reference path="../../TileMaps/SquareTileMap.ts" />
         (function (Loaders) {
@@ -15,9 +16,18 @@ var EndGate;
             var JSONLoader = (function () {
                 function JSONLoader() {
                 }
-                JSONLoader.Load = function (json, onComplete, format) {
+                JSONLoader.Load = function (json, onComplete, propertyHooks, format) {
                     if (typeof format === "undefined") { format = Loaders.JSONFormat.TMX; }
-                    return JSONLoader._loaders[Loaders.JSONFormat[format]].Load(json, onComplete);
+                    if (!propertyHooks) {
+                        // Defaults
+                        propertyHooks = {
+                            ResourceTileHooks: {},
+                            ResourceSheetHooks: {},
+                            LayerHooks: {}
+                        };
+                    }
+
+                    return JSONLoader._loaders[Loaders.JSONFormat[format]].Load(json, propertyHooks, onComplete);
                 };
                 JSONLoader._loaders = {
                     TMX: new Loaders._.TMX.TMXLoader()

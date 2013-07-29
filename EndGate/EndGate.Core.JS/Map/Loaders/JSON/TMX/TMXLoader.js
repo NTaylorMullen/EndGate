@@ -16,12 +16,12 @@ var EndGate;
                                 orthogonal: new TMX.OrthogonalLoader()
                             };
                         }
-                        TMXLoader.prototype.Load = function (data, onComplete) {
+                        TMXLoader.prototype.Load = function (data, propertyHooks, onComplete) {
                             if (!this._orientationLoaders[data.orientation]) {
                                 throw new Error("Invalid orientation.  The orientation '" + data.orientation + "' is not supported.");
                             }
 
-                            return this._orientationLoaders[data.orientation].Load(data, onComplete);
+                            return this._orientationLoaders[data.orientation].Load(data, propertyHooks, onComplete);
                         };
                         return TMXLoader;
                     })();

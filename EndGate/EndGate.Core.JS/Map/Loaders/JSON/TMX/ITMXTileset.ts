@@ -7,10 +7,11 @@ declare module EndGate.Map.Loaders._.TMX {
         imagewidth: number;
         margin: number;
         name: string;
-        properties: any;
+        properties: { [property: string]: string };
         spacing: number;
         tilewidth: number;
         tileheight: number;
+        tileproperties: { [tileIndex: string]: { [property: string]: string } };
     }
 
 }

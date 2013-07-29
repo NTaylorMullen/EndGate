@@ -16,12 +16,12 @@ module EndGate.Map.Loaders._.TMX {
             };
         }
 
-        public Load(data: ITMX, onComplete: (result: IMapLoadedResult) => any): IMapPreloadInfo {
+        public Load(data: ITMX, propertyHooks: IPropertyHooks, onComplete: (result: IMapLoadedResult) => any): IMapPreloadInfo {
             if (!this._orientationLoaders[data.orientation]) {
                 throw new Error("Invalid orientation.  The orientation '" + data.orientation + "' is not supported.");
             }
 
-            return this._orientationLoaders[data.orientation].Load(data, onComplete);
+            return this._orientationLoaders[data.orientation].Load(data, propertyHooks, onComplete);
         }
     }
 
