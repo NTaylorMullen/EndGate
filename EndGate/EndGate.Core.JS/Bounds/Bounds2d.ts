@@ -3,7 +3,7 @@
 /// <reference  path="BoundingRectangle.ts" />
 /// <reference  path="BoundingCircle.ts" />
 
-module EndGate.Bounds.Abstractions {
+module EndGate.Bounds {
 
     /**
     * Abstract bounds type that is used to detect intersections.

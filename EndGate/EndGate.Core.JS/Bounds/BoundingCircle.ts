@@ -7,7 +7,7 @@ module EndGate.Bounds {
     /**
     * Defines a circle that can be used to detect intersections.
     */
-    export class BoundingCircle extends Abstractions.Bounds2d implements _.ITyped {
+    export class BoundingCircle extends Bounds2d implements _.ITyped {
         public _type: string = "BoundingCircle";
         public _boundsType: string = "BoundingCircle";
 

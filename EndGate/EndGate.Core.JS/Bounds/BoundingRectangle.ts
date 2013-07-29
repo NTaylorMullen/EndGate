@@ -8,7 +8,7 @@ module EndGate.Bounds {
     /**
     * Defines a rectangle that can be used to detect intersections.
     */
-    export class BoundingRectangle extends Abstractions.Bounds2d implements _.ITyped {
+    export class BoundingRectangle extends Bounds2d implements _.ITyped {
         public _type: string = "BoundingRectangle";
         public _boundsType: string = "BoundingRectangle";
 

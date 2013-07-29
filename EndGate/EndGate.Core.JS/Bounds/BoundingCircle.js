@@ -119,7 +119,7 @@ var EndGate;
                 return true;
             };
             return BoundingCircle;
-        })(Bounds.Abstractions.Bounds2d);
+        })(Bounds.Bounds2d);
         Bounds.BoundingCircle = BoundingCircle;
     })(EndGate.Bounds || (EndGate.Bounds = {}));
     var Bounds = EndGate.Bounds;

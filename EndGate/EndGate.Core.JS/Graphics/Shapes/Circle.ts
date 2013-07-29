@@ -40,7 +40,7 @@ module EndGate.Graphics {
         /**
         * The bounding area that represents where the Circle will draw.
         */
-        public GetDrawBounds(): Bounds.Abstractions.Bounds2d {
+        public GetDrawBounds(): Bounds.Bounds2d {
             var bounds = new Bounds.BoundingCircle(this.Position, this.Radius);
 
             bounds.Rotation = this.Rotation;
