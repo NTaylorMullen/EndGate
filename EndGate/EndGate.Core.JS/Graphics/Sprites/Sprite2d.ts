@@ -1,7 +1,7 @@
 /// <reference path="../../Assets/Vectors/Vector2d.ts" />
 /// <reference path="../../Assets/Sizes/Size2d.ts" />
 /// <reference path="../Graphic2d.ts" />
-/// <reference path="ImageSource.ts" />
+/// <reference path="../ImageSource.ts" />
 
 module EndGate.Graphics {
 
@@ -14,7 +14,7 @@ module EndGate.Graphics {
         /**
         * Gets or sets the Image that is drawn to the game screen.
         */
-        public Image: Assets.ImageSource;
+        public Image: ImageSource;
         /**
         * Gets or sets the size of the Sprite2d.  If the Size is not equal to the image's ClipSize the Sprite2d will appear stretched.
         */
@@ -26,7 +26,7 @@ module EndGate.Graphics {
         * @param y Initial vertical location of the Sprite2d.
         * @param image Initial ImageSource of the Sprite2d.
         */
-        constructor(x: number, y: number, image: Assets.ImageSource);
+        constructor(x: number, y: number, image: ImageSource);
         /**
         * Creates a new instance of the Sprite2d object.
         * @param x Initial horizontal location of the Sprite2d.
@@ -35,8 +35,8 @@ module EndGate.Graphics {
         * @param width Initial width of the Sprite2d.  If the width does not equal the width of the image's clip width the Sprite2d will appear stretched.
         * @param height Initial height of the Sprite2d.  If the height does not equal the height of the image's clip height the Sprite2d will appear stretched.
         */
-        constructor(x: number, y: number, image: Assets.ImageSource, width: number, height: number);
-        constructor(x: number, y: number, image: Assets.ImageSource, width: number = image.ClipSize.Width, height: number = image.ClipSize.Height) {
+        constructor(x: number, y: number, image: ImageSource, width: number, height: number);
+        constructor(x: number, y: number, image: ImageSource, width: number = image.ClipSize.Width, height: number = image.ClipSize.Height) {
             super(new Vector2d(x, y));
 
             this.Image = image;

@@ -68,12 +68,12 @@ module RawRPG {
                 // Get settings for selected map
                 var settings = maps[savedMaps.val()],
                     // Build a sprite sheet from the sprite sheet url that was saved
-                    resourceSheet: eg.Graphics.Assets.ImageSource = new eg.Graphics.Assets.ImageSource(settings.SpriteSheetUrl);
+                    resourceSheet: eg.Graphics.ImageSource = new eg.Graphics.ImageSource(settings.SpriteSheetUrl);
 
                 // It takes time to load an image so we have this OnLoaded function that will trigger when the image has finished loading
                 resourceSheet.OnLoaded.Bind(() => {
                     // Build the resources array based on the new sprite sheet
-                    var resources: eg.Graphics.Assets.ImageSource[] = eg.Map.SquareTileMap.ExtractTiles(resourceSheet, settings.TileSize.Width, settings.TileSize.Height),
+                    var resources: eg.Graphics.ImageSource[] = eg.Map.SquareTileMap.ExtractTiles(resourceSheet, settings.TileSize.Width, settings.TileSize.Height),
                         tileMap: eg.Map.SquareTileMap;
 
                     // Generate the layers and add them to the scenery

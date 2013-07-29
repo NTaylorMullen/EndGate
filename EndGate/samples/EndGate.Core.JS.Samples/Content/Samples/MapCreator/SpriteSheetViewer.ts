@@ -10,9 +10,9 @@
 module MapCreator {
 
     export class SpriteSheetViewer extends eg.Game {
-        public SelectedSources: eg.Graphics.Assets.ImageSource[];
+        public SelectedSources: eg.Graphics.ImageSource[];
         public VisibleGrid: eg.Graphics.Grid;
-        public ActiveSpriteSheet: eg.Graphics.Assets.ImageSource;
+        public ActiveSpriteSheet: eg.Graphics.ImageSource;
 
         private _cameraDragController: CameraDragController;
         private _cameraZoomController: CameraZoomController;
@@ -29,7 +29,7 @@ module MapCreator {
         }
 
         private loadSpritesheet(url: string): void {
-            this.ActiveSpriteSheet = new eg.Graphics.Assets.ImageSource(url);
+            this.ActiveSpriteSheet = new eg.Graphics.ImageSource(url);
 
             this.ActiveSpriteSheet.OnLoaded.Bind(() => {
                 var createTileSelector = false;

@@ -44,7 +44,7 @@ var RawRPG;
                 activeTileMaps = [];
 
                 // Get settings for selected map
-                var settings = maps[savedMaps.val()], resourceSheet = new eg.Graphics.Assets.ImageSource(settings.SpriteSheetUrl);
+                var settings = maps[savedMaps.val()], resourceSheet = new eg.Graphics.ImageSource(settings.SpriteSheetUrl);
 
                 // It takes time to load an image so we have this OnLoaded function that will trigger when the image has finished loading
                 resourceSheet.OnLoaded.Bind(function () {

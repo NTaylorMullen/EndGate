@@ -3,7 +3,7 @@ var EndGate;
     (function (Map) {
         (function (Loaders) {
             (function (_) {
-                /// <reference path="../../../../Graphics/Sprites/ImageSource.ts" />
+                /// <reference path="../../../../Graphics/ImageSource.ts" />
                 /// <reference path="../../IMapLoader.ts" />
                 /// <reference path="../../IMapLoadedResult.ts" />
                 /// <reference path="../../IMapPreloadInfo.ts" />
@@ -82,7 +82,7 @@ var EndGate;
                             };
 
                             for (var i = 0; i < tilesets.length; i++) {
-                                tilesetSources[tilesets[i].name] = new EndGate.Graphics.Assets.ImageSource(tilesets[i].image, tilesets[i].imagewidth, tilesets[i].imageheight);
+                                tilesetSources[tilesets[i].name] = new EndGate.Graphics.ImageSource(tilesets[i].image, tilesets[i].imagewidth, tilesets[i].imageheight);
                                 tilesetSources[tilesets[i].name].OnLoaded.Bind(onLoaded);
                             }
                         };

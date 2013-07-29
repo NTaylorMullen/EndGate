@@ -3945,69 +3945,66 @@ var EndGate;
 var EndGate;
 (function (EndGate) {
     (function (Graphics) {
-        (function (Assets) {
-            var ImageSource = (function () {
-                function ImageSource(imageLocation, width, height, clipX, clipY, clipWidth, clipHeight) {
-                    if (typeof clipX === "undefined") { clipX = 0; }
-                    if (typeof clipY === "undefined") { clipY = 0; }
-                    if (typeof clipWidth === "undefined") { clipWidth = width; }
-                    if (typeof clipHeight === "undefined") { clipHeight = height; }
-                    var _this = this;
-                    var setSize = typeof width !== "undefined";
+        var ImageSource = (function () {
+            function ImageSource(imageLocation, width, height, clipX, clipY, clipWidth, clipHeight) {
+                if (typeof clipX === "undefined") { clipX = 0; }
+                if (typeof clipY === "undefined") { clipY = 0; }
+                if (typeof clipWidth === "undefined") { clipWidth = width; }
+                if (typeof clipHeight === "undefined") { clipHeight = height; }
+                var _this = this;
+                var setSize = typeof width !== "undefined";
 
-                    this._loaded = false;
-                    this._onLoaded = new EndGate.EventHandler1();
-                    this.Source = new Image();
+                this._loaded = false;
+                this._onLoaded = new EndGate.EventHandler1();
+                this.Source = new Image();
 
-                    this.Source.onload = function () {
-                        _this._loaded = true;
+                this.Source.onload = function () {
+                    _this._loaded = true;
 
-                        if (!setSize) {
-                            _this._size = new EndGate.Size2d(_this.Source.width, _this.Source.height);
-                            _this.ClipLocation = EndGate.Vector2d.Zero;
-                            _this.ClipSize = _this._size.Clone();
-                        }
-
-                        _this._onLoaded.Trigger(_this);
-                    };
-
-                    this.Source.src = imageLocation;
-                    this._imageLocation = imageLocation;
-
-                    if (setSize) {
-                        this._size = new EndGate.Size2d(width, height);
-                        this.ClipLocation = new EndGate.Vector2d(clipX, clipY);
-                        this.ClipSize = new EndGate.Size2d(clipWidth, clipHeight);
+                    if (!setSize) {
+                        _this._size = new EndGate.Size2d(_this.Source.width, _this.Source.height);
+                        _this.ClipLocation = EndGate.Vector2d.Zero;
+                        _this.ClipSize = _this._size.Clone();
                     }
+
+                    _this._onLoaded.Trigger(_this);
+                };
+
+                this.Source.src = imageLocation;
+                this._imageLocation = imageLocation;
+
+                if (setSize) {
+                    this._size = new EndGate.Size2d(width, height);
+                    this.ClipLocation = new EndGate.Vector2d(clipX, clipY);
+                    this.ClipSize = new EndGate.Size2d(clipWidth, clipHeight);
                 }
-                Object.defineProperty(ImageSource.prototype, "OnLoaded", {
-                    get: function () {
-                        return this._onLoaded;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
+            }
+            Object.defineProperty(ImageSource.prototype, "OnLoaded", {
+                get: function () {
+                    return this._onLoaded;
+                },
+                enumerable: true,
+                configurable: true
+            });
 
-                Object.defineProperty(ImageSource.prototype, "Size", {
-                    get: function () {
-                        return this._size.Clone();
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
+            Object.defineProperty(ImageSource.prototype, "Size", {
+                get: function () {
+                    return this._size.Clone();
+                },
+                enumerable: true,
+                configurable: true
+            });
 
-                ImageSource.prototype.Loaded = function () {
-                    return this._loaded;
-                };
+            ImageSource.prototype.Loaded = function () {
+                return this._loaded;
+            };
 
-                ImageSource.prototype.Extract = function (clipX, clipY, clipWidth, clipHeight) {
-                    return new ImageSource(this._imageLocation, this._size.Width, this._size.Height, clipX, clipY, clipWidth, clipHeight);
-                };
-                return ImageSource;
-            })();
-            Assets.ImageSource = ImageSource;
-        })(Graphics.Assets || (Graphics.Assets = {}));
-        var Assets = Graphics.Assets;
+            ImageSource.prototype.Extract = function (clipX, clipY, clipWidth, clipHeight) {
+                return new ImageSource(this._imageLocation, this._size.Width, this._size.Height, clipX, clipY, clipWidth, clipHeight);
+            };
+            return ImageSource;
+        })();
+        Graphics.ImageSource = ImageSource;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
     var Graphics = EndGate.Graphics;
 })(EndGate || (EndGate = {}));
@@ -5243,7 +5240,7 @@ var EndGate;
                             };
 
                             for (var i = 0; i < tilesets.length; i++) {
-                                tilesetSources[tilesets[i].name] = new EndGate.Graphics.Assets.ImageSource(tilesets[i].image, tilesets[i].imagewidth, tilesets[i].imageheight);
+                                tilesetSources[tilesets[i].name] = new EndGate.Graphics.ImageSource(tilesets[i].image, tilesets[i].imagewidth, tilesets[i].imageheight);
                                 tilesetSources[tilesets[i].name].OnLoaded.Bind(onLoaded);
                             }
                         };

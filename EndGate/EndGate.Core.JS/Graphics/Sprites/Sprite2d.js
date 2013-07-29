@@ -9,7 +9,7 @@ var EndGate;
     /// <reference path="../../Assets/Vectors/Vector2d.ts" />
     /// <reference path="../../Assets/Sizes/Size2d.ts" />
     /// <reference path="../Graphic2d.ts" />
-    /// <reference path="ImageSource.ts" />
+    /// <reference path="../ImageSource.ts" />
     (function (Graphics) {
         /**
         * Defines a drawable sprite.  Sprites are used to draw images to the game screen.

@@ -5,7 +5,7 @@ var EndGate;
     /// <reference path="../../../Assets/Sizes/Size2d.ts" />
     /// <reference path="../../../Interfaces/IUpdateable.ts" />
     /// <reference path="../../../GameTime.ts" />
-    /// <reference path="../ImageSource.ts" />
+    /// <reference path="../../ImageSource.ts" />
     (function (Graphics) {
         /**
         * Defines an animation that can be drawn to the screen.

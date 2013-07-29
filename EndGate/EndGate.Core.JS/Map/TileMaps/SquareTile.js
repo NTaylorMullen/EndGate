@@ -6,7 +6,7 @@ var __extends = this.__extends || function (d, b) {
 };
 var EndGate;
 (function (EndGate) {
-    /// <reference path="../../Graphics/Sprites/ImageSource.ts" />
+    /// <reference path="../../Graphics/ImageSource.ts" />
     /// <reference path="../../Graphics/Sprites/Sprite2d.ts" />
     (function (Map) {
         /**

@@ -2465,7 +2465,7 @@ declare module EndGate.Graphics {
         public GetDrawBounds(): EndGate.Bounds.Abstractions.Bounds2d;
     }
 }
-declare module EndGate.Graphics.Assets {
+declare module EndGate.Graphics {
     /**
     * Defines an image resource that can be used within Sprite's, SpriteAnimation's and other drawable graphics.
     */
@@ -2540,7 +2540,7 @@ declare module EndGate.Graphics {
         /**
         * Gets or sets the Image that is drawn to the game screen.
         */
-        public Image: Graphics.Assets.ImageSource;
+        public Image: Graphics.ImageSource;
         /**
         * Gets or sets the size of the Sprite2d.  If the Size is not equal to the image's ClipSize the Sprite2d will appear stretched.
         */
@@ -2551,7 +2551,7 @@ declare module EndGate.Graphics {
         * @param y Initial vertical location of the Sprite2d.
         * @param image Initial ImageSource of the Sprite2d.
         */
-        constructor(x: number, y: number, image: Graphics.Assets.ImageSource);
+        constructor(x: number, y: number, image: Graphics.ImageSource);
         /**
         * Creates a new instance of the Sprite2d object.
         * @param x Initial horizontal location of the Sprite2d.
@@ -2560,7 +2560,7 @@ declare module EndGate.Graphics {
         * @param width Initial width of the Sprite2d.  If the width does not equal the width of the image's clip width the Sprite2d will appear stretched.
         * @param height Initial height of the Sprite2d.  If the height does not equal the height of the image's clip height the Sprite2d will appear stretched.
         */
-        constructor(x: number, y: number, image: Graphics.Assets.ImageSource, width: number, height: number);
+        constructor(x: number, y: number, image: Graphics.ImageSource, width: number, height: number);
         /**
         * Draws the sprite onto the given context.  If this sprite is part of a scene the Draw function will be called automatically.
         * @param context The canvas context to draw the sprite onto.
@@ -2596,7 +2596,7 @@ declare module EndGate.Graphics {
         * @param frameSize How large each animation frame is within the imageSource sprite sheet.
         * @param frameCount How many frames to play for the animation.
         */
-        constructor(imageSource: Graphics.Assets.ImageSource, fps: number, frameSize: EndGate.Size2d, frameCount: number);
+        constructor(imageSource: Graphics.ImageSource, fps: number, frameSize: EndGate.Size2d, frameCount: number);
         /**
         * Creates a new instance of the SpriteAnimation object.
         * @param imageSource The Sprite sheet that contains the image frames used to display the animation.
@@ -2605,7 +2605,7 @@ declare module EndGate.Graphics {
         * @param frameCount How many frames to play for the animation.
         * @param startOffset The positional offset within the imageSource on where the set of animation frames begin.
         */
-        constructor(imageSource: Graphics.Assets.ImageSource, fps: number, frameSize: EndGate.Size2d, frameCount: number, startOffset?: EndGate.Vector2d);
+        constructor(imageSource: Graphics.ImageSource, fps: number, frameSize: EndGate.Size2d, frameCount: number, startOffset?: EndGate.Vector2d);
         /**
         * Gets an event that is triggered when the animation has completed, will not trigger if the animation is repeating.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
@@ -3236,14 +3236,14 @@ declare module EndGate.Map {
     * Defines an abstract class TileMap that takes an array of resources to be mapped to tiles.
     */
     class TileMap extends EndGate.Graphics.Abstractions.Graphic2d {
-        public _Resources: EndGate.Graphics.Assets.ImageSource[];
+        public _Resources: EndGate.Graphics.ImageSource[];
         /**
         * Creates a new instance of the TileMap object.
         * @param x Initial horizontal location of the tile map.
         * @param y Initial vertical location of the tile map.
         * @param resources A one dimensional array of image resources that make up the tile map (this cannot change after construction).
         */
-        constructor(x: number, y: number, resources: EndGate.Graphics.Assets.ImageSource[]);
+        constructor(x: number, y: number, resources: EndGate.Graphics.ImageSource[]);
     }
 }
 declare module EndGate.Map {
@@ -3284,7 +3284,7 @@ declare module EndGate.Map {
         * @param width The width of the tile.
         * @param height The height of the tile.
         */
-        constructor(image: EndGate.Graphics.Assets.ImageSource, width: number, height: number);
+        constructor(image: EndGate.Graphics.ImageSource, width: number, height: number);
     }
 }
 declare module EndGate.Map {
@@ -3318,7 +3318,7 @@ declare module EndGate.Map {
         * @param resources A one dimensional array of image resources that make up the tile map (this cannot change after construction).
         * @param mappings A two dimensional array numbers that map directly to the resources array to define the square tile map (this cannot change after construction).
         */
-        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: EndGate.Graphics.Assets.ImageSource[], mappings: number[][]);
+        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: EndGate.Graphics.ImageSource[], mappings: number[][]);
         /**
         * Creates a new instance of the SquareTileMap object.
         * @param x Initial horizontal location of the tile map.
@@ -3329,7 +3329,7 @@ declare module EndGate.Map {
         * @param mappings A two dimensional array numbers that map directly to the resources array to define the square tile map (this cannot change after construction).
         * @param staticMap Whether or not image tiles will change throughout the SquareTileMap's lifetime, defaults to true and cannot change after construction.
         */
-        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: EndGate.Graphics.Assets.ImageSource[], mappings: number[][], staticMap: boolean);
+        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: EndGate.Graphics.ImageSource[], mappings: number[][], staticMap: boolean);
         /**
         * Creates a new instance of the SquareTileMap object.
         * @param x Initial horizontal location of the tile map.
@@ -3341,7 +3341,7 @@ declare module EndGate.Map {
         * @param staticMap Whether or not image tiles will change throughout the SquareTileMap's lifetime, defaults to true and cannot change after construction.
         * @param drawGridLines Whether or not to draw the tile maps grid lines. Useful when trying to pinpoint specific tiles (this cannot change after construction).
         */
-        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: EndGate.Graphics.Assets.ImageSource[], mappings: number[][], staticMap: boolean, drawGridLines: boolean);
+        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: EndGate.Graphics.ImageSource[], mappings: number[][], staticMap: boolean, drawGridLines: boolean);
         /**
         * Gets an event that is triggered when a tile has been loaded, first argument is the tile details for the loaded tile, second is the percent complete.  Once this SquareTileMap has been created and all tiles loaded this event will no longer be triggered. Functions can be bound or unbound to this event to be executed when the event triggers.
         */
@@ -3356,7 +3356,7 @@ declare module EndGate.Map {
         * @param tileWidth The width of the sprite sheet tiles.
         * @param tileHeight The height of the sprite sheet tiles.
         */
-        static ExtractTiles(imageSource: EndGate.Graphics.Assets.ImageSource, tileWidth: number, tileHeight: number): EndGate.Graphics.Assets.ImageSource[];
+        static ExtractTiles(imageSource: EndGate.Graphics.ImageSource, tileWidth: number, tileHeight: number): EndGate.Graphics.ImageSource[];
         /**
         * Determines if the current SquareTileMap is loaded.
         */

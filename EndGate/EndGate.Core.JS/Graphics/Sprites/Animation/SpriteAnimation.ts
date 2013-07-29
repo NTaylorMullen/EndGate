@@ -3,7 +3,7 @@
 /// <reference path="../../../Assets/Sizes/Size2d.ts" />
 /// <reference path="../../../Interfaces/IUpdateable.ts" />
 /// <reference path="../../../GameTime.ts" />
-/// <reference path="../ImageSource.ts" />
+/// <reference path="../../ImageSource.ts" />
 
 module EndGate.Graphics {
 
@@ -11,7 +11,7 @@ module EndGate.Graphics {
     * Defines an animation that can be drawn to the screen.
     */
     export class SpriteAnimation {
-        private _imageSource: Assets.ImageSource;
+        private _imageSource: ImageSource;
         private _fps: number;
         private _frameSize: Size2d;
         private _frameCount: number;
@@ -33,7 +33,7 @@ module EndGate.Graphics {
         * @param frameSize How large each animation frame is within the imageSource sprite sheet.
         * @param frameCount How many frames to play for the animation.
         */
-        constructor(imageSource: Assets.ImageSource, fps: number, frameSize: Size2d, frameCount: number);
+        constructor(imageSource: ImageSource, fps: number, frameSize: Size2d, frameCount: number);
         /**
         * Creates a new instance of the SpriteAnimation object.
         * @param imageSource The Sprite sheet that contains the image frames used to display the animation.
@@ -42,8 +42,8 @@ module EndGate.Graphics {
         * @param frameCount How many frames to play for the animation.
         * @param startOffset The positional offset within the imageSource on where the set of animation frames begin.
         */
-        constructor(imageSource: Assets.ImageSource, fps: number, frameSize: Size2d, frameCount: number, startOffset: Vector2d = Vector2d.Zero);
-        constructor(imageSource: Assets.ImageSource, fps: number, frameSize: Size2d, frameCount: number, startOffset: Vector2d = Vector2d.Zero) {
+        constructor(imageSource: ImageSource, fps: number, frameSize: Size2d, frameCount: number, startOffset: Vector2d = Vector2d.Zero);
+        constructor(imageSource: ImageSource, fps: number, frameSize: Size2d, frameCount: number, startOffset: Vector2d = Vector2d.Zero) {
             this._imageSource = imageSource;
             this._frameSize = frameSize;
             this._frameCount = frameCount;

@@ -30,7 +30,7 @@ var MapCreator;
         }
         SpriteSheetViewer.prototype.loadSpritesheet = function (url) {
             var _this = this;
-            this.ActiveSpriteSheet = new eg.Graphics.Assets.ImageSource(url);
+            this.ActiveSpriteSheet = new eg.Graphics.ImageSource(url);
 
             this.ActiveSpriteSheet.OnLoaded.Bind(function () {
                 var createTileSelector = false;

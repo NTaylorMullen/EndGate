@@ -9,11 +9,11 @@ module AnimatedSprites {
         public Graphic: eg.Graphics.Sprite2d;
 
         // SpriteSheet image that is used to pull frames from
-        private _spriteSheet: eg.Graphics.Assets.ImageSource;
+        private _spriteSheet: eg.Graphics.ImageSource;
         private _animation: eg.Graphics.SpriteAnimation;
 
         constructor(imageSrc: string, x: number, y: number, spriteSheetWidth: number, spriteSheetHeight: number, frameWidth: number, frameHeight: number, fps: number, frameCount: number, onComplete: Function) {
-            this._spriteSheet = new eg.Graphics.Assets.ImageSource(imageSrc, spriteSheetWidth, spriteSheetHeight);
+            this._spriteSheet = new eg.Graphics.ImageSource(imageSrc, spriteSheetWidth, spriteSheetHeight);
             
             // To create our animation, we pass in our sprite sheet that we want to use for the animation, the fps (frames per second), 
             // our animation frame size, and how many frames the animation is

@@ -1,4 +1,4 @@
-/// <reference path="../../Graphics/Sprites/ImageSource.ts" />
+/// <reference path="../../Graphics/ImageSource.ts" />
 /// <reference path="../../Graphics/Sprites/Sprite2d.ts" />
 
 module EndGate.Map {
@@ -13,7 +13,7 @@ module EndGate.Map {
         * @param width The width of the tile.
         * @param height The height of the tile.
         */
-        constructor(image: Graphics.Assets.ImageSource, width: number, height: number) {
+        constructor(image: Graphics.ImageSource, width: number, height: number) {
             super(0, 0, image, width, height); // Set position to 0 because the tile gets updated when it gets added to the tile map
         }
     }

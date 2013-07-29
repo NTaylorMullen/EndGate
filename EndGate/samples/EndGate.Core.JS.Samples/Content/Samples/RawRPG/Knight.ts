@@ -18,7 +18,7 @@ module RawRPG {
             super(new eg.Bounds.BoundingCircle(startPosition, Knight.HitboxRadius));
 
             // This is our sprite sheet for all of our knight animations
-            var imageSource = new eg.Graphics.Assets.ImageSource("/Content/Samples/RawRPG/images/golden_knight.png", 576, 256);
+            var imageSource = new eg.Graphics.ImageSource("/Content/Samples/RawRPG/images/golden_knight.png", 576, 256);
 
             // Our Sprite2d will reference our sprite sheet directly and our animation will update the image source directly
             this.Graphic = new eg.Graphics.Sprite2d(startPosition.X, startPosition.Y, imageSource, 64, 64);

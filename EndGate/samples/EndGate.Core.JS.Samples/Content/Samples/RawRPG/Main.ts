@@ -9,12 +9,12 @@
         holder: JQuery = $("#gameHolder"),
         game: RawRPG.Game = null,
         // Build the image source to represent the sprite sheet we will be working with
-        resourceSheet: eg.Graphics.Assets.ImageSource = new eg.Graphics.Assets.ImageSource("/Content/Samples/RawRPG/images/wood_tileset_3.png", 512, 512),
+        resourceSheet: eg.Graphics.ImageSource = new eg.Graphics.ImageSource("/Content/Samples/RawRPG/images/wood_tileset_3.png", 512, 512),
         // Build a resource array based on the sprite sheet, this is a linear array (not multi-dimensional)
         // The images/wood_tileset_3.png has 16 tiles per row (512/32) so if we wanted to find a tile on row
         // 2 column 1 that tile would be at array index 17, this is essentially how the resource array map
         // that is further below works
-        resources: eg.Graphics.Assets.ImageSource[] = eg.Map.SquareTileMap.ExtractTiles(resourceSheet, 32, 32),
+        resources: eg.Graphics.ImageSource[] = eg.Map.SquareTileMap.ExtractTiles(resourceSheet, 32, 32),
         loadMapHandler: RawRPG.LoadMapHandler;
 
     // Setup the game canvas DOM

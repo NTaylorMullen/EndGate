@@ -1,4 +1,4 @@
-/// <reference path="../../../../Graphics/Sprites/ImageSource.ts" />
+/// <reference path="../../../../Graphics/ImageSource.ts" />
 /// <reference path="../../IMapLoader.ts" />
 /// <reference path="../../IMapLoadedResult.ts" />
 /// <reference path="../../IMapPreloadInfo.ts" />
@@ -15,7 +15,7 @@ module EndGate.Map.Loaders._.TMX {
 
     interface TileExtractResult {
         ResourceHooks: Array<Array<(details: ITileDetails) => any>>;
-        Resources: Array<Graphics.Assets.ImageSource>;
+        Resources: Array<Graphics.ImageSource>;
     }
 
     export class OrthogonalLoader implements IMapLoader {
@@ -29,12 +29,12 @@ module EndGate.Map.Loaders._.TMX {
 
             // Load all the sources referenced within the data
             this.LoadTilesetSources(data.tilesets,
-                (tileset: Graphics.Assets.ImageSource) => {
+                (tileset: Graphics.ImageSource) => {
                     percent += (1 / data.tilesets.length) * OrthogonalLoader._imagePercentMax
 
                     onPartialLoad.Trigger(percent);
                 },
-                (tilesetSources: { [tilesetName: string]: Graphics.Assets.ImageSource }) => {
+                (tilesetSources: { [tilesetName: string]: Graphics.ImageSource }) => {
                     // Triggered once all the sources have completed loading
 
                     // All the tiles extracted represent our resource list
@@ -84,10 +84,10 @@ module EndGate.Map.Loaders._.TMX {
             };
         }
 
-        private LoadTilesetSources(tilesets: Array<ITMXTileset>, onTilesetLoad: (tileset: Graphics.Assets.ImageSource) => any, onComplete: (tilesetSources: { [tilesetName: string]: Graphics.Assets.ImageSource }) => any): void {
-            var tilesetSources: { [tilesetName: string]: Graphics.Assets.ImageSource } = {},
+        private LoadTilesetSources(tilesets: Array<ITMXTileset>, onTilesetLoad: (tileset: Graphics.ImageSource) => any, onComplete: (tilesetSources: { [tilesetName: string]: Graphics.ImageSource }) => any): void {
+            var tilesetSources: { [tilesetName: string]: Graphics.ImageSource } = {},
                 loadedCount: number = 0,
-                onLoaded = (source: Graphics.Assets.ImageSource) => {
+                onLoaded = (source: Graphics.ImageSource) => {
                     onTilesetLoad(source);
                     // If everything has loaded
                     if (++loadedCount === tilesets.length) {
@@ -96,15 +96,15 @@ module EndGate.Map.Loaders._.TMX {
                 };
 
             for (var i = 0; i < tilesets.length; i++) {
-                tilesetSources[tilesets[i].name] = new Graphics.Assets.ImageSource(tilesets[i].image, tilesets[i].imagewidth, tilesets[i].imageheight);
+                tilesetSources[tilesets[i].name] = new Graphics.ImageSource(tilesets[i].image, tilesets[i].imagewidth, tilesets[i].imageheight);
                 tilesetSources[tilesets[i].name].OnLoaded.Bind(onLoaded);
             }
         }
 
-        private ExtractTilesetTiles(tilesets: Array<ITMXTileset>, tilesetSources: { [tilesetName: string]: Graphics.Assets.ImageSource }, propertyHooks: IPropertyHooks): TileExtractResult {
-            var tilesetTiles: Array<Graphics.Assets.ImageSource> = new Array<Graphics.Assets.ImageSource>(),
+        private ExtractTilesetTiles(tilesets: Array<ITMXTileset>, tilesetSources: { [tilesetName: string]: Graphics.ImageSource }, propertyHooks: IPropertyHooks): TileExtractResult {
+            var tilesetTiles: Array<Graphics.ImageSource> = new Array<Graphics.ImageSource>(),
                 resourceHooks = new Array<Array<(details: ITileDetails) => any>>(),
-                sources: Array<Graphics.Assets.ImageSource>,
+                sources: Array<Graphics.ImageSource>,
                 index: number;
 
             tilesets.sort((a: ITMXTileset, b: ITMXTileset) => { return a.firstgid - b.firstgid; });

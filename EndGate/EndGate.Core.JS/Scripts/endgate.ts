@@ -5726,7 +5726,7 @@ module EndGate.Graphics {
 
 
 
-module EndGate.Graphics.Assets {
+module EndGate.Graphics {
 
     /**
     * Defines an image resource that can be used within Sprite's, SpriteAnimation's and other drawable graphics.
@@ -5853,7 +5853,7 @@ module EndGate.Graphics {
         /**
         * Gets or sets the Image that is drawn to the game screen.
         */
-        public Image: Assets.ImageSource;
+        public Image: ImageSource;
         /**
         * Gets or sets the size of the Sprite2d.  If the Size is not equal to the image's ClipSize the Sprite2d will appear stretched.
         */
@@ -5865,7 +5865,7 @@ module EndGate.Graphics {
         * @param y Initial vertical location of the Sprite2d.
         * @param image Initial ImageSource of the Sprite2d.
         */
-        constructor(x: number, y: number, image: Assets.ImageSource);
+        constructor(x: number, y: number, image: ImageSource);
         /**
         * Creates a new instance of the Sprite2d object.
         * @param x Initial horizontal location of the Sprite2d.
@@ -5874,8 +5874,8 @@ module EndGate.Graphics {
         * @param width Initial width of the Sprite2d.  If the width does not equal the width of the image's clip width the Sprite2d will appear stretched.
         * @param height Initial height of the Sprite2d.  If the height does not equal the height of the image's clip height the Sprite2d will appear stretched.
         */
-        constructor(x: number, y: number, image: Assets.ImageSource, width: number, height: number);
-        constructor(x: number, y: number, image: Assets.ImageSource, width: number = image.ClipSize.Width, height: number = image.ClipSize.Height) {
+        constructor(x: number, y: number, image: ImageSource, width: number, height: number);
+        constructor(x: number, y: number, image: ImageSource, width: number = image.ClipSize.Width, height: number = image.ClipSize.Height) {
             super(new Vector2d(x, y));
 
             this.Image = image;
@@ -5921,7 +5921,7 @@ module EndGate.Graphics {
     * Defines an animation that can be drawn to the screen.
     */
     export class SpriteAnimation {
-        private _imageSource: Assets.ImageSource;
+        private _imageSource: ImageSource;
         private _fps: number;
         private _frameSize: Size2d;
         private _frameCount: number;
@@ -5943,7 +5943,7 @@ module EndGate.Graphics {
         * @param frameSize How large each animation frame is within the imageSource sprite sheet.
         * @param frameCount How many frames to play for the animation.
         */
-        constructor(imageSource: Assets.ImageSource, fps: number, frameSize: Size2d, frameCount: number);
+        constructor(imageSource: ImageSource, fps: number, frameSize: Size2d, frameCount: number);
         /**
         * Creates a new instance of the SpriteAnimation object.
         * @param imageSource The Sprite sheet that contains the image frames used to display the animation.
@@ -5952,8 +5952,8 @@ module EndGate.Graphics {
         * @param frameCount How many frames to play for the animation.
         * @param startOffset The positional offset within the imageSource on where the set of animation frames begin.
         */
-        constructor(imageSource: Assets.ImageSource, fps: number, frameSize: Size2d, frameCount: number, startOffset: Vector2d = Vector2d.Zero);
-        constructor(imageSource: Assets.ImageSource, fps: number, frameSize: Size2d, frameCount: number, startOffset: Vector2d = Vector2d.Zero) {
+        constructor(imageSource: ImageSource, fps: number, frameSize: Size2d, frameCount: number, startOffset: Vector2d = Vector2d.Zero);
+        constructor(imageSource: ImageSource, fps: number, frameSize: Size2d, frameCount: number, startOffset: Vector2d = Vector2d.Zero) {
             this._imageSource = imageSource;
             this._frameSize = frameSize;
             this._frameCount = frameCount;
@@ -7320,7 +7320,7 @@ module EndGate.Map {
     * Defines an abstract class TileMap that takes an array of resources to be mapped to tiles.
     */
     export class TileMap extends Graphics.Abstractions.Graphic2d {
-        public _Resources: Graphics.Assets.ImageSource[];
+        public _Resources: Graphics.ImageSource[];
 
         /**
         * Creates a new instance of the TileMap object.
@@ -7328,7 +7328,7 @@ module EndGate.Map {
         * @param y Initial vertical location of the tile map.
         * @param resources A one dimensional array of image resources that make up the tile map (this cannot change after construction).
         */
-        constructor(x: number, y: number, resources: Graphics.Assets.ImageSource[]) {
+        constructor(x: number, y: number, resources: Graphics.ImageSource[]) {
             super(new Vector2d(x, y));
 
             this._Resources = resources;
@@ -7390,7 +7390,7 @@ module EndGate.Map {
         * @param width The width of the tile.
         * @param height The height of the tile.
         */
-        constructor(image: Graphics.Assets.ImageSource, width: number, height: number) {
+        constructor(image: Graphics.ImageSource, width: number, height: number) {
             super(0, 0, image, width, height); // Set position to 0 because the tile gets updated when it gets added to the tile map
         }
     }
@@ -7442,7 +7442,7 @@ module EndGate.Map {
         * @param resources A one dimensional array of image resources that make up the tile map (this cannot change after construction).
         * @param mappings A two dimensional array numbers that map directly to the resources array to define the square tile map (this cannot change after construction).
         */
-        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.Assets.ImageSource[], mappings: number[][]);
+        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.ImageSource[], mappings: number[][]);
         /**
         * Creates a new instance of the SquareTileMap object.
         * @param x Initial horizontal location of the tile map.
@@ -7453,7 +7453,7 @@ module EndGate.Map {
         * @param mappings A two dimensional array numbers that map directly to the resources array to define the square tile map (this cannot change after construction).
         * @param staticMap Whether or not image tiles will change throughout the SquareTileMap's lifetime, defaults to true and cannot change after construction.
         */
-        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.Assets.ImageSource[], mappings: number[][], staticMap: boolean);
+        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.ImageSource[], mappings: number[][], staticMap: boolean);
         /**
         * Creates a new instance of the SquareTileMap object.
         * @param x Initial horizontal location of the tile map.
@@ -7465,8 +7465,8 @@ module EndGate.Map {
         * @param staticMap Whether or not image tiles will change throughout the SquareTileMap's lifetime, defaults to true and cannot change after construction.
         * @param drawGridLines Whether or not to draw the tile maps grid lines. Useful when trying to pinpoint specific tiles (this cannot change after construction).
         */
-        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.Assets.ImageSource[], mappings: number[][], staticMap: boolean, drawGridLines: boolean);
-        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.Assets.ImageSource[], mappings: number[][], staticMap: boolean = true, drawGridLines: boolean = false) {
+        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.ImageSource[], mappings: number[][], staticMap: boolean, drawGridLines: boolean);
+        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.ImageSource[], mappings: number[][], staticMap: boolean = true, drawGridLines: boolean = false) {
             super(x, y, resources);
 
             this._grid = new Graphics.Grid(0, 0, mappings.length, mappings[0].length, tileWidth, tileHeight, drawGridLines);
@@ -7512,8 +7512,8 @@ module EndGate.Map {
         * @param tileWidth The width of the sprite sheet tiles.
         * @param tileHeight The height of the sprite sheet tiles.
         */
-        public static ExtractTiles(imageSource: Graphics.Assets.ImageSource, tileWidth: number, tileHeight: number): Graphics.Assets.ImageSource[] {
-            var resources: Graphics.Assets.ImageSource[] = [],
+        public static ExtractTiles(imageSource: Graphics.ImageSource, tileWidth: number, tileHeight: number): Graphics.ImageSource[] {
+            var resources: Graphics.ImageSource[] = [],
                 framesPerRow: number = Math.floor(imageSource.ClipSize.Width / tileWidth),
                 rows: number = Math.floor(imageSource.ClipSize.Height / tileHeight);
 
@@ -7590,7 +7590,7 @@ module EndGate.Map {
         private AsyncBuildGridTile(row: number, column: number, resourceIndex: number, onComplete: (tile: SquareTile) => any): void {
             var action = () => {
                 var tile: SquareTile,
-                    tileGraphic: Graphics.Assets.ImageSource = this._Resources[resourceIndex];
+                    tileGraphic: Graphics.ImageSource = this._Resources[resourceIndex];
 
                 tile = new SquareTile(tileGraphic, this._grid.TileSize.Width, this._grid.TileSize.Height);
 
@@ -7882,7 +7882,7 @@ module EndGate.Map.Loaders._.TMX {
 
     interface TileExtractResult {
         ResourceHooks: Array<Array<(details: ITileDetails) => any>>;
-        Resources: Array<Graphics.Assets.ImageSource>;
+        Resources: Array<Graphics.ImageSource>;
     }
 
     export class OrthogonalLoader implements IMapLoader {
@@ -7896,12 +7896,12 @@ module EndGate.Map.Loaders._.TMX {
 
             // Load all the sources referenced within the data
             this.LoadTilesetSources(data.tilesets,
-                (tileset: Graphics.Assets.ImageSource) => {
+                (tileset: Graphics.ImageSource) => {
                     percent += (1 / data.tilesets.length) * OrthogonalLoader._imagePercentMax
 
                     onPartialLoad.Trigger(percent);
                 },
-                (tilesetSources: { [tilesetName: string]: Graphics.Assets.ImageSource }) => {
+                (tilesetSources: { [tilesetName: string]: Graphics.ImageSource }) => {
                     // Triggered once all the sources have completed loading
 
                     // All the tiles extracted represent our resource list
@@ -7951,10 +7951,10 @@ module EndGate.Map.Loaders._.TMX {
             };
         }
 
-        private LoadTilesetSources(tilesets: Array<ITMXTileset>, onTilesetLoad: (tileset: Graphics.Assets.ImageSource) => any, onComplete: (tilesetSources: { [tilesetName: string]: Graphics.Assets.ImageSource }) => any): void {
-            var tilesetSources: { [tilesetName: string]: Graphics.Assets.ImageSource } = {},
+        private LoadTilesetSources(tilesets: Array<ITMXTileset>, onTilesetLoad: (tileset: Graphics.ImageSource) => any, onComplete: (tilesetSources: { [tilesetName: string]: Graphics.ImageSource }) => any): void {
+            var tilesetSources: { [tilesetName: string]: Graphics.ImageSource } = {},
                 loadedCount: number = 0,
-                onLoaded = (source: Graphics.Assets.ImageSource) => {
+                onLoaded = (source: Graphics.ImageSource) => {
                     onTilesetLoad(source);
                     // If everything has loaded
                     if (++loadedCount === tilesets.length) {
@@ -7963,15 +7963,15 @@ module EndGate.Map.Loaders._.TMX {
                 };
 
             for (var i = 0; i < tilesets.length; i++) {
-                tilesetSources[tilesets[i].name] = new Graphics.Assets.ImageSource(tilesets[i].image, tilesets[i].imagewidth, tilesets[i].imageheight);
+                tilesetSources[tilesets[i].name] = new Graphics.ImageSource(tilesets[i].image, tilesets[i].imagewidth, tilesets[i].imageheight);
                 tilesetSources[tilesets[i].name].OnLoaded.Bind(onLoaded);
             }
         }
 
-        private ExtractTilesetTiles(tilesets: Array<ITMXTileset>, tilesetSources: { [tilesetName: string]: Graphics.Assets.ImageSource }, propertyHooks: IPropertyHooks): TileExtractResult {
-            var tilesetTiles: Array<Graphics.Assets.ImageSource> = new Array<Graphics.Assets.ImageSource>(),
+        private ExtractTilesetTiles(tilesets: Array<ITMXTileset>, tilesetSources: { [tilesetName: string]: Graphics.ImageSource }, propertyHooks: IPropertyHooks): TileExtractResult {
+            var tilesetTiles: Array<Graphics.ImageSource> = new Array<Graphics.ImageSource>(),
                 resourceHooks = new Array<Array<(details: ITileDetails) => any>>(),
-                sources: Array<Graphics.Assets.ImageSource>,
+                sources: Array<Graphics.ImageSource>,
                 index: number;
 
             tilesets.sort((a: ITMXTileset, b: ITMXTileset) => { return a.firstgid - b.firstgid; });
