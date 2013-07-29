@@ -12,7 +12,7 @@ module CollisionInspector {
         private _collisionBorderThickness: number = 4;
         private _lastCollision: eg.Collision.Assets.CollisionData = null;
 
-        constructor(public Graphic: eg.Graphics.Abstractions.Shape) {
+        constructor(public Graphic: eg.Graphics.Shape) {
             super(Graphic.GetDrawBounds());
 
             // Set the position to be 0,0 because the text position will be a child of the graphic 

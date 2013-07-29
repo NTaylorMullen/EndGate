@@ -37,7 +37,7 @@ var EndGate;
                 context.rect(-this.Size.HalfWidth, -this.Size.HalfHeight, this.Size.Width, this.Size.Height);
             };
             return Rectangle;
-        })(Graphics.Abstractions.Shape);
+        })(Graphics.Shape);
         Graphics.Rectangle = Rectangle;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
     var Graphics = EndGate.Graphics;
