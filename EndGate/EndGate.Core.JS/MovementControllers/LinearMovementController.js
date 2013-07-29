@@ -153,7 +153,7 @@ var EndGate;
                 }
             };
             return LinearMovementController;
-        })(MovementControllers.Abstractions.MovementController);
+        })(MovementControllers.MovementController);
         MovementControllers.LinearMovementController = LinearMovementController;
     })(EndGate.MovementControllers || (EndGate.MovementControllers = {}));
     var MovementControllers = EndGate.MovementControllers;

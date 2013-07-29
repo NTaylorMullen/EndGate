@@ -3366,39 +3366,36 @@ var EndGate;
 var EndGate;
 (function (EndGate) {
     (function (MovementControllers) {
-        (function (Abstractions) {
-            var MovementController = (function () {
-                function MovementController(moveables) {
-                    this.Position = moveables.length > 0 ? moveables[0].Position : EndGate.Vector2d.Zero;
-                    this.Velocity = EndGate.Vector2d.Zero;
-                    this.Rotation = 0;
-                    this._frozen = false;
+        var MovementController = (function () {
+            function MovementController(moveables) {
+                this.Position = moveables.length > 0 ? moveables[0].Position : EndGate.Vector2d.Zero;
+                this.Velocity = EndGate.Vector2d.Zero;
+                this.Rotation = 0;
+                this._frozen = false;
 
-                    this._moveables = moveables;
+                this._moveables = moveables;
+            }
+            MovementController.prototype.Freeze = function () {
+                this._frozen = true;
+            };
+
+            MovementController.prototype.Thaw = function () {
+                this._frozen = false;
+            };
+
+            MovementController.prototype.IsMoving = function () {
+                return !this._frozen && !this.Velocity.IsZero();
+            };
+
+            MovementController.prototype.Update = function (gameTime) {
+                for (var i = 0; i < this._moveables.length; i++) {
+                    this._moveables[i].Position = this.Position;
+                    this._moveables[i].Rotation = this.Rotation;
                 }
-                MovementController.prototype.Freeze = function () {
-                    this._frozen = true;
-                };
-
-                MovementController.prototype.Thaw = function () {
-                    this._frozen = false;
-                };
-
-                MovementController.prototype.IsMoving = function () {
-                    return !this._frozen && !this.Velocity.IsZero();
-                };
-
-                MovementController.prototype.Update = function (gameTime) {
-                    for (var i = 0; i < this._moveables.length; i++) {
-                        this._moveables[i].Position = this.Position;
-                        this._moveables[i].Rotation = this.Rotation;
-                    }
-                };
-                return MovementController;
-            })();
-            Abstractions.MovementController = MovementController;
-        })(MovementControllers.Abstractions || (MovementControllers.Abstractions = {}));
-        var Abstractions = MovementControllers.Abstractions;
+            };
+            return MovementController;
+        })();
+        MovementControllers.MovementController = MovementController;
     })(EndGate.MovementControllers || (EndGate.MovementControllers = {}));
     var MovementControllers = EndGate.MovementControllers;
 })(EndGate || (EndGate = {}));
@@ -3519,7 +3516,7 @@ var EndGate;
                 }
             };
             return LinearMovementController;
-        })(MovementControllers.Abstractions.MovementController);
+        })(MovementControllers.MovementController);
         MovementControllers.LinearMovementController = LinearMovementController;
     })(EndGate.MovementControllers || (EndGate.MovementControllers = {}));
     var MovementControllers = EndGate.MovementControllers;

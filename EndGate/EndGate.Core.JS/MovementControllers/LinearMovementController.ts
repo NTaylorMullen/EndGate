@@ -13,7 +13,7 @@ module EndGate.MovementControllers {
     /**
     * Defines a LinearMovementController that can move objects Up, Right, Left, Down or a combination.
     */
-    export class LinearMovementController extends Abstractions.MovementController {
+    export class LinearMovementController extends MovementController {
         private _moveSpeed: number;
         private _moving: Assets.LinearDirections;
         private _rotationUpdater: EndGate._.Utilities.NoopTripInvoker;
