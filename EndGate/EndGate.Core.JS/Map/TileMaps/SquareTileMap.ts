@@ -179,13 +179,13 @@ module EndGate.Map {
         }
 
         private FillGridWith(mappings: number[][], onComplete: () => any): void {
-            asyncLoop((next: () => void, rowsComplete: number) => {
+            asyncLoop((next: () => void , rowsComplete: number) => {
                 this.AsyncBuildGridRow(rowsComplete, mappings, () => {
                     next();
                 });
             }, mappings.length, () => {
-                onComplete();
-            });
+                    onComplete();
+                });
         }
 
         private AsyncBuildGridTile(row: number, column: number, resourceIndex: number, onComplete: (tile: SquareTile) => any): void {
@@ -195,7 +195,7 @@ module EndGate.Map {
 
                 tile = new SquareTile(tileGraphic, this._grid.TileSize.Width, this._grid.TileSize.Height);
 
-                this._grid.Fill(row, column, tile);                
+                this._grid.Fill(row, column, tile);
 
                 this.OnTileLoad.Trigger({
                     Tile: tile,
@@ -222,29 +222,22 @@ module EndGate.Map {
 
         // Only pretend async in order to free up the DOM
         private AsyncBuildGridRow(rowIndex: number, mappings: number[][], onComplete: () => any): void {
-            var action = () => {
-                    asyncLoop((next: () => void , tilesLoaded: number) => {
-                        this._tilesBuilt++;
+            setTimeout(() => {
+                asyncLoop((next: () => void , tilesLoaded: number) => {
+                    this._tilesBuilt++;
 
-                        if (mappings[rowIndex][tilesLoaded] >= 0) {
-                            this.AsyncBuildGridTile(rowIndex, tilesLoaded, mappings[rowIndex][tilesLoaded], (tile: SquareTile) => {
-                                next();
-                            });
-                        }
-                        else {
+                    if (mappings[rowIndex][tilesLoaded] >= 0) {
+                        this.AsyncBuildGridTile(rowIndex, tilesLoaded, mappings[rowIndex][tilesLoaded], (tile: SquareTile) => {
                             next();
-                        }
-                    }, mappings[rowIndex].length, () => {
+                        });
+                    }
+                    else {
+                        next();
+                    }
+                }, mappings[rowIndex].length, () => {
                         onComplete();
                     });
-                };
-            
-            if (this.RowLoadDelay.Milliseconds > 0) {
-                setTimeout(action, this.RowLoadDelay.Milliseconds);
-            }
-            else {
-                action();
-            }
+            }, this.RowLoadDelay.Milliseconds);
         }
     }
 

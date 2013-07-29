@@ -184,7 +184,7 @@ var EndGate;
             // Only pretend async in order to free up the DOM
             SquareTileMap.prototype.AsyncBuildGridRow = function (rowIndex, mappings, onComplete) {
                 var _this = this;
-                var action = function () {
+                setTimeout(function () {
                     asyncLoop(function (next, tilesLoaded) {
                         _this._tilesBuilt++;
 
@@ -198,13 +198,7 @@ var EndGate;
                     }, mappings[rowIndex].length, function () {
                         onComplete();
                     });
-                };
-
-                if (this.RowLoadDelay.Milliseconds > 0) {
-                    setTimeout(action, this.RowLoadDelay.Milliseconds);
-                } else {
-                    action();
-                }
+                }, this.RowLoadDelay.Milliseconds);
             };
             return SquareTileMap;
         })(Map.TileMap);
