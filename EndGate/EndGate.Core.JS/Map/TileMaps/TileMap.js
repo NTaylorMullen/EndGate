@@ -8,7 +8,7 @@ var EndGate;
 (function (EndGate) {
     /// <reference path="../../Assets/Vectors/Vector2d.ts" />
     /// <reference path="../../Graphics/Graphic2d.ts" />
-    /// <reference path="../../Graphics/Sprites/ImageSource.ts" />
+    /// <reference path="../../Graphics/ImageSource.ts" />
     (function (Map) {
         /**
         * Defines an abstract class TileMap that takes an array of resources to be mapped to tiles.

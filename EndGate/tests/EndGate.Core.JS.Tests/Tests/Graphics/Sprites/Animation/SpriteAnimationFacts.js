@@ -3,7 +3,7 @@
     QUnit.module("Sprite Animation Facts");
 
     QUnit.test("Stepping moves forward the current frame.", function () {
-        var imageSource = new eg.Graphics.Assets.ImageSource("foo", 200, 100),
+        var imageSource = new eg.Graphics.ImageSource("foo", 200, 100),
             animation = new eg.Graphics.SpriteAnimation(imageSource, 20, new eg.Size2d(50, 50), 8);
 
         QUnit.equal(animation._currentFrame, 0);
@@ -18,7 +18,7 @@
     });
 
     QUnit.test("After play image source is updated to match animation frame.", function () {
-        var imageSource = new eg.Graphics.Assets.ImageSource("foo", 200, 100),
+        var imageSource = new eg.Graphics.ImageSource("foo", 200, 100),
             animation = new eg.Graphics.SpriteAnimation(imageSource, 20, new eg.Size2d(50, 50), 8),
             gameTime = {
                 Now: new Date()
@@ -53,7 +53,7 @@
     });
     
     QUnit.test("Animations obey start offsets.", function () {
-        var imageSource = new eg.Graphics.Assets.ImageSource("foo", 200, 100),
+        var imageSource = new eg.Graphics.ImageSource("foo", 200, 100),
             animation = new eg.Graphics.SpriteAnimation(imageSource, 20, new eg.Size2d(50, 50), 6, new eg.Vector2d(50,0)),
             gameTime = {
                 Now: new Date()
@@ -83,7 +83,7 @@
     });
     
     QUnit.test("ImageSource is updated according to the fps.", function () {
-        var imageSource = new eg.Graphics.Assets.ImageSource("foo", 200, 100),
+        var imageSource = new eg.Graphics.ImageSource("foo", 200, 100),
             animation = new eg.Graphics.SpriteAnimation(imageSource, 20, new eg.Size2d(50, 50), 6),
             gameTime = {
                 Now: new Date()
@@ -115,7 +115,7 @@
     });
     
     QUnit.test("After play pausing does not allow automatic increase in frame.", function () {
-        var imageSource = new eg.Graphics.Assets.ImageSource("foo", 200, 100),
+        var imageSource = new eg.Graphics.ImageSource("foo", 200, 100),
             animation = new eg.Graphics.SpriteAnimation(imageSource, 20, new eg.Size2d(50, 50), 6),
             gameTime = {
                 Now: new Date()
@@ -149,7 +149,7 @@
     });
     
     QUnit.test("If repeating and playing the current frame rolls over the horn.", function () {
-        var imageSource = new eg.Graphics.Assets.ImageSource("foo", 200, 100),
+        var imageSource = new eg.Graphics.ImageSource("foo", 200, 100),
             animation = new eg.Graphics.SpriteAnimation(imageSource, 20, new eg.Size2d(50, 50), 6),
             gameTime = {
                 Now: new Date()
@@ -174,7 +174,7 @@
     });
     
     QUnit.test("After animation completes the animation no longer plays.", function () {
-        var imageSource = new eg.Graphics.Assets.ImageSource("foo", 200, 100),
+        var imageSource = new eg.Graphics.ImageSource("foo", 200, 100),
             animation = new eg.Graphics.SpriteAnimation(imageSource, 20, new eg.Size2d(50, 50), 6),
             gameTime = {
                 Now: new Date()
@@ -201,7 +201,7 @@
     });
     
     QUnit.test("OnComplete triggers when not repeating and animation finishes.", function () {
-        var imageSource = new eg.Graphics.Assets.ImageSource("foo", 200, 100),
+        var imageSource = new eg.Graphics.ImageSource("foo", 200, 100),
             animation = new eg.Graphics.SpriteAnimation(imageSource, 20, new eg.Size2d(50, 50), 6),
             gameTime = {
                 Now: new Date()
@@ -223,7 +223,7 @@
     });       
     
     QUnit.test("Stop prevents automatic updating of frame.", function () {
-        var imageSource = new eg.Graphics.Assets.ImageSource("foo", 200, 100),
+        var imageSource = new eg.Graphics.ImageSource("foo", 200, 100),
             animation = new eg.Graphics.SpriteAnimation(imageSource, 20, new eg.Size2d(50, 50), 6),
             gameTime = {
                 Now: new Date()

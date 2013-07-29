@@ -1,8 +1,8 @@
-/// <reference path="../../Assets/Vectors/Vector2d.ts" />
-/// <reference path="../../Assets/Sizes/Size2d.ts" />
-/// <reference path="../../Utilities/EventHandler1.ts" />
+/// <reference path="../Assets/Vectors/Vector2d.ts" />
+/// <reference path="../Assets/Sizes/Size2d.ts" />
+/// <reference path="../Utilities/EventHandler1.ts" />
 
-module EndGate.Graphics.Assets {
+module EndGate.Graphics {
 
     /**
     * Defines an image resource that can be used within Sprite's, SpriteAnimation's and other drawable graphics.

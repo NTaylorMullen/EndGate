@@ -1,6 +1,6 @@
 /// <reference path="../../Assets/Sizes/Size2d.ts" />
 /// <reference path="../../Assets/TimeSpan.ts" />
-/// <reference path="../../Graphics/Sprites/ImageSource.ts" />
+/// <reference path="../../Graphics/ImageSource.ts" />
 /// <reference path="../../Graphics/Grid/Grid.ts" />
 /// <reference path="../../Utilities/EventHandler2.ts" />
 /// <reference path="../../Utilities/EventHandler.ts" />
@@ -43,7 +43,7 @@ module EndGate.Map {
         * @param resources A one dimensional array of image resources that make up the tile map (this cannot change after construction).
         * @param mappings A two dimensional array numbers that map directly to the resources array to define the square tile map (this cannot change after construction).
         */
-        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.Assets.ImageSource[], mappings: number[][]);
+        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.ImageSource[], mappings: number[][]);
         /**
         * Creates a new instance of the SquareTileMap object.
         * @param x Initial horizontal location of the tile map.
@@ -54,7 +54,7 @@ module EndGate.Map {
         * @param mappings A two dimensional array numbers that map directly to the resources array to define the square tile map (this cannot change after construction).
         * @param staticMap Whether or not image tiles will change throughout the SquareTileMap's lifetime, defaults to true and cannot change after construction.
         */
-        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.Assets.ImageSource[], mappings: number[][], staticMap: boolean);
+        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.ImageSource[], mappings: number[][], staticMap: boolean);
         /**
         * Creates a new instance of the SquareTileMap object.
         * @param x Initial horizontal location of the tile map.
@@ -66,8 +66,8 @@ module EndGate.Map {
         * @param staticMap Whether or not image tiles will change throughout the SquareTileMap's lifetime, defaults to true and cannot change after construction.
         * @param drawGridLines Whether or not to draw the tile maps grid lines. Useful when trying to pinpoint specific tiles (this cannot change after construction).
         */
-        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.Assets.ImageSource[], mappings: number[][], staticMap: boolean, drawGridLines: boolean);
-        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.Assets.ImageSource[], mappings: number[][], staticMap: boolean = true, drawGridLines: boolean = false) {
+        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.ImageSource[], mappings: number[][], staticMap: boolean, drawGridLines: boolean);
+        constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.ImageSource[], mappings: number[][], staticMap: boolean = true, drawGridLines: boolean = false) {
             super(x, y, resources);
 
             this._grid = new Graphics.Grid(0, 0, mappings.length, mappings[0].length, tileWidth, tileHeight, drawGridLines);
@@ -113,8 +113,8 @@ module EndGate.Map {
         * @param tileWidth The width of the sprite sheet tiles.
         * @param tileHeight The height of the sprite sheet tiles.
         */
-        public static ExtractTiles(imageSource: Graphics.Assets.ImageSource, tileWidth: number, tileHeight: number): Graphics.Assets.ImageSource[] {
-            var resources: Graphics.Assets.ImageSource[] = [],
+        public static ExtractTiles(imageSource: Graphics.ImageSource, tileWidth: number, tileHeight: number): Graphics.ImageSource[] {
+            var resources: Graphics.ImageSource[] = [],
                 framesPerRow: number = Math.floor(imageSource.ClipSize.Width / tileWidth),
                 rows: number = Math.floor(imageSource.ClipSize.Height / tileHeight);
 
@@ -191,7 +191,7 @@ module EndGate.Map {
         private AsyncBuildGridTile(row: number, column: number, resourceIndex: number, onComplete: (tile: SquareTile) => any): void {
             var action = () => {
                 var tile: SquareTile,
-                    tileGraphic: Graphics.Assets.ImageSource = this._Resources[resourceIndex];
+                    tileGraphic: Graphics.ImageSource = this._Resources[resourceIndex];
 
                 tile = new SquareTile(tileGraphic, this._grid.TileSize.Width, this._grid.TileSize.Height);
 

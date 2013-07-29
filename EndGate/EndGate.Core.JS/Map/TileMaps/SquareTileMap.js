@@ -8,7 +8,7 @@ var EndGate;
 (function (EndGate) {
     /// <reference path="../../Assets/Sizes/Size2d.ts" />
     /// <reference path="../../Assets/TimeSpan.ts" />
-    /// <reference path="../../Graphics/Sprites/ImageSource.ts" />
+    /// <reference path="../../Graphics/ImageSource.ts" />
     /// <reference path="../../Graphics/Grid/Grid.ts" />
     /// <reference path="../../Utilities/EventHandler2.ts" />
     /// <reference path="../../Utilities/EventHandler.ts" />

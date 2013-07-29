@@ -4,7 +4,7 @@
 (function ($, window) {
     // Create a game canvas to use.  If we create a game without providing a canvas it will create a
     // canvas that fills the entire viewport.
-    var canvas = document.createElement("canvas"), holder = $("#gameHolder"), game = null, resourceSheet = new eg.Graphics.Assets.ImageSource("/Content/Samples/RawRPG/images/wood_tileset_3.png", 512, 512), resources = eg.Map.SquareTileMap.ExtractTiles(resourceSheet, 32, 32), loadMapHandler;
+    var canvas = document.createElement("canvas"), holder = $("#gameHolder"), game = null, resourceSheet = new eg.Graphics.ImageSource("/Content/Samples/RawRPG/images/wood_tileset_3.png", 512, 512), resources = eg.Map.SquareTileMap.ExtractTiles(resourceSheet, 32, 32), loadMapHandler;
 
     // Setup the game canvas DOM
     canvas.width = holder.width();

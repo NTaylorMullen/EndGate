@@ -17,7 +17,7 @@ var Sprites;
             this._canvas = _canvas;
             this._syncSliders = _syncSliders;
 
-            this.Sprite = new eg.Graphics.Sprite2d(this._canvas.width / 2, this._canvas.height / 2, new eg.Graphics.Assets.ImageSource("/Content/Samples/Sprites/html5-logo.png", 200, 200));
+            this.Sprite = new eg.Graphics.Sprite2d(this._canvas.width / 2, this._canvas.height / 2, new eg.Graphics.ImageSource("/Content/Samples/Sprites/html5-logo.png", 200, 200));
             this._spriteAnimator = new Sprites.SpriteAnimator(targetAnimators, defaultPosition, defaultSize, defaultRotation, defaultOpacity, this._syncSliders);
 
             this.Scene.Add(this.Sprite);

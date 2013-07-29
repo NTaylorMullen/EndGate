@@ -306,8 +306,8 @@
     <Content Include="Graphics\Sprites\Animation\SpriteAnimation.js">
       <DependentUpon>SpriteAnimation.ts</DependentUpon>
     </Content>
-    <CodeAnalysisDictionary Include="Graphics\Sprites\ImageSource.ts" />
-    <Content Include="Graphics\Sprites\ImageSource.js">
+    <CodeAnalysisDictionary Include="Graphics\ImageSource.ts" />
+    <Content Include="Graphics\ImageSource.js">
       <DependentUpon>ImageSource.ts</DependentUpon>
     </Content>
     <CodeAnalysisDictionary Include="Graphics\Sprites\Sprite2d.ts" />

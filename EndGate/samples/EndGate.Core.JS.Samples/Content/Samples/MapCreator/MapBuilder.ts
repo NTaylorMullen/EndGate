@@ -87,7 +87,7 @@ module MapCreator {
             return resourceMap;
         }
 
-        private FindResource(source: eg.Graphics.Assets.ImageSource, resources: eg.Graphics.Sprite2d[]): number {
+        private FindResource(source: eg.Graphics.ImageSource, resources: eg.Graphics.Sprite2d[]): number {
             for (var i = 0; i < resources.length; i++) {
                 if (resources[i].Image === source) {
                     return i;

@@ -12,7 +12,7 @@ module MapCreator {
             this._grid = grid;
         }
 
-        public Fill(entries: GridEntry[], sources: eg.Graphics.Assets.ImageSource[]): void {
+        public Fill(entries: GridEntry[], sources: eg.Graphics.ImageSource[]): void {
             if (sources.length === 0) {
                 return;
             }

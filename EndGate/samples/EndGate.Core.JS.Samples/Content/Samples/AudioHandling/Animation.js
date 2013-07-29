@@ -7,7 +7,7 @@ var AudioHandling;
         function Animation(imageSrc, x, y, spriteSheetWidth, spriteSheetHeight, frameWidth, frameHeight, fps, frameCount, onComplete, repeat, rotateRandomly) {
             if (typeof repeat === "undefined") { repeat = true; }
             if (typeof rotateRandomly === "undefined") { rotateRandomly = false; }
-            this._spriteSheet = new eg.Graphics.Assets.ImageSource(imageSrc, spriteSheetWidth, spriteSheetHeight);
+            this._spriteSheet = new eg.Graphics.ImageSource(imageSrc, spriteSheetWidth, spriteSheetHeight);
 
             // To create our animation, we pass in our sprite sheet that we want to use for the animation, the fps (frames per second),
             // our animation frame size, and how many frames the animation is
