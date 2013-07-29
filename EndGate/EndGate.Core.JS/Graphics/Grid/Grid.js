@@ -393,7 +393,7 @@ var EndGate;
                 return column >= 0 && column < this._columns;
             };
             return Grid;
-        })(Graphics.Abstractions.Graphic2d);
+        })(Graphics.Graphic2d);
         Graphics.Grid = Grid;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
     var Graphics = EndGate.Graphics;

@@ -248,7 +248,7 @@ var EndGate;
                 return this._drawBounds;
             };
             return Text2d;
-        })(Graphics.Abstractions.Graphic2d);
+        })(Graphics.Graphic2d);
         Graphics.Text2d = Text2d;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
     var Graphics = EndGate.Graphics;

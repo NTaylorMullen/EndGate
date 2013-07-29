@@ -12,7 +12,7 @@ module EndGate.Map {
     export class SceneryHandler {
         private _sceneryCanvas: HTMLCanvasElement;
         private _camera: Rendering.Camera2d;
-        private _layers: Graphics.Abstractions.Graphic2d[];
+        private _layers: Graphics.Graphic2d[];
         private _renderer: Rendering.Camera2dRenderer;
         private _disposed: boolean;
 
@@ -32,7 +32,7 @@ module EndGate.Map {
         * Adds a layer to the scenery.
         * @param layer The layer to add.
         */
-        public AddLayer(layer: Graphics.Abstractions.Graphic2d): void {
+        public AddLayer(layer: Graphics.Graphic2d): void {
             this._layers.push(layer);
         }
 
@@ -40,7 +40,7 @@ module EndGate.Map {
         * Removes a layer from the scenery.
         * @param layer The layer to remove.
         */
-        public RemoveLayer(layer: Graphics.Abstractions.Graphic2d): void {
+        public RemoveLayer(layer: Graphics.Graphic2d): void {
             this._layers.splice(this._layers.indexOf(layer), 1);
         }
 
@@ -48,7 +48,7 @@ module EndGate.Map {
         * Draws all layers onto the given context.  If this is used via a MapManager object, Draw will automatically be called.
         */
         public Draw(): void {
-            this._layers.sort(Graphics.Abstractions.Graphic2d._zindexSort);
+            this._layers.sort(Graphics.Graphic2d._zindexSort);
 
             this._renderer.Render(this._layers);
         }

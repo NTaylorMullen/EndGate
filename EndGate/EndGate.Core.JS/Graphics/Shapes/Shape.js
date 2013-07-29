@@ -177,7 +177,7 @@ var EndGate;
                     this._EndDraw(context);
                 };
                 return Shape;
-            })(Abstractions.Graphic2d);
+            })(Graphics.Graphic2d);
             Abstractions.Shape = Shape;
         })(Graphics.Abstractions || (Graphics.Abstractions = {}));
         var Abstractions = Graphics.Abstractions;

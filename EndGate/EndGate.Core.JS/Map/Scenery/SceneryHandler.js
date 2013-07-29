@@ -41,7 +41,7 @@ var EndGate;
             * Draws all layers onto the given context.  If this is used via a MapManager object, Draw will automatically be called.
             */
             SceneryHandler.prototype.Draw = function () {
-                this._layers.sort(EndGate.Graphics.Abstractions.Graphic2d._zindexSort);
+                this._layers.sort(EndGate.Graphics.Graphic2d._zindexSort);
 
                 this._renderer.Render(this._layers);
             };

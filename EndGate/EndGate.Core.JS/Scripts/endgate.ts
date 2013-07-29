@@ -2920,7 +2920,7 @@ module EndGate.Graphics.Assets._ {
 
 
 
-module EndGate.Graphics.Abstractions {
+module EndGate.Graphics {
 
     /**
     * Abstract drawable graphic type that is used create the base for graphics.
@@ -3455,7 +3455,7 @@ module EndGate.Rendering {
     * Defines a scene object that is used to maintain a list of renderable objects that are rendered onto a joint game area.
     */
     export class Scene2d implements IDisposable {       
-        private _actors: Graphics.Abstractions.Graphic2d[];
+        private _actors: Graphics.Graphic2d[];
         private _renderer: _.IRenderer;
         private _onDraw: (context: CanvasRenderingContext2D) => void;
         private _disposed: boolean;
@@ -3512,8 +3512,8 @@ module EndGate.Rendering {
         * Adds an actor to the scene.  All actors added to the scene have their Draw function called automatically.
         * @param actor The graphic to add to the scene.
         */
-        public Add(actor: Graphics.Abstractions.Graphic2d): void {
-            actor.OnDisposed.Bind((graphic: Graphics.Abstractions.Graphic2d) => {
+        public Add(actor: Graphics.Graphic2d): void {
+            actor.OnDisposed.Bind((graphic: Graphics.Graphic2d) => {
                 this.Remove(graphic);
             });
 
@@ -3524,7 +3524,7 @@ module EndGate.Rendering {
         * Removes an actor from the scene.  The actor will no longer have its Draw called.
         * @param actor The graphic to remove from the scene.
         */
-        public Remove(actor: Graphics.Abstractions.Graphic2d): void {
+        public Remove(actor: Graphics.Graphic2d): void {
             for (var i = 0; i < this._actors.length; i++) {
                 if (this._actors[i] === actor) {
                     this._actors.splice(i, 1);
@@ -4692,7 +4692,7 @@ module EndGate.Map {
     export class SceneryHandler {
         private _sceneryCanvas: HTMLCanvasElement;
         private _camera: Rendering.Camera2d;
-        private _layers: Graphics.Abstractions.Graphic2d[];
+        private _layers: Graphics.Graphic2d[];
         private _renderer: Rendering.Camera2dRenderer;
         private _disposed: boolean;
 
@@ -4712,7 +4712,7 @@ module EndGate.Map {
         * Adds a layer to the scenery.
         * @param layer The layer to add.
         */
-        public AddLayer(layer: Graphics.Abstractions.Graphic2d): void {
+        public AddLayer(layer: Graphics.Graphic2d): void {
             this._layers.push(layer);
         }
 
@@ -4720,7 +4720,7 @@ module EndGate.Map {
         * Removes a layer from the scenery.
         * @param layer The layer to remove.
         */
-        public RemoveLayer(layer: Graphics.Abstractions.Graphic2d): void {
+        public RemoveLayer(layer: Graphics.Graphic2d): void {
             this._layers.splice(this._layers.indexOf(layer), 1);
         }
 
@@ -4728,7 +4728,7 @@ module EndGate.Map {
         * Draws all layers onto the given context.  If this is used via a MapManager object, Draw will automatically be called.
         */
         public Draw(): void {
-            this._layers.sort(Graphics.Abstractions.Graphic2d._zindexSort);
+            this._layers.sort(Graphics.Graphic2d._zindexSort);
 
             this._renderer.Render(this._layers);
         }
@@ -5486,7 +5486,7 @@ module EndGate.Graphics {
     /**
     * Defines a drawable text element.
     */
-    export class Text2d extends Abstractions.Graphic2d {
+    export class Text2d extends Graphic2d {
         public _type: string = "Text2d";        
 
         private _fontSettings: Assets.FontSettings;
@@ -5847,7 +5847,7 @@ module EndGate.Graphics {
     /**
     * Defines a drawable sprite.  Sprites are used to draw images to the game screen.
     */
-    export class Sprite2d extends Abstractions.Graphic2d {
+    export class Sprite2d extends Graphic2d {
         public _type: string = "Sprite2d";
 
         /**
@@ -6413,7 +6413,7 @@ module EndGate.Graphics {
     /**
     * Defines a drawable 2d line element.
     */
-    export class Line2d extends Abstractions.Graphic2d {
+    export class Line2d extends Graphic2d {
         public _type: string = "Line2d";
 
         private _from: Vector2d;
@@ -6575,12 +6575,12 @@ module EndGate.Graphics {
     /**
     * Defines a drawable grid that can be used to store other graphics in a grid like structure.
     */
-    export class Grid extends Abstractions.Graphic2d {
+    export class Grid extends Graphic2d {
         public _type: string = "Grid";
 
         private _size: Size2d;
         private _tileSize: Size2d;
-        private _grid: Abstractions.Graphic2d[][];
+        private _grid: Graphic2d[][];
         private _gridLines: Line2d[];
         private _positionOffset: Vector2d;
         private _rows: number;
@@ -6705,7 +6705,7 @@ module EndGate.Graphics {
         * @param column The column.
         * @param graphic The graphic to fill the tile with.
         */
-        public Fill(row: number, column: number, graphic: Abstractions.Graphic2d): void {
+        public Fill(row: number, column: number, graphic: Graphic2d): void {
             if (!graphic || !this.ValidRow(row) || !this.ValidColumn(column)) {
                 return;
             }
@@ -6721,16 +6721,16 @@ module EndGate.Graphics {
         * @param row The row to fill.
         * @param graphicList The list of graphics to fill the row with.  The row will be filled with as many elements that are contained within the graphicList.
         */
-        public FillRow(row: number, graphicList: Abstractions.Graphic2d[]): void;
+        public FillRow(row: number, graphicList: Graphic2d[]): void;
         /**
         * Fills a row with the provided graphics starting at the provided column
         * @param row The row to fill.
         * @param graphicList The list of graphics to fill the row with.  The row will be filled with as many elements that are contained within the graphicList.
         * @param columnOffset The column to start filling at.
         */
-        public FillRow(row: number, graphicList: Abstractions.Graphic2d[], columnOffset: number): void;
-        public FillRow(row: number, graphicList: Abstractions.Graphic2d[], columnOffset: number = 0): void {
-            var graphic: Abstractions.Graphic2d;
+        public FillRow(row: number, graphicList: Graphic2d[], columnOffset: number): void;
+        public FillRow(row: number, graphicList: Graphic2d[], columnOffset: number = 0): void {
+            var graphic: Graphic2d;
 
             for (var i = 0; i < graphicList.length; i++) {
                 graphic = graphicList[i];
@@ -6746,16 +6746,16 @@ module EndGate.Graphics {
         * @param column The column to fill.
         * @param graphicList The list of graphics to fill the column with.  The column will be filled with as many elements that are contained within the graphicList.
         */
-        public FillColumn(column: number, graphicList: Abstractions.Graphic2d[]): void;
+        public FillColumn(column: number, graphicList: Graphic2d[]): void;
         /**
         * Fills a column with the provided graphics starting at the provided row.
         * @param column The column to fill.
         * @param graphicList The list of graphics to fill the column with.  The column will be filled with as many elements that are contained within the graphicList.
         * @param rowOffset The row to start filling at.
         */
-        public FillColumn(column: number, graphicList: Abstractions.Graphic2d[], rowOffset: number): void;
-        public FillColumn(column: number, graphicList: Abstractions.Graphic2d[], rowOffset: number = 0): void {
-            var graphic: Abstractions.Graphic2d;
+        public FillColumn(column: number, graphicList: Graphic2d[], rowOffset: number): void;
+        public FillColumn(column: number, graphicList: Graphic2d[], rowOffset: number = 0): void {
+            var graphic: Graphic2d;
 
             for (var i = 0; i < graphicList.length; i++) {
                 graphic = graphicList[i];
@@ -6772,8 +6772,8 @@ module EndGate.Graphics {
         * @param column The column to start filling at.
         * @param graphicList The list of graphics to fill the space with.  The space will be filled with as many elements that are contained within the multi-dimensional graphicList.
         */
-        public FillSpace(row: number, column: number, graphicList: Abstractions.Graphic2d[][]): void {
-            var graphic: Abstractions.Graphic2d;
+        public FillSpace(row: number, column: number, graphicList: Graphic2d[][]): void {
+            var graphic: Graphic2d;
 
             for (var i = 0; i < graphicList.length; i++) {
                 for (var j = 0; j < graphicList[i].length; j++) {
@@ -6793,7 +6793,7 @@ module EndGate.Graphics {
         * @param row The row.
         * @param column The column.
         */
-        public Get(row: number, column: number): Abstractions.Graphic2d {
+        public Get(row: number, column: number): Graphic2d {
             if (!this.ValidRow(row) || !this.ValidColumn(column)) {
                 return null;
             }
@@ -6805,15 +6805,15 @@ module EndGate.Graphics {
         * Retrieves graphics within the provided row.
         * @param row The row to retrieve.
         */
-        public GetRow(row: number): Abstractions.Graphic2d[];
+        public GetRow(row: number): Graphic2d[];
         /**
         * Retrieves graphics within the row starting at the provided column offset.
         * @param row The row to retrieve.
         * @param columnOffset The column to start retrieving the row at.
         */
-        public GetRow(row: number, columnOffset: number): Abstractions.Graphic2d[];
-        public GetRow(row: number, columnOffset: number = 0): Abstractions.Graphic2d[] {
-            var rowList: Abstractions.Graphic2d[] = [];
+        public GetRow(row: number, columnOffset: number): Graphic2d[];
+        public GetRow(row: number, columnOffset: number = 0): Graphic2d[] {
+            var rowList: Graphic2d[] = [];
 
             for (var i = columnOffset; i < this._columns; i++) {
                 rowList.push(this._grid[row][i]);
@@ -6826,15 +6826,15 @@ module EndGate.Graphics {
         * Retrieves graphics within the provided column.
         * @param column The column to retrieve.
         */
-        public GetColumn(column: number): Abstractions.Graphic2d[];
+        public GetColumn(column: number): Graphic2d[];
         /**
         * Retrieves graphics within the column starting at the provided row offset.
         * @param column The column to retrieve.
         * @param rowOffset The row to start retrieving the column at.
         */
-        public GetColumn(column: number, rowOffset: number): Abstractions.Graphic2d[];
-        public GetColumn(column: number, rowOffset: number = 0): Abstractions.Graphic2d[] {
-            var columnList: Abstractions.Graphic2d[] = [];
+        public GetColumn(column: number, rowOffset: number): Graphic2d[];
+        public GetColumn(column: number, rowOffset: number = 0): Graphic2d[] {
+            var columnList: Graphic2d[] = [];
 
             for (var i = rowOffset; i < this._rows; i++) {
                 columnList.push(this._grid[i][column]);
@@ -6850,8 +6850,8 @@ module EndGate.Graphics {
         * @param rowEnd The row to stop pulling graphics from.
         * @param columnEnd The column to stop pulling graphics from.
         */
-        public GetSpace(rowStart: number, columnStart: number, rowEnd: number, columnEnd: number): Abstractions.Graphic2d[] {
-            var space: Abstractions.Graphic2d[] = [],
+        public GetSpace(rowStart: number, columnStart: number, rowEnd: number, columnEnd: number): Graphic2d[] {
+            var space: Graphic2d[] = [],
                 rowIncrementor = (rowEnd >= rowStart) ? 1 : -1,
                 columnIncrementor = (columnEnd >= columnStart) ? 1 : -1;
 
@@ -6877,7 +6877,7 @@ module EndGate.Graphics {
         * @param row The row.
         * @param column The column.
         */
-        public Clear(row: number, column: number): Abstractions.Graphic2d {
+        public Clear(row: number, column: number): Graphic2d {
             if (!this.ValidRow(row) || !this.ValidColumn(column)) {
                 return null;
             }
@@ -6894,15 +6894,15 @@ module EndGate.Graphics {
         * Clears graphics within the provided row.
         * @param row The row to clear.
         */
-        public ClearRow(row: number): Abstractions.Graphic2d[];
+        public ClearRow(row: number): Graphic2d[];
         /**
         * Clears graphics within the row starting at the provided column offset.
         * @param row The row to clear.
         * @param columnOffset The column to start clearing the row at.
         */
-        public ClearRow(row: number, columnOffset: number): Abstractions.Graphic2d[];
-        public ClearRow(row: number, columnOffset: number = 0): Abstractions.Graphic2d[] {
-            var vals: Abstractions.Graphic2d[] = [];
+        public ClearRow(row: number, columnOffset: number): Graphic2d[];
+        public ClearRow(row: number, columnOffset: number = 0): Graphic2d[] {
+            var vals: Graphic2d[] = [];
 
             for (var i = 0; i < this._columns; i++) {
                 vals.push(this._grid[row][i]);
@@ -6917,15 +6917,15 @@ module EndGate.Graphics {
         * Clears graphics within the provided column.
         * @param column The column to clear.
         */
-        public ClearColumn(column: number): Abstractions.Graphic2d[];
+        public ClearColumn(column: number): Graphic2d[];
         /**
         * Clears graphics within the column starting at the provided column offset.
         * @param column The column to clear.
         * @param rowOffset The row to start clearing the column at.
         */
-        public ClearColumn(column: number, rowOffset: number): Abstractions.Graphic2d[];
-        public ClearColumn(column: number, rowOffset: number = 0): Abstractions.Graphic2d[] {
-            var vals: Abstractions.Graphic2d[] = [];
+        public ClearColumn(column: number, rowOffset: number): Graphic2d[];
+        public ClearColumn(column: number, rowOffset: number = 0): Graphic2d[] {
+            var vals: Graphic2d[] = [];
 
             for (var i = 0; i < this._rows; i++) {
                 vals.push(this._grid[i][column]);
@@ -6943,8 +6943,8 @@ module EndGate.Graphics {
         * @param rowEnd The row to stop clearing graphics from.
         * @param columnEnd The column to stop clearing graphics from.
         */
-        public ClearSpace(rowStart: number, columnStart: number, rowEnd: number, columnEnd: number): Abstractions.Graphic2d[] {
-            var space: Abstractions.Graphic2d[] = [],
+        public ClearSpace(rowStart: number, columnStart: number, rowEnd: number, columnEnd: number): Graphic2d[] {
+            var space: Graphic2d[] = [],
                 rowIncrementor = (rowEnd >= rowStart) ? 1 : -1,
                 columnIncrementor = (columnEnd >= columnStart) ? 1 : -1;
 
@@ -7319,7 +7319,7 @@ module EndGate.Map {
     /**
     * Defines an abstract class TileMap that takes an array of resources to be mapped to tiles.
     */
-    export class TileMap extends Graphics.Abstractions.Graphic2d {
+    export class TileMap extends Graphics.Graphic2d {
         public _Resources: Graphics.ImageSource[];
 
         /**
@@ -7578,13 +7578,13 @@ module EndGate.Map {
         }
 
         private FillGridWith(mappings: number[][], onComplete: () => any): void {
-            asyncLoop((next: () => void, rowsComplete: number) => {
+            asyncLoop((next: () => void , rowsComplete: number) => {
                 this.AsyncBuildGridRow(rowsComplete, mappings, () => {
                     next();
                 });
             }, mappings.length, () => {
-                onComplete();
-            });
+                    onComplete();
+                });
         }
 
         private AsyncBuildGridTile(row: number, column: number, resourceIndex: number, onComplete: (tile: SquareTile) => any): void {
@@ -7594,7 +7594,7 @@ module EndGate.Map {
 
                 tile = new SquareTile(tileGraphic, this._grid.TileSize.Width, this._grid.TileSize.Height);
 
-                this._grid.Fill(row, column, tile);                
+                this._grid.Fill(row, column, tile);
 
                 this.OnTileLoad.Trigger({
                     Tile: tile,
@@ -7621,29 +7621,22 @@ module EndGate.Map {
 
         // Only pretend async in order to free up the DOM
         private AsyncBuildGridRow(rowIndex: number, mappings: number[][], onComplete: () => any): void {
-            var action = () => {
-                    asyncLoop((next: () => void , tilesLoaded: number) => {
-                        this._tilesBuilt++;
+            setTimeout(() => {
+                asyncLoop((next: () => void , tilesLoaded: number) => {
+                    this._tilesBuilt++;
 
-                        if (mappings[rowIndex][tilesLoaded] >= 0) {
-                            this.AsyncBuildGridTile(rowIndex, tilesLoaded, mappings[rowIndex][tilesLoaded], (tile: SquareTile) => {
-                                next();
-                            });
-                        }
-                        else {
+                    if (mappings[rowIndex][tilesLoaded] >= 0) {
+                        this.AsyncBuildGridTile(rowIndex, tilesLoaded, mappings[rowIndex][tilesLoaded], (tile: SquareTile) => {
                             next();
-                        }
-                    }, mappings[rowIndex].length, () => {
+                        });
+                    }
+                    else {
+                        next();
+                    }
+                }, mappings[rowIndex].length, () => {
                         onComplete();
                     });
-                };
-            
-            if (this.RowLoadDelay.Milliseconds > 0) {
-                setTimeout(action, this.RowLoadDelay.Milliseconds);
-            }
-            else {
-                action();
-            }
+            }, this.RowLoadDelay.Milliseconds);
         }
     }
 

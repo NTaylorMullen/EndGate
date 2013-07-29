@@ -14,7 +14,7 @@ module EndGate.Rendering {
     * Defines a scene object that is used to maintain a list of renderable objects that are rendered onto a joint game area.
     */
     export class Scene2d implements IDisposable {       
-        private _actors: Graphics.Abstractions.Graphic2d[];
+        private _actors: Graphics.Graphic2d[];
         private _renderer: _.IRenderer;
         private _onDraw: (context: CanvasRenderingContext2D) => void;
         private _disposed: boolean;
@@ -71,8 +71,8 @@ module EndGate.Rendering {
         * Adds an actor to the scene.  All actors added to the scene have their Draw function called automatically.
         * @param actor The graphic to add to the scene.
         */
-        public Add(actor: Graphics.Abstractions.Graphic2d): void {
-            actor.OnDisposed.Bind((graphic: Graphics.Abstractions.Graphic2d) => {
+        public Add(actor: Graphics.Graphic2d): void {
+            actor.OnDisposed.Bind((graphic: Graphics.Graphic2d) => {
                 this.Remove(graphic);
             });
 
@@ -83,7 +83,7 @@ module EndGate.Rendering {
         * Removes an actor from the scene.  The actor will no longer have its Draw called.
         * @param actor The graphic to remove from the scene.
         */
-        public Remove(actor: Graphics.Abstractions.Graphic2d): void {
+        public Remove(actor: Graphics.Graphic2d): void {
             for (var i = 0; i < this._actors.length; i++) {
                 if (this._actors[i] === actor) {
                     this._actors.splice(i, 1);

@@ -27,7 +27,7 @@ var EndGate;
                 this._Resources = resources;
             }
             return TileMap;
-        })(EndGate.Graphics.Abstractions.Graphic2d);
+        })(EndGate.Graphics.Graphic2d);
         Map.TileMap = TileMap;
     })(EndGate.Map || (EndGate.Map = {}));
     var Map = EndGate.Map;

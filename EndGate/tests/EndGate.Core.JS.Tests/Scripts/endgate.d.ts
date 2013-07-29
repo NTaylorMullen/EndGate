@@ -1214,7 +1214,7 @@ declare module EndGate.Graphics.Assets._ {
         public SetContextState(context: CanvasRenderingContext2D): void;
     }
 }
-declare module EndGate.Graphics.Abstractions {
+declare module EndGate.Graphics {
     /**
     * Abstract drawable graphic type that is used create the base for graphics.
     */
@@ -1433,12 +1433,12 @@ declare module EndGate.Rendering {
         * Adds an actor to the scene.  All actors added to the scene have their Draw function called automatically.
         * @param actor The graphic to add to the scene.
         */
-        public Add(actor: EndGate.Graphics.Abstractions.Graphic2d): void;
+        public Add(actor: EndGate.Graphics.Graphic2d): void;
         /**
         * Removes an actor from the scene.  The actor will no longer have its Draw called.
         * @param actor The graphic to remove from the scene.
         */
-        public Remove(actor: EndGate.Graphics.Abstractions.Graphic2d): void;
+        public Remove(actor: EndGate.Graphics.Graphic2d): void;
         /**
         * Draws all actors within the Scene and triggers the Scene2d's onDraw callback.
         */
@@ -1968,12 +1968,12 @@ declare module EndGate.Map {
         * Adds a layer to the scenery.
         * @param layer The layer to add.
         */
-        public AddLayer(layer: EndGate.Graphics.Abstractions.Graphic2d): void;
+        public AddLayer(layer: EndGate.Graphics.Graphic2d): void;
         /**
         * Removes a layer from the scenery.
         * @param layer The layer to remove.
         */
-        public RemoveLayer(layer: EndGate.Graphics.Abstractions.Graphic2d): void;
+        public RemoveLayer(layer: EndGate.Graphics.Graphic2d): void;
         /**
         * Draws all layers onto the given context.  If this is used via a MapManager object, Draw will automatically be called.
         */
@@ -2361,7 +2361,7 @@ declare module EndGate.Graphics {
     /**
     * Defines a drawable text element.
     */
-    class Text2d extends Graphics.Abstractions.Graphic2d {
+    class Text2d extends Graphics.Graphic2d {
         public _type: string;
         private _fontSettings;
         private _text;
@@ -2535,7 +2535,7 @@ declare module EndGate.Graphics {
     /**
     * Defines a drawable sprite.  Sprites are used to draw images to the game screen.
     */
-    class Sprite2d extends Graphics.Abstractions.Graphic2d {
+    class Sprite2d extends Graphics.Graphic2d {
         public _type: string;
         /**
         * Gets or sets the Image that is drawn to the game screen.
@@ -2667,7 +2667,7 @@ declare module EndGate.Graphics.Abstractions {
     /**
     * Abstract drawable shape type that is used create customizable drawable graphics.
     */
-    class Shape extends Abstractions.Graphic2d {
+    class Shape extends Graphics.Graphic2d {
         public _type: string;
         private _fill;
         private _stroke;
@@ -2817,7 +2817,7 @@ declare module EndGate.Graphics {
     /**
     * Defines a drawable 2d line element.
     */
-    class Line2d extends Graphics.Abstractions.Graphic2d {
+    class Line2d extends Graphics.Graphic2d {
         public _type: string;
         private _from;
         private _to;
@@ -2888,7 +2888,7 @@ declare module EndGate.Graphics {
     /**
     * Defines a drawable grid that can be used to store other graphics in a grid like structure.
     */
-    class Grid extends Graphics.Abstractions.Graphic2d {
+    class Grid extends Graphics.Graphic2d {
         public _type: string;
         private _size;
         private _tileSize;
@@ -2962,68 +2962,68 @@ declare module EndGate.Graphics {
         * @param column The column.
         * @param graphic The graphic to fill the tile with.
         */
-        public Fill(row: number, column: number, graphic: Graphics.Abstractions.Graphic2d): void;
+        public Fill(row: number, column: number, graphic: Graphics.Graphic2d): void;
         /**
         * Fills a row with the provided graphics
         * @param row The row to fill.
         * @param graphicList The list of graphics to fill the row with.  The row will be filled with as many elements that are contained within the graphicList.
         */
-        public FillRow(row: number, graphicList: Graphics.Abstractions.Graphic2d[]): void;
+        public FillRow(row: number, graphicList: Graphics.Graphic2d[]): void;
         /**
         * Fills a row with the provided graphics starting at the provided column
         * @param row The row to fill.
         * @param graphicList The list of graphics to fill the row with.  The row will be filled with as many elements that are contained within the graphicList.
         * @param columnOffset The column to start filling at.
         */
-        public FillRow(row: number, graphicList: Graphics.Abstractions.Graphic2d[], columnOffset: number): void;
+        public FillRow(row: number, graphicList: Graphics.Graphic2d[], columnOffset: number): void;
         /**
         * Fills a column with the provided graphics
         * @param column The column to fill.
         * @param graphicList The list of graphics to fill the column with.  The column will be filled with as many elements that are contained within the graphicList.
         */
-        public FillColumn(column: number, graphicList: Graphics.Abstractions.Graphic2d[]): void;
+        public FillColumn(column: number, graphicList: Graphics.Graphic2d[]): void;
         /**
         * Fills a column with the provided graphics starting at the provided row.
         * @param column The column to fill.
         * @param graphicList The list of graphics to fill the column with.  The column will be filled with as many elements that are contained within the graphicList.
         * @param rowOffset The row to start filling at.
         */
-        public FillColumn(column: number, graphicList: Graphics.Abstractions.Graphic2d[], rowOffset: number): void;
+        public FillColumn(column: number, graphicList: Graphics.Graphic2d[], rowOffset: number): void;
         /**
         * Fills a tile with the provided graphic.
         * @param row The row to start filling at.
         * @param column The column to start filling at.
         * @param graphicList The list of graphics to fill the space with.  The space will be filled with as many elements that are contained within the multi-dimensional graphicList.
         */
-        public FillSpace(row: number, column: number, graphicList: Graphics.Abstractions.Graphic2d[][]): void;
+        public FillSpace(row: number, column: number, graphicList: Graphics.Graphic2d[][]): void;
         /**
         * Gets a graphic within the grid.
         * @param row The row.
         * @param column The column.
         */
-        public Get(row: number, column: number): Graphics.Abstractions.Graphic2d;
+        public Get(row: number, column: number): Graphics.Graphic2d;
         /**
         * Retrieves graphics within the provided row.
         * @param row The row to retrieve.
         */
-        public GetRow(row: number): Graphics.Abstractions.Graphic2d[];
+        public GetRow(row: number): Graphics.Graphic2d[];
         /**
         * Retrieves graphics within the row starting at the provided column offset.
         * @param row The row to retrieve.
         * @param columnOffset The column to start retrieving the row at.
         */
-        public GetRow(row: number, columnOffset: number): Graphics.Abstractions.Graphic2d[];
+        public GetRow(row: number, columnOffset: number): Graphics.Graphic2d[];
         /**
         * Retrieves graphics within the provided column.
         * @param column The column to retrieve.
         */
-        public GetColumn(column: number): Graphics.Abstractions.Graphic2d[];
+        public GetColumn(column: number): Graphics.Graphic2d[];
         /**
         * Retrieves graphics within the column starting at the provided row offset.
         * @param column The column to retrieve.
         * @param rowOffset The row to start retrieving the column at.
         */
-        public GetColumn(column: number, rowOffset: number): Graphics.Abstractions.Graphic2d[];
+        public GetColumn(column: number, rowOffset: number): Graphics.Graphic2d[];
         /**
         * Retrieves graphics within row column cross section.
         * @param rowStart The row to start pulling graphics from.
@@ -3031,35 +3031,35 @@ declare module EndGate.Graphics {
         * @param rowEnd The row to stop pulling graphics from.
         * @param columnEnd The column to stop pulling graphics from.
         */
-        public GetSpace(rowStart: number, columnStart: number, rowEnd: number, columnEnd: number): Graphics.Abstractions.Graphic2d[];
+        public GetSpace(rowStart: number, columnStart: number, rowEnd: number, columnEnd: number): Graphics.Graphic2d[];
         /**
         * Clear a grid tile.
         * @param row The row.
         * @param column The column.
         */
-        public Clear(row: number, column: number): Graphics.Abstractions.Graphic2d;
+        public Clear(row: number, column: number): Graphics.Graphic2d;
         /**
         * Clears graphics within the provided row.
         * @param row The row to clear.
         */
-        public ClearRow(row: number): Graphics.Abstractions.Graphic2d[];
+        public ClearRow(row: number): Graphics.Graphic2d[];
         /**
         * Clears graphics within the row starting at the provided column offset.
         * @param row The row to clear.
         * @param columnOffset The column to start clearing the row at.
         */
-        public ClearRow(row: number, columnOffset: number): Graphics.Abstractions.Graphic2d[];
+        public ClearRow(row: number, columnOffset: number): Graphics.Graphic2d[];
         /**
         * Clears graphics within the provided column.
         * @param column The column to clear.
         */
-        public ClearColumn(column: number): Graphics.Abstractions.Graphic2d[];
+        public ClearColumn(column: number): Graphics.Graphic2d[];
         /**
         * Clears graphics within the column starting at the provided column offset.
         * @param column The column to clear.
         * @param rowOffset The row to start clearing the column at.
         */
-        public ClearColumn(column: number, rowOffset: number): Graphics.Abstractions.Graphic2d[];
+        public ClearColumn(column: number, rowOffset: number): Graphics.Graphic2d[];
         /**
         * Clears graphics within row column cross section.
         * @param rowStart The row to start clearing graphics from.
@@ -3067,7 +3067,7 @@ declare module EndGate.Graphics {
         * @param rowEnd The row to stop clearing graphics from.
         * @param columnEnd The column to stop clearing graphics from.
         */
-        public ClearSpace(rowStart: number, columnStart: number, rowEnd: number, columnEnd: number): Graphics.Abstractions.Graphic2d[];
+        public ClearSpace(rowStart: number, columnStart: number, rowEnd: number, columnEnd: number): Graphics.Graphic2d[];
         /**
         * Draws the grid onto the given context.  If this grid is part of a scene the Draw function will be called automatically.
         * @param context The canvas context to draw the grid onto.
@@ -3235,7 +3235,7 @@ declare module EndGate.Map {
     /**
     * Defines an abstract class TileMap that takes an array of resources to be mapped to tiles.
     */
-    class TileMap extends EndGate.Graphics.Abstractions.Graphic2d {
+    class TileMap extends EndGate.Graphics.Graphic2d {
         public _Resources: EndGate.Graphics.ImageSource[];
         /**
         * Creates a new instance of the TileMap object.

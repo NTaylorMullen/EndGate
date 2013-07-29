@@ -9,7 +9,7 @@ module EndGate.Graphics {
     /**
     * Defines a drawable text element.
     */
-    export class Text2d extends Abstractions.Graphic2d {
+    export class Text2d extends Graphic2d {
         public _type: string = "Text2d";        
 
         private _fontSettings: Assets.FontSettings;
