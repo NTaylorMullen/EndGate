@@ -3,7 +3,7 @@
 /// <reference path="../Interfaces/IUpdateable.ts" />
 /// <reference path="../GameTime.ts" />
 
-module EndGate.MovementControllers.Abstractions {
+module EndGate.MovementControllers {
     
     /**
     * Abstract class that holds moveable objects and synchronizes positions across them.

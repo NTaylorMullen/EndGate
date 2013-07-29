@@ -2126,7 +2126,7 @@ declare module EndGate.MovementControllers {
         StartMoving: boolean;
     }
 }
-declare module EndGate.MovementControllers.Abstractions {
+declare module EndGate.MovementControllers {
     /**
     * Abstract class that holds moveable objects and synchronizes positions across them.
     */
@@ -2173,7 +2173,7 @@ declare module EndGate.MovementControllers {
     /**
     * Defines a LinearMovementController that can move objects Up, Right, Left, Down or a combination.
     */
-    class LinearMovementController extends MovementControllers.Abstractions.MovementController {
+    class LinearMovementController extends MovementControllers.MovementController {
         private _moveSpeed;
         private _moving;
         private _rotationUpdater;
