@@ -2050,6 +2050,11 @@ var EndGate;
             Graphic2d.prototype.Dispose = function () {
                 if (!this._disposed) {
                     this._disposed = true;
+
+                    for (var i = 0; i < this._children.length; i++) {
+                        this._children[i].Dispose();
+                    }
+
                     this.OnDisposed.Trigger(this);
                 } else {
                     throw new Error("Cannot dispose graphic more than once.");

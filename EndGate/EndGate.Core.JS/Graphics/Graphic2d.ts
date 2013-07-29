@@ -145,6 +145,12 @@ module EndGate.Graphics {
         public Dispose(): void {
             if (!this._disposed) {
                 this._disposed = true;
+
+                // Dispose all children to ensure that there's no dangling references.
+                for (var i = 0; i < this._children.length; i++) {
+                    this._children[i].Dispose();
+                }
+
                 this.OnDisposed.Trigger(this);
             }
             else {
