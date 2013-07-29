@@ -6578,11 +6578,6 @@ module EndGate.Graphics {
     export class Grid extends Abstractions.Graphic2d {
         public _type: string = "Grid";
 
-        /**
-        * Gets or sets the DrawGridLines property.  Indicates whether the grids column and row lines will be drawn.
-        */
-        public DrawGridLines: boolean;
-
         private _size: Size2d;
         private _tileSize: Size2d;
         private _grid: Abstractions.Graphic2d[][];
@@ -6591,6 +6586,7 @@ module EndGate.Graphics {
         private _rows: number;
         private _columns: number;
         private _gridLineColor: string;
+        private _drawGridLines: boolean;
 
         /**
         * Creates a new instance of the Grid object.
@@ -6627,39 +6623,38 @@ module EndGate.Graphics {
         constructor(x: number, y: number, rows: number, columns: number, tileWidth: number, tileHeight: number, drawGridLines: boolean, gridLineColor: string);
         constructor(x: number, y: number, rows: number, columns: number, tileWidth: number, tileHeight: number, drawGridLines: boolean = false, gridLineColor: string = "gray") {
             super(new Vector2d(x, y));
-            var halfSize: Size2d,
-                topLeft: Vector2d,
-                bottomRight: Vector2d;
 
             this._size = new Size2d(tileWidth * columns, tileHeight * rows);
             this._tileSize = new Size2d(tileWidth, tileHeight);
             this._grid = [];
             this._rows = rows;
             this._columns = columns;
-            this.DrawGridLines = drawGridLines;
             this._gridLines = [];
+            this.GridLineColor = gridLineColor;
+            this.DrawGridLines = drawGridLines;
 
-            halfSize = this._size.Multiply(.5);
-            topLeft = new Vector2d(-halfSize.Width, -halfSize.Height);
-            bottomRight = new Vector2d(halfSize.Width, halfSize.Height);
-
-            for (var i = 0; i < rows; i++) {
+            // Initialize our grid
+            for (var i = 0; i < this._rows; i++) {
                 this._grid[i] = [];
-                this._gridLines.push(new Line2d(topLeft.X, topLeft.Y + i * this._tileSize.Height, bottomRight.X, topLeft.Y + i * this._tileSize.Height, 1));
 
-                for (var j = 0; j < columns; j++) {
-                    if (i === 0) {
-                        this._gridLines.push(new Line2d(topLeft.X + j * this._tileSize.Width, topLeft.Y, topLeft.X + j * this._tileSize.Width, bottomRight.Y, 1));
-                    }
-
+                for (var j = 0; j < this._columns; j++) {
                     this._grid[i].push(null);
                 }
             }
+        }
 
-            this._gridLines.push(new Line2d(topLeft.X, bottomRight.Y, bottomRight.X, bottomRight.Y, 1));
-            this._gridLines.push(new Line2d(bottomRight.X, topLeft.Y, bottomRight.X, bottomRight.Y, 1));
+        /**
+        * Gets or sets the DrawGridLines property.  Indicates whether the grids column and row lines will be drawn.
+        */
+        public get DrawGridLines(): boolean {
+            return this._drawGridLines;
+        }
+        public set DrawGridLines(shouldDraw: boolean) {
+            if (shouldDraw && this._gridLines.length === 0) {
+                this.BuildGridLines();
+            }
 
-            this.GridLineColor = gridLineColor;
+            this._drawGridLines = shouldDraw;
         }
 
         /**
@@ -6674,7 +6669,7 @@ module EndGate.Graphics {
             for (var i = 0; i < this._gridLines.length; i++) {
                 this._gridLines[i].Color = color;
             }
-        }        
+        }
 
         /**
         * Gets the size of the grid.
@@ -6703,7 +6698,7 @@ module EndGate.Graphics {
         public get Columns(): number {
             return this._columns;
         }
-        
+
         /**
         * Fills a tile with the provided graphic.
         * @param row The row.
@@ -6711,7 +6706,7 @@ module EndGate.Graphics {
         * @param graphic The graphic to fill the tile with.
         */
         public Fill(row: number, column: number, graphic: Abstractions.Graphic2d): void {
-            if (!this.ValidRow(row) || !this.ValidColumn(column)) {
+            if (!graphic || !this.ValidRow(row) || !this.ValidColumn(column)) {
                 return;
             }
 
@@ -7017,6 +7012,25 @@ module EndGate.Graphics {
             return Math.floor((x - (this.Position.X - this._size.HalfWidth)) / this._tileSize.Width);
         }
 
+        private BuildGridLines(): void {
+            var halfSize: Size2d = this._size.Multiply(.5),
+                topLeft: Vector2d = new Vector2d(-halfSize.Width, -halfSize.Height),
+                bottomRight: Vector2d = new Vector2d(halfSize.Width, halfSize.Height);
+
+            for (var i = 0; i < this._rows; i++) {
+                this._gridLines.push(new Line2d(topLeft.X, topLeft.Y + i * this._tileSize.Height, bottomRight.X, topLeft.Y + i * this._tileSize.Height, 1, this._gridLineColor));
+
+                if (i === 0) {
+                    for (var j = 0; j < this._columns; j++) {
+                        this._gridLines.push(new Line2d(topLeft.X + j * this._tileSize.Width, topLeft.Y, topLeft.X + j * this._tileSize.Width, bottomRight.Y, 1, this._gridLineColor));
+                    }
+                }
+            }
+
+            this._gridLines.push(new Line2d(topLeft.X, bottomRight.Y, bottomRight.X, bottomRight.Y, 1));
+            this._gridLines.push(new Line2d(bottomRight.X, topLeft.Y, bottomRight.X, bottomRight.Y, 1));
+        }
+
         private GetInsideGridPosition(row: number, column: number): Vector2d {
             return new Vector2d(column * this._tileSize.Width - this._size.HalfWidth + this._tileSize.HalfWidth, row * this._tileSize.Height - this._size.HalfHeight + this._tileSize.HalfHeight);
         }
@@ -7282,6 +7296,19 @@ module EndGate {
         }
     }
 }
+/* Helpers.ts */
+function asyncLoop(action: (next: () => void, index: number) => void, count: number, onComplete?: ()=> void) {
+    (function loop(index) {
+        if (index < count) {
+            action(function () {
+                loop(index + 1);
+            }, index);
+        }
+        else if(onComplete) {
+            onComplete();
+        }
+    } (0));
+}
 /* TileMap.ts */
 
 
@@ -7306,6 +7333,44 @@ module EndGate.Map {
 
             this._Resources = resources;
         }
+    }
+
+}
+/* ITileDetails.ts */
+
+
+
+
+declare module EndGate.Map {
+
+    /**
+    * Defines an object that is used to fully describe a loaded tile.
+    */
+    export interface ITileDetails {
+        /**
+        * The Tile that will be on the map.
+        */
+        Tile: Graphics.Sprite2d;
+
+        /**
+        * The resource index that was used to build the tile.
+        */
+        ResourceIndex: number;
+
+        /**
+        * The row that the tile occupies.
+        */
+        Row: number;
+
+        /**
+        * The column that the tile occupies.
+        */
+        Column: number;
+
+        /**
+        * The TileMap that contains the Tile.  This can be used to determine the absolute position of the Tile by adding the Parent and Tile's position.
+        */
+        Parent: TileMap;
     }
 
 }
@@ -7338,15 +7403,35 @@ module EndGate.Map {
 
 
 
+
+
+
+
+
 module EndGate.Map {
 
     /**
     * Defines a structure that is proficient at creating diverse tile maps based off of a resource image.  Best drawn via a SceneryHandler.
     */
     export class SquareTileMap extends TileMap {
+        /**
+        * Gets or sets the tile load delay component.  This can be used to slowly load a square tile map to prevent the browser from freezing by adding a delay between tile loads to allow time for the DOM to update.  Defaults to TimeSpan.Zero.
+        */
+        public TileLoadDelay: TimeSpan;
+        /**
+        * Gets or sets the row load delay component.  This can be used to slowly load a square tile map to prevent the browser from freezing by adding a delay between row loads to allow time for the DOM to update.  Defaults to TimeSpan.Zero.
+        */
+        public RowLoadDelay: TimeSpan;
+
         private _grid: Graphics.Grid;
         private _staticMap: boolean;
         private _mapCache: HTMLCanvasElement;
+        private _mapCacheContext: CanvasRenderingContext2D;
+        private _onTileLoad: EventHandler2<ITileDetails, number>;
+        private _onLoaded: EventHandler;
+        private _loaded: boolean;
+        private _tilesBuilt: number;
+        private _totalTiles: number;
 
         /**
         * Creates a new instance of the SquareTileMap object.
@@ -7384,14 +7469,41 @@ module EndGate.Map {
         constructor(x: number, y: number, tileWidth: number, tileHeight: number, resources: Graphics.Assets.ImageSource[], mappings: number[][], staticMap: boolean = true, drawGridLines: boolean = false) {
             super(x, y, resources);
 
-            this._grid = new Graphics.Grid(0, 0, mappings.length, mappings[0].length, tileWidth, tileHeight,drawGridLines);
-            this._staticMap = staticMap;            
-
-            this.FillGridWith(mappings);
+            this._grid = new Graphics.Grid(0, 0, mappings.length, mappings[0].length, tileWidth, tileHeight, drawGridLines);
+            this._staticMap = staticMap;
+            this._onTileLoad = new EventHandler2<ITileDetails, number>();
+            this._onLoaded = new EventHandler();
+            this._loaded = false;
+            this._tilesBuilt = 0;
+            this._totalTiles = this._grid.Rows * this._grid.Columns;
+            this.TileLoadDelay = TimeSpan.Zero;
+            this.RowLoadDelay = TimeSpan.Zero;
 
             if (this._staticMap) {
                 this.BuildCache();
             }
+
+            // Execute this on the next stack, to allow time for binding to the tile maps load events
+            setTimeout(() => {
+                this.FillGridWith(mappings, () => {
+                    this._loaded = true;
+                    this._onLoaded.Trigger();
+                });
+            }, 0);
+        }
+
+        /**
+        * Gets an event that is triggered when a tile has been loaded, first argument is the tile details for the loaded tile, second is the percent complete.  Once this SquareTileMap has been created and all tiles loaded this event will no longer be triggered. Functions can be bound or unbound to this event to be executed when the event triggers.
+        */
+        public get OnTileLoad(): EventHandler2<ITileDetails, number> {
+            return this._onTileLoad;
+        }
+
+        /**
+        * Gets an event that is triggered when the square tile map has been loaded.  Once this SquareTileMap has been created and all tiles loaded this event will no longer be triggered. Functions can be bound or unbound to this event to be executed when the event triggers.
+        */
+        public get OnLoaded(): EventHandler {
+            return this._onLoaded;
         }
 
         /**
@@ -7400,10 +7512,10 @@ module EndGate.Map {
         * @param tileWidth The width of the sprite sheet tiles.
         * @param tileHeight The height of the sprite sheet tiles.
         */
-        public static ExtractTiles(imageSource: Graphics.Assets.ImageSource, tileWidth: number, tileHeight: number): Graphics.Assets.ImageSource[]{
+        public static ExtractTiles(imageSource: Graphics.Assets.ImageSource, tileWidth: number, tileHeight: number): Graphics.Assets.ImageSource[] {
             var resources: Graphics.Assets.ImageSource[] = [],
                 framesPerRow: number = Math.floor(imageSource.ClipSize.Width / tileWidth),
-                    rows: number = Math.floor(imageSource.ClipSize.Height / tileHeight);
+                rows: number = Math.floor(imageSource.ClipSize.Height / tileHeight);
 
             for (var i = 0; i < rows; i++) {
                 for (var j = 0; j < framesPerRow; j++) {
@@ -7412,6 +7524,13 @@ module EndGate.Map {
             }
 
             return resources;
+        }
+
+        /**
+        * Determines if the current SquareTileMap is loaded.
+        */
+        public IsLoaded(): boolean {
+            return this._loaded;
         }
 
         /**
@@ -7449,29 +7568,82 @@ module EndGate.Map {
             this._mapCache = <HTMLCanvasElement>document.createElement("canvas");
             this._mapCache.width = size.Width;
             this._mapCache.height = size.Height;
-
-            // Draw the grid onto the cached map
-            this._grid.Position = new Vector2d(size.HalfWidth, size.HalfHeight);
-            this._grid.Draw(this._mapCache.getContext("2d"));
-            this._grid.Position = originalPosition;
+            this._mapCacheContext = this._mapCache.getContext("2d");
+            this._mapCacheContext.translate(size.HalfWidth, size.HalfHeight);
         }
 
-        private FillGridWith(mappings: number[][]): void {
-            var tiles: SquareTile[][] = [];
+        private CacheTile(tile: SquareTile): void {
+            // Draw the tile onto the map cache
+            tile.Draw(this._mapCacheContext);
+        }
 
-            for (var i = 0; i < mappings.length; i++) {
-                tiles[i] = [];
-                for (var j = 0; j < mappings[i].length; j++) {
-                    if (mappings[i][j] >= 0) {
-                        tiles[i].push(new SquareTile(this._Resources[mappings[i][j]], this._grid.TileSize.Width, this._grid.TileSize.Height));
-                    }
-                    else {
-                        tiles[i].push(null);
-                    }
+        private FillGridWith(mappings: number[][], onComplete: () => any): void {
+            asyncLoop((next: () => void, rowsComplete: number) => {
+                this.AsyncBuildGridRow(rowsComplete, mappings, () => {
+                    next();
+                });
+            }, mappings.length, () => {
+                onComplete();
+            });
+        }
+
+        private AsyncBuildGridTile(row: number, column: number, resourceIndex: number, onComplete: (tile: SquareTile) => any): void {
+            var action = () => {
+                var tile: SquareTile,
+                    tileGraphic: Graphics.Assets.ImageSource = this._Resources[resourceIndex];
+
+                tile = new SquareTile(tileGraphic, this._grid.TileSize.Width, this._grid.TileSize.Height);
+
+                this._grid.Fill(row, column, tile);                
+
+                this.OnTileLoad.Trigger({
+                    Tile: tile,
+                    Row: row,
+                    Column: column,
+                    ResourceIndex: resourceIndex,
+                    Parent: this
+                }, this._tilesBuilt / this._totalTiles);
+
+                if (this._staticMap) {
+                    this.CacheTile(tile);
                 }
-            }
 
-            this._grid.FillSpace(0, 0, tiles);
+                onComplete(tile);
+            };
+
+            if (this.TileLoadDelay.Milliseconds > 0) {
+                setTimeout(action, this.TileLoadDelay.Milliseconds);
+            }
+            else {
+                action();
+            }
+        }
+
+        // Only pretend async in order to free up the DOM
+        private AsyncBuildGridRow(rowIndex: number, mappings: number[][], onComplete: () => any): void {
+            var action = () => {
+                    asyncLoop((next: () => void , tilesLoaded: number) => {
+                        this._tilesBuilt++;
+
+                        if (mappings[rowIndex][tilesLoaded] >= 0) {
+                            this.AsyncBuildGridTile(rowIndex, tilesLoaded, mappings[rowIndex][tilesLoaded], (tile: SquareTile) => {
+                                next();
+                            });
+                        }
+                        else {
+                            next();
+                        }
+                    }, mappings[rowIndex].length, () => {
+                        onComplete();
+                    });
+                };
+            
+            if (this.RowLoadDelay.Milliseconds > 0) {
+                setTimeout(action, this.RowLoadDelay.Milliseconds);
+            }
+            else {
+                action();
+            }
         }
     }
 
@@ -7520,6 +7692,19 @@ import eg = EndGate;
 interface Number extends EndGate.ICloneable {}
 
 Number.prototype.Clone = function (): any { return this; };
+/* IHookFunction.ts */
+
+
+declare module EndGate.Map.Loaders {
+
+    /**
+    * Defines an IHookFunction that represents a function that can be used to hook into map loading tiles.
+    */
+    export interface IHookFunction {
+        (details: ITileDetails, propertyValue: string): any;
+    }
+
+}
 /* IMapLoadedResult.ts */
 
 
@@ -7536,7 +7721,66 @@ declare module EndGate.Map.Loaders {
     }
 
 }
+/* IMapPreloadInfo.ts */
+
+
+declare module EndGate.Map.Loaders {
+
+    /**
+    * Defines an object that contains some immediately available information about the map that is about to be loaded.
+    */
+    export interface IMapPreloadInfo {
+        /**
+        * The total number of layers the map contains.
+        */
+        LayerCount: number;
+
+        /**
+        * The total number of tile resource sheets that are used to represent the map.
+        */
+        ResourceSheetCount: number;
+
+        /**
+        * The total number of tiles within the map (empty or not).
+        */
+        TileCount: number;
+
+        /**
+        * Gets an event that is triggered when the percent loaded value has changed, first argument is the percent loaded (0-1).  Functions can be bound or unbound to this event to be executed when the event triggers.
+        */
+        OnPercentLoaded: EventHandler1<number>;
+    }
+
+}
+/* IPropertyHooks.ts */
+
+
+declare module EndGate.Map.Loaders {
+
+    /**
+    * Defines an object that can be used to provide hooks to adjust tiles as they are built.
+    */
+    export interface IPropertyHooks {
+        /**
+        * Hooks to trigger when a resource tile with the specified property is used when loading a map.  Passes in the created tile and the property value for the hook.
+        */
+        ResourceTileHooks?: { [property: string]: IHookFunction };
+
+        /**
+        * Hooks to trigger when a resource sheet with the specified property is used when loading a map.  Passes in created tiles from the resource sheet and the property value for the hook.
+        */
+        ResourceSheetHooks?: { [property: string]: IHookFunction };
+
+        /**
+        * Hooks to trigger when a layer with the specified property is used when loading a map.  Passes in created tiles from the layer and the property value for the hook.
+        */
+        LayerHooks?: { [property: string]: IHookFunction };
+    }
+
+}
 /* IMapLoader.ts */
+
+
 
 
 declare module EndGate.Map.Loaders {
@@ -7548,9 +7792,10 @@ declare module EndGate.Map.Loaders {
         /**
         * Loads the provided data then calls the onComplete function once valid map data has been created.
         * @param data The base data that will be transformed into the IMapLoadedResult format.
+        * @param propertyHooks Property hooks that can be used to modify tiles while they're loading.
         * @param onComplete The function to trigger when the data has been converted into a valid IMapLoadedResult.
         */
-        Load(data: any, onComplete: (result: IMapLoadedResult) => any): void;
+        Load(data: any, propertyHooks: IPropertyHooks, onComplete: (result: IMapLoadedResult) => any): IMapPreloadInfo;
     }
 
 }
@@ -7578,6 +7823,7 @@ declare module EndGate.Map.Loaders._.TMX {
         height: number;
         x: number;
         y: number;
+        properties: { [property: string]: string };
     }
 
 }
@@ -7591,10 +7837,11 @@ declare module EndGate.Map.Loaders._.TMX {
         imagewidth: number;
         margin: number;
         name: string;
-        properties: any;
+        properties: { [property: string]: string };
         spacing: number;
         tilewidth: number;
         tileheight: number;
+        tileproperties: { [tileIndex: string]: { [property: string]: string } };
     }
 
 }
@@ -7625,45 +7872,90 @@ declare module EndGate.Map.Loaders._.TMX {
 
 
 
+
+
+
+
+
+
 module EndGate.Map.Loaders._.TMX {
 
+    interface TileExtractResult {
+        ResourceHooks: Array<Array<(details: ITileDetails) => any>>;
+        Resources: Array<Graphics.Assets.ImageSource>;
+    }
+
     export class OrthogonalLoader implements IMapLoader {
-        public Load(data: ITMX, onComplete: (result: IMapLoadedResult) => any): void {
+        private static _imagePercentMax: number = .2;
+
+        public Load(data: ITMX, propertyHooks: IPropertyHooks, onComplete: (result: IMapLoadedResult) => any): IMapPreloadInfo {
+            // We're initially at 0%.
+            var percent = 0,
+                tileCount = 0,
+                onPartialLoad: EventHandler1<number> = new EventHandler1<number>();
+
             // Load all the sources referenced within the data
-            this.LoadTilesetSources(data.tilesets, (tilesetSources: { [tilesetName: string]: Graphics.Assets.ImageSource }) => {
-                // Triggered once all the sources have completed loading
+            this.LoadTilesetSources(data.tilesets,
+                (tileset: Graphics.Assets.ImageSource) => {
+                    percent += (1 / data.tilesets.length) * OrthogonalLoader._imagePercentMax
 
-                // All the tiles extracted represent our resource list
-                var resources: Array<Graphics.Assets.ImageSource> = this.ExtractTilesetTiles(data.tilesets, tilesetSources),
-                    mappings: Array<Array<number>>,
-                    layer: SquareTileMap,
-                    layers: Array<SquareTileMap> = new Array<SquareTileMap>();
+                    onPartialLoad.Trigger(percent);
+                },
+                (tilesetSources: { [tilesetName: string]: Graphics.Assets.ImageSource }) => {
+                    // Triggered once all the sources have completed loading
 
-                for (var i = 0; i < data.layers.length; i++) {
-                    if (data.layers[i].type !== "tilelayer") {
-                        throw new Error("Invalid layer type.  The layer type '" + data.layers[i].type + "' is not supported.");
-                    }
+                    // All the tiles extracted represent our resource list
+                    var resources: TileExtractResult = this.ExtractTilesetTiles(data.tilesets, tilesetSources, propertyHooks),
+                        mappings: Array<Array<number>>,
+                        layers: Array<SquareTileMap> = new Array<SquareTileMap>(),
+                        layerPercentValue = (1 - OrthogonalLoader._imagePercentMax) / data.layers.length;
 
-                    // Convert the layer data to a 2 dimensional array and subtract 1 from all the data points (to make it 0 based)
-                    mappings = this.NormalizeLayerData(data.layers[i].data, data.width);
+                    percent = OrthogonalLoader._imagePercentMax;
 
-                    layer = new SquareTileMap(data.layers[i].x, data.layers[i].y, data.tilewidth, data.tileheight, resources, mappings);
-                    layer.ZIndex = i;
-                    layer.Visible = data.layers[i].visible;
-                    layer.Opacity = data.layers[i].opacity;
-                    layers.push(layer);
-                }
+                    asyncLoop((next: () => void , i: number) => {
+                        if (data.layers[i].type !== "tilelayer") {
+                            throw new Error("Invalid layer type.  The layer type '" + data.layers[i].type + "' is not supported.");
+                        }
 
-                onComplete({
-                    Layers: layers
+                        this.AsyncBuildLayer(data, i, propertyHooks, resources,
+                            (details: ITileDetails, percentLoaded: number) => {
+                                onPartialLoad.Trigger(percent + percentLoaded * layerPercentValue);
+                            },
+                            (layer: SquareTileMap) => {
+                                percent += layerPercentValue;
+
+                                onPartialLoad.Trigger(percent);
+
+                                layers.push(layer);
+
+                                next();
+                            });
+                    }, data.layers.length, () => {
+                            // All layers loaded
+
+                            onComplete({
+                                Layers: layers
+                            });
+                        });
                 });
-            });
+
+            for (var i = 0; i < data.layers.length; i++) {
+                tileCount += data.layers[i].data.length;
+            }
+
+            return {
+                TileCount: tileCount,
+                LayerCount: data.layers.length,
+                ResourceSheetCount: data.tilesets.length,
+                OnPercentLoaded: onPartialLoad
+            };
         }
 
-        private LoadTilesetSources(tilesets: Array<ITMXTileset>, onComplete: (tilesetSources: { [tilesetName: string]: Graphics.Assets.ImageSource }) => any): void {
+        private LoadTilesetSources(tilesets: Array<ITMXTileset>, onTilesetLoad: (tileset: Graphics.Assets.ImageSource) => any, onComplete: (tilesetSources: { [tilesetName: string]: Graphics.Assets.ImageSource }) => any): void {
             var tilesetSources: { [tilesetName: string]: Graphics.Assets.ImageSource } = {},
                 loadedCount: number = 0,
                 onLoaded = (source: Graphics.Assets.ImageSource) => {
+                    onTilesetLoad(source);
                     // If everything has loaded
                     if (++loadedCount === tilesets.length) {
                         onComplete(tilesetSources);
@@ -7676,16 +7968,97 @@ module EndGate.Map.Loaders._.TMX {
             }
         }
 
-        private ExtractTilesetTiles(tilesets: Array<ITMXTileset>, tilesetSources: { [tilesetName: string]: Graphics.Assets.ImageSource }): Array<Graphics.Assets.ImageSource> {
-            var tilesetTiles: Array<Graphics.Assets.ImageSource> = new Array<Graphics.Assets.ImageSource>();
+        private ExtractTilesetTiles(tilesets: Array<ITMXTileset>, tilesetSources: { [tilesetName: string]: Graphics.Assets.ImageSource }, propertyHooks: IPropertyHooks): TileExtractResult {
+            var tilesetTiles: Array<Graphics.Assets.ImageSource> = new Array<Graphics.Assets.ImageSource>(),
+                resourceHooks = new Array<Array<(details: ITileDetails) => any>>(),
+                sources: Array<Graphics.Assets.ImageSource>,
+                index: number;
 
             tilesets.sort((a: ITMXTileset, b: ITMXTileset) => { return a.firstgid - b.firstgid; });
 
             for (var i = 0; i < tilesets.length; i++) {
-                tilesetTiles = tilesetTiles.concat(SquareTileMap.ExtractTiles(tilesetSources[tilesets[i].name], tilesets[i].tilewidth, tilesets[i].tileheight));
+                sources = SquareTileMap.ExtractTiles(tilesetSources[tilesets[i].name], tilesets[i].tilewidth, tilesets[i].tileheight);
+
+                for (var property in tilesets[i].properties) {
+                    if (typeof propertyHooks.ResourceSheetHooks[property] !== "undefined") {
+                        for (var j = tilesets[i].firstgid - 1; j < tilesets[i].firstgid - 1 + sources.length; j++) {
+                            if (typeof resourceHooks[j] === "undefined") {
+                                resourceHooks[j] = new Array<(details: ITileDetails) => any>();
+                            }
+
+                            resourceHooks[j].push(this.BuildHookerFunction(tilesets[i].properties[property], propertyHooks.ResourceSheetHooks[property]));
+                        }
+                    }
+                }
+
+                for (var tileIndex in tilesets[i].tileproperties) {
+                    for (var property in tilesets[i].tileproperties[tileIndex])
+                        if (typeof propertyHooks.ResourceTileHooks[property] !== "undefined") {
+                            index = parseInt(tileIndex) + tilesets[i].firstgid - 1;
+
+                            if (typeof resourceHooks[index] === "undefined") {
+                                resourceHooks[index] = new Array<(details: ITileDetails) => any>();
+                            }
+
+                            resourceHooks[index].push(this.BuildHookerFunction(tilesets[i].tileproperties[tileIndex][property], propertyHooks.ResourceTileHooks[property]));
+                        }
+                }
+
+                tilesetTiles = tilesetTiles.concat(sources);
             }
 
-            return tilesetTiles;
+            return {
+                Resources: tilesetTiles,
+                ResourceHooks: resourceHooks
+            };
+        }
+
+        // Not true async but it frees up the DOM
+        private AsyncBuildLayer(tmxData: ITMX, layerIndex: number, propertyHooks: IPropertyHooks, resources: TileExtractResult, onTileLoad: (details: ITileDetails, percentComplete: number) => any, onComplete: (squareTileMap: SquareTileMap) => any): void {
+            setTimeout(() => {
+                // Convert the layer data to a 2 dimensional array and subtract 1 from all the data points (to make it 0 based)
+                var tmxLayer = tmxData.layers[layerIndex],
+                    mappings = this.NormalizeLayerData(tmxLayer.data, tmxData.width),
+                    layer = new SquareTileMap(tmxLayer.x, tmxLayer.y, tmxData.tilewidth, tmxData.tileheight, resources.Resources, mappings),
+                    layerHooks: Array<(details: ITileDetails) => any> = new Array<(details: ITileDetails) => any>();
+
+                for (var property in tmxLayer.properties) {
+                    if (typeof propertyHooks.LayerHooks[property] !== "undefined") {
+                        layerHooks.push(this.BuildHookerFunction(tmxLayer.properties[property], propertyHooks.LayerHooks[property]));
+                    }
+                }
+
+                layer.ZIndex = layerIndex;
+                layer.Visible = tmxLayer.visible;
+                layer.Opacity = tmxLayer.opacity;
+
+                // Enough delay to ensure that the page doesn't freeze
+                layer.RowLoadDelay = TimeSpan.FromMilliseconds(5);
+
+                layer.OnTileLoad.Bind((details: ITileDetails, percentComplete: number) => {
+                    if (resources.ResourceHooks[details.ResourceIndex]) {
+                        for (var i = 0; i < resources.ResourceHooks[details.ResourceIndex].length; i++) {
+                            resources.ResourceHooks[details.ResourceIndex][i](details);
+                        }
+                    }
+
+                    for (var i = 0; i < layerHooks.length; i++) {
+                        layerHooks[i](details);
+                    }
+
+                    onTileLoad(details, percentComplete);
+                });
+
+                layer.OnLoaded.Bind(() => {
+                    onComplete(layer);
+                });
+            }, 0);
+        }
+
+        private BuildHookerFunction(propertyValue: string, fn: IHookFunction): (details: ITileDetails) => any {
+            return (details: ITileDetails): any => {
+                return fn(details, propertyValue);
+            };
         }
 
         private NormalizeLayerData(data: Array<number>, columns: number): Array<Array<number>> {
@@ -7698,7 +8071,7 @@ module EndGate.Map.Loaders._.TMX {
                 if (!(normalized[index] instanceof Array)) {
                     normalized[index] = new Array<number>();
                 }
-                
+
                 // Subtract 1 because TMX format starts at 1
                 normalized[index].push(data[i] - 1);
             }
@@ -7709,6 +8082,7 @@ module EndGate.Map.Loaders._.TMX {
 
 }
 /* TMXLoader.ts */
+
 
 
 
@@ -7726,17 +8100,19 @@ module EndGate.Map.Loaders._.TMX {
             };
         }
 
-        public Load(data: ITMX, onComplete: (result: IMapLoadedResult) => any): void {
+        public Load(data: ITMX, propertyHooks: IPropertyHooks, onComplete: (result: IMapLoadedResult) => any): IMapPreloadInfo {
             if (!this._orientationLoaders[data.orientation]) {
                 throw new Error("Invalid orientation.  The orientation '" + data.orientation + "' is not supported.");
             }
 
-            this._orientationLoaders[data.orientation].Load(data, onComplete);
+            return this._orientationLoaders[data.orientation].Load(data, propertyHooks, onComplete);
         }
     }
 
 }
 /* JSONLoader.ts */
+
+
 
 
 
@@ -7759,16 +8135,33 @@ module EndGate.Map.Loaders {
         * @param json The JSON data that represents the map.
         * @param onComplete The function to trigger when the json has been converted into a valid IMapLoadedResult.
         */
-        public static Load(json: Object, onComplete: (result: IMapLoadedResult) => any): void;
+        public static Load(json: Object, onComplete: (result: IMapLoadedResult) => any): IMapPreloadInfo;
         /**
         * Loads the provided json object then calls the onComplete function once the json has been transformed.
         * @param json The JSON data that represents the map.
         * @param onComplete The function to trigger when the json has been converted into a valid IMapLoadedResult.
+        * @param propertyHooks Property hooks that can be used to modify tiles while they're loading.  All maps that are loaded are static square tile maps, therefore modified tiles will only be drawn once.
+        */
+        public static Load(json: Object, onComplete: (result: IMapLoadedResult) => any, propertyHooks: IPropertyHooks): IMapPreloadInfo;
+        /**
+        * Loads the provided json object then calls the onComplete function once the json has been transformed.
+        * @param json The JSON data that represents the map.
+        * @param onComplete The function to trigger when the json has been converted into a valid IMapLoadedResult.
+        * @param propertyHooks Property hooks that can be used to modify tiles while they're loading.  All maps that are loaded are static square tile maps, therefore modified tiles will only be drawn once.
         * @param format The format of the JSON object.  Defaults to the tmx format.
         */
-        public static Load(json: Object, onComplete: (result: IMapLoadedResult) => any, format: JSONFormat): void;
-        public static Load(json: Object, onComplete: (result: IMapLoadedResult) => any, format: JSONFormat = JSONFormat.TMX): void {
-            JSONLoader._loaders[JSONFormat[format]].Load(json, onComplete);
+        public static Load(json: Object, onComplete: (result: IMapLoadedResult) => any, propertyHooks: IPropertyHooks, format: JSONFormat): IMapPreloadInfo;
+        public static Load(json: Object, onComplete: (result: IMapLoadedResult) => any, propertyHooks?: IPropertyHooks, format: JSONFormat = JSONFormat.TMX): IMapPreloadInfo {
+            if (!propertyHooks) {
+                // Defaults
+                propertyHooks = {
+                    ResourceTileHooks: {},
+                    ResourceSheetHooks: {},
+                    LayerHooks: {}
+                };
+            }
+
+            return JSONLoader._loaders[JSONFormat[format]].Load(json, propertyHooks, onComplete);
         }
     }
 

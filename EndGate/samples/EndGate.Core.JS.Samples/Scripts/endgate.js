@@ -4504,38 +4504,39 @@ var EndGate;
                 if (typeof gridLineColor === "undefined") { gridLineColor = "gray"; }
                 _super.call(this, new EndGate.Vector2d(x, y));
                 this._type = "Grid";
-                var halfSize, topLeft, bottomRight;
 
                 this._size = new EndGate.Size2d(tileWidth * columns, tileHeight * rows);
                 this._tileSize = new EndGate.Size2d(tileWidth, tileHeight);
                 this._grid = [];
                 this._rows = rows;
                 this._columns = columns;
-                this.DrawGridLines = drawGridLines;
                 this._gridLines = [];
+                this.GridLineColor = gridLineColor;
+                this.DrawGridLines = drawGridLines;
 
-                halfSize = this._size.Multiply(.5);
-                topLeft = new EndGate.Vector2d(-halfSize.Width, -halfSize.Height);
-                bottomRight = new EndGate.Vector2d(halfSize.Width, halfSize.Height);
-
-                for (var i = 0; i < rows; i++) {
+                for (var i = 0; i < this._rows; i++) {
                     this._grid[i] = [];
-                    this._gridLines.push(new Graphics.Line2d(topLeft.X, topLeft.Y + i * this._tileSize.Height, bottomRight.X, topLeft.Y + i * this._tileSize.Height, 1));
 
-                    for (var j = 0; j < columns; j++) {
-                        if (i === 0) {
-                            this._gridLines.push(new Graphics.Line2d(topLeft.X + j * this._tileSize.Width, topLeft.Y, topLeft.X + j * this._tileSize.Width, bottomRight.Y, 1));
-                        }
-
+                    for (var j = 0; j < this._columns; j++) {
                         this._grid[i].push(null);
                     }
                 }
-
-                this._gridLines.push(new Graphics.Line2d(topLeft.X, bottomRight.Y, bottomRight.X, bottomRight.Y, 1));
-                this._gridLines.push(new Graphics.Line2d(bottomRight.X, topLeft.Y, bottomRight.X, bottomRight.Y, 1));
-
-                this.GridLineColor = gridLineColor;
             }
+            Object.defineProperty(Grid.prototype, "DrawGridLines", {
+                get: function () {
+                    return this._drawGridLines;
+                },
+                set: function (shouldDraw) {
+                    if (shouldDraw && this._gridLines.length === 0) {
+                        this.BuildGridLines();
+                    }
+
+                    this._drawGridLines = shouldDraw;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
             Object.defineProperty(Grid.prototype, "GridLineColor", {
                 get: function () {
                     return this._gridLineColor;
@@ -4584,7 +4585,7 @@ var EndGate;
             });
 
             Grid.prototype.Fill = function (row, column, graphic) {
-                if (!this.ValidRow(row) || !this.ValidColumn(column)) {
+                if (!graphic || !this.ValidRow(row) || !this.ValidColumn(column)) {
                     return;
                 }
 
@@ -4777,6 +4778,23 @@ var EndGate;
                 return Math.floor((x - (this.Position.X - this._size.HalfWidth)) / this._tileSize.Width);
             };
 
+            Grid.prototype.BuildGridLines = function () {
+                var halfSize = this._size.Multiply(.5), topLeft = new EndGate.Vector2d(-halfSize.Width, -halfSize.Height), bottomRight = new EndGate.Vector2d(halfSize.Width, halfSize.Height);
+
+                for (var i = 0; i < this._rows; i++) {
+                    this._gridLines.push(new Graphics.Line2d(topLeft.X, topLeft.Y + i * this._tileSize.Height, bottomRight.X, topLeft.Y + i * this._tileSize.Height, 1, this._gridLineColor));
+
+                    if (i === 0) {
+                        for (var j = 0; j < this._columns; j++) {
+                            this._gridLines.push(new Graphics.Line2d(topLeft.X + j * this._tileSize.Width, topLeft.Y, topLeft.X + j * this._tileSize.Width, bottomRight.Y, 1, this._gridLineColor));
+                        }
+                    }
+                }
+
+                this._gridLines.push(new Graphics.Line2d(topLeft.X, bottomRight.Y, bottomRight.X, bottomRight.Y, 1));
+                this._gridLines.push(new Graphics.Line2d(bottomRight.X, topLeft.Y, bottomRight.X, bottomRight.Y, 1));
+            };
+
             Grid.prototype.GetInsideGridPosition = function (row, column) {
                 return new EndGate.Vector2d(column * this._tileSize.Width - this._size.HalfWidth + this._tileSize.HalfWidth, row * this._tileSize.Height - this._size.HalfHeight + this._tileSize.HalfHeight);
             };
@@ -4923,6 +4941,18 @@ var EndGate;
     EndGate.Matrix2x2 = Matrix2x2;
 })(EndGate || (EndGate = {}));
 
+function asyncLoop(action, count, onComplete) {
+    ((function loop(index) {
+        if (index < count) {
+            action(function () {
+                loop(index + 1);
+            }, index);
+        } else if (onComplete) {
+            onComplete();
+        }
+    })(0));
+}
+
 var EndGate;
 (function (EndGate) {
     (function (Map) {
@@ -4963,17 +4993,46 @@ var EndGate;
             function SquareTileMap(x, y, tileWidth, tileHeight, resources, mappings, staticMap, drawGridLines) {
                 if (typeof staticMap === "undefined") { staticMap = true; }
                 if (typeof drawGridLines === "undefined") { drawGridLines = false; }
+                var _this = this;
                 _super.call(this, x, y, resources);
 
                 this._grid = new EndGate.Graphics.Grid(0, 0, mappings.length, mappings[0].length, tileWidth, tileHeight, drawGridLines);
                 this._staticMap = staticMap;
-
-                this.FillGridWith(mappings);
+                this._onTileLoad = new EndGate.EventHandler2();
+                this._onLoaded = new EndGate.EventHandler();
+                this._loaded = false;
+                this._tilesBuilt = 0;
+                this._totalTiles = this._grid.Rows * this._grid.Columns;
+                this.TileLoadDelay = EndGate.TimeSpan.Zero;
+                this.RowLoadDelay = EndGate.TimeSpan.Zero;
 
                 if (this._staticMap) {
                     this.BuildCache();
                 }
+
+                setTimeout(function () {
+                    _this.FillGridWith(mappings, function () {
+                        _this._loaded = true;
+                        _this._onLoaded.Trigger();
+                    });
+                }, 0);
             }
+            Object.defineProperty(SquareTileMap.prototype, "OnTileLoad", {
+                get: function () {
+                    return this._onTileLoad;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(SquareTileMap.prototype, "OnLoaded", {
+                get: function () {
+                    return this._onLoaded;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
             SquareTileMap.ExtractTiles = function (imageSource, tileWidth, tileHeight) {
                 var resources = [], framesPerRow = Math.floor(imageSource.ClipSize.Width / tileWidth), rows = Math.floor(imageSource.ClipSize.Height / tileHeight);
 
@@ -4984,6 +5043,10 @@ var EndGate;
                 }
 
                 return resources;
+            };
+
+            SquareTileMap.prototype.IsLoaded = function () {
+                return this._loaded;
             };
 
             SquareTileMap.prototype.Draw = function (context) {
@@ -5012,27 +5075,79 @@ var EndGate;
                 this._mapCache = document.createElement("canvas");
                 this._mapCache.width = size.Width;
                 this._mapCache.height = size.Height;
-
-                this._grid.Position = new EndGate.Vector2d(size.HalfWidth, size.HalfHeight);
-                this._grid.Draw(this._mapCache.getContext("2d"));
-                this._grid.Position = originalPosition;
+                this._mapCacheContext = this._mapCache.getContext("2d");
+                this._mapCacheContext.translate(size.HalfWidth, size.HalfHeight);
             };
 
-            SquareTileMap.prototype.FillGridWith = function (mappings) {
-                var tiles = [];
+            SquareTileMap.prototype.CacheTile = function (tile) {
+                tile.Draw(this._mapCacheContext);
+            };
 
-                for (var i = 0; i < mappings.length; i++) {
-                    tiles[i] = [];
-                    for (var j = 0; j < mappings[i].length; j++) {
-                        if (mappings[i][j] >= 0) {
-                            tiles[i].push(new Map.SquareTile(this._Resources[mappings[i][j]], this._grid.TileSize.Width, this._grid.TileSize.Height));
-                        } else {
-                            tiles[i].push(null);
-                        }
+            SquareTileMap.prototype.FillGridWith = function (mappings, onComplete) {
+                var _this = this;
+                asyncLoop(function (next, rowsComplete) {
+                    _this.AsyncBuildGridRow(rowsComplete, mappings, function () {
+                        next();
+                    });
+                }, mappings.length, function () {
+                    onComplete();
+                });
+            };
+
+            SquareTileMap.prototype.AsyncBuildGridTile = function (row, column, resourceIndex, onComplete) {
+                var _this = this;
+                var action = function () {
+                    var tile, tileGraphic = _this._Resources[resourceIndex];
+
+                    tile = new Map.SquareTile(tileGraphic, _this._grid.TileSize.Width, _this._grid.TileSize.Height);
+
+                    _this._grid.Fill(row, column, tile);
+
+                    _this.OnTileLoad.Trigger({
+                        Tile: tile,
+                        Row: row,
+                        Column: column,
+                        ResourceIndex: resourceIndex,
+                        Parent: _this
+                    }, _this._tilesBuilt / _this._totalTiles);
+
+                    if (_this._staticMap) {
+                        _this.CacheTile(tile);
                     }
-                }
 
-                this._grid.FillSpace(0, 0, tiles);
+                    onComplete(tile);
+                };
+
+                if (this.TileLoadDelay.Milliseconds > 0) {
+                    setTimeout(action, this.TileLoadDelay.Milliseconds);
+                } else {
+                    action();
+                }
+            };
+
+            SquareTileMap.prototype.AsyncBuildGridRow = function (rowIndex, mappings, onComplete) {
+                var _this = this;
+                var action = function () {
+                    asyncLoop(function (next, tilesLoaded) {
+                        _this._tilesBuilt++;
+
+                        if (mappings[rowIndex][tilesLoaded] >= 0) {
+                            _this.AsyncBuildGridTile(rowIndex, tilesLoaded, mappings[rowIndex][tilesLoaded], function (tile) {
+                                next();
+                            });
+                        } else {
+                            next();
+                        }
+                    }, mappings[rowIndex].length, function () {
+                        onComplete();
+                    });
+                };
+
+                if (this.RowLoadDelay.Milliseconds > 0) {
+                    setTimeout(action, this.RowLoadDelay.Milliseconds);
+                } else {
+                    action();
+                }
             };
             return SquareTileMap;
         })(Map.TileMap);
@@ -5070,33 +5185,58 @@ var EndGate;
                     var OrthogonalLoader = (function () {
                         function OrthogonalLoader() {
                         }
-                        OrthogonalLoader.prototype.Load = function (data, onComplete) {
+                        OrthogonalLoader.prototype.Load = function (data, propertyHooks, onComplete) {
                             var _this = this;
-                            this.LoadTilesetSources(data.tilesets, function (tilesetSources) {
-                                var resources = _this.ExtractTilesetTiles(data.tilesets, tilesetSources), mappings, layer, layers = new Array();
+                            var percent = 0, tileCount = 0, onPartialLoad = new EndGate.EventHandler1();
 
-                                for (var i = 0; i < data.layers.length; i++) {
+                            this.LoadTilesetSources(data.tilesets, function (tileset) {
+                                percent += (1 / data.tilesets.length) * OrthogonalLoader._imagePercentMax;
+
+                                onPartialLoad.Trigger(percent);
+                            }, function (tilesetSources) {
+                                var resources = _this.ExtractTilesetTiles(data.tilesets, tilesetSources, propertyHooks), mappings, layers = new Array(), layerPercentValue = (1 - OrthogonalLoader._imagePercentMax) / data.layers.length;
+
+                                percent = OrthogonalLoader._imagePercentMax;
+
+                                asyncLoop(function (next, i) {
                                     if (data.layers[i].type !== "tilelayer") {
                                         throw new Error("Invalid layer type.  The layer type '" + data.layers[i].type + "' is not supported.");
                                     }
 
-                                    mappings = _this.NormalizeLayerData(data.layers[i].data, data.width);
+                                    _this.AsyncBuildLayer(data, i, propertyHooks, resources, function (details, percentLoaded) {
+                                        onPartialLoad.Trigger(percent + percentLoaded * layerPercentValue);
+                                    }, function (layer) {
+                                        percent += layerPercentValue;
 
-                                    layer = new Map.SquareTileMap(data.layers[i].x, data.layers[i].y, data.tilewidth, data.tileheight, resources, mappings);
-                                    layer.ZIndex = i;
-                                    layer.Visible = data.layers[i].visible;
-                                    layer.Opacity = data.layers[i].opacity;
-                                    layers.push(layer);
-                                }
+                                        onPartialLoad.Trigger(percent);
 
-                                onComplete({
-                                    Layers: layers
+                                        layers.push(layer);
+
+                                        next();
+                                    });
+                                }, data.layers.length, function () {
+                                    onComplete({
+                                        Layers: layers
+                                    });
                                 });
                             });
+
+                            for (var i = 0; i < data.layers.length; i++) {
+                                tileCount += data.layers[i].data.length;
+                            }
+
+                            return {
+                                TileCount: tileCount,
+                                LayerCount: data.layers.length,
+                                ResourceSheetCount: data.tilesets.length,
+                                OnPercentLoaded: onPartialLoad
+                            };
                         };
 
-                        OrthogonalLoader.prototype.LoadTilesetSources = function (tilesets, onComplete) {
+                        OrthogonalLoader.prototype.LoadTilesetSources = function (tilesets, onTilesetLoad, onComplete) {
                             var tilesetSources = {}, loadedCount = 0, onLoaded = function (source) {
+                                onTilesetLoad(source);
+
                                 if (++loadedCount === tilesets.length) {
                                     onComplete(tilesetSources);
                                 }
@@ -5108,18 +5248,91 @@ var EndGate;
                             }
                         };
 
-                        OrthogonalLoader.prototype.ExtractTilesetTiles = function (tilesets, tilesetSources) {
-                            var tilesetTiles = new Array();
+                        OrthogonalLoader.prototype.ExtractTilesetTiles = function (tilesets, tilesetSources, propertyHooks) {
+                            var tilesetTiles = new Array(), resourceHooks = new Array(), sources, index;
 
                             tilesets.sort(function (a, b) {
                                 return a.firstgid - b.firstgid;
                             });
 
                             for (var i = 0; i < tilesets.length; i++) {
-                                tilesetTiles = tilesetTiles.concat(Map.SquareTileMap.ExtractTiles(tilesetSources[tilesets[i].name], tilesets[i].tilewidth, tilesets[i].tileheight));
+                                sources = Map.SquareTileMap.ExtractTiles(tilesetSources[tilesets[i].name], tilesets[i].tilewidth, tilesets[i].tileheight);
+
+                                for (var property in tilesets[i].properties) {
+                                    if (typeof propertyHooks.ResourceSheetHooks[property] !== "undefined") {
+                                        for (var j = tilesets[i].firstgid - 1; j < tilesets[i].firstgid - 1 + sources.length; j++) {
+                                            if (typeof resourceHooks[j] === "undefined") {
+                                                resourceHooks[j] = new Array();
+                                            }
+
+                                            resourceHooks[j].push(this.BuildHookerFunction(tilesets[i].properties[property], propertyHooks.ResourceSheetHooks[property]));
+                                        }
+                                    }
+                                }
+
+                                for (var tileIndex in tilesets[i].tileproperties) {
+                                    for (var property in tilesets[i].tileproperties[tileIndex])
+                                        if (typeof propertyHooks.ResourceTileHooks[property] !== "undefined") {
+                                            index = parseInt(tileIndex) + tilesets[i].firstgid - 1;
+
+                                            if (typeof resourceHooks[index] === "undefined") {
+                                                resourceHooks[index] = new Array();
+                                            }
+
+                                            resourceHooks[index].push(this.BuildHookerFunction(tilesets[i].tileproperties[tileIndex][property], propertyHooks.ResourceTileHooks[property]));
+                                        }
+                                }
+
+                                tilesetTiles = tilesetTiles.concat(sources);
                             }
 
-                            return tilesetTiles;
+                            return {
+                                Resources: tilesetTiles,
+                                ResourceHooks: resourceHooks
+                            };
+                        };
+
+                        OrthogonalLoader.prototype.AsyncBuildLayer = function (tmxData, layerIndex, propertyHooks, resources, onTileLoad, onComplete) {
+                            var _this = this;
+                            setTimeout(function () {
+                                var tmxLayer = tmxData.layers[layerIndex], mappings = _this.NormalizeLayerData(tmxLayer.data, tmxData.width), layer = new Map.SquareTileMap(tmxLayer.x, tmxLayer.y, tmxData.tilewidth, tmxData.tileheight, resources.Resources, mappings), layerHooks = new Array();
+
+                                for (var property in tmxLayer.properties) {
+                                    if (typeof propertyHooks.LayerHooks[property] !== "undefined") {
+                                        layerHooks.push(_this.BuildHookerFunction(tmxLayer.properties[property], propertyHooks.LayerHooks[property]));
+                                    }
+                                }
+
+                                layer.ZIndex = layerIndex;
+                                layer.Visible = tmxLayer.visible;
+                                layer.Opacity = tmxLayer.opacity;
+
+                                layer.RowLoadDelay = EndGate.TimeSpan.FromMilliseconds(5);
+
+                                layer.OnTileLoad.Bind(function (details, percentComplete) {
+                                    if (resources.ResourceHooks[details.ResourceIndex]) {
+                                        for (var i = 0; i < resources.ResourceHooks[details.ResourceIndex].length; i++) {
+                                            resources.ResourceHooks[details.ResourceIndex][i](details);
+                                        }
+                                    }
+
+                                    for (var i = 0; i < layerHooks.length; i++) {
+                                        layerHooks[i](details);
+                                    }
+
+                                    onTileLoad(details, percentComplete);
+                                });
+
+                                layer.OnLoaded.Bind(function () {
+                                    onComplete(layer);
+                                });
+                            }, 0);
+                        };
+
+                        OrthogonalLoader.prototype.BuildHookerFunction = function (propertyValue, fn) {
+                            return function (details) {
+                                return fn(details, propertyValue);
+                            };
                         };
 
                         OrthogonalLoader.prototype.NormalizeLayerData = function (data, columns) {
@@ -5137,6 +5350,7 @@ var EndGate;
 
                             return normalized;
                         };
+                        OrthogonalLoader._imagePercentMax = .2;
                         return OrthogonalLoader;
                     })();
                     TMX.OrthogonalLoader = OrthogonalLoader;
@@ -5162,12 +5376,12 @@ var EndGate;
                                 orthogonal: new TMX.OrthogonalLoader()
                             };
                         }
-                        TMXLoader.prototype.Load = function (data, onComplete) {
+                        TMXLoader.prototype.Load = function (data, propertyHooks, onComplete) {
                             if (!this._orientationLoaders[data.orientation]) {
                                 throw new Error("Invalid orientation.  The orientation '" + data.orientation + "' is not supported.");
                             }
 
-                            this._orientationLoaders[data.orientation].Load(data, onComplete);
+                            return this._orientationLoaders[data.orientation].Load(data, propertyHooks, onComplete);
                         };
                         return TMXLoader;
                     })();
@@ -5189,9 +5403,17 @@ var EndGate;
             var JSONLoader = (function () {
                 function JSONLoader() {
                 }
-                JSONLoader.Load = function (json, onComplete, format) {
+                JSONLoader.Load = function (json, onComplete, propertyHooks, format) {
                     if (typeof format === "undefined") { format = Loaders.JSONFormat.TMX; }
-                    JSONLoader._loaders[Loaders.JSONFormat[format]].Load(json, onComplete);
+                    if (!propertyHooks) {
+                        propertyHooks = {
+                            ResourceTileHooks: {},
+                            ResourceSheetHooks: {},
+                            LayerHooks: {}
+                        };
+                    }
+
+                    return JSONLoader._loaders[Loaders.JSONFormat[format]].Load(json, propertyHooks, onComplete);
                 };
                 JSONLoader._loaders = {
                     TMX: new Loaders._.TMX.TMXLoader()
