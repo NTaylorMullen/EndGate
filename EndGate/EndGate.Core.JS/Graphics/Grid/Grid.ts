@@ -8,12 +8,12 @@ module EndGate.Graphics {
     /**
     * Defines a drawable grid that can be used to store other graphics in a grid like structure.
     */
-    export class Grid extends Abstractions.Graphic2d {
+    export class Grid extends Graphic2d {
         public _type: string = "Grid";
 
         private _size: Size2d;
         private _tileSize: Size2d;
-        private _grid: Abstractions.Graphic2d[][];
+        private _grid: Graphic2d[][];
         private _gridLines: Line2d[];
         private _positionOffset: Vector2d;
         private _rows: number;
@@ -138,7 +138,7 @@ module EndGate.Graphics {
         * @param column The column.
         * @param graphic The graphic to fill the tile with.
         */
-        public Fill(row: number, column: number, graphic: Abstractions.Graphic2d): void {
+        public Fill(row: number, column: number, graphic: Graphic2d): void {
             if (!graphic || !this.ValidRow(row) || !this.ValidColumn(column)) {
                 return;
             }
@@ -154,16 +154,16 @@ module EndGate.Graphics {
         * @param row The row to fill.
         * @param graphicList The list of graphics to fill the row with.  The row will be filled with as many elements that are contained within the graphicList.
         */
-        public FillRow(row: number, graphicList: Abstractions.Graphic2d[]): void;
+        public FillRow(row: number, graphicList: Graphic2d[]): void;
         /**
         * Fills a row with the provided graphics starting at the provided column
         * @param row The row to fill.
         * @param graphicList The list of graphics to fill the row with.  The row will be filled with as many elements that are contained within the graphicList.
         * @param columnOffset The column to start filling at.
         */
-        public FillRow(row: number, graphicList: Abstractions.Graphic2d[], columnOffset: number): void;
-        public FillRow(row: number, graphicList: Abstractions.Graphic2d[], columnOffset: number = 0): void {
-            var graphic: Abstractions.Graphic2d;
+        public FillRow(row: number, graphicList: Graphic2d[], columnOffset: number): void;
+        public FillRow(row: number, graphicList: Graphic2d[], columnOffset: number = 0): void {
+            var graphic: Graphic2d;
 
             for (var i = 0; i < graphicList.length; i++) {
                 graphic = graphicList[i];
@@ -179,16 +179,16 @@ module EndGate.Graphics {
         * @param column The column to fill.
         * @param graphicList The list of graphics to fill the column with.  The column will be filled with as many elements that are contained within the graphicList.
         */
-        public FillColumn(column: number, graphicList: Abstractions.Graphic2d[]): void;
+        public FillColumn(column: number, graphicList: Graphic2d[]): void;
         /**
         * Fills a column with the provided graphics starting at the provided row.
         * @param column The column to fill.
         * @param graphicList The list of graphics to fill the column with.  The column will be filled with as many elements that are contained within the graphicList.
         * @param rowOffset The row to start filling at.
         */
-        public FillColumn(column: number, graphicList: Abstractions.Graphic2d[], rowOffset: number): void;
-        public FillColumn(column: number, graphicList: Abstractions.Graphic2d[], rowOffset: number = 0): void {
-            var graphic: Abstractions.Graphic2d;
+        public FillColumn(column: number, graphicList: Graphic2d[], rowOffset: number): void;
+        public FillColumn(column: number, graphicList: Graphic2d[], rowOffset: number = 0): void {
+            var graphic: Graphic2d;
 
             for (var i = 0; i < graphicList.length; i++) {
                 graphic = graphicList[i];
@@ -205,8 +205,8 @@ module EndGate.Graphics {
         * @param column The column to start filling at.
         * @param graphicList The list of graphics to fill the space with.  The space will be filled with as many elements that are contained within the multi-dimensional graphicList.
         */
-        public FillSpace(row: number, column: number, graphicList: Abstractions.Graphic2d[][]): void {
-            var graphic: Abstractions.Graphic2d;
+        public FillSpace(row: number, column: number, graphicList: Graphic2d[][]): void {
+            var graphic: Graphic2d;
 
             for (var i = 0; i < graphicList.length; i++) {
                 for (var j = 0; j < graphicList[i].length; j++) {
@@ -226,7 +226,7 @@ module EndGate.Graphics {
         * @param row The row.
         * @param column The column.
         */
-        public Get(row: number, column: number): Abstractions.Graphic2d {
+        public Get(row: number, column: number): Graphic2d {
             if (!this.ValidRow(row) || !this.ValidColumn(column)) {
                 return null;
             }
@@ -238,15 +238,15 @@ module EndGate.Graphics {
         * Retrieves graphics within the provided row.
         * @param row The row to retrieve.
         */
-        public GetRow(row: number): Abstractions.Graphic2d[];
+        public GetRow(row: number): Graphic2d[];
         /**
         * Retrieves graphics within the row starting at the provided column offset.
         * @param row The row to retrieve.
         * @param columnOffset The column to start retrieving the row at.
         */
-        public GetRow(row: number, columnOffset: number): Abstractions.Graphic2d[];
-        public GetRow(row: number, columnOffset: number = 0): Abstractions.Graphic2d[] {
-            var rowList: Abstractions.Graphic2d[] = [];
+        public GetRow(row: number, columnOffset: number): Graphic2d[];
+        public GetRow(row: number, columnOffset: number = 0): Graphic2d[] {
+            var rowList: Graphic2d[] = [];
 
             for (var i = columnOffset; i < this._columns; i++) {
                 rowList.push(this._grid[row][i]);
@@ -259,15 +259,15 @@ module EndGate.Graphics {
         * Retrieves graphics within the provided column.
         * @param column The column to retrieve.
         */
-        public GetColumn(column: number): Abstractions.Graphic2d[];
+        public GetColumn(column: number): Graphic2d[];
         /**
         * Retrieves graphics within the column starting at the provided row offset.
         * @param column The column to retrieve.
         * @param rowOffset The row to start retrieving the column at.
         */
-        public GetColumn(column: number, rowOffset: number): Abstractions.Graphic2d[];
-        public GetColumn(column: number, rowOffset: number = 0): Abstractions.Graphic2d[] {
-            var columnList: Abstractions.Graphic2d[] = [];
+        public GetColumn(column: number, rowOffset: number): Graphic2d[];
+        public GetColumn(column: number, rowOffset: number = 0): Graphic2d[] {
+            var columnList: Graphic2d[] = [];
 
             for (var i = rowOffset; i < this._rows; i++) {
                 columnList.push(this._grid[i][column]);
@@ -283,8 +283,8 @@ module EndGate.Graphics {
         * @param rowEnd The row to stop pulling graphics from.
         * @param columnEnd The column to stop pulling graphics from.
         */
-        public GetSpace(rowStart: number, columnStart: number, rowEnd: number, columnEnd: number): Abstractions.Graphic2d[] {
-            var space: Abstractions.Graphic2d[] = [],
+        public GetSpace(rowStart: number, columnStart: number, rowEnd: number, columnEnd: number): Graphic2d[] {
+            var space: Graphic2d[] = [],
                 rowIncrementor = (rowEnd >= rowStart) ? 1 : -1,
                 columnIncrementor = (columnEnd >= columnStart) ? 1 : -1;
 
@@ -310,7 +310,7 @@ module EndGate.Graphics {
         * @param row The row.
         * @param column The column.
         */
-        public Clear(row: number, column: number): Abstractions.Graphic2d {
+        public Clear(row: number, column: number): Graphic2d {
             if (!this.ValidRow(row) || !this.ValidColumn(column)) {
                 return null;
             }
@@ -327,15 +327,15 @@ module EndGate.Graphics {
         * Clears graphics within the provided row.
         * @param row The row to clear.
         */
-        public ClearRow(row: number): Abstractions.Graphic2d[];
+        public ClearRow(row: number): Graphic2d[];
         /**
         * Clears graphics within the row starting at the provided column offset.
         * @param row The row to clear.
         * @param columnOffset The column to start clearing the row at.
         */
-        public ClearRow(row: number, columnOffset: number): Abstractions.Graphic2d[];
-        public ClearRow(row: number, columnOffset: number = 0): Abstractions.Graphic2d[] {
-            var vals: Abstractions.Graphic2d[] = [];
+        public ClearRow(row: number, columnOffset: number): Graphic2d[];
+        public ClearRow(row: number, columnOffset: number = 0): Graphic2d[] {
+            var vals: Graphic2d[] = [];
 
             for (var i = 0; i < this._columns; i++) {
                 vals.push(this._grid[row][i]);
@@ -350,15 +350,15 @@ module EndGate.Graphics {
         * Clears graphics within the provided column.
         * @param column The column to clear.
         */
-        public ClearColumn(column: number): Abstractions.Graphic2d[];
+        public ClearColumn(column: number): Graphic2d[];
         /**
         * Clears graphics within the column starting at the provided column offset.
         * @param column The column to clear.
         * @param rowOffset The row to start clearing the column at.
         */
-        public ClearColumn(column: number, rowOffset: number): Abstractions.Graphic2d[];
-        public ClearColumn(column: number, rowOffset: number = 0): Abstractions.Graphic2d[] {
-            var vals: Abstractions.Graphic2d[] = [];
+        public ClearColumn(column: number, rowOffset: number): Graphic2d[];
+        public ClearColumn(column: number, rowOffset: number = 0): Graphic2d[] {
+            var vals: Graphic2d[] = [];
 
             for (var i = 0; i < this._rows; i++) {
                 vals.push(this._grid[i][column]);
@@ -376,8 +376,8 @@ module EndGate.Graphics {
         * @param rowEnd The row to stop clearing graphics from.
         * @param columnEnd The column to stop clearing graphics from.
         */
-        public ClearSpace(rowStart: number, columnStart: number, rowEnd: number, columnEnd: number): Abstractions.Graphic2d[] {
-            var space: Abstractions.Graphic2d[] = [],
+        public ClearSpace(rowStart: number, columnStart: number, rowEnd: number, columnEnd: number): Graphic2d[] {
+            var space: Graphic2d[] = [],
                 rowIncrementor = (rowEnd >= rowStart) ? 1 : -1,
                 columnIncrementor = (columnEnd >= columnStart) ? 1 : -1;
 

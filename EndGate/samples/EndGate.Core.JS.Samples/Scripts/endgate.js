@@ -1970,103 +1970,100 @@ var EndGate;
 var EndGate;
 (function (EndGate) {
     (function (Graphics) {
-        (function (Abstractions) {
-            var Graphic2d = (function () {
-                function Graphic2d(position) {
-                    this._type = "Graphic2d";
-                    this.Position = position;
-                    this.Rotation = 0;
-                    this.ZIndex = 0;
-                    this.Visible = true;
-                    this._State = new Graphics.Assets._.Graphic2dState();
-                    this._children = [];
-                    this._disposed = false;
-                    this._onDisposed = new EndGate.EventHandler1();
+        var Graphic2d = (function () {
+            function Graphic2d(position) {
+                this._type = "Graphic2d";
+                this.Position = position;
+                this.Rotation = 0;
+                this.ZIndex = 0;
+                this.Visible = true;
+                this._State = new Graphics.Assets._.Graphic2dState();
+                this._children = [];
+                this._disposed = false;
+                this._onDisposed = new EndGate.EventHandler1();
+            }
+            Object.defineProperty(Graphic2d.prototype, "OnDisposed", {
+                get: function () {
+                    return this._onDisposed;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(Graphic2d.prototype, "Opacity", {
+                get: function () {
+                    return this._State.GlobalAlpha;
+                },
+                set: function (alpha) {
+                    this._State.GlobalAlpha = alpha;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Graphic2d.prototype.AddChild = function (graphic) {
+                this._children.push(graphic);
+                this._children.sort(Graphic2d._zindexSort);
+            };
+
+            Graphic2d.prototype.RemoveChild = function (graphic) {
+                var index = this._children.indexOf(graphic);
+
+                if (index >= 0) {
+                    this._children.splice(index, 1);
+                    return true;
                 }
-                Object.defineProperty(Graphic2d.prototype, "OnDisposed", {
-                    get: function () {
-                        return this._onDisposed;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
 
-                Object.defineProperty(Graphic2d.prototype, "Opacity", {
-                    get: function () {
-                        return this._State.GlobalAlpha;
-                    },
-                    set: function (alpha) {
-                        this._State.GlobalAlpha = alpha;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
+                return false;
+            };
 
-                Graphic2d.prototype.AddChild = function (graphic) {
-                    this._children.push(graphic);
-                    this._children.sort(Graphic2d._zindexSort);
-                };
+            Graphic2d.prototype.Children = function () {
+                return this._children;
+            };
 
-                Graphic2d.prototype.RemoveChild = function (graphic) {
-                    var index = this._children.indexOf(graphic);
+            Graphic2d.prototype._StartDraw = function (context) {
+                context.save();
+                this._State.SetContextState(context);
 
-                    if (index >= 0) {
-                        this._children.splice(index, 1);
-                        return true;
+                context.translate(this.Position.X, this.Position.Y);
+
+                if (this.Rotation !== 0) {
+                    context.rotate(this.Rotation);
+                }
+            };
+
+            Graphic2d.prototype._EndDraw = function (context) {
+                for (var i = 0; i < this._children.length; i++) {
+                    if (this._children[i].Visible) {
+                        this._children[i].Draw(context);
                     }
+                }
 
-                    return false;
-                };
+                context.restore();
+            };
 
-                Graphic2d.prototype.Children = function () {
-                    return this._children;
-                };
+            Graphic2d.prototype.Draw = function (context) {
+                throw new Error("The Draw method is abstract on Graphic2d and should not be called.");
+            };
 
-                Graphic2d.prototype._StartDraw = function (context) {
-                    context.save();
-                    this._State.SetContextState(context);
+            Graphic2d.prototype.GetDrawBounds = function () {
+                throw new Error("GetDrawBounds is abstract, it must be implemented.");
+            };
 
-                    context.translate(this.Position.X, this.Position.Y);
-
-                    if (this.Rotation !== 0) {
-                        context.rotate(this.Rotation);
-                    }
-                };
-
-                Graphic2d.prototype._EndDraw = function (context) {
-                    for (var i = 0; i < this._children.length; i++) {
-                        if (this._children[i].Visible) {
-                            this._children[i].Draw(context);
-                        }
-                    }
-
-                    context.restore();
-                };
-
-                Graphic2d.prototype.Draw = function (context) {
-                    throw new Error("The Draw method is abstract on Graphic2d and should not be called.");
-                };
-
-                Graphic2d.prototype.GetDrawBounds = function () {
-                    throw new Error("GetDrawBounds is abstract, it must be implemented.");
-                };
-
-                Graphic2d.prototype.Dispose = function () {
-                    if (!this._disposed) {
-                        this._disposed = true;
-                        this.OnDisposed.Trigger(this);
-                    } else {
-                        throw new Error("Cannot dispose graphic more than once.");
-                    }
-                };
-                Graphic2d._zindexSort = function (a, b) {
-                    return a.ZIndex - b.ZIndex;
-                };
-                return Graphic2d;
-            })();
-            Abstractions.Graphic2d = Graphic2d;
-        })(Graphics.Abstractions || (Graphics.Abstractions = {}));
-        var Abstractions = Graphics.Abstractions;
+            Graphic2d.prototype.Dispose = function () {
+                if (!this._disposed) {
+                    this._disposed = true;
+                    this.OnDisposed.Trigger(this);
+                } else {
+                    throw new Error("Cannot dispose graphic more than once.");
+                }
+            };
+            Graphic2d._zindexSort = function (a, b) {
+                return a.ZIndex - b.ZIndex;
+            };
+            return Graphic2d;
+        })();
+        Graphics.Graphic2d = Graphic2d;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
     var Graphics = EndGate.Graphics;
 })(EndGate || (EndGate = {}));
@@ -3230,7 +3227,7 @@ var EndGate;
             };
 
             SceneryHandler.prototype.Draw = function () {
-                this._layers.sort(EndGate.Graphics.Abstractions.Graphic2d._zindexSort);
+                this._layers.sort(EndGate.Graphics.Graphic2d._zindexSort);
 
                 this._renderer.Render(this._layers);
             };
@@ -3936,7 +3933,7 @@ var EndGate;
                 return this._drawBounds;
             };
             return Text2d;
-        })(Graphics.Abstractions.Graphic2d);
+        })(Graphics.Graphic2d);
         Graphics.Text2d = Text2d;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
     var Graphics = EndGate.Graphics;
@@ -4039,7 +4036,7 @@ var EndGate;
                 return bounds;
             };
             return Sprite2d;
-        })(Graphics.Abstractions.Graphic2d);
+        })(Graphics.Graphic2d);
         Graphics.Sprite2d = Sprite2d;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
     var Graphics = EndGate.Graphics;
@@ -4304,7 +4301,7 @@ var EndGate;
                     this._EndDraw(context);
                 };
                 return Shape;
-            })(Abstractions.Graphic2d);
+            })(Graphics.Graphic2d);
             Abstractions.Shape = Shape;
         })(Graphics.Abstractions || (Graphics.Abstractions = {}));
         var Abstractions = Graphics.Abstractions;
@@ -4485,7 +4482,7 @@ var EndGate;
                 this._cachedPosition = this.Position.Clone();
             };
             return Line2d;
-        })(Graphics.Abstractions.Graphic2d);
+        })(Graphics.Graphic2d);
         Graphics.Line2d = Line2d;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
     var Graphics = EndGate.Graphics;
@@ -4804,7 +4801,7 @@ var EndGate;
                 return column >= 0 && column < this._columns;
             };
             return Grid;
-        })(Graphics.Abstractions.Graphic2d);
+        })(Graphics.Graphic2d);
         Graphics.Grid = Grid;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
     var Graphics = EndGate.Graphics;
@@ -4961,7 +4958,7 @@ var EndGate;
                 this._Resources = resources;
             }
             return TileMap;
-        })(EndGate.Graphics.Abstractions.Graphic2d);
+        })(EndGate.Graphics.Graphic2d);
         Map.TileMap = TileMap;
     })(EndGate.Map || (EndGate.Map = {}));
     var Map = EndGate.Map;
@@ -5124,7 +5121,7 @@ var EndGate;
 
             SquareTileMap.prototype.AsyncBuildGridRow = function (rowIndex, mappings, onComplete) {
                 var _this = this;
-                var action = function () {
+                setTimeout(function () {
                     asyncLoop(function (next, tilesLoaded) {
                         _this._tilesBuilt++;
 
@@ -5138,13 +5135,7 @@ var EndGate;
                     }, mappings[rowIndex].length, function () {
                         onComplete();
                     });
-                };
-
-                if (this.RowLoadDelay.Milliseconds > 0) {
-                    setTimeout(action, this.RowLoadDelay.Milliseconds);
-                } else {
-                    action();
-                }
+                }, this.RowLoadDelay.Milliseconds);
             };
             return SquareTileMap;
         })(Map.TileMap);

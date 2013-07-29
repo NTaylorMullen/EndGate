@@ -149,7 +149,7 @@ var EndGate;
                 this._cachedPosition = this.Position.Clone();
             };
             return Line2d;
-        })(Graphics.Abstractions.Graphic2d);
+        })(Graphics.Graphic2d);
         Graphics.Line2d = Line2d;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
     var Graphics = EndGate.Graphics;

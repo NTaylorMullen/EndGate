@@ -7,7 +7,7 @@ module EndGate.Map {
     /**
     * Defines an abstract class TileMap that takes an array of resources to be mapped to tiles.
     */
-    export class TileMap extends Graphics.Abstractions.Graphic2d {
+    export class TileMap extends Graphics.Graphic2d {
         public _Resources: Graphics.ImageSource[];
 
         /**

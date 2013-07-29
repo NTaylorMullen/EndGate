@@ -48,7 +48,7 @@ var EndGate;
                 return bounds;
             };
             return Sprite2d;
-        })(Graphics.Abstractions.Graphic2d);
+        })(Graphics.Graphic2d);
         Graphics.Sprite2d = Sprite2d;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
     var Graphics = EndGate.Graphics;

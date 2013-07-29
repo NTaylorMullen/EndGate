@@ -8,7 +8,7 @@ module EndGate.Graphics {
     /**
     * Defines a drawable sprite.  Sprites are used to draw images to the game screen.
     */
-    export class Sprite2d extends Abstractions.Graphic2d {
+    export class Sprite2d extends Graphic2d {
         public _type: string = "Sprite2d";
 
         /**

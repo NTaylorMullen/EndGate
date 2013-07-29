@@ -8,7 +8,7 @@
 /// <reference path="../Utilities/EventHandler1.ts" />
 /// <reference path="Graphic2dState.ts" />
 
-module EndGate.Graphics.Abstractions {
+module EndGate.Graphics {
 
     /**
     * Abstract drawable graphic type that is used create the base for graphics.

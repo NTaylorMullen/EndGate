@@ -8,7 +8,7 @@ module EndGate.Graphics {
     /**
     * Defines a drawable 2d line element.
     */
-    export class Line2d extends Abstractions.Graphic2d {
+    export class Line2d extends Graphic2d {
         public _type: string = "Line2d";
 
         private _from: Vector2d;

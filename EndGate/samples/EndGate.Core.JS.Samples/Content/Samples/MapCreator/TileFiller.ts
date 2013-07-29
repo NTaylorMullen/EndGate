@@ -17,7 +17,7 @@ module MapCreator {
                 return;
             }
 
-            var previousEntry: eg.Graphics.Abstractions.Graphic2d,
+            var previousEntry: eg.Graphics.Graphic2d,
                 sourceIndex = 0;
 
             for (var i = 0; i < entries.length; i++) {
