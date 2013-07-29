@@ -42,7 +42,7 @@ module Shapes {
         private BuildShape(builder: HTMLElement): void {
             var shapeTypeName = $(builder).attr("shape"),
                 shapeType = eg.Graphics[shapeTypeName],
-                newShape: eg.Graphics.Abstractions.Shape;
+                newShape: eg.Graphics.Shape;
 
             // If there is no current shape
             if (!this.Shape) {

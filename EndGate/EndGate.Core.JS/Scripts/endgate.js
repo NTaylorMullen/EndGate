@@ -4164,144 +4164,141 @@ var EndGate;
 var EndGate;
 (function (EndGate) {
     (function (Graphics) {
-        (function (Abstractions) {
-            var Shape = (function (_super) {
-                __extends(Shape, _super);
-                function Shape(position, color) {
-                    _super.call(this, position);
-                    this._type = "Shape";
+        var Shape = (function (_super) {
+            __extends(Shape, _super);
+            function Shape(position, color) {
+                _super.call(this, position);
+                this._type = "Shape";
 
-                    this._fill = false;
-                    this._stroke = false;
+                this._fill = false;
+                this._stroke = false;
 
-                    if (typeof color !== "undefined") {
-                        this.Color = color;
-                    }
+                if (typeof color !== "undefined") {
+                    this.Color = color;
                 }
-                Object.defineProperty(Shape.prototype, "Color", {
-                    get: function () {
-                        return this._State.FillStyle;
-                    },
-                    set: function (color) {
-                        this._fill = true;
-                        this._State.FillStyle = color;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
+            }
+            Object.defineProperty(Shape.prototype, "Color", {
+                get: function () {
+                    return this._State.FillStyle;
+                },
+                set: function (color) {
+                    this._fill = true;
+                    this._State.FillStyle = color;
+                },
+                enumerable: true,
+                configurable: true
+            });
 
-                Object.defineProperty(Shape.prototype, "BorderThickness", {
-                    get: function () {
-                        return this._State.LineWidth;
-                    },
-                    set: function (thickness) {
-                        this._State.LineWidth = thickness;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
+            Object.defineProperty(Shape.prototype, "BorderThickness", {
+                get: function () {
+                    return this._State.LineWidth;
+                },
+                set: function (thickness) {
+                    this._State.LineWidth = thickness;
+                },
+                enumerable: true,
+                configurable: true
+            });
 
-                Object.defineProperty(Shape.prototype, "BorderColor", {
-                    get: function () {
-                        return this._State.StrokeStyle;
-                    },
-                    set: function (color) {
-                        this._stroke = true;
-                        this._State.StrokeStyle = color;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
+            Object.defineProperty(Shape.prototype, "BorderColor", {
+                get: function () {
+                    return this._State.StrokeStyle;
+                },
+                set: function (color) {
+                    this._stroke = true;
+                    this._State.StrokeStyle = color;
+                },
+                enumerable: true,
+                configurable: true
+            });
 
-                Object.defineProperty(Shape.prototype, "ShadowColor", {
-                    get: function () {
-                        return this._State.ShadowColor;
-                    },
-                    set: function (color) {
-                        this._fill = true;
-                        this._State.ShadowColor = color;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
+            Object.defineProperty(Shape.prototype, "ShadowColor", {
+                get: function () {
+                    return this._State.ShadowColor;
+                },
+                set: function (color) {
+                    this._fill = true;
+                    this._State.ShadowColor = color;
+                },
+                enumerable: true,
+                configurable: true
+            });
 
-                Object.defineProperty(Shape.prototype, "ShadowX", {
-                    get: function () {
-                        return this._State.ShadowOffsetX;
-                    },
-                    set: function (x) {
-                        this._State.ShadowOffsetX = x;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
+            Object.defineProperty(Shape.prototype, "ShadowX", {
+                get: function () {
+                    return this._State.ShadowOffsetX;
+                },
+                set: function (x) {
+                    this._State.ShadowOffsetX = x;
+                },
+                enumerable: true,
+                configurable: true
+            });
 
-                Object.defineProperty(Shape.prototype, "ShadowY", {
-                    get: function () {
-                        return this._State.ShadowOffsetY;
-                    },
-                    set: function (y) {
-                        this._State.ShadowOffsetY = y;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
+            Object.defineProperty(Shape.prototype, "ShadowY", {
+                get: function () {
+                    return this._State.ShadowOffsetY;
+                },
+                set: function (y) {
+                    this._State.ShadowOffsetY = y;
+                },
+                enumerable: true,
+                configurable: true
+            });
 
-                Object.defineProperty(Shape.prototype, "ShadowBlur", {
-                    get: function () {
-                        return this._State.ShadowBlur;
-                    },
-                    set: function (blur) {
-                        this._State.ShadowBlur = blur;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
+            Object.defineProperty(Shape.prototype, "ShadowBlur", {
+                get: function () {
+                    return this._State.ShadowBlur;
+                },
+                set: function (blur) {
+                    this._State.ShadowBlur = blur;
+                },
+                enumerable: true,
+                configurable: true
+            });
 
-                Shape.prototype.Border = function (thickness, color) {
-                    this.BorderThickness = thickness;
-                    this.BorderColor = color;
-                };
+            Shape.prototype.Border = function (thickness, color) {
+                this.BorderThickness = thickness;
+                this.BorderColor = color;
+            };
 
-                Shape.prototype.Shadow = function (x, y, color, blur) {
-                    this.ShadowX = x;
-                    this.ShadowY = y;
-                    this.ShadowColor = color;
-                    this.ShadowBlur = blur;
-                };
+            Shape.prototype.Shadow = function (x, y, color, blur) {
+                this.ShadowX = x;
+                this.ShadowY = y;
+                this.ShadowColor = color;
+                this.ShadowBlur = blur;
+            };
 
-                Shape.prototype._StartDraw = function (context) {
-                    _super.prototype._StartDraw.call(this, context);
-                    context.beginPath();
-                };
+            Shape.prototype._StartDraw = function (context) {
+                _super.prototype._StartDraw.call(this, context);
+                context.beginPath();
+            };
 
-                Shape.prototype._EndDraw = function (context) {
-                    if (this._fill) {
-                        context.fill();
-                    }
+            Shape.prototype._EndDraw = function (context) {
+                if (this._fill) {
+                    context.fill();
+                }
 
-                    if (this._stroke) {
-                        context.stroke();
-                    } else {
-                        context.closePath();
-                    }
+                if (this._stroke) {
+                    context.stroke();
+                } else {
+                    context.closePath();
+                }
 
-                    _super.prototype._EndDraw.call(this, context);
-                };
+                _super.prototype._EndDraw.call(this, context);
+            };
 
-                Shape.prototype._BuildPath = function (context) {
-                };
+            Shape.prototype._BuildPath = function (context) {
+            };
 
-                Shape.prototype.Draw = function (context) {
-                    this._StartDraw(context);
-                    this._BuildPath(context);
-                    this._EndDraw(context);
-                };
-                return Shape;
-            })(Graphics.Graphic2d);
-            Abstractions.Shape = Shape;
-        })(Graphics.Abstractions || (Graphics.Abstractions = {}));
-        var Abstractions = Graphics.Abstractions;
+            Shape.prototype.Draw = function (context) {
+                this._StartDraw(context);
+                this._BuildPath(context);
+                this._EndDraw(context);
+            };
+            return Shape;
+        })(Graphics.Graphic2d);
+        Graphics.Shape = Shape;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
     var Graphics = EndGate.Graphics;
 })(EndGate || (EndGate = {}));
@@ -4329,7 +4326,7 @@ var EndGate;
                 context.arc(0, 0, this.Radius, 0, (Math).twoPI);
             };
             return Circle;
-        })(Graphics.Abstractions.Shape);
+        })(Graphics.Shape);
         Graphics.Circle = Circle;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
     var Graphics = EndGate.Graphics;
@@ -4358,7 +4355,7 @@ var EndGate;
                 context.rect(-this.Size.HalfWidth, -this.Size.HalfHeight, this.Size.Width, this.Size.Height);
             };
             return Rectangle;
-        })(Graphics.Abstractions.Shape);
+        })(Graphics.Shape);
         Graphics.Rectangle = Rectangle;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
     var Graphics = EndGate.Graphics;

@@ -8,7 +8,7 @@ module EndGate.Graphics {
     /**
     * Defines a drawable rectangle.
     */
-    export class Rectangle extends Abstractions.Shape {
+    export class Rectangle extends Shape {
         public _type: string = "Rectangle";
 
         /**

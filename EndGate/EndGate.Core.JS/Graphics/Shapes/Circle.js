@@ -37,7 +37,7 @@ var EndGate;
                 context.arc(0, 0, this.Radius, 0, (Math).twoPI);
             };
             return Circle;
-        })(Graphics.Abstractions.Shape);
+        })(Graphics.Shape);
         Graphics.Circle = Circle;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
     var Graphics = EndGate.Graphics;

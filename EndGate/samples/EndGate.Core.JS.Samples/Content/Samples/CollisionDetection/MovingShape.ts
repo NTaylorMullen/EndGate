@@ -19,7 +19,7 @@ module CollisionDetection {
         private _collisionColorAlpha: number = 0;
         private _collisionColor: number[] = [255, 0, 0];
 
-        constructor(public Graphic: eg.Graphics.Abstractions.Shape, private _velocity: eg.Vector2d, private _directionInterval: number) {
+        constructor(public Graphic: eg.Graphics.Shape, private _velocity: eg.Vector2d, private _directionInterval: number) {
             super(Graphic.GetDrawBounds());
 
             this.Graphic.Border(this._collisionBorderThickness, "rgba(" + this._collisionColor + ",0,0," + this._collisionColorAlpha + ")");

@@ -6109,7 +6109,7 @@ module EndGate.Graphics {
 
 
 
-module EndGate.Graphics.Abstractions {
+module EndGate.Graphics {
 
     /**
     * Abstract drawable shape type that is used create customizable drawable graphics.
@@ -6298,7 +6298,7 @@ module EndGate.Graphics {
     /**
     * Defines a drawable circle.
     */
-    export class Circle extends Abstractions.Shape {
+    export class Circle extends Shape {
         public _type: string = "Circle";
          
         /**
@@ -6354,7 +6354,7 @@ module EndGate.Graphics {
     /**
     * Defines a drawable rectangle.
     */
-    export class Rectangle extends Abstractions.Shape {
+    export class Rectangle extends Shape {
         public _type: string = "Rectangle";
 
         /**

@@ -40,7 +40,7 @@ module Shapes {
             this._lastChanged = new Date().getTime();
         }
 
-        public ApplyAnimation(shape: eg.Graphics.Abstractions.Shape, gameTime: eg.GameTime): void {
+        public ApplyAnimation(shape: eg.Graphics.Shape, gameTime: eg.GameTime): void {
             if (gameTime.Now.getTime() - this._lastChanged > ShapeAnimator.ChangeDirectionEvery) {
                 this.Direction *= -1;
                 this._lastChanged = gameTime.Now.getTime();
@@ -54,7 +54,7 @@ module Shapes {
             }
         }
 
-        private Position(shape: eg.Graphics.Abstractions.Shape, gameTime: eg.GameTime): void {
+        private Position(shape: eg.Graphics.Shape, gameTime: eg.GameTime): void {
             var incrementor = ShapeAnimator.AnimationSpeed * gameTime.Elapsed.Seconds,
                 direction = shape.Position.Subtract(this._defaultPosition).Abs().Sign();
 
@@ -76,14 +76,14 @@ module Shapes {
             }
         }
 
-        private Rotation(shape: eg.Graphics.Abstractions.Shape, gameTime: eg.GameTime): void {
+        private Rotation(shape: eg.Graphics.Shape, gameTime: eg.GameTime): void {
             var incrementor = ShapeAnimator.RotationSpeed * gameTime.Elapsed.Seconds,
                 direction = 1;
 
             shape.Rotation += direction * this.Direction * incrementor;
         }
 
-        private Opacity(shape: eg.Graphics.Abstractions.Shape, gameTime: eg.GameTime): void {
+        private Opacity(shape: eg.Graphics.Shape, gameTime: eg.GameTime): void {
             var incrementor = .33 * gameTime.Elapsed.Seconds;
 
             shape.Opacity = shape.Opacity + incrementor * this.Direction;

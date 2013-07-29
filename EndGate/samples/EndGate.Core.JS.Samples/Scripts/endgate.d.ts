@@ -2663,7 +2663,7 @@ declare module EndGate.Graphics {
         private GetFrameColumn();
     }
 }
-declare module EndGate.Graphics.Abstractions {
+declare module EndGate.Graphics {
     /**
     * Abstract drawable shape type that is used create customizable drawable graphics.
     */
@@ -2751,7 +2751,7 @@ declare module EndGate.Graphics {
     /**
     * Defines a drawable circle.
     */
-    class Circle extends Graphics.Abstractions.Shape {
+    class Circle extends Graphics.Shape {
         public _type: string;
         /**
         * Gets or sets the Radius of the Circle.
@@ -2783,7 +2783,7 @@ declare module EndGate.Graphics {
     /**
     * Defines a drawable rectangle.
     */
-    class Rectangle extends Graphics.Abstractions.Shape {
+    class Rectangle extends Graphics.Shape {
         public _type: string;
         /**
         * Gets or sets the Size of the Rectangle.

@@ -8,7 +8,7 @@ module EndGate.Graphics {
     /**
     * Defines a drawable circle.
     */
-    export class Circle extends Abstractions.Shape {
+    export class Circle extends Shape {
         public _type: string = "Circle";
          
         /**

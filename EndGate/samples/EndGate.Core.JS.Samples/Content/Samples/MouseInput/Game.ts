@@ -21,7 +21,7 @@ module MouseInput {
         private _doubleClickColor: string = "#000000";
         private _onMoveColor: string = "#000000";
 
-        private _shapes: eg.Graphics.Abstractions.Shape[] = [];
+        private _shapes: eg.Graphics.Shape[] = [];
 
         constructor(canvas: HTMLCanvasElement, lastMouseEvent: JQuery) {
             super(canvas);
