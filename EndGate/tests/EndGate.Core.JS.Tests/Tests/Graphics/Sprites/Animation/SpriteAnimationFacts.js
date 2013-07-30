@@ -3,7 +3,7 @@
     QUnit.module("Sprite Animation Facts");
 
     QUnit.test("Creating a SpriteAnimation with an unloaded image source does not throw.", function () {
-        var imageSource = new eg.Graphics.ImageSource("foo"),
+        var imageSource = new eg.Graphics.ImageSource("https://www.google.com/images/srpr/logo4w.png"),
             animation = new eg.Graphics.SpriteAnimation(imageSource, 20, new eg.Size2d(50, 50), 8);
 
         QUnit.throws(function () {
@@ -11,254 +11,290 @@
         });
     });
 
-    QUnit.test("Stepping moves forward the current frame.", function () {
-        var imageSource = new eg.Graphics.ImageSource("foo", 200, 100),
+    QUnit.asyncTimeoutTest("Stepping moves forward the current frame.", 10000, function (end, assert, testName) {
+        var imageSource = new eg.Graphics.ImageSource("https://www.google.com/images/srpr/logo4w.png", 200, 100),
             animation = new eg.Graphics.SpriteAnimation(imageSource, 20, new eg.Size2d(50, 50), 8);
 
-        QUnit.equal(animation._currentFrame, 0);
+        imageSource.OnLoaded.Bind(function () {
+            QUnit.equal(animation._currentFrame, 0);
 
-        animation.Step();
+            animation.Step();
 
-        QUnit.equal(animation._currentFrame, 1);
+            QUnit.equal(animation._currentFrame, 1);
 
-        animation.Step(3);
+            animation.Step(3);
 
-        QUnit.equal(animation._currentFrame, 4);
+            QUnit.equal(animation._currentFrame, 4);
+            end();
+        });
+
+        return function () { };
     });
 
-    QUnit.test("After play image source is updated to match animation frame.", function () {
-        var imageSource = new eg.Graphics.ImageSource("foo", 200, 100),
-            animation = new eg.Graphics.SpriteAnimation(imageSource, 20, new eg.Size2d(50, 50), 8),
-            gameTime = {
+    QUnit.asyncTimeoutTest("After play image source is updated to match animation frame.", 10000, function (end, assert, testName) {
+        var imageSource = new eg.Graphics.ImageSource("https://www.google.com/images/srpr/logo4w.png", 200, 100),
+            animation = new eg.Graphics.SpriteAnimation(imageSource, 20, new eg.Size2d(50, 50), 8);
+
+        imageSource.OnLoaded.Bind(function () {
+            var gameTime = {
                 Now: new Date()
             };
 
-        QUnit.ok(imageSource.ClipSize.Equivalent(new eg.Size2d(200, 100)));
+            QUnit.ok(imageSource.ClipSize.Equivalent(new eg.Size2d(200, 100)));
 
-        animation.Play();
+            animation.Play();
 
-        QUnit.ok(imageSource.ClipSize.Equivalent(new eg.Size2d(50, 50)));
+            QUnit.ok(imageSource.ClipSize.Equivalent(new eg.Size2d(50, 50)));
 
-        animation.Update(gameTime);
+            animation.Update(gameTime);
 
-        QUnit.ok(imageSource.ClipSize.Equivalent(new eg.Size2d(50, 50)));
-        QUnit.ok(imageSource.ClipLocation.Equivalent(eg.Vector2d.Zero));
+            QUnit.ok(imageSource.ClipSize.Equivalent(new eg.Size2d(50, 50)));
+            QUnit.ok(imageSource.ClipLocation.Equivalent(eg.Vector2d.Zero));
 
-        gameTime.Now = new Date(new Date().getTime() + (1000 / 20));
+            gameTime.Now = new Date(new Date().getTime() + (1000 / 20));
 
-        animation.Update(gameTime);
+            animation.Update(gameTime);
 
-        QUnit.equal(animation._currentFrame, 1);
-        QUnit.ok(imageSource.ClipSize.Equivalent(new eg.Size2d(50, 50)));
-        QUnit.ok(imageSource.ClipLocation.Equivalent(new eg.Vector2d(50, 0)));
+            QUnit.equal(animation._currentFrame, 1);
+            QUnit.ok(imageSource.ClipSize.Equivalent(new eg.Size2d(50, 50)));
+            QUnit.ok(imageSource.ClipLocation.Equivalent(new eg.Vector2d(50, 0)));
 
-        gameTime.Now = new Date(new Date().getTime() + 6 * (1000 / 20));
+            gameTime.Now = new Date(new Date().getTime() + 6 * (1000 / 20));
 
-        animation.Update(gameTime);
+            animation.Update(gameTime);
 
-        QUnit.equal(animation._currentFrame, 6);
-        QUnit.ok(imageSource.ClipSize.Equivalent(new eg.Size2d(50, 50)));
-        QUnit.ok(imageSource.ClipLocation.Equivalent(new eg.Vector2d(100, 50)));
+            QUnit.equal(animation._currentFrame, 6);
+            QUnit.ok(imageSource.ClipSize.Equivalent(new eg.Size2d(50, 50)));
+            QUnit.ok(imageSource.ClipLocation.Equivalent(new eg.Vector2d(100, 50)));
+            end();
+        });
     });
-    
-    QUnit.test("Animations obey start offsets.", function () {
-        var imageSource = new eg.Graphics.ImageSource("foo", 200, 100),
-            animation = new eg.Graphics.SpriteAnimation(imageSource, 20, new eg.Size2d(50, 50), 6, new eg.Vector2d(50,0)),
-            gameTime = {
+
+    QUnit.asyncTimeoutTest("Animations obey start offsets.", 10000, function (end, assert, testName) {
+        var imageSource = new eg.Graphics.ImageSource("https://www.google.com/images/srpr/logo4w.png", 200, 100),
+            animation = new eg.Graphics.SpriteAnimation(imageSource, 20, new eg.Size2d(50, 50), 6, new eg.Vector2d(50, 0));
+
+        imageSource.OnLoaded.Bind(function () {
+            var gameTime = {
                 Now: new Date()
             };
 
-        animation.Play();
-        animation.Update(gameTime);
+            animation.Play();
+            animation.Update(gameTime);
 
-        QUnit.ok(imageSource.ClipSize.Equivalent(new eg.Size2d(50, 50)));
-        QUnit.ok(imageSource.ClipLocation.Equivalent(new eg.Vector2d(50, 0)));
+            QUnit.ok(imageSource.ClipSize.Equivalent(new eg.Size2d(50, 50)));
+            QUnit.ok(imageSource.ClipLocation.Equivalent(new eg.Vector2d(50, 0)));
 
-        gameTime.Now = new Date(new Date().getTime() + (1000 / 20));
+            gameTime.Now = new Date(new Date().getTime() + (1000 / 20));
 
-        animation.Update(gameTime);
+            animation.Update(gameTime);
 
-        QUnit.equal(animation._currentFrame, 1);
-        QUnit.ok(imageSource.ClipSize.Equivalent(new eg.Size2d(50, 50)));
-        QUnit.ok(imageSource.ClipLocation.Equivalent(new eg.Vector2d(100, 0)));
+            QUnit.equal(animation._currentFrame, 1);
+            QUnit.ok(imageSource.ClipSize.Equivalent(new eg.Size2d(50, 50)));
+            QUnit.ok(imageSource.ClipLocation.Equivalent(new eg.Vector2d(100, 0)));
 
-        gameTime.Now = new Date(new Date().getTime() + 5 * (1000 / 20));
+            gameTime.Now = new Date(new Date().getTime() + 5 * (1000 / 20));
 
-        animation.Update(gameTime);
+            animation.Update(gameTime);
 
-        QUnit.equal(animation._currentFrame, 5);
-        QUnit.ok(imageSource.ClipSize.Equivalent(new eg.Size2d(50, 50)));
-        QUnit.ok(imageSource.ClipLocation.Equivalent(new eg.Vector2d(150, 50)));
+            QUnit.equal(animation._currentFrame, 5);
+            QUnit.ok(imageSource.ClipSize.Equivalent(new eg.Size2d(50, 50)));
+            QUnit.ok(imageSource.ClipLocation.Equivalent(new eg.Vector2d(150, 50)));
+            end();
+        });
     });
-    
-    QUnit.test("ImageSource is updated according to the fps.", function () {
-        var imageSource = new eg.Graphics.ImageSource("foo", 200, 100),
+
+    QUnit.asyncTimeoutTest("ImageSource is updated according to the fps.", 10000, function (end, assert, testName) {
+        var imageSource = new eg.Graphics.ImageSource("https://www.google.com/images/srpr/logo4w.png", 200, 100),
+            animation = new eg.Graphics.SpriteAnimation(imageSource, 20, new eg.Size2d(50, 50), 6);
+
+        imageSource.OnLoaded.Bind(function () {
+            var gameTime = {
+                Now: new Date()
+            };
+
+            animation.Play();
+            animation.Update(gameTime);
+
+            QUnit.equal(animation._currentFrame, 0);
+
+            gameTime.Now = new Date(new Date().getTime() + (1000 / 20) - 5);
+
+            animation.Update(gameTime);
+
+            QUnit.equal(animation._currentFrame, 0);
+
+            gameTime.Now = new Date(new Date().getTime() + (1000 / 20));
+
+            animation.Update(gameTime);
+
+            QUnit.equal(animation._currentFrame, 1);
+
+            animation.Fps = 40;
+            gameTime.Now = new Date(gameTime.Now.getTime() + (1000 / 40));
+
+            animation.Update(gameTime);
+
+            QUnit.equal(animation._currentFrame, 2);
+            end();
+        });
+    });
+
+    QUnit.asyncTimeoutTest("After play pausing does not allow automatic increase in frame.", 10000, function (end, assert, testName) {
+        var imageSource = new eg.Graphics.ImageSource("https://www.google.com/images/srpr/logo4w.png", 200, 100),
+            animation = new eg.Graphics.SpriteAnimation(imageSource, 20, new eg.Size2d(50, 50), 6);
+
+        imageSource.OnLoaded.Bind(function () {
+            var gameTime = {
+                Now: new Date()
+            };
+
+            animation.Play();
+            animation.Update(gameTime);
+
+            QUnit.equal(animation._currentFrame, 0);
+
+            gameTime.Now = new Date(new Date().getTime() + (1000 / 20));
+
+            animation.Update(gameTime);
+
+            QUnit.equal(animation._currentFrame, 1);
+
+            animation.Pause();
+            gameTime.Now = new Date(gameTime.Now.getTime() + (1000 / 10));
+
+            animation.Update(gameTime);
+
+            QUnit.equal(animation._currentFrame, 1);
+
+            animation.Play();
+
+            gameTime.Now = new Date(new Date().getTime() + (1000 / 20));
+
+            animation.Update(gameTime);
+
+            QUnit.equal(animation._currentFrame, 2);
+            end();
+        });
+    });
+
+    QUnit.asyncTimeoutTest("If repeating and playing the current frame rolls over the horn.", 10000, function (end, assert, testName) {
+        var imageSource = new eg.Graphics.ImageSource("https://www.google.com/images/srpr/logo4w.png", 200, 100),
+            animation = new eg.Graphics.SpriteAnimation(imageSource, 20, new eg.Size2d(50, 50), 6);
+
+        imageSource.OnLoaded.Bind(function () {
+            var gameTime = {
+                Now: new Date()
+            };
+            animation.Play(true);
+            animation.Update(gameTime);
+
+            QUnit.equal(animation._currentFrame, 0);
+
+            gameTime.Now = new Date(new Date().getTime() + 5 * (1000 / 20));
+
+            animation.Update(gameTime);
+
+            QUnit.equal(animation._currentFrame, 5);
+
+            gameTime.Now = new Date(gameTime.Now.getTime() + 2 * (1000 / 20));
+
+            animation.Update(gameTime);
+
+            QUnit.equal(animation._currentFrame, 1);
+            end();
+        });
+    });
+
+    QUnit.asyncTimeoutTest("After animation completes the animation no longer plays.", 10000, function (end, assert, testName) {
+        var imageSource = new eg.Graphics.ImageSource("https://www.google.com/images/srpr/logo4w.png", 200, 100),
+            animation = new eg.Graphics.SpriteAnimation(imageSource, 20, new eg.Size2d(50, 50), 6);
+
+        imageSource.OnLoaded.Bind(function () {
+            var gameTime = {
+                Now: new Date()
+            };
+
+            animation.Play();
+            animation.Update(gameTime);
+
+            QUnit.equal(animation._currentFrame, 0);
+
+            gameTime.Now = new Date(new Date().getTime() + 5 * (1000 / 20));
+
+            animation.Update(gameTime);
+
+            QUnit.equal(animation._currentFrame, 5);
+            QUnit.ok(animation.IsPlaying());
+
+            gameTime.Now = new Date(gameTime.Now.getTime() + 2 * (1000 / 20));
+
+            animation.Update(gameTime);
+
+            QUnit.equal(animation._currentFrame, 5);
+            QUnit.ok(!animation.IsPlaying());
+            end();
+        });
+    });
+
+    QUnit.asyncTimeoutTest("OnComplete triggers when not repeating and animation finishes.", 10000, function (end, assert, testName) {
+        var imageSource = new eg.Graphics.ImageSource("https://www.google.com/images/srpr/logo4w.png", 200, 100),
             animation = new eg.Graphics.SpriteAnimation(imageSource, 20, new eg.Size2d(50, 50), 6),
-            gameTime = {
-                Now: new Date()
-            };
-
-        animation.Play();
-        animation.Update(gameTime);
-
-        QUnit.equal(animation._currentFrame, 0);
-
-        gameTime.Now = new Date(new Date().getTime() + (1000 / 20) - 5);
-
-        animation.Update(gameTime);
-
-        QUnit.equal(animation._currentFrame, 0);        
-
-        gameTime.Now = new Date(new Date().getTime() + (1000 / 20));
-
-        animation.Update(gameTime);
-
-        QUnit.equal(animation._currentFrame, 1);
-
-        animation.Fps = 40;
-        gameTime.Now = new Date(gameTime.Now.getTime() + (1000/40));
-
-        animation.Update(gameTime);
-
-        QUnit.equal(animation._currentFrame, 2);
-    });
-    
-    QUnit.test("After play pausing does not allow automatic increase in frame.", function () {
-        var imageSource = new eg.Graphics.ImageSource("foo", 200, 100),
-            animation = new eg.Graphics.SpriteAnimation(imageSource, 20, new eg.Size2d(50, 50), 6),
-            gameTime = {
-                Now: new Date()
-            };
-
-        animation.Play();
-        animation.Update(gameTime);
-
-        QUnit.equal(animation._currentFrame, 0);
-
-        gameTime.Now = new Date(new Date().getTime() + (1000 / 20));
-
-        animation.Update(gameTime);
-
-        QUnit.equal(animation._currentFrame, 1);
-
-        animation.Pause();
-        gameTime.Now = new Date(gameTime.Now.getTime() + (1000 / 10));
-
-        animation.Update(gameTime);
-
-        QUnit.equal(animation._currentFrame, 1);
-
-        animation.Play();
-
-        gameTime.Now = new Date(new Date().getTime() + (1000 / 20));
-
-        animation.Update(gameTime);
-
-        QUnit.equal(animation._currentFrame, 2);
-    });
-    
-    QUnit.test("If repeating and playing the current frame rolls over the horn.", function () {
-        var imageSource = new eg.Graphics.ImageSource("foo", 200, 100),
-            animation = new eg.Graphics.SpriteAnimation(imageSource, 20, new eg.Size2d(50, 50), 6),
-            gameTime = {
-                Now: new Date()
-            };
-
-        animation.Play(true);
-        animation.Update(gameTime);
-
-        QUnit.equal(animation._currentFrame, 0);
-
-        gameTime.Now = new Date(new Date().getTime() + 5 * (1000 / 20));
-
-        animation.Update(gameTime);
-
-        QUnit.equal(animation._currentFrame, 5);
-
-        gameTime.Now = new Date(gameTime.Now.getTime() + 2 * (1000 / 20));
-
-        animation.Update(gameTime);
-
-        QUnit.equal(animation._currentFrame, 1);
-    });
-    
-    QUnit.test("After animation completes the animation no longer plays.", function () {
-        var imageSource = new eg.Graphics.ImageSource("foo", 200, 100),
-            animation = new eg.Graphics.SpriteAnimation(imageSource, 20, new eg.Size2d(50, 50), 6),
-            gameTime = {
-                Now: new Date()
-            };
-
-        animation.Play();
-        animation.Update(gameTime);
-
-        QUnit.equal(animation._currentFrame, 0);
-
-        gameTime.Now = new Date(new Date().getTime() + 5 * (1000 / 20));
-
-        animation.Update(gameTime);
-
-        QUnit.equal(animation._currentFrame, 5);
-        QUnit.ok(animation.IsPlaying());
-
-        gameTime.Now = new Date(gameTime.Now.getTime() + 2 * (1000 / 20));
-
-        animation.Update(gameTime);
-
-        QUnit.equal(animation._currentFrame, 5);
-        QUnit.ok(!animation.IsPlaying());
-    });
-    
-    QUnit.test("OnComplete triggers when not repeating and animation finishes.", function () {
-        var imageSource = new eg.Graphics.ImageSource("foo", 200, 100),
-            animation = new eg.Graphics.SpriteAnimation(imageSource, 20, new eg.Size2d(50, 50), 6),
-            gameTime = {
-                Now: new Date()
-            },
             triggered = false;
 
-        animation.OnComplete.Bind(function () {
-            triggered = true;
-        });
-        animation.Play();
-
-        gameTime.Now = new Date(new Date().getTime() + 6 * (1000 / 20));
-
-        animation.Update(gameTime);
-
-        QUnit.equal(animation._currentFrame, 5);
-        QUnit.ok(!animation.IsPlaying());
-        QUnit.ok(triggered);
-    });       
-    
-    QUnit.test("Stop prevents automatic updating of frame.", function () {
-        var imageSource = new eg.Graphics.ImageSource("foo", 200, 100),
-            animation = new eg.Graphics.SpriteAnimation(imageSource, 20, new eg.Size2d(50, 50), 6),
-            gameTime = {
+        imageSource.OnLoaded.Bind(function () {
+            var gameTime = {
                 Now: new Date()
             };
 
-        animation.Play();
-        animation.Update(gameTime);
+            animation.OnComplete.Bind(function () {
+                triggered = true;
+            });
+            animation.Play();
 
-        QUnit.equal(animation._currentFrame, 0);
+            gameTime.Now = new Date(new Date().getTime() + 6 * (1000 / 20));
 
-        gameTime.Now = new Date(new Date().getTime() + 5 * (1000 / 20));
+            animation.Update(gameTime);
 
-        animation.Update(gameTime);
+            QUnit.equal(animation._currentFrame, 5);
+            QUnit.ok(!animation.IsPlaying());
+            QUnit.ok(triggered);
+            end();
+        });
+    });
 
-        QUnit.equal(animation._currentFrame, 5);
-        QUnit.ok(animation.IsPlaying());
-        animation.Stop();
-        QUnit.ok(!animation.IsPlaying());
-        QUnit.equal(animation._currentFrame, 0);
+    QUnit.asyncTimeoutTest("Stop prevents automatic updating of frame.", 10000, function (end, assert, testName) {
+        var imageSource = new eg.Graphics.ImageSource("https://www.google.com/images/srpr/logo4w.png", 200, 100),
+            animation = new eg.Graphics.SpriteAnimation(imageSource, 20, new eg.Size2d(50, 50), 6);
 
-        gameTime.Now = new Date(gameTime.Now.getTime() + 2 * (1000 / 20));
+        imageSource.OnLoaded.Bind(function () {
+            var gameTime = {
+                Now: new Date()
+            };
 
-        animation.Update(gameTime);
+            animation.Play();
+            animation.Update(gameTime);
 
-        QUnit.equal(animation._currentFrame, 0);
-        QUnit.ok(!animation.IsPlaying());
+            QUnit.equal(animation._currentFrame, 0);
+
+            gameTime.Now = new Date(new Date().getTime() + 5 * (1000 / 20));
+
+            animation.Update(gameTime);
+
+            QUnit.equal(animation._currentFrame, 5);
+            QUnit.ok(animation.IsPlaying());
+            animation.Stop();
+            QUnit.ok(!animation.IsPlaying());
+            QUnit.equal(animation._currentFrame, 0);
+
+            gameTime.Now = new Date(gameTime.Now.getTime() + 2 * (1000 / 20));
+
+            animation.Update(gameTime);
+
+            QUnit.equal(animation._currentFrame, 0);
+            QUnit.ok(!animation.IsPlaying());
+            end();
+        });
     });
 
 })();
