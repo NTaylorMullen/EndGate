@@ -859,33 +859,46 @@ var EndGate;
         function EventHandler() {
             this._type = "Event";
             this._actions = [];
-            this._hasBindings = false;
         }
         EventHandler.prototype.Bind = function (action) {
             this._actions.push(action);
-            this._hasBindings = true;
+        };
+
+        EventHandler.prototype.BindFor = function (action, triggerCount) {
+            var that = this, triggers = 0;
+
+            this._actions.push(function () {
+                if (++triggers >= triggerCount) {
+                    that.Unbind(action);
+                }
+
+                action.apply(this, arguments);
+            });
         };
 
         EventHandler.prototype.Unbind = function (action) {
-            var foo = this._actions[i];
-
             for (var i = 0; i < this._actions.length; i++) {
                 if (this._actions[i] === action) {
                     this._actions.splice(i, 1);
 
-                    this._hasBindings = this._actions.length > 0;
                     return;
                 }
             }
         };
 
         EventHandler.prototype.HasBindings = function () {
-            return this._hasBindings;
+            return this._actions.length > 0;
         };
 
         EventHandler.prototype.Trigger = function () {
-            for (var i = 0; i < this._actions.length; i++) {
-                this._actions[i]();
+            var actions;
+
+            if (this.HasBindings()) {
+                actions = this._actions.slice(0);
+
+                for (var i = 0; i < actions.length; i++) {
+                    actions[i]();
+                }
             }
         };
         return EventHandler;
@@ -1242,11 +1255,21 @@ var EndGate;
         function EventHandler1() {
             this._type = "Event";
             this._actions = [];
-            this._hasBindings = false;
         }
         EventHandler1.prototype.Bind = function (action) {
             this._actions.push(action);
-            this._hasBindings = true;
+        };
+
+        EventHandler1.prototype.BindFor = function (action, triggerCount) {
+            var that = this, triggers = 0;
+
+            this._actions.push(function () {
+                if (++triggers >= triggerCount) {
+                    that.Unbind(action);
+                }
+
+                action.apply(this, arguments);
+            });
         };
 
         EventHandler1.prototype.Unbind = function (action) {
@@ -1254,19 +1277,24 @@ var EndGate;
                 if (this._actions[i] === action) {
                     this._actions.splice(i, 1);
 
-                    this._hasBindings = this._actions.length > 0;
                     return;
                 }
             }
         };
 
         EventHandler1.prototype.HasBindings = function () {
-            return this._hasBindings;
+            return this._actions.length > 0;
         };
 
         EventHandler1.prototype.Trigger = function (val) {
-            for (var i = 0; i < this._actions.length; i++) {
-                this._actions[i](val);
+            var actions;
+
+            if (this.HasBindings()) {
+                actions = this._actions.slice(0);
+
+                for (var i = 0; i < actions.length; i++) {
+                    actions[i](val);
+                }
             }
         };
         return EventHandler1;
@@ -1646,11 +1674,21 @@ var EndGate;
         function EventHandler2() {
             this._type = "Event";
             this._actions = [];
-            this._hasBindings = false;
         }
         EventHandler2.prototype.Bind = function (action) {
             this._actions.push(action);
-            this._hasBindings = true;
+        };
+
+        EventHandler2.prototype.BindFor = function (action, triggerCount) {
+            var that = this, triggers = 0;
+
+            this._actions.push(function () {
+                if (++triggers >= triggerCount) {
+                    that.Unbind(action);
+                }
+
+                action.apply(this, arguments);
+            });
         };
 
         EventHandler2.prototype.Unbind = function (action) {
@@ -1658,19 +1696,24 @@ var EndGate;
                 if (this._actions[i] === action) {
                     this._actions.splice(i, 1);
 
-                    this._hasBindings = this._actions.length > 0;
                     return;
                 }
             }
         };
 
         EventHandler2.prototype.HasBindings = function () {
-            return this._hasBindings;
+            return this._actions.length > 0;
         };
 
         EventHandler2.prototype.Trigger = function (val1, val2) {
-            for (var i = 0; i < this._actions.length; i++) {
-                this._actions[i](val1, val2);
+            var actions;
+
+            if (this.HasBindings()) {
+                actions = this._actions.slice(0);
+
+                for (var i = 0; i < actions.length; i++) {
+                    actions[i](val1, val2);
+                }
             }
         };
         return EventHandler2;
@@ -6271,11 +6314,21 @@ var EndGate;
         function EventHandler3() {
             this._type = "Event";
             this._actions = [];
-            this._hasBindings = false;
         }
         EventHandler3.prototype.Bind = function (action) {
             this._actions.push(action);
-            this._hasBindings = true;
+        };
+
+        EventHandler3.prototype.BindFor = function (action, triggerCount) {
+            var that = this, triggers = 0;
+
+            this._actions.push(function () {
+                if (++triggers >= triggerCount) {
+                    that.Unbind(action);
+                }
+
+                action.apply(this, arguments);
+            });
         };
 
         EventHandler3.prototype.Unbind = function (action) {
@@ -6283,19 +6336,24 @@ var EndGate;
                 if (this._actions[i] === action) {
                     this._actions.splice(i, 1);
 
-                    this._hasBindings = this._actions.length > 0;
                     return;
                 }
             }
         };
 
         EventHandler3.prototype.HasBindings = function () {
-            return this._hasBindings;
+            return this._actions.length > 0;
         };
 
         EventHandler3.prototype.Trigger = function (val1, val2, val3) {
-            for (var i = 0; i < this._actions.length; i++) {
-                this._actions[i](val1, val2, val3);
+            var actions;
+
+            if (this.HasBindings()) {
+                actions = this._actions.slice(0);
+
+                for (var i = 0; i < actions.length; i++) {
+                    actions[i](val1, val2, val3);
+                }
             }
         };
         return EventHandler3;

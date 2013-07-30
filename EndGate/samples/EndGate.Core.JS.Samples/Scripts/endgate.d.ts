@@ -901,7 +901,6 @@ declare module EndGate {
     class EventHandler implements EndGate._.ITyped {
         public _type: string;
         private _actions;
-        private _hasBindings;
         /**
         * Creates a new instance of the EventHandler object.
         */
@@ -911,6 +910,12 @@ declare module EndGate {
         * @param action Function to execute on EventHandler Trigger.
         */
         public Bind(action: Function): void;
+        /**
+        * Binds the provided action to the EventHandler for the specified number of triggers.  Once all triggers have been fired the EventHandler will unbind itself.  Trigger will execute all bound functions.
+        * @param action Function to execute on EventHandler Trigger.
+        * @param triggerCount Number of triggers to wait before unbinding the action.
+        */
+        public BindFor(action: Function, triggerCount: number): void;
         /**
         * Unbinds the provided action from the EventHandler.
         * @param action Function to unbind.  The action will no longer be executed when the EventHandler gets Triggered.
@@ -981,7 +986,6 @@ declare module EndGate {
     class EventHandler1<T> implements EndGate._.ITyped {
         public _type: string;
         private _actions;
-        private _hasBindings;
         /**
         * Creates a new instance of the EventHandler object.
         */
@@ -991,6 +995,12 @@ declare module EndGate {
         * @param action Function to execute on EventHandler Trigger.
         */
         public Bind(action: (val: T) => any): void;
+        /**
+        * Binds the provided action to the EventHandler1 for the specified number of triggers.  Once all triggers have been fired the action will unbind itself.  Trigger will execute all bound functions.
+        * @param action Function to execute on EventHandler Trigger.
+        * @param triggerCount Number of triggers to wait before unbinding the action.
+        */
+        public BindFor(action: (val: T) => any, triggerCount: number): void;
         /**
         * Unbinds the provided action from the EventHandler1.
         * @param action Function to unbind.  The action will no longer be executed when the EventHandler gets Triggered.
@@ -1118,7 +1128,6 @@ declare module EndGate {
     class EventHandler2<T, U> implements EndGate._.ITyped {
         public _type: string;
         private _actions;
-        private _hasBindings;
         /**
         * Creates a new instance of the EventHandler2 object.
         */
@@ -1128,6 +1137,12 @@ declare module EndGate {
         * @param action Function to execute on EventHandler2 Trigger.
         */
         public Bind(action: (val1: T, val2: U) => any): void;
+        /**
+        * Binds the provided action to the EventHandler2 for the specified number of triggers.  Once all triggers have been fired the action will unbind itself.  Trigger will execute all bound functions.
+        * @param action Function to execute on EventHandler2 Trigger.
+        * @param triggerCount Number of triggers to wait before unbinding the action.
+        */
+        public BindFor(action: (val1: T, val2: U) => any, triggerCount: number): void;
         /**
         * Unbinds the provided action from the EventHandler2.
         * @param action Function to unbind.  The action will no longer be executed when the EventHandler gets Triggered.
@@ -3950,7 +3965,6 @@ declare module EndGate {
     class EventHandler3<T, U, V> implements EndGate._.ITyped {
         public _type: string;
         private _actions;
-        private _hasBindings;
         /**
         * Creates a new instance of the EventHandler3 object.
         */
@@ -3960,6 +3974,12 @@ declare module EndGate {
         * @param action Function to execute on EventHandler3 Trigger.
         */
         public Bind(action: (val1: T, val2: U, val3: V) => any): void;
+        /**
+        * Binds the provided action to the EventHandler3 for the specified number of triggers.  Once all triggers have been fired the action will unbind itself.  Trigger will execute all bound functions.
+        * @param action Function to execute on EventHandler3 Trigger.
+        * @param triggerCount Number of triggers to wait before unbinding the action.
+        */
+        public BindFor(action: (val1: T, val2: U, val3: V) => any, triggerCount: number): void;
         /**
         * Unbinds the provided action from the EventHandler3.
         * @param action Function to unbind.  The action will no longer be executed when the EventHandler gets Triggered.

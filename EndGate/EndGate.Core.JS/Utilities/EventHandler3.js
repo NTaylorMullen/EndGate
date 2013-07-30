@@ -12,7 +12,6 @@ var EndGate;
         function EventHandler3() {
             this._type = "Event";
             this._actions = [];
-            this._hasBindings = false;
         }
         /**
         * Binds the provided action to the EventHandler3.  Trigger will execute all bound functions.
@@ -20,7 +19,23 @@ var EndGate;
         */
         EventHandler3.prototype.Bind = function (action) {
             this._actions.push(action);
-            this._hasBindings = true;
+        };
+
+        /**
+        * Binds the provided action to the EventHandler3 for the specified number of triggers.  Once all triggers have been fired the action will unbind itself.  Trigger will execute all bound functions.
+        * @param action Function to execute on EventHandler3 Trigger.
+        * @param triggerCount Number of triggers to wait before unbinding the action.
+        */
+        EventHandler3.prototype.BindFor = function (action, triggerCount) {
+            var that = this, triggers = 0;
+
+            this._actions.push(function () {
+                if (++triggers >= triggerCount) {
+                    that.Unbind(action);
+                }
+
+                action.apply(this, arguments);
+            });
         };
 
         /**
@@ -32,7 +47,6 @@ var EndGate;
                 if (this._actions[i] === action) {
                     this._actions.splice(i, 1);
 
-                    this._hasBindings = this._actions.length > 0;
                     return;
                 }
             }
@@ -42,7 +56,7 @@ var EndGate;
         * Determines if the EventHandler3 has active bindings.
         */
         EventHandler3.prototype.HasBindings = function () {
-            return this._hasBindings;
+            return this._actions.length > 0;
         };
 
         /**
@@ -52,8 +66,15 @@ var EndGate;
         * @param val3 The third argument to pass to the bound functions.
         */
         EventHandler3.prototype.Trigger = function (val1, val2, val3) {
-            for (var i = 0; i < this._actions.length; i++) {
-                this._actions[i](val1, val2, val3);
+            var actions;
+
+            if (this.HasBindings()) {
+                // Clone array so unbinds happening via triggers do not affect functionality
+                actions = this._actions.slice(0);
+
+                for (var i = 0; i < actions.length; i++) {
+                    actions[i](val1, val2, val3);
+                }
             }
         };
         return EventHandler3;
