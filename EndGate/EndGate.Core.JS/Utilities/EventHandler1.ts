@@ -10,14 +10,12 @@ module EndGate {
         public _type: string = "Event";
 
         private _actions: Array<(val: T) => any>;
-        private _hasBindings: boolean;
 
         /**
         * Creates a new instance of the EventHandler object.
         */
         constructor() {
             this._actions = [];
-            this._hasBindings = false;
         }
 
         /**
@@ -26,7 +24,24 @@ module EndGate {
         */
         public Bind(action: (val: T) => any): void {
             this._actions.push(action);
-            this._hasBindings = true;
+        }
+
+        /**
+        * Binds the provided action to the EventHandler1 for the specified number of triggers.  Once all triggers have been fired the action will unbind itself.  Trigger will execute all bound functions.
+        * @param action Function to execute on EventHandler Trigger.
+        * @param triggerCount Number of triggers to wait before unbinding the action.
+        */
+        public BindFor(action: (val: T) => any, triggerCount: number): void {
+            var that = this,
+                triggers: number = 0;
+
+            this._actions.push(function () {
+                if (++triggers >= triggerCount) {
+                    that.Unbind(action);
+                }
+
+                action.apply(this, arguments);
+            });
         }
 
         /**
@@ -38,7 +53,6 @@ module EndGate {
                 if (this._actions[i] === action) {
                     this._actions.splice(i, 1);
 
-                    this._hasBindings = this._actions.length > 0;
                     return;
                 }
             }
@@ -48,7 +62,7 @@ module EndGate {
         * Determines if the EventHandler1 has active bindings.
         */
         public HasBindings(): boolean {
-            return this._hasBindings;
+            return this._actions.length > 0;
         }
 
         /**
@@ -56,8 +70,15 @@ module EndGate {
         * @param val The argument to pass to the bound functions.
         */
         public Trigger(val: T): void {
-            for (var i = 0; i < this._actions.length; i++) {
-                this._actions[i](val);
+            var actions;
+
+            if (this.HasBindings()) {
+                // Clone array so unbinds happening via triggers do not affect functionality
+                actions = this._actions.slice(0);
+
+                for (var i = 0; i < actions.length; i++) {
+                    actions[i](val);
+                }
             }
         }
     }
