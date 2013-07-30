@@ -2,6 +2,15 @@
 
     QUnit.module("Sprite Animation Facts");
 
+    QUnit.test("Creating a SpriteAnimation with an unloaded image source does not throw.", function () {
+        var imageSource = new eg.Graphics.ImageSource("foo"),
+            animation = new eg.Graphics.SpriteAnimation(imageSource, 20, new eg.Size2d(50, 50), 8);
+
+        QUnit.throws(function () {
+            animation.Play()
+        });
+    });
+
     QUnit.test("Stepping moves forward the current frame.", function () {
         var imageSource = new eg.Graphics.ImageSource("foo", 200, 100),
             animation = new eg.Graphics.SpriteAnimation(imageSource, 20, new eg.Size2d(50, 50), 8);

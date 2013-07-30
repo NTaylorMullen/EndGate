@@ -51,12 +51,22 @@ module EndGate.Graphics {
             this._playing = false;
             this._repeating = false;
             this._currentFrame = 0;
-            this._framesPerRow = Math.min(Math.floor((imageSource.ClipSize.Width - startOffset.X) / frameSize.Width), frameCount);
             this._lastStepAt = 0;
 
             this._onComplete = new EventHandler();
 
             this.Fps = fps;
+
+            if (imageSource.Loaded()) {
+                this._framesPerRow = Math.min(Math.floor((imageSource.ClipSize.Width - startOffset.X) / frameSize.Width), frameCount);
+            }
+            else {
+                imageSource.OnLoaded.BindFor((image: Graphics.ImageSource) => {
+                    this._framesPerRow = Math.min(Math.floor((imageSource.ClipSize.Width - startOffset.X) / frameSize.Width), frameCount);
+                }, 1);
+
+                this._framesPerRow = 1;
+            }
         }
 
         /**
@@ -85,6 +95,13 @@ module EndGate.Graphics {
         }
 
         /**
+        * Determines if the animation can play.  This is essentially checking if the underlying image source is loaded.
+        */
+        public CanPlay(): boolean {
+            return this._imageSource.Loaded();
+        }
+
+        /**
         * Plays the animation.
         */
         public Play(): void;
@@ -94,6 +111,10 @@ module EndGate.Graphics {
         */
         public Play(repeat: boolean): void;
         public Play(repeat: boolean = false): void {
+            if (!this._imageSource.Loaded()) {
+                throw new Error("Image source not loaded yet.");
+            }
+
             this._lastStepAt = new Date().getTime();
             this._repeating = repeat;
             this._playing = true;

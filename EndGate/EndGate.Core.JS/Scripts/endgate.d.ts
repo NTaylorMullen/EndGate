@@ -2634,6 +2634,10 @@ declare module EndGate.Graphics {
         */
         public IsPlaying(): boolean;
         /**
+        * Determines if the animation can play.  This is essentially checking if the underlying image source is loaded.
+        */
+        public CanPlay(): boolean;
+        /**
         * Plays the animation.
         */
         public Play(): void;

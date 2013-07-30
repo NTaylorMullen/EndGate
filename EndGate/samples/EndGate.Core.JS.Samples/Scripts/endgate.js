@@ -4090,6 +4090,7 @@ var EndGate;
         var SpriteAnimation = (function () {
             function SpriteAnimation(imageSource, fps, frameSize, frameCount, startOffset) {
                 if (typeof startOffset === "undefined") { startOffset = EndGate.Vector2d.Zero; }
+                var _this = this;
                 this._imageSource = imageSource;
                 this._frameSize = frameSize;
                 this._frameCount = frameCount;
@@ -4097,12 +4098,21 @@ var EndGate;
                 this._playing = false;
                 this._repeating = false;
                 this._currentFrame = 0;
-                this._framesPerRow = Math.min(Math.floor((imageSource.ClipSize.Width - startOffset.X) / frameSize.Width), frameCount);
                 this._lastStepAt = 0;
 
                 this._onComplete = new EndGate.EventHandler();
 
                 this.Fps = fps;
+
+                if (imageSource.Loaded()) {
+                    this._framesPerRow = Math.min(Math.floor((imageSource.ClipSize.Width - startOffset.X) / frameSize.Width), frameCount);
+                } else {
+                    imageSource.OnLoaded.BindFor(function (image) {
+                        _this._framesPerRow = Math.min(Math.floor((imageSource.ClipSize.Width - startOffset.X) / frameSize.Width), frameCount);
+                    }, 1);
+
+                    this._framesPerRow = 1;
+                }
             }
             Object.defineProperty(SpriteAnimation.prototype, "OnComplete", {
                 get: function () {
@@ -4128,8 +4138,16 @@ var EndGate;
                 return this._playing;
             };
 
+            SpriteAnimation.prototype.CanPlay = function () {
+                return this._imageSource.Loaded();
+            };
+
             SpriteAnimation.prototype.Play = function (repeat) {
                 if (typeof repeat === "undefined") { repeat = false; }
+                if (!this._imageSource.Loaded()) {
+                    throw new Error("Image source not loaded yet.");
+                }
+
                 this._lastStepAt = new Date().getTime();
                 this._repeating = repeat;
                 this._playing = true;
