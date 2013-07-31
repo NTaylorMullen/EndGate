@@ -24,3 +24,6 @@ PublishProfiles/
 *.ncrunchsolution
 *.log
 *.vspx
+endgate.js
+endgate.d.ts
+endgate.ts
