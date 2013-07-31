@@ -10,11 +10,17 @@
 
 module EndGate.Rendering {
 
+    interface IActorMapping {
+        Actor: Graphics.Graphic2d;
+        Remove: (graphic: Graphics.Graphic2d) => any;
+    }
+
     /**
     * Defines a scene object that is used to maintain a list of renderable objects that are rendered onto a joint game area.
     */
-    export class Scene2d implements IDisposable {       
+    export class Scene2d implements IDisposable {
         private _actors: Graphics.Graphic2d[];
+        private _actorMappings: IActorMapping[];
         private _renderer: _.IRenderer;
         private _onDraw: (context: CanvasRenderingContext2D) => void;
         private _disposed: boolean;
@@ -29,7 +35,7 @@ module EndGate.Rendering {
         * Creates a new instance of the Scene2d object.  The game canvas is created and appended to the HTML body to fill the screen.
         * @param onDraw Callback to execute whenever the Scene's draw is triggered.
         */
-        constructor(onDraw: (context: CanvasRenderingContext2D) => void);
+        constructor(onDraw: (context: CanvasRenderingContext2D) => void );
         /**
         * Creates a new instance of the Scene2d object.
         * @param onDraw Callback to execute whenever the Scene's draw is triggered.
@@ -37,6 +43,7 @@ module EndGate.Rendering {
         */
         constructor(onDraw: (context: CanvasRenderingContext2D) => void , drawArea: HTMLCanvasElement);
         constructor(onDraw: (context: CanvasRenderingContext2D) => void = _ => { }, drawArea?: HTMLCanvasElement) {
+            this._actorMappings = [];
             this._actors = [];
 
             if (typeof drawArea === "undefined") {
@@ -72,10 +79,16 @@ module EndGate.Rendering {
         * @param actor The graphic to add to the scene.
         */
         public Add(actor: Graphics.Graphic2d): void {
-            actor.OnDisposed.Bind((graphic: Graphics.Graphic2d) => {
-                this.Remove(graphic);
-            });
+            var mapping: IActorMapping = {
+                Actor: actor,
+                Remove: (graphic: Graphics.Graphic2d) => {
+                    this.Remove(graphic);
+                }
+            };
 
+            actor.OnDisposed.Bind(mapping.Remove);
+
+            this._actorMappings.push(mapping);
             this._actors.push(actor);
         }
 
@@ -86,7 +99,9 @@ module EndGate.Rendering {
         public Remove(actor: Graphics.Graphic2d): void {
             for (var i = 0; i < this._actors.length; i++) {
                 if (this._actors[i] === actor) {
+                    this._actors[i].OnDisposed.Unbind(this._actorMappings[i].Remove);
                     this._actors.splice(i, 1);
+                    this._actorMappings.splice(i, 1);
                     return;
                 }
             }
@@ -105,7 +120,13 @@ module EndGate.Rendering {
         public Dispose(): void {
             if (!this._disposed) {
                 this._disposed = true;
+                
+                for (var i = 0; i < this._actors.length; i++) {
+                    this.Remove(this._actors[i]);
+                }
+
                 this._actors = [];
+                this._actorMappings = [];
                 this._renderer.Dispose();
             }
             else {
@@ -124,7 +145,7 @@ module EndGate.Rendering {
                 body: HTMLElement = <HTMLElement>document.getElementsByTagName('body')[0];
 
             drawArea.width = window.innerWidth;
-            drawArea.height = window.innerHeight;            
+            drawArea.height = window.innerHeight;
 
             body.appendChild(drawArea);
             body.style.margin = "0px";
