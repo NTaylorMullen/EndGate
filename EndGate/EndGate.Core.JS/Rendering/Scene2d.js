@@ -17,6 +17,7 @@ var EndGate;
             function Scene2d(onDraw, drawArea) {
                 if (typeof onDraw === "undefined") { onDraw = function (_) {
                 }; }
+                this._actorMappings = [];
                 this._actors = [];
 
                 if (typeof drawArea === "undefined") {
@@ -60,10 +61,16 @@ var EndGate;
             */
             Scene2d.prototype.Add = function (actor) {
                 var _this = this;
-                actor.OnDisposed.Bind(function (graphic) {
-                    _this.Remove(graphic);
-                });
+                var mapping = {
+                    Actor: actor,
+                    Remove: function (graphic) {
+                        _this.Remove(graphic);
+                    }
+                };
 
+                actor.OnDisposed.Bind(mapping.Remove);
+
+                this._actorMappings.push(mapping);
                 this._actors.push(actor);
             };
 
@@ -74,7 +81,9 @@ var EndGate;
             Scene2d.prototype.Remove = function (actor) {
                 for (var i = 0; i < this._actors.length; i++) {
                     if (this._actors[i] === actor) {
+                        this._actors[i].OnDisposed.Unbind(this._actorMappings[i].Remove);
                         this._actors.splice(i, 1);
+                        this._actorMappings.splice(i, 1);
                         return;
                     }
                 }
@@ -93,7 +102,13 @@ var EndGate;
             Scene2d.prototype.Dispose = function () {
                 if (!this._disposed) {
                     this._disposed = true;
+
+                    for (var i = 0; i < this._actors.length; i++) {
+                        this.Remove(this._actors[i]);
+                    }
+
                     this._actors = [];
+                    this._actorMappings = [];
                     this._renderer.Dispose();
                 } else {
                     throw new Error("Scene2d cannot be disposed more than once");
