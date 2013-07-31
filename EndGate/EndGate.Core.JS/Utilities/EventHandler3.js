@@ -10,7 +10,7 @@ var EndGate;
         * Creates a new instance of the EventHandler3 object.
         */
         function EventHandler3() {
-            this._type = "Event";
+            this._type = "EventHandler3";
             this._actions = [];
         }
         /**
@@ -76,6 +76,14 @@ var EndGate;
                     actions[i](val1, val2, val3);
                 }
             }
+        };
+
+        /**
+        * Disposes the event handler and unbinds all bound events.
+        */
+        EventHandler3.prototype.Dispose = function () {
+            // Clear the array
+            this._actions = [];
         };
         return EventHandler3;
     })();

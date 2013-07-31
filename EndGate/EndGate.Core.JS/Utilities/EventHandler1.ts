@@ -6,8 +6,8 @@ module EndGate {
     /**
     * Defines a type constrained event handler object that can maintain bound functions which take in a value T and trigger them on demand.
     */
-    export class EventHandler1<T> implements _.ITyped {
-        public _type: string = "Event";
+    export class EventHandler1<T> implements IDisposable, _.ITyped {
+        public _type: string = "EventHandler1";
 
         private _actions: Array<(val: T) => any>;
 
@@ -80,6 +80,14 @@ module EndGate {
                     actions[i](val);
                 }
             }
+        }
+
+        /**
+        * Disposes the event handler and unbinds all bound events.
+        */
+        public Dispose(): void {
+            // Clear the array
+            this._actions = [];
         }
     }
 

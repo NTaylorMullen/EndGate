@@ -6,8 +6,8 @@ module EndGate {
     /**
     * Defines an event handler object that can maintain bound functions and trigger them on demand.
     */
-    export class EventHandler implements _.ITyped {
-        public _type: string = "Event";
+    export class EventHandler implements IDisposable, _.ITyped {
+        public _type: string = "EventHandler";
 
         private _actions: Array<Function>;
 
@@ -79,6 +79,14 @@ module EndGate {
                     actions[i]();
                 }
             }
+        }
+
+        /**
+        * Disposes the event handler and unbinds all bound events.
+        */
+        public Dispose(): void {
+            // Clear the array
+            this._actions = [];
         }
     }
 
