@@ -1,4 +1,5 @@
 /// <reference path="../Interfaces/IUpdateable.ts" />
+/// <reference path="../Interfaces/IDisposable.ts" />
 /// <reference path="../Interfaces/ITyped.ts" />
 /// <reference path="Assets/QuadTree.ts" />
 /// <reference path="CollisionConfiguration.ts" />
@@ -17,13 +18,14 @@ module EndGate.Collision {
     /**
     * Defines a manager that will check for collisions between objects that it is monitoring.
     */
-    export class CollisionManager implements IUpdateable, EndGate._.ITyped {
+    export class CollisionManager implements IUpdateable, IDisposable, EndGate._.ITyped {
         public _type: string = "CollisionManager";
         private _collidables: ICollidableMappings[];
         private _nonStaticCollidables: Collidable[];
         public _quadTree: Assets._.QuadTree;
         private _onCollision: EventHandler2<Collidable, Collidable>;
         private _enabled: boolean;
+        private _disposed: boolean;
 
         /**
         * Creates a new instance of CollisionManager.
@@ -33,6 +35,7 @@ module EndGate.Collision {
             this._nonStaticCollidables = [];
             this._quadTree = new Assets._.QuadTree(configuration);
             this._enabled = false;
+            this._disposed = false;
             this._onCollision = new EventHandler2<Collidable, Collidable>();
         }
 
@@ -144,6 +147,26 @@ module EndGate.Collision {
                         this.OnCollision.Trigger(colliding[i][0], colliding[i][1]);
                     }
                 }
+            }
+        }
+
+        /**
+        * Destroys removes all monitored collidables and destroys the collision manager.
+        */
+        public Dispose(): void {
+            if (!this._disposed) {
+                this._disposed = true;
+
+                for (var i = 0; i < this._collidables.length; i++) {
+                    this.Unmonitor(this._collidables[i].Collidable);
+                }
+
+                this._collidables = [];
+                this._nonStaticCollidables = [];
+                this._quadTree = null;
+            }
+            else {
+                throw new Error("CollisionManager cannot be disposed more than once");
             }
         }
 

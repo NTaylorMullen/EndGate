@@ -82,6 +82,7 @@ var EndGate;
         Game.prototype.Dispose = function () {
             this.Scene.Dispose();
             this.Map.Dispose();
+            this.CollisionManager.Dispose();
             GameRunnerInstance.Unregister(this);
         };
         Game._gameIds = 0;
