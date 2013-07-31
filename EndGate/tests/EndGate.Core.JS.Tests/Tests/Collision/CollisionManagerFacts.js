@@ -4,6 +4,21 @@
 
     QUnit.module("Collision Manager Facts");
 
+    QUnit.test("Collision manager unmonitors its collidables on dispose.", function () {
+        var cm = new eg.Collision.CollisionManager(new eg.Collision.CollisionConfiguration(new eg.Size2d(700, 700))),
+            rect = new eg.Collision.Collidable(new eg.Bounds.BoundingRectangle(eg.Vector2d.Zero, new eg.Size2d(30, 50)));
+
+        QUnit.ok(!rect.OnDisposed.HasBindings());
+
+        cm.Monitor(rect);
+
+        QUnit.ok(rect.OnDisposed.HasBindings());
+
+        cm.Dispose();
+
+        QUnit.ok(!rect.OnDisposed.HasBindings());
+    });
+
     QUnit.test("Collision manager detects collisions.", function () {
         var cm = new eg.Collision.CollisionManager(new eg.Collision.CollisionConfiguration(new eg.Size2d(700,700))),
             rect = new eg.Collision.Collidable(new eg.Bounds.BoundingRectangle(eg.Vector2d.Zero, new eg.Size2d(30, 50))),
