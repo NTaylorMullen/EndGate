@@ -2,6 +2,43 @@
 
     QUnit.module("Scene2d Facts");
 
+    QUnit.test("Dispose unbinds all actors OnDisposed events.", function () {
+        var scene = new eg.Rendering.Scene2d(),
+        actor = new eg.Graphics.Circle(100, 100, 30);
+
+        QUnit.ok(!actor.OnDisposed.HasBindings());
+
+        scene.Add(actor);
+
+        QUnit.ok(actor.OnDisposed.HasBindings());
+
+        scene.Dispose();
+
+        QUnit.ok(!actor.OnDisposed.HasBindings());
+    });
+
+    QUnit.test("Adding and removing actors multiple times does not leak OnDisposed event handler bindings.", function () {
+        var scene = new eg.Rendering.Scene2d(),
+            actor = new eg.Graphics.Circle(100, 100, 30),
+            disposesTriggered = 0;
+
+        actor.OnDisposed.Bind(function () {
+            disposesTriggered++;
+        });
+
+        scene.Add(actor);
+        scene.Remove(actor);
+        scene.Add(actor);
+        scene.Remove(actor);
+        scene.Add(actor);
+        scene.Remove(actor);
+        scene.Add(actor);
+
+        actor.Dispose();
+
+        QUnit.equal(disposesTriggered, 1);
+    });
+
     QUnit.test("Renderables added have draw triggered.", function () {
         var scene = new eg.Rendering.Scene2d(),
             draws1 = 0,
@@ -14,7 +51,7 @@
                     return new eg.Bounds.BoundingCircle(eg.Vector2d.Zero, 5);
                 },
                 Visible: true,
-                OnDisposed : new EndGate.EventHandler1()
+                OnDisposed: new EndGate.EventHandler1()
             },
             renderable2 = {
                 Draw: function (context) {
