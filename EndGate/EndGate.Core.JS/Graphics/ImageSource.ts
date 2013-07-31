@@ -1,3 +1,4 @@
+/// <reference path="../Interfaces/IDisposable.ts" />
 /// <reference path="../Assets/Vectors/Vector2d.ts" />
 /// <reference path="../Assets/Sizes/Size2d.ts" />
 /// <reference path="../Utilities/EventHandler1.ts" />
@@ -7,7 +8,7 @@ module EndGate.Graphics {
     /**
     * Defines an image resource that can be used within Sprite's, SpriteAnimation's and other drawable graphics.
     */
-    export class ImageSource {
+    export class ImageSource implements IDisposable {
         /**
         * Gets or sets the ClipLocation.  Represents where the image clip is within the base image.
         */
@@ -108,6 +109,13 @@ module EndGate.Graphics {
         */
         public Extract(clipX: number, clipY: number, clipWidth: number, clipHeight: number): ImageSource {
             return new ImageSource(this._imageLocation, this._size.Width, this._size.Height, clipX, clipY, clipWidth, clipHeight);
+        }
+
+        /**
+        * Disposes the image source and unbinds all bound events.
+        */
+        public Dispose(): void {
+            this.Source = null;
         }
     }
 

@@ -1,5 +1,6 @@
 var EndGate;
 (function (EndGate) {
+    /// <reference path="../Interfaces/IDisposable.ts" />
     /// <reference path="../Assets/Vectors/Vector2d.ts" />
     /// <reference path="../Assets/Sizes/Size2d.ts" />
     /// <reference path="../Utilities/EventHandler1.ts" />
@@ -79,6 +80,13 @@ var EndGate;
             */
             ImageSource.prototype.Extract = function (clipX, clipY, clipWidth, clipHeight) {
                 return new ImageSource(this._imageLocation, this._size.Width, this._size.Height, clipX, clipY, clipWidth, clipHeight);
+            };
+
+            /**
+            * Disposes the image source and unbinds all bound events.
+            */
+            ImageSource.prototype.Dispose = function () {
+                this.Source = null;
             };
             return ImageSource;
         })();
