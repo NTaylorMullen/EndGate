@@ -126,6 +126,7 @@ module EndGate {
         public Dispose(): void {
             this.Scene.Dispose();
             this.Map.Dispose();
+            this.CollisionManager.Dispose();
             GameRunnerInstance.Unregister(this);
         }
     }

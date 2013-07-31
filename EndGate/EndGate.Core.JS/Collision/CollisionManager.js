@@ -1,6 +1,7 @@
 var EndGate;
 (function (EndGate) {
     /// <reference path="../Interfaces/IUpdateable.ts" />
+    /// <reference path="../Interfaces/IDisposable.ts" />
     /// <reference path="../Interfaces/ITyped.ts" />
     /// <reference path="Assets/QuadTree.ts" />
     /// <reference path="CollisionConfiguration.ts" />
@@ -22,6 +23,7 @@ var EndGate;
                 this._nonStaticCollidables = [];
                 this._quadTree = new Collision.Assets._.QuadTree(configuration);
                 this._enabled = false;
+                this._disposed = false;
                 this._onCollision = new EndGate.EventHandler2();
             }
             Object.defineProperty(CollisionManager.prototype, "OnCollision", {
@@ -117,6 +119,25 @@ var EndGate;
                             this.OnCollision.Trigger(colliding[i][0], colliding[i][1]);
                         }
                     }
+                }
+            };
+
+            /**
+            * Destroys removes all monitored collidables and destroys the collision manager.
+            */
+            CollisionManager.prototype.Dispose = function () {
+                if (!this._disposed) {
+                    this._disposed = true;
+
+                    for (var i = 0; i < this._collidables.length; i++) {
+                        this.Unmonitor(this._collidables[i].Collidable);
+                    }
+
+                    this._collidables = [];
+                    this._nonStaticCollidables = [];
+                    this._quadTree = null;
+                } else {
+                    throw new Error("CollisionManager cannot be disposed more than once");
                 }
             };
 
