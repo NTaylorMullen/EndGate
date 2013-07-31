@@ -9,12 +9,17 @@
 
 module EndGate.Collision {
 
+    interface ICollidableMappings {
+        Collidable: Collidable;
+        Unmonitor: (collidable: Collidable) => any;
+    }
+
     /**
     * Defines a manager that will check for collisions between objects that it is monitoring.
     */
     export class CollisionManager implements IUpdateable, EndGate._.ITyped {
         public _type: string = "CollisionManager";
-        private _collidables: Collidable[];
+        private _collidables: ICollidableMappings[];
         private _nonStaticCollidables: Collidable[];
         public _quadTree: Assets._.QuadTree;
         private _onCollision: EventHandler2<Collidable, Collidable>;
@@ -53,13 +58,18 @@ module EndGate.Collision {
         */
         public Monitor(obj: Collidable, staticPosition: boolean): void;
         public Monitor(obj: Collidable, staticPosition: boolean = false): void {
+            var mapping: ICollidableMappings = {
+                Collidable: obj,
+                Unmonitor: (collidable) => {
+                    this.Unmonitor(collidable);
+                }
+            };
+
             this._enabled = true;
 
-            obj.OnDisposed.Bind(() => {
-                this.Unmonitor(obj);
-            });
+            obj.OnDisposed.Bind(mapping.Unmonitor);
 
-            this._collidables.push(obj);
+            this._collidables.push(mapping);
 
             if (!staticPosition) {
                 this._nonStaticCollidables.push(obj);
@@ -74,10 +84,14 @@ module EndGate.Collision {
         * @param obj Collidable to unmonitor.
         */
         public Unmonitor(obj: Collidable): void {
-            var index = this._collidables.indexOf(obj);
+            var index: number;
             
-            if (index >= 0) {
-                this._collidables.splice(index, 1);
+            for (var i = 0; i < this._collidables.length; i++) {
+                if (this._collidables[i].Collidable._id === obj._id) {
+                    this._collidables[i].Collidable.OnDisposed.Unbind(this._collidables[i].Unmonitor);
+                    this._collidables.splice(i, 1);                    
+                    break;
+                }
             }
 
             index = this._nonStaticCollidables.indexOf(obj);

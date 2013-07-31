@@ -1744,13 +1744,18 @@ var EndGate;
             CollisionManager.prototype.Monitor = function (obj, staticPosition) {
                 if (typeof staticPosition === "undefined") { staticPosition = false; }
                 var _this = this;
+                var mapping = {
+                    Collidable: obj,
+                    Unmonitor: function (collidable) {
+                        _this.Unmonitor(collidable);
+                    }
+                };
+
                 this._enabled = true;
 
-                obj.OnDisposed.Bind(function () {
-                    _this.Unmonitor(obj);
-                });
+                obj.OnDisposed.Bind(mapping.Unmonitor);
 
-                this._collidables.push(obj);
+                this._collidables.push(mapping);
 
                 if (!staticPosition) {
                     this._nonStaticCollidables.push(obj);
@@ -1760,10 +1765,14 @@ var EndGate;
             };
 
             CollisionManager.prototype.Unmonitor = function (obj) {
-                var index = this._collidables.indexOf(obj);
+                var index;
 
-                if (index >= 0) {
-                    this._collidables.splice(index, 1);
+                for (var i = 0; i < this._collidables.length; i++) {
+                    if (this._collidables[i].Collidable._id === obj._id) {
+                        this._collidables[i].Collidable.OnDisposed.Unbind(this._collidables[i].Unmonitor);
+                        this._collidables.splice(i, 1);
+                        break;
+                    }
                 }
 
                 index = this._nonStaticCollidables.indexOf(obj);
