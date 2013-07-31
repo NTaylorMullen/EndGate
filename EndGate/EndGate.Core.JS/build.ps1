@@ -114,7 +114,13 @@ foreach($file in $dependencyArray)
 	}
 }
 
-Clear-Content $outputDeclarationPath
+if (Test-Path $outputDeclarationPath) {
+	Clear-Content $outputDeclarationPath
+}
+else {
+	New-Item $outputDeclarationPath -type file
+}
+
 
 tsc --comments --out $outputDeclarationPath --declaration $allFilesStr --target ES5
 
