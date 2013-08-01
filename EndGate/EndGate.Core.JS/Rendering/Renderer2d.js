@@ -2,6 +2,7 @@ var EndGate;
 (function (EndGate) {
     /// <reference path="IRenderer.ts" />
     /// <reference path="IRenderable.ts" />
+    /// <reference path="../Interfaces/IDisposable.ts" />
     /// <reference path="../Utilities/EventHandler1.ts" />
     /// <reference path="../Assets/Sizes/Size2d.ts" />
     (function (Rendering) {
@@ -70,6 +71,7 @@ var EndGate;
                     this._disposed = true;
 
                     this._visibleCanvas.parentNode.removeChild(this._visibleCanvas);
+                    this._onRendererSizeChange.Dispose();
                 }
             };
 

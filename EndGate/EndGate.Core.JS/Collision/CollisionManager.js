@@ -135,6 +135,7 @@ var EndGate;
 
                     this._collidables = [];
                     this._nonStaticCollidables = [];
+                    this._onCollision.Dispose();
                     this._quadTree = null;
                 } else {
                     throw new Error("CollisionManager cannot be disposed more than once");

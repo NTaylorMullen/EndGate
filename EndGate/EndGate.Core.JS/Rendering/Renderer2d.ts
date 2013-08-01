@@ -1,5 +1,6 @@
 /// <reference path="IRenderer.ts" />
 /// <reference path="IRenderable.ts" />
+/// <reference path="../Interfaces/IDisposable.ts" />
 /// <reference path="../Utilities/EventHandler1.ts" />
 /// <reference path="../Assets/Sizes/Size2d.ts" />
 
@@ -8,7 +9,7 @@ module EndGate.Rendering {
     /**
     * Defines a 2d renderer that uses a double buffer to draw graphics.
     */
-    export class Renderer2d implements _.IRenderer {
+    export class Renderer2d implements IDisposable, _.IRenderer {
         public static _zindexSort: (a: IRenderable, b: IRenderable) => number = (a: IRenderable, b: IRenderable) => { return a.ZIndex - b.ZIndex; };
 
         public _BufferCanvas: HTMLCanvasElement;
@@ -81,6 +82,7 @@ module EndGate.Rendering {
                 this._disposed = true;
 
                 this._visibleCanvas.parentNode.removeChild(this._visibleCanvas);
+                this._onRendererSizeChange.Dispose();
             }
         }
 

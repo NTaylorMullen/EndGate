@@ -66,6 +66,11 @@ var EndGate;
                 * Gets an event that is triggered when the square tile map has been loaded.  Once this SquareTileMap has been created and all tiles loaded this event will no longer be triggered. Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
                 function () {
+                    this._grid.Dispose();
+
+                    this.OnTileLoad.Dispose();
+                    this.OnLoaded.Dispose();
+
                     return this._onLoaded;
                 },
                 enumerable: true,
@@ -122,6 +127,15 @@ var EndGate;
                 bounds.Position = this.Position;
 
                 return bounds;
+            };
+
+            /**
+            * Removes all children and unbinds all events associated with the SquareTileMap.
+            */
+            SquareTileMap.prototype.Dispose = function () {
+                this._onLoaded.Dispose();
+                this._onTileLoad.Dispose();
+                _super.prototype.Dispose.call(this);
             };
 
             SquareTileMap.prototype.BuildCache = function () {

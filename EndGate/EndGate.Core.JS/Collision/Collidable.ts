@@ -73,6 +73,8 @@ module EndGate.Collision {
             if (!this._disposed) {
                 this._disposed = true;
                 this.OnDisposed.Trigger(this);
+                this.OnDisposed.Dispose();
+                this.OnCollision.Dispose();
             }
             else {
                 throw new Error("Cannot dispose collidable more than once.");

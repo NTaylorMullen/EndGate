@@ -163,6 +163,7 @@ module EndGate.Collision {
 
                 this._collidables = [];
                 this._nonStaticCollidables = [];
+                this._onCollision.Dispose();
                 this._quadTree = null;
             }
             else {
