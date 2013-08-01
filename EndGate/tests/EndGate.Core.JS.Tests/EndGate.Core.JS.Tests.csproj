@@ -92,6 +92,7 @@
     <Content Include="Tests\GameFacts.js" />
     <Content Include="Tests\Graphics\Graphic2dFacts.js" />
     <Content Include="Tests\Graphics\Sprites\Animation\SpriteAnimationFacts.js" />
+    <Content Include="Tests\Input\Keyboard\KeyboardHandlerFacts.js" />
     <Content Include="Tests\Loopers\RepaintLooperFacts.js" />
     <Content Include="Tests\Rendering\Renderer2dFacts.js" />
     <Content Include="Tests\Rendering\Scene2dFacts.js" />

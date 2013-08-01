@@ -8,6 +8,12 @@
         },
         runModule = true;
 
+    QUnit.isTrue = function (actual, message) {
+        return QUnit.ok(actual === true, message);
+    };
+    QUnit.isFalse = function (actual, message) {
+        return QUnit.ok(actual === false, message);
+    };
     QUnit.isSet = function (actual, message) {
         return QUnit.notEqual(typeof (actual), "undefined", message);
     };
@@ -90,6 +96,16 @@
                         isNotSet: function (actual, message) {
                             if (!hasFinished) {
                                 QUnit.isNotSet(actual, message);
+                            }
+                        },
+                        isTrue: function (actual, message) {
+                            if (!hasFinished) {
+                                QUnit.isTrue(actual, message);
+                            }
+                        },
+                        isFalse: function (actual, message) {
+                            if (!hasFinished) {
+                                QUnit.isFalse(actual, message);
                             }
                         }
                     };
