@@ -1,6 +1,7 @@
 var EndGate;
 (function (EndGate) {
     /// <reference path="../Utilities/EventHandler1.ts" />
+    /// <reference path="../Interfaces/IDisposable.ts" />
     /// <reference path="AudioSettings.ts" />
     (function (Sound) {
         var supportedAudioTypes = {
@@ -17,6 +18,7 @@ var EndGate;
         var AudioClip = (function () {
             function AudioClip(source, settings) {
                 if (typeof settings === "undefined") { settings = Sound.AudioSettings.Default; }
+                this._disposed = false;
                 this._settings = settings.Clone();
                 this._audio = document.createElement("audio");
                 this.SetAudioSource(source);
@@ -106,6 +108,21 @@ var EndGate;
             AudioClip.prototype.Stop = function () {
                 this.Seek(0);
                 this._audio.pause();
+            };
+
+            /**
+            * Unbinds all events and nulls out the settings and audio component to allow for garbage collection.
+            */
+            AudioClip.prototype.Dispose = function () {
+                if (!this._disposed) {
+                    this._disposed = true;
+
+                    this._onComplete.Dispose();
+                    this._audio = null;
+                    this._settings = null;
+                } else {
+                    throw new Error("Cannot dispose AudioClip more than once.");
+                }
             };
 
             AudioClip.prototype.SetAudioSource = function (source) {

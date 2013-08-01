@@ -1,4 +1,5 @@
 /// <reference path="../Utilities/EventHandler1.ts" />
+/// <reference path="../Interfaces/IDisposable.ts" />
 /// <reference path="AudioSettings.ts" />
 
 module EndGate.Sound {
@@ -14,10 +15,11 @@ module EndGate.Sound {
     /**
     * Defines a single audio clip that can be played, stopped or paused.
     */
-    export class AudioClip {
+    export class AudioClip implements IDisposable {
         private _audio: HTMLAudioElement;
         private _settings: AudioSettings;
         private _onComplete: EventHandler1<Event>;
+        private _disposed: boolean;
 
         /**
         * Creates a new instance of the AudioClip object.
@@ -42,6 +44,7 @@ module EndGate.Sound {
         */
         constructor(source: string[], settings: AudioSettings = AudioSettings.Default);
         constructor(source: any, settings: AudioSettings = AudioSettings.Default) {
+            this._disposed = false;
             this._settings = settings.Clone();
             this._audio = <HTMLAudioElement>document.createElement("audio");
             this.SetAudioSource(source);
@@ -124,6 +127,22 @@ module EndGate.Sound {
         public Stop(): void {
             this.Seek(0);
             this._audio.pause();
+        }
+
+        /**
+        * Unbinds all events and nulls out the settings and audio component to allow for garbage collection.
+        */
+        public Dispose(): void {
+            if (!this._disposed) {
+                this._disposed = true;
+
+                this._onComplete.Dispose();
+                this._audio = null;
+                this._settings = null;
+            }
+            else {
+                throw new Error("Cannot dispose AudioClip more than once.");
+            }
         }
 
         private SetAudioSource(source: any): void {
