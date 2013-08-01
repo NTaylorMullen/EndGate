@@ -2,6 +2,7 @@ var EndGate;
 (function (EndGate) {
     /// <reference path="../../Assets/Vectors/Vector2d.ts" />
     /// <reference path="../../Utilities/EventHandler1.ts" />
+    /// <reference path="../../Interfaces/IDisposable.ts" />
     /// <reference path="MouseButton.ts" />
     /// <reference path="IMouseEvent.ts" />
     /// <reference path="IMouseClickEvent.ts" />
@@ -18,6 +19,7 @@ var EndGate;
             function MouseHandler(target) {
                 var _this = this;
                 this._target = target;
+                this._disposed = false;
 
                 this._onClick = new EndGate.EventHandler1();
                 this._onDoubleClick = new EndGate.EventHandler1();
@@ -153,29 +155,72 @@ var EndGate;
                 configurable: true
             });
 
+            /**
+            * Disposes the MouseHandler and unbinds all bound events.
+            */
+            MouseHandler.prototype.Dispose = function () {
+                if (!this._disposed) {
+                    this._disposed = true;
+
+                    this._onClick.Dispose();
+                    this._onDoubleClick.Dispose();
+                    this._onDown.Dispose();
+                    this._onMove.Dispose();
+                    this._onScroll.Dispose();
+                    this._onUp.Dispose();
+
+                    this.Unwire();
+
+                    this._target = null;
+                } else {
+                    throw new Error("MouseHandler cannot be disposed more than once");
+                }
+            };
+
             MouseHandler.prototype.Wire = function () {
                 var _this = this;
-                this._target.addEventListener("click", this._target.oncontextmenu = this.BuildEvent(this._onClick, this.BuildMouseClickEvent), false);
-                this._target.addEventListener("dblclick", this.BuildEvent(this._onDoubleClick, this.BuildMouseClickEvent), false);
-                this._target.addEventListener("mousedown", this.BuildEvent(this._onDown, this.BuildMouseClickEvent), false);
-                this._target.addEventListener("mouseup", this.BuildEvent(this._onUp, this.BuildMouseClickEvent), false);
-                this._target.addEventListener("mousemove", this.BuildEvent(this._onMove, this.BuildMouseEvent), false);
+                this._clickWire = this._contextMenuWire = this.BuildEvent(this._onClick, this.BuildMouseClickEvent);
+                this._dblClickWire = this.BuildEvent(this._onDoubleClick, this.BuildMouseClickEvent);
+                this._mouseDownWire = this.BuildEvent(this._onDown, this.BuildMouseClickEvent);
+                this._mouseUpWire = this.BuildEvent(this._onUp, this.BuildMouseClickEvent);
+                this._mouseMoveWire = this.BuildEvent(this._onMove, this.BuildMouseEvent);
 
                 if ((/MSIE/i.test(navigator.userAgent))) {
-                    this._target.addEventListener("wheel", this.BuildEvent(this._onScroll, function (e) {
+                    this._mouseWheelWireName = "wheel";
+                    this._mouseWheelWire = this.BuildEvent(this._onScroll, function (e) {
                         e.wheelDeltaX = -e.deltaX;
                         e.wheelDeltaY = -e.deltaY;
                         return _this.BuildMouseScrollEvent(e);
-                    }), false);
+                    });
                 } else if ((/Firefox/i.test(navigator.userAgent))) {
-                    this._target.addEventListener("DOMMouseScroll", this.BuildEvent(this._onScroll, function (e) {
+                    this._mouseWheelWireName = "DOMMouseScroll";
+                    this._mouseWheelWire = this.BuildEvent(this._onScroll, function (e) {
                         e.wheelDeltaX = e.axis === 1 ? -e.detail : 0;
                         e.wheelDeltaY = e.axis === 2 ? -e.detail : 0;
                         return _this.BuildMouseScrollEvent(e);
-                    }), false);
+                    });
                 } else {
-                    this._target.addEventListener("mousewheel", this.BuildEvent(this._onScroll, this.BuildMouseScrollEvent), false);
+                    this._mouseWheelWireName = "mousewheel";
+                    this._mouseWheelWire = this.BuildEvent(this._onScroll, this.BuildMouseScrollEvent);
                 }
+
+                this._target.addEventListener("click", this._clickWire, false);
+                this._target.addEventListener("contextmenu", this._contextMenuWire, false);
+                this._target.addEventListener("dblclick", this._dblClickWire, false);
+                this._target.addEventListener("mousedown", this._mouseDownWire, false);
+                this._target.addEventListener("mouseup", this._mouseUpWire, false);
+                this._target.addEventListener("mousemove", this._mouseMoveWire, false);
+                this._target.addEventListener(this._mouseWheelWireName, this._mouseWheelWire, false);
+            };
+
+            MouseHandler.prototype.Unwire = function () {
+                this._target.removeEventListener("click", this._clickWire, false);
+                this._target.removeEventListener("contextmenu", this._contextMenuWire, false);
+                this._target.removeEventListener("dblclick", this._dblClickWire, false);
+                this._target.removeEventListener("mousedown", this._mouseDownWire, false);
+                this._target.removeEventListener("mouseup", this._mouseUpWire, false);
+                this._target.removeEventListener("mousemove", this._mouseMoveWire, false);
+                this._target.removeEventListener(this._mouseWheelWireName, this._mouseWheelWire, false);
             };
 
             MouseHandler.prototype.BuildEvent = function (eventHandler, mouseEventBuilder, returnValue) {
