@@ -1,5 +1,6 @@
 /// <reference path="KeyboardCommand.ts" />
 /// <reference path="KeyboardCommandEvent.ts" />
+/// <reference path="../../Interfaces/IDisposable.ts" />
 /// <reference path="../../Utilities/EventHandler1.ts" />
 
 module EndGate.Input {
@@ -7,7 +8,7 @@ module EndGate.Input {
     /**
     * Defines a handler that will check for keyboard commands and execute appropriate functions.
     */
-    export class KeyboardHandler {
+    export class KeyboardHandler implements IDisposable {
         private static _keyboardCommandIds: number = 0;
         private _target: HTMLCanvasElement;
         private _onPressCommands: { [id: number]: Assets.KeyboardCommand; };
@@ -17,6 +18,12 @@ module EndGate.Input {
         private _onKeyPress: EventHandler1<KeyboardCommandEvent>;
         private _onKeyDown: EventHandler1<KeyboardCommandEvent>;
         private _onKeyUp: EventHandler1<KeyboardCommandEvent>;
+
+        // For Disposing purposes
+        private _keyDownWire: (ke: KeyboardEvent) => void;
+        private _keyUpWire: (ke: KeyboardEvent) => void;
+        private _keyPressWire: (ke: KeyboardEvent) => void;
+        private _disposed: boolean;
 
         /**
         * Creates a new instance of the KeyboardHandler object.
@@ -29,6 +36,8 @@ module EndGate.Input {
             this._onKeyPress = new EventHandler1<KeyboardCommandEvent>();
             this._onKeyDown = new EventHandler1<KeyboardCommandEvent>();
             this._onKeyUp = new EventHandler1<KeyboardCommandEvent>();
+
+            this._disposed = false;
 
             this.Wire();
         }
@@ -81,6 +90,42 @@ module EndGate.Input {
             return this.UpdateCache(keyCommand, action, this._onUpCommands);
         }
 
+        /**
+        * Disposes the KeyboardHandler and unbinds all bound events.
+        */
+        public Dispose(): void {
+            if (!this._disposed) {
+                this._disposed = true;
+
+                this._onKeyDown.Dispose();
+                this._onKeyPress.Dispose();
+                this._onKeyUp.Dispose();
+
+                for (var command in this._onDownCommands) {
+                    this._onDownCommands[command].Dispose();
+                }
+
+                this._onDownCommands = null;
+
+                for (var command in this._onUpCommands) {
+                    this._onUpCommands[command].Dispose();
+                }
+
+                this._onUpCommands = null;
+
+                for (var command in this._onPressCommands) {
+                    this._onPressCommands[command].Dispose();
+                }
+
+                this._onPressCommands = null;
+
+                this.Unwire();
+            }
+            else {
+                throw new Error("KeyboardHandler cannot be disposed more than once");
+            }
+        }
+
         private UpdateCache(keyCommand: string, action: Function, store: { [id: number]: Assets.KeyboardCommand; }): Assets.KeyboardCommand {
             var command = new Assets.KeyboardCommand(keyCommand, action),
                 commandId = KeyboardHandler._keyboardCommandIds++;
@@ -95,11 +140,21 @@ module EndGate.Input {
         }
 
         private Wire(): void {
-            document.addEventListener("keypress", this.BuildKeyEvent(this._onPressCommands, this.OnKeyPress), false);
+            this._keyPressWire = this.BuildKeyEvent(this._onPressCommands, this.OnKeyPress);
+            this._keyDownWire = this.BuildKeyEvent(this._onDownCommands, this.OnKeyDown);
+            this._keyUpWire = this.BuildKeyEvent(this._onUpCommands, this.OnKeyUp);
 
-            document.addEventListener("keydown", this.BuildKeyEvent(this._onDownCommands, this.OnKeyDown), false);
+            document.addEventListener("keypress", this._keyPressWire, false);
 
-            document.addEventListener("keyup", this.BuildKeyEvent(this._onUpCommands, this.OnKeyUp), false);
+            document.addEventListener("keydown", this._keyDownWire, false);
+
+            document.addEventListener("keyup", this._keyUpWire, false);
+        }
+
+        private Unwire(): void {
+            document.removeEventListener("keypress", this._keyPressWire, false);
+            document.removeEventListener("keydown", this._keyDownWire, false);
+            document.removeEventListener("keyup", this._keyUpWire, false);
         }
 
         private FocusingTextArea(ke: KeyboardEvent): boolean {
