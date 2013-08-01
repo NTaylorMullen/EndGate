@@ -3,6 +3,7 @@ var EndGate;
     /// <reference path="Functions/ITweeningFunction.ts" />
     /// <reference path="../Assets/TimeSpan.ts" />
     /// <reference path="../Utilities/EventHandler1.ts" />
+    /// <reference path="../Interfaces/IDisposable.ts" />
     /// <reference path="../Interfaces/ICloneable.ts" />
     /// <reference path="../Interfaces/IUpdateable.ts" />
     /// <reference path="../GameTime.ts" />
@@ -209,6 +210,15 @@ var EndGate;
                     this._UpdateTween();
                     this._onChange.Trigger(this._current.Clone());
                 }
+            };
+
+            /**
+            * Stops and unbinds all events from the tween.
+            */
+            Tween.prototype.Dispose = function () {
+                this.Stop();
+                this._onChange.Dispose();
+                this._onComplete.Dispose();
             };
 
             Tween.prototype._UpdateTween = function () {
