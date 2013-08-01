@@ -10,7 +10,7 @@ var EndGate;
         * Creates a new instance of the EventHandler2 object.
         */
         function EventHandler2() {
-            var _type = "EventHandler2"
+            this._type = "EventHandler2";
             this._actions = [];
         }
         /**

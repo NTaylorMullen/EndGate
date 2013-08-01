@@ -130,6 +130,7 @@ var EndGate;
                     }
 
                     this.OnDisposed.Trigger(this);
+                    this.OnDisposed.Dispose();
                 } else {
                     throw new Error("Cannot dispose graphic more than once.");
                 }

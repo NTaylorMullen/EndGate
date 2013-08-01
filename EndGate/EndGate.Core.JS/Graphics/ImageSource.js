@@ -87,6 +87,7 @@ var EndGate;
             */
             ImageSource.prototype.Dispose = function () {
                 this.Source = null;
+                this._onLoaded.Dispose();
             };
             return ImageSource;
         })();

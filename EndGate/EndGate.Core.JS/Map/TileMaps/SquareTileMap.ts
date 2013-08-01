@@ -104,6 +104,11 @@ module EndGate.Map {
         * Gets an event that is triggered when the square tile map has been loaded.  Once this SquareTileMap has been created and all tiles loaded this event will no longer be triggered. Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public get OnLoaded(): EventHandler {
+            this._grid.Dispose();
+
+            this.OnTileLoad.Dispose();
+            this.OnLoaded.Dispose();
+
             return this._onLoaded;
         }
 
@@ -160,6 +165,15 @@ module EndGate.Map {
             bounds.Position = this.Position;
 
             return bounds;
+        }
+
+        /**
+        * Removes all children and unbinds all events associated with the SquareTileMap.
+        */
+        public Dispose(): void {
+            this._onLoaded.Dispose();
+            this._onTileLoad.Dispose();
+            super.Dispose();
         }
 
         private BuildCache(): void {

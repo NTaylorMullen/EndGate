@@ -116,6 +116,7 @@ module EndGate.Graphics {
         */
         public Dispose(): void {
             this.Source = null;
+            this._onLoaded.Dispose();
         }
     }
 
