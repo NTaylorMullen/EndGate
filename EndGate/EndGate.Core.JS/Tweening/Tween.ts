@@ -1,6 +1,7 @@
 /// <reference path="Functions/ITweeningFunction.ts" />
 /// <reference path="../Assets/TimeSpan.ts" />
 /// <reference path="../Utilities/EventHandler1.ts" />
+/// <reference path="../Interfaces/IDisposable.ts" />
 /// <reference path="../Interfaces/ICloneable.ts" />
 /// <reference path="../Interfaces/IUpdateable.ts" />
 /// <reference path="../GameTime.ts" />
@@ -10,7 +11,7 @@ module EndGate.Tweening {
     /**
     * Defines a base Tween class that is used to move a value from a start value to an end value.
     */
-    export class Tween<T extends ICloneable> implements IUpdateable {
+    export class Tween<T extends ICloneable> implements IDisposable, IUpdateable {
         private _from: T;
         private _to: T;
         private _current: T;
@@ -191,6 +192,15 @@ module EndGate.Tweening {
                 this._UpdateTween();
                 this._onChange.Trigger(this._current.Clone());
             }
+        }
+
+        /**
+        * Stops and unbinds all events from the tween.
+        */
+        public Dispose(): void {
+            this.Stop();
+            this._onChange.Dispose();
+            this._onComplete.Dispose();
         }
 
         public _UpdateTween(): void {
