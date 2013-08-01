@@ -2,6 +2,25 @@
 
     QUnit.module("Sprite Animation Facts");
 
+    QUnit.asyncTimeoutTest("Dispose clears event handlers but does not dispose underlying image source.", 10000, function (end, assert, testName) {
+        var imageSource = new eg.Graphics.ImageSource("https://www.google.com/images/srpr/logo4w.png"),
+            animation = new eg.Graphics.SpriteAnimation(imageSource, 20, new eg.Size2d(50, 50), 8);
+
+        imageSource.OnLoaded.Bind(function () {
+            animation.OnComplete.Bind(function () { });
+
+            assert.isTrue(animation.OnComplete.HasBindings());
+            
+            animation.Dispose();
+
+            assert.isFalse(animation.OnComplete.HasBindings());
+            assert.ok(imageSource.Source);
+            end();
+        });
+
+        return function () { };
+    });
+
     QUnit.test("Creating a SpriteAnimation with an unloaded image source does not throw.", function () {
         var imageSource = new eg.Graphics.ImageSource("https://www.google.com/images/srpr/logo4w.png"),
             animation = new eg.Graphics.SpriteAnimation(imageSource, 20, new eg.Size2d(50, 50), 8);
