@@ -2,6 +2,7 @@ var EndGate;
 (function (EndGate) {
     /// <reference path="KeyboardCommand.ts" />
     /// <reference path="KeyboardCommandEvent.ts" />
+    /// <reference path="../../Interfaces/IDisposable.ts" />
     /// <reference path="../../Utilities/EventHandler1.ts" />
     (function (Input) {
         /**
@@ -19,6 +20,8 @@ var EndGate;
                 this._onKeyPress = new EndGate.EventHandler1();
                 this._onKeyDown = new EndGate.EventHandler1();
                 this._onKeyUp = new EndGate.EventHandler1();
+
+                this._disposed = false;
 
                 this.Wire();
             }
@@ -82,6 +85,41 @@ var EndGate;
                 return this.UpdateCache(keyCommand, action, this._onUpCommands);
             };
 
+            /**
+            * Disposes the KeyboardHandler and unbinds all bound events.
+            */
+            KeyboardHandler.prototype.Dispose = function () {
+                if (!this._disposed) {
+                    this._disposed = true;
+
+                    this._onKeyDown.Dispose();
+                    this._onKeyPress.Dispose();
+                    this._onKeyUp.Dispose();
+
+                    for (var command in this._onDownCommands) {
+                        this._onDownCommands[command].Dispose();
+                    }
+
+                    this._onDownCommands = null;
+
+                    for (var command in this._onUpCommands) {
+                        this._onUpCommands[command].Dispose();
+                    }
+
+                    this._onUpCommands = null;
+
+                    for (var command in this._onPressCommands) {
+                        this._onPressCommands[command].Dispose();
+                    }
+
+                    this._onPressCommands = null;
+
+                    this.Unwire();
+                } else {
+                    throw new Error("KeyboardHandler cannot be disposed more than once");
+                }
+            };
+
             KeyboardHandler.prototype.UpdateCache = function (keyCommand, action, store) {
                 var command = new Input.Assets.KeyboardCommand(keyCommand, action), commandId = KeyboardHandler._keyboardCommandIds++;
 
@@ -95,11 +133,21 @@ var EndGate;
             };
 
             KeyboardHandler.prototype.Wire = function () {
-                document.addEventListener("keypress", this.BuildKeyEvent(this._onPressCommands, this.OnKeyPress), false);
+                this._keyPressWire = this.BuildKeyEvent(this._onPressCommands, this.OnKeyPress);
+                this._keyDownWire = this.BuildKeyEvent(this._onDownCommands, this.OnKeyDown);
+                this._keyUpWire = this.BuildKeyEvent(this._onUpCommands, this.OnKeyUp);
 
-                document.addEventListener("keydown", this.BuildKeyEvent(this._onDownCommands, this.OnKeyDown), false);
+                document.addEventListener("keypress", this._keyPressWire, false);
 
-                document.addEventListener("keyup", this.BuildKeyEvent(this._onUpCommands, this.OnKeyUp), false);
+                document.addEventListener("keydown", this._keyDownWire, false);
+
+                document.addEventListener("keyup", this._keyUpWire, false);
+            };
+
+            KeyboardHandler.prototype.Unwire = function () {
+                document.removeEventListener("keypress", this._keyPressWire, false);
+                document.removeEventListener("keydown", this._keyDownWire, false);
+                document.removeEventListener("keyup", this._keyUpWire, false);
             };
 
             KeyboardHandler.prototype.FocusingTextArea = function (ke) {
