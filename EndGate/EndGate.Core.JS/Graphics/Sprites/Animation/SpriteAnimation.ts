@@ -2,6 +2,7 @@
 /// <reference path="../../../Assets/Vectors/Vector2d.ts" />
 /// <reference path="../../../Assets/Sizes/Size2d.ts" />
 /// <reference path="../../../Interfaces/IUpdateable.ts" />
+/// <reference path="../../../Interfaces/IDisposable.ts" />
 /// <reference path="../../../GameTime.ts" />
 /// <reference path="../../ImageSource.ts" />
 
@@ -10,7 +11,7 @@ module EndGate.Graphics {
     /**
     * Defines an animation that can be drawn to the screen.
     */
-    export class SpriteAnimation {
+    export class SpriteAnimation implements IDisposable {
         private _imageSource: ImageSource;
         private _fps: number;
         private _frameSize: Size2d;
@@ -195,6 +196,13 @@ module EndGate.Graphics {
                     this.Step(stepCount);
                 }
             }
+        }
+
+        /**
+        * Unbinds all events.  Does not dispose the underlying image source.
+        */
+        public Dispose(): void {
+            this._onComplete.Dispose();            
         }
 
         private UpdateImageSource(): void {

@@ -4,6 +4,7 @@ var EndGate;
     /// <reference path="../../../Assets/Vectors/Vector2d.ts" />
     /// <reference path="../../../Assets/Sizes/Size2d.ts" />
     /// <reference path="../../../Interfaces/IUpdateable.ts" />
+    /// <reference path="../../../Interfaces/IDisposable.ts" />
     /// <reference path="../../../GameTime.ts" />
     /// <reference path="../../ImageSource.ts" />
     (function (Graphics) {
@@ -145,6 +146,13 @@ var EndGate;
                         this.Step(stepCount);
                     }
                 }
+            };
+
+            /**
+            * Unbinds all events.  Does not dispose the underlying image source.
+            */
+            SpriteAnimation.prototype.Dispose = function () {
+                this._onComplete.Dispose();
             };
 
             SpriteAnimation.prototype.UpdateImageSource = function () {
