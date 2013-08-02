@@ -22,9 +22,28 @@ var EndGate;
                 this.Visible = true;
                 this._State = new Graphics.Assets._.Graphic2dState();
                 this._children = [];
+                this._childrenRemovalBindings = [];
+                this.Parent = null;
                 this._disposed = false;
                 this._onDisposed = new EndGate.EventHandler1();
             }
+            Object.defineProperty(Graphic2d.prototype, "AbsolutePosition", {
+                get: /**
+                * Gets the absolute position of the Graphic2d.  This is used to calculate absolute positions when graphic's have parents.
+                */
+                function () {
+                    var position = this.Position, node = this;
+
+                    while (node = node.Parent) {
+                        position = position.Add(node.Position);
+                    }
+
+                    return position;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
             Object.defineProperty(Graphic2d.prototype, "OnDisposed", {
                 get: /**
                 * Gets an event that is triggered when the Graphic2d has been disposed.  Functions can be bound or unbound to this event to be executed when the event triggers.
@@ -56,7 +75,22 @@ var EndGate;
             * @param graphic Child to add.
             */
             Graphic2d.prototype.AddChild = function (graphic) {
+                var _this = this;
+                var removalBinding;
+
+                if (graphic.Parent !== null) {
+                    throw new Error("Graphic already has parent, cannot add it as a child.");
+                }
+
+                removalBinding = function (graphic) {
+                    _this.RemoveChild(graphic);
+                };
+
+                graphic.Parent = this;
+                graphic.OnDisposed.Bind(removalBinding);
+
                 this._children.push(graphic);
+                this._childrenRemovalBindings.push(removalBinding);
                 this._children.sort(Graphic2d._zindexSort);
             };
 
@@ -68,7 +102,10 @@ var EndGate;
                 var index = this._children.indexOf(graphic);
 
                 if (index >= 0) {
+                    this._children[index].Parent = null;
+                    this._children[index].OnDisposed.Unbind(this._childrenRemovalBindings[index]);
                     this._children.splice(index, 1);
+                    this._childrenRemovalBindings.splice(index, 1);
                     return true;
                 }
 
@@ -122,13 +159,18 @@ var EndGate;
             * Triggers the OnDisposed event.  If this Graphic2d is used with a Scene2d it will be removed from the scene when disposed.
             */
             Graphic2d.prototype.Dispose = function () {
+                var childrenClone;
+
                 if (!this._disposed) {
                     this._disposed = true;
 
-                    for (var i = 0; i < this._children.length; i++) {
-                        this._children[i].Dispose();
+                    childrenClone = this._children.slice(0);
+
+                    for (var i = 0; i < childrenClone.length; i++) {
+                        childrenClone.Dispose();
                     }
 
+                    this._children = null;
                     this.OnDisposed.Trigger(this);
                     this.OnDisposed.Dispose();
                 } else {

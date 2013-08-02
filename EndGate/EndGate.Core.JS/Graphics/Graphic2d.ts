@@ -35,11 +35,17 @@ module EndGate.Graphics {
         */
         public Rotation: number;
 
+        /**
+        * Gets the parent of the Graphic2d.  Value is null if no parent exists.
+        */
+        public Parent: Graphic2d;
+
         public _State: Assets._.Graphic2dState;
 
         public static _zindexSort: (a: Graphic2d, b: Graphic2d) => number = (a: Graphic2d, b: Graphic2d) => { return a.ZIndex - b.ZIndex; };
 
         private _children: Graphic2d[];
+        private _childrenRemovalBindings: Array<(graphic: Graphic2d) => void>;
         private _onDisposed: EventHandler1<Graphic2d>;
         private _disposed: boolean;
 
@@ -50,8 +56,25 @@ module EndGate.Graphics {
             this.Visible = true;
             this._State = new Assets._.Graphic2dState();
             this._children = [];
+            this._childrenRemovalBindings = [];
+            this.Parent = null;
             this._disposed = false;
             this._onDisposed = new EventHandler1<Graphic2d>();
+        }
+
+        /**
+        * Gets the absolute position of the Graphic2d.  This is used to calculate absolute positions when graphic's have parents.
+        */
+        public get AbsolutePosition(): Vector2d {
+            var position = this.Position,
+                node = this;
+            
+            // Iterate up the parent tree until we're at the root parent
+            while (node = node.Parent) {
+                position = position.Add(node.Position);
+            }
+
+            return position;
         }
 
         /**
@@ -77,7 +100,21 @@ module EndGate.Graphics {
         * @param graphic Child to add.
         */
         public AddChild(graphic: Graphic2d): void {
+            var removalBinding: (graphic: Graphic2d) => void;
+
+            if (graphic.Parent !== null) {
+                throw new Error("Graphic already has parent, cannot add it as a child.");
+            }
+
+            removalBinding = (graphic: Graphic2d) => {
+                this.RemoveChild(graphic);
+            };
+
+            graphic.Parent = this;
+            graphic.OnDisposed.Bind(removalBinding);
+
             this._children.push(graphic);
+            this._childrenRemovalBindings.push(removalBinding);
             this._children.sort(Graphic2d._zindexSort);
         }
 
@@ -89,7 +126,10 @@ module EndGate.Graphics {
             var index = this._children.indexOf(graphic);
 
             if (index >= 0) {
+                this._children[index].Parent = null;
+                this._children[index].OnDisposed.Unbind(this._childrenRemovalBindings[index]);
                 this._children.splice(index, 1);
+                this._childrenRemovalBindings.splice(index, 1);
                 return true;
             }
 
@@ -143,14 +183,19 @@ module EndGate.Graphics {
         * Triggers the OnDisposed event.  If this Graphic2d is used with a Scene2d it will be removed from the scene when disposed.
         */
         public Dispose(): void {
+            var childrenClone;
+
             if (!this._disposed) {
                 this._disposed = true;
 
+                childrenClone = this._children.slice(0);
+
                 // Dispose all children to ensure that there's no dangling references.
-                for (var i = 0; i < this._children.length; i++) {
-                    this._children[i].Dispose();
+                for (var i = 0; i < childrenClone.length; i++) {
+                    childrenClone.Dispose();
                 }
 
+                this._children = null;
                 this.OnDisposed.Trigger(this);
                 this.OnDisposed.Dispose();
             }
