@@ -29,9 +29,12 @@ module AudioHandling {
                 this.Graphic.Rotation = Math.random() * (<any>Math).twoPI + -Math.PI;
             }
 
-            // By default the animation is stopped, meaning even if it has update called on it the frames will not start moving
-            // Therefore here we're saying that the animation is ready to play
-            this._animation.Play(repeat);
+            // Need  to wait until the image is loaded to play the animation
+            this._spriteSheet.OnLoaded.Bind(() => {
+                // By default the animation is stopped, meaning even if it has update called on it the frames will not start moving
+                // Therefore here we're saying that the animation is ready to play
+                this._animation.Play(repeat);
+            });            
         }
 
         public Update(gameTime: eg.GameTime): void {

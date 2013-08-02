@@ -7,6 +7,7 @@ var AudioHandling;
         function Animation(imageSrc, x, y, spriteSheetWidth, spriteSheetHeight, frameWidth, frameHeight, fps, frameCount, onComplete, repeat, rotateRandomly) {
             if (typeof repeat === "undefined") { repeat = true; }
             if (typeof rotateRandomly === "undefined") { rotateRandomly = false; }
+            var _this = this;
             this._spriteSheet = new eg.Graphics.ImageSource(imageSrc, spriteSheetWidth, spriteSheetHeight);
 
             // To create our animation, we pass in our sprite sheet that we want to use for the animation, the fps (frames per second),
@@ -23,9 +24,12 @@ var AudioHandling;
                 this.Graphic.Rotation = Math.random() * (Math).twoPI + -Math.PI;
             }
 
-            // By default the animation is stopped, meaning even if it has update called on it the frames will not start moving
-            // Therefore here we're saying that the animation is ready to play
-            this._animation.Play(repeat);
+            // Need  to wait until the image is loaded to play the animation
+            this._spriteSheet.OnLoaded.Bind(function () {
+                // By default the animation is stopped, meaning even if it has update called on it the frames will not start moving
+                // Therefore here we're saying that the animation is ready to play
+                _this._animation.Play(repeat);
+            });
         }
         Animation.prototype.Update = function (gameTime) {
             // Update the animation so that it plays
