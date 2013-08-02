@@ -77,6 +77,9 @@ module EndGate.Graphics {
                 this.ClipLocation = new Vector2d(clipX, clipY);
                 this.ClipSize = new Size2d(clipWidth, clipHeight);
             }
+            else {
+                this.ClipSize = null; // Waiting for the image source OnLoad to set it
+            }
         }
 
         /**
@@ -96,7 +99,7 @@ module EndGate.Graphics {
         /**
         * Determines if the ImageSource has been loaded.
         */
-        public Loaded(): boolean {
+        public IsLoaded(): boolean {
             return this._loaded;
         }
 

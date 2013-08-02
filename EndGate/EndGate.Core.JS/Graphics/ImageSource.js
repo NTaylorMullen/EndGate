@@ -40,6 +40,8 @@ var EndGate;
                     this._size = new EndGate.Size2d(width, height);
                     this.ClipLocation = new EndGate.Vector2d(clipX, clipY);
                     this.ClipSize = new EndGate.Size2d(clipWidth, clipHeight);
+                } else {
+                    this.ClipSize = null;
                 }
             }
             Object.defineProperty(ImageSource.prototype, "OnLoaded", {
@@ -67,7 +69,7 @@ var EndGate;
             /**
             * Determines if the ImageSource has been loaded.
             */
-            ImageSource.prototype.Loaded = function () {
+            ImageSource.prototype.IsLoaded = function () {
                 return this._loaded;
             };
 
