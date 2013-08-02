@@ -58,7 +58,7 @@ module EndGate.Graphics {
 
             this.Fps = fps;
 
-            if (imageSource.Loaded()) {
+            if (imageSource.ClipSize !== null || imageSource.IsLoaded()) {
                 this._framesPerRow = Math.min(Math.floor((imageSource.ClipSize.Width - startOffset.X) / frameSize.Width), frameCount);
             }
             else {
@@ -99,7 +99,7 @@ module EndGate.Graphics {
         * Determines if the animation can play.  This is essentially checking if the underlying image source is loaded.
         */
         public CanPlay(): boolean {
-            return this._imageSource.Loaded();
+            return this._imageSource.IsLoaded();
         }
 
         /**
@@ -112,7 +112,7 @@ module EndGate.Graphics {
         */
         public Play(repeat: boolean): void;
         public Play(repeat: boolean = false): void {
-            if (!this._imageSource.Loaded()) {
+            if (!this._imageSource.ClipSize) {
                 throw new Error("Image source not loaded yet.");
             }
 

@@ -5,6 +5,7 @@ var AnimatedSprites;
     // Generic animation class that allows me to display temporary animations in the viewport
     var Animation = (function () {
         function Animation(imageSrc, x, y, spriteSheetWidth, spriteSheetHeight, frameWidth, frameHeight, fps, frameCount, onComplete) {
+            var _this = this;
             this._spriteSheet = new eg.Graphics.ImageSource(imageSrc, spriteSheetWidth, spriteSheetHeight);
 
             // To create our animation, we pass in our sprite sheet that we want to use for the animation, the fps (frames per second),
@@ -20,9 +21,12 @@ var AnimatedSprites;
             // Randomly rotate the Sprite2d to give a more distinct look to the animation
             this.Graphic.Rotation = Math.random() * (Math).twoPI + -Math.PI;
 
-            // By default the animation is stopped, meaning even if it has update called on it the frames will not start moving
-            // Therefore here we're saying that the animation is ready to play
-            this._animation.Play();
+            // Need  to wait until the image is loaded to play the animation
+            this._spriteSheet.OnLoaded.Bind(function () {
+                // By default the animation is stopped, meaning even if it has update called on it the frames will not start moving
+                // Therefore here we're saying that the animation is ready to play
+                _this._animation.Play();
+            });
         }
         Animation.prototype.Update = function (gameTime) {
             // Update the animation so that it plays

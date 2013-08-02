@@ -28,7 +28,7 @@ var EndGate;
 
                 this.Fps = fps;
 
-                if (imageSource.Loaded()) {
+                if (imageSource.ClipSize !== null || imageSource.IsLoaded()) {
                     this._framesPerRow = Math.min(Math.floor((imageSource.ClipSize.Width - startOffset.X) / frameSize.Width), frameCount);
                 } else {
                     imageSource.OnLoaded.BindFor(function (image) {
@@ -75,12 +75,12 @@ var EndGate;
             * Determines if the animation can play.  This is essentially checking if the underlying image source is loaded.
             */
             SpriteAnimation.prototype.CanPlay = function () {
-                return this._imageSource.Loaded();
+                return this._imageSource.IsLoaded();
             };
 
             SpriteAnimation.prototype.Play = function (repeat) {
                 if (typeof repeat === "undefined") { repeat = false; }
-                if (!this._imageSource.Loaded()) {
+                if (!this._imageSource.ClipSize) {
                     throw new Error("Image source not loaded yet.");
                 }
 

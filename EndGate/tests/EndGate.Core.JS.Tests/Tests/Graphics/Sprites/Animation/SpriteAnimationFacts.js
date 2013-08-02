@@ -21,13 +21,22 @@
         return function () { };
     });
 
-    QUnit.test("Creating a SpriteAnimation with an unloaded image source does not throw.", function () {
+    QUnit.test("Playing a SpriteAnimation with an unloaded, unset image source throws.", function () {
         var imageSource = new eg.Graphics.ImageSource("https://www.google.com/images/srpr/logo4w.png"),
             animation = new eg.Graphics.SpriteAnimation(imageSource, 20, new eg.Size2d(50, 50), 8);
 
         QUnit.throws(function () {
             animation.Play()
         });
+    });
+
+    QUnit.test("Playing a SpriteAnimation with an unloaded, set image source does not throw.", function () {
+        var imageSource = new eg.Graphics.ImageSource("https://www.google.com/images/srpr/logo4w.png", 300, 300),
+            animation = new eg.Graphics.SpriteAnimation(imageSource, 20, new eg.Size2d(50, 50), 8);
+        
+        animation.Play();
+
+        QUnit.isTrue(animation.IsPlaying());
     });
 
     QUnit.asyncTimeoutTest("Stepping moves forward the current frame.", 10000, function (end, assert, testName) {
