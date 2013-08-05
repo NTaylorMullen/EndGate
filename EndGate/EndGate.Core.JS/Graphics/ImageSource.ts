@@ -1,4 +1,5 @@
 /// <reference path="../Interfaces/IDisposable.ts" />
+/// <reference path="../Interfaces/ICloneable.ts" />
 /// <reference path="../Assets/Vectors/Vector2d.ts" />
 /// <reference path="../Assets/Sizes/Size2d.ts" />
 /// <reference path="../Utilities/EventHandler1.ts" />
@@ -8,7 +9,7 @@ module EndGate.Graphics {
     /**
     * Defines an image resource that can be used within Sprite's, SpriteAnimation's and other drawable graphics.
     */
-    export class ImageSource implements IDisposable {
+    export class ImageSource implements IDisposable, ICloneable {
         /**
         * Gets or sets the ClipLocation.  Represents where the image clip is within the base image.
         */
@@ -28,6 +29,11 @@ module EndGate.Graphics {
         private _onLoaded: EventHandler1<ImageSource>;
 
         /**
+        * Creates a new instance of the ImageSource object with a pre-loaded image object.
+        * @param image Image object to use as the source.
+        */
+        constructor(image: HTMLImageElement);
+        /**
         * Creates a new instance of the ImageSource object.
         * @param imageLocation Image source url (this cannot change after construction). 
         */
@@ -41,6 +47,15 @@ module EndGate.Graphics {
         constructor(imageLocation: string, width: number, height: number);
         /**
         * Creates a new instance of the ImageSource object with a specified width and height and a clip location.  If width and height are smaller than the actual width and height of the image source the image will be stretched
+        * @param image Image object to use as the source.
+        * @param clipX The horizontal location of the clip.
+        * @param clipY The vertical location of the clip.
+        * @param clipWidth The width of the clip.  Ultimately this width is the width that is drawn to the screen.
+        * @param clipHeight The height of the clip.  Ultimately this height is the height that is drawn to the screen.
+        */
+        constructor(image: HTMLImageElement, clipX: number, clipY: number, clipWidth: number, clipHeight: number);
+        /**
+        * Creates a new instance of the ImageSource object with a specified width and height and a clip location.  If width and height are smaller than the actual width and height of the image source the image will be stretched
         * @param imageLocation Image source url (this cannot change after construction).
         * @param width The width of the base image (this cannot change after construction).
         * @param height The height of the base image (this cannot change after construction).
@@ -49,35 +64,49 @@ module EndGate.Graphics {
         * @param clipWidth The width of the clip.  Ultimately this width is the width that is drawn to the screen.
         * @param clipHeight The height of the clip.  Ultimately this height is the height that is drawn to the screen.
         */
-        constructor(imageLocation: string, width: number, height: number, clipX: number, clipY: number, clipWidth: number, clipHeight: number);
-        constructor(imageLocation: string, width?: number, height?: number, clipX: number = 0, clipY: number = 0, clipWidth: number = width, clipHeight: number = height) {
-            var setSize = typeof width !== "undefined";
+        constructor(imageLocation: string, width: number, height: number, clipX: number, clipY: number, clipWidth: number, clipHeight: number);        
+        constructor(image: any, width?: number, height?: number, clipX: number = 0, clipY: number = 0, clipWidth: number = width, clipHeight: number = height) {
+            var sizeDefined: boolean = typeof width !== "undefined", imageLocation: string;
 
-            this._loaded = false;
             this._onLoaded = new EventHandler1<ImageSource>();
-            this.Source = new Image();
 
-            this.Source.onload = () => {
-                this._loaded = true;
+            if (typeof image === "string") {
+                imageLocation = image;
+                this._loaded = false;
+                this.Source = new Image();
 
-                if (!setSize) {
-                    this._size = new Size2d(this.Source.width, this.Source.height);
-                    this.ClipLocation = Vector2d.Zero;
-                    this.ClipSize = this._size.Clone();
+                this.Source.onload = () => {
+                    this._loaded = true;
+
+                    if (!sizeDefined) {
+                        this._size = new Size2d(this.Source.width, this.Source.height);
+                        this.ClipLocation = Vector2d.Zero;
+                        this.ClipSize = this._size.Clone();
+                    }
+
+                    this._onLoaded.Trigger(this);
+                };
+
+                this.Source.src = imageLocation;
+                this._imageLocation = imageLocation;
+
+                if (sizeDefined) {
+                    this._size = new Size2d(width, height);
+                    this.ClipLocation = new Vector2d(clipX, clipY);
+                    this.ClipSize = new Size2d(clipWidth, clipHeight);
                 }
-
-                this._onLoaded.Trigger(this);
-            };
-
-            this.Source.src = imageLocation;
-            this._imageLocation = imageLocation;
-
-            if (setSize) {
-                this._size = new Size2d(width, height);
-                this.ClipLocation = new Vector2d(clipX, clipY);
-                this.ClipSize = new Size2d(clipWidth, clipHeight);
+                else {
+                    this.ClipSize = null; // Waiting for the image source OnLoad to set it
+                }
             }
             else {
+                this._loaded = false;
+                this.Source = image;
+                this._imageLocation = image.src;
+                this._size = new Size2d(image.width, image.height);
+
+                this.ClipLocation = new Vector2d(clipX, clipY);
+                this.ClipSize = new Size2d(clipWidth, clipHeight);
                 this.ClipSize = null; // Waiting for the image source OnLoad to set it
             }
         }
@@ -120,6 +149,13 @@ module EndGate.Graphics {
         public Dispose(): void {
             this.Source = null;
             this._onLoaded.Dispose();
+        }
+
+        /**
+        * Returns an identical copy of this image source.  Uses existing base image source.
+        */
+        public Clone(): ImageSource {
+            return new ImageSource(this.Source, this.ClipLocation.X, this.ClipLocation.Y, this.ClipSize.Width, this.ClipSize.Height);
         }
     }
 
