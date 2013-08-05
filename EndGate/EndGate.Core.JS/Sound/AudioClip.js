@@ -20,8 +20,15 @@ var EndGate;
                 if (typeof settings === "undefined") { settings = Sound.AudioSettings.Default; }
                 this._disposed = false;
                 this._settings = settings.Clone();
-                this._audio = document.createElement("audio");
-                this.SetAudioSource(source);
+                this._canPlayWires = [];
+
+                if (source instanceof HTMLAudioElement) {
+                    this._audio = source;
+                } else {
+                    this._audio = document.createElement("audio");
+                    this.SetAudioSource(source);
+                }
+
                 this.ApplySettings();
 
                 this._onComplete = new EndGate.EventHandler1();
@@ -71,10 +78,14 @@ var EndGate;
             */
             AudioClip.prototype.Play = function () {
                 var _this = this;
+                var wire;
+
                 if (this._audio.readyState === 0) {
-                    this._audio.addEventListener("canplay", function () {
+                    wire = function () {
                         _this._audio.play();
-                    }, true);
+                    };
+                    this._canPlayWires.push(wire);
+                    this._audio.addEventListener("canplay", wire, true);
                 } else {
                     this._audio.play();
                 }
@@ -93,10 +104,16 @@ var EndGate;
             */
             AudioClip.prototype.Seek = function (time) {
                 var _this = this;
+                var wire;
+
                 if (this._audio.readyState === 0) {
-                    this._audio.addEventListener("canplay", function () {
+                    wire = function () {
                         _this._audio.currentTime = time;
-                    }, true);
+                    };
+
+                    this._canPlayWires.push(wire);
+
+                    this._audio.addEventListener("canplay", wire, true);
                 } else {
                     this._audio.currentTime = time;
                 }
@@ -120,6 +137,12 @@ var EndGate;
                     this._onComplete.Dispose();
                     this._audio = null;
                     this._settings = null;
+
+                    for (var i = 0; i < this._canPlayWires.length; i++) {
+                        this._audio.removeEventListener("canplay", this._canPlayWires[i], true);
+                    }
+
+                    this._audio.removeEventListener("ended", this._endedWire, true);
                 } else {
                     throw new Error("Cannot dispose AudioClip more than once.");
                 }
@@ -153,9 +176,11 @@ var EndGate;
                 this._audio.preload = this._settings.Preload;
                 this.Volume = this._settings.Volume;
 
-                this._audio.addEventListener("ended", function (e) {
+                this._endedWire = function (e) {
                     _this.OnComplete.Trigger(e);
-                }, true);
+                };
+
+                this._audio.addEventListener("ended", this._endedWire, true);
             };
             return AudioClip;
         })();

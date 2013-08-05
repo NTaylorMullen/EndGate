@@ -19,8 +19,15 @@ module EndGate.Sound {
         private _audio: HTMLAudioElement;
         private _settings: AudioSettings;
         private _onComplete: EventHandler1<Event>;
+        private _canPlayWires: Array<() => void>;
+        private _endedWire: (e: Event) => void;
         private _disposed: boolean;
 
+        /**
+        * Creates a new instance of the AudioClip object.
+        * @param source An audio element to use as the source audio clip.
+        */
+        constructor(source: HTMLAudioElement);
         /**
         * Creates a new instance of the AudioClip object.
         * @param source An array of source paths to audio clips.  Pass in multiple audio types of the same clip to ensure cross browser compatibility.
@@ -43,11 +50,25 @@ module EndGate.Sound {
         * @param settings Audio clip settings.
         */
         constructor(source: string[], settings: AudioSettings = AudioSettings.Default);
+        /**
+        * Creates a new instance of the AudioClip object.
+        * @param source An audio element to use as the source audio clip.
+        * @param settings Audio clip settings.
+        */
+        constructor(source: HTMLAudioElement, settings: AudioSettings = AudioSettings.Default);
         constructor(source: any, settings: AudioSettings = AudioSettings.Default) {
             this._disposed = false;
             this._settings = settings.Clone();
-            this._audio = <HTMLAudioElement>document.createElement("audio");
-            this.SetAudioSource(source);
+            this._canPlayWires = [];
+            
+            if (source instanceof HTMLAudioElement) {
+                this._audio = source;
+            }
+            else {
+                this._audio = <HTMLAudioElement>document.createElement("audio");
+                this.SetAudioSource(source);
+            }
+
             this.ApplySettings();
 
             this._onComplete = new EventHandler1<Event>();
@@ -89,10 +110,14 @@ module EndGate.Sound {
         * Plays the current audio clip.
         */
         public Play(): void {
+            var wire: () => void;
+
             if (this._audio.readyState === <any>0) {
-                this._audio.addEventListener("canplay", () => {
+                wire = () => {
                     this._audio.play();
-                }, true);
+                };
+                this._canPlayWires.push(wire);
+                this._audio.addEventListener("canplay", wire, true);
             }
             else {
                 this._audio.play();
@@ -111,10 +136,16 @@ module EndGate.Sound {
         * @param time The time to seek to.
         */
         public Seek(time: number): void {
+            var wire: () => void;
+
             if (this._audio.readyState === <any>0) {
-                this._audio.addEventListener("canplay", () => {
+                wire = () => {
                     this._audio.currentTime = time;
-                }, true);
+                };
+
+                this._canPlayWires.push(wire);
+
+                this._audio.addEventListener("canplay", wire, true);
             }
             else {
                 this._audio.currentTime = time;
@@ -139,6 +170,12 @@ module EndGate.Sound {
                 this._onComplete.Dispose();
                 this._audio = null;
                 this._settings = null;
+
+                for (var i = 0; i < this._canPlayWires.length; i++) {
+                    this._audio.removeEventListener("canplay", this._canPlayWires[i], true);
+                }
+
+                this._audio.removeEventListener("ended", this._endedWire, true);
             }
             else {
                 throw new Error("Cannot dispose AudioClip more than once.");
@@ -174,9 +211,11 @@ module EndGate.Sound {
             this._audio.preload = this._settings.Preload;
             this.Volume = this._settings.Volume;
 
-            this._audio.addEventListener("ended", (e: Event) => {
+            this._endedWire = (e: Event) => {
                 this.OnComplete.Trigger(e);
-            }, true);
+            };
+
+            this._audio.addEventListener("ended", this._endedWire, true);
         }
 
     }
