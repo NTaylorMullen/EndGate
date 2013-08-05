@@ -1,6 +1,7 @@
 var EndGate;
 (function (EndGate) {
     /// <reference path="../Interfaces/IDisposable.ts" />
+    /// <reference path="../Interfaces/ICloneable.ts" />
     /// <reference path="../Assets/Vectors/Vector2d.ts" />
     /// <reference path="../Assets/Sizes/Size2d.ts" />
     /// <reference path="../Utilities/EventHandler1.ts" />
@@ -9,38 +10,51 @@ var EndGate;
         * Defines an image resource that can be used within Sprite's, SpriteAnimation's and other drawable graphics.
         */
         var ImageSource = (function () {
-            function ImageSource(imageLocation, width, height, clipX, clipY, clipWidth, clipHeight) {
+            function ImageSource(image, width, height, clipX, clipY, clipWidth, clipHeight) {
                 if (typeof clipX === "undefined") { clipX = 0; }
                 if (typeof clipY === "undefined") { clipY = 0; }
                 if (typeof clipWidth === "undefined") { clipWidth = width; }
                 if (typeof clipHeight === "undefined") { clipHeight = height; }
                 var _this = this;
-                var setSize = typeof width !== "undefined";
+                var sizeDefined = typeof width !== "undefined", imageLocation;
 
-                this._loaded = false;
                 this._onLoaded = new EndGate.EventHandler1();
-                this.Source = new Image();
 
-                this.Source.onload = function () {
-                    _this._loaded = true;
+                if (typeof image === "string") {
+                    imageLocation = image;
+                    this._loaded = false;
+                    this.Source = new Image();
 
-                    if (!setSize) {
-                        _this._size = new EndGate.Size2d(_this.Source.width, _this.Source.height);
-                        _this.ClipLocation = EndGate.Vector2d.Zero;
-                        _this.ClipSize = _this._size.Clone();
+                    this.Source.onload = function () {
+                        _this._loaded = true;
+
+                        if (!sizeDefined) {
+                            _this._size = new EndGate.Size2d(_this.Source.width, _this.Source.height);
+                            _this.ClipLocation = EndGate.Vector2d.Zero;
+                            _this.ClipSize = _this._size.Clone();
+                        }
+
+                        _this._onLoaded.Trigger(_this);
+                    };
+
+                    this.Source.src = imageLocation;
+                    this._imageLocation = imageLocation;
+
+                    if (sizeDefined) {
+                        this._size = new EndGate.Size2d(width, height);
+                        this.ClipLocation = new EndGate.Vector2d(clipX, clipY);
+                        this.ClipSize = new EndGate.Size2d(clipWidth, clipHeight);
+                    } else {
+                        this.ClipSize = null;
                     }
+                } else {
+                    this._loaded = false;
+                    this.Source = image;
+                    this._imageLocation = image.src;
+                    this._size = new EndGate.Size2d(image.width, image.height);
 
-                    _this._onLoaded.Trigger(_this);
-                };
-
-                this.Source.src = imageLocation;
-                this._imageLocation = imageLocation;
-
-                if (setSize) {
-                    this._size = new EndGate.Size2d(width, height);
                     this.ClipLocation = new EndGate.Vector2d(clipX, clipY);
                     this.ClipSize = new EndGate.Size2d(clipWidth, clipHeight);
-                } else {
                     this.ClipSize = null;
                 }
             }
@@ -90,6 +104,13 @@ var EndGate;
             ImageSource.prototype.Dispose = function () {
                 this.Source = null;
                 this._onLoaded.Dispose();
+            };
+
+            /**
+            * Returns an identical copy of this image source.  Uses existing base image source.
+            */
+            ImageSource.prototype.Clone = function () {
+                return new ImageSource(this.Source, this.ClipLocation.X, this.ClipLocation.Y, this.ClipSize.Width, this.ClipSize.Height);
             };
             return ImageSource;
         })();
