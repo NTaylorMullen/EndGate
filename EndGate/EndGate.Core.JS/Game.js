@@ -44,6 +44,8 @@ var EndGate;
             this.Configuration.CollisionConfiguration._OnChange.Bind(function () {
                 _this.CollisionManager = new EndGate.Collision.CollisionManager(_this.Configuration.CollisionConfiguration);
             });
+
+            this._PrepareLoadContent();
         }
         Game.prototype._PrepareUpdate = function () {
             this._gameTime.Update();
@@ -51,6 +53,16 @@ var EndGate;
             this.Update(this._gameTime);
             this.CollisionManager.Update(this._gameTime);
             this._updateRequired = false;
+        };
+
+        Game.prototype._PrepareLoadContent = function () {
+            this.LoadContent();
+        };
+
+        /**
+        * Triggered at the start of the game.  All audio sources and images should be loaded in this method.
+        */
+        Game.prototype.LoadContent = function () {
         };
 
         /**
