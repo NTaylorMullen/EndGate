@@ -10,6 +10,9 @@ module EndGate.Content {
         private _images: { [name: string]: Graphics.ImageSource };
         private _audioPlayers: { [name: string]: Sound.AudioPlayer; };
 
+        /**
+        * Creates a new instance of the ContentManager object.
+        */
         constructor() {
             this._images = {};
             this._audioPlayers = {};
@@ -106,6 +109,7 @@ module EndGate.Content {
 
             return player;
         }
+
     }
 
 }
