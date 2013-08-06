@@ -7,7 +7,7 @@ module EndGate.Sound {
     * Defines an AudioPlayer that is mapped to a specific source.  Ultimately used to play the same sound simultaneously.
     */
     export class AudioPlayer {
-        private _source: any;
+        private _source: string[];
 
         /**
         * Creates a new instance of the AudioPlayer object.
@@ -20,7 +20,26 @@ module EndGate.Sound {
         */
         constructor(source: string[]);
         constructor(source: any) {
-            this._source = source;
+            if (!(source instanceof Array)) {
+                this._source = [];
+                this._source.push(source);
+            }
+            else {
+                this._source = source;
+            }
+        }
+
+        /**
+        * Builds an AudioClip with the default settings.
+        */
+        public BuildClip(): AudioClip;
+        /**
+        * Builds an AudioClip with the provided settings.
+        * @param settings Audio settings to play the AudioClip with.
+        */
+        public BuildClip(settings: AudioSettings): AudioClip;
+        public BuildClip(settings: AudioSettings = AudioSettings.Default): AudioClip {
+            return new AudioClip(this._source, settings);
         }
 
         /**
