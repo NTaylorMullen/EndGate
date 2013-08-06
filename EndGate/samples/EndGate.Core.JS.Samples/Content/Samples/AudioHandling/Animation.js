@@ -4,12 +4,11 @@ var AudioHandling;
 (function (AudioHandling) {
     // Generic animation class that allows me to display temporary animations in the viewport
     var Animation = (function () {
-        function Animation(imageSrc, x, y, spriteSheetWidth, spriteSheetHeight, frameWidth, frameHeight, fps, frameCount, onComplete, repeat, rotateRandomly) {
+        function Animation(_spriteSheet, x, y, frameWidth, frameHeight, fps, frameCount, onComplete, repeat, rotateRandomly) {
             if (typeof repeat === "undefined") { repeat = true; }
             if (typeof rotateRandomly === "undefined") { rotateRandomly = false; }
             var _this = this;
-            this._spriteSheet = new eg.Graphics.ImageSource(imageSrc, spriteSheetWidth, spriteSheetHeight);
-
+            this._spriteSheet = _spriteSheet;
             // To create our animation, we pass in our sprite sheet that we want to use for the animation, the fps (frames per second),
             // our animation frame size, and how many frames the animation is
             this._animation = new eg.Graphics.SpriteAnimation(this._spriteSheet, fps, new eg.Size2d(frameWidth, frameHeight), frameCount);
@@ -24,12 +23,16 @@ var AudioHandling;
                 this.Graphic.Rotation = Math.random() * (Math).twoPI + -Math.PI;
             }
 
-            // Need  to wait until the image is loaded to play the animation
-            this._spriteSheet.OnLoaded.Bind(function () {
-                // By default the animation is stopped, meaning even if it has update called on it the frames will not start moving
-                // Therefore here we're saying that the animation is ready to play
-                _this._animation.Play(repeat);
-            });
+            if (this._spriteSheet.IsLoaded()) {
+                this._animation.Play(repeat);
+            } else {
+                // Need  to wait until the image is loaded to play the animation
+                this._spriteSheet.OnLoaded.Bind(function () {
+                    // By default the animation is stopped, meaning even if it has update called on it the frames will not start moving
+                    // Therefore here we're saying that the animation is ready to play
+                    _this._animation.Play(repeat);
+                });
+            }
         }
         Animation.prototype.Update = function (gameTime) {
             // Update the animation so that it plays

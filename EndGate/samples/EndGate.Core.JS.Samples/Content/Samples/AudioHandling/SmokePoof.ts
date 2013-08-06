@@ -5,8 +5,10 @@
 module AudioHandling {
 
     export class SmokePoof extends Animation implements eg.IUpdateable {
+        public static BaseGraphic: eg.Graphics.ImageSource;
+
         constructor(x: number, y: number, onComplete: Function) {
-            super("/Content/Samples/AudioHandling/images/smoke_poof.png", x, y, 1280, 128, 128, 128, 20, 10, onComplete, false, true);
+            super(SmokePoof.BaseGraphic.Clone(), x, y, 128, 128, 20, 10, onComplete, false, true);
         }
     }
 

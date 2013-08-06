@@ -5,8 +5,10 @@
 module AudioHandling {
 
     export class BurningFlame extends Animation implements eg.IUpdateable {
+        public static BaseGraphic: eg.Graphics.ImageSource;
+
         constructor(x: number, y: number) {
-            super("/Content/Samples/AudioHandling/images/burning_flame.png", x, y, 768, 128, 128, 128, 16, 6, () => { });
+            super(BurningFlame.BaseGraphic.Clone(), x, y, 128, 128, 16, 6, () => { });
         }
     }
 

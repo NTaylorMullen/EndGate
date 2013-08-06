@@ -12,7 +12,7 @@ var AudioHandling;
     var BurningFlame = (function (_super) {
         __extends(BurningFlame, _super);
         function BurningFlame(x, y) {
-            _super.call(this, "/Content/Samples/AudioHandling/images/burning_flame.png", x, y, 768, 128, 128, 128, 16, 6, function () {
+            _super.call(this, BurningFlame.BaseGraphic.Clone(), x, y, 128, 128, 16, 6, function () {
             });
         }
         return BurningFlame;
