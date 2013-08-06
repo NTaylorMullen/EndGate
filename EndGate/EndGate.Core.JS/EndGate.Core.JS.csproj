@@ -81,6 +81,10 @@
       <DependentUpon>CollisionConfiguration.ts</DependentUpon>
     </Content>
     <TypeScriptCompile Include="Extensions\Helpers.ts" />
+    <TypeScriptCompile Include="Content\ContentManager.ts" />
+    <Content Include="Content\ContentManager.js">
+      <DependentUpon>ContentManager.ts</DependentUpon>
+    </Content>
     <Content Include="Extensions\Helpers.js">
       <DependentUpon>Helpers.ts</DependentUpon>
     </Content>
@@ -494,10 +498,6 @@
     <CodeAnalysisDictionary Include="Sound\AudioClip.ts" />
     <Content Include="Sound\AudioClip.js">
       <DependentUpon>AudioClip.ts</DependentUpon>
-    </Content>
-    <CodeAnalysisDictionary Include="Sound\AudioManager.ts" />
-    <Content Include="Sound\AudioManager.js">
-      <DependentUpon>AudioManager.ts</DependentUpon>
     </Content>
     <CodeAnalysisDictionary Include="Sound\AudioPlayer.ts" />
     <Content Include="Sound\AudioPlayer.js">
