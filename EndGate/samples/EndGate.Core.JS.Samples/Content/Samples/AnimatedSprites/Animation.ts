@@ -9,12 +9,9 @@ module AnimatedSprites {
         public Graphic: eg.Graphics.Sprite2d;
 
         // SpriteSheet image that is used to pull frames from
-        private _spriteSheet: eg.Graphics.ImageSource;
         private _animation: eg.Graphics.SpriteAnimation;
 
-        constructor(imageSrc: string, x: number, y: number, spriteSheetWidth: number, spriteSheetHeight: number, frameWidth: number, frameHeight: number, fps: number, frameCount: number, onComplete: Function) {
-            this._spriteSheet = new eg.Graphics.ImageSource(imageSrc, spriteSheetWidth, spriteSheetHeight);
-
+        constructor(private _spriteSheet: eg.Graphics.ImageSource, x: number, y: number, frameWidth: number, frameHeight: number, fps: number, frameCount: number, onComplete: Function) {
             // To create our animation, we pass in our sprite sheet that we want to use for the animation, the fps (frames per second), 
             // our animation frame size, and how many frames the animation is
             this._animation = new eg.Graphics.SpriteAnimation(this._spriteSheet, fps, new eg.Size2d(frameWidth, frameHeight), frameCount);
@@ -26,13 +23,18 @@ module AnimatedSprites {
 
             // Randomly rotate the Sprite2d to give a more distinct look to the animation
             this.Graphic.Rotation = Math.random() * (<any>Math).twoPI + -Math.PI;
-
-            // Need  to wait until the image is loaded to play the animation
-            this._spriteSheet.OnLoaded.Bind(() => {
-                // By default the animation is stopped, meaning even if it has update called on it the frames will not start moving
-                // Therefore here we're saying that the animation is ready to play
+            
+            if (this._spriteSheet.IsLoaded()) {
                 this._animation.Play();
-            });
+            }
+            else {
+                // Need  to wait until the image is loaded to play the animation
+                this._spriteSheet.OnLoaded.Bind(() => {
+                    // By default the animation is stopped, meaning even if it has update called on it the frames will not start moving
+                    // Therefore here we're saying that the animation is ready to play
+                    this._animation.Play();
+                });
+            }
         }
 
         public Update(gameTime: eg.GameTime): void {

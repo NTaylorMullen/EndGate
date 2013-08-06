@@ -5,8 +5,12 @@
 module AnimatedSprites {
 
     export class ElectricPulse extends Animation implements eg.IUpdateable {
+        public static BaseGraphic: eg.Graphics.ImageSource;
+
         constructor(x: number, y: number, onComplete: Function) {
-            super("/Content/Samples/AnimatedSprites/images/electric_pulse.png", x, y, 1152, 128, 128, 128, 20, 10, onComplete);
+            var graphic = ElectricPulse.BaseGraphic.Clone();
+
+            super(graphic, x, y, 128, 128, 20, 10, onComplete);
         }
     }
 
