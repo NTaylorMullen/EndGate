@@ -48,14 +48,18 @@ var EndGate;
                         this.ClipSize = null;
                     }
                 } else {
-                    this._loaded = false;
+                    clipWidth = clipX;
+                    clipHeight = clipY;
+                    clipX = width;
+                    clipY = height;
+
+                    this._loaded = true;
                     this.Source = image;
                     this._imageLocation = image.src;
                     this._size = new EndGate.Size2d(image.width, image.height);
 
                     this.ClipLocation = new EndGate.Vector2d(clipX, clipY);
                     this.ClipSize = new EndGate.Size2d(clipWidth, clipHeight);
-                    this.ClipSize = null;
                 }
             }
             Object.defineProperty(ImageSource.prototype, "OnLoaded", {

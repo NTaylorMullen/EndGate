@@ -100,14 +100,18 @@ module EndGate.Graphics {
                 }
             }
             else {
-                this._loaded = false;
+                clipWidth = clipX;
+                clipHeight = clipY;
+                clipX = width;
+                clipY = height;
+
+                this._loaded = true;
                 this.Source = image;
                 this._imageLocation = image.src;
                 this._size = new Size2d(image.width, image.height);
 
                 this.ClipLocation = new Vector2d(clipX, clipY);
                 this.ClipSize = new Size2d(clipWidth, clipHeight);
-                this.ClipSize = null; // Waiting for the image source OnLoad to set it
             }
         }
 
