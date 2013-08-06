@@ -8,9 +8,7 @@ module AnimatedSprites {
         public static BaseGraphic: eg.Graphics.ImageSource;
 
         constructor(x: number, y: number, onComplete: Function) {
-            var graphic = ElectricPulse.BaseGraphic.Clone();
-
-            super(graphic, x, y, 128, 128, 20, 10, onComplete);
+            super(ElectricPulse.BaseGraphic.Clone(), x, y, 128, 128, 20, 10, onComplete);
         }
     }
 

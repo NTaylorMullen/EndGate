@@ -12,9 +12,7 @@ var AnimatedSprites;
     var ElectricPulse = (function (_super) {
         __extends(ElectricPulse, _super);
         function ElectricPulse(x, y, onComplete) {
-            var graphic = ElectricPulse.BaseGraphic.Clone();
-
-            _super.call(this, graphic, x, y, 128, 128, 20, 10, onComplete);
+            _super.call(this, ElectricPulse.BaseGraphic.Clone(), x, y, 128, 128, 20, 10, onComplete);
         }
         return ElectricPulse;
     })(AnimatedSprites.Animation);

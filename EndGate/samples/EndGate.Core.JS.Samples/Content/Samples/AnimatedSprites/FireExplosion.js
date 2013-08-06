@@ -12,9 +12,7 @@ var AnimatedSprites;
     var FireExplosion = (function (_super) {
         __extends(FireExplosion, _super);
         function FireExplosion(x, y, onComplete) {
-            var graphic = FireExplosion.BaseGraphic.Clone();
-
-            _super.call(this, graphic, x, y, 128, 128, 18, 9, onComplete);
+            _super.call(this, FireExplosion.BaseGraphic.Clone(), x, y, 128, 128, 18, 9, onComplete);
         }
         return FireExplosion;
     })(AnimatedSprites.Animation);
