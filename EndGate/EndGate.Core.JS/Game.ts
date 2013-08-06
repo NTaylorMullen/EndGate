@@ -7,7 +7,7 @@
 /// <reference path="Collision/CollisionManager.ts" />
 /// <reference path="Rendering/Scene2d.ts" />
 /// <reference path="Input/InputManager.ts" />
-/// <reference path="Sound/AudioManager.ts" />
+/// <reference path="Content/ContentManager.ts" />
 /// <reference path="Map/MapManager.ts" />
 
 module EndGate {
@@ -35,9 +35,9 @@ module EndGate {
         */
         public Input: Input.InputManager;
         /**
-        * An audio manager which is used to load, manage and play audio clips.
+        * A content manager which is used to load, unload and retrieve images and audio sources.
         */
-        public Audio: Sound.AudioManager;
+        public Content: Content.ContentManager;
         /**
         * A map manager that is used to draw large Graphic2d's (Layer's) to the background.
         */
@@ -71,7 +71,7 @@ module EndGate {
             }, gameCanvas);
 
             this.Input = new Input.InputManager(this.Scene.DrawArea);
-            this.Audio = new Sound.AudioManager();
+            this.Content = new Content.ContentManager();
             
             initialQuadTreeSize = this.Scene.Camera.Size;
 
