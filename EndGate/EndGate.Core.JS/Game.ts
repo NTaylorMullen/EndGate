@@ -86,6 +86,8 @@ module EndGate {
             this.Configuration.CollisionConfiguration._OnChange.Bind(() => {
                 this.CollisionManager = new Collision.CollisionManager(this.Configuration.CollisionConfiguration);
             });
+
+            this._PrepareLoadContent();
         }
 
         public _PrepareUpdate(): void {
@@ -94,6 +96,16 @@ module EndGate {
             this.Update(this._gameTime);
             this.CollisionManager.Update(this._gameTime);
             this._updateRequired = false;
+        }
+
+        public _PrepareLoadContent(): void {
+            this.LoadContent();
+        }
+
+        /**
+        * Triggered at the start of the game.  All audio sources and images should be loaded in this method.
+        */
+        public LoadContent(): void {
         }
 
         /**
