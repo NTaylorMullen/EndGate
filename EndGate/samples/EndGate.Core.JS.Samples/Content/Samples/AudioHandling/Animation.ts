@@ -9,11 +9,9 @@ module AudioHandling {
         public Graphic: eg.Graphics.Sprite2d;
 
         // SpriteSheet image that is used to pull frames from
-        private _spriteSheet: eg.Graphics.ImageSource;
         private _animation: eg.Graphics.SpriteAnimation;
 
-        constructor(imageSrc: string, x: number, y: number, spriteSheetWidth: number, spriteSheetHeight: number, frameWidth: number, frameHeight: number, fps: number, frameCount: number, onComplete: Function, repeat: boolean = true, rotateRandomly: boolean = false) {
-            this._spriteSheet = new eg.Graphics.ImageSource(imageSrc, spriteSheetWidth, spriteSheetHeight);
+        constructor(private _spriteSheet: eg.Graphics.ImageSource, x: number, y: number, frameWidth: number, frameHeight: number, fps: number, frameCount: number, onComplete: Function, repeat: boolean = true, rotateRandomly: boolean = false) {
 
             // To create our animation, we pass in our sprite sheet that we want to use for the animation, the fps (frames per second), 
             // our animation frame size, and how many frames the animation is
@@ -29,12 +27,17 @@ module AudioHandling {
                 this.Graphic.Rotation = Math.random() * (<any>Math).twoPI + -Math.PI;
             }
 
-            // Need  to wait until the image is loaded to play the animation
-            this._spriteSheet.OnLoaded.Bind(() => {
-                // By default the animation is stopped, meaning even if it has update called on it the frames will not start moving
-                // Therefore here we're saying that the animation is ready to play
+            if (this._spriteSheet.IsLoaded()) {
                 this._animation.Play(repeat);
-            });            
+            }
+            else {
+                // Need  to wait until the image is loaded to play the animation
+                this._spriteSheet.OnLoaded.Bind(() => {
+                    // By default the animation is stopped, meaning even if it has update called on it the frames will not start moving
+                    // Therefore here we're saying that the animation is ready to play
+                    this._animation.Play(repeat);
+                });
+            }
         }
 
         public Update(gameTime: eg.GameTime): void {
