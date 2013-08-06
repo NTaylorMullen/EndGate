@@ -8,8 +8,18 @@ var EndGate;
         */
         var AudioPlayer = (function () {
             function AudioPlayer(source) {
-                this._source = source;
+                if (!(source instanceof Array)) {
+                    this._source = [];
+                    this._source.push(source);
+                } else {
+                    this._source = source;
+                }
             }
+            AudioPlayer.prototype.BuildClip = function (settings) {
+                if (typeof settings === "undefined") { settings = Sound.AudioSettings.Default; }
+                return new Sound.AudioClip(this._source, settings);
+            };
+
             AudioPlayer.prototype.Play = function (settings) {
                 if (typeof settings === "undefined") { settings = Sound.AudioSettings.Default; }
                 var clip = new Sound.AudioClip(this._source, settings);
