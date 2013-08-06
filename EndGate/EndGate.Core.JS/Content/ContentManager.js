@@ -7,6 +7,9 @@ var EndGate;
         * Defines a content manager that is used to preload AudioClip's and ImageSource's so that they can be used throughout a game.
         */
         var ContentManager = (function () {
+            /**
+            * Creates a new instance of the ContentManager object.
+            */
             function ContentManager() {
                 this._images = {};
                 this._audioPlayers = {};
