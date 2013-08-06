@@ -168,14 +168,13 @@ module EndGate.Sound {
                 this._disposed = true;
 
                 this._onComplete.Dispose();
-                this._audio = null;
-                this._settings = null;
-
                 for (var i = 0; i < this._canPlayWires.length; i++) {
                     this._audio.removeEventListener("canplay", this._canPlayWires[i], true);
                 }
 
                 this._audio.removeEventListener("ended", this._endedWire, true);
+                this._audio = null;
+                this._settings = null;                
             }
             else {
                 throw new Error("Cannot dispose AudioClip more than once.");
