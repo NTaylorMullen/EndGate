@@ -7,7 +7,7 @@
 /// <reference path="Collision/CollisionManager.ts" />
 /// <reference path="Rendering/Scene2d.ts" />
 /// <reference path="Input/InputManager.ts" />
-/// <reference path="Sound/AudioManager.ts" />
+/// <reference path="Content/ContentManager.ts" />
 /// <reference path="Map/MapManager.ts" />
 var EndGate;
 (function (EndGate) {
@@ -29,7 +29,7 @@ var EndGate;
             }, gameCanvas);
 
             this.Input = new EndGate.Input.InputManager(this.Scene.DrawArea);
-            this.Audio = new EndGate.Sound.AudioManager();
+            this.Content = new EndGate.Content.ContentManager();
 
             initialQuadTreeSize = this.Scene.Camera.Size;
 
