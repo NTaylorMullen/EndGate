@@ -12,7 +12,9 @@ var AnimatedSprites;
     var FireExplosion = (function (_super) {
         __extends(FireExplosion, _super);
         function FireExplosion(x, y, onComplete) {
-            _super.call(this, "/Content/Samples/AnimatedSprites/images/fire_explosion.png", x, y, 1152, 128, 128, 128, 18, 9, onComplete);
+            var graphic = FireExplosion.BaseGraphic.Clone();
+
+            _super.call(this, graphic, x, y, 128, 128, 18, 9, onComplete);
         }
         return FireExplosion;
     })(AnimatedSprites.Animation);

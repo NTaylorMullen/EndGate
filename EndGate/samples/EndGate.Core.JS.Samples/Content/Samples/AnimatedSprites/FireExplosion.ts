@@ -5,8 +5,12 @@
 module AnimatedSprites {
 
     export class FireExplosion extends Animation implements eg.IUpdateable {
+        public static BaseGraphic: eg.Graphics.ImageSource;
+
         constructor(x: number, y: number, onComplete: Function) {
-            super("/Content/Samples/AnimatedSprites/images/fire_explosion.png", x, y, 1152, 128, 128, 128, 18, 9, onComplete);
+            var graphic = FireExplosion.BaseGraphic.Clone();
+
+            super(graphic, x, y, 128, 128, 18, 9, onComplete);
         }
     }
 
