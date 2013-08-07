@@ -70,6 +70,13 @@ var EndGate;
             });
 
             /**
+            * Returns the list of children for the current Graphic2d.
+            */
+            Graphic2d.prototype.GetChildren = function () {
+                return this._children.slice(0);
+            };
+
+            /**
             * Adds a child to the Graphic2d.  Children are drawn with relative positions to the parent Graphic2d.  Children
             * of a Graphic2d should not be added to the Scene, parent Graphic2d's are responsible for drawing their children.
             * @param graphic Child to add.
@@ -110,13 +117,6 @@ var EndGate;
                 }
 
                 return false;
-            };
-
-            /**
-            * Returns the list of children for the current Graphic2d.
-            */
-            Graphic2d.prototype.Children = function () {
-                return this._children;
             };
 
             Graphic2d.prototype._StartDraw = function (context) {

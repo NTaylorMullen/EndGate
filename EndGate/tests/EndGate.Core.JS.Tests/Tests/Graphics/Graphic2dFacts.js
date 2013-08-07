@@ -35,13 +35,13 @@
 
         parent.AddChild(child);
 
-        QUnit.equal(parent.Children().length, 1);
+        QUnit.equal(parent.GetChildren().length, 1);
 
         child.Dispose();
 
         QUnit.equal(child.Parent, null);
         QUnit.isFalse(child.OnDisposed.HasBindings());
-        QUnit.equal(parent.Children().length, 0);
+        QUnit.equal(parent.GetChildren().length, 0);
     });
 
     QUnit.test("Graphic2d's cannot AddChild a graphic that already has a parent.", function () {
