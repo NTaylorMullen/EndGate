@@ -229,8 +229,9 @@ var EndGate;
                 return function (e) {
                     if (eventHandler.HasBindings()) {
                         eventHandler.Trigger(mouseEventBuilder.call(_this, e));
-                        e.preventDefault();
                     }
+
+                    e.preventDefault();
 
                     return returnValue;
                 };
