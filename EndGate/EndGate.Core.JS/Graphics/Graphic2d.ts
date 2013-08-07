@@ -45,7 +45,7 @@ module EndGate.Graphics {
         public static _zindexSort: (a: Graphic2d, b: Graphic2d) => number = (a: Graphic2d, b: Graphic2d) => { return a.ZIndex - b.ZIndex; };
 
         private _children: Graphic2d[];
-        private _childrenRemovalBindings: Array<(graphic: Graphic2d) => void>;
+        private _childrenRemovalBindings: Array<(graphic: Graphic2d) => void >;
         private _onDisposed: EventHandler1<Graphic2d>;
         private _disposed: boolean;
 
@@ -68,7 +68,7 @@ module EndGate.Graphics {
         public get AbsolutePosition(): Vector2d {
             var position = this.Position,
                 node = this;
-            
+
             // Iterate up the parent tree until we're at the root parent
             while (node = node.Parent) {
                 position = position.Add(node.Position);
@@ -92,6 +92,13 @@ module EndGate.Graphics {
         }
         public set Opacity(alpha: number) {
             this._State.GlobalAlpha = alpha;
+        }
+
+        /**
+        * Returns the list of children for the current Graphic2d.
+        */
+        public GetChildren(): Graphic2d[] {
+            return this._children.slice(0);
         }
 
         /**
@@ -134,13 +141,6 @@ module EndGate.Graphics {
             }
 
             return false;
-        }
-
-        /**
-        * Returns the list of children for the current Graphic2d.
-        */
-        public Children(): Graphic2d[]{
-            return this._children;
         }
 
         public _StartDraw(context: CanvasRenderingContext2D): void {
