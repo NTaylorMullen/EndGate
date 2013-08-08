@@ -242,5 +242,15 @@ module EndGate.Graphics {
 
             return this._drawBounds;
         }
+
+        /**
+        * Scale's the fonts FontSize.
+        * @param scale The value to multiply the graphic's size by.
+        */
+        public Scale(scale: number): void {
+            var size = parseInt(this.FontSettings.FontSize);
+
+            this.FontSettings.FontSize = this.FontSettings.FontSize.replace(size.toString(), (size * scale).toString());
+        }
     }
 }

@@ -65,6 +65,15 @@ module EndGate.Graphics {
 
             return bounds;
         }
+
+        /**
+        * Scale's the Sprite2d graphic.
+        * @param scale The value to multiply the graphic's size by.
+        */
+        public Scale(scale: number): void {
+            this.Size.Width *= scale;
+            this.Size.Height *= scale;
+        }
     }
 
 }

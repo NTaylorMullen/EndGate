@@ -33,6 +33,14 @@ var EndGate;
                 return bounds;
             };
 
+            /**
+            * Scale's the circle graphic.
+            * @param scale The value to multiply the graphic's size by.
+            */
+            Circle.prototype.Scale = function (scale) {
+                this.Radius *= scale;
+            };
+
             Circle.prototype._BuildPath = function (context) {
                 context.arc(0, 0, this.Radius, 0, (Math).twoPI);
             };

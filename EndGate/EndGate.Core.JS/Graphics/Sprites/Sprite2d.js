@@ -47,6 +47,15 @@ var EndGate;
 
                 return bounds;
             };
+
+            /**
+            * Scale's the Sprite2d graphic.
+            * @param scale The value to multiply the graphic's size by.
+            */
+            Sprite2d.prototype.Scale = function (scale) {
+                this.Size.Width *= scale;
+                this.Size.Height *= scale;
+            };
             return Sprite2d;
         })(Graphics.Graphic2d);
         Graphics.Sprite2d = Sprite2d;

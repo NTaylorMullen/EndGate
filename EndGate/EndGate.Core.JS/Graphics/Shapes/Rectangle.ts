@@ -50,6 +50,15 @@ module EndGate.Graphics {
             return bounds;
         }
 
+        /**
+        * Scale's the rectangle graphic.
+        * @param scale The value to multiply the graphic's size by.
+        */
+        public Scale(scale: number): void {
+            this.Size.Width *= scale;
+            this.Size.Height *= scale;
+        }
+
         public _BuildPath(context: CanvasRenderingContext2D): void {
             context.rect(-this.Size.HalfWidth, -this.Size.HalfHeight, this.Size.Width, this.Size.Height);
         }
