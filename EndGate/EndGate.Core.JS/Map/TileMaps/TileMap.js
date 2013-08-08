@@ -26,6 +26,12 @@ var EndGate;
 
                 this._Resources = resources;
             }
+            /**
+            * Scale is not implemented.
+            */
+            TileMap.prototype.Scale = function (scale) {
+                throw new Error("Scale is not implemented for TileMaps.");
+            };
             return TileMap;
         })(EndGate.Graphics.Graphic2d);
         Map.TileMap = TileMap;

@@ -48,6 +48,14 @@ module EndGate.Graphics {
             return bounds;
         }
 
+        /**
+        * Scale's the circle graphic.
+        * @param scale The value to multiply the graphic's size by.
+        */
+        public Scale(scale: number): void {
+            this.Radius *= scale;
+        }
+
         public _BuildPath(context: CanvasRenderingContext2D): void {           
             context.arc(0, 0, this.Radius, 0, (<any>Math).twoPI);
         }        

@@ -141,6 +141,15 @@ module EndGate.Graphics {
             return bounds;
         }
 
+        /**
+        * Scale's the Line2d graphic.
+        * @param scale The value to multiply the graphic's size by.
+        */
+        public Scale(scale: number): void {
+            this.From = this.Position.Add(this.From.Subtract(this.Position).Multiply(scale));
+            this.To = this.Position.Add(this.To.Subtract(this.Position).Multiply(scale));
+        }
+
         private UpdatePosition(): void {
             this.Position = ((this._from.Add(this._to)).Divide(2));
             this._difference = this._to.Subtract(this._from);

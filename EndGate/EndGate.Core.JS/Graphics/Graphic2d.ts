@@ -180,6 +180,14 @@ module EndGate.Graphics {
         }
 
         /**
+        * Abstract: Should be overridden to scale the size of the Graphic2d.
+        * @param scale The value to multiply the graphic's size by.
+        */
+        public Scale(scale: number): void{
+            throw new Error("Scale is abstract, it must be implemented.");
+        }
+
+        /**
         * Triggers the OnDisposed event.  If this Graphic2d is used with a Scene2d it will be removed from the scene when disposed.
         */
         public Dispose(): void {

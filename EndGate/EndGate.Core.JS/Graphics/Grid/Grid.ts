@@ -430,6 +430,14 @@ module EndGate.Graphics {
         }
 
         /**
+        * Scale is not implemented.
+        * @param scale The value to multiply the graphic's size by.
+        */
+        public Scale(scale: number): void {
+            throw new Error("Scale is not implemented for the Grid class.");
+        }
+
+        /**
         * Converts the provided vertical coordinate to a row number that is based on the current grid.
         * @param y The vertical coordinate to convert to a row.
         */

@@ -247,6 +247,16 @@ var EndGate;
 
                 return this._drawBounds;
             };
+
+            /**
+            * Scale's the fonts FontSize.
+            * @param scale The value to multiply the graphic's size by.
+            */
+            Text2d.prototype.Scale = function (scale) {
+                var size = parseInt(this.FontSettings.FontSize);
+
+                this.FontSettings.FontSize = this.FontSettings.FontSize.replace(size.toString(), (size * scale).toString());
+            };
             return Text2d;
         })(Graphics.Graphic2d);
         Graphics.Text2d = Text2d;

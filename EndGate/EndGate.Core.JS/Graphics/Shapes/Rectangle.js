@@ -33,6 +33,15 @@ var EndGate;
                 return bounds;
             };
 
+            /**
+            * Scale's the rectangle graphic.
+            * @param scale The value to multiply the graphic's size by.
+            */
+            Rectangle.prototype.Scale = function (scale) {
+                this.Size.Width *= scale;
+                this.Size.Height *= scale;
+            };
+
             Rectangle.prototype._BuildPath = function (context) {
                 context.rect(-this.Size.HalfWidth, -this.Size.HalfHeight, this.Size.Width, this.Size.Height);
             };
