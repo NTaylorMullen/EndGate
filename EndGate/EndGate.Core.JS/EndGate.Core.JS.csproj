@@ -318,24 +318,24 @@
     <Content Include="Graphics\Sprites\Sprite2d.js">
       <DependentUpon>Sprite2d.ts</DependentUpon>
     </Content>
-    <CodeAnalysisDictionary Include="Graphics\Text\Font\FontFamily.ts" />
-    <Content Include="Graphics\Text\Font\FontFamily.js">
+    <CodeAnalysisDictionary Include="Graphics\Shapes\Text\Font\FontFamily.ts" />
+    <Content Include="Graphics\Shapes\Text\Font\FontFamily.js">
       <DependentUpon>FontFamily.ts</DependentUpon>
     </Content>
-    <CodeAnalysisDictionary Include="Graphics\Text\Font\FontSettings.ts" />
-    <Content Include="Graphics\Text\Font\FontSettings.js">
+    <CodeAnalysisDictionary Include="Graphics\Shapes\Text\Font\FontSettings.ts" />
+    <Content Include="Graphics\Shapes\Text\Font\FontSettings.js">
       <DependentUpon>FontSettings.ts</DependentUpon>
     </Content>
-    <CodeAnalysisDictionary Include="Graphics\Text\Font\FontStyle.ts" />
-    <Content Include="Graphics\Text\Font\FontStyle.js">
+    <CodeAnalysisDictionary Include="Graphics\Shapes\Text\Font\FontStyle.ts" />
+    <Content Include="Graphics\Shapes\Text\Font\FontStyle.js">
       <DependentUpon>FontStyle.ts</DependentUpon>
     </Content>
-    <CodeAnalysisDictionary Include="Graphics\Text\Font\FontVariant.ts" />
-    <Content Include="Graphics\Text\Font\FontVariant.js">
+    <CodeAnalysisDictionary Include="Graphics\Shapes\Text\Font\FontVariant.ts" />
+    <Content Include="Graphics\Shapes\Text\Font\FontVariant.js">
       <DependentUpon>FontVariant.ts</DependentUpon>
     </Content>
-    <CodeAnalysisDictionary Include="Graphics\Text\Text2d.ts" />
-    <Content Include="Graphics\Text\Text2d.js">
+    <CodeAnalysisDictionary Include="Graphics\Shapes\Text\Text2d.ts" />
+    <Content Include="Graphics\Shapes\Text\Text2d.js">
       <DependentUpon>Text2d.ts</DependentUpon>
     </Content>
     <CodeAnalysisDictionary Include="Input\InputManager.ts" />
