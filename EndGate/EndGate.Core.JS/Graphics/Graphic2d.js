@@ -3,6 +3,7 @@ var EndGate;
     /// <reference path="../Interfaces/ITyped.ts" />
     /// <reference path="../Interfaces/IMoveable.ts" />
     /// <reference path="../Interfaces/IDisposable.ts" />
+    /// <reference path="../Interfaces/ICloneable.ts" />
     /// <reference path="../Rendering/IRenderable.ts" />
     /// <reference path="../Assets/Sizes/Size2d.ts" />
     /// <reference path="../Assets/Vectors/Vector2d.ts" />
@@ -161,6 +162,25 @@ var EndGate;
             */
             Graphic2d.prototype.Scale = function (scale) {
                 throw new Error("Scale is abstract, it must be implemented.");
+            };
+
+            /**
+            * Abstract: Returns a nearly identical copy of this Graphic2d.  If this Graphic2d belongs to a parent, the cloned Graphic2d will not. If this Graphic2d has children, all children will be cloned as well.  Lastly, the cloned Graphic2d will not have the same event bindings as this one does.
+            */
+            Graphic2d.prototype.Clone = function () {
+                throw new Error("Clone is abstract, it must be implemented.");
+            };
+
+            // Used by derived Graphic2d's to centralize logic
+            Graphic2d.prototype._Clone = function (graphic) {
+                for (var i = 0; i < this._children.length; i++) {
+                    graphic.AddChild(this._children[i].Clone());
+                }
+
+                graphic.Opacity = this.Opacity;
+                graphic.Rotation = this.Rotation;
+                graphic.Visible = this.Visible;
+                graphic.ZIndex = this.ZIndex;
             };
 
             /**

@@ -56,6 +56,17 @@ module EndGate.Graphics {
             this.Radius *= scale;
         }
 
+        /**
+        * Returns a nearly identical copy of this Circle.  If this Circle belongs to a parent, the cloned Circle will not. If this Circle has children, all children will be cloned as well.  Lastly, the cloned Circle will not have the same event bindings as this one does.
+        */
+        public Clone(): Circle {
+            var graphic = new Circle(this.Position.X, this.Position.Y, this.Radius, this.Color);
+
+            super._Clone(graphic);
+
+            return graphic;
+        }
+
         public _BuildPath(context: CanvasRenderingContext2D): void {           
             context.arc(0, 0, this.Radius, 0, (<any>Math).twoPI);
         }        

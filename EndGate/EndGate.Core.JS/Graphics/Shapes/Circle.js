@@ -41,6 +41,17 @@ var EndGate;
                 this.Radius *= scale;
             };
 
+            /**
+            * Returns a nearly identical copy of this Circle.  If this Circle belongs to a parent, the cloned Circle will not. If this Circle has children, all children will be cloned as well.  Lastly, the cloned Circle will not have the same event bindings as this one does.
+            */
+            Circle.prototype.Clone = function () {
+                var graphic = new Circle(this.Position.X, this.Position.Y, this.Radius, this.Color);
+
+                _super.prototype._Clone.call(this, graphic);
+
+                return graphic;
+            };
+
             Circle.prototype._BuildPath = function (context) {
                 context.arc(0, 0, this.Radius, 0, (Math).twoPI);
             };

@@ -42,6 +42,17 @@ var EndGate;
                 this.Size.Height *= scale;
             };
 
+            /**
+            * Returns a nearly identical copy of this Rectangle.  If this Rectangle belongs to a parent, the cloned Rectangle will not. If this Rectangle has children, all children will be cloned as well.  Lastly, the cloned Rectangle will not have the same event bindings as this one does.
+            */
+            Rectangle.prototype.Clone = function () {
+                var graphic = new Rectangle(this.Position.X, this.Position.Y, this.Size.Width, this.Size.Height, this.Color);
+
+                _super.prototype._Clone.call(this, graphic);
+
+                return graphic;
+            };
+
             Rectangle.prototype._BuildPath = function (context) {
                 context.rect(-this.Size.HalfWidth, -this.Size.HalfHeight, this.Size.Width, this.Size.Height);
             };
