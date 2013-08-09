@@ -1,8 +1,8 @@
 interface Window {
-    OnRepaintCompleted(callback: Function): void;
+    OnRepaintCompleted: () => void;
 }
 
-window.OnRepaintCompleted = () => {
+(<any>window).OnRepaintCompleted = () => {
     return (
         window.requestAnimationFrame ||
         (<any>window).webkitRequestAnimationFrame ||
@@ -10,7 +10,7 @@ window.OnRepaintCompleted = () => {
         (<any>window).oRequestAnimationFrame ||
         (<any>window).msRequestAnimationFrame ||
         function (callback) {
-            window.setTimeout(callback, 0);
+            (<any>window).setTimeout(callback, 0);
         }
     );
 } ();
