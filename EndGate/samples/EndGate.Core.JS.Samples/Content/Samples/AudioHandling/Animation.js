@@ -42,4 +42,4 @@ var AudioHandling;
     })();
     AudioHandling.Animation = Animation;
 })(AudioHandling || (AudioHandling = {}));
-//@ sourceMappingURL=Animation.js.map
+//# sourceMappingURL=Animation.js.map

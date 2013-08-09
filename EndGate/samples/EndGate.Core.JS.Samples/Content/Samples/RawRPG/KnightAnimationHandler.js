@@ -63,4 +63,4 @@ var RawRPG;
     })();
     RawRPG.KnightAnimationHandler = KnightAnimationHandler;
 })(RawRPG || (RawRPG = {}));
-//@ sourceMappingURL=KnightAnimationHandler.js.map
+//# sourceMappingURL=KnightAnimationHandler.js.map

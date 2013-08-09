@@ -86,6 +86,7 @@ var EndGate;
         * Triggered as fast as possible.  Determined by the current browsers repaint rate.
         */
         Game.prototype.Draw = function (context) {
+            // This is called by the scene
         };
 
         /**

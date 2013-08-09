@@ -1,9 +1,3 @@
-var __extends = this.__extends || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
 /// <reference path="../../../Scripts/endgate.d.ts" />
 /// <reference path="../../../Scripts/jquery.d.ts" />
 /// <reference path="CameraDragController.ts" />
@@ -11,6 +5,12 @@ var __extends = this.__extends || function (d, b) {
 /// <reference path="TileSelector.ts" />
 /// <reference path="TileHighlighter.ts" />
 /// <reference path="GridEntry.ts" />
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
 // Wrap in module to keep code out of global scope
 var MapCreator;
 (function (MapCreator) {
@@ -94,4 +94,4 @@ var MapCreator;
     })(eg.Game);
     MapCreator.SpriteSheetViewer = SpriteSheetViewer;
 })(MapCreator || (MapCreator = {}));
-//@ sourceMappingURL=SpriteSheetViewer.js.map
+//# sourceMappingURL=SpriteSheetViewer.js.map

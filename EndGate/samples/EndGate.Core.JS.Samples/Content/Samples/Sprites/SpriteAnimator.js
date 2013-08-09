@@ -87,4 +87,4 @@ var Sprites;
     })();
     Sprites.SpriteAnimator = SpriteAnimator;
 })(Sprites || (Sprites = {}));
-//@ sourceMappingURL=SpriteAnimator.js.map
+//# sourceMappingURL=SpriteAnimator.js.map

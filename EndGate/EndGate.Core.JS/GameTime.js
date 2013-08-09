@@ -10,7 +10,6 @@ var EndGate;
         * Creates a new instance of the GameTime object.
         */
         function GameTime() {
-            this._type = "GameTime";
             this._start = this._lastUpdate = new Date();
 
             this.Update();

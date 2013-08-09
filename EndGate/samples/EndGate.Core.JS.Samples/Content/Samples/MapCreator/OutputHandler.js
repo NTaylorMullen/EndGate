@@ -74,4 +74,4 @@ var MapCreator;
     })();
     MapCreator.OutputHandler = OutputHandler;
 })(MapCreator || (MapCreator = {}));
-//@ sourceMappingURL=OutputHandler.js.map
+//# sourceMappingURL=OutputHandler.js.map

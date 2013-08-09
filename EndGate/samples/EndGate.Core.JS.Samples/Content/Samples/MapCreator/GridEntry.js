@@ -12,4 +12,4 @@ var MapCreator;
     })();
     MapCreator.GridEntry = GridEntry;
 })(MapCreator || (MapCreator = {}));
-//@ sourceMappingURL=GridEntry.js.map
+//# sourceMappingURL=GridEntry.js.map

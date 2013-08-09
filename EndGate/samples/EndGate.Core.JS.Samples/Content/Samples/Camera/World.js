@@ -35,4 +35,4 @@ var Camera;
     })();
     Camera.World = World;
 })(Camera || (Camera = {}));
-//@ sourceMappingURL=World.js.map
+//# sourceMappingURL=World.js.map

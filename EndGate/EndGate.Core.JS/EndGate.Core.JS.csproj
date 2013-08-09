@@ -147,6 +147,14 @@
     <Content Include="Map\TileMaps\ITileDetails.js">
       <DependentUpon>ITileDetails.ts</DependentUpon>
     </Content>
+    <TypeScriptCompile Include="Particles\Emitter.ts" />
+    <Content Include="Particles\Emitter.js">
+      <DependentUpon>Emitter.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Particles\Range.ts" />
+    <Content Include="Particles\Range.js">
+      <DependentUpon>Range.ts</DependentUpon>
+    </Content>
     <Content Include="Tweening\Functions\Back.js">
       <DependentUpon>Back.ts</DependentUpon>
     </Content>
@@ -533,6 +541,6 @@
   <ItemGroup />
   <Import Project="$(SolutionDir)\build\Microsoft.TypeScript.targets" Condition="Exists('$(SolutionDir)\build\Microsoft.TypeScript.targets')" />
   <Target Name="BeforeBuild">
-    <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass .\build.ps1" WorkingDirectory="$(ProjectDir)" Condition=" '$(OS)' == 'Windows_NT'" />
+    <!--<Exec Command="powershell -NoProfile -ExecutionPolicy Bypass .\build.ps1" WorkingDirectory="$(ProjectDir)" Condition=" '$(OS)' == 'Windows_NT'" />-->
   </Target>
 </Project>

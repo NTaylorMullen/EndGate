@@ -122,7 +122,7 @@ else {
 }
 
 
-tsc --comments --out $outputDeclarationPath --declaration $allFilesStr --target ES5
+tsc --out $outputDeclarationPath --declaration $allFilesStr --target ES5
 
 # Since TypeScript will not push imports into declaration files I need to append the alias via the build step
 Add-Content $outputDeclarationPath "import eg = EndGate;"

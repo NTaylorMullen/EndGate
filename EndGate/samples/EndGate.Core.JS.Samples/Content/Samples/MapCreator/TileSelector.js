@@ -98,4 +98,4 @@ var MapCreator;
     })();
     MapCreator.TileSelector = TileSelector;
 })(MapCreator || (MapCreator = {}));
-//@ sourceMappingURL=TileSelector.js.map
+//# sourceMappingURL=TileSelector.js.map

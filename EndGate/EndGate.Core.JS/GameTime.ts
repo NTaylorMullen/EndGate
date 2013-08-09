@@ -6,9 +6,7 @@ module EndGate {
     /**
     * Defines a game time class that is used to manage update timing execution as well as total game time.
     */
-    export class GameTime implements _.ITyped {
-        public _type: string = "GameTime";
-
+    export class GameTime {
         // Start date
         private _start: Date;
         private _lastUpdate: Date;

@@ -222,6 +222,7 @@ var EndGate;
             };
 
             Tween.prototype._UpdateTween = function () {
+                // This should be overridden
             };
             return Tween;
         })();

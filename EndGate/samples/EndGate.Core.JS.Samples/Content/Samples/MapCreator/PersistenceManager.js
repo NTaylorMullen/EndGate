@@ -63,4 +63,4 @@ var MapCreator;
     })();
     MapCreator.PersistenceManager = PersistenceManager;
 })(MapCreator || (MapCreator = {}));
-//@ sourceMappingURL=PersistenceManager.js.map
+//# sourceMappingURL=PersistenceManager.js.map

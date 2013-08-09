@@ -86,4 +86,4 @@ var Texts;
     })();
     Texts.TextAnimator = TextAnimator;
 })(Texts || (Texts = {}));
-//@ sourceMappingURL=TextAnimator.js.map
+//# sourceMappingURL=TextAnimator.js.map

@@ -13,4 +13,4 @@
     // Create our game
     game = new KeyboardInput.Game(canvas, $("#bindButton"), $("#unbindButton"), $("#bindingCommandInput"), $("#bindingResultInput"), $("#commandHolder"));
 })($, window);
-//@ sourceMappingURL=Main.js.map
+//# sourceMappingURL=Main.js.map

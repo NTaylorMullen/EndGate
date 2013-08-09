@@ -13,4 +13,4 @@
     // Create our game
     game = new MapLoading.Game(canvas, mapUrlInput, loadMapButton, gameHolder, loadDialogHolder);
 })($, window);
-//@ sourceMappingURL=Main.js.map
+//# sourceMappingURL=Main.js.map

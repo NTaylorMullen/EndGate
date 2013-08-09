@@ -66,4 +66,4 @@ var RawRPG;
     })();
     RawRPG.LoadMapHandler = LoadMapHandler;
 })(RawRPG || (RawRPG = {}));
-//@ sourceMappingURL=LoadMapHandler.js.map
+//# sourceMappingURL=LoadMapHandler.js.map

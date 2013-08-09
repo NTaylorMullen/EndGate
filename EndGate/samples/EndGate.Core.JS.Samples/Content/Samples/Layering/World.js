@@ -22,4 +22,4 @@ var Layering;
     })();
     Layering.World = World;
 })(Layering || (Layering = {}));
-//@ sourceMappingURL=World.js.map
+//# sourceMappingURL=World.js.map

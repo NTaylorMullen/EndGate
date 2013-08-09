@@ -91,4 +91,4 @@ var Shapes;
     })();
     Shapes.ShapeAnimator = ShapeAnimator;
 })(Shapes || (Shapes = {}));
-//@ sourceMappingURL=ShapeAnimator.js.map
+//# sourceMappingURL=ShapeAnimator.js.map

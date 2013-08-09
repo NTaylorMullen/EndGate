@@ -51,4 +51,4 @@ var MapCreator;
     })();
     MapCreator.CameraDragController = CameraDragController;
 })(MapCreator || (MapCreator = {}));
-//@ sourceMappingURL=CameraDragController.js.map
+//# sourceMappingURL=CameraDragController.js.map

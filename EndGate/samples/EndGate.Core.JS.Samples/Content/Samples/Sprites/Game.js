@@ -1,12 +1,12 @@
+/// <reference path="../../../Scripts/jquery.d.ts" />
+/// <reference path="../../../Scripts/endgate.d.ts" />
+/// <reference path="SpriteAnimator.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-/// <reference path="../../../Scripts/jquery.d.ts" />
-/// <reference path="../../../Scripts/endgate.d.ts" />
-/// <reference path="SpriteAnimator.ts" />
 // Wrap in module to keep code out of global scope
 var Sprites;
 (function (Sprites) {
@@ -29,4 +29,4 @@ var Sprites;
     })(eg.Game);
     Sprites.Game = Game;
 })(Sprites || (Sprites = {}));
-//@ sourceMappingURL=Game.js.map
+//# sourceMappingURL=Game.js.map

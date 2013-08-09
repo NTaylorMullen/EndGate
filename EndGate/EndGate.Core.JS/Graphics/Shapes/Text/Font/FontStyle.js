@@ -8,7 +8,6 @@ var EndGate;
             (function (FontStyle) {
                 FontStyle[FontStyle["Normal"] = 0] = "Normal";
                 FontStyle[FontStyle["Italic"] = 1] = "Italic";
-
                 FontStyle[FontStyle["Oblique"] = 2] = "Oblique";
             })(Assets.FontStyle || (Assets.FontStyle = {}));
             var FontStyle = Assets.FontStyle;
