@@ -142,6 +142,19 @@ var EndGate;
                 this.To = this.Position.Add(this.To.Subtract(this.Position).Multiply(scale));
             };
 
+            /**
+            * Returns a nearly identical copy of this Line2d.  If this Line2d belongs to a parent, the cloned Line2d will not. If this Line2d has children, all children will be cloned as well.  Lastly, the cloned Line2d will not have the same event bindings as this one does.
+            */
+            Line2d.prototype.Clone = function () {
+                var graphic = new Line2d(this.From.X, this.From.Y, this.To.X, this.To.Y, this.LineWidth, this.Color);
+
+                graphic.LineCap = this.LineCap;
+
+                _super.prototype._Clone.call(this, graphic);
+
+                return graphic;
+            };
+
             Line2d.prototype.UpdatePosition = function () {
                 this.Position = ((this._from.Add(this._to)).Divide(2));
                 this._difference = this._to.Subtract(this._from);

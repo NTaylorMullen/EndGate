@@ -56,6 +56,17 @@ var EndGate;
                 this.Size.Width *= scale;
                 this.Size.Height *= scale;
             };
+
+            /**
+            * Returns a nearly identical copy of this Sprite2d.  If this Sprite2d belongs to a parent, the cloned Sprite2d will not. If this Sprite2d has children, all children will be cloned as well.  Lastly, the cloned Sprite2d will not have the same event bindings as this one does.
+            */
+            Sprite2d.prototype.Clone = function () {
+                var graphic = new Sprite2d(this.Position.X, this.Position.Y, this.Image.Clone(), this.Size.Width, this.Size.Height);
+
+                _super.prototype._Clone.call(this, graphic);
+
+                return graphic;
+            };
             return Sprite2d;
         })(Graphics.Graphic2d);
         Graphics.Sprite2d = Sprite2d;

@@ -9,7 +9,6 @@ module EndGate.Graphics {
     export class Shape extends Graphic2d {
         public _type: string = "Shape";
         private _fill: boolean;
-        private _stroke: boolean;
 
         /**
         * Should only ever be called by derived classes.
@@ -26,7 +25,6 @@ module EndGate.Graphics {
             super(position);
 
             this._fill = false;
-            this._stroke = false;
 
             if (typeof color !== "undefined") {
                 this.Color = color;
@@ -61,7 +59,6 @@ module EndGate.Graphics {
             return this._State.StrokeStyle;
         }
         public set BorderColor(color: string) {
-            this._stroke = true;
             this._State.StrokeStyle = color;
         }
 
@@ -154,7 +151,7 @@ module EndGate.Graphics {
                 context.fill();
             }
 
-            if (this._stroke) {
+            if (this._State.LineWidth > 0) {
                 context.stroke();
             }
             else {
@@ -176,6 +173,13 @@ module EndGate.Graphics {
             this._StartDraw(context);
             this._BuildPath(context);
             this._EndDraw(context);
+        }
+
+        public _Clone(graphic: Shape): void {
+            graphic.Border(this.BorderThickness, this.BorderColor);
+            graphic.Shadow(this.ShadowX, this.ShadowY, this.ShadowColor, this.ShadowBlur);
+
+            super._Clone(graphic);
         }
     }
 }

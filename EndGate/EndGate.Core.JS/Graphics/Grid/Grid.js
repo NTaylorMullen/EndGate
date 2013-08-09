@@ -372,6 +372,28 @@ var EndGate;
                 return Math.floor((x - (this.Position.X - this._size.HalfWidth)) / this._tileSize.Width);
             };
 
+            /**
+            * Returns a nearly identical copy of this Grid.  If this Grid belongs to a parent, the cloned Grid will not. If this Grid has children, all children will be cloned as well.  Lastly, the cloned Grid will not have the same event bindings as this one does.
+            */
+            Grid.prototype.Clone = function () {
+                var graphic = new Grid(this.Position.X, this.Position.Y, this._rows, this._columns, this._tileSize.Width, this._tileSize.Height, this._drawGridLines, this._gridLineColor);
+
+                for (var i = 0; i < this._grid.length; i++) {
+                    for (var j = 0; j < this._grid[i].length; j++) {
+                        if (this._grid[i][j]) {
+                            graphic.Fill(i, j, this._grid[i][j].Clone());
+                        }
+                    }
+                }
+
+                graphic.Opacity = this.Opacity;
+                graphic.Rotation = this.Rotation;
+                graphic.Visible = this.Visible;
+                graphic.ZIndex = this.ZIndex;
+
+                return graphic;
+            };
+
             Grid.prototype.BuildGridLines = function () {
                 var halfSize = this._size.Multiply(.5), topLeft = new EndGate.Vector2d(-halfSize.Width, -halfSize.Height), bottomRight = new EndGate.Vector2d(halfSize.Width, halfSize.Height);
 

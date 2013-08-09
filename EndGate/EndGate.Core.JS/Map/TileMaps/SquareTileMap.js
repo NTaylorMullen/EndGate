@@ -28,6 +28,7 @@ var EndGate;
                 var _this = this;
                 _super.call(this, x, y, resources);
 
+                this._mappings = mappings;
                 this._grid = new EndGate.Graphics.Grid(0, 0, mappings.length, mappings[0].length, tileWidth, tileHeight, drawGridLines);
                 this._staticMap = staticMap;
                 this._onTileLoad = new EndGate.EventHandler2();
@@ -133,6 +134,22 @@ var EndGate;
                 this._onLoaded.Dispose();
                 this._onTileLoad.Dispose();
                 _super.prototype.Dispose.call(this);
+            };
+
+            /**
+            * Returns a nearly identical copy of this SquareTileMap.  If this SquareTileMap belongs to a parent, the cloned SquareTileMap will not. If this SquareTileMap has children, all children will be cloned as well.  Lastly, the cloned SquareTileMap will not have the same event bindings as this one does.
+            */
+            SquareTileMap.prototype.Clone = function () {
+                var graphic = new SquareTileMap(this.Position.X, this.Position.Y, this._grid.TileSize.Width, this._grid.TileSize.Height, this._Resources, this._mappings);
+
+                graphic.Opacity = this.Opacity;
+                graphic.Rotation = this.Rotation;
+                graphic.Visible = this.Visible;
+                graphic.ZIndex = this.ZIndex;
+                graphic.RowLoadDelay = this.RowLoadDelay.Clone();
+                graphic.TileLoadDelay = this.TileLoadDelay.Clone();
+
+                return graphic;
             };
 
             SquareTileMap.prototype.BuildCache = function () {

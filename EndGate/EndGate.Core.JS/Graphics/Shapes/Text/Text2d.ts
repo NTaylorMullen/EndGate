@@ -134,6 +134,24 @@ module EndGate.Graphics {
 
             this.FontSettings.FontSize = this.FontSettings.FontSize.replace(size.toString(), (size * scale).toString());
         }
-        
+
+        /**
+        * Returns a nearly identical copy of this Text2d.  If this Text2d belongs to a parent, the cloned Text2d will not. If this Text2d has children, all children will be cloned as well.  Lastly, the cloned Text2d will not have the same event bindings as this one does.
+        */
+        public Clone(): Text2d {
+            var graphic = new Text2d(this.Position.X, this.Position.Y, this.Text, this.Color);
+
+            graphic.Align = this.Align;
+            graphic.Baseline = this.Baseline;
+            graphic.FontSettings.FontFamily = this.FontSettings.FontFamily;
+            graphic.FontSettings.FontSize = this.FontSettings.FontSize;
+            graphic.FontSettings.FontStyle = this.FontSettings.FontStyle;
+            graphic.FontSettings.FontVariant = this.FontSettings.FontVariant;
+            graphic.FontSettings.FontWeight = this.FontSettings.FontWeight;
+            
+            super._Clone(graphic);
+
+            return graphic;
+        }
     }
 }

@@ -74,6 +74,17 @@ module EndGate.Graphics {
             this.Size.Width *= scale;
             this.Size.Height *= scale;
         }
+
+        /**
+        * Returns a nearly identical copy of this Sprite2d.  If this Sprite2d belongs to a parent, the cloned Sprite2d will not. If this Sprite2d has children, all children will be cloned as well.  Lastly, the cloned Sprite2d will not have the same event bindings as this one does.
+        */
+        public Clone(): Sprite2d {
+            var graphic = new Sprite2d(this.Position.X, this.Position.Y, this.Image.Clone(), this.Size.Width, this.Size.Height);
+
+            super._Clone(graphic);
+
+            return graphic;
+        }
     }
 
 }

@@ -1,6 +1,7 @@
 /// <reference path="../Interfaces/ITyped.ts" />
 /// <reference path="../Interfaces/IMoveable.ts" />
 /// <reference path="../Interfaces/IDisposable.ts" />
+/// <reference path="../Interfaces/ICloneable.ts" />
 /// <reference path="../Rendering/IRenderable.ts" />
 /// <reference path="../Assets/Sizes/Size2d.ts" />
 /// <reference path="../Assets/Vectors/Vector2d.ts" />
@@ -13,7 +14,7 @@ module EndGate.Graphics {
     /**
     * Abstract drawable graphic type that is used create the base for graphics.
     */
-    export class Graphic2d implements _.ITyped, Rendering.IRenderable, IMoveable, IDisposable {
+    export class Graphic2d implements _.ITyped, Rendering.IRenderable, IMoveable, IDisposable, ICloneable {
         public _type: string = "Graphic2d";
 
         /**
@@ -185,6 +186,25 @@ module EndGate.Graphics {
         */
         public Scale(scale: number): void{
             throw new Error("Scale is abstract, it must be implemented.");
+        }
+
+        /**
+        * Abstract: Returns a nearly identical copy of this Graphic2d.  If this Graphic2d belongs to a parent, the cloned Graphic2d will not. If this Graphic2d has children, all children will be cloned as well.  Lastly, the cloned Graphic2d will not have the same event bindings as this one does.
+        */
+        public Clone(): Graphic2d {
+            throw new Error("Clone is abstract, it must be implemented.");
+        }
+
+        // Used by derived Graphic2d's to centralize logic
+        public _Clone(graphic: Graphic2d): void {
+            for (var i = 0; i < this._children.length; i++){
+                graphic.AddChild(this._children[i].Clone());
+            }
+
+            graphic.Opacity = this.Opacity;
+            graphic.Rotation = this.Rotation;
+            graphic.Visible = this.Visible;
+            graphic.ZIndex = this.ZIndex;
         }
 
         /**

@@ -19,7 +19,6 @@ var EndGate;
                 this._type = "Shape";
 
                 this._fill = false;
-                this._stroke = false;
 
                 if (typeof color !== "undefined") {
                     this.Color = color;
@@ -62,7 +61,6 @@ var EndGate;
                     return this._State.StrokeStyle;
                 },
                 set: function (color) {
-                    this._stroke = true;
                     this._State.StrokeStyle = color;
                 },
                 enumerable: true,
@@ -153,7 +151,7 @@ var EndGate;
                     context.fill();
                 }
 
-                if (this._stroke) {
+                if (this._State.LineWidth > 0) {
                     context.stroke();
                 } else {
                     context.closePath();
@@ -174,6 +172,13 @@ var EndGate;
                 this._StartDraw(context);
                 this._BuildPath(context);
                 this._EndDraw(context);
+            };
+
+            Shape.prototype._Clone = function (graphic) {
+                graphic.Border(this.BorderThickness, this.BorderColor);
+                graphic.Shadow(this.ShadowX, this.ShadowY, this.ShadowColor, this.ShadowBlur);
+
+                _super.prototype._Clone.call(this, graphic);
             };
             return Shape;
         })(Graphics.Graphic2d);
