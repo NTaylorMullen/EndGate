@@ -43,7 +43,7 @@ module EndGate.Graphics {
         * @param frameCount How many frames to play for the animation.
         * @param startOffset The positional offset within the imageSource on where the set of animation frames begin.
         */
-        constructor(imageSource: ImageSource, fps: number, frameSize: Size2d, frameCount: number, startOffset: Vector2d = Vector2d.Zero);
+        constructor(imageSource: ImageSource, fps: number, frameSize: Size2d, frameCount: number, startOffset: Vector2d);
         constructor(imageSource: ImageSource, fps: number, frameSize: Size2d, frameCount: number, startOffset: Vector2d = Vector2d.Zero) {
             this._imageSource = imageSource;
             this._frameSize = frameSize;
