@@ -43,19 +43,19 @@ module EndGate.Sound {
         * @param source Source path to an audio clip.
         * @param settings Audio clip settings.
         */
-        constructor(source: string, settings: AudioSettings = AudioSettings.Default);
+        constructor(source: string, settings: AudioSettings);
         /**
         * Creates a new instance of the AudioClip object.
         * @param source An array of source paths to audio clips.  Pass in multiple audio types of the same clip to ensure cross browser compatibility.
         * @param settings Audio clip settings.
         */
-        constructor(source: string[], settings: AudioSettings = AudioSettings.Default);
+        constructor(source: string[], settings: AudioSettings);
         /**
         * Creates a new instance of the AudioClip object.
         * @param source An audio element to use as the source audio clip.
         * @param settings Audio clip settings.
         */
-        constructor(source: HTMLAudioElement, settings: AudioSettings = AudioSettings.Default);
+        constructor(source: HTMLAudioElement, settings: AudioSettings);
         constructor(source: any, settings: AudioSettings = AudioSettings.Default) {
             this._disposed = false;
             this._settings = settings.Clone();
