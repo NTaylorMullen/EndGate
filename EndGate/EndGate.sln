@@ -14,16 +14,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{49EB
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EndGate.Core.JS", "EndGate.Core.JS\EndGate.Core.JS.csproj", "{BDAADAAA-4DD3-4FAA-891C-BD70C442B3BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EndGate.Core.JS.Tests", "tests\EndGate.Core.JS.Tests\EndGate.Core.JS.Tests.csproj", "{95189D2C-5919-4DFD-A243-EEAD6DFF401D}"
-	ProjectSection(ProjectDependencies) = postProject
-		{BDAADAAA-4DD3-4FAA-891C-BD70C442B3BB} = {BDAADAAA-4DD3-4FAA-891C-BD70C442B3BB}
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EndGate.Core.JS.Samples", "samples\EndGate.Core.JS.Samples\EndGate.Core.JS.Samples.csproj", "{6FB8F9C4-0785-49E3-A77A-930789F61281}"
-	ProjectSection(ProjectDependencies) = postProject
-		{BDAADAAA-4DD3-4FAA-891C-BD70C442B3BB} = {BDAADAAA-4DD3-4FAA-891C-BD70C442B3BB}
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{3B69DE52-9F6F-4DAD-9467-A32CBC7EBB4C}"
 	ProjectSection(SolutionItems) = preProject
 		build\Build.proj = build\Build.proj
@@ -48,20 +38,8 @@ Global
 		{BDAADAAA-4DD3-4FAA-891C-BD70C442B3BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDAADAAA-4DD3-4FAA-891C-BD70C442B3BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BDAADAAA-4DD3-4FAA-891C-BD70C442B3BB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{95189D2C-5919-4DFD-A243-EEAD6DFF401D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{95189D2C-5919-4DFD-A243-EEAD6DFF401D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{95189D2C-5919-4DFD-A243-EEAD6DFF401D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{95189D2C-5919-4DFD-A243-EEAD6DFF401D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6FB8F9C4-0785-49E3-A77A-930789F61281}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6FB8F9C4-0785-49E3-A77A-930789F61281}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6FB8F9C4-0785-49E3-A77A-930789F61281}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6FB8F9C4-0785-49E3-A77A-930789F61281}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{95189D2C-5919-4DFD-A243-EEAD6DFF401D} = {C0BAA468-9EA0-4176-B9FD-151A0A8DF798}
-		{6FB8F9C4-0785-49E3-A77A-930789F61281} = {49EB18BE-1A16-4D27-A023-8917A910AAD3}
 	EndGlobalSection
 EndGlobal
