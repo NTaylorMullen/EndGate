@@ -6,7 +6,7 @@ module EndGate.Tweening {
     /**
     * Defines a NumberTween class that is used to move a number from a start value to an end value.
     */
-    export class NumberTween extends Tween<number> {
+    export class NumberTween extends Tween<Number> {
 
         /**
         * Creates a new instance of the NumberTween object.
