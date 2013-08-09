@@ -20,7 +20,7 @@ module EndGate.Tweening {
         }
 
         public _UpdateTween(): void {
-            this.Current = this.TweeningFunction(this.From, this.To, this.Elapsed, this.Duration);
+            this.Current = <Number>this.TweeningFunction(this.From, this.To, this.Elapsed, this.Duration);
         }
     }
 

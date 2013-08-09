@@ -21,7 +21,7 @@ module EndGate._.Loopers {
 
             if (this._running) {
                 // Let initial call stack unwind before initiating the loop
-                window.setTimeout(() => {
+                (<any>window).setTimeout(() => {
                     this.Loop(timedCallback);
                 }, 0);
             }

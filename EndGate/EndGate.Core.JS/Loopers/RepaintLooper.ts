@@ -38,7 +38,7 @@ module EndGate._.Loopers {
 
                 // We want to maintain the "this" context, also we need to continuously bind
                 // the method due to how the underlying native function works
-                window.OnRepaintCompleted(() =>
+                (<any>window).OnRepaintCompleted(() =>
                 {
                     this.Run();
                 });
