@@ -30,15 +30,15 @@ module MapCreator {
                     'class MyGame extends eg.Game {}<br /><br />' +
                     'var myGame = new MyGame(),<br />' +
                     '   resourceSheet = new eg.Graphics.ImageSource("' + spriteSheetViewer.SpriteSheetUrl + '", ' + spriteSheetViewer.ActiveSpriteSheet.Size.Width + ', ' + spriteSheetViewer.ActiveSpriteSheet.Size.Height + '),<br />' +
-                    '   resources: eg.Graphics.ImageSource[] = eg.Map.SquareTileMap.ExtractTiles(resourceSheet, ' + tileWidth + ', ' + tileHeight + '),<br />' +
-                    '   layers: eg.Map.SquareTileMap[] = [<br />';
+                    '   resources: eg.Graphics.ImageSource[] = eg.Graphics.SquareTileMap.ExtractTiles(resourceSheet, ' + tileWidth + ', ' + tileHeight + '),<br />' +
+                    '   layers: eg.Graphics.SquareTileMap[] = [<br />';
 
                     for (var i = 0; i < resourceMappings.length; i++) {
                         if (i > 0) {
                             outputString += ', <br />';
                         }
 
-                        outputString += 'new eg.Map.SquareTileMap(0,0,' + tileWidth + ', ' + tileHeight + ', resources, ' + JSON.stringify(resourceMappings[i].Layer) + ')';
+                        outputString += 'new eg.Graphics.SquareTileMap(0,0,' + tileWidth + ', ' + tileHeight + ', resources, ' + JSON.stringify(resourceMappings[i].Layer) + ')';
                     }
 
                     outputString += '<br />]; <br /><br />' +
