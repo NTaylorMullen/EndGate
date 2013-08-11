@@ -50,6 +50,10 @@ module EndGate.Graphics {
         private _onDisposed: EventHandler1<Graphic2d>;
         private _disposed: boolean;
 
+        /**
+        * Creates a new instance of the Graphic2d object.  Should only ever be called by a derived class.
+        * @param position The initial position of the Graphic2d
+        */
         constructor(position: Vector2d) {
             this.Position = position;
             this.Rotation = 0;
