@@ -1,7 +1,7 @@
 /// <reference path="ITMXLayer.ts" />
 /// <reference path="ITMXTileset.ts" />
 
-declare module EndGate.Map.Loaders._.TMX {
+declare module EndGate.MapLoaders._.TMX {
 
     export interface ITMX {
         version: number;

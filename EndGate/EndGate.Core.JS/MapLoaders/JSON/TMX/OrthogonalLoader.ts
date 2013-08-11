@@ -1,17 +1,17 @@
-/// <reference path="../../../../Graphics/ImageSource.ts" />
+/// <reference path="../../../Graphics/ImageSource.ts" />
 /// <reference path="../../IMapLoader.ts" />
 /// <reference path="../../IMapLoadedResult.ts" />
 /// <reference path="../../IMapPreloadInfo.ts" />
 /// <reference path="../../IHookFunction.ts" />
-/// <reference path="../../../../Graphics/TileMaps/SquareTileMap.ts" />
-/// <reference path="../../../../Graphics/TileMaps/ITileDetails.ts" />
-/// <reference path="../../../../Assets/TimeSpan.ts" />
-/// <reference path="../../../../Extensions/Helpers.ts" />
-/// <reference path="../../../../Utilities/EventHandler1.ts" />
+/// <reference path="../../../Graphics/TileMaps/SquareTileMap.ts" />
+/// <reference path="../../../Graphics/TileMaps/ITileDetails.ts" />
+/// <reference path="../../../Assets/TimeSpan.ts" />
+/// <reference path="../../../Extensions/Helpers.ts" />
+/// <reference path="../../../Utilities/EventHandler1.ts" />
 /// <reference path="ITMX.ts" />
 /// <reference path="ITMXTileset.ts" />
 
-module EndGate.Map.Loaders._.TMX {
+module EndGate.MapLoaders._.TMX {
 
     interface TileExtractResult {
         ResourceHooks: Array<Array<(details: Graphics.Assets.ITileDetails) => any>>;

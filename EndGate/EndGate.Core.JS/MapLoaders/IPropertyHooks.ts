@@ -1,6 +1,6 @@
 /// <reference path="IHookFunction.ts" />
 
-declare module EndGate.Map.Loaders {
+declare module EndGate.MapLoaders {
 
     /**
     * Defines an object that can be used to provide hooks to adjust tiles as they are built.

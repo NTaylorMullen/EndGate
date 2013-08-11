@@ -1,6 +1,6 @@
-/// <reference path="../../Utilities/EventHandler1.ts" />
+/// <reference path="../Utilities/EventHandler1.ts" />
 
-declare module EndGate.Map.Loaders {
+declare module EndGate.MapLoaders {
 
     /**
     * Defines an object that contains some immediately available information about the map that is about to be loaded.

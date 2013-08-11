@@ -4,7 +4,7 @@
 /// <reference path="ITMX.ts" />
 /// <reference path="OrthogonalLoader.ts" />
 
-module EndGate.Map.Loaders._.TMX {
+module EndGate.MapLoaders._.TMX {
 
     export class TMXLoader implements IMapLoader {
         private _orientationLoaders: { [orientation: string]: IMapLoader };

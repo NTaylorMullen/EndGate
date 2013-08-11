@@ -1,4 +1,4 @@
-declare module EndGate.Map.Loaders._.TMX {
+declare module EndGate.MapLoaders._.TMX {
 
     export interface ITMXTileset {
         firstgid: number;

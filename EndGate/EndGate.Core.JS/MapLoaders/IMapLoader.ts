@@ -1,7 +1,7 @@
 /// <reference path="IMapPreloadInfo.ts" />
 /// <reference path="IPropertyHooks.ts" />
 
-declare module EndGate.Map.Loaders {
+declare module EndGate.MapLoaders {
 
     /**
     * Defines an object that can load data and output a result asynchronously.

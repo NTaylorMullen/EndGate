@@ -32,10 +32,10 @@ module MapLoading {
             // We use jquery to retrieve the map json from a url location
             (<any>$.getJSON(url, (mapJson) => {
                 // Use the JSONLoader to load the map json
-                var preloadInfo = eg.Map.Loaders.JSONLoader.Load(mapJson, (result: eg.Map.Loaders.IMapLoadedResult) => {
+                var preloadInfo = eg.MapLoaders.JSONLoader.Load(mapJson, (result: eg.MapLoaders.IMapLoadedResult) => {
                     // We get an array of square tile maps that we then need to add to the scene
                     // Note that the ZIndexes of the layers are already set from 0 - (layers.length-1)
-                    this.LoadLayers(<Array<eg.Map.SquareTileMap>>result.Layers);
+                    this.LoadLayers(<Array<eg.Graphics.SquareTileMap>>result.Layers);
 
                     // Notify the caller that the load has completed.
                     loadComplete();
@@ -64,7 +64,7 @@ module MapLoading {
         }
 
         // Set the load information based on the preload information gathered from the EndGate json loader.
-        private SetInfo(info: eg.Map.Loaders.IMapPreloadInfo): void {
+        private SetInfo(info: eg.MapLoaders.IMapPreloadInfo): void {
             this._totalTiles.html(this.ToFormattedNumberString(info.TileCount));
             this._totalLayers.html(this.ToFormattedNumberString(info.LayerCount));
             this._totalResources.html(this.ToFormattedNumberString(info.ResourceSheetCount));

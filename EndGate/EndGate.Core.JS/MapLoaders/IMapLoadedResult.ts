@@ -1,6 +1,6 @@
-/// <reference path="../../Graphics/TileMaps/TileMap.ts" />
+/// <reference path="../Graphics/TileMaps/TileMap.ts" />
 
-declare module EndGate.Map.Loaders {
+declare module EndGate.MapLoaders {
 
     /**
     * Defines an object that contains all the information needed to create a scenic map.
