@@ -4,8 +4,6 @@
 /// <reference path="../IMapPreloadInfo.ts" />
 /// <reference path="../IMapLoadedResult.ts" />
 /// <reference path="../IPropertyHooks.ts" />
-/// <reference path="../../TileMaps/TileMap.ts" />
-/// <reference path="../../TileMaps/SquareTileMap.ts" />
 
 module EndGate.Map.Loaders {
 

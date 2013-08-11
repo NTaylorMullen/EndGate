@@ -49,10 +49,10 @@ var RawRPG;
                 // It takes time to load an image so we have this OnLoaded function that will trigger when the image has finished loading
                 resourceSheet.OnLoaded.Bind(function () {
                     // Build the resources array based on the new sprite sheet
-                    var resources = eg.Map.SquareTileMap.ExtractTiles(resourceSheet, settings.TileSize.Width, settings.TileSize.Height), tileMap;
+                    var resources = eg.Graphics.SquareTileMap.ExtractTiles(resourceSheet, settings.TileSize.Width, settings.TileSize.Height), tileMap;
 
                     for (var i = 0; i < settings.Layers.length; i++) {
-                        tileMap = new eg.Map.SquareTileMap(centerPosition.X, centerPosition.Y, settings.TileSize.Width, settings.TileSize.Height, resources, settings.Layers[i].Layer);
+                        tileMap = new eg.Graphics.SquareTileMap(centerPosition.X, centerPosition.Y, settings.TileSize.Width, settings.TileSize.Height, resources, settings.Layers[i].Layer);
                         activeTileMaps.push(tileMap);
                         gameScene.Add(tileMap);
                     }

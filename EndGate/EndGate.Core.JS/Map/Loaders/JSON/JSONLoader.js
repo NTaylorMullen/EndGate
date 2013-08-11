@@ -7,8 +7,6 @@ var EndGate;
         /// <reference path="../IMapPreloadInfo.ts" />
         /// <reference path="../IMapLoadedResult.ts" />
         /// <reference path="../IPropertyHooks.ts" />
-        /// <reference path="../../TileMaps/TileMap.ts" />
-        /// <reference path="../../TileMaps/SquareTileMap.ts" />
         (function (Loaders) {
             /**
             * Defines a JSON loader that is used to load maps.

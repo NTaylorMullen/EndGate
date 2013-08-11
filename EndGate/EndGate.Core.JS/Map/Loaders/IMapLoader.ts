@@ -1,4 +1,3 @@
-/// <reference path="../TileMaps/TileMap.ts" />
 /// <reference path="IMapPreloadInfo.ts" />
 /// <reference path="IPropertyHooks.ts" />
 

@@ -9,7 +9,7 @@ var EndGate;
     /// <reference path="../../Assets/Vectors/Vector2d.ts" />
     /// <reference path="../../Graphics/Graphic2d.ts" />
     /// <reference path="../../Graphics/ImageSource.ts" />
-    (function (Map) {
+    (function (Graphics) {
         /**
         * Defines an abstract class TileMap that takes an array of resources to be mapped to tiles.
         */
@@ -34,7 +34,7 @@ var EndGate;
             };
             return TileMap;
         })(EndGate.Graphics.Graphic2d);
-        Map.TileMap = TileMap;
-    })(EndGate.Map || (EndGate.Map = {}));
-    var Map = EndGate.Map;
+        Graphics.TileMap = TileMap;
+    })(EndGate.Graphics || (EndGate.Graphics = {}));
+    var Graphics = EndGate.Graphics;
 })(EndGate || (EndGate = {}));

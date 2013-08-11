@@ -143,8 +143,8 @@
     <Content Include="Map\Loaders\JSON\TMX\TMXLoader.js">
       <DependentUpon>TMXLoader.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="Map\TileMaps\ITileDetails.ts" />
-    <Content Include="Map\TileMaps\ITileDetails.js">
+    <TypeScriptCompile Include="Graphics\TileMaps\ITileDetails.ts" />
+    <Content Include="Graphics\TileMaps\ITileDetails.js">
       <DependentUpon>ITileDetails.ts</DependentUpon>
     </Content>
     <TypeScriptCompile Include="Particles\Emitter.ts" />
@@ -434,16 +434,16 @@
     <Content Include="Loopers\TimedCallback.js">
       <DependentUpon>TimedCallback.ts</DependentUpon>
     </Content>
-    <CodeAnalysisDictionary Include="Map\TileMaps\SquareTileMap.ts" />
-    <TypeScriptCompile Include="Map\TileMaps\SquareTile.ts" />
-    <Content Include="Map\TileMaps\SquareTile.js">
+    <CodeAnalysisDictionary Include="Graphics\TileMaps\SquareTileMap.ts" />
+    <TypeScriptCompile Include="Graphics\TileMaps\SquareTile.ts" />
+    <Content Include="Graphics\TileMaps\SquareTile.js">
       <DependentUpon>SquareTile.ts</DependentUpon>
     </Content>
-    <Content Include="Map\TileMaps\SquareTileMap.js">
+    <Content Include="Graphics\TileMaps\SquareTileMap.js">
       <DependentUpon>SquareTileMap.ts</DependentUpon>
     </Content>
-    <CodeAnalysisDictionary Include="Map\TileMaps\TileMap.ts" />
-    <Content Include="Map\TileMaps\TileMap.js">
+    <CodeAnalysisDictionary Include="Graphics\TileMaps\TileMap.ts" />
+    <Content Include="Graphics\TileMaps\TileMap.js">
       <DependentUpon>TileMap.ts</DependentUpon>
     </Content>
     <CodeAnalysisDictionary Include="MovementControllers\LinearDirections.ts" />

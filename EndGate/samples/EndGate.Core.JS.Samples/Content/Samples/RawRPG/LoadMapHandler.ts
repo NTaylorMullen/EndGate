@@ -25,7 +25,7 @@ module RawRPG {
                 // Grab any saved maps from local storage
                 strMaps = localStorage.getItem("mapBuilder"),
                 maps: { [name: string]: ISettings; },
-                activeTileMaps: eg.Map.SquareTileMap[] = [];
+                activeTileMaps: eg.Graphics.SquareTileMap[] = [];
 
             // If there are saved maps parse them out into an appropriate JS object
             if (strMaps && strMaps.length > 0) {
@@ -73,12 +73,12 @@ module RawRPG {
                 // It takes time to load an image so we have this OnLoaded function that will trigger when the image has finished loading
                 resourceSheet.OnLoaded.Bind(() => {
                     // Build the resources array based on the new sprite sheet
-                    var resources: eg.Graphics.ImageSource[] = eg.Map.SquareTileMap.ExtractTiles(resourceSheet, settings.TileSize.Width, settings.TileSize.Height),
-                        tileMap: eg.Map.SquareTileMap;
+                    var resources: eg.Graphics.ImageSource[] = eg.Graphics.SquareTileMap.ExtractTiles(resourceSheet, settings.TileSize.Width, settings.TileSize.Height),
+                        tileMap: eg.Graphics.SquareTileMap;
 
                     // Generate the layers and add them to the scenery
                     for (var i = 0; i < settings.Layers.length; i++) {
-                        tileMap = new eg.Map.SquareTileMap(centerPosition.X, centerPosition.Y, settings.TileSize.Width, settings.TileSize.Height, resources, settings.Layers[i].Layer);
+                        tileMap = new eg.Graphics.SquareTileMap(centerPosition.X, centerPosition.Y, settings.TileSize.Width, settings.TileSize.Height, resources, settings.Layers[i].Layer);
                         activeTileMaps.push(tileMap);
                         gameScene.Add(tileMap);
                     }

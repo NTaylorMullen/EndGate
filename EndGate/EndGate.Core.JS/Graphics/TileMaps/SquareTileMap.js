@@ -16,7 +16,7 @@ var EndGate;
     /// <reference path="ITileDetails.ts" />
     /// <reference path="TileMap.ts" />
     /// <reference path="SquareTile.ts" />
-    (function (Map) {
+    (function (Graphics) {
         /**
         * Defines a structure that is proficient at creating diverse tile maps based off of a resource image.  Best drawn via a SceneryHandler.
         */
@@ -183,7 +183,7 @@ var EndGate;
                 var action = function () {
                     var tile, tileGraphic = _this._Resources[resourceIndex];
 
-                    tile = new Map.SquareTile(tileGraphic, _this._grid.TileSize.Width, _this._grid.TileSize.Height);
+                    tile = new Graphics.Assets.SquareTile(tileGraphic, _this._grid.TileSize.Width, _this._grid.TileSize.Height);
 
                     _this._grid.Fill(row, column, tile);
 
@@ -229,8 +229,8 @@ var EndGate;
                 }, this.RowLoadDelay.Milliseconds);
             };
             return SquareTileMap;
-        })(Map.TileMap);
-        Map.SquareTileMap = SquareTileMap;
-    })(EndGate.Map || (EndGate.Map = {}));
-    var Map = EndGate.Map;
+        })(Graphics.TileMap);
+        Graphics.SquareTileMap = SquareTileMap;
+    })(EndGate.Graphics || (EndGate.Graphics = {}));
+    var Graphics = EndGate.Graphics;
 })(EndGate || (EndGate = {}));
