@@ -15,6 +15,10 @@ var EndGate;
         * Abstract drawable graphic type that is used create the base for graphics.
         */
         var Graphic2d = (function () {
+            /**
+            * Creates a new instance of the Graphic2d object.  Should only ever be called by a derived class.
+            * @param position The initial position of the Graphic2d
+            */
             function Graphic2d(position) {
                 this._type = "Graphic2d";
                 this.Position = position;
