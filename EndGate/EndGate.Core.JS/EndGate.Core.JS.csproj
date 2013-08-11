@@ -434,14 +434,6 @@
     <Content Include="Loopers\TimedCallback.js">
       <DependentUpon>TimedCallback.ts</DependentUpon>
     </Content>
-    <CodeAnalysisDictionary Include="Map\MapManager.ts" />
-    <Content Include="Map\MapManager.js">
-      <DependentUpon>MapManager.ts</DependentUpon>
-    </Content>
-    <CodeAnalysisDictionary Include="Map\Scenery\SceneryHandler.ts" />
-    <Content Include="Map\Scenery\SceneryHandler.js">
-      <DependentUpon>SceneryHandler.ts</DependentUpon>
-    </Content>
     <CodeAnalysisDictionary Include="Map\TileMaps\SquareTileMap.ts" />
     <TypeScriptCompile Include="Map\TileMaps\SquareTile.ts" />
     <Content Include="Map\TileMaps\SquareTile.js">

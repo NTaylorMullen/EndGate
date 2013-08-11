@@ -4,7 +4,7 @@
 var RawRPG;
 (function (RawRPG) {
     var LoadMapHandler = (function () {
-        function LoadMapHandler(sceneryHandler, centerPosition, defaultRows, defaultColumns, defaultTileSize, spriteSheetUrl, defaultLayer) {
+        function LoadMapHandler(gameScene, centerPosition, defaultRows, defaultColumns, defaultTileSize, spriteSheetUrl, defaultLayer) {
             var savedMaps = $("#savedMaps"), loadMap = $("#loadMap"), strMaps = localStorage.getItem("mapBuilder"), maps, activeTileMaps = [];
 
             if (strMaps && strMaps.length > 0) {
@@ -38,7 +38,7 @@ var RawRPG;
             // Will load currently selected map when clicked
             loadMap.click(function () {
                 for (var i = 0; i < activeTileMaps.length; i++) {
-                    sceneryHandler.RemoveLayer(activeTileMaps[i]);
+                    gameScene.Remove(activeTileMaps[i]);
                 }
 
                 activeTileMaps = [];
@@ -54,7 +54,7 @@ var RawRPG;
                     for (var i = 0; i < settings.Layers.length; i++) {
                         tileMap = new eg.Map.SquareTileMap(centerPosition.X, centerPosition.Y, settings.TileSize.Width, settings.TileSize.Height, resources, settings.Layers[i].Layer);
                         activeTileMaps.push(tileMap);
-                        sceneryHandler.AddLayer(tileMap);
+                        gameScene.Add(tileMap);
                     }
                 });
             });

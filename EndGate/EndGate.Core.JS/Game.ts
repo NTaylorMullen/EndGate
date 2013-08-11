@@ -8,7 +8,6 @@
 /// <reference path="Rendering/Scene2d.ts" />
 /// <reference path="Input/InputManager.ts" />
 /// <reference path="Content/ContentManager.ts" />
-/// <reference path="Map/MapManager.ts" />
 
 module EndGate {
 
@@ -38,10 +37,6 @@ module EndGate {
         * A content manager which is used to load, unload and retrieve images and audio sources.
         */
         public Content: Content.ContentManager;
-        /**
-        * A map manager that is used to draw large Graphic2d's (Layer's) to the background.
-        */
-        public Map: Map.MapManager;
 
         public _ID: number;
 
@@ -81,7 +76,6 @@ module EndGate {
             
             this.Configuration = new GameConfiguration(GameRunnerInstance.Register(this), initialQuadTreeSize)
             this.CollisionManager = new Collision.CollisionManager(this.Configuration.CollisionConfiguration);
-            this.Map = new Map.MapManager(this.Scene);
 
             this.Configuration.CollisionConfiguration._OnChange.Bind(() => {
                 this.CollisionManager = new Collision.CollisionManager(this.Configuration.CollisionConfiguration);
@@ -120,7 +114,6 @@ module EndGate {
                 return;
             }
 
-            this.Map.Scenery.Draw();
             this.Scene.Draw();
             this._updateRequired = true;
         }
@@ -137,7 +130,6 @@ module EndGate {
         */
         public Dispose(): void {
             this.Scene.Dispose();
-            this.Map.Dispose();
             this.CollisionManager.Dispose();
             this.Input.Dispose();
 
