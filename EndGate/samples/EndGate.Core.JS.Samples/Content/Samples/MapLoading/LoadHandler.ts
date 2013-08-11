@@ -6,7 +6,7 @@
 module MapLoading {
 
     export class LoadHandler {
-        private _mapLayers: Array<eg.Map.SquareTileMap>;
+        private _mapLayers: Array<eg.Graphics.SquareTileMap>;
         private _totalTiles: JQuery;
         private _totalLayers: JQuery;
         private _totalResources: JQuery;
@@ -15,7 +15,7 @@ module MapLoading {
         private _lastPercentValue: number;
 
         constructor(private _game: Game, loadDialog: JQuery) {
-            this._mapLayers = new Array<eg.Map.SquareTileMap>();
+            this._mapLayers = new Array<eg.Graphics.SquareTileMap>();
 
             this._totalTiles = loadDialog.find("#totalTiles");
             this._totalLayers = loadDialog.find("#totalLayers");
@@ -86,7 +86,7 @@ module MapLoading {
             return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
 
-        private LoadLayers(layers: Array<eg.Map.SquareTileMap>): void {
+        private LoadLayers(layers: Array<eg.Graphics.SquareTileMap>): void {
             // Clear all existing layers (so we can click more than once)
             for (var i = 0; i < this._mapLayers.length; i++) {
                 this._game.Scene.Remove(this._mapLayers[i]);

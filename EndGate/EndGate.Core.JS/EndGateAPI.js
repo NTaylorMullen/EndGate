@@ -27,8 +27,8 @@
 /// <reference path="Assets/Sizes/Size2d.ts" />
 /// <reference path="Assets/Vectors/Vector2d.ts" />
 /// <reference path="Assets/Matrixes/Matrix2x2.ts" />
-/// <reference path="Map/TileMaps/SquareTileMap.ts" />
-/// <reference path="Map/TileMaps/TileMap.ts" />
+/// <reference path="Graphics/TileMaps/SquareTileMap.ts" />
+/// <reference path="Graphics/TileMaps/TileMap.ts" />
 // When this file is compiled into a declaration file it does not include this line,
 // therefore in the build.ps1 we have to append this aliasing module.
 var eg = EndGate;

@@ -2,7 +2,7 @@
 /// <reference path="../../Graphics/Sprites/Sprite2d.ts" />
 /// <reference path="TileMap.ts" />
 
-declare module EndGate.Map {
+declare module EndGate.Graphics.Assets {
 
     /**
     * Defines an object that is used to fully describe a loaded tile.

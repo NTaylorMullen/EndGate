@@ -3,8 +3,8 @@
 /// <reference path="../../IMapLoadedResult.ts" />
 /// <reference path="../../IMapPreloadInfo.ts" />
 /// <reference path="../../IHookFunction.ts" />
-/// <reference path="../../../TileMaps/SquareTileMap.ts" />
-/// <reference path="../../../TileMaps/ITileDetails.ts" />
+/// <reference path="../../../../Graphics/TileMaps/SquareTileMap.ts" />
+/// <reference path="../../../../Graphics/TileMaps/ITileDetails.ts" />
 /// <reference path="../../../../Assets/TimeSpan.ts" />
 /// <reference path="../../../../Extensions/Helpers.ts" />
 /// <reference path="../../../../Utilities/EventHandler1.ts" />
@@ -14,7 +14,7 @@
 module EndGate.Map.Loaders._.TMX {
 
     interface TileExtractResult {
-        ResourceHooks: Array<Array<(details: ITileDetails) => any>>;
+        ResourceHooks: Array<Array<(details: Graphics.Assets.ITileDetails) => any>>;
         Resources: Array<Graphics.ImageSource>;
     }
 
@@ -40,7 +40,7 @@ module EndGate.Map.Loaders._.TMX {
                     // All the tiles extracted represent our resource list
                     var resources: TileExtractResult = this.ExtractTilesetTiles(data.tilesets, tilesetSources, propertyHooks),
                         mappings: Array<Array<number>>,
-                        layers: Array<SquareTileMap> = new Array<SquareTileMap>(),
+                        layers: Array<Graphics.SquareTileMap> = new Array<Graphics.SquareTileMap>(),
                         layerPercentValue = (1 - OrthogonalLoader._imagePercentMax) / data.layers.length;
 
                     percent = OrthogonalLoader._imagePercentMax;
@@ -51,10 +51,10 @@ module EndGate.Map.Loaders._.TMX {
                         }
 
                         this.AsyncBuildLayer(data, i, propertyHooks, resources,
-                            (details: ITileDetails, percentLoaded: number) => {
+                            (details: Graphics.Assets.ITileDetails, percentLoaded: number) => {
                                 onPartialLoad.Trigger(percent + percentLoaded * layerPercentValue);
                             },
-                            (layer: SquareTileMap) => {
+                            (layer: Graphics.SquareTileMap) => {
                                 percent += layerPercentValue;
 
                                 onPartialLoad.Trigger(percent);
@@ -103,20 +103,20 @@ module EndGate.Map.Loaders._.TMX {
 
         private ExtractTilesetTiles(tilesets: Array<ITMXTileset>, tilesetSources: { [tilesetName: string]: Graphics.ImageSource }, propertyHooks: IPropertyHooks): TileExtractResult {
             var tilesetTiles: Array<Graphics.ImageSource> = new Array<Graphics.ImageSource>(),
-                resourceHooks = new Array<Array<(details: ITileDetails) => any>>(),
+                resourceHooks = new Array<Array<(details: Graphics.Assets.ITileDetails) => any>>(),
                 sources: Array<Graphics.ImageSource>,
                 index: number;
 
             tilesets.sort((a: ITMXTileset, b: ITMXTileset) => { return a.firstgid - b.firstgid; });
 
             for (var i = 0; i < tilesets.length; i++) {
-                sources = SquareTileMap.ExtractTiles(tilesetSources[tilesets[i].name], tilesets[i].tilewidth, tilesets[i].tileheight);
+                sources = Graphics.SquareTileMap.ExtractTiles(tilesetSources[tilesets[i].name], tilesets[i].tilewidth, tilesets[i].tileheight);
 
                 for (var property in tilesets[i].properties) {
                     if (typeof propertyHooks.ResourceSheetHooks[property] !== "undefined") {
                         for (var j = tilesets[i].firstgid - 1; j < tilesets[i].firstgid - 1 + sources.length; j++) {
                             if (typeof resourceHooks[j] === "undefined") {
-                                resourceHooks[j] = new Array<(details: ITileDetails) => any>();
+                                resourceHooks[j] = new Array<(details: Graphics.Assets.ITileDetails) => any>();
                             }
 
                             resourceHooks[j].push(this.BuildHookerFunction(tilesets[i].properties[property], propertyHooks.ResourceSheetHooks[property]));
@@ -130,7 +130,7 @@ module EndGate.Map.Loaders._.TMX {
                             index = parseInt(tileIndex) + tilesets[i].firstgid - 1;
 
                             if (typeof resourceHooks[index] === "undefined") {
-                                resourceHooks[index] = new Array<(details: ITileDetails) => any>();
+                                resourceHooks[index] = new Array<(details: Graphics.Assets.ITileDetails) => any>();
                             }
 
                             resourceHooks[index].push(this.BuildHookerFunction(tilesets[i].tileproperties[tileIndex][property], propertyHooks.ResourceTileHooks[property]));
@@ -147,13 +147,13 @@ module EndGate.Map.Loaders._.TMX {
         }
 
         // Not true async but it frees up the DOM
-        private AsyncBuildLayer(tmxData: ITMX, layerIndex: number, propertyHooks: IPropertyHooks, resources: TileExtractResult, onTileLoad: (details: ITileDetails, percentComplete: number) => any, onComplete: (squareTileMap: SquareTileMap) => any): void {
+        private AsyncBuildLayer(tmxData: ITMX, layerIndex: number, propertyHooks: IPropertyHooks, resources: TileExtractResult, onTileLoad: (details: Graphics.Assets.ITileDetails, percentComplete: number) => any, onComplete: (squareTileMap: Graphics.SquareTileMap) => any): void {
             setTimeout(() => {
                 // Convert the layer data to a 2 dimensional array and subtract 1 from all the data points (to make it 0 based)
                 var tmxLayer = tmxData.layers[layerIndex],
                     mappings = this.NormalizeLayerData(tmxLayer.data, tmxData.width),
-                    layer = new SquareTileMap(tmxLayer.x, tmxLayer.y, tmxData.tilewidth, tmxData.tileheight, resources.Resources, mappings),
-                    layerHooks: Array<(details: ITileDetails) => any> = new Array<(details: ITileDetails) => any>();
+                    layer = new Graphics.SquareTileMap(tmxLayer.x, tmxLayer.y, tmxData.tilewidth, tmxData.tileheight, resources.Resources, mappings),
+                    layerHooks: Array<(details: Graphics.Assets.ITileDetails) => any> = new Array<(details: Graphics.Assets.ITileDetails) => any>();
 
                 for (var property in tmxLayer.properties) {
                     if (typeof propertyHooks.LayerHooks[property] !== "undefined") {
@@ -168,7 +168,7 @@ module EndGate.Map.Loaders._.TMX {
                 // Enough delay to ensure that the page doesn't freeze
                 layer.RowLoadDelay = TimeSpan.FromMilliseconds(5);
 
-                layer.OnTileLoad.Bind((details: ITileDetails, percentComplete: number) => {
+                layer.OnTileLoad.Bind((details: Graphics.Assets.ITileDetails, percentComplete: number) => {
                     if (resources.ResourceHooks[details.ResourceIndex]) {
                         for (var i = 0; i < resources.ResourceHooks[details.ResourceIndex].length; i++) {
                             resources.ResourceHooks[details.ResourceIndex][i](details);
@@ -188,8 +188,8 @@ module EndGate.Map.Loaders._.TMX {
             }, 0);
         }
 
-        private BuildHookerFunction(propertyValue: string, fn: IHookFunction): (details: ITileDetails) => any {
-            return (details: ITileDetails): any => {
+        private BuildHookerFunction(propertyValue: string, fn: IHookFunction): (details: Graphics.Assets.ITileDetails) => any {
+            return (details: Graphics.Assets.ITileDetails): any => {
                 return fn(details, propertyValue);
             };
         }

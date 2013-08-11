@@ -8,8 +8,8 @@ var EndGate;
                 /// <reference path="../../IMapLoadedResult.ts" />
                 /// <reference path="../../IMapPreloadInfo.ts" />
                 /// <reference path="../../IHookFunction.ts" />
-                /// <reference path="../../../TileMaps/SquareTileMap.ts" />
-                /// <reference path="../../../TileMaps/ITileDetails.ts" />
+                /// <reference path="../../../../Graphics/TileMaps/SquareTileMap.ts" />
+                /// <reference path="../../../../Graphics/TileMaps/ITileDetails.ts" />
                 /// <reference path="../../../../Assets/TimeSpan.ts" />
                 /// <reference path="../../../../Extensions/Helpers.ts" />
                 /// <reference path="../../../../Utilities/EventHandler1.ts" />
@@ -95,7 +95,7 @@ var EndGate;
                             });
 
                             for (var i = 0; i < tilesets.length; i++) {
-                                sources = Map.SquareTileMap.ExtractTiles(tilesetSources[tilesets[i].name], tilesets[i].tilewidth, tilesets[i].tileheight);
+                                sources = EndGate.Graphics.SquareTileMap.ExtractTiles(tilesetSources[tilesets[i].name], tilesets[i].tilewidth, tilesets[i].tileheight);
 
                                 for (var property in tilesets[i].properties) {
                                     if (typeof propertyHooks.ResourceSheetHooks[property] !== "undefined") {
@@ -136,7 +136,7 @@ var EndGate;
                             var _this = this;
                             setTimeout(function () {
                                 // Convert the layer data to a 2 dimensional array and subtract 1 from all the data points (to make it 0 based)
-                                var tmxLayer = tmxData.layers[layerIndex], mappings = _this.NormalizeLayerData(tmxLayer.data, tmxData.width), layer = new Map.SquareTileMap(tmxLayer.x, tmxLayer.y, tmxData.tilewidth, tmxData.tileheight, resources.Resources, mappings), layerHooks = new Array();
+                                var tmxLayer = tmxData.layers[layerIndex], mappings = _this.NormalizeLayerData(tmxLayer.data, tmxData.width), layer = new EndGate.Graphics.SquareTileMap(tmxLayer.x, tmxLayer.y, tmxData.tilewidth, tmxData.tileheight, resources.Resources, mappings), layerHooks = new Array();
 
                                 for (var property in tmxLayer.properties) {
                                     if (typeof propertyHooks.LayerHooks[property] !== "undefined") {

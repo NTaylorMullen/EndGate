@@ -14,7 +14,7 @@
         // The images/wood_tileset_3.png has 16 tiles per row (512/32) so if we wanted to find a tile on row
         // 2 column 1 that tile would be at array index 17, this is essentially how the resource array map
         // that is further below works
-        resources: eg.Graphics.ImageSource[] = eg.Map.SquareTileMap.ExtractTiles(resourceSheet, 32, 32),
+        resources: eg.Graphics.ImageSource[] = eg.Graphics.SquareTileMap.ExtractTiles(resourceSheet, 32, 32),
         loadMapHandler: RawRPG.LoadMapHandler;
 
     // Setup the game canvas DOM

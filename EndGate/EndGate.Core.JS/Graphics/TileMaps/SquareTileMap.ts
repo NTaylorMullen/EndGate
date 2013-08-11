@@ -9,7 +9,7 @@
 /// <reference path="TileMap.ts" />
 /// <reference path="SquareTile.ts" />
 
-module EndGate.Map {
+module EndGate.Graphics {
 
     /**
     * Defines a structure that is proficient at creating diverse tile maps based off of a resource image.  Best drawn via a SceneryHandler.
@@ -29,7 +29,7 @@ module EndGate.Map {
         private _mapCache: HTMLCanvasElement;
         private _mapCacheContext: CanvasRenderingContext2D;
         private _mappings: number[][];
-        private _onTileLoad: EventHandler2<ITileDetails, number>;
+        private _onTileLoad: EventHandler2<Assets.ITileDetails, number>;
         private _onLoaded: EventHandler;
         private _loaded: boolean;
         private _tilesBuilt: number;
@@ -74,7 +74,7 @@ module EndGate.Map {
             this._mappings = mappings;
             this._grid = new Graphics.Grid(0, 0, mappings.length, mappings[0].length, tileWidth, tileHeight, drawGridLines);
             this._staticMap = staticMap;
-            this._onTileLoad = new EventHandler2<ITileDetails, number>();
+            this._onTileLoad = new EventHandler2<Assets.ITileDetails, number>();
             this._onLoaded = new EventHandler();
             this._loaded = false;
             this._tilesBuilt = 0;
@@ -202,7 +202,7 @@ module EndGate.Map {
             this._mapCacheContext.translate(size.HalfWidth, size.HalfHeight);
         }
 
-        private CacheTile(tile: SquareTile): void {
+        private CacheTile(tile: Assets.SquareTile): void {
             // Draw the tile onto the map cache
             tile.Draw(this._mapCacheContext);
         }
@@ -217,12 +217,12 @@ module EndGate.Map {
                 });
         }
 
-        private AsyncBuildGridTile(row: number, column: number, resourceIndex: number, onComplete: (tile: SquareTile) => any): void {
+        private AsyncBuildGridTile(row: number, column: number, resourceIndex: number, onComplete: (tile: Assets.SquareTile) => any): void {
             var action = () => {
-                var tile: SquareTile,
+                var tile: Assets.SquareTile,
                     tileGraphic: Graphics.ImageSource = this._Resources[resourceIndex];
 
-                tile = new SquareTile(tileGraphic, this._grid.TileSize.Width, this._grid.TileSize.Height);
+                tile = new Assets.SquareTile(tileGraphic, this._grid.TileSize.Width, this._grid.TileSize.Height);
 
                 this._grid.Fill(row, column, tile);
 
@@ -256,7 +256,7 @@ module EndGate.Map {
                     this._tilesBuilt++;
 
                     if (mappings[rowIndex][tilesLoaded] >= 0) {
-                        this.AsyncBuildGridTile(rowIndex, tilesLoaded, mappings[rowIndex][tilesLoaded], (tile: SquareTile) => {
+                        this.AsyncBuildGridTile(rowIndex, tilesLoaded, mappings[rowIndex][tilesLoaded], (tile: Assets.SquareTile) => {
                             next();
                         });
                     }

@@ -1,7 +1,6 @@
 /// <reference path="../../IMapLoader.ts" />
 /// <reference path="../../IMapLoadedResult.ts" />
 /// <reference path="../../IMapPreloadInfo.ts" />
-/// <reference path="../../../TileMaps/TileMap.ts" />
 /// <reference path="ITMX.ts" />
 /// <reference path="OrthogonalLoader.ts" />
 
