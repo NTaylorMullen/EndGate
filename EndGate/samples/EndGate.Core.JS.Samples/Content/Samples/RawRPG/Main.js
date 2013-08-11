@@ -17,7 +17,7 @@
     // Our LoadMapHandler takes in the default properties to build a default "map", it will also allow you to
     // load in maps that are created in the MapBuilder.  All of these numbers in this multi-dimensional reference
     // the array index of our resource map ("resources") that was instantiated above
-    loadMapHandler = new RawRPG.LoadMapHandler(game.Map.Scenery, new eg.Vector2d(canvas.width / 2, canvas.height / 2), 27, 47, new eg.Size2d(32, 32), "/Content/Samples/RawRPG/images/wood_tileset_3.png", [
+    loadMapHandler = new RawRPG.LoadMapHandler(game.Scene, new eg.Vector2d(canvas.width / 2, canvas.height / 2), 27, 47, new eg.Size2d(32, 32), "/Content/Samples/RawRPG/images/wood_tileset_3.png", [
         [155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155],
         [155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155],
         [155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155],

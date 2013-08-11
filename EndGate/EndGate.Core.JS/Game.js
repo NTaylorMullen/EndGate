@@ -8,7 +8,6 @@
 /// <reference path="Rendering/Scene2d.ts" />
 /// <reference path="Input/InputManager.ts" />
 /// <reference path="Content/ContentManager.ts" />
-/// <reference path="Map/MapManager.ts" />
 var EndGate;
 (function (EndGate) {
     /**
@@ -39,7 +38,6 @@ var EndGate;
 
             this.Configuration = new EndGate.GameConfiguration(GameRunnerInstance.Register(this), initialQuadTreeSize);
             this.CollisionManager = new EndGate.Collision.CollisionManager(this.Configuration.CollisionConfiguration);
-            this.Map = new EndGate.Map.MapManager(this.Scene);
 
             this.Configuration.CollisionConfiguration._OnChange.Bind(function () {
                 _this.CollisionManager = new EndGate.Collision.CollisionManager(_this.Configuration.CollisionConfiguration);
@@ -77,7 +75,6 @@ var EndGate;
                 return;
             }
 
-            this.Map.Scenery.Draw();
             this.Scene.Draw();
             this._updateRequired = true;
         };
@@ -93,7 +90,6 @@ var EndGate;
         */
         Game.prototype.Dispose = function () {
             this.Scene.Dispose();
-            this.Map.Dispose();
             this.CollisionManager.Dispose();
             this.Input.Dispose();
 

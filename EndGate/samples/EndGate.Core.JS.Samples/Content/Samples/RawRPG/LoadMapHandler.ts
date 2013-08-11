@@ -19,7 +19,7 @@ module RawRPG {
     }
 
     export class LoadMapHandler {
-        constructor(sceneryHandler: eg.Map.SceneryHandler, centerPosition: eg.Vector2d, defaultRows: number, defaultColumns: number, defaultTileSize: eg.Size2d, spriteSheetUrl: string, defaultLayer: number[][]) {
+        constructor(gameScene: eg.Rendering.Scene2d, centerPosition: eg.Vector2d, defaultRows: number, defaultColumns: number, defaultTileSize: eg.Size2d, spriteSheetUrl: string, defaultLayer: number[][]) {
             var savedMaps: JQuery = $("#savedMaps"),
                 loadMap: JQuery = $("#loadMap"),
                 // Grab any saved maps from local storage
@@ -60,7 +60,7 @@ module RawRPG {
             loadMap.click(() => {
                 // Unload layers from scene
                 for (var i = 0; i < activeTileMaps.length; i++) {
-                    sceneryHandler.RemoveLayer(activeTileMaps[i]);
+                    gameScene.Remove(activeTileMaps[i]);
                 }
 
                 activeTileMaps = [];
@@ -80,7 +80,7 @@ module RawRPG {
                     for (var i = 0; i < settings.Layers.length; i++) {
                         tileMap = new eg.Map.SquareTileMap(centerPosition.X, centerPosition.Y, settings.TileSize.Width, settings.TileSize.Height, resources, settings.Layers[i].Layer);
                         activeTileMaps.push(tileMap);
-                        sceneryHandler.AddLayer(tileMap);
+                        gameScene.Add(tileMap);
                     }
                 });
             });

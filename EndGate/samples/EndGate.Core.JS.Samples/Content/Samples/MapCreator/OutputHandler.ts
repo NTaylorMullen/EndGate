@@ -43,7 +43,7 @@ module MapCreator {
 
                     outputString += '<br />]; <br /><br />' +
                         'for (var i = 0; i < layers.length; i++) {<br />' +
-                        '   myGame.Map.Scenery.AddLayer(layers[i]);<br />' +
+                        '   myGame.Scene.Add(layers[i]);<br />' +
                         '}<br />';
                 }
                 else if (outputOptions.val() === "2") {

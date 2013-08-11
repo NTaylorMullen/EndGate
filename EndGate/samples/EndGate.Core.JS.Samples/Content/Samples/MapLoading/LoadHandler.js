@@ -78,7 +78,7 @@ var MapLoading;
 
         LoadHandler.prototype.LoadLayers = function (layers) {
             for (var i = 0; i < this._mapLayers.length; i++) {
-                this._game.Map.Scenery.RemoveLayer(this._mapLayers[i]);
+                this._game.Scene.Remove(this._mapLayers[i]);
             }
 
             if (layers) {
@@ -86,7 +86,7 @@ var MapLoading;
             }
 
             for (var i = 0; i < this._mapLayers.length; i++) {
-                this._game.Map.Scenery.AddLayer(this._mapLayers[i]);
+                this._game.Scene.Add(this._mapLayers[i]);
             }
 
             if (this._mapLayers.length > 0) {

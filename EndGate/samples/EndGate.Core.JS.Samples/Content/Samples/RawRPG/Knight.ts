@@ -22,6 +22,7 @@ module RawRPG {
 
             // Our Sprite2d will reference our sprite sheet directly and our animation will update the image source directly
             this.Graphic = new eg.Graphics.Sprite2d(startPosition.X, startPosition.Y, imageSource, 64, 64);
+            this.Graphic.ZIndex = 5;
             // We create a movement controller and it will control the bounds and the graphic.  Therefore whenever the movement controller
             // moves it will update the bounds and graphic position as well
             // rotateWithMovements means we rotate whatever the movement controller is monitoring (bounds and graphic in this case) to coincide with the direction

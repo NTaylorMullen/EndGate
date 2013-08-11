@@ -29,7 +29,7 @@ var MapCreator;
                         outputString += 'new eg.Map.SquareTileMap(0,0,' + tileWidth + ', ' + tileHeight + ', resources, ' + JSON.stringify(resourceMappings[i].Layer) + ')';
                     }
 
-                    outputString += '<br />]; <br /><br />' + 'for (var i = 0; i < layers.length; i++) {<br />' + '   myGame.Map.Scenery.AddLayer(layers[i]);<br />' + '}<br />';
+                    outputString += '<br />]; <br /><br />' + 'for (var i = 0; i < layers.length; i++) {<br />' + '   myGame.Scene.Add(layers[i]);<br />' + '}<br />';
                 } else if (outputOptions.val() === "2") {
                     var parent = document.createElement("div"), copyCanvas = document.createElement("canvas"), size = mapBuilder.LayerManager.SelectedLayer.Layer.Size, tempGame, img;
 

@@ -89,7 +89,7 @@ module MapLoading {
         private LoadLayers(layers: Array<eg.Map.SquareTileMap>): void {
             // Clear all existing layers (so we can click more than once)
             for (var i = 0; i < this._mapLayers.length; i++) {
-                this._game.Map.Scenery.RemoveLayer(this._mapLayers[i]);
+                this._game.Scene.Remove(this._mapLayers[i]);
             }
 
             if (layers) {
@@ -98,7 +98,7 @@ module MapLoading {
 
             // Add all of the layers to the scenery (so they're drawn)
             for (var i = 0; i < this._mapLayers.length; i++) {
-                this._game.Map.Scenery.AddLayer(this._mapLayers[i]);
+                this._game.Scene.Add(this._mapLayers[i]);
             }
 
             // Update the camera to be in the middle of the map
