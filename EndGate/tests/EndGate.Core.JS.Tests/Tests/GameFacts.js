@@ -14,7 +14,7 @@
 
         game = new eg.Game(canvas);
 
-        QUnit.equal(holder.children.length, 2);
+        QUnit.equal(holder.children.length, 1);
         game.Dispose();
         QUnit.equal(holder.children.length, 0);
     });
