@@ -147,6 +147,18 @@
     <Content Include="Map\TileMaps\ITileDetails.js">
       <DependentUpon>ITileDetails.ts</DependentUpon>
     </Content>
+    <TypeScriptCompile Include="Particles\Emitter.ts" />
+    <Content Include="Particles\Emitter.js">
+      <DependentUpon>Emitter.ts</DependentUpon>
+    </Content>
+    <TypeScriptCompile Include="Particles\Range.ts" />
+    <TypeScriptCompile Include="Particles\Particle.ts" />
+    <Content Include="Particles\Particle.js">
+      <DependentUpon>Particle.ts</DependentUpon>
+    </Content>
+    <Content Include="Particles\Range.js">
+      <DependentUpon>Range.ts</DependentUpon>
+    </Content>
     <Content Include="Tweening\Functions\Back.js">
       <DependentUpon>Back.ts</DependentUpon>
     </Content>

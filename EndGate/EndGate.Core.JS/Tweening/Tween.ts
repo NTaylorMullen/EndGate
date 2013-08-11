@@ -171,7 +171,7 @@ module EndGate.Tweening {
         * @param gameTime The global game time object.  Used to represent total time running and used to track update interval elapsed speeds.
         */
         public Update(gameTime: GameTime): void {
-            if (!this._playing || (this._elapsed.Equivalent(this._duration)))
+            if (!this._playing)
             {
                 return;
             }
