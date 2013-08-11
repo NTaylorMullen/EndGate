@@ -1,0 +1,117 @@
+﻿@{
+    ViewBag.SampleName = "Particles";
+    ViewBag.SEODescription = "View an EndGate sample that showcases particle emission.";
+    Layout = "~/Views/Shared/_SamplesLayout.cshtml";
+}
+
+@section styles {
+    @Styles.Render("~/Content/themes/base/jquery-ui.css")
+
+    <style>
+        #gameHolder {
+            margin-left: 0px;
+        }
+
+        .slider-horizontal {
+            float: left;
+            width: 125px;
+            height: 10px;
+            margin: 7px;
+            font-size: 12px;
+        }
+
+        .ui-slider-handle {
+            border-color: #317eac;
+        }
+
+        h4 {
+            font-size: 16px;
+            clear: both;
+        }
+
+        select {
+            width: 100%;
+        }
+
+        .ui-widget-content .span2 {
+            width: 160px;
+        }
+
+        span.pull-left {
+            font-size: 8px;
+            margin-top: 3px;
+            margin-right: 3px;
+        }
+    </style>
+}
+
+<div class="page-header section_header">
+    <h3>@ViewBag.SampleName</h3>
+    <p>Demonstrates how to use and control a particle emitter.</p>
+</div>
+
+<div class="row well ui-widget-content">
+    <div class="span2 well" style="margin-bottom: 0px; height: 174px;">
+        <h4 class="text-center">Particle Lifetime</h4>
+        <span class="pull-left">Min</span><div id="particleLifetimeMin" class="slider-horizontal"></div>
+        <span class="pull-left">Max</span><div id="particleLifetimeMax" class="slider-horizontal"></div>
+        <h4 class="text-center">Particle Speed</h4>
+        <span class="pull-left">Min</span><div id="particleSpeedMin" class="slider-horizontal"></div>
+        <span class="pull-left">Max</span><div id="particleSpeedMax" class="slider-horizontal"></div>
+    </div>
+    <div class="span2 well" style="height: 174px;">
+        <h4 class="text-center">Particle Scale</h4>
+        <span class="pull-left">Min</span><div id="particleScaleMin" class="slider-horizontal"></div>
+        <span class="pull-left">Max</span><div id="particleScaleMax" class="slider-horizontal"></div>
+        <h4 class="text-center">Particle Opacity</h4>
+        <span class="pull-left">Min</span><div id="particleOpacityMin" class="slider-horizontal"></div>
+        <span class="pull-left">Max</span><div id="particleOpacityMax" class="slider-horizontal"></div>
+    </div>
+    <div class="span2 well" style="height: 174px;">
+        <h4 class="text-center">Particle Rotation</h4>
+        <span class="pull-left">Min</span><div id="particleRotationMin" class="slider-horizontal"></div>
+        <span class="pull-left">Max</span><div id="particleRotationMax" class="slider-horizontal"></div>
+        <h4 class="text-center">Particle Rotation Speed</h4>
+        <span class="pull-left">Min</span><div id="particleRotationSpeedMin" class="slider-horizontal"></div>
+        <span class="pull-left">Max</span><div id="particleRotationSpeedMax" class="slider-horizontal"></div>
+    </div>    
+    <div class="span2 well" style="margin-bottom: 0px; height: 174px;">
+        <h4 class="text-center">Particle Fade-In</h4>
+        <span class="pull-left">Min</span><div id="particleFadeInDurationMin" class="slider-horizontal"></div>
+        <span class="pull-left">Max</span><div id="particleFadeInDurationMax" class="slider-horizontal"></div>
+        <h4 class="text-center">Particle Fade-Out</h4>
+        <span class="pull-left">Min</span><div id="particleFadeOutDurationMin" class="slider-horizontal"></div>
+        <span class="pull-left">Max</span><div id="particleFadeOutDurationMax" class="slider-horizontal"></div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="span3 well ui-widget-content" style="margin-left: 0px; height: 446px; width: 206px;">
+        <div class="span2 well" style="margin-left: 0px; height: 174px;">
+            <h4 class="text-center">Emission Function</h4>
+            <select id="tweenFunction">
+            </select>
+            <h4 class="text-center">Emission Direction</h4>
+            <span class="pull-left">Min</span><div id="emissionDirectionMin" class="slider-horizontal"></div>
+            <span class="pull-left">Max</span><div id="emissionDirectionMax" class="slider-horizontal"></div>
+        </div>
+        <div class="span2 well" style="margin-left: 0px; height: 174px;">
+            <h4 class="text-center">Emission Interval</h4>
+            <span class="pull-left">Min</span><div id="emissionIntervalMin" class="slider-horizontal"></div>
+            <span class="pull-left">Max</span><div id="emissionIntervalMax" class="slider-horizontal"></div>
+            <h4 class="text-center">Emission Output</h4>
+            <span class="pull-left">Min</span><div id="emissionOutputMin" class="slider-horizontal"></div>
+            <span class="pull-left">Max</span><div id="emissionOutputMax" class="slider-horizontal"></div>
+        </div>
+    </div>
+
+    <div id="gameHolder" class="well span8" style="height: 485px; width: 678px; margin-left: 15px; box-sizing: border-box;">
+    </div>
+</div>
+
+@section scripts {
+    @Scripts.Render("~/Scripts/jquery-ui-1.10.2.js")
+    <script data-typescript="true" src="~/Content/Samples/Particles/CustomSlider.js"></script>
+    <script data-typescript="true" src="~/Content/Samples/Particles/Game.js"></script>
+    <script data-typescript="true" src="~/Content/Samples/Particles/Main.js"></script>
+}

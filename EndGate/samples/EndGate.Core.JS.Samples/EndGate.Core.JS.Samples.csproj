@@ -155,6 +155,11 @@
     <Content Include="Content\Samples\KeyboardInput\thumbnail.png" />
     <Content Include="Content\Samples\Layering\thumbnail.png" />
     <Content Include="Content\Samples\MapCreator\thumbnail.png" />
+    <TypeScriptCompile Include="Content\Samples\Particles\CustomSlider.ts" />
+    <Content Include="Content\Samples\Particles\CustomSlider.js">
+      <DependentUpon>CustomSlider.ts</DependentUpon>
+    </Content>
+    <Content Include="Views\Samples\Particles.cshtml" />
     <TypeScriptCompile Include="Content\Samples\MapLoading\CameraController.ts" />
     <Content Include="Content\Samples\MapLoading\CameraController.js">
       <DependentUpon>CameraController.ts</DependentUpon>
@@ -163,6 +168,15 @@
     <Content Include="Content\Samples\MapLoading\LoadHandler.js">
       <DependentUpon>LoadHandler.ts</DependentUpon>
     </Content>
+    <TypeScriptCompile Include="Content\Samples\Particles\Main.ts" />
+    <TypeScriptCompile Include="Content\Samples\Particles\Game.ts" />
+    <Content Include="Content\Samples\Particles\Game.js">
+      <DependentUpon>Game.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\Particles\Main.js">
+      <DependentUpon>Main.ts</DependentUpon>
+    </Content>
+    <Content Include="Content\Samples\Particles\thumbnail.png" />
     <Content Include="Views\Samples\MapLoading.cshtml" />
     <TypeScriptCompile Include="Content\Samples\MapLoading\Main.ts" />
     <TypeScriptCompile Include="Content\Samples\MapLoading\Game.ts" />
