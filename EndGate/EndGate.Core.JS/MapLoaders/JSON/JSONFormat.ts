@@ -1,4 +1,4 @@
-module EndGate.Map.Loaders {
+module EndGate.MapLoaders {
 
     /**
     * Defines supported JSON formats for map loading.

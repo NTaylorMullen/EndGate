@@ -95,52 +95,52 @@
       <DependentUpon>ICloneable.ts</DependentUpon>
     </Content>
     <TypeScriptCompile Include="Tweening\Functions\Back.ts" />
-    <TypeScriptCompile Include="Map\Loaders\JSON\JSONLoader.ts" />
-    <TypeScriptCompile Include="Map\Loaders\JSON\JSONFormat.ts" />
-    <TypeScriptCompile Include="Map\Loaders\JSON\TMX\ITMX.ts" />
-    <TypeScriptCompile Include="Map\Loaders\IMapLoader.ts" />
-    <TypeScriptCompile Include="Map\Loaders\IMapLoadedResult.ts" />
-    <TypeScriptCompile Include="Map\Loaders\IHookFunction.ts" />
-    <Content Include="Map\Loaders\IHookFunction.js">
+    <TypeScriptCompile Include="MapLoaders\JSON\JSONLoader.ts" />
+    <TypeScriptCompile Include="MapLoaders\JSON\JSONFormat.ts" />
+    <TypeScriptCompile Include="MapLoaders\JSON\TMX\ITMX.ts" />
+    <TypeScriptCompile Include="MapLoaders\IMapLoader.ts" />
+    <TypeScriptCompile Include="MapLoaders\IMapLoadedResult.ts" />
+    <TypeScriptCompile Include="MapLoaders\IHookFunction.ts" />
+    <Content Include="MapLoaders\IHookFunction.js">
       <DependentUpon>IHookFunction.ts</DependentUpon>
     </Content>
-    <Content Include="Map\Loaders\IMapLoadedResult.js">
+    <Content Include="MapLoaders\IMapLoadedResult.js">
       <DependentUpon>IMapLoadedResult.ts</DependentUpon>
     </Content>
-    <Content Include="Map\Loaders\IMapLoader.js">
+    <Content Include="MapLoaders\IMapLoader.js">
       <DependentUpon>IMapLoader.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="Map\Loaders\IMapPreloadInfo.ts" />
-    <Content Include="Map\Loaders\IMapPreloadInfo.js">
+    <TypeScriptCompile Include="MapLoaders\IMapPreloadInfo.ts" />
+    <Content Include="MapLoaders\IMapPreloadInfo.js">
       <DependentUpon>IMapPreloadInfo.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="Map\Loaders\IPropertyHooks.ts" />
-    <Content Include="Map\Loaders\IPropertyHooks.js">
+    <TypeScriptCompile Include="MapLoaders\IPropertyHooks.ts" />
+    <Content Include="MapLoaders\IPropertyHooks.js">
       <DependentUpon>IPropertyHooks.ts</DependentUpon>
     </Content>
-    <Content Include="Map\Loaders\JSON\TMX\ITMX.js">
+    <Content Include="MapLoaders\JSON\TMX\ITMX.js">
       <DependentUpon>ITMX.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="Map\Loaders\JSON\TMX\ITMXLayer.ts" />
-    <Content Include="Map\Loaders\JSON\TMX\ITMXLayer.js">
+    <TypeScriptCompile Include="MapLoaders\JSON\TMX\ITMXLayer.ts" />
+    <Content Include="MapLoaders\JSON\TMX\ITMXLayer.js">
       <DependentUpon>ITMXLayer.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="Map\Loaders\JSON\TMX\ITMXTileset.ts" />
-    <Content Include="Map\Loaders\JSON\TMX\ITMXTileset.js">
+    <TypeScriptCompile Include="MapLoaders\JSON\TMX\ITMXTileset.ts" />
+    <Content Include="MapLoaders\JSON\TMX\ITMXTileset.js">
       <DependentUpon>ITMXTileset.ts</DependentUpon>
     </Content>
-    <Content Include="Map\Loaders\JSON\JSONFormat.js">
+    <Content Include="MapLoaders\JSON\JSONFormat.js">
       <DependentUpon>JSONFormat.ts</DependentUpon>
     </Content>
-    <Content Include="Map\Loaders\JSON\JSONLoader.js">
+    <Content Include="MapLoaders\JSON\JSONLoader.js">
       <DependentUpon>JSONLoader.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="Map\Loaders\JSON\TMX\TMXLoader.ts" />
-    <TypeScriptCompile Include="Map\Loaders\JSON\TMX\OrthogonalLoader.ts" />
-    <Content Include="Map\Loaders\JSON\TMX\OrthogonalLoader.js">
+    <TypeScriptCompile Include="MapLoaders\JSON\TMX\TMXLoader.ts" />
+    <TypeScriptCompile Include="MapLoaders\JSON\TMX\OrthogonalLoader.ts" />
+    <Content Include="MapLoaders\JSON\TMX\OrthogonalLoader.js">
       <DependentUpon>OrthogonalLoader.ts</DependentUpon>
     </Content>
-    <Content Include="Map\Loaders\JSON\TMX\TMXLoader.js">
+    <Content Include="MapLoaders\JSON\TMX\TMXLoader.js">
       <DependentUpon>TMXLoader.ts</DependentUpon>
     </Content>
     <TypeScriptCompile Include="Graphics\TileMaps\ITileDetails.ts" />

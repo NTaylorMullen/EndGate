@@ -5,7 +5,7 @@
 /// <reference path="../IMapLoadedResult.ts" />
 /// <reference path="../IPropertyHooks.ts" />
 
-module EndGate.Map.Loaders {
+module EndGate.MapLoaders {
 
     /**
     * Defines a JSON loader that is used to load maps.

@@ -24,7 +24,7 @@ var MapLoading;
             // We use jquery to retrieve the map json from a url location
             ($.getJSON(url, function (mapJson) {
                 // Use the JSONLoader to load the map json
-                var preloadInfo = eg.Map.Loaders.JSONLoader.Load(mapJson, function (result) {
+                var preloadInfo = eg.MapLoaders.JSONLoader.Load(mapJson, function (result) {
                     // We get an array of square tile maps that we then need to add to the scene
                     // Note that the ZIndexes of the layers are already set from 0 - (layers.length-1)
                     _this.LoadLayers(result.Layers);
