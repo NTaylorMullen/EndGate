@@ -88,6 +88,29 @@ module EndGate.Graphics {
             this._text = text;
         }
 
+        public _StartDraw(context: CanvasRenderingContext2D): void {
+            context.save();
+            this._State.SetContextState(context);
+
+            context.translate(this.Position.X, this.Position.Y);
+
+            if (this.Rotation !== 0) {
+                context.rotate(this.Rotation);
+            }
+        }
+
+        public _EndDraw(context: CanvasRenderingContext2D): void {
+            var children = this.GetChildren();
+
+            for (var i = 0; i < children.length; i++) {
+                if (children[i].Visible) {
+                    children[i].Draw(context);
+                }
+            }
+
+            context.restore();
+        }
+
         /**
         * Draws the text onto the given context.  If this Text2d is part of a scene the Draw function will be called automatically.
         * @param context The canvas context to draw the text onto.
@@ -97,7 +120,7 @@ module EndGate.Graphics {
 
             this._State.Font = this._fontSettings._BuildFont();
 
-            super._StartDraw(context);
+            this._StartDraw(context);
 
             context.fillText(this._text, 0, 0);
             if (this._State.LineWidth > 0) {
@@ -112,7 +135,7 @@ module EndGate.Graphics {
                 this._drawBounds.Size.Height = parseInt(this._fontSettings.FontSize) * 1.5;
             }
 
-            super._EndDraw(context);
+            this._EndDraw(context);
         }
 
         /**
