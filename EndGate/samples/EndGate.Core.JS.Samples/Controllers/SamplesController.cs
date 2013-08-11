@@ -77,6 +77,11 @@ namespace EndGate.Core.JS.Samples.Controllers
             return View();
         }
 
+        public ActionResult Particles()
+        {
+            return View();
+        }
+
         public ActionResult RawRPG()
         {
             return View();
