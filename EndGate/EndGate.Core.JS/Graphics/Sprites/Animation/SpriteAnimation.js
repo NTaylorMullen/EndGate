@@ -141,7 +141,7 @@ var EndGate;
 
                 if (this._playing) {
                     stepCount = Math.floor(timeSinceStep / this._stepEvery);
-                    if (stepCount !== 0) {
+                    if (stepCount > 0) {
                         this._lastStepAt = gameTime.Now.getTime();
                         this.Step(stepCount);
                     }
