@@ -224,7 +224,7 @@ module EndGate.Graphics {
 
                 // Dispose all children to ensure that there's no dangling references.
                 for (var i = 0; i < childrenClone.length; i++) {
-                    childrenClone.Dispose();
+                    childrenClone[i].Dispose();
                 }
 
                 this._children = null;
