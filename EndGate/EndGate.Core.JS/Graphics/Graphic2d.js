@@ -199,7 +199,7 @@ var EndGate;
                     childrenClone = this._children.slice(0);
 
                     for (var i = 0; i < childrenClone.length; i++) {
-                        childrenClone.Dispose();
+                        childrenClone[i].Dispose();
                     }
 
                     this._children = null;
