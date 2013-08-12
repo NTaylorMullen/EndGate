@@ -163,7 +163,7 @@ var EndGate;
 
             /**
             * Determines if the current BoundingRectangle completely contains the provided BoundingCircle.
-            * @param point A circle to check containment on.
+            * @param circle A circle to check containment on.
             */
             BoundingRectangle.prototype.ContainsCircle = function (circle) {
                 return this.ContainsPoint(new EndGate.Vector2d(circle.Position.X - circle.Radius, circle.Position.Y)) && this.ContainsPoint(new EndGate.Vector2d(circle.Position.X, circle.Position.Y - circle.Radius)) && this.ContainsPoint(new EndGate.Vector2d(circle.Position.X + circle.Radius, circle.Position.Y)) && this.ContainsPoint(new EndGate.Vector2d(circle.Position.X, circle.Position.Y + circle.Radius));
@@ -171,7 +171,7 @@ var EndGate;
 
             /**
             * Determines if the current BoundingCircle completely contains the provided BoundingRectangle.
-            * @param point A rectangle to check containment on.
+            * @param rectangle A rectangle to check containment on.
             */
             BoundingRectangle.prototype.ContainsRectangle = function (rectangle) {
                 var corners = rectangle.Corners();

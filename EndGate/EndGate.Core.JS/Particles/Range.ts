@@ -7,7 +7,13 @@ module EndGate.Particles {
     * Defines a range that is used to describe a range of values.
     */
     export class Range<T> implements ICloneable {
+        /**
+        * Gets or sets the minimum value of the range.
+        */
         public Min: T;
+        /**
+        * Gets or sets the maximum value of the range.
+        */
         public Max: T;
 
         /**

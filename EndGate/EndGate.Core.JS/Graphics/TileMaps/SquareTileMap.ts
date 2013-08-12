@@ -98,7 +98,7 @@ module EndGate.Graphics {
         /**
         * Gets an event that is triggered when a tile has been loaded, first argument is the tile details for the loaded tile, second is the percent complete.  Once this SquareTileMap has been created and all tiles loaded this event will no longer be triggered. Functions can be bound or unbound to this event to be executed when the event triggers.
         */
-        public get OnTileLoad(): EventHandler2<ITileDetails, number> {
+        public get OnTileLoad(): EventHandler2<Assets.ITileDetails, number> {
             return this._onTileLoad;
         }
 
