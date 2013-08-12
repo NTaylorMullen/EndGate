@@ -5,36 +5,7 @@
 (function ($, window) {
     // Create a game canvas to use.  If we create a game without providing a canvas it will create a
     // canvas that fills the entire viewport.
-    var canvas = document.createElement("canvas"), holder = $("#gameHolder"), game, shapeColorPicker, borderColorPicker, borderThicknessSlider, rotationSlider, xPositionSlider, yPositionSlider, opacitySlider, widthSlider, heightSlider, shadowXSlider, shadowYSlider, shadowColorPicker, shadowBlurSlider, ensureValue = function (val, min, max) {
-        return Math.min(Math.max(val, min), max);
-    }, slidersAnimationMappings = {
-        Position: function () {
-            xPositionSlider.UpdateSlider(ensureValue(game.Shape.Position.X, 0, canvas.width / 2));
-            yPositionSlider.UpdateSlider(ensureValue(game.Shape.Position.Y, 0, canvas.height / 2));
-        },
-        Rotation: function () {
-            rotationSlider.UpdateSlider(ensureValue(game.Shape.Rotation * 100, -628, 628));
-        },
-        Size: function () {
-            var newWidth, newHeight;
-
-            if (game.Shape._type === "Circle") {
-                newWidth = game.Shape.Radius;
-                newHeight = game.Shape.Radius;
-            } else {
-                newWidth = game.Shape.Size.Width;
-                newHeight = game.Shape.Size.Height;
-            }
-
-            widthSlider.UpdateSlider(ensureValue(newWidth, 0, canvas.width));
-            heightSlider.UpdateSlider(ensureValue(newHeight, 0, canvas.height));
-        },
-        Opacity: function () {
-            opacitySlider.UpdateSlider(ensureValue(game.Shape.Opacity * 100, 0, 100));
-        }
-    }, syncSliders = function (animation) {
-        slidersAnimationMappings[animation]();
-    };
+    var canvas = document.createElement("canvas"), holder = $("#gameHolder"), game, shapeColorPicker, borderColorPicker, borderThicknessSlider, rotationSlider, xPositionSlider, yPositionSlider, opacitySlider, widthSlider, heightSlider, shadowXSlider, shadowYSlider, shadowColorPicker, shadowBlurSlider;
 
     // Setup DOM
     canvas.width = holder.width();
@@ -42,7 +13,7 @@
     holder.append(canvas);
 
     // Create game
-    game = new Shapes.Game(canvas, $(".shapeBuilder"), $(".shapeAnimator"), new eg.Vector2d(canvas.width / 2, canvas.height / 2), new eg.Size2d(100, 100), 0, 1, syncSliders);
+    game = new Shapes.Game(canvas, $(".shapeBuilder"));
 
     // Wire up all the sliders
     shapeColorPicker = new Shapes.ColorPicker($("#redColorPicker"), $("#greenColorPicker"), $("#blueColorPicker"), [127, 0, 127], function (newcolor) {

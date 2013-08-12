@@ -27,39 +27,16 @@
         fontFamilyTypeSelect: JQuery = $("#fontFamilyTypeSelect"),
         fontWeightSelect: JQuery = $("#fontWeightSelect"),
         fontStyleSelect: JQuery = $("#fontStyleSelect"),
-        // Return value that is closest to provided value but still within min-max range
-        ensureValue = function (val, min, max) {
-            return Math.min(Math.max(val, min), max);
-        },
         // These functions are used to sync the shapes positions with the sliders
         fillSelect = function (select: JQuery, optionList: any, onchange: Function) {
             var i = 0;
-            
+
             while (optionList[i]) {
                 select.append("<option value=\"" + optionList[i] + "\">" + optionList[i] + "</option>");
                 i++;
-            }            
+            }
 
             select.change(onchange);
-        },
-        slidersAnimationMappings = {
-            Position: function () {
-                xPositionSlider.UpdateSlider(ensureValue(game.Text.Position.X, 0, canvas.width / 2));
-                yPositionSlider.UpdateSlider(ensureValue(game.Text.Position.Y, 0, canvas.height / 2));
-            },
-            Rotation: function () {
-                rotationSlider.UpdateSlider(ensureValue(game.Text.Rotation * 100, -628, 628));
-            },
-            Size: function () {
-                fontSizeSlider.UpdateSlider(ensureValue(parseFloat(game.Text.FontSettings.FontSize), 0, 100));
-            },
-            Opacity: function () {
-                opacitySlider.UpdateSlider(ensureValue(game.Text.Opacity * 100, 0, 100));
-            }
-        },
-        // Sync sliders is used to make sure that all sliders are showing the correct values
-        syncSliders: Function = function (animation) {
-            slidersAnimationMappings[animation]();
         };
 
     // Setup DOM
@@ -68,7 +45,7 @@
     holder.append(canvas);
 
     // Create game
-    game = new Texts.Game(canvas, $(".textAnimator"), new eg.Vector2d(canvas.width / 2, canvas.height / 2), 0, 1, syncSliders);
+    game = new Texts.Game(canvas);
 
     // Wire up all the sliders
     textColorPicker = new Texts.ColorPicker($("#redColorPicker"), $("#greenColorPicker"), $("#blueColorPicker"), [127, 0, 127], (newcolor: string) => {
