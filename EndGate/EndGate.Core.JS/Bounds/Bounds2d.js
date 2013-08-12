@@ -33,7 +33,7 @@ var EndGate;
 
             /**
             * Abstract: Determines if the current bounded object completely contains the provided BoundingCircle.
-            * @param point A circle to check containment on.
+            * @param circle A circle to check containment on.
             */
             Bounds2d.prototype.ContainsCircle = function (circle) {
                 throw new Error("This method is abstract!");
@@ -41,7 +41,7 @@ var EndGate;
 
             /**
             * Abstract: Determines if the current bounded object completely contains the provided BoundingRectangle.
-            * @param point A rectangle to check containment on.
+            * @param rectangle A rectangle to check containment on.
             */
             Bounds2d.prototype.ContainsRectangle = function (rectangle) {
                 throw new Error("This method is abstract!");

@@ -33,7 +33,7 @@ module EndGate.Particles {
         * Creates a new instance of the Particle object.
         * @param texture The texture for the particle.
         * @param fromLocation The from location of the Particle.
-        * @param endLocation The end location of the Particle.
+        * @param toLocation The end location of the Particle.
         * @param scale How large the Particles Texture should be.  Value will multiply the size of the provided texture.
         * @param opacity The particles opacity.  Value should be between 0 and 1.
         * @param rotation The particles initial rotation.  Value should be in radians.

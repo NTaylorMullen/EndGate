@@ -55,7 +55,7 @@ module EndGate.Bounds {
 
         /**
         * Abstract: Determines if the current bounded object completely contains the provided BoundingCircle.
-        * @param point A circle to check containment on.
+        * @param circle A circle to check containment on.
         */
         public ContainsCircle(circle: BoundingCircle): boolean {
             throw new Error("This method is abstract!");
@@ -63,7 +63,7 @@ module EndGate.Bounds {
 
         /**
         * Abstract: Determines if the current bounded object completely contains the provided BoundingRectangle.
-        * @param point A rectangle to check containment on.
+        * @param rectangle A rectangle to check containment on.
         */
         public ContainsRectangle(rectangle: BoundingRectangle): boolean {
             throw new Error("This method is abstract!");
@@ -76,7 +76,7 @@ module EndGate.Bounds {
         public Contains(point: Vector2d): boolean;
         /**
         * Abstract: Determines if the current bounded object completely contains another bounded object.
-        * @param point A bounded object to check containment on.
+        * @param obj A bounded object to check containment on.
         */
         public Contains(obj: Bounds2d): boolean;
         public Contains(obj: any): boolean {

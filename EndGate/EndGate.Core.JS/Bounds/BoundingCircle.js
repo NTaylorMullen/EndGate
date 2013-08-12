@@ -97,7 +97,7 @@ var EndGate;
 
             /**
             * Determines if the current BoundingCircle completely contains the provided BoundingCircle.
-            * @param point A circle to check containment on.
+            * @param circle A circle to check containment on.
             */
             BoundingCircle.prototype.ContainsCircle = function (circle) {
                 return circle.Position.Distance(this.Position).Length() + circle.Radius <= this.Radius;
@@ -105,7 +105,7 @@ var EndGate;
 
             /**
             * Determines if the current BoundingCircle completely contains the provided BoundingRectangle.
-            * @param point A rectangle to check containment on.
+            * @param rectangle A rectangle to check containment on.
             */
             BoundingCircle.prototype.ContainsRectangle = function (rectangle) {
                 var corners = rectangle.Corners();
