@@ -24,11 +24,6 @@ module Shapes {
             this.SliderChange();
         }
 
-        // Take an outside value and update the slider (this is used for things like animating)
-        public UpdateSlider(val: number): void {
-            this._target.slider("value", val);
-        }
-
         private SliderChange(): void {
             this._onSliderChange(parseInt(this._target.slider("value")));
         }

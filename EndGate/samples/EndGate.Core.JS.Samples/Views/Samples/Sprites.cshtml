@@ -56,7 +56,7 @@
 </div>
 
 <div class="row well ui-widget-content span8" style="margin-left: 0">
-    <div class="span2 well" style="margin-bottom: 0px; height: 148px;">
+    <div class="span2 well" style="margin-left: 20%; margin-bottom: 0px; height: 148px;">
         <h4 class="text-center">Rotation</h4>
         <div id="rotationSlider" class="slider-horizontal"></div>
         <h4 class="text-center">Position</h4>
@@ -70,19 +70,6 @@
         <div id="widthSlider" class="slider-horizontal"></div>
         <div id="heightSlider" class="slider-horizontal"></div>
     </div>
-    <div class="span2 well text-center" style="margin-bottom: 0px; height: 148px;">
-        <h4 class="text-center">Animate</h4>
-        <p>
-            <button animation="Position" class="spriteAnimator btn" style="width: 100%;">Position</button>
-        </p>
-        <p>
-            <button animation="Rotation" class="spriteAnimator btn" style="width: 100%;">Rotation</button>
-        </p>
-        <p>
-            <button animation="Size" class="spriteAnimator btn" style="width: 45%;">Size</button>
-            <button animation="Opacity" class="spriteAnimator btn" style="width: 45%;">Opac</button>
-        </p>
-    </div>
 </div>
 
 <div class="row">
@@ -93,7 +80,6 @@
 @section scripts {
     @Scripts.Render("~/Scripts/jquery-ui-1.10.2.js")
     <script data-typescript="true" src="~/Content/Samples/Sprites/CustomSlider.js"></script>
-    <script data-typescript="true" src="~/Content/Samples/Sprites/SpriteAnimator.js"></script>
     <script data-typescript="true" src="~/Content/Samples/Sprites/Game.js"></script>
     <script data-typescript="true" src="~/Content/Samples/Sprites/Main.js"></script>
 }

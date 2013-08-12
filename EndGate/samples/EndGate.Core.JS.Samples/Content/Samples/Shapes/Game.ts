@@ -1,6 +1,5 @@
 /// <reference path="../../../Scripts/jquery.d.ts" />
 /// <reference path="../../../Scripts/endgate.d.ts" />
-/// <reference path="ShapeAnimator.ts" />
 
 // Wrap in module to keep code out of global scope
 module Shapes {
@@ -8,9 +7,7 @@ module Shapes {
     export class Game extends eg.Game {
         public Shape: any;
 
-        private _shapeAnimator: ShapeAnimator;
-
-        constructor(private _canvas: HTMLCanvasElement, targetBuilders: JQuery, targetAnimators: JQuery, defaultPosition: eg.Vector2d, defaultSize: eg.Size2d, defaultRotation: number, defaultOpacity: number, private _syncSliders: Function) {
+        constructor(private _canvas: HTMLCanvasElement, targetBuilders: JQuery) {
             super(_canvas);
             var that = this,
                 // Builders represent the shape building, aka viewing a circle or a rectangle
@@ -29,13 +26,6 @@ module Shapes {
 
             // Apply default builder
             $(targetBuilders[0]).click();
-
-            this._shapeAnimator = new ShapeAnimator(targetAnimators, defaultPosition, defaultSize, defaultRotation, defaultOpacity, this._syncSliders);
-        }
-
-        public Update(gameTime: eg.GameTime): void {
-            // Update the shape animator so that it can move the shape
-            this._shapeAnimator.ApplyAnimation(this.Shape, gameTime);
         }
 
         // Used to go from circle to rectangle or vice versa
@@ -55,11 +45,6 @@ module Shapes {
                 }
                 else {
                     newShape = new shapeType(this.Shape.Position.X, this.Shape.Position.Y, Math.min((<any>this.Shape).Size.Width, (<any>this.Shape).Size.Height) / 2);
-                    window.setTimeout((function (sizeSync) {
-                        return function () {
-                            sizeSync("Size");
-                        };
-                    })(this._syncSliders), 0);
                 }
                 // Copy all of the previous shapes settings over to the new shape
                 newShape.Color = this.Shape.Color;

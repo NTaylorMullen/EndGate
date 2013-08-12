@@ -6,16 +6,14 @@ var __extends = this.__extends || function (d, b) {
 };
 /// <reference path="../../../Scripts/jquery.d.ts" />
 /// <reference path="../../../Scripts/endgate.d.ts" />
-/// <reference path="ShapeAnimator.ts" />
 // Wrap in module to keep code out of global scope
 var Shapes;
 (function (Shapes) {
     var Game = (function (_super) {
         __extends(Game, _super);
-        function Game(_canvas, targetBuilders, targetAnimators, defaultPosition, defaultSize, defaultRotation, defaultOpacity, _syncSliders) {
+        function Game(_canvas, targetBuilders) {
             _super.call(this, _canvas);
             this._canvas = _canvas;
-            this._syncSliders = _syncSliders;
             var that = this, builderClicked = function () {
                 if (!$(this).hasClass("disabled")) {
                     targetBuilders.removeClass("disabled");
@@ -31,14 +29,7 @@ var Shapes;
 
             // Apply default builder
             $(targetBuilders[0]).click();
-
-            this._shapeAnimator = new Shapes.ShapeAnimator(targetAnimators, defaultPosition, defaultSize, defaultRotation, defaultOpacity, this._syncSliders);
         }
-        Game.prototype.Update = function (gameTime) {
-            // Update the shape animator so that it can move the shape
-            this._shapeAnimator.ApplyAnimation(this.Shape, gameTime);
-        };
-
         // Used to go from circle to rectangle or vice versa
         Game.prototype.BuildShape = function (builder) {
             var shapeTypeName = $(builder).attr("shape"), shapeType = eg.Graphics[shapeTypeName], newShape;
@@ -50,11 +41,6 @@ var Shapes;
                     newShape = new shapeType(this.Shape.Position.X, this.Shape.Position.Y, (this.Shape).Radius * 2, (this.Shape).Radius * 2);
                 } else {
                     newShape = new shapeType(this.Shape.Position.X, this.Shape.Position.Y, Math.min((this.Shape).Size.Width, (this.Shape).Size.Height) / 2);
-                    window.setTimeout((function (sizeSync) {
-                        return function () {
-                            sizeSync("Size");
-                        };
-                    })(this._syncSliders), 0);
                 }
 
                 // Copy all of the previous shapes settings over to the new shape

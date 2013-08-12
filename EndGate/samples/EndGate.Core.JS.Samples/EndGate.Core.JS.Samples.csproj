@@ -238,10 +238,6 @@
     <Content Include="Content\Samples\Text\Main.js">
       <DependentUpon>Main.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="Content\Samples\Text\TextAnimator.ts" />
-    <Content Include="Content\Samples\Text\TextAnimator.js">
-      <DependentUpon>TextAnimator.ts</DependentUpon>
-    </Content>
     <Content Include="Images\attribution.txt" />
     <Content Include="Images\combined-tiles.png" />
     <Content Include="Styles\utilities.min.css">
@@ -261,10 +257,6 @@
     <Content Include="Content\Samples\Sprites\Main.js">
       <DependentUpon>Main.ts</DependentUpon>
     </Content>
-    <TypeScriptCompile Include="Content\Samples\Sprites\SpriteAnimator.ts" />
-    <Content Include="Content\Samples\Sprites\SpriteAnimator.js">
-      <DependentUpon>SpriteAnimator.ts</DependentUpon>
-    </Content>
     <Content Include="Views\Samples\Sprites.cshtml" />
     <TypeScriptCompile Include="Content\Samples\Shapes\ColorPicker.ts" />
     <Content Include="Content\Samples\Shapes\ColorPicker.js">
@@ -281,10 +273,6 @@
     <TypeScriptCompile Include="Content\Samples\Shapes\Main.ts" />
     <Content Include="Content\Samples\Shapes\Main.js">
       <DependentUpon>Main.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Content\Samples\Shapes\ShapeAnimator.ts" />
-    <Content Include="Content\Samples\Shapes\ShapeAnimator.js">
-      <DependentUpon>ShapeAnimator.ts</DependentUpon>
     </Content>
     <Content Include="Content\themes\base\images\animated-overlay.gif" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -801,9 +789,6 @@
     <Content Include="Content\Samples\Shapes\Main.js.map">
       <DependentUpon>Main.ts</DependentUpon>
     </Content>
-    <Content Include="Content\Samples\Shapes\ShapeAnimator.js.map">
-      <DependentUpon>ShapeAnimator.ts</DependentUpon>
-    </Content>
     <Content Include="Content\Samples\Sprites\CustomSlider.js.map">
       <DependentUpon>CustomSlider.ts</DependentUpon>
     </Content>
@@ -812,9 +797,6 @@
     </Content>
     <Content Include="Content\Samples\Sprites\Main.js.map">
       <DependentUpon>Main.ts</DependentUpon>
-    </Content>
-    <Content Include="Content\Samples\Sprites\SpriteAnimator.js.map">
-      <DependentUpon>SpriteAnimator.ts</DependentUpon>
     </Content>
     <Content Include="Content\Samples\Text\ColorPicker.js.map">
       <DependentUpon>ColorPicker.ts</DependentUpon>
@@ -827,9 +809,6 @@
     </Content>
     <Content Include="Content\Samples\Text\Main.js.map">
       <DependentUpon>Main.ts</DependentUpon>
-    </Content>
-    <Content Include="Content\Samples\Text\TextAnimator.js.map">
-      <DependentUpon>TextAnimator.ts</DependentUpon>
     </Content>
     <Content Include="Content\Samples\MapLoading\map.json" />
     <None Include="Scripts\jquery-2.0.0.intellisense.js" />

@@ -1,7 +1,6 @@
 /// <reference path="../../../Scripts/jquery.d.ts" />
 /// <reference path="Game.ts" />
 /// <reference path="CustomSlider.ts" />
-/// <reference path="SpriteAnimator.ts" />
 
 (function ($, window) {
     // Create a game canvas to use.  If we create a game without providing a canvas it will create a
@@ -15,37 +14,7 @@
         yPositionSlider: Sprites.CustomSlider,
         opacitySlider: Sprites.CustomSlider,
         widthSlider: Sprites.CustomSlider,
-        heightSlider: Sprites.CustomSlider,
-        // Return value that is closest to provided value but still within min-max range
-        ensureValue = function (val, min, max) {
-            return Math.min(Math.max(val, min), max);
-        },
-        slidersAnimationMappings = {
-            Position: function () {
-                xPositionSlider.UpdateSlider(ensureValue(game.Sprite.Position.X, 0, canvas.width / 2));
-                yPositionSlider.UpdateSlider(ensureValue(game.Sprite.Position.Y, 0, canvas.height / 2));
-            },
-            Rotation: function () {
-                rotationSlider.UpdateSlider(ensureValue(game.Sprite.Rotation * 100, -628, 628));
-            },
-            Size: function () {
-                var newWidth,
-                    newHeight;
-
-                newWidth = game.Sprite.Size.Width;
-                newHeight = game.Sprite.Size.Height;
-
-                widthSlider.UpdateSlider(ensureValue(newWidth, 0, canvas.width));
-                heightSlider.UpdateSlider(ensureValue(newHeight, 0, canvas.height));
-            },
-            Opacity: function () {
-                opacitySlider.UpdateSlider(ensureValue(game.Sprite.Opacity * 100, 0, 100));
-            }
-        },
-        // Sync sliders is used to make sure that all sliders are showing the correct values
-        syncSliders: Function = function (animation) {
-            slidersAnimationMappings[animation]();
-        };
+        heightSlider: Sprites.CustomSlider;
 
     // Setup DOM
     canvas.width = holder.width();
@@ -53,7 +22,7 @@
     holder.append(canvas);
 
     // Create game
-    game = new Sprites.Game(canvas, $(".spriteAnimator"), new eg.Vector2d(canvas.width / 2, canvas.height / 2), new eg.Size2d(100, 100), 0, 1, syncSliders);
+    game = new Sprites.Game(canvas);
 
     // Wire up all the sliders
     rotationSlider = new Sprites.CustomSlider($("#rotationSlider"), -628, 628, 0, (newrotation: number) => {

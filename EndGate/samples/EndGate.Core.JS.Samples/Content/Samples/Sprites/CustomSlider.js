@@ -28,11 +28,6 @@ var Sprites;
             // This essentially triggers the onSliderChange event with the default values
             this.SliderChange();
         }
-        // Take an outside value and update the slider (this is used for things like animating)
-        CustomSlider.prototype.UpdateSlider = function (val) {
-            this._target.slider("value", val);
-        };
-
         CustomSlider.prototype.SliderChange = function () {
             this._onSliderChange(parseInt(this._target.slider("value")));
         };
