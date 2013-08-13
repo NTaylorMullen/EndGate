@@ -141,8 +141,8 @@ module EndGate.Collision {
                     if (!cacheMap[hash]) {
                         cacheMap[hash] = true;
 
-                        colliding[i][0].Collided(new Assets.CollisionData(colliding[i][1]));
-                        colliding[i][1].Collided(new Assets.CollisionData(colliding[i][0]));
+                        colliding[i][0].Collided(new CollisionData(colliding[i][1]));
+                        colliding[i][1].Collided(new CollisionData(colliding[i][0]));
 
                         this.OnCollision.Trigger(colliding[i][0], colliding[i][1]);
                     }

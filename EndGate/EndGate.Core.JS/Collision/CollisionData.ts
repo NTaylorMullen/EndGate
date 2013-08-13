@@ -1,7 +1,7 @@
 /// <reference path="../Assets/Vectors/Vector2d.ts" />
 /// <reference path="Collidable.ts" />
 
-module EndGate.Collision.Assets {
+module EndGate.Collision {
 
     /**
     * Defines a data object that is used to describe a collision event.
