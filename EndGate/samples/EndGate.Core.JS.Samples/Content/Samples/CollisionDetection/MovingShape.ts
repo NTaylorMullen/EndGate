@@ -26,7 +26,7 @@ module CollisionDetection {
         }
 
         // Triggered when shapes collide with each other
-        public Collided(data: eg.Collision.Assets.CollisionData): void {
+        public Collided(data: eg.Collision.CollisionData): void {
             // Reset the collision alpha to be 1
             this._collisionColorAlpha = 1;
 

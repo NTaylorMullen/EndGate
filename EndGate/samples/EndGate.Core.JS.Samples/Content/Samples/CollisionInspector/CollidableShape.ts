@@ -10,7 +10,7 @@ module CollisionInspector {
 
         private _collisionBorderColor: string = "black";
         private _collisionBorderThickness: number = 4;
-        private _lastCollision: eg.Collision.Assets.CollisionData = null;
+        private _lastCollision: eg.Collision.CollisionData = null;
 
         constructor(public Graphic: eg.Graphics.Shape) {
             super(Graphic.GetDrawBounds());
@@ -42,7 +42,7 @@ module CollisionInspector {
         }
 
         // Triggered when shapes collide with each other
-        public Collided(data: eg.Collision.Assets.CollisionData): void {
+        public Collided(data: eg.Collision.CollisionData): void {
             // Make border thickness visible on collision
             this.Graphic.BorderThickness = this._collisionBorderThickness;
 

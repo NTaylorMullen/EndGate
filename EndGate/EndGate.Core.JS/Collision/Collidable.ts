@@ -21,7 +21,7 @@ module EndGate.Collision {
 
         private static _collidableIDs: number = 0;
         private _disposed: boolean;
-        private _onCollision: EventHandler1<Assets.CollisionData>;
+        private _onCollision: EventHandler1<CollisionData>;
         private _onDisposed: EventHandler1<Collidable>;
 
         /**
@@ -33,14 +33,14 @@ module EndGate.Collision {
             this.Bounds = bounds;
             this._id = Collidable._collidableIDs++;
 
-            this._onCollision = new EventHandler1<Assets.CollisionData>();
+            this._onCollision = new EventHandler1<CollisionData>();
             this._onDisposed = new EventHandler1<Collidable>();
         }
 
         /**
         * Gets an event that is triggered when a collision happens.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
-        public get OnCollision(): EventHandler1<Assets.CollisionData> {
+        public get OnCollision(): EventHandler1<CollisionData> {
             return this._onCollision;
         }
         /**
@@ -62,7 +62,7 @@ module EndGate.Collision {
         * Triggers the OnCollision event.  Can also be overridden from derived classes to be called when a collision occurs if the collidable is being used with a CollisionManager
         * @param data Collision information related to the collision.
         */
-        public Collided(data: Assets.CollisionData): void {
+        public Collided(data: CollisionData): void {
             this.OnCollision.Trigger(data);
         }
 
