@@ -1,18 +1,9 @@
-<<<<<<< HEAD
-﻿(function () {
+(function () {
     QUnit.module("Color Facts");
     //Add tests for 
     //1. 6 digit hex
     //2. alpha hex
     //3. string colors
-=======
-﻿(function() {
-    QUnit.module("Color Facts");
-    //Add tests for 
-//1. 6 digit hex
-//2. alpha hex
-//3. string colors
->>>>>>> bdb8b95548db6242ab42cea06768689e741242a8
     QUnit.test("Passing a short #hex test", function () {
         var color = new eg.Graphics.Color("#fff");
         QUnit.ok(1 === color.A);
