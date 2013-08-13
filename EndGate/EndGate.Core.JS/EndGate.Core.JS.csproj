@@ -91,6 +91,10 @@
     <Content Include="Extensions\NumberExtensions.js">
       <DependentUpon>NumberExtensions.ts</DependentUpon>
     </Content>
+    <TypeScriptCompile Include="Graphics\Color.ts" />
+    <Content Include="Graphics\Color.js">
+      <DependentUpon>Color.ts</DependentUpon>
+    </Content>
     <Content Include="Interfaces\ICloneable.js">
       <DependentUpon>ICloneable.ts</DependentUpon>
     </Content>
