@@ -21,11 +21,14 @@ var Tweening;
 
             this._opacityTween = new eg.Tweening.NumberTween(0, 1, eg.TimeSpan.Zero, eg.Tweening.Functions.Linear.EaseNone);
 
+            this._colorTween = new eg.Tweening.ColorTween(target.Color, eg.Graphics.Color.Red, eg.TimeSpan.Zero, eg.Tweening.Functions.Linear.EaseNone);
+
             // Bind each of the reverse functions as the completion to each tween component.
             this._positionTween.OnComplete.Bind(tweenReverse);
             this._sizeTween.OnComplete.Bind(tweenReverse);
             this._rotationTween.OnComplete.Bind(tweenReverse);
             this._opacityTween.OnComplete.Bind(tweenReverse);
+            this._colorTween.OnComplete.Bind(tweenReverse);
 
             // Bind each of the OnChange events so we can update the target object correctly.
             this._positionTween.OnChange.Bind(function (newPosition) {
@@ -39,6 +42,9 @@ var Tweening;
             });
             this._opacityTween.OnChange.Bind(function (newOpacity) {
                 target.Opacity = newOpacity;
+            });
+            this._colorTween.OnChange.Bind(function (newColor) {
+                target.Color = newColor;
             });
         }
         TweenManager.prototype.Play = function (name, duration, tweenFunction) {

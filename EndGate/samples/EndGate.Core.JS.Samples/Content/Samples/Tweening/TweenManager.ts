@@ -10,6 +10,7 @@ module Tweening {
         private _sizeTween: eg.Tweening.Size2dTween;
         private _rotationTween: eg.Tweening.NumberTween;
         private _opacityTween: eg.Tweening.NumberTween;
+        private _colorTween: eg.Tweening.ColorTween;
 
         constructor(target: eg.Graphics.Rectangle, onTweenComplete: Function) {
             // Build a general reverse function that will reverse the current tween so it can essentially just cycle back and forth
@@ -46,11 +47,18 @@ module Tweening {
                 eg.TimeSpan.Zero,
                 eg.Tweening.Functions.Linear.EaseNone);
 
+            this._colorTween = new eg.Tweening.ColorTween(
+                target.Color,
+                eg.Graphics.Color.Red,
+                eg.TimeSpan.Zero,
+                eg.Tweening.Functions.Linear.EaseNone);
+
             // Bind each of the reverse functions as the completion to each tween component.
             this._positionTween.OnComplete.Bind(tweenReverse);
             this._sizeTween.OnComplete.Bind(tweenReverse);
             this._rotationTween.OnComplete.Bind(tweenReverse);
             this._opacityTween.OnComplete.Bind(tweenReverse);
+            this._colorTween.OnComplete.Bind(tweenReverse);
 
             // Bind each of the OnChange events so we can update the target object correctly.
             this._positionTween.OnChange.Bind((newPosition: eg.Vector2d) => {
@@ -64,6 +72,9 @@ module Tweening {
             });
             this._opacityTween.OnChange.Bind((newOpacity: number) => {
                 target.Opacity = newOpacity;
+            });
+            this._colorTween.OnChange.Bind((newColor: eg.Graphics.Color) => {
+                target.Color = newColor;
             });
         }
 
