@@ -42,8 +42,8 @@ module Tweening {
                 eg.Tweening.Functions.Linear.EaseNone);
 
             this._opacityTween = new eg.Tweening.NumberTween(
+                target.Opacity,
                 0,
-                1,
                 eg.TimeSpan.Zero,
                 eg.Tweening.Functions.Linear.EaseNone);
 

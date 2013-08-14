@@ -19,7 +19,7 @@ var Tweening;
 
             this._rotationTween = new eg.Tweening.NumberTween(0, Math.PI * 2, eg.TimeSpan.Zero, eg.Tweening.Functions.Linear.EaseNone);
 
-            this._opacityTween = new eg.Tweening.NumberTween(0, 1, eg.TimeSpan.Zero, eg.Tweening.Functions.Linear.EaseNone);
+            this._opacityTween = new eg.Tweening.NumberTween(target.Opacity, 0, eg.TimeSpan.Zero, eg.Tweening.Functions.Linear.EaseNone);
 
             this._colorTween = new eg.Tweening.ColorTween(target.Color, eg.Graphics.Color.Red, eg.TimeSpan.Zero, eg.Tweening.Functions.Linear.EaseNone);
 
