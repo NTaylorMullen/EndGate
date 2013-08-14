@@ -8,6 +8,7 @@ var EndGate;
 (function (EndGate) {
     /// <reference path="../../Assets/Vectors/Vector2d.ts" />
     /// <reference path="../Graphic2d.ts" />
+    /// <reference path="../Color.ts" />
     (function (Graphics) {
         /**
         * Abstract drawable shape type that is used create customizable drawable graphics.
@@ -29,11 +30,15 @@ var EndGate;
                 * Gets or sets the current shape color.  Valid colors are strings like "red" or "rgb(255,0,0)".
                 */
                 function () {
-                    return this._State.FillStyle;
+                    return this._fillStyle;
                 },
                 set: function (color) {
+                    if (typeof color === "string") {
+                        color = new Graphics.Color(color);
+                    }
                     this._fill = true;
-                    this._State.FillStyle = color;
+                    this._fillStyle = color;
+                    this._State.FillStyle = color.toString();
                 },
                 enumerable: true,
                 configurable: true
@@ -58,10 +63,11 @@ var EndGate;
                 * Gets or sets the current border color.  Valid colors are strings like "red" or "rgb(255,0,0)".
                 */
                 function () {
-                    return this._State.StrokeStyle;
+                    return this._strokeStyle;
                 },
                 set: function (color) {
-                    this._State.StrokeStyle = color;
+                    this._strokeStyle = color;
+                    this._State.StrokeStyle = color.toString();
                 },
                 enumerable: true,
                 configurable: true
@@ -72,11 +78,12 @@ var EndGate;
                 * Gets or sets the current shadow color.  Valid colors are strings like "red" or "rgb(255,0,0)".
                 */
                 function () {
-                    return this._State.ShadowColor;
+                    return this._shadowColor;
                 },
                 set: function (color) {
                     this._fill = true;
-                    this._State.ShadowColor = color;
+                    this._shadowColor = color;
+                    this._State.ShadowColor = color.toString();
                 },
                 enumerable: true,
                 configurable: true
@@ -175,8 +182,8 @@ var EndGate;
             };
 
             Shape.prototype._Clone = function (graphic) {
-                graphic.Border(this.BorderThickness, this.BorderColor);
-                graphic.Shadow(this.ShadowX, this.ShadowY, this.ShadowColor, this.ShadowBlur);
+                graphic.Border(this.BorderThickness, this.BorderColor.Clone());
+                graphic.Shadow(this.ShadowX, this.ShadowY, this.ShadowColor.Clone(), this.ShadowBlur);
 
                 _super.prototype._Clone.call(this, graphic);
             };

@@ -10,6 +10,7 @@ var EndGate;
     /// <reference path="../Assets/Vectors/Vector2d.ts" />
     /// <reference path="../Bounds/BoundingRectangle.ts" />
     /// <reference path="Graphic2d.ts" />
+    /// <reference path="Color.ts" />
     (function (Graphics) {
         /**
         * Defines a drawable 2d line element.
@@ -27,6 +28,9 @@ var EndGate;
                 this.UpdatePosition();
 
                 if (typeof color !== "undefined") {
+                    if (typeof color === "string") {
+                        color = new Graphics.Color(color);
+                    }
                     this.Color = color;
                 }
             }
@@ -65,10 +69,14 @@ var EndGate;
                 * Gets or sets the line color.  Valid colors are strings like "red" or "rgb(255,0,0)".
                 */
                 function () {
-                    return this._State.StrokeStyle;
+                    return this._strokeStyle;
                 },
                 set: function (color) {
-                    this._State.StrokeStyle = color;
+                    if (typeof color === "string") {
+                        color = new Graphics.Color(color);
+                    }
+                    this._strokeStyle = color;
+                    this._State.StrokeStyle = color.toString();
                 },
                 enumerable: true,
                 configurable: true
@@ -146,7 +154,7 @@ var EndGate;
             * Returns a nearly identical copy of this Line2d.  If this Line2d belongs to a parent, the cloned Line2d will not. If this Line2d has children, all children will be cloned as well.  Lastly, the cloned Line2d will not have the same event bindings as this one does.
             */
             Line2d.prototype.Clone = function () {
-                var graphic = new Line2d(this.From.X, this.From.Y, this.To.X, this.To.Y, this.LineWidth, this.Color);
+                var graphic = new Line2d(this.From.X, this.From.Y, this.To.X, this.To.Y, this.LineWidth, this.Color.Clone());
 
                 graphic.LineCap = this.LineCap;
 

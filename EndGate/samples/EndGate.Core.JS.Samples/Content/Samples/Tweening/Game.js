@@ -19,7 +19,7 @@ var Tweening;
             this._ui = new Tweening.UI();
 
             // This rectangle will be the object that is tweened.
-            this._object = new eg.Graphics.Rectangle(Game._sideOffset, canvas.height / 2, 100, 70, "blue");
+            this._object = new eg.Graphics.Rectangle(Game._sideOffset, canvas.height / 2, 100, 70, eg.Graphics.Color.Blue);
 
             // Build a Tween manager. Pass in the target object to apply all tweens to and pass in an
             // onTweenComplete function.  After a tween completes we need to re-enable the UI.

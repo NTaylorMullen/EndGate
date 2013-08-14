@@ -14,7 +14,7 @@ var CollisionInspector;
         function CollidableShape(Graphic) {
             _super.call(this, Graphic.GetDrawBounds());
             this.Graphic = Graphic;
-            this._collisionBorderColor = "black";
+            this._collisionBorderColor = eg.Graphics.Color.Black;
             this._collisionBorderThickness = 4;
             this._lastCollision = null;
 

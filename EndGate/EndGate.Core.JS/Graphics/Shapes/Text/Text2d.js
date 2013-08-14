@@ -8,6 +8,7 @@ var EndGate;
 (function (EndGate) {
     /// <reference path="../../../Assets/Vectors/Vector2d.ts" />
     /// <reference path="../../Graphic2d.ts" />
+    /// <reference path="../../Color.ts" />
     /// <reference path="../../../Utilities/NoopTripInvoker.ts" />
     /// <reference path="../../../Bounds/BoundingRectangle.ts" />
     /// <reference path="../Shape.ts" />
@@ -19,7 +20,7 @@ var EndGate;
         var Text2d = (function (_super) {
             __extends(Text2d, _super);
             function Text2d(x, y, text, color) {
-                if (typeof color === "undefined") { color = "black"; }
+                if (typeof color === "undefined") { color = Graphics.Color.Black; }
                 _super.call(this, new EndGate.Vector2d(x, y), color);
                 this._type = "Text2d";
 
@@ -161,7 +162,7 @@ var EndGate;
             * Returns a nearly identical copy of this Text2d.  If this Text2d belongs to a parent, the cloned Text2d will not. If this Text2d has children, all children will be cloned as well.  Lastly, the cloned Text2d will not have the same event bindings as this one does.
             */
             Text2d.prototype.Clone = function () {
-                var graphic = new Text2d(this.Position.X, this.Position.Y, this.Text, this.Color);
+                var graphic = new Text2d(this.Position.X, this.Position.Y, this.Text, this.Color.Clone());
 
                 graphic.Align = this.Align;
                 graphic.Baseline = this.Baseline;

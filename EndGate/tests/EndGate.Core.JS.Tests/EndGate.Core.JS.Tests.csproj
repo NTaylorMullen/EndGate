@@ -91,7 +91,6 @@
     <Content Include="Tests\Collision\CollisionManagerFacts.js" />
     <Content Include="Tests\Graphics\ColorFacts.js" />
     <Content Include="Tests\GameFacts.js" />
-    <Content Include="Tests\Graphics\ColorFacts.js" />
     <Content Include="Tests\Graphics\Graphic2dFacts.js" />
     <Content Include="Tests\Graphics\Sprites\Animation\SpriteAnimationFacts.js" />
     <Content Include="Tests\Input\InputManagerFacts.js" />

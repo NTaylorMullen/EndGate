@@ -19,10 +19,10 @@ var Particles;
             this.Emitter = new eg.Particles.Emitter(this._canvas.width / 2, this._canvas.height / 2, eg.Tweening.Functions.Linear.EaseNone);
 
             // Emitters randomly select Graphic2d's that are part of their texture pool.
-            this.Emitter.AddTexture(new eg.Graphics.Circle(0, 0, 3, "#1A1EB2"));
-            this.Emitter.AddTexture(new eg.Graphics.Circle(0, 0, 1.5, "#4E51D8"));
-            this.Emitter.AddTexture(new eg.Graphics.Rectangle(0, 0, 3, 5, "#7375D8"));
-            this.Emitter.AddTexture(new eg.Graphics.Rectangle(0, 0, 7, 5, "rgb(4,199,255)"));
+            this.Emitter.AddTexture(new eg.Graphics.Circle(0, 0, 3, new eg.Graphics.Color("#1A1EB2")));
+            this.Emitter.AddTexture(new eg.Graphics.Circle(0, 0, 1.5, new eg.Graphics.Color("#4E51D8")));
+            this.Emitter.AddTexture(new eg.Graphics.Rectangle(0, 0, 3, 5, new eg.Graphics.Color("#7375D8")));
+            this.Emitter.AddTexture(new eg.Graphics.Rectangle(0, 0, 7, 5, new eg.Graphics.Color("rgb(4,199,255)")));
 
             // Starts auto emitting based on the EmissionInterval.  Emissions can be forced via emitter.Emit().
             this.Emitter.Start();

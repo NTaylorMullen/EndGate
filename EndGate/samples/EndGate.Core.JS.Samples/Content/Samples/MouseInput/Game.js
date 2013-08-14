@@ -18,17 +18,17 @@ var MouseInput;
             this._radiusSize = 5;
             this._scrollSpeed = 5;
             this._clickColors = {
-                Left: "#ff0000",
-                Middle: "#00ff00",
-                Right: "#0000ff"
+                Left: eg.Graphics.Color.Red,
+                Middle: eg.Graphics.Color.Green,
+                Right: eg.Graphics.Color.Blue
             };
             this._inbetweenColors = {
-                Left: "#ffa5a5",
-                Middle: "#a5ffa5",
-                Right: "#a5a5ff"
+                Left: new eg.Graphics.Color("#ffa5a5"),
+                Middle: new eg.Graphics.Color("#a5ffa5"),
+                Right: new eg.Graphics.Color("#a5a5ff")
             };
-            this._doubleClickColor = "#000000";
-            this._onMoveColor = "#000000";
+            this._doubleClickColor = eg.Graphics.Color.Black;
+            this._onMoveColor = eg.Graphics.Color.Black;
             this._shapes = [];
 
             this.Input.Mouse.OnClick = null;

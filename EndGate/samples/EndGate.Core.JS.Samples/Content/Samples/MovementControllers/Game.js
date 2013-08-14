@@ -16,7 +16,7 @@ var MovementControllers;
             // Default values for the movement controller
             this._characterMoveSpeed = 100;
             this._characterSize = new eg.Size2d(50, 30);
-            this._characterColor = "brown";
+            this._characterColor = eg.Graphics.Color.Brown;
             this._upKeys = ["w", "up"];
             this._rightKeys = ["d", "right"];
             this._downKeys = ["s", "down"];
