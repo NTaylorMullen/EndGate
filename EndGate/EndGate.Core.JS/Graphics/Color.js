@@ -2,6 +2,8 @@ var EndGate;
 (function (EndGate) {
     /// <reference path="../Interfaces/ITyped.ts" />
     /// <reference path="../Interfaces/ICloneable.ts" />
+    /// <reference path="../Interfaces/IDisposable.ts" />
+    /// <reference path="../Utilities/EventHandler1.ts" />
     (function (Graphics) {
         /**
         * Color class used to pass around colors in a typed manner.
@@ -10,6 +12,8 @@ var EndGate;
             function Color(r, g, b, a) {
                 this._type = "Color";
                 this._cached = undefined;
+                this._onChange = new EndGate.EventHandler1();
+
                 if (typeof (r) === 'string' && r.length > 0) {
                     this.InitializeColorFromString(r);
                 } else {
@@ -42,6 +46,17 @@ var EndGate;
                 configurable: true
             });
 
+            Object.defineProperty(Color.prototype, "OnChange", {
+                get: /**
+                * Gets an EventHandler that is triggered when the R, G, B, or A values of this Color change.
+                */
+                function () {
+                    return this._onChange;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
             Object.defineProperty(Color.prototype, "R", {
                 get: /**
                 * Gets or sets the current red channel. Value must be an integer between 0 and 255 inclusive.
@@ -52,6 +67,7 @@ var EndGate;
                 set: function (r) {
                     this._cached = undefined;
                     this._r = Math.round(Math.min(Math.max(r, 0), 255));
+                    this._onChange.Trigger(this);
                 },
                 enumerable: true,
                 configurable: true
@@ -67,6 +83,7 @@ var EndGate;
                 set: function (g) {
                     this._cached = undefined;
                     this._g = Math.round(Math.min(Math.max(g, 0), 255));
+                    this._onChange.Trigger(this);
                 },
                 enumerable: true,
                 configurable: true
@@ -82,6 +99,7 @@ var EndGate;
                 set: function (b) {
                     this._cached = undefined;
                     this._b = Math.round(Math.min(Math.max(b, 0), 255));
+                    this._onChange.Trigger(this);
                 },
                 enumerable: true,
                 configurable: true
@@ -97,6 +115,7 @@ var EndGate;
                 set: function (a) {
                     this._cached = undefined;
                     this._a = Math.min(Math.max(a, 0), 1);
+                    this._onChange.Trigger(this);
                 },
                 enumerable: true,
                 configurable: true
@@ -1826,6 +1845,16 @@ var EndGate;
                 return new Color(this.R, this.G, this.B, this.A);
             };
 
+            /**
+            * Disposes the Color object and unbinds any active event bindings.
+            */
+            Color.prototype.Dispose = function () {
+                this._onChange.Dispose();
+            };
+
+            /**
+            * toString override that returns the Color in the "rgba(r,g,b,a)" format.
+            */
             Color.prototype.toString = function () {
                 if (this._cached === undefined) {
                     this._cached = 'rgba(' + this.R + ',' + this.G + ',' + this.B + ',' + this.A + ')';
