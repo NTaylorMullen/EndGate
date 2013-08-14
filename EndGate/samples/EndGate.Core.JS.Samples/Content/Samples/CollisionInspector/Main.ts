@@ -18,9 +18,9 @@
     game = new CollisionInspector.Game(canvas);
 
     // Add objects that we'll be checking collisions for
-    game.Add(new CollisionInspector.CollidableShape(new eg.Graphics.Circle(70, canvas.height / 2, 50, "red")));
-    game.Add(new CollisionInspector.CollidableShape(new eg.Graphics.Circle(550, canvas.height / 2, 70, "blue")));
-    game.Add(new CollisionInspector.CollidableShape(new eg.Graphics.Rectangle(300, canvas.height / 2, 200, 100, "green")));
-    game.Add(new CollisionInspector.CollidableShape(new eg.Graphics.Rectangle(800, canvas.height / 2, 150, 75, "orange")));
+    game.Add(new CollisionInspector.CollidableShape(new eg.Graphics.Circle(70, canvas.height / 2, 50, eg.Graphics.Color.Red)));
+    game.Add(new CollisionInspector.CollidableShape(new eg.Graphics.Circle(550, canvas.height / 2, 70, eg.Graphics.Color.Blue)));
+    game.Add(new CollisionInspector.CollidableShape(new eg.Graphics.Rectangle(300, canvas.height / 2, 200, 100, eg.Graphics.Color.Green)));
+    game.Add(new CollisionInspector.CollidableShape(new eg.Graphics.Rectangle(800, canvas.height / 2, 150, 75, eg.Graphics.Color.Orange)));
 
 })($, window);

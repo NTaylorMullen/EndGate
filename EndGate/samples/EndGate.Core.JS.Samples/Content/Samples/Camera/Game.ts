@@ -33,7 +33,7 @@ module Camera {
             this._world = new World(this.Scene);
 
             // A black circle that represents the center of the camera
-            this._cameraLocation = new eg.Graphics.Circle(this.Scene.Camera.Position.X, this.Scene.Camera.Position.Y, 5, "black");
+            this._cameraLocation = new eg.Graphics.Circle(this.Scene.Camera.Position.X, this.Scene.Camera.Position.Y, 5, eg.Graphics.Color.Black);
             this.Scene.Add(this._cameraLocation);
 
             // Need to monitor moving directions so we know which way to move based on flags

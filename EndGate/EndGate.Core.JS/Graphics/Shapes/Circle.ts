@@ -1,6 +1,7 @@
 /// <reference path="../../Assets/Sizes/Size2d.ts" />
 /// <reference path="../../Assets/Vectors/Vector2d.ts" />
 /// <reference path="../../Bounds/BoundingCircle.ts" />
+/// <reference path="../Color.ts" />
 /// <reference path="Shape.ts" />
 
 module EndGate.Graphics {
@@ -30,8 +31,16 @@ module EndGate.Graphics {
         * @param radius Initial Radius of the Circle.
         * @param color Initial color of the Circle.
         */
+        constructor(x: number, y: number, radius: number, color: Color);
+        /**
+        * Creates a new instance of the Circle object with a specified color.
+        * @param x Initial horizontal location of the Circle.
+        * @param y Initial vertical location of the Circle.
+        * @param radius Initial Radius of the Circle.
+        * @param color Initial color string of the Circle.
+        */
         constructor(x: number, y: number, radius: number, color: string);
-        constructor(x: number, y: number, radius: number, color?: string) {
+        constructor(x: number, y: number, radius: number, color?: any) {
             super(new Vector2d(x, y), color);
 
             this.Radius = radius;
@@ -60,7 +69,7 @@ module EndGate.Graphics {
         * Returns a nearly identical copy of this Circle.  If this Circle belongs to a parent, the cloned Circle will not. If this Circle has children, all children will be cloned as well.  Lastly, the cloned Circle will not have the same event bindings as this one does.
         */
         public Clone(): Circle {
-            var graphic = new Circle(this.Position.X, this.Position.Y, this.Radius, this.Color);
+            var graphic = new Circle(this.Position.X, this.Position.Y, this.Radius, this.Color.Clone());
 
             super._Clone(graphic);
 

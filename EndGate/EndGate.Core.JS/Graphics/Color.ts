@@ -1429,7 +1429,7 @@ module EndGate.Graphics {
         * Returns a copy of the color with the current color channels.
         */
         public Clone() : any {
-            return new Color(this.A, this.R, this.G, this.B);
+            return new Color(this.R, this.G, this.B, this.A);
         }
  
         public toString(): string {

@@ -8,7 +8,7 @@ module CollisionInspector {
         // Represents the text location within the shape
         public TextPosition: eg.Graphics.Text2d;
 
-        private _collisionBorderColor: string = "black";
+        private _collisionBorderColor: eg.Graphics.Color = eg.Graphics.Color.Black;
         private _collisionBorderThickness: number = 4;
         private _lastCollision: eg.Collision.CollisionData = null;
 
