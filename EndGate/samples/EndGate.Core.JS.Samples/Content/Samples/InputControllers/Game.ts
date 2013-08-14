@@ -15,7 +15,7 @@ module InputControllers {
             super(canvas);
 
             // Our character is our rectangle graphic
-            this._character = new eg.Graphics.Rectangle(canvas.width / 2, canvas.height / 2, 50, 30, "green");
+            this._character = new eg.Graphics.Rectangle(canvas.width / 2, canvas.height / 2, 50, 30, eg.Graphics.Color.Green);
 
             // Create a MovementController to handle moving the character correctly
             this._characterMovementController = new eg.MovementControllers.LinearMovementController([this._character], this._characterMoveSpeed);

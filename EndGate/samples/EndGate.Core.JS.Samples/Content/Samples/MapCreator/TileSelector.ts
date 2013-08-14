@@ -15,8 +15,8 @@ module MapCreator {
             var downAt: eg.Vector2d,
                 groupSelecting = false;
 
-            this._groupSelector = new eg.Graphics.Rectangle(0, 0, 0, 0, "rgb(100, 255, 0)");
-            this._groupSelector.Border(2, "green");
+            this._groupSelector = new eg.Graphics.Rectangle(0, 0, 0, 0, new eg.Graphics.Color(100, 255, 0));
+            this._groupSelector.Border(2, eg.Graphics.Color.Green);
             this._groupSelector.Opacity = .4;
 
             mouseHandler.OnDown.Bind((e: eg.Input.IMouseClickEvent) => {

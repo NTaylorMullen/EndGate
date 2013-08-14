@@ -33,7 +33,7 @@
     game = new Shapes.Game(canvas, $(".shapeBuilder"));
 
     // Wire up all the sliders
-    shapeColorPicker = new Shapes.ColorPicker($("#redColorPicker"), $("#greenColorPicker"), $("#blueColorPicker"), [127, 0, 127], (newcolor: string) => {
+    shapeColorPicker = new Shapes.ColorPicker($("#redColorPicker"), $("#greenColorPicker"), $("#blueColorPicker"), [127, 0, 127], (newcolor: eg.Graphics.Color) => {
         game.Shape.Color = newcolor;
     });
     rotationSlider = new Shapes.CustomSlider($("#rotationSlider"), -628, 628, 0, (newrotation: number) => {
@@ -64,7 +64,7 @@
             game.Shape.Size.Height = newHeight;
         }
     });
-    borderColorPicker = new Shapes.ColorPicker($("#borderRed"), $("#borderGreen"), $("#borderBlue"), [0, 0, 0], (newcolor: string) => {
+    borderColorPicker = new Shapes.ColorPicker($("#borderRed"), $("#borderGreen"), $("#borderBlue"), [0, 0, 0], (newcolor: eg.Graphics.Color) => {
         game.Shape.BorderColor = newcolor;
     });
     borderThicknessSlider = new Shapes.CustomSlider($("#borderThickness"), 0, 100, 7, (newThickness) => {
@@ -76,7 +76,7 @@
     shadowYSlider = new Shapes.CustomSlider($("#shadowY"), -30, 30, 10, (newY: number) => {
         game.Shape.ShadowY = newY;
     });
-    shadowColorPicker = new Shapes.ColorPicker($("#shadowColorRed"), $("#shadowColorGreen"), $("#shadowColorBlue"), [0, 0, 100], (newcolor: string) => {
+    shadowColorPicker = new Shapes.ColorPicker($("#shadowColorRed"), $("#shadowColorGreen"), $("#shadowColorBlue"), [0, 0, 100], (newcolor: eg.Graphics.Color) => {
         game.Shape.ShadowColor = newcolor;
     });
     shadowBlurSlider = new Shapes.CustomSlider($("#shadowBlur"), 0, 300, 55, (newBlur: number) => {

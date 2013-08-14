@@ -48,7 +48,7 @@
     game = new Texts.Game(canvas);
 
     // Wire up all the sliders
-    textColorPicker = new Texts.ColorPicker($("#redColorPicker"), $("#greenColorPicker"), $("#blueColorPicker"), [127, 0, 127], (newcolor: string) => {
+    textColorPicker = new Texts.ColorPicker($("#redColorPicker"), $("#greenColorPicker"), $("#blueColorPicker"), [127, 0, 127], (newcolor: eg.Graphics.Color) => {
         game.Text.Color = newcolor;
     });
     rotationSlider = new Texts.CustomSlider($("#rotationSlider"), -628, 628, 0, (newrotation: number) => {
@@ -66,7 +66,7 @@
     fontSizeSlider = new Texts.CustomSlider($("#fontSizeSlider"), 0, 100, 20, (newSize) => {
         game.Text.FontSettings.FontSize = newSize + "pt";
     });
-    borderColorPicker = new Texts.ColorPicker($("#borderRed"), $("#borderGreen"), $("#borderBlue"), [0, 0, 0], (newcolor: string) => {
+    borderColorPicker = new Texts.ColorPicker($("#borderRed"), $("#borderGreen"), $("#borderBlue"), [0, 0, 0], (newcolor: eg.Graphics.Color) => {
         game.Text.BorderColor = newcolor;
     });
     borderThicknessSlider = new Texts.CustomSlider($("#borderThickness"), 0, 100, 0, (newThickness) => {
@@ -78,7 +78,7 @@
     shadowYSlider = new Texts.CustomSlider($("#shadowY"), -30, 30, 10, (newY: number) => {
         game.Text.ShadowY = newY;
     });
-    shadowColorPicker = new Texts.ColorPicker($("#shadowColorRed"), $("#shadowColorGreen"), $("#shadowColorBlue"), [0, 0, 100], (newcolor: string) => {
+    shadowColorPicker = new Texts.ColorPicker($("#shadowColorRed"), $("#shadowColorGreen"), $("#shadowColorBlue"), [0, 0, 100], (newcolor: eg.Graphics.Color) => {
         game.Text.ShadowColor = newcolor;
     });
     shadowBlurSlider = new Texts.CustomSlider($("#shadowBlur"), 0, 300, 55, (newBlur: number) => {
