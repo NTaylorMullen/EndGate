@@ -19,6 +19,7 @@ var EndGate;
             __extends(Line2d, _super);
             function Line2d(fromX, fromY, toX, toY, lineWidth, color) {
                 if (typeof lineWidth === "undefined") { lineWidth = 1; }
+                var _this = this;
                 _super.call(this, EndGate.Vector2d.Zero);
                 this._type = "Line2d";
 
@@ -27,11 +28,17 @@ var EndGate;
                 this.LineWidth = lineWidth;
                 this.UpdatePosition();
 
+                this._strokeChangeWire = function (color) {
+                    _this._State.StrokeStyle = color.toString();
+                };
+
                 if (typeof color !== "undefined") {
                     if (typeof color === "string") {
                         color = new Graphics.Color(color);
                     }
-                    this.Color = color;
+                    this.Color = this._strokeStyle = color;
+                } else {
+                    this.Color = this._strokeStyle = Graphics.Color.Black;
                 }
             }
             Object.defineProperty(Line2d.prototype, "From", {
@@ -75,8 +82,16 @@ var EndGate;
                     if (typeof color === "string") {
                         color = new Graphics.Color(color);
                     }
+
+                    // Unbind old
+                    this._strokeStyle.OnChange.Unbind(this._strokeChangeWire);
                     this._strokeStyle = color;
-                    this._State.StrokeStyle = color.toString();
+
+                    // Bind new
+                    this._strokeStyle.OnChange.Bind(this._strokeChangeWire);
+
+                    // Update state
+                    this._strokeChangeWire(color);
                 },
                 enumerable: true,
                 configurable: true
@@ -115,6 +130,10 @@ var EndGate;
             * @param context The canvas context to draw the line onto.
             */
             Line2d.prototype.Draw = function (context) {
+                if (this._strokeStyle.toString() !== this._State.StrokeStyle) {
+                    this._State.StrokeStyle = this._strokeStyle.toString();
+                }
+
                 _super.prototype._StartDraw.call(this, context);
 
                 if (!this._cachedPosition.Equivalent(this.Position)) {
@@ -161,6 +180,12 @@ var EndGate;
                 _super.prototype._Clone.call(this, graphic);
 
                 return graphic;
+            };
+
+            Line2d.prototype.Dispose = function () {
+                _super.prototype.Dispose.call(this);
+
+                this._strokeStyle.OnChange.Unbind(this._strokeChangeWire);
             };
 
             Line2d.prototype.UpdatePosition = function () {

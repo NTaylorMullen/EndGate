@@ -9,10 +9,12 @@ module EndGate.Graphics {
     */
     export class Shape extends Graphic2d {
         public _type: string = "Shape";
-        private _fill: boolean;
         private _fillStyle: Color;
         private _strokeStyle: Color;
         private _shadowColor: Color;
+        private _fillChangeWire: (color: Color) => void;
+        private _strokeChangeWire: (color: Color) => void;
+        private _shadowChangeWire: (color: Color) => void;
 
         /**
         * Should only ever be called by derived classes.
@@ -34,10 +36,26 @@ module EndGate.Graphics {
         constructor(position: Vector2d, color?: any) {
             super(position);
 
-            this._fill = false;
+            this._fillChangeWire = (color: Color) => {
+                this._State.FillStyle = color.toString();
+            };
+
+            this._strokeChangeWire = (color: Color) => {
+                this._State.StrokeStyle = color.toString();
+            };
+
+            this._shadowChangeWire = (color: Color) => {
+                this._State.ShadowColor = color.toString();
+            };
+
+            this.ShadowColor = this._shadowColor = Color.Black;
+            this.BorderColor = this._strokeStyle = Color.Black;
 
             if (typeof color !== "undefined") {
-                this.Color = color;
+                this.Color = this._fillStyle = color;
+            }
+            else {
+                this.Color = this._fillStyle = Color.Black;
             }
         }
 
@@ -51,9 +69,14 @@ module EndGate.Graphics {
             if (typeof color === "string") {
                 color = new Color(color);
             }
-            this._fill = true;
+
+            // Unbind old
+            this._fillStyle.OnChange.Unbind(this._fillChangeWire);
             this._fillStyle = color;
-            this._State.FillStyle = color.toString();
+            // Bind new
+            this._fillStyle.OnChange.Bind(this._fillChangeWire);
+            // Update state
+            this._fillChangeWire(color);
         }
 
         /**
@@ -72,9 +95,18 @@ module EndGate.Graphics {
         public get BorderColor(): Color {
             return this._strokeStyle;
         }
-        public set BorderColor(color: Color) {
+        public set BorderColor(color: any) {
+            if (typeof color === "string") {
+                color = new Color(color);
+            }
+
+            // Unbind old
+            this._strokeStyle.OnChange.Unbind(this._strokeChangeWire);
             this._strokeStyle = color;
-            this._State.StrokeStyle = color.toString();
+            // Bind new
+            this._strokeStyle.OnChange.Bind(this._strokeChangeWire);
+            // Update state
+            this._strokeChangeWire(color);
         }
 
         /**
@@ -83,10 +115,18 @@ module EndGate.Graphics {
         public get ShadowColor(): Color {
             return this._shadowColor;
         }
-        public set ShadowColor(color: Color) {
-            this._fill = true;
+        public set ShadowColor(color: any) {
+            if (typeof color === "string") {
+                color = new Color(color);
+            }
+
+            // Unbind old
+            this._shadowColor.OnChange.Unbind(this._shadowChangeWire);
             this._shadowColor = color;
-            this._State.ShadowColor = color.toString();
+            // Bind new
+            this._shadowColor.OnChange.Bind(this._shadowChangeWire);
+            // Update state
+            this._shadowChangeWire(color);
         }
 
         /**
@@ -163,9 +203,7 @@ module EndGate.Graphics {
         }
 
         public _EndDraw(context: CanvasRenderingContext2D): void {
-            if (this._fill) {
-                context.fill();
-            }
+            context.fill();
 
             if (this._State.LineWidth > 0) {
                 context.stroke();
@@ -189,6 +227,14 @@ module EndGate.Graphics {
             this._StartDraw(context);
             this._BuildPath(context);
             this._EndDraw(context);
+        }
+
+        public Dispose(): void {
+            super.Dispose();
+
+            this._fillStyle.OnChange.Unbind(this._fillChangeWire);
+            this._strokeStyle.OnChange.Unbind(this._strokeChangeWire);
+            this._shadowColor.OnChange.Unbind(this._shadowChangeWire);
         }
 
         public _Clone(graphic: Shape): void {
