@@ -1,11 +1,13 @@
 /// <reference path="../Interfaces/ITyped.ts" />
 /// <reference path="../Interfaces/ICloneable.ts" />
+/// <reference path="../Interfaces/IDisposable.ts" />
+/// <reference path="../Utilities/EventHandler1.ts" />
 module EndGate.Graphics {
 
     /**
     * Color class used to pass around colors in a typed manner.
     */
-    export class Color implements _.ITyped, ICloneable {
+    export class Color implements _.ITyped, ICloneable, IDisposable {
         public _type: string = "Color";
         
         //Regex to match rgba in hex form ffffffff, 00000000, ff33dd4499
@@ -168,6 +170,7 @@ module EndGate.Graphics {
         private _g: number;
         private _b: number;
         private _a: number;
+        private _onChange: EventHandler1<Color>;
 
         /**
         * Creates a new instance of Color with color channels set to black.
@@ -194,6 +197,8 @@ module EndGate.Graphics {
         */
         constructor(r: number, g: number, b: number, a: number);
         constructor(r?: any, g?: any, b?: any, a?: any) {
+            this._onChange = new EventHandler1<Color>();
+
             if (typeof (r) === 'string' && r.length > 0) {
                 this.InitializeColorFromString(r);
             } else {
@@ -218,16 +223,24 @@ module EndGate.Graphics {
         public static get TRANSPARENT(): number {
             return 0;
         }
+
+        /**
+        * Gets an EventHandler that is triggered when the R, G, B, or A values of this Color change.
+        */
+        public get OnChange(): EventHandler<Color> {
+            return this._onChange;
+        }
         
         /**
         * Gets or sets the current red channel. Value must be an integer between 0 and 255 inclusive.
         */
-        public get R() : number {
+        public get R(): number {
             return this._r;
         }
         public set R(r: number) {
             this._cached = undefined;
             this._r = Math.round(Math.min(Math.max(r, 0), 255));
+            this._onChange.Trigger(this);
         }
 
         /**
@@ -239,6 +252,7 @@ module EndGate.Graphics {
         public set G(g: number) {
             this._cached = undefined;
             this._g = Math.round(Math.min(Math.max(g, 0), 255));
+            this._onChange.Trigger(this);
         }
 
         /**
@@ -250,6 +264,7 @@ module EndGate.Graphics {
         public set B(b: number) {
             this._cached = undefined;
             this._b = Math.round(Math.min(Math.max(b, 0), 255));
+            this._onChange.Trigger(this);
         }
 
         /**
@@ -261,6 +276,7 @@ module EndGate.Graphics {
         public set A(a: number) {
             this._cached = undefined;
             this._a = Math.min(Math.max(a, 0), 1);
+            this._onChange.Trigger(this);
         }
 
         /**
@@ -1431,7 +1447,17 @@ module EndGate.Graphics {
         public Clone() : any {
             return new Color(this.R, this.G, this.B, this.A);
         }
+
+        /**
+        * Disposes the Color object and unbinds any active event bindings.
+        */
+        public Dispose(): void {
+            this._onChange.Dispose();
+        }
  
+        /**
+        * toString override that returns the Color in the "rgba(r,g,b,a)" format.
+        */
         public toString(): string {
             if (this._cached === undefined) {
                 this._cached = 'rgba(' + this.R + ',' + this.G + ',' + this.B + ',' + this.A + ')';
