@@ -60,6 +60,7 @@ module EndGate.Graphics {
             this.ZIndex = 0;
             this.Visible = true;
             this._State = new Assets._.Graphic2dState();
+            this.Opacity = 1;
             this._children = [];
             this._childrenRemovalBindings = [];
             this.Parent = null;
