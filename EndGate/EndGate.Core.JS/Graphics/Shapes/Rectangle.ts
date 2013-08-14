@@ -1,6 +1,7 @@
 /// <reference path="../../Assets/Sizes/Size2d.ts" />
 /// <reference path="../../Assets/Vectors/Vector2d.ts" />
 /// <reference path="../../Bounds/BoundingRectangle.ts" />
+/// <reference path="../Color.ts" />
 /// <reference path="Shape.ts" />
 
 module EndGate.Graphics {
@@ -32,8 +33,9 @@ module EndGate.Graphics {
         * @param height Initial height of the Rectangle.
         * @param color Initial color of the Rectangle.
         */
+        constructor(x: number, y: number, width: number, height: number, color: Color);
         constructor(x: number, y: number, width: number, height: number, color: string);
-        constructor(x: number, y: number, width: number, height: number, color?: string) {
+        constructor(x: number, y: number, width: number, height: number, color?: any) {
             super(new Vector2d(x, y), color);
 
             this.Size = new Size2d(width, height);
