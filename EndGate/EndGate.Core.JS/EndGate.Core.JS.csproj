@@ -163,6 +163,10 @@
     <Content Include="Particles\Range.js">
       <DependentUpon>Range.ts</DependentUpon>
     </Content>
+    <TypeScriptCompile Include="Tweening\ColorTween.ts" />
+    <Content Include="Tweening\ColorTween.js">
+      <DependentUpon>ColorTween.ts</DependentUpon>
+    </Content>
     <Content Include="Tweening\Functions\Back.js">
       <DependentUpon>Back.ts</DependentUpon>
     </Content>
