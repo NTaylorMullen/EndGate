@@ -8,7 +8,7 @@ module MovementControllers {
         // Default values for the movement controller
         private _characterMoveSpeed: number = 100;
         private _characterSize: eg.Size2d = new eg.Size2d(50, 30);
-        private _characterColor: string = "brown";
+        private _characterColor: eg.Graphics.Color = eg.Graphics.Color.Brown;
         private _upKeys: string[] = ["w", "up"];
         private _rightKeys: string[] = ["d", "right"];
         private _downKeys: string[] = ["s", "down"];
