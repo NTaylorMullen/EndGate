@@ -75,7 +75,7 @@ var CollisionDetection;
         };
 
         Game.prototype.GetRandomColor = function () {
-            return "rgb(" + (Math.floor(Math.random() * 250) + 1) + ", " + (Math.floor(Math.random() * 250) + 1) + ", " + (Math.floor(Math.random() * 250) + 1) + ")";
+            return new eg.Graphics.Color((Math.floor(Math.random() * 250) + 1), (Math.floor(Math.random() * 250) + 1), (Math.floor(Math.random() * 250) + 1));
         };
 
         Game.prototype.GetRandomVelocity = function () {

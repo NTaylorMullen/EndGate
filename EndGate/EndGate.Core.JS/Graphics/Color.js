@@ -1823,7 +1823,7 @@ var EndGate;
             * Returns a copy of the color with the current color channels.
             */
             Color.prototype.Clone = function () {
-                return new Color(this.A, this.R, this.G, this.B);
+                return new Color(this.R, this.G, this.B, this.A);
             };
 
             Color.prototype.toString = function () {

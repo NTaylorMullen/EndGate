@@ -9,6 +9,7 @@ var EndGate;
     /// <reference path="../../Assets/Sizes/Size2d.ts" />
     /// <reference path="../../Assets/Vectors/Vector2d.ts" />
     /// <reference path="../../Bounds/BoundingRectangle.ts" />
+    /// <reference path="../Color.ts" />
     /// <reference path="Shape.ts" />
     (function (Graphics) {
         /**
@@ -46,7 +47,7 @@ var EndGate;
             * Returns a nearly identical copy of this Rectangle.  If this Rectangle belongs to a parent, the cloned Rectangle will not. If this Rectangle has children, all children will be cloned as well.  Lastly, the cloned Rectangle will not have the same event bindings as this one does.
             */
             Rectangle.prototype.Clone = function () {
-                var graphic = new Rectangle(this.Position.X, this.Position.Y, this.Size.Width, this.Size.Height, this.Color);
+                var graphic = new Rectangle(this.Position.X, this.Position.Y, this.Size.Width, this.Size.Height, this.Color.Clone());
 
                 _super.prototype._Clone.call(this, graphic);
 

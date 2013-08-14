@@ -9,6 +9,7 @@ var EndGate;
     /// <reference path="../../Assets/Sizes/Size2d.ts" />
     /// <reference path="../../Assets/Vectors/Vector2d.ts" />
     /// <reference path="../../Bounds/BoundingCircle.ts" />
+    /// <reference path="../Color.ts" />
     /// <reference path="Shape.ts" />
     (function (Graphics) {
         /**
@@ -45,7 +46,7 @@ var EndGate;
             * Returns a nearly identical copy of this Circle.  If this Circle belongs to a parent, the cloned Circle will not. If this Circle has children, all children will be cloned as well.  Lastly, the cloned Circle will not have the same event bindings as this one does.
             */
             Circle.prototype.Clone = function () {
-                var graphic = new Circle(this.Position.X, this.Position.Y, this.Radius, this.Color);
+                var graphic = new Circle(this.Position.X, this.Position.Y, this.Radius, this.Color.Clone());
 
                 _super.prototype._Clone.call(this, graphic);
 

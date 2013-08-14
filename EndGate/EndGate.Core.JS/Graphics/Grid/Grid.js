@@ -9,6 +9,7 @@ var EndGate;
     /// <reference path="../../Assets/Vectors/Vector2d.ts" />
     /// <reference path="../../Assets/Sizes/Size2d.ts" />
     /// <reference path="../Graphic2d.ts" />
+    /// <reference path="../Color.ts" />
     /// <reference path="../Line2d.ts" />
     (function (Graphics) {
         /**
@@ -18,7 +19,7 @@ var EndGate;
             __extends(Grid, _super);
             function Grid(x, y, rows, columns, tileWidth, tileHeight, drawGridLines, gridLineColor) {
                 if (typeof drawGridLines === "undefined") { drawGridLines = false; }
-                if (typeof gridLineColor === "undefined") { gridLineColor = "gray"; }
+                if (typeof gridLineColor === "undefined") { gridLineColor = new Graphics.Color("gray"); }
                 _super.call(this, new EndGate.Vector2d(x, y));
                 this._type = "Grid";
 
@@ -65,6 +66,9 @@ var EndGate;
                     return this._gridLineColor;
                 },
                 set: function (color) {
+                    if (typeof color === "string") {
+                        color = new Graphics.Color(color);
+                    }
                     this._gridLineColor = color;
 
                     for (var i = 0; i < this._gridLines.length; i++) {
@@ -376,7 +380,7 @@ var EndGate;
             * Returns a nearly identical copy of this Grid.  If this Grid belongs to a parent, the cloned Grid will not. If this Grid has children, all children will be cloned as well.  Lastly, the cloned Grid will not have the same event bindings as this one does.
             */
             Grid.prototype.Clone = function () {
-                var graphic = new Grid(this.Position.X, this.Position.Y, this._rows, this._columns, this._tileSize.Width, this._tileSize.Height, this._drawGridLines, this._gridLineColor);
+                var graphic = new Grid(this.Position.X, this.Position.Y, this._rows, this._columns, this._tileSize.Width, this._tileSize.Height, this._drawGridLines, this._gridLineColor.Clone());
 
                 for (var i = 0; i < this._grid.length; i++) {
                     for (var j = 0; j < this._grid[i].length; j++) {
