@@ -2,6 +2,7 @@
 /// <reference path="../Assets/Vectors/Vector2d.ts" />
 /// <reference path="../Bounds/BoundingRectangle.ts" />
 /// <reference path="Graphic2d.ts" />
+/// <reference path="Color.ts" />
 
 module EndGate.Graphics {
 
@@ -16,6 +17,7 @@ module EndGate.Graphics {
         private _difference: Vector2d;
         private _boundsWidth: number;
         private _cachedPosition: Vector2d;
+        private _strokeStyle: Color;
 
         /**
         * Creates a new instance of the Line2d object with a line width of 1.
@@ -43,8 +45,18 @@ module EndGate.Graphics {
         * @param lineWidth Initial thickness of the line.
         * @param color Initial color of the line.
         */
+        constructor(fromX: number, fromY: number, toX: number, toY: number, lineWidth: number, color: Color);
+        /**
+        * Creates a new instance of the Line2d object with a specified line width and color.
+        * @param fromX Starting horizontal coordinate.
+        * @param fromY Starting vertical coordinate.
+        * @param toX Ending horizontal coordinate.
+        * @param toY Ending vertical coordinate.
+        * @param lineWidth Initial thickness of the line.
+        * @param color Initial color string of the line.
+        */
         constructor(fromX: number, fromY: number, toX: number, toY: number, lineWidth: number, color: string);
-        constructor(fromX: number, fromY: number, toX: number, toY: number, lineWidth: number = 1, color?: string) {
+        constructor(fromX: number, fromY: number, toX: number, toY: number, lineWidth: number = 1, color?: any) {
             super(Vector2d.Zero);// Set to zero here then updated in the rest of the constructor (use same logic)
 
             this._from = new Vector2d(fromX, fromY);
@@ -53,6 +65,9 @@ module EndGate.Graphics {
             this.UpdatePosition();
 
             if (typeof color !== "undefined") {
+                if (typeof color === "string") {
+                    color = new Color(color);
+                }
                 this.Color = color;
             }
         }
@@ -82,11 +97,15 @@ module EndGate.Graphics {
         /**
         * Gets or sets the line color.  Valid colors are strings like "red" or "rgb(255,0,0)".
         */
-        public get Color(): string {
-            return this._State.StrokeStyle;
+        public get Color(): Color {
+            return this._strokeStyle;
         }
-        public set Color(color: string) {
-            this._State.StrokeStyle = color;
+        public set Color(color: any) {
+            if (typeof color === "string") {
+                color = new Color(color);
+            }
+            this._strokeStyle = color;
+            this._State.StrokeStyle = color.toString();
         }
 
         /**
