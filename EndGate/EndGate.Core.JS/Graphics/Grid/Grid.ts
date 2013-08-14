@@ -472,7 +472,7 @@ module EndGate.Graphics {
         * Returns a nearly identical copy of this Grid.  If this Grid belongs to a parent, the cloned Grid will not. If this Grid has children, all children will be cloned as well.  Lastly, the cloned Grid will not have the same event bindings as this one does.
         */
         public Clone(): Grid {
-            var graphic = new Grid(this.Position.X, this.Position.Y, this._rows, this._columns, this._tileSize.Width, this._tileSize.Height, this._drawGridLines, this._gridLineColor);
+            var graphic = new Grid(this.Position.X, this.Position.Y, this._rows, this._columns, this._tileSize.Width, this._tileSize.Height, this._drawGridLines, this._gridLineColor.Clone());
 
             for (var i = 0; i < this._grid.length; i++) {
                 for (var j = 0; j < this._grid[i].length; j++) {
