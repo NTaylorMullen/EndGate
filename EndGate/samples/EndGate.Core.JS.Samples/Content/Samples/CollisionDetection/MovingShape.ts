@@ -22,7 +22,7 @@ module CollisionDetection {
         constructor(public Graphic: eg.Graphics.Shape, private _velocity: eg.Vector2d, private _directionInterval: number) {
             super(Graphic.GetDrawBounds());
 
-            this.Graphic.Border(this._collisionBorderThickness, "rgba(" + this._collisionColor + ",0,0," + this._collisionColorAlpha + ")");
+            this.Graphic.Border(this._collisionBorderThickness, new eg.Graphics.Color(this._collisionColor[0], this._collisionColor[1], this._collisionColor[2], this._collisionColorAlpha));
         }
 
         // Triggered when shapes collide with each other
@@ -30,13 +30,10 @@ module CollisionDetection {
             // Reset the collision alpha to be 1
             this._collisionColorAlpha = 1;
 
-            // Parse the rgb color into an array
-            var strColor = (<MovingShape>data.With).Graphic.Color.replace("rgb(", "").replace(")", "").split(",");
-
             // Update the border color array
-            for (var i = 0; i < strColor.length; i++) {
-                this._collisionColor[i] = parseInt(strColor[i]);
-            }
+            this._collisionColor[0] = (<MovingShape>data.With).Graphic.Color.R;
+            this._collisionColor[1] = (<MovingShape>data.With).Graphic.Color.G;
+            this._collisionColor[2] = (<MovingShape>data.With).Graphic.Color.B;
 
             // When we call the base Collided function it essentially triggers the OnCollision function of the Collidable
             super.Collided(data);
@@ -56,7 +53,7 @@ module CollisionDetection {
             // Update the alpha of the border, we multiply by Elapsed.Seconds so that we at most traverse this._fadeSpeed points per second
             this._collisionColorAlpha = Math.max(this._collisionColorAlpha - gameTime.Elapsed.Seconds * this._fadeSpeed, 0);
 
-            this.Graphic.BorderColor = "rgba(" + this._collisionColor[0] + "," + this._collisionColor[1] + "," + this._collisionColor[2] + "," + this._collisionColorAlpha + ")";
+            this.Graphic.BorderColor = new eg.Graphics.Color(this._collisionColor[0], this._collisionColor[1], this._collisionColor[2], this._collisionColorAlpha);
 
             // Update the graphic and bounds rotation and position.
             this.Graphic.Rotation = this.Bounds.Rotation = this.Graphic.Rotation + gameTime.Elapsed.Seconds * MovingShape.RotationSpeed * this._rotationMultiplier;

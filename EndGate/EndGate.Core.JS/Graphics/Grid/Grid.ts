@@ -1,6 +1,7 @@
 /// <reference path="../../Assets/Vectors/Vector2d.ts" />
 /// <reference path="../../Assets/Sizes/Size2d.ts" />
 /// <reference path="../Graphic2d.ts" />
+/// <reference path="../Color.ts" />
 /// <reference path="../Line2d.ts" />
 
 module EndGate.Graphics {
@@ -17,7 +18,7 @@ module EndGate.Graphics {
         private _gridLines: Line2d[];
         private _rows: number;
         private _columns: number;
-        private _gridLineColor: string;
+        private _gridLineColor: Color;
         private _drawGridLines: boolean;
 
         /**
@@ -52,8 +53,20 @@ module EndGate.Graphics {
         * @param drawGridLines Initial value for DrawGridLines.
         * @param gridLineColor Initial grid line color (only useful if drawGridLines is true); 
         */
+        constructor(x: number, y: number, rows: number, columns: number, tileWidth: number, tileHeight: number, drawGridLines: boolean, gridLineColor: Color);
+        /**
+        * Creates a new instance of the Grid object.
+        * @param x Initial horizontal location of the grid.
+        * @param y Initial vertical location of the grid.
+        * @param rows Number of rows the grid will have (this cannot change after construction).
+        * @param columns Number of columns the grid will have (this cannot change after construction).
+        * @param tileWidth The width of the grid tiles (this cannot change after construction).
+        * @param tileHeight The height of the grid tiles (this cannot change after construction).
+        * @param drawGridLines Initial value for DrawGridLines.
+        * @param gridLineColor Initial grid line color (only useful if drawGridLines is true); 
+        */
         constructor(x: number, y: number, rows: number, columns: number, tileWidth: number, tileHeight: number, drawGridLines: boolean, gridLineColor: string);
-        constructor(x: number, y: number, rows: number, columns: number, tileWidth: number, tileHeight: number, drawGridLines: boolean = false, gridLineColor: string = "gray") {
+        constructor(x: number, y: number, rows: number, columns: number, tileWidth: number, tileHeight: number, drawGridLines: boolean = false, gridLineColor: any = new Color("gray")) {
             super(new Vector2d(x, y));
 
             this._size = new Size2d(tileWidth * columns, tileHeight * rows);
@@ -92,10 +105,13 @@ module EndGate.Graphics {
         /**
         * Gets or sets the current grid line color.  Grid lines are only drawn of DrawGridLines is set to true.  Valid colors are strings like "red" or "rgb(255,0,0)".
         */
-        public get GridLineColor(): string {
+        public get GridLineColor(): Color {
             return this._gridLineColor;
         }
-        public set GridLineColor(color: string) {
+        public set GridLineColor(color: any) {
+            if (typeof color === "string") {
+                color = new Color(color);
+            }
             this._gridLineColor = color;
 
             for (var i = 0; i < this._gridLines.length; i++) {
@@ -456,7 +472,7 @@ module EndGate.Graphics {
         * Returns a nearly identical copy of this Grid.  If this Grid belongs to a parent, the cloned Grid will not. If this Grid has children, all children will be cloned as well.  Lastly, the cloned Grid will not have the same event bindings as this one does.
         */
         public Clone(): Grid {
-            var graphic = new Grid(this.Position.X, this.Position.Y, this._rows, this._columns, this._tileSize.Width, this._tileSize.Height, this._drawGridLines, this._gridLineColor);
+            var graphic = new Grid(this.Position.X, this.Position.Y, this._rows, this._columns, this._tileSize.Width, this._tileSize.Height, this._drawGridLines, this._gridLineColor.Clone());
 
             for (var i = 0; i < this._grid.length; i++) {
                 for (var j = 0; j < this._grid[i].length; j++) {

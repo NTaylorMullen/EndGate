@@ -1,5 +1,6 @@
 /// <reference path="../../Assets/Vectors/Vector2d.ts" />
 /// <reference path="../Graphic2d.ts" />
+/// <reference path="../Color.ts" />
 
 module EndGate.Graphics {
 
@@ -9,6 +10,9 @@ module EndGate.Graphics {
     export class Shape extends Graphic2d {
         public _type: string = "Shape";
         private _fill: boolean;
+        private _fillStyle: Color;
+        private _strokeStyle: Color;
+        private _shadowColor: Color;
 
         /**
         * Should only ever be called by derived classes.
@@ -20,8 +24,14 @@ module EndGate.Graphics {
         * @param position Initial Position of the current shape object.
         * @param color Initial Color of the current shape object.
         */
+        constructor(position: Vector2d, color: Color);
+        /**
+        * Should only ever be called by derived classes.
+        * @param position Initial Position of the current shape object.
+        * @param color Initial string Color of the current shape object.
+        */
         constructor(position: Vector2d, color: string);
-        constructor(position: Vector2d, color?: string) {
+        constructor(position: Vector2d, color?: any) {
             super(position);
 
             this._fill = false;
@@ -34,12 +44,16 @@ module EndGate.Graphics {
         /**
         * Gets or sets the current shape color.  Valid colors are strings like "red" or "rgb(255,0,0)".
         */
-        public get Color(): string {
-            return this._State.FillStyle;
+        public get Color(): Color {
+            return this._fillStyle;
         }
-        public set Color(color: string) {
+        public set Color(color: any) {
+            if (typeof color === "string") {
+                color = new Color(color);
+            }
             this._fill = true;
-            this._State.FillStyle = color;
+            this._fillStyle = color;
+            this._State.FillStyle = color.toString();
         }
 
         /**
@@ -55,22 +69,24 @@ module EndGate.Graphics {
         /**
         * Gets or sets the current border color.  Valid colors are strings like "red" or "rgb(255,0,0)".
         */
-        public get BorderColor(): string {
-            return this._State.StrokeStyle;
+        public get BorderColor(): Color {
+            return this._strokeStyle;
         }
-        public set BorderColor(color: string) {
-            this._State.StrokeStyle = color;
+        public set BorderColor(color: Color) {
+            this._strokeStyle = color;
+            this._State.StrokeStyle = color.toString();
         }
 
         /**
         * Gets or sets the current shadow color.  Valid colors are strings like "red" or "rgb(255,0,0)".
         */
-        public get ShadowColor(): string {
-            return this._State.ShadowColor;
+        public get ShadowColor(): Color {
+            return this._shadowColor;
         }
-        public set ShadowColor(color: string) {
+        public set ShadowColor(color: Color) {
             this._fill = true;
-            this._State.ShadowColor = color;
+            this._shadowColor = color;
+            this._State.ShadowColor = color.toString();
         }
 
         /**
@@ -108,7 +124,7 @@ module EndGate.Graphics {
         * @param thickness The new border thickness in pixels.
         * @param color The new border color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
         */
-        public Border(thickness: number, color: string): void {
+        public Border(thickness: number, color: Color): void {
             this.BorderThickness = thickness;
             this.BorderColor = color;
         }
@@ -125,7 +141,7 @@ module EndGate.Graphics {
         * @param y The shadows new vertical position.
         * @param color The new shadow color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
         */
-        public Shadow(x: number, y: number, color: string): void;
+        public Shadow(x: number, y: number, color: Color): void;
         /**
         * Sets the current shadow x and y positions and shadows color.
         * @param x The shadows new horizontal position.
@@ -133,8 +149,8 @@ module EndGate.Graphics {
         * @param color The new shadow color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
         * @param blur The new shadow blur.
         */
-        public Shadow(x: number, y: number, color: string, blur: number): void;
-        public Shadow(x: number, y: number, color?: string, blur?: number): void {
+        public Shadow(x: number, y: number, color: Color, blur: number): void;
+        public Shadow(x: number, y: number, color?: Color, blur?: number): void {
             this.ShadowX = x;
             this.ShadowY = y;
             this.ShadowColor = color;
@@ -176,8 +192,8 @@ module EndGate.Graphics {
         }
 
         public _Clone(graphic: Shape): void {
-            graphic.Border(this.BorderThickness, this.BorderColor);
-            graphic.Shadow(this.ShadowX, this.ShadowY, this.ShadowColor, this.ShadowBlur);
+            graphic.Border(this.BorderThickness, this.BorderColor.Clone());
+            graphic.Shadow(this.ShadowX, this.ShadowY, this.ShadowColor.Clone(), this.ShadowBlur);
 
             super._Clone(graphic);
         }

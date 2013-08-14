@@ -8,18 +8,18 @@ module MouseInput {
         // Default values
         private _radiusSize: number = 5;
         private _scrollSpeed: number = 5;
-        private _clickColors: { [name: string]: string; } = {
-            Left: "#ff0000",
-            Middle: "#00ff00",
-            Right: "#0000ff"
+        private _clickColors: { [name: string]: eg.Graphics.Color; } = {
+            Left: eg.Graphics.Color.Red,
+            Middle: eg.Graphics.Color.Green,
+            Right: eg.Graphics.Color.Blue
         };
-        private _inbetweenColors: { [name: string]: string; } = {
-            Left: "#ffa5a5",
-            Middle: "#a5ffa5",
-            Right: "#a5a5ff"
+        private _inbetweenColors: { [name: string]: eg.Graphics.Color; } = {
+            Left: new eg.Graphics.Color("#ffa5a5"),
+            Middle: new eg.Graphics.Color("#a5ffa5"),
+            Right: new eg.Graphics.Color("#a5a5ff")
         };
-        private _doubleClickColor: string = "#000000";
-        private _onMoveColor: string = "#000000";
+        private _doubleClickColor: eg.Graphics.Color = eg.Graphics.Color.Black;
+        private _onMoveColor: eg.Graphics.Color = eg.Graphics.Color.Black;
 
         private _shapes: eg.Graphics.Shape[] = [];
 
@@ -66,7 +66,7 @@ module MouseInput {
         }
 
         // Helper function to add shapes to our managed shapes list and to the scene simultaneously
-        private MarkLocationWithCircle(position: eg.Vector2d, radius: number, color: string): void {
+        private MarkLocationWithCircle(position: eg.Vector2d, radius: number, color: eg.Graphics.Color): void {
             var shape = new eg.Graphics.Circle(position.X, position.Y, radius, color);
 
             this._shapes.push(shape);
@@ -74,7 +74,7 @@ module MouseInput {
         }
 
         // Helper function to add shapes to our managed shapes list and to the scene simultaneously
-        private MarkLocationWithRectangle(position: eg.Vector2d, size: eg.Size2d, color: string): void {
+        private MarkLocationWithRectangle(position: eg.Vector2d, size: eg.Size2d, color: eg.Graphics.Color): void {
             var shape = new eg.Graphics.Rectangle(position.X, position.Y, size.Width, size.Height, color);
 
             this._shapes.push(shape);

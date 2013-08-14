@@ -79,8 +79,8 @@ module CollisionDetection {
             return Math.floor(Math.random() * this._size.Width * .05) + 5
         }
 
-        private GetRandomColor(): string {
-            return "rgb(" + (Math.floor(Math.random() * 250) + 1) + ", " + (Math.floor(Math.random() * 250) + 1) + ", " + (Math.floor(Math.random() * 250) + 1) + ")";
+        private GetRandomColor(): eg.Graphics.Color {
+            return new eg.Graphics.Color((Math.floor(Math.random() * 250) + 1), (Math.floor(Math.random() * 250) + 1), (Math.floor(Math.random() * 250) + 1));
         }
 
         private GetRandomVelocity(): eg.Vector2d {
