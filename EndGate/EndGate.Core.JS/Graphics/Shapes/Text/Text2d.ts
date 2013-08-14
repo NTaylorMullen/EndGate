@@ -44,7 +44,7 @@ module EndGate.Graphics {
         * @param color Initial string color of the Text2d. Default is Black.
         */
         constructor(x: number, y: number, text: string, color: string);
-        constructor(x: number, y: number, text: string, color: any = new Color("black")) {
+        constructor(x: number, y: number, text: string, color: any = Color.Black) {
             super(new Vector2d(x, y), color);
 
             this._text = text;
@@ -171,7 +171,7 @@ module EndGate.Graphics {
         * Returns a nearly identical copy of this Text2d.  If this Text2d belongs to a parent, the cloned Text2d will not. If this Text2d has children, all children will be cloned as well.  Lastly, the cloned Text2d will not have the same event bindings as this one does.
         */
         public Clone(): Text2d {
-            var graphic = new Text2d(this.Position.X, this.Position.Y, this.Text, this.Color);
+            var graphic = new Text2d(this.Position.X, this.Position.Y, this.Text, this.Color.Clone());
 
             graphic.Align = this.Align;
             graphic.Baseline = this.Baseline;
