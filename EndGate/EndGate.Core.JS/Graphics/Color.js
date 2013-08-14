@@ -44,14 +44,14 @@ var EndGate;
 
             Object.defineProperty(Color.prototype, "R", {
                 get: /**
-                * Gets or sets the current red channel. Value must be between 0 and 255 inclusive.
+                * Gets or sets the current red channel. Value must be an integer between 0 and 255 inclusive.
                 */
                 function () {
                     return this._r;
                 },
                 set: function (r) {
                     this._cached = undefined;
-                    this._r = Math.min(Math.max(r, 0), 255);
+                    this._r = Math.round(Math.min(Math.max(r, 0), 255));
                 },
                 enumerable: true,
                 configurable: true
@@ -59,14 +59,14 @@ var EndGate;
 
             Object.defineProperty(Color.prototype, "G", {
                 get: /**
-                * Gets or sets the current green channel. Value must be between 0 and 255 inclusive.
+                * Gets or sets the current green channel. Value must be an integer between 0 and 255 inclusive.
                 */
                 function () {
                     return this._g;
                 },
                 set: function (g) {
                     this._cached = undefined;
-                    this._g = Math.min(Math.max(g, 0), 255);
+                    this._g = Math.round(Math.min(Math.max(g, 0), 255));
                 },
                 enumerable: true,
                 configurable: true
@@ -74,14 +74,14 @@ var EndGate;
 
             Object.defineProperty(Color.prototype, "B", {
                 get: /**
-                * Gets or sets the current blue channel. Value must be between 0 and 255 inclusive.
+                * Gets or sets the current blue channel. Value must be an integer between 0 and 255 inclusive.
                 */
                 function () {
                     return this._b;
                 },
                 set: function (b) {
                     this._cached = undefined;
-                    this._b = Math.min(Math.max(b, 0), 255);
+                    this._b = Math.round(Math.min(Math.max(b, 0), 255));
                 },
                 enumerable: true,
                 configurable: true

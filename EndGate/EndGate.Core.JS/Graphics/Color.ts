@@ -220,36 +220,36 @@ module EndGate.Graphics {
         }
         
         /**
-        * Gets or sets the current red channel. Value must be between 0 and 255 inclusive.
+        * Gets or sets the current red channel. Value must be an integer between 0 and 255 inclusive.
         */
         public get R() : number {
             return this._r;
         }
         public set R(r: number) {
             this._cached = undefined;
-            this._r = Math.min(Math.max(r, 0), 255);
+            this._r = Math.round(Math.min(Math.max(r, 0), 255));
         }
 
         /**
-        * Gets or sets the current green channel. Value must be between 0 and 255 inclusive.
+        * Gets or sets the current green channel. Value must be an integer between 0 and 255 inclusive.
         */
         public get G(): number {
             return this._g;
         }
         public set G(g: number) {
             this._cached = undefined;
-            this._g = Math.min(Math.max(g, 0), 255);
+            this._g = Math.round(Math.min(Math.max(g, 0), 255));
         }
 
         /**
-        * Gets or sets the current blue channel. Value must be between 0 and 255 inclusive.
+        * Gets or sets the current blue channel. Value must be an integer between 0 and 255 inclusive.
         */
         public get B(): number {
             return this._b;
         }
         public set B(b: number) {
             this._cached = undefined;
-            this._b = Math.min(Math.max(b, 0), 255);
+            this._b = Math.round(Math.min(Math.max(b, 0), 255));
         }
 
         /**
