@@ -15,8 +15,8 @@ namespace EndGate.Core.JS.Samples
 
             routes.MapRoute(
                 name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Samples", action = "Index", id = UrlParameter.Optional }
+                url: "{controller}/{sample}",
+                defaults: new { controller = "Samples", action = "Index", sample = "Index" }
             );
         }
     }
