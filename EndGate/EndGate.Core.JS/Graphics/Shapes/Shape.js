@@ -16,13 +16,29 @@ var EndGate;
         var Shape = (function (_super) {
             __extends(Shape, _super);
             function Shape(position, color) {
+                var _this = this;
                 _super.call(this, position);
                 this._type = "Shape";
 
-                this._fill = false;
+                this._fillChangeWire = function (color) {
+                    _this._State.FillStyle = color.toString();
+                };
+
+                this._strokeChangeWire = function (color) {
+                    _this._State.StrokeStyle = color.toString();
+                };
+
+                this._shadowChangeWire = function (color) {
+                    _this._State.ShadowColor = color.toString();
+                };
+
+                this.ShadowColor = this._shadowColor = Graphics.Color.Black;
+                this.BorderColor = this._strokeStyle = Graphics.Color.Black;
 
                 if (typeof color !== "undefined") {
-                    this.Color = color;
+                    this.Color = this._fillStyle = color;
+                } else {
+                    this.Color = this._fillStyle = Graphics.Color.Black;
                 }
             }
             Object.defineProperty(Shape.prototype, "Color", {
@@ -36,9 +52,16 @@ var EndGate;
                     if (typeof color === "string") {
                         color = new Graphics.Color(color);
                     }
-                    this._fill = true;
+
+                    // Unbind old
+                    this._fillStyle.OnChange.Unbind(this._fillChangeWire);
                     this._fillStyle = color;
-                    this._State.FillStyle = color.toString();
+
+                    // Bind new
+                    this._fillStyle.OnChange.Bind(this._fillChangeWire);
+
+                    // Update state
+                    this._fillChangeWire(color);
                 },
                 enumerable: true,
                 configurable: true
@@ -66,8 +89,19 @@ var EndGate;
                     return this._strokeStyle;
                 },
                 set: function (color) {
+                    if (typeof color === "string") {
+                        color = new Graphics.Color(color);
+                    }
+
+                    // Unbind old
+                    this._strokeStyle.OnChange.Unbind(this._strokeChangeWire);
                     this._strokeStyle = color;
-                    this._State.StrokeStyle = color.toString();
+
+                    // Bind new
+                    this._strokeStyle.OnChange.Bind(this._strokeChangeWire);
+
+                    // Update state
+                    this._strokeChangeWire(color);
                 },
                 enumerable: true,
                 configurable: true
@@ -81,9 +115,19 @@ var EndGate;
                     return this._shadowColor;
                 },
                 set: function (color) {
-                    this._fill = true;
+                    if (typeof color === "string") {
+                        color = new Graphics.Color(color);
+                    }
+
+                    // Unbind old
+                    this._shadowColor.OnChange.Unbind(this._shadowChangeWire);
                     this._shadowColor = color;
-                    this._State.ShadowColor = color.toString();
+
+                    // Bind new
+                    this._shadowColor.OnChange.Bind(this._shadowChangeWire);
+
+                    // Update state
+                    this._shadowChangeWire(color);
                 },
                 enumerable: true,
                 configurable: true
@@ -154,9 +198,7 @@ var EndGate;
             };
 
             Shape.prototype._EndDraw = function (context) {
-                if (this._fill) {
-                    context.fill();
-                }
+                context.fill();
 
                 if (this._State.LineWidth > 0) {
                     context.stroke();
@@ -179,6 +221,14 @@ var EndGate;
                 this._StartDraw(context);
                 this._BuildPath(context);
                 this._EndDraw(context);
+            };
+
+            Shape.prototype.Dispose = function () {
+                _super.prototype.Dispose.call(this);
+
+                this._fillStyle.OnChange.Unbind(this._fillChangeWire);
+                this._strokeStyle.OnChange.Unbind(this._strokeChangeWire);
+                this._shadowColor.OnChange.Unbind(this._shadowChangeWire);
             };
 
             Shape.prototype._Clone = function (graphic) {

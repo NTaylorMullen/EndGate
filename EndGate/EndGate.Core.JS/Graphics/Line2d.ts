@@ -18,6 +18,7 @@ module EndGate.Graphics {
         private _boundsWidth: number;
         private _cachedPosition: Vector2d;
         private _strokeStyle: Color;
+        private _strokeChangeWire: (color: Color) => void;
 
         /**
         * Creates a new instance of the Line2d object with a line width of 1.
@@ -64,11 +65,18 @@ module EndGate.Graphics {
             this.LineWidth = lineWidth;
             this.UpdatePosition();
 
+            this._strokeChangeWire = (color: Color) => {
+                this._State.StrokeStyle = color.toString();
+            };
+
             if (typeof color !== "undefined") {
                 if (typeof color === "string") {
                     color = new Color(color);
                 }
-                this.Color = color;
+                this.Color = this._strokeStyle = color;
+            }
+            else {
+                this.Color = this._strokeStyle = Color.Black;
             }
         }
 
@@ -104,8 +112,14 @@ module EndGate.Graphics {
             if (typeof color === "string") {
                 color = new Color(color);
             }
+            
+            // Unbind old
+            this._strokeStyle.OnChange.Unbind(this._strokeChangeWire);
             this._strokeStyle = color;
-            this._State.StrokeStyle = color.toString();
+            // Bind new
+            this._strokeStyle.OnChange.Bind(this._strokeChangeWire);
+            // Update state
+            this._strokeChangeWire(color);
         }
 
         /**
@@ -133,6 +147,12 @@ module EndGate.Graphics {
         * @param context The canvas context to draw the line onto.
         */
         public Draw(context: CanvasRenderingContext2D): void {
+            // Need to check to ensure that the colors still match up so if people are performing direct color manipulation
+            // such as color.R = 131.
+            if (this._strokeStyle.toString() !== this._State.StrokeStyle) {
+                this._State.StrokeStyle = this._strokeStyle.toString();
+            }
+
             super._StartDraw(context);
 
             // Check if the user has modified the position directly, if so we need to translate the from and to positions accordingly
@@ -180,6 +200,12 @@ module EndGate.Graphics {
             super._Clone(graphic);
 
             return graphic;
+        }
+
+        public Dispose(): void {
+            super.Dispose();
+
+            this._strokeStyle.OnChange.Unbind(this._strokeChangeWire);
         }
 
         private UpdatePosition(): void {
