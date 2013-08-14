@@ -4,6 +4,16 @@
 
     QUnit.module("Graphic2d Facts");
 
+    QUnit.test("Opacity is not undefined after graphic creation.", function () {
+        var circle = new eg.Graphics.Circle(30, 30, 3),
+            rectangle = new eg.Graphics.Rectangle(30, 30, 3, 3),
+            line = new eg.Graphics.Line2d(0, 0, 10, 10, 2);
+
+        QUnit.isSet(circle.Opacity);
+        QUnit.isSet(rectangle.Opacity);
+        QUnit.isSet(line.Opacity);
+    });
+
     QUnit.test("Absolute Position calculates position correctly.", function () {
         var parent = new eg.Graphics.Circle(30, 30, 3),
             parent2 = new eg.Graphics.Circle(30, 30, 3),
