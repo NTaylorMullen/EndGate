@@ -18,34 +18,12 @@ var EndGate;
                     this.InitializeColorFromString(r);
                 } else {
                     //check if the alpha channel is defined
-                    this.A = a === undefined ? Color.OPAQUE : a;
+                    this.A = a === undefined ? 1 : a;
                     this.R = r;
                     this.G = g;
                     this.B = b;
                 }
             }
-            Object.defineProperty(Color, "OPAQUE", {
-                get: /**
-                * Helper function that returns the value of fully opaque for alpha.
-                */
-                function () {
-                    return 1;
-                },
-                enumerable: true,
-                configurable: true
-            });
-
-            Object.defineProperty(Color, "TRANSPARENT", {
-                get: /**
-                * Helper function that returns the value of fully transparent for alpha.
-                */
-                function () {
-                    return 0;
-                },
-                enumerable: true,
-                configurable: true
-            });
-
             Object.defineProperty(Color.prototype, "OnChange", {
                 get: /**
                 * Gets an EventHandler that is triggered when the R, G, B, or A values of this Color change.
@@ -286,6 +264,17 @@ var EndGate;
 
                 return color;
             };
+
+            Object.defineProperty(Color, "Transparent", {
+                get: /**
+                * Returns a transparent Color object.
+                */
+                function () {
+                    return Color._namedColors.transparent.Clone();
+                },
+                enumerable: true,
+                configurable: true
+            });
 
             Object.defineProperty(Color, "AliceBlue", {
                 get: /**
@@ -1868,6 +1857,7 @@ var EndGate;
             Color.RgbaRegExp = /^([a-f\d])([a-f\d])([a-f\d])$/i;
 
             Color._namedColors = {
+                "transparent": new Color(255, 255, 255, 0),
                 "aliceblue": new Color("#f0f8ff"),
                 "antiquewhite": new Color("#faebd7"),
                 "aqua": new Color("#00ffff"),
