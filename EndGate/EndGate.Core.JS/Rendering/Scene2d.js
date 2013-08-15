@@ -26,8 +26,6 @@ var EndGate;
 
                 this._onDraw = onDraw;
 
-                this.ApplyStyles(drawArea);
-
                 this._drawArea = drawArea;
                 this._camera = new Rendering.Camera2d(new EndGate.Vector2d(this._drawArea.width / 2, this._drawArea.height / 2), new EndGate.Size2d(this._drawArea.width, this._drawArea.height));
                 this._renderer = new Rendering.Camera2dRenderer(this._drawArea, this._camera);
@@ -115,17 +113,11 @@ var EndGate;
                 }
             };
 
-            Scene2d.prototype.ApplyStyles = function (drawArea) {
-                drawArea.style.position = "absolute";
-                drawArea.style.zIndex = "2";
-                drawArea.parentElement.style.position = "relative";
-            };
-
             Scene2d.prototype.CreateDefaultDrawArea = function () {
                 var drawArea = document.createElement("canvas"), body = document.getElementsByTagName('body')[0];
 
-                drawArea.width = window.innerWidth;
-                drawArea.height = window.innerHeight;
+                drawArea.width = document.documentElement.clientWidth;
+                drawArea.height = document.documentElement.clientHeight - 5;
 
                 body.appendChild(drawArea);
                 body.style.margin = "0px";
