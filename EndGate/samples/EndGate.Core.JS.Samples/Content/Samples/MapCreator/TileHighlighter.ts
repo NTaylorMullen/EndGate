@@ -25,7 +25,7 @@ module MapCreator {
             for (var i = 0; i < tiles.length; i++) {
                 gridTile = <eg.Graphics.Rectangle>this._grid.Get(tiles[i].Row, tiles[i].Column);
                 if (gridTile) {
-                    tile = new eg.Graphics.Rectangle(gridTile.Position.X, gridTile.Position.Y, gridTile.Size.Width, gridTile.Size.Height, new eg.Graphics.Color(0,0,0,eg.Graphics.Color.TRANSPARENT));
+                    tile = new eg.Graphics.Rectangle(gridTile.Position.X, gridTile.Position.Y, gridTile.Size.Width, gridTile.Size.Height, eg.Graphics.Color.Transparent);
                     tile.Border(2, "red");
                     this._grid.AddChild(tile);
                     this.SelectedTiles.push(tile);

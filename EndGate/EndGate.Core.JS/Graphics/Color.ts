@@ -22,6 +22,7 @@ module EndGate.Graphics {
         //Object to hold all HTML5 named colors
         //ref: http://www.tutorialspoint.com/html5/html5_color_names.htm
         private static _namedColors = {
+            "transparent": new Color(255, 255, 255, 0),
             "aliceblue": new Color("#f0f8ff"),
             "antiquewhite": new Color("#faebd7"),
             "aqua": new Color("#00ffff"),
@@ -203,25 +204,11 @@ module EndGate.Graphics {
                 this.InitializeColorFromString(r);
             } else {
                 //check if the alpha channel is defined
-                this.A = a === undefined ? Color.OPAQUE : a;
+                this.A = a === undefined ? 1 : a;
                 this.R = r;
                 this.G = g;
                 this.B = b;
             }
-        }
-
-        /**
-        * Helper function that returns the value of fully opaque for alpha.
-        */
-        public static get OPAQUE(): number {
-            return 1;
-        }
-
-        /**
-        * Helper function that returns the value of fully transparent for alpha.
-        */
-        public static get TRANSPARENT(): number {
-            return 0;
         }
 
         /**
@@ -454,6 +441,13 @@ module EndGate.Graphics {
             return color;
         }
         
+        /**
+        * Returns a transparent Color object.
+        */
+        public static get Transparent(): Color {
+            return Color._namedColors.transparent.Clone();
+        }
+
         /**
         * Returns a Color object set to the color named color AliceBlue.
         */
