@@ -52,6 +52,10 @@ module EndGate.Graphics {
             this.BorderColor = this._strokeStyle = Color.Black;
 
             if (typeof color !== "undefined") {
+                if (typeof color === "string") {
+                    color = new Color(color);
+                }
+
                 this.Color = this._fillStyle = color;
             }
             else {
