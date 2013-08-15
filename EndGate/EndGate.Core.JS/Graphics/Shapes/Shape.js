@@ -36,6 +36,10 @@ var EndGate;
                 this.BorderColor = this._strokeStyle = Graphics.Color.Black;
 
                 if (typeof color !== "undefined") {
+                    if (typeof color === "string") {
+                        color = new Graphics.Color(color);
+                    }
+
                     this.Color = this._fillStyle = color;
                 } else {
                     this.Color = this._fillStyle = Graphics.Color.Black;
