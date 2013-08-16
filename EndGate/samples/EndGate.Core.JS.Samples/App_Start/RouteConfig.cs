@@ -14,6 +14,12 @@ namespace EndGate.Core.JS.Samples
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name: "Samples",
+                url: "Samples/{sample}",
+                defaults: new { controller = "Samples", action = "Index", sample = "Index" }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{sample}",
                 defaults: new { controller = "Samples", action = "Index", sample = "Index" }
