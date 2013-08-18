@@ -12,7 +12,7 @@
 For all this and more you can always visit the EndGate [homepage] (http://endgate.net).
 
 ## Questions? 
-Post a question on [Stack Overflow] (http://stackoverflow.com/) with the "EndGate" tag or come join me and other contributors in the [EndGate room] (https://jabbr.net/#/rooms/EndGate) on [JabbR] (https://jabbr.net).
+Post a question on [Stack Overflow] (http://stackoverflow.com/) or [Game Development Stack Exchange] (http://gamedev.stackexchange.com/) with the "EndGate" tag.  You can also come and join me and other contributors in the [EndGate room] (https://jabbr.net/#/rooms/EndGate) on [JabbR] (https://jabbr.net).
 
 ## A brief look
 **1**. Create a custom game object.
