@@ -168,7 +168,14 @@ module EndGate.Graphics {
         * @param thickness The new border thickness in pixels.
         * @param color The new border color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
         */
-        public Border(thickness: number, color: Color): void {
+        public Border(thickness: number, color: string): void
+        /**
+        * Sets the current borders thickness and color.
+        * @param thickness The new border thickness in pixels.
+        * @param color The new border color.
+        */
+        public Border(thickness: number, color: Color): void;
+        public Border(thickness: number, color: any): void {
             this.BorderThickness = thickness;
             this.BorderColor = color;
         }
@@ -185,6 +192,13 @@ module EndGate.Graphics {
         * @param y The shadows new vertical position.
         * @param color The new shadow color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
         */
+        public Shadow(x: number, y: number, color: string): void;
+        /**
+        * Sets the current shadow x and y positions and shadows color.
+        * @param x The shadows new horizontal position.
+        * @param y The shadows new vertical position.
+        * @param color The new shadow color.
+        */
         public Shadow(x: number, y: number, color: Color): void;
         /**
         * Sets the current shadow x and y positions and shadows color.
@@ -193,8 +207,16 @@ module EndGate.Graphics {
         * @param color The new shadow color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
         * @param blur The new shadow blur.
         */
+        public Shadow(x: number, y: number, color: string, blur: number): void;
+        /**
+        * Sets the current shadow x and y positions and shadows color.
+        * @param x The shadows new horizontal position.
+        * @param y The shadows new vertical position.
+        * @param color The new shadow color.
+        * @param blur The new shadow blur.
+        */
         public Shadow(x: number, y: number, color: Color, blur: number): void;
-        public Shadow(x: number, y: number, color?: Color, blur?: number): void {
+        public Shadow(x: number, y: number, color?: any, blur?: number): void {
             this.ShadowX = x;
             this.ShadowY = y;
             this.ShadowColor = color;

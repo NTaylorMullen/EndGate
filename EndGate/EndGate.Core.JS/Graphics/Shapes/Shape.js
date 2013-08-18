@@ -179,11 +179,6 @@ var EndGate;
                 configurable: true
             });
 
-            /**
-            * Sets the current borders thickness and color.
-            * @param thickness The new border thickness in pixels.
-            * @param color The new border color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-            */
             Shape.prototype.Border = function (thickness, color) {
                 this.BorderThickness = thickness;
                 this.BorderColor = color;
