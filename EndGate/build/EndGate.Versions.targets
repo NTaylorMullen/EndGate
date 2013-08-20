@@ -6,7 +6,7 @@
     <PatchVersion>0</PatchVersion>
     <VersionQuality>beta1</VersionQuality>
 
-    <QualityEnding Condition="$(BuildQuality) != ''">-$(VersionQuality)</QualityEnding>
+    <QualityEnding Condition="$(VersionQuality) != ''">-$(VersionQuality)</QualityEnding>
     <EndGateVersion>$(MajorVersion).$(MinorVersion).$(PatchVersion)$(QualityEnding)</EndGateVersion>
   </PropertyGroup>
 </Project>
