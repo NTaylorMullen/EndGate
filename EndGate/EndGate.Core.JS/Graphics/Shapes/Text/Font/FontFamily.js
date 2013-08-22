@@ -28,7 +28,6 @@ var EndGate;
                 FontFamily[FontFamily["Script"] = 19] = "Script";
                 FontFamily[FontFamily["Swiss"] = 20] = "Swiss";
                 FontFamily[FontFamily["TimesNewRoman"] = 21] = "TimesNewRoman";
-
                 FontFamily[FontFamily["Verdana"] = 22] = "Verdana";
             })(Assets.FontFamily || (Assets.FontFamily = {}));
             var FontFamily = Assets.FontFamily;

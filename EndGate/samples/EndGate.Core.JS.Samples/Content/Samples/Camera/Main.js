@@ -14,4 +14,4 @@
     // Create our game
     game = new Camera.Game(canvas, cameraPosition, cameraDistance);
 })($, window);
-//@ sourceMappingURL=Main.js.map
+//# sourceMappingURL=Main.js.map

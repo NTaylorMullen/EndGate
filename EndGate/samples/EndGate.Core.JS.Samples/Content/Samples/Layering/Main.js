@@ -14,4 +14,4 @@
     // Create our game
     game = new Layering.Game(canvas);
 })($, window);
-//@ sourceMappingURL=Main.js.map
+//# sourceMappingURL=Main.js.map

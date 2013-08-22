@@ -49,4 +49,4 @@ var AnimatedSprites;
     })();
     AnimatedSprites.ElectricPulseManager = ElectricPulseManager;
 })(AnimatedSprites || (AnimatedSprites = {}));
-//@ sourceMappingURL=ElectricPulseManager.js.map
+//# sourceMappingURL=ElectricPulseManager.js.map

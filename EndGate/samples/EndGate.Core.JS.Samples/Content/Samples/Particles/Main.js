@@ -82,4 +82,4 @@
         game.Emitter.ParticleFadeOutDuration.Max = eg.TimeSpan.FromMilliseconds(newFadeOutMax);
     });
 })($, window);
-//@ sourceMappingURL=Main.js.map
+//# sourceMappingURL=Main.js.map

@@ -7,7 +7,6 @@ var EndGate;
             */
             (function (FontVariant) {
                 FontVariant[FontVariant["Normal"] = 0] = "Normal";
-
                 FontVariant[FontVariant["SmallCaps"] = 1] = "SmallCaps";
             })(Assets.FontVariant || (Assets.FontVariant = {}));
             var FontVariant = Assets.FontVariant;

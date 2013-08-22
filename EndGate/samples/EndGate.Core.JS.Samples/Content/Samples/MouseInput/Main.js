@@ -13,4 +13,4 @@
     // Create our game
     game = new MouseInput.Game(canvas, lastMouseEvent);
 })($, window);
-//@ sourceMappingURL=Main.js.map
+//# sourceMappingURL=Main.js.map

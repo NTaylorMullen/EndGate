@@ -15,4 +15,4 @@ var MapCreator;
     })();
     MapCreator.CameraZoomController = CameraZoomController;
 })(MapCreator || (MapCreator = {}));
-//@ sourceMappingURL=CameraZoomController.js.map
+//# sourceMappingURL=CameraZoomController.js.map

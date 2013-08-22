@@ -42,4 +42,4 @@ var AudioHandling;
     })();
     AudioHandling.SmokePoofManager = SmokePoofManager;
 })(AudioHandling || (AudioHandling = {}));
-//@ sourceMappingURL=SmokePoofManager.js.map
+//# sourceMappingURL=SmokePoofManager.js.map

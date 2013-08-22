@@ -76,4 +76,4 @@
         game.Text.FontSettings.FontWeight = $(this).val();
     });
 })($, window);
-//@ sourceMappingURL=Main.js.map
+//# sourceMappingURL=Main.js.map

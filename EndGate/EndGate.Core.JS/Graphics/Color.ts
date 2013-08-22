@@ -214,7 +214,7 @@ module EndGate.Graphics {
         /**
         * Gets an EventHandler that is triggered when the R, G, B, or A values of this Color change.
         */
-        public get OnChange(): EventHandler<Color> {
+        public get OnChange(): EventHandler1<Color> {
             return this._onChange;
         }
         
@@ -1165,7 +1165,7 @@ module EndGate.Graphics {
         /**
         * Returns a Color object set to the color named color Orchid.
         */
-        public static get Orchid(): Orchid {
+        public static get Orchid(): Color {
             return Color._namedColors.orchid.Clone();
         }
 

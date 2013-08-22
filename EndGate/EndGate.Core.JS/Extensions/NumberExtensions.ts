@@ -1,5 +1,7 @@
 /// <reference path="../Interfaces/ICloneable.ts" />
 
-interface Number extends EndGate.ICloneable {}
+interface Number extends EndGate.ICloneable {
+    Clone: () => Number;
+}
 
-Number.prototype.Clone = function (): any { return this; };
+Number.prototype.Clone = function (): Number { return this; };

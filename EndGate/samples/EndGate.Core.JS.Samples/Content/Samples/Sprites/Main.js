@@ -34,4 +34,4 @@
         game.Sprite.Size.Height = newHeight;
     });
 })($, window);
-//@ sourceMappingURL=Main.js.map
+//# sourceMappingURL=Main.js.map

@@ -86,4 +86,4 @@ var MapCreator;
     })();
     MapCreator.LayerManager = LayerManager;
 })(MapCreator || (MapCreator = {}));
-//@ sourceMappingURL=LayerManager.js.map
+//# sourceMappingURL=LayerManager.js.map

@@ -1,12 +1,12 @@
+/// <reference path="../../../Scripts/endgate.d.ts" />
+/// <reference path="BurningFlame.ts" />
+/// <reference path="SmokePoofManager.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-/// <reference path="../../../Scripts/endgate.d.ts" />
-/// <reference path="BurningFlame.ts" />
-/// <reference path="SmokePoofManager.ts" />
 // Wrap in module to keep code out of global scope
 var AudioHandling;
 (function (AudioHandling) {
@@ -39,6 +39,7 @@ var AudioHandling;
             // We provide two sound files so that it can play properly in all browsers. If one sound file fails to load/play the other will be loaded and played.
             this.Content.LoadAudio("burning", ["/Content/Samples/AudioHandling/sounds/fireburning.ogg", "/Content/Samples/AudioHandling/sounds/fireburning.mp3"]);
             this.Content.LoadAudio("poof", ["/Content/Samples/AudioHandling/sounds/smokepoof.ogg", "/Content/Samples/AudioHandling/sounds/smokepoof.mp3"]);
+            // NOTE: Names could be identical to the image names above, audio and image sources do not share name restrictions.
         };
 
         Game.prototype.Update = function (gameTime) {
@@ -49,4 +50,4 @@ var AudioHandling;
     })(eg.Game);
     AudioHandling.Game = Game;
 })(AudioHandling || (AudioHandling = {}));
-//@ sourceMappingURL=Game.js.map
+//# sourceMappingURL=Game.js.map

@@ -14,4 +14,4 @@
     // Create our game
     game = new AnimatedSprites.Game(canvas);
 })($, window);
-//@ sourceMappingURL=Main.js.map
+//# sourceMappingURL=Main.js.map

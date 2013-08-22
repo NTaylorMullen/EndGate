@@ -55,4 +55,4 @@ var MapCreator;
     })();
     MapCreator.TileHighlighter = TileHighlighter;
 })(MapCreator || (MapCreator = {}));
-//@ sourceMappingURL=TileHighlighter.js.map
+//# sourceMappingURL=TileHighlighter.js.map

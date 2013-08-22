@@ -39,4 +39,4 @@ var KeyboardInput;
     })();
     KeyboardInput.CommandBinder = CommandBinder;
 })(KeyboardInput || (KeyboardInput = {}));
-//@ sourceMappingURL=CommandBinder.js.map
+//# sourceMappingURL=CommandBinder.js.map

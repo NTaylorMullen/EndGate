@@ -1,12 +1,12 @@
+/// <reference path="../../../Scripts/endgate.d.ts" />
+/// <reference path="UI.ts" />
+/// <reference path="TweenManager.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-/// <reference path="../../../Scripts/endgate.d.ts" />
-/// <reference path="UI.ts" />
-/// <reference path="TweenManager.ts" />
 // Wrap in module to keep code out of global scope
 var Tweening;
 (function (Tweening) {
@@ -47,4 +47,4 @@ var Tweening;
     })(eg.Game);
     Tweening.Game = Game;
 })(Tweening || (Tweening = {}));
-//@ sourceMappingURL=Game.js.map
+//# sourceMappingURL=Game.js.map

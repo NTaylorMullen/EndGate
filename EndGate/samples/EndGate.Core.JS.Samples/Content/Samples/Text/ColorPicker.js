@@ -40,4 +40,4 @@ var Texts;
     })();
     Texts.ColorPicker = ColorPicker;
 })(Texts || (Texts = {}));
-//@ sourceMappingURL=ColorPicker.js.map
+//# sourceMappingURL=ColorPicker.js.map
