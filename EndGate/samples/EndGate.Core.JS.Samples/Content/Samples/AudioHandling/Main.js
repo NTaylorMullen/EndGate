@@ -13,4 +13,4 @@
     // Create our game
     game = new AudioHandling.Game(canvas);
 })($, window);
-//@ sourceMappingURL=Main.js.map
+//# sourceMappingURL=Main.js.map

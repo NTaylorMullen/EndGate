@@ -35,4 +35,4 @@ var Sprites;
     })();
     Sprites.CustomSlider = CustomSlider;
 })(Sprites || (Sprites = {}));
-//@ sourceMappingURL=CustomSlider.js.map
+//# sourceMappingURL=CustomSlider.js.map

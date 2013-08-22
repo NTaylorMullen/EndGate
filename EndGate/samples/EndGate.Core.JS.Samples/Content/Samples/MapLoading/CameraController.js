@@ -34,4 +34,4 @@ var MapLoading;
     })();
     MapLoading.CameraController = CameraController;
 })(MapLoading || (MapLoading = {}));
-//@ sourceMappingURL=CameraController.js.map
+//# sourceMappingURL=CameraController.js.map

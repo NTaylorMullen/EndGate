@@ -6,7 +6,6 @@ var Layering;
 (function (Layering) {
     var LayerController = (function () {
         function LayerController(world) {
-            var _this = this;
             // Helper function to bind our + and our - to control the ZIndex of the graphics
             var bindControls = function (controlHolderID, model) {
                 $("#" + controlHolderID + " .addZIndex, #" + controlHolderID + " .subtractZIndex").click(function () {
@@ -24,4 +23,4 @@ var Layering;
     })();
     Layering.LayerController = LayerController;
 })(Layering || (Layering = {}));
-//@ sourceMappingURL=LayerController.js.map
+//# sourceMappingURL=LayerController.js.map

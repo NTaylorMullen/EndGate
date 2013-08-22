@@ -37,4 +37,4 @@ var AnimatedSprites;
     })();
     AnimatedSprites.FireExplosionManager = FireExplosionManager;
 })(AnimatedSprites || (AnimatedSprites = {}));
-//@ sourceMappingURL=FireExplosionManager.js.map
+//# sourceMappingURL=FireExplosionManager.js.map

@@ -1,10 +1,10 @@
+/// <reference path="../Scripts/endgate.d.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-/// <reference path="../Scripts/endgate.d.ts" />
 var UpdateTester = (function (_super) {
     __extends(UpdateTester, _super);
     function UpdateTester(updateRate, onUpdateLimit, updateLimit) {
@@ -56,4 +56,4 @@ var CollisionManagerGame = (function (_super) {
     };
     return CollisionManagerGame;
 })(eg.Game);
-//@ sourceMappingURL=Assets.js.map
+//# sourceMappingURL=Assets.js.map

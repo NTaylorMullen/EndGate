@@ -1,11 +1,11 @@
+/// <reference path="../../../Scripts/jquery.d.ts" />
+/// <reference path="../../../Scripts/endgate.d.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-/// <reference path="../../../Scripts/jquery.d.ts" />
-/// <reference path="../../../Scripts/endgate.d.ts" />
 // Wrap in module to keep code out of global scope
 var Particles;
 (function (Particles) {
@@ -64,4 +64,4 @@ var Particles;
     })(eg.Game);
     Particles.Game = Game;
 })(Particles || (Particles = {}));
-//@ sourceMappingURL=Game.js.map
+//# sourceMappingURL=Game.js.map

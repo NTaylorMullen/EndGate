@@ -64,4 +64,4 @@
         game.Shape.ShadowBlur = newBlur;
     });
 })($, window);
-//@ sourceMappingURL=Main.js.map
+//# sourceMappingURL=Main.js.map

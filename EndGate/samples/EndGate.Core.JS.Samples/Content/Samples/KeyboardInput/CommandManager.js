@@ -35,4 +35,4 @@ var KeyboardInput;
     })();
     KeyboardInput.CommandManager = CommandManager;
 })(KeyboardInput || (KeyboardInput = {}));
-//@ sourceMappingURL=CommandManager.js.map
+//# sourceMappingURL=CommandManager.js.map

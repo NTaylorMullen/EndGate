@@ -39,4 +39,4 @@ var AnimatedSprites;
     })();
     AnimatedSprites.Animation = Animation;
 })(AnimatedSprites || (AnimatedSprites = {}));
-//@ sourceMappingURL=Animation.js.map
+//# sourceMappingURL=Animation.js.map

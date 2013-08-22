@@ -14,4 +14,4 @@ var Camera;
     })();
     Camera.MovingDirection = MovingDirection;
 })(Camera || (Camera = {}));
-//@ sourceMappingURL=MovingDirection.js.map
+//# sourceMappingURL=MovingDirection.js.map

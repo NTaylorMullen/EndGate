@@ -1,13 +1,13 @@
+/// <reference path="../../../Scripts/jquery.d.ts" />
+/// <reference path="../../../Scripts/endgate.d.ts" />
+/// <reference path="CommandBinder.ts" />
+/// <reference path="KeyboardStatusUpdater.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-/// <reference path="../../../Scripts/jquery.d.ts" />
-/// <reference path="../../../Scripts/endgate.d.ts" />
-/// <reference path="CommandBinder.ts" />
-/// <reference path="KeyboardStatusUpdater.ts" />
 // Wrap in module to keep code out of global scope
 var KeyboardInput;
 (function (KeyboardInput) {
@@ -23,4 +23,4 @@ var KeyboardInput;
     })(eg.Game);
     KeyboardInput.Game = Game;
 })(KeyboardInput || (KeyboardInput = {}));
-//@ sourceMappingURL=Game.js.map
+//# sourceMappingURL=Game.js.map

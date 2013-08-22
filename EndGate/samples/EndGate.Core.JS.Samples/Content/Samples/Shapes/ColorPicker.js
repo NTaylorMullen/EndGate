@@ -40,4 +40,4 @@ var Shapes;
     })();
     Shapes.ColorPicker = ColorPicker;
 })(Shapes || (Shapes = {}));
-//@ sourceMappingURL=ColorPicker.js.map
+//# sourceMappingURL=ColorPicker.js.map

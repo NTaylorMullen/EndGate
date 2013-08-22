@@ -20,4 +20,4 @@
     game.Add(new CollisionInspector.CollidableShape(new eg.Graphics.Rectangle(300, canvas.height / 2, 200, 100, eg.Graphics.Color.Green)));
     game.Add(new CollisionInspector.CollidableShape(new eg.Graphics.Rectangle(800, canvas.height / 2, 150, 75, eg.Graphics.Color.Orange)));
 })($, window);
-//@ sourceMappingURL=Main.js.map
+//# sourceMappingURL=Main.js.map

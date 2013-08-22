@@ -72,4 +72,4 @@ var MapCreator;
     })();
     MapCreator.SetupManager = SetupManager;
 })(MapCreator || (MapCreator = {}));
-//@ sourceMappingURL=SetupManager.js.map
+//# sourceMappingURL=SetupManager.js.map
