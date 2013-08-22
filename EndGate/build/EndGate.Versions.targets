@@ -4,7 +4,7 @@
     <MajorVersion>0</MajorVersion>
     <MinorVersion>2</MinorVersion>
     <PatchVersion>0</PatchVersion>
-    <VersionQuality>beta1</VersionQuality>
+    <VersionQuality>beta2</VersionQuality>
 
     <QualityEnding Condition="$(VersionQuality) != ''">-$(VersionQuality)</QualityEnding>
     <EndGateVersion>$(MajorVersion).$(MinorVersion).$(PatchVersion)$(QualityEnding)</EndGateVersion>
