@@ -14,22 +14,48 @@ Copyright (C) Microsoft Corporation. All rights reserved.
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
+    <VsToolsPath Condition="'$(VsToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VsToolsPath>
+  </PropertyGroup>
+
+  <UsingTask TaskName="TypeScript.Tasks.VsTsc" AssemblyFile="$(VSToolsPath)\TypeScript\TypeScript.tasks.dll" />
+
+  
+  <PropertyGroup>
     <CompileDependsOn>
       CompileTypeScript;
       $(CompileDependsOn);
     </CompileDependsOn>
   </PropertyGroup>
-  
+
   <PropertyGroup>
-    <TypeScriptBuildConfigurations Condition="'$(TypeScriptIncludeComments)' == 'true'">$(TypeScriptBuildConfigurations) --comments</TypeScriptBuildConfigurations>
+    <PublishPipelineCollectFilesCore>
+      $(PublishPipelineCollectFilesCore);
+      TypeScriptCollectPublishFiles;
+    </PublishPipelineCollectFilesCore>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(TypeScriptBuildConfigurations)' == ''">
+    <TypeScriptCompileOnSaveEnabled Condition="'$(TypeScriptEnableCompileOnSave)' != 'false'">true</TypeScriptCompileOnSaveEnabled>
+
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptRemoveComments)' == 'true'">$(TypeScriptBuildConfigurations) --removeComments</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptNoImplicitAny)' == 'true'">$(TypeScriptBuildConfigurations) --noImplicitAny</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptNoResolve)' == 'true'">$(TypeScriptBuildConfigurations) --noResolve</TypeScriptBuildConfigurations>
     <TypeScriptBuildConfigurations Condition="'$(TypeScriptGeneratesDeclarations)' == 'true'">$(TypeScriptBuildConfigurations) --declaration</TypeScriptBuildConfigurations>
     <TypeScriptBuildConfigurations Condition="'$(TypeScriptModuleKind)' != ''">$(TypeScriptBuildConfigurations) --module $(TypeScriptModuleKind)</TypeScriptBuildConfigurations>
-    <TypeScriptBuildConfigurations Condition="'$(TypeScriptIncludeDefaultLib)' == 'false'">$(TypeScriptBuildConfigurations) --nolib</TypeScriptBuildConfigurations>
-    <TypeScriptBuildConfigurations Condition="'$(TypeScriptOutFile)' != ''">$(TypeScriptBuildConfigurations) --out $(TypeScriptOutFile)</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptOutFile)' != ''">$(TypeScriptBuildConfigurations) --out &quot;$(TypeScriptOutFile)&quot;</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptOutDir)' != ''">$(TypeScriptBuildConfigurations) --outDir &quot;$(TypeScriptOutDir)&quot;</TypeScriptBuildConfigurations>
     <TypeScriptBuildConfigurations Condition="'$(TypeScriptSourceMap)' == 'true'">$(TypeScriptBuildConfigurations) --sourcemap</TypeScriptBuildConfigurations>
     <TypeScriptBuildConfigurations Condition="'$(TypeScriptTarget)' != ''">$(TypeScriptBuildConfigurations) --target $(TypeScriptTarget)</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptNoResolve)' == 'true'">$(TypeScriptBuildConfigurations) --noResolve</TypeScriptBuildConfigurations>
     <TypeScriptBuildConfigurations Condition="'$(TypeScriptAdditionalFlags)' != ''">$(TypeScriptBuildConfigurations) $(TypeScriptAdditionalFlags)</TypeScriptBuildConfigurations>
-    <TypeScriptCompileOnSaveEnabled Condition="'$(TypeScriptEnableCompileOnSave)' != 'false' and '$(TypeScriptOutFile)' == ''">true</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptMapRoot)' != ''">$(TypeScriptBuildConfigurations) --mapRoot &quot;$(TypeScriptMapRoot)&quot;</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptSourceRoot)' != ''">$(TypeScriptBuildConfigurations) --sourceRoot &quot;$(TypeScriptSourceRoot)&quot;</TypeScriptBuildConfigurations>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TscToolPath Condition="'$(TscToolPath)' == ''">$(MSBuildProgramFiles32)\Microsoft SDKs\TypeScript</TscToolPath>
+    <TscToolExe Condition="'$(TscToolExe)' == ''">tsc.exe</TscToolExe>
+    <TscYieldDuringToolExecution Condition="'$(TscYieldDuringToolExecution)' == ''">true</TscYieldDuringToolExecution>
   </PropertyGroup>
 
   <ItemGroup>
@@ -41,20 +67,26 @@ Copyright (C) Microsoft Corporation. All rights reserved.
   <ItemGroup>
     <ProjectCapability Include="TypeScript" />
   </ItemGroup>
-  
-  <PropertyGroup>
-    <TypeScriptOptions>$(TypeScriptBuildConfigurations)</TypeScriptOptions>
-    <TypeScriptFiles>@(TypeScriptCompile ->'&quot;%(fullpath)&quot;', ' ')</TypeScriptFiles>
-    <TypeScriptCommandLine>$(TypeScriptOptions);$(TypeScriptFiles)</TypeScriptCommandLine>
-    <TypeScriptArgsFile>__typeScriptArgs.txt</TypeScriptArgsFile>
-  </PropertyGroup>  
 
-  <Target Name="CompileTypeScript">
-    <Message Text="Compiling TypeScript files..." />
-    <Delete Files="$(TypeScriptArgsFile)" />
-    <WriteLinesToFile File="$(TypeScriptArgsFile)" Lines="$(TypeScriptCommandLine)" />
-    <Exec Command="tsc %40$(TypeScriptArgsFile)"/>
-    <Delete Files="$(TypeScriptArgsFile)" />
+  <Target Name="CompileTypeScript" Condition="'$(BuildingProject)' != 'false'">
+    <VsTsc
+      ToolPath="$(TscToolPath)"
+      ToolExe="$(TscToolExe)"
+      Configurations="$(TypeScriptBuildConfigurations)"
+      FullPathsToFiles="@(TypeScriptCompile)"
+      YieldDuringToolExecution="$(TscYieldDuringToolExecution)"
+      OutFile="$(TypeScriptOutFile)"
+      OutDir="$(TypeScriptOutDir)"
+      >
+      <Output TaskParameter="GeneratedJavascript" ItemName="GeneratedJavascript" />
+    </VsTsc>
+  </Target>
+
+  <Target Name="TypeScriptCollectPublishFiles">
+    <Message Text="Adding to FilesForPackagingFromProject: @(GeneratedJavascript->'%(Identity)')"/>
+    <ItemGroup>
+      <FilesForPackagingFromProject Include="@(GeneratedJavascript->'%(Identity)')"/>
+    </ItemGroup>
   </Target>
   
 </Project>
