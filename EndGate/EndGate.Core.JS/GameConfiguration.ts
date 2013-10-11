@@ -12,7 +12,7 @@ module EndGate {
         */
         public DrawOnlyAfterUpdate: boolean;
 
-        private _defaultUpdateRate: number = 40;
+        private _defaultUpdateRate: number = 65;
         private _updateRateSetter: (updateRate: number) => void;
         private _updateRate: number;
         private _collisionConfiguration: Collision.CollisionConfiguration;

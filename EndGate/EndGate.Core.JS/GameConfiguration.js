@@ -11,7 +11,7 @@ var EndGate;
         * @param updateRateSetter A function that updates the rate of "Update" execution.
         */
         function GameConfiguration(updateRateSetter, initialQuadTreeSize) {
-            this._defaultUpdateRate = 40;
+            this._defaultUpdateRate = 65;
             this.DrawOnlyAfterUpdate = true;
 
             this._updateRateSetter = updateRateSetter;
