@@ -33,15 +33,16 @@ module EndGate {
         */
         public BindFor(action: (val1: T, val2: U) => any, triggerCount: number): void {
             var that = this,
-                triggers: number = 0;
+                triggers: number = 0,
+                wire: (val1: T, val2: U) => any = function () {
+                    if (++triggers >= triggerCount) {
+                        that.Unbind(wire);
+                    }
 
-            this._actions.push(function () {
-                if (++triggers >= triggerCount) {
-                    that.Unbind(action);
-                }
+                    action.apply(this, arguments);
+                };
 
-                action.apply(this, arguments);
-            });
+            this._actions.push(wire);
         }
 
         /**

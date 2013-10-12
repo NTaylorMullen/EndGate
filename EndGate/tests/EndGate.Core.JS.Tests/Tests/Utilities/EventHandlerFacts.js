@@ -2,6 +2,23 @@
 
     QUnit.module("Event Handler Facts");
 
+    QUnit.test("BindFor successfully unbinds itself after the designated trigger count.", function () {
+        var es = [new eg.EventHandler(), new eg.EventHandler1(), new eg.EventHandler2(), new eg.EventHandler3()],
+            e;
+
+        for (var i = 0; i < es.length; i++) {
+            e = es[i];
+
+            e.BindFor(function () { }, 2);
+
+            QUnit.isTrue(e.HasBindings());
+            e.Trigger();
+            QUnit.isTrue(e.HasBindings());
+            e.Trigger();
+            QUnit.isFalse(e.HasBindings());
+        }
+    });
+
     QUnit.test("Events can be bound and triggered.", function () {
         var e = new eg.EventHandler(),
             firstTriggered = false,

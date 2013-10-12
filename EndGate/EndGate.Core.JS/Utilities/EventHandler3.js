@@ -27,15 +27,15 @@ var EndGate;
         * @param triggerCount Number of triggers to wait before unbinding the action.
         */
         EventHandler3.prototype.BindFor = function (action, triggerCount) {
-            var that = this, triggers = 0;
-
-            this._actions.push(function () {
+            var that = this, triggers = 0, wire = function () {
                 if (++triggers >= triggerCount) {
-                    that.Unbind(action);
+                    that.Unbind(wire);
                 }
 
                 action.apply(this, arguments);
-            });
+            };
+
+            this._actions.push(wire);
         };
 
         /**
