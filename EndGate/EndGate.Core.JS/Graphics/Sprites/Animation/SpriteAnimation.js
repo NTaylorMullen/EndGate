@@ -29,10 +29,12 @@ var EndGate;
                 this.Fps = fps;
 
                 if (imageSource.ClipSize !== null || imageSource.IsLoaded()) {
-                    this._framesPerRow = Math.min(Math.floor((imageSource.ClipSize.Width - startOffset.X) / frameSize.Width), frameCount);
+                    this._framesPerRow = Math.min(Math.floor((imageSource.Size.Width - startOffset.X) / frameSize.Width), frameCount);
+                    this.UpdateImageSource();
                 } else {
                     imageSource.OnLoaded.BindFor(function (image) {
-                        _this._framesPerRow = Math.min(Math.floor((imageSource.ClipSize.Width - startOffset.X) / frameSize.Width), frameCount);
+                        _this._framesPerRow = Math.min(Math.floor((imageSource.Size.Width - startOffset.X) / frameSize.Width), frameCount);
+                        _this.UpdateImageSource();
                     }, 1);
 
                     this._framesPerRow = 1;
