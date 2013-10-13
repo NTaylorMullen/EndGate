@@ -127,7 +127,11 @@ var EndGate;
             * Returns an identical copy of this image source.  Uses existing base image source.
             */
             ImageSource.prototype.Clone = function () {
-                return new ImageSource(this.Source, this.ClipLocation.X, this.ClipLocation.Y, this.ClipSize.Width, this.ClipSize.Height);
+                if (this.ClipSize) {
+                    return new ImageSource(this.Source, this.ClipLocation.X, this.ClipLocation.Y, this.ClipSize.Width, this.ClipSize.Height);
+                } else {
+                    return new ImageSource(this.Source);
+                }
             };
             return ImageSource;
         })();
