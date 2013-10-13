@@ -13,16 +13,21 @@ var AudioHandling;
     var Game = (function (_super) {
         __extends(Game, _super);
         function Game(canvas) {
+            var _this = this;
             _super.call(this, canvas);
 
-            // Create the burning flame at the center of the canvas
-            this._burningFlame = new AudioHandling.BurningFlame(canvas.width / 2, canvas.height / 2);
+            AudioHandling.BurningFlame.BaseGraphic.OnLoaded.BindFor(function (_) {
+                // Create the burning flame at the center of the canvas
+                _this._burningFlame = new AudioHandling.BurningFlame(canvas.width / 2, canvas.height / 2);
 
-            // Add the burning flames graphic to the Scene (so it can be drawn)
-            this.Scene.Add(this._burningFlame.Graphic);
+                // Add the burning flames graphic to the Scene (so it can be drawn)
+                _this.Scene.Add(_this._burningFlame.Graphic);
+            }, 1);
 
-            // We pass in the loaded AudioPlayer for the smoke poof sound
-            this._smokePoofManager = new AudioHandling.SmokePoofManager(this.Input.Mouse, this.Scene, this.Content.GetAudio("poof"));
+            AudioHandling.SmokePoof.BaseGraphic.OnLoaded.BindFor(function (_) {
+                // We pass in the loaded AudioPlayer for the smoke poof sound
+                _this._smokePoofManager = new AudioHandling.SmokePoofManager(_this.Input.Mouse, _this.Scene, _this.Content.GetAudio("poof"));
+            }, 1);
 
             // Play our burning sound on repeat at 75% volume.  The this._burningSound allows for modification of the sound after
             // it has begun to play.  However, in this sample we do not do any modifications to the sound once we play it.
@@ -43,8 +48,13 @@ var AudioHandling;
         };
 
         Game.prototype.Update = function (gameTime) {
-            this._burningFlame.Update(gameTime);
-            this._smokePoofManager.Update(gameTime);
+            if (this._burningFlame) {
+                this._burningFlame.Update(gameTime);
+            }
+
+            if (this._smokePoofManager) {
+                this._smokePoofManager.Update(gameTime);
+            }
         };
         return Game;
     })(eg.Game);

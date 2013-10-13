@@ -24,8 +24,7 @@ var EndGate;
                     imageLocation = image;
                     this._loaded = false;
                     this.Source = new Image();
-
-                    this.Source.onload = function () {
+                    this._loadWire = function (e) {
                         _this._loaded = true;
 
                         if (!sizeDefined) {
@@ -53,13 +52,26 @@ var EndGate;
                     clipX = width;
                     clipY = height;
 
-                    this._loaded = true;
                     this.Source = image;
+
+                    this._loaded = false;
+
+                    this._loadWire = function (e) {
+                        _this._loaded = true;
+                        _this._onLoaded.Trigger(_this);
+                    };
+
                     this._imageLocation = image.src;
                     this._size = new EndGate.Size2d(image.width, image.height);
 
                     this.ClipLocation = new EndGate.Vector2d(clipX, clipY);
                     this.ClipSize = new EndGate.Size2d(clipWidth, clipHeight);
+                }
+
+                if (!this.Source.complete) {
+                    this.Source.addEventListener("load", this._loadWire, false);
+                } else {
+                    setTimeout(this._loadWire, 0);
                 }
             }
             Object.defineProperty(ImageSource.prototype, "OnLoaded", {
@@ -106,6 +118,7 @@ var EndGate;
             * Disposes the image source and unbinds all bound events.
             */
             ImageSource.prototype.Dispose = function () {
+                this.Source.removeEventListener("load", this._loadWire);
                 this.Source = null;
                 this._onLoaded.Dispose();
             };

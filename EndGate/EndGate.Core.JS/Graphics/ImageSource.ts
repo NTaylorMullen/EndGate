@@ -27,6 +27,7 @@ module EndGate.Graphics {
         private _loaded: boolean;
         private _imageLocation;
         private _onLoaded: EventHandler1<ImageSource>;
+        private _loadWire: (e: Event) => void;
 
         /**
         * Creates a new instance of the ImageSource object with a pre-loaded image object.
@@ -74,8 +75,7 @@ module EndGate.Graphics {
                 imageLocation = image;
                 this._loaded = false;
                 this.Source = new Image();
-
-                this.Source.onload = () => {
+                this._loadWire = (e: Event) => {
                     this._loaded = true;
 
                     if (!sizeDefined) {
@@ -98,20 +98,32 @@ module EndGate.Graphics {
                 else {
                     this.ClipSize = null; // Waiting for the image source OnLoad to set it
                 }
-            }
-            else {
+            } else {
                 clipWidth = clipX;
                 clipHeight = clipY;
                 clipX = width;
                 clipY = height;
 
-                this._loaded = true;
                 this.Source = image;
+
+                this._loaded = false;
+
+                this._loadWire = (e: Event) => {
+                    this._loaded = true;
+                    this._onLoaded.Trigger(this);
+                };                
+
                 this._imageLocation = image.src;
                 this._size = new Size2d(image.width, image.height);
 
                 this.ClipLocation = new Vector2d(clipX, clipY);
                 this.ClipSize = new Size2d(clipWidth, clipHeight);
+            }
+
+            if (!this.Source.complete) {
+                this.Source.addEventListener("load", this._loadWire, false);
+            } else {
+                setTimeout(this._loadWire, 0);
             }
         }
 
@@ -151,6 +163,7 @@ module EndGate.Graphics {
         * Disposes the image source and unbinds all bound events.
         */
         public Dispose(): void {
+            this.Source.removeEventListener("load", this._loadWire);
             this.Source = null;
             this._onLoaded.Dispose();
         }

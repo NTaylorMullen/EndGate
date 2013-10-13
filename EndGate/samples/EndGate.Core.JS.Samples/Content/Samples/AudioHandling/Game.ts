@@ -14,14 +14,17 @@ module AudioHandling {
         constructor(canvas: HTMLCanvasElement) {
             super(canvas);
 
-            // Create the burning flame at the center of the canvas
-            this._burningFlame = new BurningFlame(canvas.width / 2, canvas.height / 2);
-            // Add the burning flames graphic to the Scene (so it can be drawn)
-            this.Scene.Add(this._burningFlame.Graphic);
+            BurningFlame.BaseGraphic.OnLoaded.BindFor((_) => {
+                // Create the burning flame at the center of the canvas
+                this._burningFlame = new BurningFlame(canvas.width / 2, canvas.height / 2);
+                // Add the burning flames graphic to the Scene (so it can be drawn)
+                this.Scene.Add(this._burningFlame.Graphic);
+            }, 1);
 
-            // We pass in the loaded AudioPlayer for the smoke poof sound
-            
-            this._smokePoofManager = new SmokePoofManager(this.Input.Mouse, this.Scene, this.Content.GetAudio("poof"));            
+            SmokePoof.BaseGraphic.OnLoaded.BindFor((_) => {
+                // We pass in the loaded AudioPlayer for the smoke poof sound
+                this._smokePoofManager = new SmokePoofManager(this.Input.Mouse, this.Scene, this.Content.GetAudio("poof"));
+            }, 1);
 
             // Play our burning sound on repeat at 75% volume.  The this._burningSound allows for modification of the sound after
             // it has begun to play.  However, in this sample we do not do any modifications to the sound once we play it.
@@ -43,8 +46,13 @@ module AudioHandling {
         }
 
         public Update(gameTime: eg.GameTime): void {
-            this._burningFlame.Update(gameTime);
-            this._smokePoofManager.Update(gameTime);
+            if (this._burningFlame) {
+                this._burningFlame.Update(gameTime);
+            }
+
+            if (this._smokePoofManager) {
+                this._smokePoofManager.Update(gameTime);
+            }
         }
     }
 
