@@ -23,7 +23,11 @@ module EndGate.Rendering {
             this._camera = camera;
             this._contextBuilder = new _.Camera2dCanvasContextBuilder(this._camera);
 
-            this.OnRendererSizeChange.Bind(this._contextBuilder._UpdateCanvasCenter);
+            this.OnRendererSizeChange.Bind((newSize: eg.Size2d) => {
+                this._contextBuilder._UpdateCanvasCenter(newSize);
+                this._camera.Size = newSize;
+            });
+
             this._contextBuilder._UpdateCanvasCenter(new Size2d(renderOnto.width, renderOnto.height));
             this._BufferContext = this._contextBuilder.Build(this._BufferContext);
 

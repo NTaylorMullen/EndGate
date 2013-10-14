@@ -22,12 +22,17 @@ var EndGate;
             * @param camera The camera that ultimately decides what is drawn to the renderOnto canvas.
             */
             function Camera2dRenderer(renderOnto, camera) {
+                var _this = this;
                 _super.call(this, renderOnto);
 
                 this._camera = camera;
                 this._contextBuilder = new Rendering._.Camera2dCanvasContextBuilder(this._camera);
 
-                this.OnRendererSizeChange.Bind(this._contextBuilder._UpdateCanvasCenter);
+                this.OnRendererSizeChange.Bind(function (newSize) {
+                    _this._contextBuilder._UpdateCanvasCenter(newSize);
+                    _this._camera.Size = newSize;
+                });
+
                 this._contextBuilder._UpdateCanvasCenter(new EndGate.Size2d(renderOnto.width, renderOnto.height));
                 this._BufferContext = this._contextBuilder.Build(this._BufferContext);
             }
