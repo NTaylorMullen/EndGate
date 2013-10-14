@@ -38,11 +38,21 @@ var EndGate;
                 this.OnDown.Bind(function (e) {
                     _this._isDown = true;
                     _this[e.Button + "IsDown"] = true;
+                    window.focus();
                 });
 
                 this.OnUp.Bind(function (e) {
                     _this._isDown = false;
                     _this[e.Button + "IsDown"] = false;
+                    window.focus();
+                });
+
+                this.OnClick.Bind(function (e) {
+                    window.focus();
+                });
+
+                this.OnDoubleClick.Bind(function (e) {
+                    window.focus();
                 });
             }
             Object.defineProperty(MouseHandler.prototype, "LeftIsDown", {

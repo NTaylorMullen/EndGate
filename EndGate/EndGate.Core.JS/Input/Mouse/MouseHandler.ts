@@ -67,11 +67,21 @@ module EndGate.Input {
             this.OnDown.Bind((e: IMouseClickEvent) => {
                 this._isDown = true;
                 this[e.Button + "IsDown"] = true;
+                window.focus();
             });
 
             this.OnUp.Bind((e: IMouseClickEvent) => {
                 this._isDown = false;
                 this[e.Button + "IsDown"] = false;
+                window.focus();
+            });
+
+            this.OnClick.Bind((e: IMouseClickEvent) => {
+                window.focus();
+            });
+
+            this.OnDoubleClick.Bind((e: IMouseClickEvent) => {
+                window.focus();
             });
         }
 
