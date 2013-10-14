@@ -105,16 +105,24 @@ module EndGate.Graphics {
                 clipY = height;
 
                 this.Source = image;
+                this._imageLocation = image.src;
 
                 this._loaded = false;
 
-                this._loadWire = (e: Event) => {
-                    this._loaded = true;
-                    this._onLoaded.Trigger(this);
-                };                
+                if (this.Source.complete) {
+                    this._loadWire = (e: Event) => {
+                        this._loaded = true;
+                        this._onLoaded.Trigger(this);
+                    };
 
-                this._imageLocation = image.src;
-                this._size = new Size2d(image.width, image.height);
+                    this._size = new Size2d(image.width, image.height);
+                } else {
+                    this._loadWire = (e: Event) => {
+                        this._loaded = true;
+                        this._onLoaded.Trigger(this);
+                        this._size = new Size2d(image.width, image.height);
+                    };
+                }
 
                 this.ClipLocation = new Vector2d(clipX, clipY);
                 this.ClipSize = new Size2d(clipWidth, clipHeight);

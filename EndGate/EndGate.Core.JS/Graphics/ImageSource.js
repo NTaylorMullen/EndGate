@@ -53,16 +53,24 @@ var EndGate;
                     clipY = height;
 
                     this.Source = image;
+                    this._imageLocation = image.src;
 
                     this._loaded = false;
 
-                    this._loadWire = function (e) {
-                        _this._loaded = true;
-                        _this._onLoaded.Trigger(_this);
-                    };
+                    if (this.Source.complete) {
+                        this._loadWire = function (e) {
+                            _this._loaded = true;
+                            _this._onLoaded.Trigger(_this);
+                        };
 
-                    this._imageLocation = image.src;
-                    this._size = new EndGate.Size2d(image.width, image.height);
+                        this._size = new EndGate.Size2d(image.width, image.height);
+                    } else {
+                        this._loadWire = function (e) {
+                            _this._loaded = true;
+                            _this._onLoaded.Trigger(_this);
+                            _this._size = new EndGate.Size2d(image.width, image.height);
+                        };
+                    }
 
                     this.ClipLocation = new EndGate.Vector2d(clipX, clipY);
                     this.ClipSize = new EndGate.Size2d(clipWidth, clipHeight);
