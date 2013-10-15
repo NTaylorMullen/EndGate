@@ -195,7 +195,7 @@ var EndGate;
                 this._mouseUpWire = this.BuildEvent(this._onUp, this.BuildMouseClickEvent);
                 this._mouseMoveWire = this.BuildEvent(this._onMove, this.BuildMouseEvent);
 
-                if ((/MSIE/i.test(navigator.userAgent))) {
+                if ((/MSIE/i.test(navigator.userAgent)) || (/Trident/i.test(navigator.userAgent))) {
                     this._mouseWheelWireName = "wheel";
                     this._mouseWheelWire = this.BuildEvent(this._onScroll, function (e) {
                         e.wheelDeltaX = -e.deltaX;

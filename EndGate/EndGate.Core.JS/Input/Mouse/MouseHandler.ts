@@ -187,7 +187,7 @@ module EndGate.Input {
 
             // OnScroll, in order to detect horizontal scrolling need to hack a bit (browser sniffing)
             // if we were just doing vertical scrolling we could settle with the else statement in this block
-            if ((/MSIE/i.test(navigator.userAgent))) {
+            if ((/MSIE/i.test(navigator.userAgent)) || (/Trident/i.test(navigator.userAgent))) {
                 this._mouseWheelWireName = "wheel";
                 this._mouseWheelWire = this.BuildEvent<IMouseScrollEvent>(this._onScroll, (e: any) => {
                     e.wheelDeltaX = -e.deltaX;
