@@ -68,7 +68,7 @@
                 Now: new Date()
             };
 
-            QUnit.ok(imageSource.ClipSize.Equivalent(new eg.Size2d(200, 100)));
+            QUnit.ok(imageSource.ClipSize.Equivalent(new eg.Size2d(50, 50)));
 
             animation.Play();
 
