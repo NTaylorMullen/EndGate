@@ -2,7 +2,6 @@
 /// <reference path="../Interfaces/IMoveable.ts" />
 /// <reference path="../Interfaces/IDisposable.ts" />
 /// <reference path="../Interfaces/ICloneable.ts" />
-/// <reference path="../Rendering/IRenderable.ts" />
 /// <reference path="../Assets/Sizes/Size2d.ts" />
 /// <reference path="../Assets/Vectors/Vector2d.ts" />
 /// <reference path="../Bounds/Bounds2d.ts" />

@@ -484,26 +484,6 @@
     <Content Include="Rendering\Camera\Camera2d.js">
       <DependentUpon>Camera2d.ts</DependentUpon>
     </Content>
-    <CodeAnalysisDictionary Include="Rendering\Camera\Camera2dCanvasContextBuilder.ts" />
-    <Content Include="Rendering\Camera\Camera2dCanvasContextBuilder.js">
-      <DependentUpon>Camera2dCanvasContextBuilder.ts</DependentUpon>
-    </Content>
-    <CodeAnalysisDictionary Include="Rendering\Camera\Camera2dRenderer.ts" />
-    <Content Include="Rendering\Camera\Camera2dRenderer.js">
-      <DependentUpon>Camera2dRenderer.ts</DependentUpon>
-    </Content>
-    <CodeAnalysisDictionary Include="Rendering\Renderer2d.ts" />
-    <TypeScriptCompile Include="Rendering\IRenderable.ts" />
-    <Content Include="Rendering\IRenderable.js">
-      <DependentUpon>IRenderable.ts</DependentUpon>
-    </Content>
-    <TypeScriptCompile Include="Rendering\IRenderer.ts" />
-    <Content Include="Rendering\IRenderer.js">
-      <DependentUpon>IRenderer.ts</DependentUpon>
-    </Content>
-    <Content Include="Rendering\Renderer2d.js">
-      <DependentUpon>Renderer2d.ts</DependentUpon>
-    </Content>
     <CodeAnalysisDictionary Include="Rendering\Scene2d.ts" />
     <Content Include="Rendering\Scene2d.js">
       <DependentUpon>Scene2d.ts</DependentUpon>
@@ -549,6 +529,8 @@
   <ItemGroup />
   <Import Project="$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets')" />
   <Target Name="AfterBuild">
+  <Import Project="$(SolutionDir)\build\Microsoft.TypeScript.targets" Condition="Exists('$(SolutionDir)\build\Microsoft.TypeScript.targets')" />
+  <Target Name="BeforeBuild">
     <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass .\build.ps1" WorkingDirectory="$(ProjectDir)" Condition=" '$(OS)' == 'Windows_NT'" />
   </Target>
 </Project>
