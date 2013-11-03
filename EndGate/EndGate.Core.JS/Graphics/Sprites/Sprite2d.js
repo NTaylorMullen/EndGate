@@ -19,24 +19,26 @@ var EndGate;
             function Sprite2d(x, y, image, width, height) {
                 if (typeof width === "undefined") { width = image.ClipSize.Width; }
                 if (typeof height === "undefined") { height = image.ClipSize.Height; }
-                _super.call(this, new EndGate.Vector2d(x, y));
+                var _this = this;
+                _super.call(this, new PIXI.Sprite(image.Source), new EndGate.Vector2d(x, y));
                 this._type = "Sprite2d";
 
                 this.Image = image;
                 this.Size = new EndGate.Size2d(width, height);
+                this.PixiBase.anchor.x = this.PixiBase.anchor.y = .5;
+
+                this._MonitorProperty(this.PixiBase, "width", function () {
+                    return _this.Size.Width;
+                }, function (width) {
+                    _this.Size.Width = width;
+                });
+
+                this._MonitorProperty(this.PixiBase, "height", function () {
+                    _this.Size.Height = height;
+                }, function (height) {
+                    _this.Size.Height = height;
+                });
             }
-            /**
-            * Draws the sprite onto the given context.  If this sprite is part of a scene the Draw function will be called automatically.
-            * @param context The canvas context to draw the sprite onto.
-            */
-            Sprite2d.prototype.Draw = function (context) {
-                _super.prototype._StartDraw.call(this, context);
-
-                context.drawImage(this.Image.Source, this.Image.ClipLocation.X, this.Image.ClipLocation.Y, this.Image.ClipSize.Width, this.Image.ClipSize.Height, -this.Size.HalfWidth, -this.Size.HalfHeight, this.Size.Width, this.Size.Height);
-
-                _super.prototype._EndDraw.call(this, context);
-            };
-
             /**
             * The bounding area that represents where the Sprite2d will draw.
             */

@@ -20,7 +20,7 @@ var EndGate;
             function Grid(x, y, rows, columns, tileWidth, tileHeight, drawGridLines, gridLineColor) {
                 if (typeof drawGridLines === "undefined") { drawGridLines = false; }
                 if (typeof gridLineColor === "undefined") { gridLineColor = new EndGate.Graphics.Color("gray"); }
-                _super.call(this, new EndGate.Vector2d(x, y));
+                _super.call(this, new PIXI.DisplayObjectContainer(), new EndGate.Vector2d(x, y));
                 this._type = "Grid";
 
                 this._size = new EndGate.Size2d(tileWidth * columns, tileHeight * rows);
@@ -328,14 +328,12 @@ var EndGate;
             * @param context The canvas context to draw the grid onto.
             */
             Grid.prototype.Draw = function (context) {
-                _super.prototype._StartDraw.call(this, context);
-
+                //super._StartDraw(context);
                 context.save();
-                _super.prototype._EndDraw.call(this, context);
 
                 if (this.DrawGridLines) {
                     for (var i = 0; i < this._gridLines.length; i++) {
-                        this._gridLines[i].Draw(context);
+                        //this._gridLines[i].Draw(context);
                     }
                 }
                 context.restore();

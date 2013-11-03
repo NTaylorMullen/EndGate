@@ -141,7 +141,7 @@ module EndGate.Graphics {
         * @param context The canvas context to draw the SquareTileMap onto.
         */
         public Draw(context: CanvasRenderingContext2D): void {
-            super._StartDraw(context);
+            //super._StartDraw(context);
 
             if (!this._staticMap) {
                 this._grid.Draw(context);
@@ -150,7 +150,7 @@ module EndGate.Graphics {
                 context.drawImage(this._mapCache, -this._mapCache.width / 2, -this._mapCache.height / 2);
             }
 
-            super._EndDraw(context);
+            //super._EndDraw(context);
         }
 
         /**
@@ -204,7 +204,7 @@ module EndGate.Graphics {
 
         private CacheTile(tile: Assets.SquareTile): void {
             // Draw the tile onto the map cache
-            tile.Draw(this._mapCacheContext);
+            //tile.Draw(this._mapCacheContext);
         }
 
         private FillGridWith(mappings: number[][], onComplete: () => any): void {

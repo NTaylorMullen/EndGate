@@ -134,6 +134,7 @@ var EndGate;
 
         /**
         * Calculates the distance between the current vector and the provided one.
+        * @param vector The vector to calculate the distance to.
         */
         Vector2d.prototype.Distance = function (vector) {
             return new Vector2d(Math.abs(vector.X - this.X), Math.abs(vector.Y - this.Y));

@@ -13,9 +13,11 @@ module EndGate.Graphics {
         public _type: string = "Circle";
          
         /**
-        * Gets or sets the Radius of the Circle.
+        * Gets or sets the PIXIBase object that is used to render the Circle.
         */
-        public Radius: number;
+        public PixiBase: PIXI.Graphics;
+
+        private _radius: number;
 
         /**
         * Creates a new instance of the Circle object.
@@ -41,9 +43,20 @@ module EndGate.Graphics {
         */
         constructor(x: number, y: number, radius: number, color: string);
         constructor(x: number, y: number, radius: number, color?: any) {
-            super(new Vector2d(x, y), color);
+            super(new PIXI.Graphics(), new Vector2d(x, y), color);
 
             this.Radius = radius;
+        }
+
+        /**
+        * Gets or sets the Radius of the Circle.
+        */
+        public get Radius(): number {
+            return this._radius;
+        }
+        public set Radius(radius: number) {
+            this._radius = radius;
+            this._BuildGraphic();
         }
 
         /**
@@ -76,8 +89,12 @@ module EndGate.Graphics {
             return graphic;
         }
 
-        public _BuildPath(context: CanvasRenderingContext2D): void {           
-            context.arc(0, 0, this.Radius, 0, (<any>Math).twoPI);
-        }        
+        public _BuildGraphic(): void {
+            if (typeof this._radius !== "undefined") {
+                this._StartBuildGraphic();
+                this.PixiBase.drawCircle(0, 0, this.Radius);
+                this._EndBuildGraphic();
+            }
+        }
     }
 }

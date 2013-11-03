@@ -81,6 +81,8 @@
     <Content Include="Scripts\qunit.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Styles\qunit.css" />
+    <TypeScriptCompile Include="Scripts\typings\pixi\pixi.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\pixi\webgl.d.ts" />
     <TypeScriptCompile Include="Tests\Assets.ts" />
     <Content Include="Tests\Assets.js">
       <DependentUpon>Assets.ts</DependentUpon>

@@ -18,11 +18,56 @@ var EndGate;
         var Rectangle = (function (_super) {
             __extends(Rectangle, _super);
             function Rectangle(x, y, width, height, color) {
-                _super.call(this, new EndGate.Vector2d(x, y), color);
+                _super.call(this, new PIXI.Graphics(), new EndGate.Vector2d(x, y), color);
                 this._type = "Rectangle";
 
+                this._size = EndGate.Size2d.Zero;
                 this.Size = new EndGate.Size2d(width, height);
             }
+            Object.defineProperty(Rectangle.prototype, "Size", {
+                get: /**
+                * Gets or sets the Size of the Rectangle.
+                */
+                function () {
+                    return this._size;
+                },
+                set: function (size) {
+                    var _this = this;
+                    var previousWidth = this._size.Width, previousHeight = this._size.Height;
+
+                    // Delete the old size to remove any property bindings on the Size2d
+                    delete this._size.Width;
+                    delete this._size.Height;
+
+                    // Reset the size to its previous values (the monitor should not be applying now)
+                    this._size.Width = previousWidth;
+                    this._size.Height = previousHeight;
+
+                    this._size = size;
+                    this._proxyWidth = size.Width;
+                    this._proxyHeight = size.Height;
+
+                    // If our Size changes we need to update the underlying PIXI object to match
+                    this._MonitorProperty(size, "Width", function () {
+                        return _this._proxyWidth;
+                    }, function (width) {
+                        _this._proxyWidth = width;
+                        _this._BuildGraphic();
+                    });
+
+                    this._MonitorProperty(size, "Height", function () {
+                        return _this._proxyHeight;
+                    }, function (height) {
+                        _this._proxyHeight = height;
+                        _this._BuildGraphic();
+                    });
+
+                    this._BuildGraphic();
+                },
+                enumerable: true,
+                configurable: true
+            });
+
             /**
             * The bounding area that represents where the Rectangle will draw.
             */
@@ -54,8 +99,12 @@ var EndGate;
                 return graphic;
             };
 
-            Rectangle.prototype._BuildPath = function (context) {
-                context.rect(-this.Size.HalfWidth, -this.Size.HalfHeight, this.Size.Width, this.Size.Height);
+            Rectangle.prototype._BuildGraphic = function () {
+                if (this.Size) {
+                    this._StartBuildGraphic();
+                    this.PixiBase.drawRect(-this.Size.HalfWidth, -this.Size.HalfHeight, this.Size.Width, this.Size.Height);
+                    this._EndBuildGraphic();
+                }
             };
             return Rectangle;
         })(EndGate.Graphics.Shape);

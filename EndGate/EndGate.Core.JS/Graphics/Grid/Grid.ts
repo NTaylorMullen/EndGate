@@ -67,7 +67,7 @@ module EndGate.Graphics {
         */
         constructor(x: number, y: number, rows: number, columns: number, tileWidth: number, tileHeight: number, drawGridLines: boolean, gridLineColor: string);
         constructor(x: number, y: number, rows: number, columns: number, tileWidth: number, tileHeight: number, drawGridLines: boolean = false, gridLineColor: any = new Color("gray")) {
-            super(new Vector2d(x, y));
+            super(new PIXI.DisplayObjectContainer(), new Vector2d(x, y));
 
             this._size = new Size2d(tileWidth * columns, tileHeight * rows);
             this._tileSize = new Size2d(tileWidth, tileHeight);
@@ -420,14 +420,14 @@ module EndGate.Graphics {
         * @param context The canvas context to draw the grid onto.
         */
         public Draw(context: CanvasRenderingContext2D): void {
-            super._StartDraw(context);
+            //super._StartDraw(context);
 
             context.save();
-            super._EndDraw(context);
+            //super._EndDraw(context);
 
             if (this.DrawGridLines) {
                 for (var i = 0; i < this._gridLines.length; i++) {
-                    this._gridLines[i].Draw(context);
+                    //this._gridLines[i].Draw(context);
                 }
             }
             context.restore();

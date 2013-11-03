@@ -15,8 +15,14 @@ module EndGate.Graphics {
         * Gets or sets the Image that is drawn to the game screen.
         */
         public Image: ImageSource;
+
         /**
-        * Gets or sets the size of the Sprite2d.  If the Size is not equal to the image's ClipSize the Sprite2d will appear stretched.
+        * Gets or sets the PIXIBase object that is used to render the Sprite.
+        */
+        public PixiBase: PIXI.Sprite;
+
+        /**
+        * Gets or sets the Size of the Sprite2d.  If the Size is not equal to the image's ClipSize the Sprite2d will appear stretched.
         */
         public Size: Size2d;
 
@@ -37,22 +43,23 @@ module EndGate.Graphics {
         */
         constructor(x: number, y: number, image: ImageSource, width: number, height: number);
         constructor(x: number, y: number, image: ImageSource, width: number = image.ClipSize.Width, height: number = image.ClipSize.Height) {
-            super(new Vector2d(x, y));
+            super(new PIXI.Sprite(image.Source), new Vector2d(x, y));
 
             this.Image = image;
             this.Size = new Size2d(width, height);
-        }        
+            this.PixiBase.anchor.x = this.PixiBase.anchor.y = .5;
 
-        /**
-        * Draws the sprite onto the given context.  If this sprite is part of a scene the Draw function will be called automatically.
-        * @param context The canvas context to draw the sprite onto.
-        */
-        public Draw(context: CanvasRenderingContext2D): void {
-            super._StartDraw(context);
+            this._MonitorProperty(this.PixiBase, "width", () => {
+                return this.Size.Width;
+            }, (width: number) => {
+                    this.Size.Width = width;
+                });
 
-            context.drawImage(this.Image.Source, this.Image.ClipLocation.X, this.Image.ClipLocation.Y, this.Image.ClipSize.Width, this.Image.ClipSize.Height, - this.Size.HalfWidth, - this.Size.HalfHeight, this.Size.Width, this.Size.Height)
-
-            super._EndDraw(context);
+            this._MonitorProperty(this.PixiBase, "height", () => {
+                this.Size.Height = height;
+            }, (height: number) => {
+                    this.Size.Height = height;
+                });
         }
 
         /**

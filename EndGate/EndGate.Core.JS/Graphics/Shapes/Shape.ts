@@ -9,57 +9,56 @@ module EndGate.Graphics {
     */
     export class Shape extends Graphic2d {
         public _type: string = "Shape";
-        private _fillStyle: Color;
-        private _strokeStyle: Color;
-        private _shadowColor: Color;
-        private _fillChangeWire: (color: Color) => void;
-        private _strokeChangeWire: (color: Color) => void;
-        private _shadowChangeWire: (color: Color) => void;
+
+        /**
+        * Gets or sets the PIXIBase object that is used to render the Shape.
+        */
+        public PixiBase: PIXI.Graphics;
+
+        private _fillColor: Color;
+        private _strokeColor: Color;
+        private _borderThickness: number;
+        private _graphicChangedWire: (color?: Color) => void;
 
         /**
         * Should only ever be called by derived classes.
+        * @param pixiBase The underlying PIXI object to use for rendering.
         * @param position Initial Position of the current shape object.
         */
-        constructor(position: Vector2d);
+        constructor(pixiBase: PIXI.DisplayObjectContainer, position: Vector2d);
         /**
         * Should only ever be called by derived classes.
+        * @param pixiBase The underlying PIXI object to use for rendering.
         * @param position Initial Position of the current shape object.
         * @param color Initial Color of the current shape object.
         */
-        constructor(position: Vector2d, color: Color);
+        constructor(pixiBase: PIXI.DisplayObjectContainer, position: Vector2d, color: Color);
         /**
         * Should only ever be called by derived classes.
+        * @param pixiBase The underlying PIXI object to use for rendering.
         * @param position Initial Position of the current shape object.
         * @param color Initial string Color of the current shape object.
         */
-        constructor(position: Vector2d, color: string);
-        constructor(position: Vector2d, color?: any) {
-            super(position);
+        constructor(pixiBase: PIXI.DisplayObjectContainer, position: Vector2d, color: string);
+        constructor(pixiBase: PIXI.DisplayObjectContainer, position: Vector2d, color?: any) {
+            super(pixiBase, position);
 
-            this._fillChangeWire = (color: Color) => {
-                this._State.FillStyle = color.toString();
+            this._graphicChangedWire = () => {
+                this._BuildGraphic();
             };
 
-            this._strokeChangeWire = (color: Color) => {
-                this._State.StrokeStyle = color.toString();
-            };
-
-            this._shadowChangeWire = (color: Color) => {
-                this._State.ShadowColor = color.toString();
-            };
-
-            this.ShadowColor = this._shadowColor = Color.Black;
-            this.BorderColor = this._strokeStyle = Color.Black;
+            this.BorderColor = this._strokeColor = Color.Black;
+            this._borderThickness = 0;
 
             if (typeof color !== "undefined") {
                 if (typeof color === "string") {
                     color = new Color(color);
                 }
 
-                this.Color = this._fillStyle = color;
+                this.Color = this._fillColor = color;
             }
             else {
-                this.Color = this._fillStyle = Color.Black;
+                this.Color = this._fillColor = Color.Black;
             }
         }
 
@@ -67,7 +66,7 @@ module EndGate.Graphics {
         * Gets or sets the current shape color.  Valid colors are strings like "red" or "rgb(255,0,0)".
         */
         public get Color(): Color {
-            return this._fillStyle;
+            return this._fillColor;
         }
         public set Color(color) {
             if (typeof color === "string") {
@@ -75,29 +74,30 @@ module EndGate.Graphics {
             }
 
             // Unbind old
-            this._fillStyle.OnChange.Unbind(this._fillChangeWire);
-            this._fillStyle = color;
+            this._fillColor.OnChange.Unbind(this._graphicChangedWire);
+            this._fillColor = color;
             // Bind new
-            this._fillStyle.OnChange.Bind(this._fillChangeWire);
+            this._fillColor.OnChange.Bind(this._graphicChangedWire);
             // Update state
-            this._fillChangeWire(color);
+            this._graphicChangedWire();
         }
 
         /**
         * Gets or sets the current border thickness.
         */
         public get BorderThickness(): number {
-            return this._State.LineWidth;
+            return this._borderThickness;
         }
         public set BorderThickness(thickness: number) {
-            this._State.LineWidth = thickness;
+            this._borderThickness = thickness;
+            this._graphicChangedWire();
         }
 
         /**
         * Gets or sets the current border color.  Valid colors are strings like "red" or "rgb(255,0,0)".
         */
         public get BorderColor(): Color {
-            return this._strokeStyle;
+            return this._strokeColor;
         }
         public set BorderColor(color) {
             if (typeof color === "string") {
@@ -105,62 +105,12 @@ module EndGate.Graphics {
             }
 
             // Unbind old
-            this._strokeStyle.OnChange.Unbind(this._strokeChangeWire);
-            this._strokeStyle = color;
+            this._strokeColor.OnChange.Unbind(this._graphicChangedWire);
+            this._strokeColor = color;
             // Bind new
-            this._strokeStyle.OnChange.Bind(this._strokeChangeWire);
+            this._strokeColor.OnChange.Bind(this._graphicChangedWire);
             // Update state
-            this._strokeChangeWire(color);
-        }
-
-        /**
-        * Gets or sets the current shadow color.  Valid colors are strings like "red" or "rgb(255,0,0)".
-        */
-        public get ShadowColor(): Color {
-            return this._shadowColor;
-        }
-        public set ShadowColor(color) {
-            if (typeof color === "string") {
-                color = new Color(<any>color);
-            }
-
-            // Unbind old
-            this._shadowColor.OnChange.Unbind(this._shadowChangeWire);
-            this._shadowColor = color;
-            // Bind new
-            this._shadowColor.OnChange.Bind(this._shadowChangeWire);
-            // Update state
-            this._shadowChangeWire(color);
-        }
-
-        /**
-        * Gets or sets the current horizontal shadow position.
-        */
-        public get ShadowX(): number {
-            return this._State.ShadowOffsetX;
-        }
-        public set ShadowX(x: number) {
-            this._State.ShadowOffsetX = x;
-        }
-
-        /**
-        * Gets or sets the current vertical shadow position.
-        */
-        public get ShadowY(): number {
-            return this._State.ShadowOffsetY;
-        }
-        public set ShadowY(y: number) {
-            this._State.ShadowOffsetY = y;
-        }
-
-        /**
-        * Gets or sets the current shadow blur.
-        */
-        public get ShadowBlur(): number {
-            return this._State.ShadowBlur;
-        }
-        public set ShadowBlur(blur: number) {
-            this._State.ShadowBlur = blur;
+            this._graphicChangedWire();
         }
 
         /**
@@ -180,92 +130,38 @@ module EndGate.Graphics {
             this.BorderColor = color;
         }
 
-        /**
-        * Sets the current shadow x and y positions.
-        * @param x The shadows new horizontal position.
-        * @param y The shadows new vertical position.
-        */
-        public Shadow(x: number, y: number): void;
-        /**
-        * Sets the current shadow x and y positions and shadows color.
-        * @param x The shadows new horizontal position.
-        * @param y The shadows new vertical position.
-        * @param color The new shadow color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-        */
-        public Shadow(x: number, y: number, color: string): void;
-        /**
-        * Sets the current shadow x and y positions and shadows color.
-        * @param x The shadows new horizontal position.
-        * @param y The shadows new vertical position.
-        * @param color The new shadow color.
-        */
-        public Shadow(x: number, y: number, color: Color): void;
-        /**
-        * Sets the current shadow x and y positions and shadows color.
-        * @param x The shadows new horizontal position.
-        * @param y The shadows new vertical position.
-        * @param color The new shadow color.  Can be valid color strings, like "red" or "rgb(255,0,0)".
-        * @param blur The new shadow blur.
-        */
-        public Shadow(x: number, y: number, color: string, blur: number): void;
-        /**
-        * Sets the current shadow x and y positions and shadows color.
-        * @param x The shadows new horizontal position.
-        * @param y The shadows new vertical position.
-        * @param color The new shadow color.
-        * @param blur The new shadow blur.
-        */
-        public Shadow(x: number, y: number, color: Color, blur: number): void;
-        public Shadow(x: number, y: number, color?: any, blur?: number): void {
-            this.ShadowX = x;
-            this.ShadowY = y;
-            this.ShadowColor = color;
-            this.ShadowBlur = blur;
-        }
+        // Should be called before any shape logic builds graphics
+        public _StartBuildGraphic(): void {
+            this.PixiBase.clear();
 
-        public _StartDraw(context: CanvasRenderingContext2D): void {
-            super._StartDraw(context);
-            context.beginPath();
-        }
-
-        public _EndDraw(context: CanvasRenderingContext2D): void {
-            context.fill();
-
-            if (this._State.LineWidth > 0) {
-                context.stroke();
-            }
-            else {
-                context.closePath();
+            if (this._borderThickness > 0) {
+                this.PixiBase.lineStyle(this._borderThickness, this._strokeColor.toHexValue(), this._strokeColor.A);
             }
 
-            super._EndDraw(context);
+            this.PixiBase.beginFill(this._fillColor.toHexValue(), this._fillColor.A);
         }
 
-        // This should be overridden if you want to build a proper shape
-        public _BuildPath(context: CanvasRenderingContext2D): void {
+        // Should be overridden to control what's built;
+        public _BuildGraphic(): void {
+            this._StartBuildGraphic();
+            // Overridden graphic code should go here
+            this._EndBuildGraphic();
         }
 
-        /**
-        * Draws the shape onto the given context.  If this shape is part of a scene the Draw function will be called automatically.
-        * @param context The canvas context to draw the shape onto.
-        */
-        public Draw(context: CanvasRenderingContext2D): void { // You can override this Draw if you want to implement your own logic for applying styles and drawing (do not recommend overriding)
-            this._StartDraw(context);
-            this._BuildPath(context);
-            this._EndDraw(context);
+        // Should be called before any shape logic builds graphics
+        public _EndBuildGraphic(): void {
+            this.PixiBase.endFill();
         }
 
         public Dispose(): void {
             super.Dispose();
 
-            this._fillStyle.OnChange.Unbind(this._fillChangeWire);
-            this._strokeStyle.OnChange.Unbind(this._strokeChangeWire);
-            this._shadowColor.OnChange.Unbind(this._shadowChangeWire);
+            this._fillColor.OnChange.Unbind(this._graphicChangedWire);
+            this._strokeColor.OnChange.Unbind(this._graphicChangedWire);
         }
 
         public _Clone(graphic: Shape): void {
             graphic.Border(this.BorderThickness, this.BorderColor.Clone());
-            graphic.Shadow(this.ShadowX, this.ShadowY, this.ShadowColor.Clone(), this.ShadowBlur);
 
             super._Clone(graphic);
         }

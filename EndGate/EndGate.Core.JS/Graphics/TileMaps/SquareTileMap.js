@@ -103,15 +103,12 @@ var EndGate;
             * @param context The canvas context to draw the SquareTileMap onto.
             */
             SquareTileMap.prototype.Draw = function (context) {
-                _super.prototype._StartDraw.call(this, context);
-
                 if (!this._staticMap) {
                     this._grid.Draw(context);
                 } else {
                     context.drawImage(this._mapCache, -this._mapCache.width / 2, -this._mapCache.height / 2);
                 }
-
-                _super.prototype._EndDraw.call(this, context);
+                //super._EndDraw(context);
             };
 
             /**
@@ -164,7 +161,7 @@ var EndGate;
 
             SquareTileMap.prototype.CacheTile = function (tile) {
                 // Draw the tile onto the map cache
-                tile.Draw(this._mapCacheContext);
+                //tile.Draw(this._mapCacheContext);
             };
 
             SquareTileMap.prototype.FillGridWith = function (mappings, onComplete) {

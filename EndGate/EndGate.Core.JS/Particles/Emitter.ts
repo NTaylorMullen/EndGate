@@ -77,7 +77,7 @@ module EndGate.Particles {
         * @param emissionFunction The initial EmissionFunction to use for particle control.
         */
         constructor(x: number, y: number, emissionFunction: Tweening.Functions.ITweeningFunction) {
-            super(new Vector2d(x, y));
+            super(new PIXI.DisplayObjectContainer(), new Vector2d(x, y));
 
             this._texturePool = new Array<Graphics.Graphic2d>()
             this._particlePool = {};
@@ -190,15 +190,6 @@ module EndGate.Particles {
             }
 
             return particles;
-        }
-
-        /**
-        * Draws the Emitter onto the given context.  If this Emitter is part of a scene the Draw function will be called automatically.
-        * @param context The canvas context to draw the Emitter onto.
-        */
-        public Draw(context: CanvasRenderingContext2D): void {
-            super._StartDraw(context);
-            super._EndDraw(context);
         }
 
         /**

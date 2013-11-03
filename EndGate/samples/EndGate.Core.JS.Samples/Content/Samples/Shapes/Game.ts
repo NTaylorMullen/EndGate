@@ -49,7 +49,7 @@ module Shapes {
                 // Copy all of the previous shapes settings over to the new shape
                 newShape.Color = this.Shape.Color;
                 newShape.Border(this.Shape.BorderThickness, this.Shape.BorderColor);
-                newShape.Shadow(this.Shape.ShadowX, this.Shape.ShadowY, this.Shape.ShadowColor, this.Shape.ShadowBlur);
+                //newShape.Shadow(this.Shape.ShadowX, this.Shape.ShadowY, this.Shape.ShadowColor, this.Shape.ShadowBlur);
                 newShape.Opacity = this.Shape.Opacity;
                 newShape.Rotation = this.Shape.Rotation;
 

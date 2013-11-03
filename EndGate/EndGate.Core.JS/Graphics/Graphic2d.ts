@@ -6,65 +6,75 @@
 /// <reference path="../Assets/Vectors/Vector2d.ts" />
 /// <reference path="../Bounds/Bounds2d.ts" />
 /// <reference path="../Utilities/EventHandler1.ts" />
-/// <reference path="Graphic2dState.ts" />
+/// <reference path="../Scripts/typings/pixi/pixi.d.ts" />
 
 module EndGate.Graphics {
+
+    interface IRemovalBinding {
+        For: Graphic2d;
+        DisposedWire: (graphic: Graphic2d) => void;
+        ZIndexChangedWire: (zIndex: number) => void;
+    }
 
     /**
     * Abstract drawable graphic type that is used create the base for graphics.
     */
-    export class Graphic2d implements _.ITyped, Rendering.IRenderable, IMoveable, IDisposable, ICloneable {
+    export class Graphic2d implements _.ITyped, IMoveable, IDisposable, ICloneable {
         public _type: string = "Graphic2d";
-
-        /**
-        * Gets or sets the ZIndex of the Graphic2d.  The ZIndex is used to control draw order.  Higher ZIndexes appear above lower ZIndexed graphics.
-        */
-        public ZIndex: number;
-
-        /**
-        * Gets or sets the Visible property.  The Visible property determines whether the renderable will be drawn to the game screen.
-        */
-        public Visible: boolean;
-
-        /**
-        * Gets or sets the Position of the Graphic2d.  The Position determines where the graphic will be drawn on the screen.
-        */
-        public Position: Vector2d;
-        /**
-        * Gets or sets the Rotation of the Graphic2d..
-        */
-        public Rotation: number;
 
         /**
         * Gets the parent of the Graphic2d.  Value is null if no parent exists.
         */
         public Parent: Graphic2d;
 
-        public _State: Assets._.Graphic2dState;
+        /**
+        * Gets or sets the PIXIBase object that is used to render the Graphic2d.
+        */
+        public PixiBase: PIXI.DisplayObjectContainer;
+
+        /**
+        * Gets or sets the Position of the Graphic2d.  The Position determines where the graphic will be drawn on the screen.
+        */
+        public Position: Vector2d;
 
         public static _zindexSort: (a: Graphic2d, b: Graphic2d) => number = (a: Graphic2d, b: Graphic2d) => { return a.ZIndex - b.ZIndex; };
 
+        private _zIndex: number;
         private _children: Graphic2d[];
-        private _childrenRemovalBindings: Array<(graphic: Graphic2d) => void >;
+        private _childrenRemovalBindings: Array<IRemovalBinding>;
         private _onDisposed: EventHandler1<Graphic2d>;
+        private _onZIndexChange: EventHandler1<number>;
         private _disposed: boolean;
 
         /**
         * Creates a new instance of the Graphic2d object.  Should only ever be called by a derived class.
-        * @param position The initial position of the Graphic2d
+        * @param pixiBase The underlying PIXI object to use for rendering.
+        * @param position The initial position of the Graphic2d.
         */
-        constructor(position: Vector2d) {
+        constructor(pixiBase: PIXI.DisplayObjectContainer, position: Vector2d) {
+            this.PixiBase = pixiBase;
             this.Position = position;
             this.Rotation = 0;
-            this.ZIndex = 0;
-            this.Visible = true;
-            this._State = new Assets._.Graphic2dState();
             this.Opacity = 1;
+            this._zIndex = 0;
             this._children = [];
             this._childrenRemovalBindings = [];
             this.Parent = null;
             this._disposed = false;
             this._onDisposed = new EventHandler1<Graphic2d>();
+            this._onZIndexChange = new EventHandler1<number>();
+
+            this._MonitorProperty(this.PixiBase.position, "x", () => {
+                return this.Position.X;
+            }, (newX: number) => {
+                    this.Position.X = newX;
+                });
+
+            this._MonitorProperty(this.PixiBase.position, "y", () => {
+                return this.Position.Y;
+            }, (newY: number) => {
+                    this.Position.Y = newY;
+                });
         }
 
         /**
@@ -83,6 +93,37 @@ module EndGate.Graphics {
         }
 
         /**
+        * Gets or sets the Visible property.  The Visible property determines whether the Graphic2d will be drawn to the game screen.
+        */
+        public get Visible(): boolean {
+            return this.PixiBase.visible;
+        }
+        public set Visible(visible: boolean) {
+            this.PixiBase.visible = visible;
+        }
+
+        /**
+        * Gets or sets the Visible property.  The Visible property determines whether the Graphic2d will be drawn to the game screen.
+        */
+        public get ZIndex(): number {
+            return this._zIndex;
+        }
+        public set ZIndex(zIndex: number) {
+            this._zIndex = zIndex;
+            this.OnZIndexChange.Trigger(zIndex);
+        }
+
+        /**
+        * Gets or sets the Rotation of the Graphic2d.
+        */
+        public get Rotation(): number {
+            return this.PixiBase.rotation;
+        }
+        public set Rotation(rotation: number) {
+            this.PixiBase.rotation = rotation;
+        }
+
+        /**
         * Gets an event that is triggered when the Graphic2d has been disposed.  Functions can be bound or unbound to this event to be executed when the event triggers.
         */
         public get OnDisposed(): EventHandler1<Graphic2d> {
@@ -90,13 +131,20 @@ module EndGate.Graphics {
         }
 
         /**
+        * Gets an event that is triggered when the Graphic2d's ZIndex changes.  Functions can be bound or unbound to this event to be executed when the event triggers.
+        */
+        public get OnZIndexChange(): EventHandler1<number> {
+            return this._onZIndexChange;
+        }
+
+        /**
         * Gets or sets the current opacity.  Value is between 0 and 1.
         */
         public get Opacity(): number {
-            return this._State.GlobalAlpha;
+            return this.PixiBase.alpha;
         }
         public set Opacity(alpha: number) {
-            this._State.GlobalAlpha = alpha;
+            this.PixiBase.alpha = alpha;
         }
 
         /**
@@ -112,22 +160,34 @@ module EndGate.Graphics {
         * @param graphic Child to add.
         */
         public AddChild(graphic: Graphic2d): void {
-            var removalBinding: (graphic: Graphic2d) => void;
+            var removalBinding: IRemovalBinding;
 
             if (graphic.Parent !== null) {
                 throw new Error("Graphic already has parent, cannot add it as a child.");
             }
 
-            removalBinding = (graphic: Graphic2d) => {
-                this.RemoveChild(graphic);
+            removalBinding = {
+                For: graphic,
+                DisposedWire: (graphic: Graphic2d) => {
+                    this.RemoveChild(graphic);
+                },
+                ZIndexChangedWire: (zIndex: number) => {
+                    this._children.sort(Graphic2d._zindexSort);
+
+                    this.PixiBase.removeChild(graphic.PixiBase);
+                    this.PixiBase.addChildAt(graphic.PixiBase, this._children.indexOf(graphic));
+                }
             };
 
             graphic.Parent = this;
-            graphic.OnDisposed.Bind(removalBinding);
+            graphic.OnDisposed.Bind(removalBinding.DisposedWire);
+            graphic.OnZIndexChange.Bind(removalBinding.ZIndexChangedWire);
 
             this._children.push(graphic);
             this._childrenRemovalBindings.push(removalBinding);
             this._children.sort(Graphic2d._zindexSort);
+
+            this.PixiBase.addChildAt(graphic.PixiBase, this._children.indexOf(graphic));
         }
 
         /**
@@ -135,46 +195,27 @@ module EndGate.Graphics {
         * @param graphic Child to remove.
         */
         public RemoveChild(graphic: Graphic2d): boolean {
-            var index = this._children.indexOf(graphic);
+            var index = this._children.indexOf(graphic),
+                removalBinding: IRemovalBinding;
+
+            for (var i = 0; i < this._childrenRemovalBindings.length; i++) {
+                if (this._childrenRemovalBindings[i].For === graphic) {
+                    removalBinding = this._childrenRemovalBindings[i];
+                    this._childrenRemovalBindings.splice(i, 1);
+                    break;
+                }
+            }
 
             if (index >= 0) {
+                this.PixiBase.removeChild(graphic.PixiBase);
                 this._children[index].Parent = null;
-                this._children[index].OnDisposed.Unbind(this._childrenRemovalBindings[index]);
+                this._children[index].OnDisposed.Unbind(removalBinding.DisposedWire);
+                this._children[index].OnZIndexChange.Unbind(removalBinding.ZIndexChangedWire);
                 this._children.splice(index, 1);
-                this._childrenRemovalBindings.splice(index, 1);
                 return true;
             }
 
             return false;
-        }
-
-        public _StartDraw(context: CanvasRenderingContext2D): void {
-            context.save();
-            this._State.SetContextState(context);
-
-            context.translate(this.Position.X, this.Position.Y);
-
-            if (this.Rotation !== 0) {
-                context.rotate(this.Rotation);
-            }
-        }
-
-        public _EndDraw(context: CanvasRenderingContext2D): void {
-            for (var i = 0; i < this._children.length; i++) {
-                if (this._children[i].Visible) {
-                    this._children[i].Draw(context);
-                }
-            }
-
-            context.restore();
-        }
-
-        /**
-        * Abstract: Should be overridden to draw the derived class onto the context.  If this graphic is part of a scene the Draw function will be called automatically.
-        * @param context The canvas context to draw the graphic onto.
-        */
-        public Draw(context: CanvasRenderingContext2D): void {
-            throw new Error("The Draw method is abstract on Graphic2d and should not be called.");
         }
 
         /**
@@ -188,7 +229,7 @@ module EndGate.Graphics {
         * Abstract: Should be overridden to scale the size of the Graphic2d.
         * @param scale The value to multiply the graphic's size by.
         */
-        public Scale(scale: number): void{
+        public Scale(scale: number): void {
             throw new Error("Scale is abstract, it must be implemented.");
         }
 
@@ -201,7 +242,7 @@ module EndGate.Graphics {
 
         // Used by derived Graphic2d's to centralize logic
         public _Clone(graphic: Graphic2d): void {
-            for (var i = 0; i < this._children.length; i++){
+            for (var i = 0; i < this._children.length; i++) {
                 graphic.AddChild(this._children[i].Clone());
             }
 
@@ -228,12 +269,26 @@ module EndGate.Graphics {
                 }
 
                 this._children = null;
+
+                // Set the position to be a new Vector2d so it unbinds all monitors to the existing position object
+                this.Position = null;
+                this._childrenRemovalBindings = null;
+                this.OnZIndexChange.Dispose();
                 this.OnDisposed.Trigger(this);
                 this.OnDisposed.Dispose();
             }
             else {
                 throw new Error("Cannot dispose graphic more than once.");
             }
+        }
+
+        public _MonitorProperty(obj: any, property: string, getFn: () => any, setFn: (value: any) => void): void {
+            Object.defineProperty(obj, property, {
+                get: getFn,
+                set: setFn,
+                enumerable: true,
+                configurable: true
+            });
         }
     }
 

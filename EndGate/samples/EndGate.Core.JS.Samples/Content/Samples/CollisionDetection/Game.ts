@@ -56,7 +56,7 @@ module CollisionDetection {
         // Helper function to add shapes to all the necessary monitors
         private AddShape(shape: MovingShape): void {
             // Monitor the moving shapes so that the MovingShape Collided functions get triggered on collisions
-            this.CollisionManager.Monitor(shape);
+            //this.CollisionManager.Monitor(shape);
 
             // Add the MovingShape to the list of shapes we're monitoring (so we can update it) and then move the shape throughout the play area.
             this._shapes.push(shape);

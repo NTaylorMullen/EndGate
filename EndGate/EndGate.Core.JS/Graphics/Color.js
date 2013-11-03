@@ -12,6 +12,7 @@ var EndGate;
             function Color(r, g, b, a) {
                 this._type = "Color";
                 this._cached = undefined;
+                this._hexCached = undefined;
                 this._onChange = new EndGate.EventHandler1();
 
                 if (typeof (r) === 'string' && r.length > 0) {
@@ -43,7 +44,7 @@ var EndGate;
                     return this._r;
                 },
                 set: function (r) {
-                    this._cached = undefined;
+                    this._cached = this._hexCached = undefined;
                     this._r = Math.round(Math.min(Math.max(r, 0), 255));
                     this._onChange.Trigger(this);
                 },
@@ -59,7 +60,7 @@ var EndGate;
                     return this._g;
                 },
                 set: function (g) {
-                    this._cached = undefined;
+                    this._cached = this._hexCached = undefined;
                     this._g = Math.round(Math.min(Math.max(g, 0), 255));
                     this._onChange.Trigger(this);
                 },
@@ -75,7 +76,7 @@ var EndGate;
                     return this._b;
                 },
                 set: function (b) {
-                    this._cached = undefined;
+                    this._cached = this._hexCached = undefined;
                     this._b = Math.round(Math.min(Math.max(b, 0), 255));
                     this._onChange.Trigger(this);
                 },
@@ -1853,6 +1854,30 @@ var EndGate;
                     this._cached = 'rgba(' + this.R + ',' + this.G + ',' + this.B + ',' + this.A + ')';
                 }
                 return this._cached;
+            };
+
+            /**
+            * Returns the Color in the "#rrggbb" format.
+            */
+            Color.prototype.toHexString = function () {
+                if (this._hexCached === undefined) {
+                    this._hexCached = "#" + this.ComponentToHex(this.R) + this.ComponentToHex(this.G) + this.ComponentToHex(this.B);
+                }
+
+                return this._hexCached;
+            };
+
+            /**
+            * Returns the Color in the hexadecimal numeric format.
+            */
+            Color.prototype.toHexValue = function () {
+                return parseInt(this.toHexString().substring(1), 16);
+            };
+
+            Color.prototype.ComponentToHex = function (value) {
+                var hex = value.toString(16);
+
+                return hex.length === 1 ? "0" + hex : hex;
             };
             Color.RgbaHexRegExp = /^([a-f\d])([a-f\d])([a-f\d])([a-f\d])$/i;
 

@@ -167,6 +167,7 @@ module EndGate.Graphics {
         };
         
         private _cached: string = undefined;
+        private _hexCached: string = undefined;
         private _r: number;
         private _g: number;
         private _b: number;
@@ -225,7 +226,7 @@ module EndGate.Graphics {
             return this._r;
         }
         public set R(r: number) {
-            this._cached = undefined;
+            this._cached = this._hexCached = undefined;
             this._r = Math.round(Math.min(Math.max(r, 0), 255));
             this._onChange.Trigger(this);
         }
@@ -237,7 +238,7 @@ module EndGate.Graphics {
             return this._g;
         }
         public set G(g: number) {
-            this._cached = undefined;
+            this._cached = this._hexCached = undefined;
             this._g = Math.round(Math.min(Math.max(g, 0), 255));
             this._onChange.Trigger(this);
         }
@@ -249,7 +250,7 @@ module EndGate.Graphics {
             return this._b;
         }
         public set B(b: number) {
-            this._cached = undefined;
+            this._cached = this._hexCached = undefined;
             this._b = Math.round(Math.min(Math.max(b, 0), 255));
             this._onChange.Trigger(this);
         }
@@ -1457,6 +1458,30 @@ module EndGate.Graphics {
                 this._cached = 'rgba(' + this.R + ',' + this.G + ',' + this.B + ',' + this.A + ')';
             }
             return this._cached;
+        }
+
+        /**
+        * Returns the Color in the "#rrggbb" format.
+        */
+        public toHexString(): string {
+            if (this._hexCached === undefined) {
+                this._hexCached = "#" + this.ComponentToHex(this.R) + this.ComponentToHex(this.G) + this.ComponentToHex(this.B);
+            }
+
+            return this._hexCached;
+        }
+
+        /**
+        * Returns the Color in the hexadecimal numeric format.
+        */
+        public toHexValue(): number {
+            return parseInt(this.toHexString().substring(1), 16);
+        }
+
+        private ComponentToHex(value: number): string {
+            var hex = value.toString(16);
+
+            return hex.length === 1 ? "0" + hex : hex;
         }
    }
 }

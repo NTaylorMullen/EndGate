@@ -17,7 +17,7 @@ module EndGate.Graphics {
         * @param resources A one dimensional array of image resources that make up the tile map (this cannot change after construction).
         */
         constructor(x: number, y: number, resources: Graphics.ImageSource[]) {
-            super(new Vector2d(x, y));
+            super(new PIXI.DisplayObjectContainer(), new Vector2d(x, y));
 
             this._Resources = resources;
         }

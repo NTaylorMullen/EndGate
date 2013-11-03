@@ -33,7 +33,7 @@ module EndGate {
         constructor(x?: number, y?: number) {
             this.X = x || 0;
             this.Y = y || 0;
-        }
+        }        
 
         /**
         * Returns a Vector2d with all its components set to zero.
@@ -164,6 +164,7 @@ module EndGate {
 
         /**
         * Calculates the distance between the current vector and the provided one.
+        * @param vector The vector to calculate the distance to.
         */
         public Distance(vector: Vector2d): Vector2d {
             return new Vector2d(Math.abs(vector.X - this.X), Math.abs(vector.Y - this.Y));
@@ -284,7 +285,7 @@ module EndGate {
         public Divide(val: Vector2d): Vector2d;
         /**
         * Returns a Vector2d that is the result of dividing the X and Y of this Vector2d by the Width and Height of the provided Size2d.
-        * @param val The Vector2d to divide.
+        * @param val The Size2d to divide.
         */
         public Divide(val: Size2d): Vector2d;
         /**

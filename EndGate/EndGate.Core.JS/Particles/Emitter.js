@@ -29,7 +29,7 @@ var EndGate;
             */
             function Emitter(x, y, emissionFunction) {
                 var _this = this;
-                _super.call(this, new EndGate.Vector2d(x, y));
+                _super.call(this, new PIXI.DisplayObjectContainer(), new EndGate.Vector2d(x, y));
                 /**
                 * Gets or sets the EmissionInterval.  The EmissionInterval is used to control how often particles are emitted.
                 */
@@ -157,15 +157,6 @@ var EndGate;
                 }
 
                 return particles;
-            };
-
-            /**
-            * Draws the Emitter onto the given context.  If this Emitter is part of a scene the Draw function will be called automatically.
-            * @param context The canvas context to draw the Emitter onto.
-            */
-            Emitter.prototype.Draw = function (context) {
-                _super.prototype._StartDraw.call(this, context);
-                _super.prototype._EndDraw.call(this, context);
             };
 
             /**

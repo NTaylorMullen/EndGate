@@ -22,7 +22,7 @@ var EndGate;
             * @param resources A one dimensional array of image resources that make up the tile map (this cannot change after construction).
             */
             function TileMap(x, y, resources) {
-                _super.call(this, new EndGate.Vector2d(x, y));
+                _super.call(this, new PIXI.DisplayObjectContainer(), new EndGate.Vector2d(x, y));
 
                 this._Resources = resources;
             }

@@ -17,6 +17,7 @@ namespace EndGate.Core.JS.Samples.App_Start
 
             bundles.Add(new ScriptBundle("~/bundles/mainjs")
                         .Include("~/Bootstrap/bootstrap.js")
+                        .Include("~/Scripts/pixi-1.3.0.js")
                         .Include("~/Scripts/endgate.js"));
 
             bundles.Add(new StyleBundle("~/bundles/codemirrorcss")

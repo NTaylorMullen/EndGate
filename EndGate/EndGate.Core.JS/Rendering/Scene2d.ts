@@ -4,6 +4,7 @@
 /// <reference path="../Graphics/Graphic2d.ts" />
 /// <reference path="../Assets/Sizes/Size2d.ts" />
 /// <reference path="../Assets/Vectors/Vector2d.ts" />
+/// <reference path="../Scripts/typings/pixi/pixi.d.ts" />
 /// <reference path="Camera/Camera2d.ts" />
 
 module EndGate.Rendering {
@@ -17,10 +18,9 @@ module EndGate.Rendering {
     * Defines a scene object that is used to maintain a list of renderable objects that are rendered onto a joint game area.
     */
     export class Scene2d implements IDisposable {
-        private _actors: Graphics.Graphic2d[];
         private _actorMappings: IActorMapping[];
-        private _renderer: _.IRenderer;
-        private _onDraw: (context: CanvasRenderingContext2D) => void;
+        private _renderer: PIXI.IPixiRenderer;
+        private _stage: PIXI.Stage;
         private _disposed: boolean;
         private _camera: Camera2d;
         private _drawArea: HTMLCanvasElement;
@@ -30,29 +30,22 @@ module EndGate.Rendering {
         */
         constructor();
         /**
-        * Creates a new instance of the Scene2d object.  The game canvas is created and appended to the HTML body to fill the screen.
-        * @param onDraw Callback to execute whenever the Scene's draw is triggered.
-        */
-        constructor(onDraw: (context: CanvasRenderingContext2D) => void );
-        /**
         * Creates a new instance of the Scene2d object.
         * @param onDraw Callback to execute whenever the Scene's draw is triggered.
         * @param drawArea The game canvas to draw onto.
         */
-        constructor(onDraw: (context: CanvasRenderingContext2D) => void , drawArea: HTMLCanvasElement);
-        constructor(onDraw: (context: CanvasRenderingContext2D) => void = _ => { }, drawArea?: HTMLCanvasElement) {
+        constructor(drawArea: HTMLCanvasElement);
+        constructor(drawArea?: HTMLCanvasElement) {
             this._actorMappings = [];
-            this._actors = [];
 
             if (typeof drawArea === "undefined") {
                 drawArea = this.CreateDefaultDrawArea();
             }
 
-            this._onDraw = onDraw;
-
             this._drawArea = drawArea;
+            this._stage = new PIXI.Stage(0x000000);
             this._camera = new Camera2d(new Vector2d(this._drawArea.width / 2, this._drawArea.height / 2), new Size2d(this._drawArea.width, this._drawArea.height));
-            this._renderer = new Camera2dRenderer(this._drawArea, this._camera);
+            this._renderer = PIXI.autoDetectRenderer(drawArea.width, drawArea.height, drawArea, true);
             this._disposed = false;
         }
 
@@ -85,7 +78,7 @@ module EndGate.Rendering {
             actor.OnDisposed.Bind(mapping.Remove);
 
             this._actorMappings.push(mapping);
-            this._actors.push(actor);
+            this._stage.addChild(actor.PixiBase);
         }
 
         /**
@@ -93,11 +86,11 @@ module EndGate.Rendering {
         * @param actor The graphic to remove from the scene.
         */
         public Remove(actor: Graphics.Graphic2d): void {
-            for (var i = 0; i < this._actors.length; i++) {
-                if (this._actors[i] === actor) {
-                    this._actors[i].OnDisposed.Unbind(this._actorMappings[i].Remove);
-                    this._actors.splice(i, 1);
+            for (var i = 0; i < this._actorMappings.length; i++) {
+                if (this._actorMappings[i].Actor === actor) {
+                    this._actorMappings[i].Actor.OnDisposed.Unbind(this._actorMappings[i].Remove);                    
                     this._actorMappings.splice(i, 1);
+                    this._stage.removeChild(actor.PixiBase);
                     return;
                 }
             }
@@ -107,7 +100,7 @@ module EndGate.Rendering {
         * Draws all actors within the Scene and triggers the Scene2d's onDraw callback.
         */
         public Draw(): void {
-            this._onDraw(this._renderer.Render(this._actors));
+            this._renderer.render(this._stage);
         }
 
         /**
@@ -117,13 +110,12 @@ module EndGate.Rendering {
             if (!this._disposed) {
                 this._disposed = true;
                 
-                for (var i = 0; i < this._actors.length; i++) {
-                    this.Remove(this._actors[i]);
+                for (var i = 0; i < this._actorMappings.length; i++) {
+                    this.Remove(this._actorMappings[i].Actor);
                 }
 
-                this._actors = [];
-                this._actorMappings = [];
-                this._renderer.Dispose();
+                this._actorMappings = null;
+                this._renderer = null;
             }
             else {
                 throw new Error("Scene2d cannot be disposed more than once");

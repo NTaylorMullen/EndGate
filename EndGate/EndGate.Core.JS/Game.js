@@ -1,7 +1,6 @@
 /// <reference path="Interfaces/IDisposable.ts" />
 /// <reference path="Interfaces/ITyped.ts" />
 /// <reference path="Interfaces/IUpdateable.ts" />
-/// <reference path="Rendering/IRenderable.ts" />
 /// <reference path="GameRunner.ts" />
 /// <reference path="GameConfiguration.ts" />
 /// <reference path="Collision/CollisionManager.ts" />
@@ -23,9 +22,7 @@ var EndGate;
             this._gameTime = new EndGate.GameTime();
             this._ID = Game._gameIds++;
 
-            this.Scene = new EndGate.Rendering.Scene2d(function (context) {
-                _this.Draw(context);
-            }, gameCanvas);
+            this.Scene = new EndGate.Rendering.Scene2d(gameCanvas);
 
             this.Input = new EndGate.Input.InputManager(this.Scene.DrawArea);
             this.Content = new EndGate.Content.ContentManager();
@@ -77,12 +74,14 @@ var EndGate;
 
             this.Scene.Draw();
             this._updateRequired = true;
+
+            this.Draw();
         };
 
         /**
         * Triggered as fast as possible.  Determined by the current browsers repaint rate.
         */
-        Game.prototype.Draw = function (context) {
+        Game.prototype.Draw = function () {
             // This is called by the scene
         };
 

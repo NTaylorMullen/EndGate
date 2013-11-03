@@ -21,19 +21,18 @@ module EndGate.Graphics {
         /**
         * Gets the base image source.  Should not be modified once the ImageSource has been constructed
         */
-        public Source: HTMLImageElement;
+        public Source: PIXI.Texture;
 
         private _size: Size2d;
         private _loaded: boolean;
-        private _imageLocation;
         private _onLoaded: EventHandler1<ImageSource>;
-        private _loadWire: (e: Event) => void;
+        private _loadWire: (e: PIXI.IEvent) => void;
 
         /**
         * Creates a new instance of the ImageSource object with a pre-loaded image object.
         * @param image Image object to use as the source.
         */
-        constructor(image: HTMLImageElement);
+        constructor(image: PIXI.BaseTexture);
         /**
         * Creates a new instance of the ImageSource object.
         * @param imageLocation Image source url (this cannot change after construction). 
@@ -54,7 +53,7 @@ module EndGate.Graphics {
         * @param clipWidth The width of the clip.  Ultimately this width is the width that is drawn to the screen.
         * @param clipHeight The height of the clip.  Ultimately this height is the height that is drawn to the screen.
         */
-        constructor(image: HTMLImageElement, clipX: number, clipY: number, clipWidth: number, clipHeight: number);
+        constructor(image: PIXI.BaseTexture, clipX: number, clipY: number, clipWidth: number, clipHeight: number);
         /**
         * Creates a new instance of the ImageSource object with a specified width and height and a clip location.  If width and height are smaller than the actual width and height of the image source the image will be stretched
         * @param imageLocation Image source url (this cannot change after construction).
@@ -74,21 +73,19 @@ module EndGate.Graphics {
             if (typeof image === "string") {
                 imageLocation = image;
                 this._loaded = false;
-                this.Source = new Image();
-                this._loadWire = (e: Event) => {
+                this.Source = PIXI.Texture.fromImage(imageLocation);
+
+                this._loadWire = (e: PIXI.IEvent) => {
                     this._loaded = true;
 
                     if (!sizeDefined) {
-                        this._size = new Size2d(this.Source.width, this.Source.height);
+                        this._size = new Size2d(this.Source.baseTexture.width, this.Source.baseTexture.height);
                         this.ClipLocation = Vector2d.Zero;
                         this.ClipSize = this._size.Clone();
                     }
 
                     this._onLoaded.Trigger(this);
                 };
-
-                this.Source.src = imageLocation;
-                this._imageLocation = imageLocation;
 
                 if (sizeDefined) {
                     this._size = new Size2d(width, height);
@@ -104,20 +101,19 @@ module EndGate.Graphics {
                 clipX = width;
                 clipY = height;
 
-                this.Source = image;
-                this._imageLocation = image.src;
+                this.Source = new PIXI.Texture(image, new PIXI.Rectangle(clipX, clipY, clipWidth, clipHeight));
 
                 this._loaded = false;
 
-                if (this.Source.complete) {
-                    this._loadWire = (e: Event) => {
+                if ((<any>this.Source.baseTexture.source).complete) {
+                    this._loadWire = (e: PIXI.IEvent) => {
                         this._loaded = true;
                         this._onLoaded.Trigger(this);
                     };
 
                     this._size = new Size2d(image.width, image.height);
                 } else {
-                    this._loadWire = (e: Event) => {
+                    this._loadWire = (e: PIXI.IEvent) => {
                         this._loaded = true;
                         this._onLoaded.Trigger(this);
                         this._size = new Size2d(image.width, image.height);
@@ -128,8 +124,8 @@ module EndGate.Graphics {
                 this.ClipSize = new Size2d(clipWidth, clipHeight);
             }
 
-            if (!this.Source.complete) {
-                this.Source.addEventListener("load", this._loadWire, false);
+            if (!(<any>this.Source.baseTexture.source).complete) {
+                this.Source.baseTexture.addEventListener("update", this._loadWire);
             } else {
                 setTimeout(this._loadWire, 0);
             }
@@ -164,7 +160,7 @@ module EndGate.Graphics {
         * @param clipHeight The height of the clip.
         */
         public Extract(clipX: number, clipY: number, clipWidth: number, clipHeight: number): ImageSource {
-            return new ImageSource(this._imageLocation, this._size.Width, this._size.Height, clipX, clipY, clipWidth, clipHeight);
+            return new ImageSource(this.Source.baseTexture, clipX, clipY, clipWidth, clipHeight);
         }
 
         /**
@@ -181,9 +177,9 @@ module EndGate.Graphics {
         */
         public Clone(): ImageSource {
             if (this.ClipSize) {
-                return new ImageSource(this.Source, this.ClipLocation.X, this.ClipLocation.Y, this.ClipSize.Width, this.ClipSize.Height);
+                return new ImageSource(this.Source.baseTexture, this.ClipLocation.X, this.ClipLocation.Y, this.ClipSize.Width, this.ClipSize.Height);
             } else {
-                return new ImageSource(this.Source);
+                return new ImageSource(this.Source.baseTexture);
             }
         }
     }

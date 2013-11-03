@@ -1,8 +1,3 @@
-/// <reference path="../../Assets/Sizes/Size2d.ts" />
-/// <reference path="../../Assets/Vectors/Vector2d.ts" />
-/// <reference path="../../Bounds/BoundingCircle.ts" />
-/// <reference path="../Color.ts" />
-/// <reference path="Shape.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -11,6 +6,11 @@ var __extends = this.__extends || function (d, b) {
 };
 var EndGate;
 (function (EndGate) {
+    /// <reference path="../../Assets/Sizes/Size2d.ts" />
+    /// <reference path="../../Assets/Vectors/Vector2d.ts" />
+    /// <reference path="../../Bounds/BoundingCircle.ts" />
+    /// <reference path="../Color.ts" />
+    /// <reference path="Shape.ts" />
     (function (Graphics) {
         /**
         * Defines a drawable circle.
@@ -18,11 +18,26 @@ var EndGate;
         var Circle = (function (_super) {
             __extends(Circle, _super);
             function Circle(x, y, radius, color) {
-                _super.call(this, new EndGate.Vector2d(x, y), color);
+                _super.call(this, new PIXI.Graphics(), new EndGate.Vector2d(x, y), color);
                 this._type = "Circle";
 
                 this.Radius = radius;
             }
+            Object.defineProperty(Circle.prototype, "Radius", {
+                get: /**
+                * Gets or sets the Radius of the Circle.
+                */
+                function () {
+                    return this._radius;
+                },
+                set: function (radius) {
+                    this._radius = radius;
+                    this._BuildGraphic();
+                },
+                enumerable: true,
+                configurable: true
+            });
+
             /**
             * The bounding area that represents where the Circle will draw.
             */
@@ -53,11 +68,15 @@ var EndGate;
                 return graphic;
             };
 
-            Circle.prototype._BuildPath = function (context) {
-                context.arc(0, 0, this.Radius, 0, Math.twoPI);
+            Circle.prototype._BuildGraphic = function () {
+                if (typeof this._radius !== "undefined") {
+                    this._StartBuildGraphic();
+                    this.PixiBase.drawCircle(0, 0, this.Radius);
+                    this._EndBuildGraphic();
+                }
             };
             return Circle;
-        })(EndGate.Graphics.Shape);
+        })(Graphics.Shape);
         Graphics.Circle = Circle;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
     var Graphics = EndGate.Graphics;

@@ -33,7 +33,7 @@ var DrawTester = (function (_super) {
         this._onDrawLimit = onDrawLimit;
         this._drawLimit = drawLimit;
     }
-    DrawTester.prototype.Draw = function (context) {
+    DrawTester.prototype.Draw = function () {
         this.DrawCount++;
         if (this.DrawCount === this._drawLimit) {
             this._onDrawLimit();

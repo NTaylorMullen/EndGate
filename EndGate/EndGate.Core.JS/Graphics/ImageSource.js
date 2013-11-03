@@ -23,21 +23,19 @@ var EndGate;
                 if (typeof image === "string") {
                     imageLocation = image;
                     this._loaded = false;
-                    this.Source = new Image();
+                    this.Source = PIXI.Texture.fromImage(imageLocation);
+
                     this._loadWire = function (e) {
                         _this._loaded = true;
 
                         if (!sizeDefined) {
-                            _this._size = new EndGate.Size2d(_this.Source.width, _this.Source.height);
+                            _this._size = new EndGate.Size2d(_this.Source.baseTexture.width, _this.Source.baseTexture.height);
                             _this.ClipLocation = EndGate.Vector2d.Zero;
                             _this.ClipSize = _this._size.Clone();
                         }
 
                         _this._onLoaded.Trigger(_this);
                     };
-
-                    this.Source.src = imageLocation;
-                    this._imageLocation = imageLocation;
 
                     if (sizeDefined) {
                         this._size = new EndGate.Size2d(width, height);
@@ -52,12 +50,11 @@ var EndGate;
                     clipX = width;
                     clipY = height;
 
-                    this.Source = image;
-                    this._imageLocation = image.src;
+                    this.Source = new PIXI.Texture(image, new PIXI.Rectangle(clipX, clipY, clipWidth, clipHeight));
 
                     this._loaded = false;
 
-                    if (this.Source.complete) {
+                    if ((this.Source.baseTexture.source).complete) {
                         this._loadWire = function (e) {
                             _this._loaded = true;
                             _this._onLoaded.Trigger(_this);
@@ -76,8 +73,8 @@ var EndGate;
                     this.ClipSize = new EndGate.Size2d(clipWidth, clipHeight);
                 }
 
-                if (!this.Source.complete) {
-                    this.Source.addEventListener("load", this._loadWire, false);
+                if (!(this.Source.baseTexture.source).complete) {
+                    this.Source.baseTexture.addEventListener("update", this._loadWire);
                 } else {
                     setTimeout(this._loadWire, 0);
                 }
@@ -119,7 +116,7 @@ var EndGate;
             * @param clipHeight The height of the clip.
             */
             ImageSource.prototype.Extract = function (clipX, clipY, clipWidth, clipHeight) {
-                return new ImageSource(this._imageLocation, this._size.Width, this._size.Height, clipX, clipY, clipWidth, clipHeight);
+                return new ImageSource(this.Source.baseTexture, clipX, clipY, clipWidth, clipHeight);
             };
 
             /**
@@ -136,9 +133,9 @@ var EndGate;
             */
             ImageSource.prototype.Clone = function () {
                 if (this.ClipSize) {
-                    return new ImageSource(this.Source, this.ClipLocation.X, this.ClipLocation.Y, this.ClipSize.Width, this.ClipSize.Height);
+                    return new ImageSource(this.Source.baseTexture, this.ClipLocation.X, this.ClipLocation.Y, this.ClipSize.Width, this.ClipSize.Height);
                 } else {
-                    return new ImageSource(this.Source);
+                    return new ImageSource(this.Source.baseTexture);
                 }
             };
             return ImageSource;

@@ -39,7 +39,7 @@ class DrawTester extends eg.Game {
         this._drawLimit = drawLimit;
     }
 
-    public Draw(context: CanvasRenderingContext2D) {
+    public Draw() {
         this.DrawCount++;
         if (this.DrawCount === this._drawLimit) {
             this._onDrawLimit();

@@ -1,15 +1,14 @@
-/// <reference path="../Interfaces/ITyped.ts" />
-/// <reference path="../Interfaces/IMoveable.ts" />
-/// <reference path="../Interfaces/IDisposable.ts" />
-/// <reference path="../Interfaces/ICloneable.ts" />
-/// <reference path="../Rendering/IRenderable.ts" />
-/// <reference path="../Assets/Sizes/Size2d.ts" />
-/// <reference path="../Assets/Vectors/Vector2d.ts" />
-/// <reference path="../Bounds/Bounds2d.ts" />
-/// <reference path="../Utilities/EventHandler1.ts" />
-/// <reference path="Graphic2dState.ts" />
 var EndGate;
 (function (EndGate) {
+    /// <reference path="../Interfaces/ITyped.ts" />
+    /// <reference path="../Interfaces/IMoveable.ts" />
+    /// <reference path="../Interfaces/IDisposable.ts" />
+    /// <reference path="../Interfaces/ICloneable.ts" />
+    /// <reference path="../Assets/Sizes/Size2d.ts" />
+    /// <reference path="../Assets/Vectors/Vector2d.ts" />
+    /// <reference path="../Bounds/Bounds2d.ts" />
+    /// <reference path="../Utilities/EventHandler1.ts" />
+    /// <reference path="../Scripts/typings/pixi/pixi.d.ts" />
     (function (Graphics) {
         /**
         * Abstract drawable graphic type that is used create the base for graphics.
@@ -17,27 +16,41 @@ var EndGate;
         var Graphic2d = (function () {
             /**
             * Creates a new instance of the Graphic2d object.  Should only ever be called by a derived class.
-            * @param position The initial position of the Graphic2d
+            * @param pixiBase The underlying PIXI object to use for rendering.
+            * @param position The initial position of the Graphic2d.
             */
-            function Graphic2d(position) {
+            function Graphic2d(pixiBase, position) {
+                var _this = this;
                 this._type = "Graphic2d";
+                this.PixiBase = pixiBase;
                 this.Position = position;
                 this.Rotation = 0;
-                this.ZIndex = 0;
-                this.Visible = true;
-                this._State = new EndGate.Graphics.Assets._.Graphic2dState();
                 this.Opacity = 1;
+                this._zIndex = 0;
                 this._children = [];
                 this._childrenRemovalBindings = [];
                 this.Parent = null;
                 this._disposed = false;
                 this._onDisposed = new EndGate.EventHandler1();
+                this._onZIndexChange = new EndGate.EventHandler1();
+
+                this._MonitorProperty(this.PixiBase.position, "x", function () {
+                    return _this.Position.X;
+                }, function (newX) {
+                    _this.Position.X = newX;
+                });
+
+                this._MonitorProperty(this.PixiBase.position, "y", function () {
+                    return _this.Position.Y;
+                }, function (newY) {
+                    _this.Position.Y = newY;
+                });
             }
             Object.defineProperty(Graphic2d.prototype, "AbsolutePosition", {
-                /**
+                get: /**
                 * Gets the absolute position of the Graphic2d.  This is used to calculate absolute positions when graphic's have parents.
                 */
-                get: function () {
+                function () {
                     var position = this.Position, node = this;
 
                     while (node = node.Parent) {
@@ -50,26 +63,80 @@ var EndGate;
                 configurable: true
             });
 
+            Object.defineProperty(Graphic2d.prototype, "Visible", {
+                get: /**
+                * Gets or sets the Visible property.  The Visible property determines whether the Graphic2d will be drawn to the game screen.
+                */
+                function () {
+                    return this.PixiBase.visible;
+                },
+                set: function (visible) {
+                    this.PixiBase.visible = visible;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(Graphic2d.prototype, "ZIndex", {
+                get: /**
+                * Gets or sets the Visible property.  The Visible property determines whether the Graphic2d will be drawn to the game screen.
+                */
+                function () {
+                    return this._zIndex;
+                },
+                set: function (zIndex) {
+                    this._zIndex = zIndex;
+                    this.OnZIndexChange.Trigger(zIndex);
+                },
+                enumerable: true,
+                configurable: true
+            });
+
+            Object.defineProperty(Graphic2d.prototype, "Rotation", {
+                get: /**
+                * Gets or sets the Rotation of the Graphic2d.
+                */
+                function () {
+                    return this.PixiBase.rotation;
+                },
+                set: function (rotation) {
+                    this.PixiBase.rotation = rotation;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
             Object.defineProperty(Graphic2d.prototype, "OnDisposed", {
-                /**
+                get: /**
                 * Gets an event that is triggered when the Graphic2d has been disposed.  Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
-                get: function () {
+                function () {
                     return this._onDisposed;
                 },
                 enumerable: true,
                 configurable: true
             });
 
+            Object.defineProperty(Graphic2d.prototype, "OnZIndexChange", {
+                get: /**
+                * Gets an event that is triggered when the Graphic2d's ZIndex changes.  Functions can be bound or unbound to this event to be executed when the event triggers.
+                */
+                function () {
+                    return this._onZIndexChange;
+                },
+                enumerable: true,
+                configurable: true
+            });
+
             Object.defineProperty(Graphic2d.prototype, "Opacity", {
-                /**
+                get: /**
                 * Gets or sets the current opacity.  Value is between 0 and 1.
                 */
-                get: function () {
-                    return this._State.GlobalAlpha;
+                function () {
+                    return this.PixiBase.alpha;
                 },
                 set: function (alpha) {
-                    this._State.GlobalAlpha = alpha;
+                    this.PixiBase.alpha = alpha;
                 },
                 enumerable: true,
                 configurable: true
@@ -95,16 +162,28 @@ var EndGate;
                     throw new Error("Graphic already has parent, cannot add it as a child.");
                 }
 
-                removalBinding = function (graphic) {
-                    _this.RemoveChild(graphic);
+                removalBinding = {
+                    For: graphic,
+                    DisposedWire: function (graphic) {
+                        _this.RemoveChild(graphic);
+                    },
+                    ZIndexChangedWire: function (zIndex) {
+                        _this._children.sort(Graphic2d._zindexSort);
+
+                        _this.PixiBase.removeChild(graphic.PixiBase);
+                        _this.PixiBase.addChildAt(graphic.PixiBase, _this._children.indexOf(graphic));
+                    }
                 };
 
                 graphic.Parent = this;
-                graphic.OnDisposed.Bind(removalBinding);
+                graphic.OnDisposed.Bind(removalBinding.DisposedWire);
+                graphic.OnZIndexChange.Bind(removalBinding.ZIndexChangedWire);
 
                 this._children.push(graphic);
                 this._childrenRemovalBindings.push(removalBinding);
                 this._children.sort(Graphic2d._zindexSort);
+
+                this.PixiBase.addChildAt(graphic.PixiBase, this._children.indexOf(graphic));
             };
 
             /**
@@ -112,46 +191,26 @@ var EndGate;
             * @param graphic Child to remove.
             */
             Graphic2d.prototype.RemoveChild = function (graphic) {
-                var index = this._children.indexOf(graphic);
+                var index = this._children.indexOf(graphic), removalBinding;
+
+                for (var i = 0; i < this._childrenRemovalBindings.length; i++) {
+                    if (this._childrenRemovalBindings[i].For === graphic) {
+                        removalBinding = this._childrenRemovalBindings[i];
+                        this._childrenRemovalBindings.splice(i, 1);
+                        break;
+                    }
+                }
 
                 if (index >= 0) {
+                    this.PixiBase.removeChild(graphic.PixiBase);
                     this._children[index].Parent = null;
-                    this._children[index].OnDisposed.Unbind(this._childrenRemovalBindings[index]);
+                    this._children[index].OnDisposed.Unbind(removalBinding.DisposedWire);
+                    this._children[index].OnZIndexChange.Unbind(removalBinding.ZIndexChangedWire);
                     this._children.splice(index, 1);
-                    this._childrenRemovalBindings.splice(index, 1);
                     return true;
                 }
 
                 return false;
-            };
-
-            Graphic2d.prototype._StartDraw = function (context) {
-                context.save();
-                this._State.SetContextState(context);
-
-                context.translate(this.Position.X, this.Position.Y);
-
-                if (this.Rotation !== 0) {
-                    context.rotate(this.Rotation);
-                }
-            };
-
-            Graphic2d.prototype._EndDraw = function (context) {
-                for (var i = 0; i < this._children.length; i++) {
-                    if (this._children[i].Visible) {
-                        this._children[i].Draw(context);
-                    }
-                }
-
-                context.restore();
-            };
-
-            /**
-            * Abstract: Should be overridden to draw the derived class onto the context.  If this graphic is part of a scene the Draw function will be called automatically.
-            * @param context The canvas context to draw the graphic onto.
-            */
-            Graphic2d.prototype.Draw = function (context) {
-                throw new Error("The Draw method is abstract on Graphic2d and should not be called.");
             };
 
             /**
@@ -204,11 +263,25 @@ var EndGate;
                     }
 
                     this._children = null;
+
+                    // Set the position to be a new Vector2d so it unbinds all monitors to the existing position object
+                    this.Position = null;
+                    this._childrenRemovalBindings = null;
+                    this.OnZIndexChange.Dispose();
                     this.OnDisposed.Trigger(this);
                     this.OnDisposed.Dispose();
                 } else {
                     throw new Error("Cannot dispose graphic more than once.");
                 }
+            };
+
+            Graphic2d.prototype._MonitorProperty = function (obj, property, getFn, setFn) {
+                Object.defineProperty(obj, property, {
+                    get: getFn,
+                    set: setFn,
+                    enumerable: true,
+                    configurable: true
+                });
             };
             Graphic2d._zindexSort = function (a, b) {
                 return a.ZIndex - b.ZIndex;

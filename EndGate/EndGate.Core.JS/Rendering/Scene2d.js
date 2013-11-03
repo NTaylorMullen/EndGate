@@ -6,27 +6,24 @@ var EndGate;
     /// <reference path="../Graphics/Graphic2d.ts" />
     /// <reference path="../Assets/Sizes/Size2d.ts" />
     /// <reference path="../Assets/Vectors/Vector2d.ts" />
+    /// <reference path="../Scripts/typings/pixi/pixi.d.ts" />
     /// <reference path="Camera/Camera2d.ts" />
     (function (Rendering) {
         /**
         * Defines a scene object that is used to maintain a list of renderable objects that are rendered onto a joint game area.
         */
         var Scene2d = (function () {
-            function Scene2d(onDraw, drawArea) {
-                if (typeof onDraw === "undefined") { onDraw = function (_) {
-                }; }
+            function Scene2d(drawArea) {
                 this._actorMappings = [];
-                this._actors = [];
 
                 if (typeof drawArea === "undefined") {
                     drawArea = this.CreateDefaultDrawArea();
                 }
 
-                this._onDraw = onDraw;
-
                 this._drawArea = drawArea;
+                this._stage = new PIXI.Stage(0x000000);
                 this._camera = new Rendering.Camera2d(new EndGate.Vector2d(this._drawArea.width / 2, this._drawArea.height / 2), new EndGate.Size2d(this._drawArea.width, this._drawArea.height));
-                this._renderer = new Rendering.Camera2dRenderer(this._drawArea, this._camera);
+                this._renderer = PIXI.autoDetectRenderer(drawArea.width, drawArea.height, drawArea, true);
                 this._disposed = false;
             }
             Object.defineProperty(Scene2d.prototype, "DrawArea", {
@@ -67,7 +64,7 @@ var EndGate;
                 actor.OnDisposed.Bind(mapping.Remove);
 
                 this._actorMappings.push(mapping);
-                this._actors.push(actor);
+                this._stage.addChild(actor.PixiBase);
             };
 
             /**
@@ -75,11 +72,11 @@ var EndGate;
             * @param actor The graphic to remove from the scene.
             */
             Scene2d.prototype.Remove = function (actor) {
-                for (var i = 0; i < this._actors.length; i++) {
-                    if (this._actors[i] === actor) {
-                        this._actors[i].OnDisposed.Unbind(this._actorMappings[i].Remove);
-                        this._actors.splice(i, 1);
+                for (var i = 0; i < this._actorMappings.length; i++) {
+                    if (this._actorMappings[i].Actor === actor) {
+                        this._actorMappings[i].Actor.OnDisposed.Unbind(this._actorMappings[i].Remove);
                         this._actorMappings.splice(i, 1);
+                        this._stage.removeChild(actor.PixiBase);
                         return;
                     }
                 }
@@ -89,7 +86,7 @@ var EndGate;
             * Draws all actors within the Scene and triggers the Scene2d's onDraw callback.
             */
             Scene2d.prototype.Draw = function () {
-                this._onDraw(this._renderer.Render(this._actors));
+                this._renderer.render(this._stage);
             };
 
             /**
@@ -99,13 +96,12 @@ var EndGate;
                 if (!this._disposed) {
                     this._disposed = true;
 
-                    for (var i = 0; i < this._actors.length; i++) {
-                        this.Remove(this._actors[i]);
+                    for (var i = 0; i < this._actorMappings.length; i++) {
+                        this.Remove(this._actorMappings[i].Actor);
                     }
 
-                    this._actors = [];
-                    this._actorMappings = [];
-                    this._renderer.Dispose();
+                    this._actorMappings = null;
+                    this._renderer = null;
                 } else {
                     throw new Error("Scene2d cannot be disposed more than once");
                 }

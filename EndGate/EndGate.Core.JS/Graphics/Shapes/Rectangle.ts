@@ -13,9 +13,13 @@ module EndGate.Graphics {
         public _type: string = "Rectangle";
 
         /**
-        * Gets or sets the Size of the Rectangle.
+        * Gets or sets the PIXIBase object that is used to render the Rectangle.
         */
-        public Size: Size2d;
+        public PixiBase: PIXI.Graphics;
+
+        private _size: Size2d;
+        private _proxyWidth: number;
+        private _proxyHeight: number;
 
         /**
         * Creates a new instance of the Rectangle object.
@@ -44,9 +48,50 @@ module EndGate.Graphics {
         */
         constructor(x: number, y: number, width: number, height: number, color: string);
         constructor(x: number, y: number, width: number, height: number, color?: any) {
-            super(new Vector2d(x, y), color);
+            super(new PIXI.Graphics(), new Vector2d(x, y), color);
 
+            this._size = Size2d.Zero;
             this.Size = new Size2d(width, height);
+        }
+
+        /**
+        * Gets or sets the Size of the Rectangle.
+        */
+        public get Size(): Size2d {
+            return this._size;
+        }
+        public set Size(size: Size2d) {
+            var previousWidth = this._size.Width,
+                previousHeight = this._size.Height;
+
+            // Delete the old size to remove any property bindings on the Size2d
+            delete this._size.Width;
+            delete this._size.Height;
+
+            // Reset the size to its previous values (the monitor should not be applying now)
+            this._size.Width = previousWidth;
+            this._size.Height = previousHeight;
+
+            this._size = size;
+            this._proxyWidth = size.Width;
+            this._proxyHeight = size.Height;
+
+            // If our Size changes we need to update the underlying PIXI object to match
+            this._MonitorProperty(size, "Width", () => {
+                return this._proxyWidth;
+            }, (width: number) => {
+                    this._proxyWidth = width;
+                    this._BuildGraphic();
+                });
+
+            this._MonitorProperty(size, "Height", () => {
+                return this._proxyHeight
+            }, (height: number) => {
+                    this._proxyHeight = height;
+                    this._BuildGraphic();
+                });
+
+            this._BuildGraphic();
         }
 
         /**
@@ -80,8 +125,12 @@ module EndGate.Graphics {
             return graphic;
         }
 
-        public _BuildPath(context: CanvasRenderingContext2D): void {
-            context.rect(-this.Size.HalfWidth, -this.Size.HalfHeight, this.Size.Width, this.Size.Height);
+        public _BuildGraphic(): void {
+            if (this.Size) {
+                this._StartBuildGraphic();
+                this.PixiBase.drawRect(-this.Size.HalfWidth, -this.Size.HalfHeight, this.Size.Width, this.Size.Height);
+                this._EndBuildGraphic();
+            }
         }
     }
 

@@ -51,16 +51,16 @@
         game.Text.BorderThickness = newThickness;
     });
     shadowXSlider = new Texts.CustomSlider($("#shadowX"), -30, 30, 20, function (newX) {
-        game.Text.ShadowX = newX;
+        //game.Text.ShadowX = newX;
     });
     shadowYSlider = new Texts.CustomSlider($("#shadowY"), -30, 30, 10, function (newY) {
-        game.Text.ShadowY = newY;
+        //game.Text.ShadowY = newY;
     });
     shadowColorPicker = new Texts.ColorPicker($("#shadowColorRed"), $("#shadowColorGreen"), $("#shadowColorBlue"), [0, 0, 100], function (newcolor) {
-        game.Text.ShadowColor = newcolor;
+        //game.Text.ShadowColor = newcolor;
     });
     shadowBlurSlider = new Texts.CustomSlider($("#shadowBlur"), 0, 300, 55, function (newBlur) {
-        game.Text.ShadowBlur = newBlur;
+        //game.Text.ShadowBlur = newBlur;
     });
 
     // Wire up text selections
