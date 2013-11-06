@@ -1,5 +1,6 @@
 /// <reference path="KeyboardModifiers.ts" />
 /// <reference path="KeyboardCommand.ts" />
+/// <reference path="KeyboardEventTarget.ts" />
 
 module EndGate.Input {
     var shiftValues: { [unmodified: string]: string; } = {
@@ -67,6 +68,11 @@ module EndGate.Input {
         public Modifiers: Assets.KeyboardModifiers;
 
         /**
+        * Target element which triggered the exception.
+        */
+        public Target: KeyboardEventTarget;
+
+        /**
         * Creates a new instance of the KeyboardCommandEvent object.
         * @param keyEvent The raw key event from the DOM.
         */
@@ -94,6 +100,7 @@ module EndGate.Input {
             }
 
             this.Key = character;
+            this.Target = new KeyboardEventTarget(keyEvent.target);
         }
 
         /**

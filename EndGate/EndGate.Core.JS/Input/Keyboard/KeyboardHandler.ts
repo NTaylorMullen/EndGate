@@ -157,36 +157,10 @@ module EndGate.Input {
             document.removeEventListener("keyup", this._keyUpWire, false);
         }
 
-        private FocusingTextArea(ke: KeyboardEvent): boolean {
-            var element;
-
-            if (ke.target) {
-                element = ke.target;
-            }
-            else if (ke.srcElement) {
-                element = ke.srcElement;
-            }
-
-            if (element.nodeType === 3) {
-                element = element.parentNode;
-            }
-
-            if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
-                return true;
-            }
-
-            return false;
-        }
-
         private BuildKeyEvent(store: { [id: number]: Assets.KeyboardCommand; }, eventHandler: EventHandler1<KeyboardCommandEvent>): (ke: KeyboardEvent) => void {
             return (ke: KeyboardEvent) => {
                 var keyboardCommandEvent: KeyboardCommandEvent,
                     propogate: boolean = true;
-
-                //Don't enable shortcut keys in Input, Text area fields
-                if (this.FocusingTextArea(ke)) {
-                    return;
-                }
 
                 keyboardCommandEvent = new KeyboardCommandEvent(ke);
 
