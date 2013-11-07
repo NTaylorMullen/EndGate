@@ -10,28 +10,28 @@ module EndGate.Input {
         private _tag: string;
 
         /**
-        * Id of the target element.
+        * Gets the id of the target element.
         */
         public get Id(): string {
             return this._id;
         }
 
         /**
-        * A list of classes on the target element.
+        * Gets a list of classes on the target element.
         */
         public get Classes(): string[] {
             return this._classes;
         }
 
         /**
-        * Element that caused the keyboard event.
+        * Gets the element that caused the keyboard event.
         */
         public get Element(): HTMLElement {
             return this._element;
         }
 
         /**
-        * The type of tag of the target element.
+        * Gets the type of tag of the target element.
         */
         public get Tag(): string {
             return this._tag;
