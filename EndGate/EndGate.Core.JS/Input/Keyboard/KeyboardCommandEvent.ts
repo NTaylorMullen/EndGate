@@ -68,7 +68,7 @@ module EndGate.Input {
         public Modifiers: Assets.KeyboardModifiers;
 
         /**
-        * Target element which triggered the exception.
+        * Target element which triggered the event.
         */
         public Target: KeyboardEventTarget;
 
