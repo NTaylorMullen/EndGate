@@ -2,6 +2,7 @@ var EndGate;
 (function (EndGate) {
     /// <reference path="KeyboardModifiers.ts" />
     /// <reference path="KeyboardCommand.ts" />
+    /// <reference path="KeyboardEventTarget.ts" />
     (function (Input) {
         var shiftValues = {
             "~": "`",
@@ -83,6 +84,7 @@ var EndGate;
                 }
 
                 this.Key = character;
+                this.Target = new Input.KeyboardEventTarget(keyEvent.target);
             }
             /**
             * Determines if the KeyboardCommand matches the KeyboardCommandEvent
