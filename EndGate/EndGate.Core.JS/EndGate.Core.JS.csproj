@@ -56,6 +56,7 @@
     <TypeScriptCompile Include="Game.ts" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="Input\Keyboard\KeyboardEventTarget.ts" />
     <TypeScriptCompile Include="Utilities\EventHandler1.ts" />
     <TypeScriptCompile Include="Tweening\Tween.ts" />
     <TypeScriptCompile Include="Assets\TimeSpan.ts" />

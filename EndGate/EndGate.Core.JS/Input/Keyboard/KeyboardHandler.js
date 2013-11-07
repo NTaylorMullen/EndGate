@@ -150,34 +150,9 @@ var EndGate;
                 document.removeEventListener("keyup", this._keyUpWire, false);
             };
 
-            KeyboardHandler.prototype.FocusingTextArea = function (ke) {
-                var element;
-
-                if (ke.target) {
-                    element = ke.target;
-                } else if (ke.srcElement) {
-                    element = ke.srcElement;
-                }
-
-                if (element.nodeType === 3) {
-                    element = element.parentNode;
-                }
-
-                if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
-                    return true;
-                }
-
-                return false;
-            };
-
             KeyboardHandler.prototype.BuildKeyEvent = function (store, eventHandler) {
-                var _this = this;
                 return function (ke) {
                     var keyboardCommandEvent, propogate = true;
-
-                    if (_this.FocusingTextArea(ke)) {
-                        return;
-                    }
 
                     keyboardCommandEvent = new Input.KeyboardCommandEvent(ke);
 
