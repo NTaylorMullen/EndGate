@@ -69,7 +69,7 @@ module EndGate.Graphics {
         public get Color(): Color {
             return this._fillStyle;
         }
-        public set Color(color: any) {
+        public set Color(color) {
             if (typeof color === "string") {
                 color = new Color(<any>color);
             }
@@ -99,7 +99,7 @@ module EndGate.Graphics {
         public get BorderColor(): Color {
             return this._strokeStyle;
         }
-        public set BorderColor(color: any) {
+        public set BorderColor(color) {
             if (typeof color === "string") {
                 color = new Color(<any>color);
             }
@@ -119,7 +119,7 @@ module EndGate.Graphics {
         public get ShadowColor(): Color {
             return this._shadowColor;
         }
-        public set ShadowColor(color: any) {
+        public set ShadowColor(color) {
             if (typeof color === "string") {
                 color = new Color(<any>color);
             }

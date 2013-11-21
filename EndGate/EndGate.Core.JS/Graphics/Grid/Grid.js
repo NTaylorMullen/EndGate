@@ -1,3 +1,8 @@
+/// <reference path="../../Assets/Vectors/Vector2d.ts" />
+/// <reference path="../../Assets/Sizes/Size2d.ts" />
+/// <reference path="../Graphic2d.ts" />
+/// <reference path="../Color.ts" />
+/// <reference path="../Line2d.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -6,11 +11,6 @@ var __extends = this.__extends || function (d, b) {
 };
 var EndGate;
 (function (EndGate) {
-    /// <reference path="../../Assets/Vectors/Vector2d.ts" />
-    /// <reference path="../../Assets/Sizes/Size2d.ts" />
-    /// <reference path="../Graphic2d.ts" />
-    /// <reference path="../Color.ts" />
-    /// <reference path="../Line2d.ts" />
     (function (Graphics) {
         /**
         * Defines a drawable grid that can be used to store other graphics in a grid like structure.
@@ -19,7 +19,7 @@ var EndGate;
             __extends(Grid, _super);
             function Grid(x, y, rows, columns, tileWidth, tileHeight, drawGridLines, gridLineColor) {
                 if (typeof drawGridLines === "undefined") { drawGridLines = false; }
-                if (typeof gridLineColor === "undefined") { gridLineColor = new Graphics.Color("gray"); }
+                if (typeof gridLineColor === "undefined") { gridLineColor = new EndGate.Graphics.Color("gray"); }
                 _super.call(this, new EndGate.Vector2d(x, y));
                 this._type = "Grid";
 
@@ -41,10 +41,10 @@ var EndGate;
                 }
             }
             Object.defineProperty(Grid.prototype, "DrawGridLines", {
-                get: /**
+                /**
                 * Gets or sets the DrawGridLines property.  Indicates whether the grids column and row lines will be drawn.
                 */
-                function () {
+                get: function () {
                     return this._drawGridLines;
                 },
                 set: function (shouldDraw) {
@@ -59,15 +59,15 @@ var EndGate;
             });
 
             Object.defineProperty(Grid.prototype, "GridLineColor", {
-                get: /**
+                /**
                 * Gets or sets the current grid line color.  Grid lines are only drawn of DrawGridLines is set to true.  Valid colors are strings like "red" or "rgb(255,0,0)".
                 */
-                function () {
+                get: function () {
                     return this._gridLineColor;
                 },
                 set: function (color) {
                     if (typeof color === "string") {
-                        color = new Graphics.Color(color);
+                        color = new EndGate.Graphics.Color(color);
                     }
                     this._gridLineColor = color;
 
@@ -80,10 +80,10 @@ var EndGate;
             });
 
             Object.defineProperty(Grid.prototype, "Size", {
-                get: /**
+                /**
                 * Gets the size of the grid.
                 */
-                function () {
+                get: function () {
                     return this._size.Clone();
                 },
                 enumerable: true,
@@ -91,10 +91,10 @@ var EndGate;
             });
 
             Object.defineProperty(Grid.prototype, "TileSize", {
-                get: /**
+                /**
                 * Gets the size of the tiles.
                 */
-                function () {
+                get: function () {
                     return this._tileSize.Clone();
                 },
                 enumerable: true,
@@ -102,10 +102,10 @@ var EndGate;
             });
 
             Object.defineProperty(Grid.prototype, "Rows", {
-                get: /**
+                /**
                 * Gets the number of rows.
                 */
-                function () {
+                get: function () {
                     return this._rows;
                 },
                 enumerable: true,
@@ -113,10 +113,10 @@ var EndGate;
             });
 
             Object.defineProperty(Grid.prototype, "Columns", {
-                get: /**
+                /**
                 * Gets the number of columns.
                 */
-                function () {
+                get: function () {
                     return this._columns;
                 },
                 enumerable: true,
@@ -402,17 +402,17 @@ var EndGate;
                 var halfSize = this._size.Multiply(.5), topLeft = new EndGate.Vector2d(-halfSize.Width, -halfSize.Height), bottomRight = new EndGate.Vector2d(halfSize.Width, halfSize.Height);
 
                 for (var i = 0; i < this._rows; i++) {
-                    this._gridLines.push(new Graphics.Line2d(topLeft.X, topLeft.Y + i * this._tileSize.Height, bottomRight.X, topLeft.Y + i * this._tileSize.Height, 1, this._gridLineColor));
+                    this._gridLines.push(new EndGate.Graphics.Line2d(topLeft.X, topLeft.Y + i * this._tileSize.Height, bottomRight.X, topLeft.Y + i * this._tileSize.Height, 1, this._gridLineColor));
 
                     if (i === 0) {
                         for (var j = 0; j < this._columns; j++) {
-                            this._gridLines.push(new Graphics.Line2d(topLeft.X + j * this._tileSize.Width, topLeft.Y, topLeft.X + j * this._tileSize.Width, bottomRight.Y, 1, this._gridLineColor));
+                            this._gridLines.push(new EndGate.Graphics.Line2d(topLeft.X + j * this._tileSize.Width, topLeft.Y, topLeft.X + j * this._tileSize.Width, bottomRight.Y, 1, this._gridLineColor));
                         }
                     }
                 }
 
-                this._gridLines.push(new Graphics.Line2d(topLeft.X, bottomRight.Y, bottomRight.X, bottomRight.Y, 1));
-                this._gridLines.push(new Graphics.Line2d(bottomRight.X, topLeft.Y, bottomRight.X, bottomRight.Y, 1));
+                this._gridLines.push(new EndGate.Graphics.Line2d(topLeft.X, bottomRight.Y, bottomRight.X, bottomRight.Y, 1));
+                this._gridLines.push(new EndGate.Graphics.Line2d(bottomRight.X, topLeft.Y, bottomRight.X, bottomRight.Y, 1));
             };
 
             Grid.prototype.GetInsideGridPosition = function (row, column) {
@@ -427,7 +427,7 @@ var EndGate;
                 return column >= 0 && column < this._columns;
             };
             return Grid;
-        })(Graphics.Graphic2d);
+        })(EndGate.Graphics.Graphic2d);
         Graphics.Grid = Grid;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
     var Graphics = EndGate.Graphics;

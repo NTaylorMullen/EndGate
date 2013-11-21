@@ -1,12 +1,12 @@
+/// <reference path="../../Assets/Vectors/Vector2d.ts" />
+/// <reference path="../../Utilities/EventHandler1.ts" />
+/// <reference path="../../Interfaces/IDisposable.ts" />
+/// <reference path="MouseButton.ts" />
+/// <reference path="IMouseEvent.ts" />
+/// <reference path="IMouseClickEvent.ts" />
+/// <reference path="IMouseScrollEvent.ts" />
 var EndGate;
 (function (EndGate) {
-    /// <reference path="../../Assets/Vectors/Vector2d.ts" />
-    /// <reference path="../../Utilities/EventHandler1.ts" />
-    /// <reference path="../../Interfaces/IDisposable.ts" />
-    /// <reference path="MouseButton.ts" />
-    /// <reference path="IMouseEvent.ts" />
-    /// <reference path="IMouseClickEvent.ts" />
-    /// <reference path="IMouseScrollEvent.ts" />
     (function (Input) {
         /**
         * Defines a handler that will monitor mouse events over a specified area and will execute appropriate functions based on the events.
@@ -56,10 +56,10 @@ var EndGate;
                 });
             }
             Object.defineProperty(MouseHandler.prototype, "LeftIsDown", {
-                get: /**
+                /**
                 * Indicates if the left mouse button is down
                 */
-                function () {
+                get: function () {
                     return this._leftIsDown;
                 },
                 enumerable: true,
@@ -67,10 +67,10 @@ var EndGate;
             });
 
             Object.defineProperty(MouseHandler.prototype, "MiddleIsDown", {
-                get: /**
+                /**
                 * Indicates if the middle mouse button is down
                 */
-                function () {
+                get: function () {
                     return this._middleIsDown;
                 },
                 enumerable: true,
@@ -78,10 +78,10 @@ var EndGate;
             });
 
             Object.defineProperty(MouseHandler.prototype, "RightIsDown", {
-                get: /**
+                /**
                 * Indicates if the right mouse button is down
                 */
-                function () {
+                get: function () {
                     return this._rightIsDown;
                 },
                 enumerable: true,
@@ -89,10 +89,10 @@ var EndGate;
             });
 
             Object.defineProperty(MouseHandler.prototype, "IsDown", {
-                get: /**
+                /**
                 * Indicates if any mouse button is down.
                 */
-                function () {
+                get: function () {
                     return this._isDown;
                 },
                 enumerable: true,
@@ -100,10 +100,10 @@ var EndGate;
             });
 
             Object.defineProperty(MouseHandler.prototype, "OnClick", {
-                get: /**
+                /**
                 * Gets an event that is triggered when a mouse click occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
-                function () {
+                get: function () {
                     return this._onClick;
                 },
                 enumerable: true,
@@ -111,10 +111,10 @@ var EndGate;
             });
 
             Object.defineProperty(MouseHandler.prototype, "OnDoubleClick", {
-                get: /**
+                /**
                 * Gets an event that is triggered when a mouse double click occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
-                function () {
+                get: function () {
                     return this._onDoubleClick;
                 },
                 enumerable: true,
@@ -122,10 +122,10 @@ var EndGate;
             });
 
             Object.defineProperty(MouseHandler.prototype, "OnDown", {
-                get: /**
+                /**
                 * Gets an event that is triggered when a mouse down event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
-                function () {
+                get: function () {
                     return this._onDown;
                 },
                 enumerable: true,
@@ -133,10 +133,10 @@ var EndGate;
             });
 
             Object.defineProperty(MouseHandler.prototype, "OnUp", {
-                get: /**
+                /**
                 * Gets an event that is triggered when a mouse up event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
-                function () {
+                get: function () {
                     return this._onUp;
                 },
                 enumerable: true,
@@ -144,10 +144,10 @@ var EndGate;
             });
 
             Object.defineProperty(MouseHandler.prototype, "OnMove", {
-                get: /**
+                /**
                 * Gets an event that is triggered when a mouse move event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
-                function () {
+                get: function () {
                     return this._onMove;
                 },
                 enumerable: true,
@@ -155,10 +155,10 @@ var EndGate;
             });
 
             Object.defineProperty(MouseHandler.prototype, "OnScroll", {
-                get: /**
+                /**
                 * Gets an event that is triggered when a mouse scroll event occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
-                function () {
+                get: function () {
                     return this._onScroll;
                 },
                 enumerable: true,
@@ -195,6 +195,8 @@ var EndGate;
                 this._mouseUpWire = this.BuildEvent(this._onUp, this.BuildMouseClickEvent);
                 this._mouseMoveWire = this.BuildEvent(this._onMove, this.BuildMouseEvent);
 
+                // OnScroll, in order to detect horizontal scrolling need to hack a bit (browser sniffing)
+                // if we were just doing vertical scrolling we could settle with the else statement in this block
                 if ((/MSIE/i.test(navigator.userAgent)) || (/Trident/i.test(navigator.userAgent))) {
                     this._mouseWheelWireName = "wheel";
                     this._mouseWheelWire = this.BuildEvent(this._onScroll, function (e) {
@@ -276,13 +278,13 @@ var EndGate;
                     return MouseHandler.MouseButtonArray[event.which];
                 }
 
-                return Input._.MouseButton.Right;
+                return EndGate.Input._.MouseButton.Right;
             };
 
             MouseHandler.prototype.GetMouseScrollDierction = function (event) {
                 return new EndGate.Vector2d(-Math.max(-1, Math.min(1, event.wheelDeltaX)), -Math.max(-1, Math.min(1, event.wheelDeltaY)));
             };
-            MouseHandler.MouseButtonArray = [null, Input._.MouseButton.Left, Input._.MouseButton.Middle, Input._.MouseButton.Right];
+            MouseHandler.MouseButtonArray = [null, EndGate.Input._.MouseButton.Left, EndGate.Input._.MouseButton.Middle, EndGate.Input._.MouseButton.Right];
             return MouseHandler;
         })();
         Input.MouseHandler = MouseHandler;

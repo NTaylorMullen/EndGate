@@ -1,15 +1,15 @@
+/// <reference path="../Interfaces/ITyped.ts" />
+/// <reference path="../Interfaces/IMoveable.ts" />
+/// <reference path="../Interfaces/IDisposable.ts" />
+/// <reference path="../Interfaces/ICloneable.ts" />
+/// <reference path="../Rendering/IRenderable.ts" />
+/// <reference path="../Assets/Sizes/Size2d.ts" />
+/// <reference path="../Assets/Vectors/Vector2d.ts" />
+/// <reference path="../Bounds/Bounds2d.ts" />
+/// <reference path="../Utilities/EventHandler1.ts" />
+/// <reference path="Graphic2dState.ts" />
 var EndGate;
 (function (EndGate) {
-    /// <reference path="../Interfaces/ITyped.ts" />
-    /// <reference path="../Interfaces/IMoveable.ts" />
-    /// <reference path="../Interfaces/IDisposable.ts" />
-    /// <reference path="../Interfaces/ICloneable.ts" />
-    /// <reference path="../Rendering/IRenderable.ts" />
-    /// <reference path="../Assets/Sizes/Size2d.ts" />
-    /// <reference path="../Assets/Vectors/Vector2d.ts" />
-    /// <reference path="../Bounds/Bounds2d.ts" />
-    /// <reference path="../Utilities/EventHandler1.ts" />
-    /// <reference path="Graphic2dState.ts" />
     (function (Graphics) {
         /**
         * Abstract drawable graphic type that is used create the base for graphics.
@@ -25,7 +25,7 @@ var EndGate;
                 this.Rotation = 0;
                 this.ZIndex = 0;
                 this.Visible = true;
-                this._State = new Graphics.Assets._.Graphic2dState();
+                this._State = new EndGate.Graphics.Assets._.Graphic2dState();
                 this.Opacity = 1;
                 this._children = [];
                 this._childrenRemovalBindings = [];
@@ -34,10 +34,10 @@ var EndGate;
                 this._onDisposed = new EndGate.EventHandler1();
             }
             Object.defineProperty(Graphic2d.prototype, "AbsolutePosition", {
-                get: /**
+                /**
                 * Gets the absolute position of the Graphic2d.  This is used to calculate absolute positions when graphic's have parents.
                 */
-                function () {
+                get: function () {
                     var position = this.Position, node = this;
 
                     while (node = node.Parent) {
@@ -51,10 +51,10 @@ var EndGate;
             });
 
             Object.defineProperty(Graphic2d.prototype, "OnDisposed", {
-                get: /**
+                /**
                 * Gets an event that is triggered when the Graphic2d has been disposed.  Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
-                function () {
+                get: function () {
                     return this._onDisposed;
                 },
                 enumerable: true,
@@ -62,10 +62,10 @@ var EndGate;
             });
 
             Object.defineProperty(Graphic2d.prototype, "Opacity", {
-                get: /**
+                /**
                 * Gets or sets the current opacity.  Value is between 0 and 1.
                 */
-                function () {
+                get: function () {
                     return this._State.GlobalAlpha;
                 },
                 set: function (alpha) {

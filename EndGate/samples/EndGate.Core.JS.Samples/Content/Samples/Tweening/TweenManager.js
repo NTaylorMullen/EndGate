@@ -63,6 +63,7 @@ var Tweening;
         };
 
         TweenManager.prototype.Update = function (gameTime) {
+            // Check if the active tween is set
             if (this._activeTween) {
                 // Tweens need to be updated in order to change position
                 this._activeTween.Update(gameTime);

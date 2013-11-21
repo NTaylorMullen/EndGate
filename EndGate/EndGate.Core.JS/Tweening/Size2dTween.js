@@ -1,3 +1,5 @@
+/// <reference path="Tween.ts" />
+/// <reference path="../Assets/Sizes/Size2d.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -6,8 +8,6 @@ var __extends = this.__extends || function (d, b) {
 };
 var EndGate;
 (function (EndGate) {
-    /// <reference path="Tween.ts" />
-    /// <reference path="../Assets/Sizes/Size2d.ts" />
     (function (Tweening) {
         /**
         * Defines a Size2dTween class that is used to move a Size2d from a start value to an end value.
@@ -28,7 +28,7 @@ var EndGate;
                 this.Current = new EndGate.Size2d(this.TweeningFunction(this.From.Width, this.To.Width, this.Elapsed, this.Duration), this.TweeningFunction(this.From.Height, this.To.Height, this.Elapsed, this.Duration));
             };
             return Size2dTween;
-        })(Tweening.Tween);
+        })(EndGate.Tweening.Tween);
         Tweening.Size2dTween = Size2dTween;
     })(EndGate.Tweening || (EndGate.Tweening = {}));
     var Tweening = EndGate.Tweening;

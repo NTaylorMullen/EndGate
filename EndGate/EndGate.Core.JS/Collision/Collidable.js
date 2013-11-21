@@ -1,11 +1,11 @@
+/// <reference path="../Interfaces/IDisposable.ts" />
+/// <reference path="../Interfaces/ITyped.ts" />
+/// <reference path="../Bounds/Bounds2d.ts" />
+/// <reference path="../Utilities/EventHandler1.ts" />
+/// <reference path="../Assets/Vectors/Vector2d.ts" />
+/// <reference path="CollisionData.ts" />
 var EndGate;
 (function (EndGate) {
-    /// <reference path="../Interfaces/IDisposable.ts" />
-    /// <reference path="../Interfaces/ITyped.ts" />
-    /// <reference path="../Bounds/Bounds2d.ts" />
-    /// <reference path="../Utilities/EventHandler1.ts" />
-    /// <reference path="../Assets/Vectors/Vector2d.ts" />
-    /// <reference path="CollisionData.ts" />
     (function (Collision) {
         /**
         * Defines a collidable object that can be used to detect collisions with other objects.
@@ -25,10 +25,10 @@ var EndGate;
                 this._onDisposed = new EndGate.EventHandler1();
             }
             Object.defineProperty(Collidable.prototype, "OnCollision", {
-                get: /**
+                /**
                 * Gets an event that is triggered when a collision happens.  Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
-                function () {
+                get: function () {
                     return this._onCollision;
                 },
                 enumerable: true,
@@ -36,10 +36,10 @@ var EndGate;
             });
 
             Object.defineProperty(Collidable.prototype, "OnDisposed", {
-                get: /**
+                /**
                 * Gets an event that is triggered when the Collidable has been disposed.  Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
-                function () {
+                get: function () {
                     return this._onDisposed;
                 },
                 enumerable: true,

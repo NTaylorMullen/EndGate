@@ -1,9 +1,9 @@
+/// <reference path="KeyboardCommand.ts" />
+/// <reference path="KeyboardCommandEvent.ts" />
+/// <reference path="../../Interfaces/IDisposable.ts" />
+/// <reference path="../../Utilities/EventHandler1.ts" />
 var EndGate;
 (function (EndGate) {
-    /// <reference path="KeyboardCommand.ts" />
-    /// <reference path="KeyboardCommandEvent.ts" />
-    /// <reference path="../../Interfaces/IDisposable.ts" />
-    /// <reference path="../../Utilities/EventHandler1.ts" />
     (function (Input) {
         /**
         * Defines a handler that will check for keyboard commands and execute appropriate functions.
@@ -13,9 +13,9 @@ var EndGate;
             * Creates a new instance of the KeyboardHandler object.
             */
             function KeyboardHandler() {
-                this._onPressCommands = ({});
-                this._onDownCommands = ({});
-                this._onUpCommands = ({});
+                this._onPressCommands = {};
+                this._onDownCommands = {};
+                this._onUpCommands = {};
 
                 this._onKeyPress = new EndGate.EventHandler1();
                 this._onKeyDown = new EndGate.EventHandler1();
@@ -26,10 +26,10 @@ var EndGate;
                 this.Wire();
             }
             Object.defineProperty(KeyboardHandler.prototype, "OnKeyPress", {
-                get: /**
+                /**
                 * Gets an event that is triggered when any key press occurs.  Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
-                function () {
+                get: function () {
                     return this._onKeyPress;
                 },
                 enumerable: true,
@@ -37,10 +37,10 @@ var EndGate;
             });
 
             Object.defineProperty(KeyboardHandler.prototype, "OnKeyDown", {
-                get: /**
+                /**
                 *Gets an event that is triggered when any key goes down.  Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
-                function () {
+                get: function () {
                     return this._onKeyDown;
                 },
                 enumerable: true,
@@ -48,10 +48,10 @@ var EndGate;
             });
 
             Object.defineProperty(KeyboardHandler.prototype, "OnKeyUp", {
-                get: /**
+                /**
                 * Gets an event that is triggered when any key comes up.  Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
-                function () {
+                get: function () {
                     return this._onKeyUp;
                 },
                 enumerable: true,
@@ -121,7 +121,7 @@ var EndGate;
             };
 
             KeyboardHandler.prototype.UpdateCache = function (keyCommand, action, store) {
-                var command = new Input.Assets.KeyboardCommand(keyCommand, action), commandId = KeyboardHandler._keyboardCommandIds++;
+                var command = new EndGate.Input.Assets.KeyboardCommand(keyCommand, action), commandId = KeyboardHandler._keyboardCommandIds++;
 
                 command.OnDispose.Bind(function () {
                     delete store[commandId];
@@ -154,7 +154,7 @@ var EndGate;
                 return function (ke) {
                     var keyboardCommandEvent, propogate = true;
 
-                    keyboardCommandEvent = new Input.KeyboardCommandEvent(ke);
+                    keyboardCommandEvent = new EndGate.Input.KeyboardCommandEvent(ke);
 
                     eventHandler.Trigger(keyboardCommandEvent);
 

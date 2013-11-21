@@ -1,7 +1,7 @@
+/// <reference path="../Assets/Sizes/Size2d.ts" />
+/// <reference path="../Utilities/EventHandler.ts" />
 var EndGate;
 (function (EndGate) {
-    /// <reference path="../Assets/Sizes/Size2d.ts" />
-    /// <reference path="../Utilities/EventHandler.ts" />
     (function (Collision) {
         /**
         * Defines a CollisionConfiguration object that is used to configure and optimize the collision manager.
@@ -13,10 +13,10 @@ var EndGate;
                 this._OnChange = new EndGate.EventHandler();
             }
             Object.defineProperty(CollisionConfiguration.prototype, "MinQuadTreeNodeSize", {
-                get: /**
+                /**
                 * Gets or sets the minimum quad tree node size.  For best performance this value should be equivalent to the smallest collidable object that will be monitored by the CollisionManager.  Changing this value re-creates the collision manager.  Values must represent a square.
                 */
-                function () {
+                get: function () {
                     return this._minQuadTreeNodeSize.Clone();
                 },
                 set: function (newSize) {
@@ -32,10 +32,10 @@ var EndGate;
             });
 
             Object.defineProperty(CollisionConfiguration.prototype, "InitialQuadTreeSize", {
-                get: /**
+                /**
                 * Gets or sets the initial quad tree size.  The quad tree used for collision detection will dynamically grow in size if items drift outside of its boundaries.  If this property is set it will re-instantiate a new quad tree.  Values must be divisible by the MinQuadTreeNodeSize and must represent a square.
                 */
-                function () {
+                get: function () {
                     return this._initialQuadTreeSize;
                 },
                 set: function (newSize) {

@@ -1,3 +1,6 @@
+/// <reference path="../../Assets/Vectors/Vector2d.ts" />
+/// <reference path="../../Graphics/Graphic2d.ts" />
+/// <reference path="../../Graphics/ImageSource.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -6,9 +9,6 @@ var __extends = this.__extends || function (d, b) {
 };
 var EndGate;
 (function (EndGate) {
-    /// <reference path="../../Assets/Vectors/Vector2d.ts" />
-    /// <reference path="../../Graphics/Graphic2d.ts" />
-    /// <reference path="../../Graphics/ImageSource.ts" />
     (function (Graphics) {
         /**
         * Defines an abstract class TileMap that takes an array of resources to be mapped to tiles.

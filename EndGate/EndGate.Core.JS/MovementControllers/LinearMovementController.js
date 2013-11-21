@@ -1,3 +1,12 @@
+/// <reference path="../Assets/Vectors/Vector2d.ts" />
+/// <reference path="../Interfaces/IMoveable.ts" />
+/// <reference path="../Utilities/NoopTripInvoker.ts" />
+/// <reference path="../Extensions/MathExtensions.ts" />
+/// <reference path="../GameTime.ts" />
+/// <reference path="../Utilities/EventHandler1.ts" />
+/// <reference path="LinearDirections.ts" />
+/// <reference path="IMoveEvent.ts" />
+/// <reference path="MovementController.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -6,15 +15,6 @@ var __extends = this.__extends || function (d, b) {
 };
 var EndGate;
 (function (EndGate) {
-    /// <reference path="../Assets/Vectors/Vector2d.ts" />
-    /// <reference path="../Interfaces/IMoveable.ts" />
-    /// <reference path="../Utilities/NoopTripInvoker.ts" />
-    /// <reference path="../Extensions/MathExtensions.ts" />
-    /// <reference path="../GameTime.ts" />
-    /// <reference path="../Utilities/EventHandler1.ts" />
-    /// <reference path="LinearDirections.ts" />
-    /// <reference path="IMoveEvent.ts" />
-    /// <reference path="MovementController.ts" />
     (function (MovementControllers) {
         /**
         * Defines a LinearMovementController that can move objects Up, Right, Left, Down or a combination.
@@ -28,7 +28,7 @@ var EndGate;
                 _super.call(this, movables);
 
                 this._moveSpeed = moveSpeed;
-                this._moving = new MovementControllers.Assets.LinearDirections();
+                this._moving = new EndGate.MovementControllers.Assets.LinearDirections();
                 this.OnMove = new EndGate.EventHandler1();
                 this._rotationUpdater = new EndGate._.Utilities.NoopTripInvoker(function () {
                     _this.UpdateRotation();
@@ -153,7 +153,7 @@ var EndGate;
                 }
             };
             return LinearMovementController;
-        })(MovementControllers.MovementController);
+        })(EndGate.MovementControllers.MovementController);
         MovementControllers.LinearMovementController = LinearMovementController;
     })(EndGate.MovementControllers || (EndGate.MovementControllers = {}));
     var MovementControllers = EndGate.MovementControllers;

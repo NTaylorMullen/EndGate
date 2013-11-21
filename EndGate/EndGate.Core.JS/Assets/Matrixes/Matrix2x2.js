@@ -20,10 +20,10 @@ var EndGate;
             ];
         }
         Object.defineProperty(Matrix2x2, "Zero", {
-            get: /**
+            /**
             * Creates a Matrix2x2 with all its rows and columns initialized to 0.
             */
-            function () {
+            get: function () {
                 return new Matrix2x2();
             },
             enumerable: true,
@@ -31,10 +31,10 @@ var EndGate;
         });
 
         Object.defineProperty(Matrix2x2, "Identity", {
-            get: /**
+            /**
             * Returns the identity matrix for a 2x2.
             */
-            function () {
+            get: function () {
                 return new Matrix2x2(1, 0, 0, 1);
             },
             enumerable: true,
@@ -162,11 +162,11 @@ var EndGate;
             return this.Values[0].toString() + " " + this.Values[1].toString();
         };
 
-        Matrix2x2.Scale = /**
+        /**
         * Creates a scaling matrix based off the provided Vector2d.
         * @param vector The vector used to determine the X and Y scaling values.
         */
-        function (vector) {
+        Matrix2x2.Scale = function (vector) {
             return new Matrix2x2(vector.X, 0, 0, vector.Y);
         };
         return Matrix2x2;

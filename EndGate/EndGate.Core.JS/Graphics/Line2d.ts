@@ -108,7 +108,7 @@ module EndGate.Graphics {
         public get Color(): Color {
             return this._strokeStyle;
         }
-        public set Color(color: any) {
+        public set Color(color) {
             if (typeof color === "string") {
                 color = new Color(<any>color);
             }

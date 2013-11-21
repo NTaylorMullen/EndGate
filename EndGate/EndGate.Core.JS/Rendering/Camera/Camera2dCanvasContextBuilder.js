@@ -1,9 +1,9 @@
+/// <reference path="../../Assets/Vectors/Vector2d.ts" />
+/// <reference path="../../Assets/Sizes/Size2d.ts" />
+/// <reference path="Camera2d.ts" />
 var EndGate;
 (function (EndGate) {
     (function (Rendering) {
-        /// <reference path="../../Assets/Vectors/Vector2d.ts" />
-        /// <reference path="../../Assets/Sizes/Size2d.ts" />
-        /// <reference path="Camera2d.ts" />
         (function (_) {
             /**
             * Defines a builder that is used to build a camera sensitive CanvasRenderingContext2d so that anything drawn to it becomes relative to the Camera2d.
@@ -27,7 +27,7 @@ var EndGate;
                 Camera2dCanvasContextBuilder.prototype.Build = function (context) {
                     var that = this, savedCreateRadialGradient = context.createRadialGradient, savedTranslate = context.translate, savedSave = context.save, savedRestore = context.restore, savedDrawImage1 = this.BuildPositionReplacer(context.drawImage, 1), savedDrawImage2 = this.BuildPositionReplacer(context.drawImage, 5);
 
-                    (context).unModifiedClearRect = context.clearRect;
+                    context.unModifiedClearRect = context.clearRect;
 
                     context.arc = this.BuildPositionReplacer(context.arc);
                     context.arcTo = this.BuildPositionReplacer(context.arcTo, 0, 4);

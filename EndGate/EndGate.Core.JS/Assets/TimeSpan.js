@@ -13,10 +13,10 @@ var EndGate;
             this.Milliseconds = milliseconds + seconds * TimeSpan._secondsMultiplier + minutes * TimeSpan._minutesMultiplier;
         }
         Object.defineProperty(TimeSpan.prototype, "Milliseconds", {
-            get: /**
+            /**
             * Gets or sets the number of milliseconds the TimeSpan represents.
             */
-            function () {
+            get: function () {
                 return this._milliseconds;
             },
             set: function (val) {
@@ -29,10 +29,10 @@ var EndGate;
         });
 
         Object.defineProperty(TimeSpan.prototype, "Seconds", {
-            get: /**
+            /**
             * Gets or sets the number of seconds the TimeSpan represents.
             */
-            function () {
+            get: function () {
                 return this._seconds;
             },
             set: function (val) {
@@ -45,10 +45,10 @@ var EndGate;
         });
 
         Object.defineProperty(TimeSpan.prototype, "Minutes", {
-            get: /**
+            /**
             * Gets or sets the number of minutes the TimeSpan represents.
             */
-            function () {
+            get: function () {
                 return this._minutes;
             },
             set: function (val) {
@@ -130,44 +130,44 @@ var EndGate;
             return this.Milliseconds + ":" + this.Seconds + ":" + this.Minutes;
         };
 
-        TimeSpan.FromMilliseconds = /**
+        /**
         * Returns a TimeSpan that represents the specified number of milliseconds.
         * @param val Number of milliseconds.
         */
-        function (val) {
+        TimeSpan.FromMilliseconds = function (val) {
             return new TimeSpan(val);
         };
 
-        TimeSpan.FromSeconds = /**
+        /**
         * Returns a TimeSpan that represents the specified number of seconds.
         * @param val Number of seconds.
         */
-        function (val) {
+        TimeSpan.FromSeconds = function (val) {
             return new TimeSpan(0, val);
         };
 
-        TimeSpan.FromMinutes = /**
+        /**
         * Returns a TimeSpan that represents the specified number of minutes.
         * @param val Number of minutes.
         */
-        function (val) {
+        TimeSpan.FromMinutes = function (val) {
             return new TimeSpan(0, 0, val);
         };
 
-        TimeSpan.DateSpan = /**
+        /**
         * Returns a TimeSpan that represents the time between the two dates.
         * @param from The from date.
         * @param to The to date.
         */
-        function (from, to) {
+        TimeSpan.DateSpan = function (from, to) {
             return new TimeSpan(to.getTime() - from.getTime());
         };
 
         Object.defineProperty(TimeSpan, "Zero", {
-            get: /**
+            /**
             * Gets a TimeSpan that represents a 0 millisecond time interval.
             */
-            function () {
+            get: function () {
                 return new TimeSpan(0);
             },
             enumerable: true,

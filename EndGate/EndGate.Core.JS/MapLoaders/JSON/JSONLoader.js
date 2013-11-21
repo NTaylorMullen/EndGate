@@ -1,11 +1,11 @@
+/// <reference path="JSONFormat.ts" />
+/// <reference path="TMX/TMXLoader.ts" />
+/// <reference path="../IMapLoader.ts" />
+/// <reference path="../IMapPreloadInfo.ts" />
+/// <reference path="../IMapLoadedResult.ts" />
+/// <reference path="../IPropertyHooks.ts" />
 var EndGate;
 (function (EndGate) {
-    /// <reference path="JSONFormat.ts" />
-    /// <reference path="TMX/TMXLoader.ts" />
-    /// <reference path="../IMapLoader.ts" />
-    /// <reference path="../IMapPreloadInfo.ts" />
-    /// <reference path="../IMapLoadedResult.ts" />
-    /// <reference path="../IPropertyHooks.ts" />
     (function (MapLoaders) {
         /**
         * Defines a JSON loader that is used to load maps.
@@ -14,7 +14,7 @@ var EndGate;
             function JSONLoader() {
             }
             JSONLoader.Load = function (json, onComplete, propertyHooks, format) {
-                if (typeof format === "undefined") { format = MapLoaders.JSONFormat.TMX; }
+                if (typeof format === "undefined") { format = 0 /* TMX */; }
                 if (!propertyHooks) {
                     // Defaults
                     propertyHooks = {
@@ -24,10 +24,10 @@ var EndGate;
                     };
                 }
 
-                return JSONLoader._loaders[MapLoaders.JSONFormat[format]].Load(json, propertyHooks, onComplete);
+                return JSONLoader._loaders[EndGate.MapLoaders.JSONFormat[format]].Load(json, propertyHooks, onComplete);
             };
             JSONLoader._loaders = {
-                TMX: new MapLoaders._.TMX.TMXLoader()
+                TMX: new EndGate.MapLoaders._.TMX.TMXLoader()
             };
             return JSONLoader;
         })();

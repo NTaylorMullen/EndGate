@@ -324,7 +324,7 @@ module EndGate.Graphics {
 
             if (hex.length === 4) {
                 //short version that includes alpha channel
-                hex = hex.replace(Color.RgbaHexRegExp, function(m, a, r, g, b) {
+                hex = hex.replace(Color.RgbaHexRegExp, function(m, a?, r?, g?, b?) {
                     return r + r + g + g + b + b + a + a;
                 });
             }

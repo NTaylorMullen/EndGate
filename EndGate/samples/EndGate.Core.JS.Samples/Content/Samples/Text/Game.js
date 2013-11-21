@@ -18,7 +18,7 @@ var Texts;
 
             this.Text = new eg.Graphics.Text2d(this._canvas.width / 2, this._canvas.height / 2, "Hello World!");
             this.Text.FontSettings.FontSize = "20pt";
-            this.Text.FontSettings.FontFamily = eg.Graphics.Assets.FontFamily.TimesNewRoman;
+            this.Text.FontSettings.FontFamily = 21 /* TimesNewRoman */;
             this.Scene.Add(this.Text);
         }
         return Game;

@@ -1,7 +1,7 @@
+/// <reference path="../Interfaces/ICloneable.ts" />
+/// <reference path="../Assets/TimeSpan.ts" />
 var EndGate;
 (function (EndGate) {
-    /// <reference path="../Interfaces/ICloneable.ts" />
-    /// <reference path="../Assets/TimeSpan.ts" />
     (function (Particles) {
         /**
         * Defines a range that is used to describe a range of values.
@@ -19,19 +19,19 @@ var EndGate;
                 return new Range(this.Min, this.Max);
             };
 
-            Range.RandomNumber = /**
+            /**
             * Returns a random number between range.Min and range.Max.
             * @param range The range used to bound the number value.
             */
-            function (range) {
+            Range.RandomNumber = function (range) {
                 return Math.random() * (range.Max - range.Min) + range.Min;
             };
 
-            Range.RandomTimeSpan = /**
+            /**
             * Returns a random TimeSpan between range.Min and range.Max.
             * @param range The range used to bound the TimeSpan value.
             */
-            function (range) {
+            Range.RandomTimeSpan = function (range) {
                 return EndGate.TimeSpan.FromMilliseconds(Math.floor(Math.random() * (range.Max.Milliseconds - range.Min.Milliseconds + 1) + range.Min.Milliseconds));
             };
             return Range;

@@ -3,10 +3,13 @@
 // Wrap in module to keep code out of global scope
 var RawRPG;
 (function (RawRPG) {
+    
+
     var LoadMapHandler = (function () {
         function LoadMapHandler(gameScene, centerPosition, defaultRows, defaultColumns, defaultTileSize, spriteSheetUrl, defaultLayer) {
             var savedMaps = $("#savedMaps"), loadMap = $("#loadMap"), strMaps = localStorage.getItem("mapBuilder"), maps, activeTileMaps = [];
 
+            // If there are saved maps parse them out into an appropriate JS object
             if (strMaps && strMaps.length > 0) {
                 maps = JSON.parse(strMaps);
             } else {
@@ -19,12 +22,10 @@ var RawRPG;
                 Columns: defaultColumns,
                 TileSize: defaultTileSize,
                 SpriteSheetUrl: spriteSheetUrl,
-                Layers: [
-                    {
+                Layers: [{
                         Name: "Default",
                         Layer: defaultLayer
-                    }
-                ]
+                    }]
             };
 
             for (var saveName in maps) {

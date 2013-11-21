@@ -1,7 +1,7 @@
+/// <reference path="../Assets/Vectors/Vector2d.ts" />
+/// <reference path="Collidable.ts" />
 var EndGate;
 (function (EndGate) {
-    /// <reference path="../Assets/Vectors/Vector2d.ts" />
-    /// <reference path="Collidable.ts" />
     (function (Collision) {
         /**
         * Defines a data object that is used to describe a collision event.

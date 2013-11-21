@@ -19,6 +19,8 @@ var AnimatedSprites;
             this._mouse.OnMove.Bind(function (event) {
                 var electricPulseId, electricPulse, now = new Date().getTime();
 
+                // Check how long it's been since we last created an electric pulse If it's been more then
+                // X milliseconds(_pulseFrequency) then create a new ElectricPulse
                 if (now - that._lastPulse >= that._pulseFrequency) {
                     that._lastPulse = now;
                     electricPulseId = that._electricPulseIds++;

@@ -1,15 +1,15 @@
+/// <reference path="../Interfaces/IUpdateable.ts" />
+/// <reference path="../Graphics/Graphic2d.ts" />
+/// <reference path="../Assets/Vectors/Vector2d.ts" />
+/// <reference path="../Assets/TimeSpan.ts" />
+/// <reference path="../Tweening/Functions/ITweeningFunction.ts" />
+/// <reference path="../Tweening/Functions/Linear.ts" />
+/// <reference path="../Tweening/Vector2dTween.ts" />
+/// <reference path="../Tweening/NumberTween.ts" />
+/// <reference path="../Utilities/EventHandler1.ts" />
+/// <reference path="../GameTime.ts" />
 var EndGate;
 (function (EndGate) {
-    /// <reference path="../Interfaces/IUpdateable.ts" />
-    /// <reference path="../Graphics/Graphic2d.ts" />
-    /// <reference path="../Assets/Vectors/Vector2d.ts" />
-    /// <reference path="../Assets/TimeSpan.ts" />
-    /// <reference path="../Tweening/Functions/ITweeningFunction.ts" />
-    /// <reference path="../Tweening/Functions/Linear.ts" />
-    /// <reference path="../Tweening/Vector2dTween.ts" />
-    /// <reference path="../Tweening/NumberTween.ts" />
-    /// <reference path="../Utilities/EventHandler1.ts" />
-    /// <reference path="../GameTime.ts" />
     (function (Particles) {
         /**
         * Defines a particle that abides by several configured values.
@@ -51,10 +51,10 @@ var EndGate;
                 this._fadeTween.Play();
             }
             Object.defineProperty(Particle.prototype, "Texture", {
-                get: /**
+                /**
                 * Gets the particles texture.
                 */
-                function () {
+                get: function () {
                     return this._texture;
                 },
                 enumerable: true,
@@ -62,10 +62,10 @@ var EndGate;
             });
 
             Object.defineProperty(Particle.prototype, "OnDeath", {
-                get: /**
+                /**
                 * Gets an event that is triggered when the particle dies.  Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
-                function () {
+                get: function () {
                     return this._onDeath;
                 },
                 enumerable: true,

@@ -1,3 +1,12 @@
+/// <reference path="Range.ts" />
+/// <reference path="Particle.ts" />
+/// <reference path="../Graphics/Graphic2d.ts" />
+/// <reference path="../Assets/TimeSpan.ts" />
+/// <reference path="../Assets/Vectors/Vector2d.ts" />
+/// <reference path="../Extensions/MathExtensions.ts" />
+/// <reference path="../Interfaces/IUpdateable.ts" />
+/// <reference path="../Interfaces/ICloneable.ts" />
+/// <reference path="../Tweening/Functions/ITweeningFunction.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -6,15 +15,6 @@ var __extends = this.__extends || function (d, b) {
 };
 var EndGate;
 (function (EndGate) {
-    /// <reference path="Range.ts" />
-    /// <reference path="Particle.ts" />
-    /// <reference path="../Graphics/Graphic2d.ts" />
-    /// <reference path="../Assets/TimeSpan.ts" />
-    /// <reference path="../Assets/Vectors/Vector2d.ts" />
-    /// <reference path="../Extensions/MathExtensions.ts" />
-    /// <reference path="../Interfaces/IUpdateable.ts" />
-    /// <reference path="../Interfaces/ICloneable.ts" />
-    /// <reference path="../Tweening/Functions/ITweeningFunction.ts" />
     (function (Particles) {
         /**
         * Defines a particle emitter that can emit particles based on various configurations.
@@ -33,47 +33,47 @@ var EndGate;
                 /**
                 * Gets or sets the EmissionInterval.  The EmissionInterval is used to control how often particles are emitted.
                 */
-                this.EmissionInterval = new Particles.Range(EndGate.TimeSpan.FromMilliseconds(30));
+                this.EmissionInterval = new EndGate.Particles.Range(EndGate.TimeSpan.FromMilliseconds(30));
                 /**
                 * Gets or sets the EmissionDirection.  The EmissionDirection is used to control the angle of particle emissions.  This angle value should be in radians.
                 */
-                this.EmissionDirection = new Particles.Range(0, Math.PI * 2);
+                this.EmissionDirection = new EndGate.Particles.Range(0, Math.PI * 2);
                 /**
                 * Gets or sets the EmissionOutput.  The EmissionOutput is used to control how many particles should be emitted per emission.
                 */
-                this.EmissionOutput = new Particles.Range(1);
+                this.EmissionOutput = new EndGate.Particles.Range(1);
                 /**
                 * Gets or sets the ParticleLifetime.  The ParticleLifetime is used to control how long particles live before dying out.
                 */
-                this.ParticleLifetime = new Particles.Range(EndGate.TimeSpan.FromSeconds(1), EndGate.TimeSpan.FromSeconds(3));
+                this.ParticleLifetime = new EndGate.Particles.Range(EndGate.TimeSpan.FromSeconds(1), EndGate.TimeSpan.FromSeconds(3));
                 /**
                 * Gets or sets the ParticleSpeed.  The ParticleSpeed is used to control the average speed that emitted particles will move at during their lifetime.
                 */
-                this.ParticleSpeed = new Particles.Range(30, 100);
+                this.ParticleSpeed = new EndGate.Particles.Range(30, 100);
                 /**
                 * Gets or sets the ParticleScale.  The ParticleScale is used to control each particles size.  Values are percentages of particles base sizes.
                 */
-                this.ParticleScale = new Particles.Range(.75, 1.5);
+                this.ParticleScale = new EndGate.Particles.Range(.75, 1.5);
                 /**
                 * Gets or sets the ParticleRotation.  The ParticleRotation is used to control the initial rotation of emitted particles.
                 */
-                this.ParticleRotation = new Particles.Range(0, Math.PI * 2);
+                this.ParticleRotation = new EndGate.Particles.Range(0, Math.PI * 2);
                 /**
                 * Gets or sets the ParticleRotationSpeed.  The ParticleRotationSpeed is used to control how quickly emitted particles rotate.  Values should indicate X number of radians per second.
                 */
-                this.ParticleRotationSpeed = new Particles.Range(0, Math.PI);
+                this.ParticleRotationSpeed = new EndGate.Particles.Range(0, Math.PI);
                 /**
                 * Gets or sets the ParticleOpacity.  The ParticleOpacity is used to control emitted particles opacity.  Values should be between 0 and 1.
                 */
-                this.ParticleOpacity = new Particles.Range(1);
+                this.ParticleOpacity = new EndGate.Particles.Range(1);
                 /**
                 * Gets or sets the ParticleFadeInDuration.  The ParticleFadeInDuration is used to control how long particles take to fade in.
                 */
-                this.ParticleFadeInDuration = new Particles.Range(EndGate.TimeSpan.FromSeconds(.5));
+                this.ParticleFadeInDuration = new EndGate.Particles.Range(EndGate.TimeSpan.FromSeconds(.5));
                 /**
                 * Gets or sets the ParticleFadeOutDuration.  The ParticleFadeOutDuration is used to control how long particles take to fade out.
                 */
-                this.ParticleFadeOutDuration = new Particles.Range(EndGate.TimeSpan.FromSeconds(.5), EndGate.TimeSpan.FromSeconds(1));
+                this.ParticleFadeOutDuration = new EndGate.Particles.Range(EndGate.TimeSpan.FromSeconds(.5), EndGate.TimeSpan.FromSeconds(1));
 
                 this._texturePool = new Array();
                 this._particlePool = {};
@@ -136,15 +136,15 @@ var EndGate;
             * To allow for complex particle manipulation this method can be overridden by derived Emitter classes.
             */
             Emitter.prototype.Emit = function () {
-                var particleCount = Particles.Range.RandomNumber(this.EmissionOutput), endLocation, emissionDirection, particleSpeed, particleLifeTime, particle, particles = new Array();
+                var particleCount = EndGate.Particles.Range.RandomNumber(this.EmissionOutput), endLocation, emissionDirection, particleSpeed, particleLifeTime, particle, particles = new Array();
 
                 for (var i = 0; i < particleCount; i++) {
-                    particleLifeTime = Particles.Range.RandomTimeSpan(this.ParticleLifetime);
-                    particleSpeed = Particles.Range.RandomNumber(this.ParticleSpeed);
-                    emissionDirection = Particles.Range.RandomNumber(this.EmissionDirection);
+                    particleLifeTime = EndGate.Particles.Range.RandomTimeSpan(this.ParticleLifetime);
+                    particleSpeed = EndGate.Particles.Range.RandomNumber(this.ParticleSpeed);
+                    emissionDirection = EndGate.Particles.Range.RandomNumber(this.EmissionDirection);
                     endLocation = new EndGate.Vector2d(particleLifeTime.Seconds * particleSpeed, 0).RotateAround(EndGate.Vector2d.Zero, emissionDirection);
 
-                    particle = new Particles.Particle(this.BuildTextureFromPool(), EndGate.Vector2d.Zero, endLocation, Particles.Range.RandomNumber(this.ParticleScale), Particles.Range.RandomNumber(this.ParticleOpacity), Particles.Range.RandomNumber(this.ParticleRotation), Particles.Range.RandomNumber(this.ParticleRotationSpeed), particleLifeTime, Particles.Range.RandomTimeSpan(this.ParticleFadeInDuration), Particles.Range.RandomTimeSpan(this.ParticleFadeOutDuration), this.EmissionFunction);
+                    particle = new EndGate.Particles.Particle(this.BuildTextureFromPool(), EndGate.Vector2d.Zero, endLocation, EndGate.Particles.Range.RandomNumber(this.ParticleScale), EndGate.Particles.Range.RandomNumber(this.ParticleOpacity), EndGate.Particles.Range.RandomNumber(this.ParticleRotation), EndGate.Particles.Range.RandomNumber(this.ParticleRotationSpeed), particleLifeTime, EndGate.Particles.Range.RandomTimeSpan(this.ParticleFadeInDuration), EndGate.Particles.Range.RandomTimeSpan(this.ParticleFadeOutDuration), this.EmissionFunction);
 
                     particle._id = this._particleId++;
 
@@ -184,7 +184,7 @@ var EndGate;
                 var timeSinceEmit, emitCount, emissionRate;
 
                 if (this._emitting) {
-                    emissionRate = Particles.Range.RandomTimeSpan(this.EmissionInterval).Milliseconds;
+                    emissionRate = EndGate.Particles.Range.RandomTimeSpan(this.EmissionInterval).Milliseconds;
                     if (emissionRate > 0) {
                         timeSinceEmit = gameTime.Now.getTime() - this._lastEmit;
                         emitCount = Math.floor(timeSinceEmit / emissionRate);

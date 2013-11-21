@@ -1,3 +1,8 @@
+/// <reference path="../Assets/Sizes/Size2d.ts" />
+/// <reference path="../Assets/Vectors/Vector2d.ts" />
+/// <reference path="../Bounds/BoundingRectangle.ts" />
+/// <reference path="Graphic2d.ts" />
+/// <reference path="Color.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -6,11 +11,6 @@ var __extends = this.__extends || function (d, b) {
 };
 var EndGate;
 (function (EndGate) {
-    /// <reference path="../Assets/Sizes/Size2d.ts" />
-    /// <reference path="../Assets/Vectors/Vector2d.ts" />
-    /// <reference path="../Bounds/BoundingRectangle.ts" />
-    /// <reference path="Graphic2d.ts" />
-    /// <reference path="Color.ts" />
     (function (Graphics) {
         /**
         * Defines a drawable 2d line element.
@@ -20,7 +20,7 @@ var EndGate;
             function Line2d(fromX, fromY, toX, toY, lineWidth, color) {
                 if (typeof lineWidth === "undefined") { lineWidth = 1; }
                 var _this = this;
-                _super.call(this, EndGate.Vector2d.Zero);
+                _super.call(this, EndGate.Vector2d.Zero); // Set to zero here then updated in the rest of the constructor (use same logic)
                 this._type = "Line2d";
 
                 this._from = new EndGate.Vector2d(fromX, fromY);
@@ -34,18 +34,18 @@ var EndGate;
 
                 if (typeof color !== "undefined") {
                     if (typeof color === "string") {
-                        color = new Graphics.Color(color);
+                        color = new EndGate.Graphics.Color(color);
                     }
                     this.Color = this._strokeStyle = color;
                 } else {
-                    this.Color = this._strokeStyle = Graphics.Color.Black;
+                    this.Color = this._strokeStyle = EndGate.Graphics.Color.Black;
                 }
             }
             Object.defineProperty(Line2d.prototype, "From", {
-                get: /**
+                /**
                 * Gets or sets the From location of the Line2d.
                 */
-                function () {
+                get: function () {
                     return this._from;
                 },
                 set: function (newPosition) {
@@ -57,10 +57,10 @@ var EndGate;
             });
 
             Object.defineProperty(Line2d.prototype, "To", {
-                get: /**
+                /**
                 * Gets or sets the To location of the Line2d.
                 */
-                function () {
+                get: function () {
                     return this._to;
                 },
                 set: function (newPosition) {
@@ -72,15 +72,15 @@ var EndGate;
             });
 
             Object.defineProperty(Line2d.prototype, "Color", {
-                get: /**
+                /**
                 * Gets or sets the line color.  Valid colors are strings like "red" or "rgb(255,0,0)".
                 */
-                function () {
+                get: function () {
                     return this._strokeStyle;
                 },
                 set: function (color) {
                     if (typeof color === "string") {
-                        color = new Graphics.Color(color);
+                        color = new EndGate.Graphics.Color(color);
                     }
 
                     // Unbind old
@@ -98,10 +98,10 @@ var EndGate;
             });
 
             Object.defineProperty(Line2d.prototype, "LineWidth", {
-                get: /**
+                /**
                 * Gets or sets the line width.
                 */
-                function () {
+                get: function () {
                     return this._State.LineWidth;
                 },
                 set: function (width) {
@@ -112,10 +112,10 @@ var EndGate;
             });
 
             Object.defineProperty(Line2d.prototype, "LineCap", {
-                get: /**
+                /**
                 * Gets or sets the line cap.  Values can be "butt", "round", "square".
                 */
-                function () {
+                get: function () {
                     return this._State.LineCap;
                 },
                 set: function (cap) {
@@ -130,12 +130,15 @@ var EndGate;
             * @param context The canvas context to draw the line onto.
             */
             Line2d.prototype.Draw = function (context) {
+                // Need to check to ensure that the colors still match up so if people are performing direct color manipulation
+                // such as color.R = 131.
                 if (this._strokeStyle.toString() !== this._State.StrokeStyle) {
                     this._State.StrokeStyle = this._strokeStyle.toString();
                 }
 
                 _super.prototype._StartDraw.call(this, context);
 
+                // Check if the user has modified the position directly, if so we need to translate the from and to positions accordingly
                 if (!this._cachedPosition.Equivalent(this.Position)) {
                     this.RefreshCache();
                 }
@@ -204,7 +207,7 @@ var EndGate;
                 this._cachedPosition = this.Position.Clone();
             };
             return Line2d;
-        })(Graphics.Graphic2d);
+        })(EndGate.Graphics.Graphic2d);
         Graphics.Line2d = Line2d;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
     var Graphics = EndGate.Graphics;

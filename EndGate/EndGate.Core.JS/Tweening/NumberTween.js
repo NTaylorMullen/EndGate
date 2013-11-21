@@ -1,3 +1,5 @@
+/// <reference path="Tween.ts" />
+/// <reference path="../Extensions/NumberExtensions.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -6,8 +8,6 @@ var __extends = this.__extends || function (d, b) {
 };
 var EndGate;
 (function (EndGate) {
-    /// <reference path="Tween.ts" />
-    /// <reference path="../Extensions/NumberExtensions.ts" />
     (function (Tweening) {
         /**
         * Defines a NumberTween class that is used to move a number from a start value to an end value.
@@ -28,7 +28,7 @@ var EndGate;
                 this.Current = this.TweeningFunction(this.From, this.To, this.Elapsed, this.Duration);
             };
             return NumberTween;
-        })(Tweening.Tween);
+        })(EndGate.Tweening.Tween);
         Tweening.NumberTween = NumberTween;
     })(EndGate.Tweening || (EndGate.Tweening = {}));
     var Tweening = EndGate.Tweening;

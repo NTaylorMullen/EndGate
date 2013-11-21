@@ -11,6 +11,7 @@ var MapCreator;
             var outputButton = utilities.find("#output"), outputOptions = utilities.find("#outputOptions"), outputPanel = $("#outputPanel"), outputString;
 
             outputButton.click(function () {
+                // Output text
                 if (outputOptions.val() === "0") {
                     // We use the same "saving" logic to then generate a string that we push out to the user
                     persistenceManager.SaveMap("_output", "_");

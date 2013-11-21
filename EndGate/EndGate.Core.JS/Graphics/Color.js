@@ -25,10 +25,10 @@ var EndGate;
                 }
             }
             Object.defineProperty(Color.prototype, "OnChange", {
-                get: /**
+                /**
                 * Gets an EventHandler that is triggered when the R, G, B, or A values of this Color change.
                 */
-                function () {
+                get: function () {
                     return this._onChange;
                 },
                 enumerable: true,
@@ -36,10 +36,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color.prototype, "R", {
-                get: /**
+                /**
                 * Gets or sets the current red channel. Value must be an integer between 0 and 255 inclusive.
                 */
-                function () {
+                get: function () {
                     return this._r;
                 },
                 set: function (r) {
@@ -52,10 +52,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color.prototype, "G", {
-                get: /**
+                /**
                 * Gets or sets the current green channel. Value must be an integer between 0 and 255 inclusive.
                 */
-                function () {
+                get: function () {
                     return this._g;
                 },
                 set: function (g) {
@@ -68,10 +68,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color.prototype, "B", {
-                get: /**
+                /**
                 * Gets or sets the current blue channel. Value must be an integer between 0 and 255 inclusive.
                 */
-                function () {
+                get: function () {
                     return this._b;
                 },
                 set: function (b) {
@@ -84,10 +84,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color.prototype, "A", {
-                get: /**
+                /**
                 * Gets or sets the current alpha channel. Value must be between 0 and 1 inclusive.
                 */
-                function () {
+                get: function () {
                     return this._a;
                 },
                 set: function (a) {
@@ -99,57 +99,57 @@ var EndGate;
                 configurable: true
             });
 
-            Color.FromRGB = /**
+            /**
             * Creates a new Color object with the specified RGB values.
             * @param r The red channel. Must be between 0 and 255 inclusive.
             * @param g The green channel. Must be between 0 and 255 inclusive.
             * @param b The blue channel. Must be between 0 and 255 inclusive.
             */
-            function (r, g, b) {
+            Color.FromRGB = function (r, g, b) {
                 return new Color(r, g, b);
             };
 
-            Color.FromRGBA = /**
+            /**
             * Creates a new Color object with the specified RGBA values.
             * @param r The red channel. Must be between 0 and 255 inclusive.
             * @param g The green channel. Must be between 0 and 255 inclusive.
             * @param b The blue channel. Must be between 0 and 255 inclusive.
             * @param a The alpha channel. Must be between 0 and 1 inclusive.
             */
-            function (r, g, b, a) {
+            Color.FromRGBA = function (r, g, b, a) {
                 return new Color(r, g, b, a);
             };
 
-            Color.FromARGB = /**
+            /**
             * Creates a new Color object with the specified ARGB values.
             * @param a The alpha channel. Must be between 0 and 1 inclusive.
             * @param r The red channel. Must be between 0 and 255 inclusive.
             * @param g The green channel. Must be between 0 and 255 inclusive.
             * @param b The blue channel. Must be between 0 and 255 inclusive.
             */
-            function (a, r, g, b) {
+            Color.FromARGB = function (a, r, g, b) {
                 return new Color(r, g, b, a);
             };
 
-            Color.FromHex = /**
+            /**
             * Creates a new Color object from the specified hex assignment.
             * @param hex The hex based color code.
             */
-            function (hex) {
+            Color.FromHex = function (hex) {
                 return new Color(hex);
             };
 
-            Color.FromName = /**
+            /**
             * Creates a new Color object form the HTML5 named colors.
             * @param name The name of the HTML5 color to use.
             */
-            function (name) {
+            Color.FromName = function (name) {
                 return new Color(name);
             };
 
-            Color.ConvertShortHexToLong = //Converts a short hex string e.g. fff or cccc to the long version
+            //Converts a short hex string e.g. fff or cccc to the long version
             //e.g. ffffffff the alpha channel.
-            function (hex) {
+            Color.ConvertShortHexToLong = function (hex) {
                 if (hex.length === 3) {
                     //append the alpha channel default which is fully opaque
                     hex = hex + 'f';
@@ -187,6 +187,7 @@ var EndGate;
 
             //Creates a color object from the string provided
             Color.prototype.CreateColorObjectFromString = function (hex) {
+                //we're not interested in the pound sign
                 if (hex.charAt(0) === '#') {
                     hex = hex.substr(1);
                 }
@@ -194,10 +195,13 @@ var EndGate;
                 //convert short hexes to long hexes
                 hex = Color.ConvertShortHexToLong(hex);
 
+                //ensure we have an alpha channel
                 if (hex.length === 6) {
                     hex = hex + 'ff';
                 }
 
+                //if it's exactly 8 characters long then it's
+                //a hex and we build the Color object from this
                 if (hex.length === 8) {
                     return this.ParseAlphaHex(hex);
                 }
@@ -266,10 +270,10 @@ var EndGate;
             };
 
             Object.defineProperty(Color, "Transparent", {
-                get: /**
+                /**
                 * Returns a transparent Color object.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.transparent.Clone();
                 },
                 enumerable: true,
@@ -277,10 +281,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "AliceBlue", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color AliceBlue.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.aliceblue.Clone();
                 },
                 enumerable: true,
@@ -288,10 +292,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "AntiqueWhite", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color AntiqueWhite.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.antiquewhite.Clone();
                 },
                 enumerable: true,
@@ -299,10 +303,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Aqua", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Aqua.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.aqua.Clone();
                 },
                 enumerable: true,
@@ -310,10 +314,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Aquamarine", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Aquamarine.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.aquamarine.Clone();
                 },
                 enumerable: true,
@@ -321,10 +325,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Azure", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Azure.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.azure.Clone();
                 },
                 enumerable: true,
@@ -332,10 +336,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Beige", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Beige.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.beige.Clone();
                 },
                 enumerable: true,
@@ -343,10 +347,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Bisque", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Bisque.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.bisque.Clone();
                 },
                 enumerable: true,
@@ -354,10 +358,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Black", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Black.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.black.Clone();
                 },
                 enumerable: true,
@@ -365,10 +369,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "BlanchedAlmond", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color BlanchedAlmond.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.blanchedalmond.Clone();
                 },
                 enumerable: true,
@@ -376,10 +380,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Blue", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Blue.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.blue.Clone();
                 },
                 enumerable: true,
@@ -387,10 +391,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "BlueViolet", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color BlueViolet.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.blueviolet.Clone();
                 },
                 enumerable: true,
@@ -398,10 +402,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Brown", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Brown.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.brown.Clone();
                 },
                 enumerable: true,
@@ -409,10 +413,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "BurlyWood", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color BurlyWood.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.burlywood.Clone();
                 },
                 enumerable: true,
@@ -420,10 +424,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "CadetBlue", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color CadetBlue.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.cadetblue.Clone();
                 },
                 enumerable: true,
@@ -431,10 +435,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Chartreuse", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Chartreuse.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.chartreuse.Clone();
                 },
                 enumerable: true,
@@ -442,10 +446,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Chocolate", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Chocolate.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.chocolate.Clone();
                 },
                 enumerable: true,
@@ -453,10 +457,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Coral", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Coral.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.coral.Clone();
                 },
                 enumerable: true,
@@ -464,10 +468,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "CornflowerBlue", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color CornflowerBlue.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.cornflowerblue.Clone();
                 },
                 enumerable: true,
@@ -475,10 +479,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Cornsilk", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Cornsilk.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.cornsilk.Clone();
                 },
                 enumerable: true,
@@ -486,10 +490,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Crimson", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Crimson.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.crimson.Clone();
                 },
                 enumerable: true,
@@ -497,10 +501,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Cyan", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Cyan.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.cyan.Clone();
                 },
                 enumerable: true,
@@ -508,10 +512,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "DarkBlue", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color DarkBlue.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.darkblue.Clone();
                 },
                 enumerable: true,
@@ -519,10 +523,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "DarkCyan", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color DarkCyan.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.darkcyan.Clone();
                 },
                 enumerable: true,
@@ -530,10 +534,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "DarkGoldenRod", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color DarkGoldenRod.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.darkgoldenrod.Clone();
                 },
                 enumerable: true,
@@ -541,10 +545,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "DarkGray", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color DarkGray.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.darkgray.Clone();
                 },
                 enumerable: true,
@@ -552,10 +556,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "DarkGreen", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color DarkGreen.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.darkgreen.Clone();
                 },
                 enumerable: true,
@@ -563,10 +567,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "DarkKhaki", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color DarkKhaki.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.darkkhaki.Clone();
                 },
                 enumerable: true,
@@ -574,10 +578,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "DarkMagenta", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color DarkMagenta.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.darkmagenta.Clone();
                 },
                 enumerable: true,
@@ -585,10 +589,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "DarkOliveGreen", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color DarkOliveGreen.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.darkolivegreen.Clone();
                 },
                 enumerable: true,
@@ -596,10 +600,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "DarkOrange", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color DarkOrange.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.darkorange.Clone();
                 },
                 enumerable: true,
@@ -607,10 +611,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "DarkOrchid", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color DarkOrchid.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.darkorchid.Clone();
                 },
                 enumerable: true,
@@ -618,10 +622,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "DarkRed", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color DarkRed.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.darkred.Clone();
                 },
                 enumerable: true,
@@ -629,10 +633,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "DarkSalmon", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color DarkSalmon.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.darksalmon.Clone();
                 },
                 enumerable: true,
@@ -640,10 +644,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "DarkSeaGreen", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color DarkSeaGreen.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.darkseagreen.Clone();
                 },
                 enumerable: true,
@@ -651,10 +655,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "DarkSlateBlue", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color DarkSlateBlue.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.darkslateblue.Clone();
                 },
                 enumerable: true,
@@ -662,10 +666,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "DarkSlateGray", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color DarkSlateGray.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.darkslategray.Clone();
                 },
                 enumerable: true,
@@ -673,10 +677,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "DarkTurquoise", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color DarkTurquoise.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.darkturquoise.Clone();
                 },
                 enumerable: true,
@@ -684,10 +688,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "DarkViolet", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color DarkViolet.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.darkviolet.Clone();
                 },
                 enumerable: true,
@@ -695,10 +699,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "DeepPink", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color DeepPink.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.deeppink.Clone();
                 },
                 enumerable: true,
@@ -706,10 +710,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "DeepSkyBlue", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color DeepSkyBlue.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.deepskyblue.Clone();
                 },
                 enumerable: true,
@@ -717,10 +721,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "DimGray", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color DimGray.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.dimgray.Clone();
                 },
                 enumerable: true,
@@ -728,10 +732,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "DodgerBlue", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color DodgerBlue.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.dodgerblue.Clone();
                 },
                 enumerable: true,
@@ -739,10 +743,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "FireBrick", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color FireBrick.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.firebrick.Clone();
                 },
                 enumerable: true,
@@ -750,10 +754,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "FloralWhite", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color FloralWhite.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.floralwhite.Clone();
                 },
                 enumerable: true,
@@ -761,10 +765,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "ForestGreen", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color ForestGreen.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.forestgreen.Clone();
                 },
                 enumerable: true,
@@ -772,10 +776,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Fuchsia", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Fuchsia.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.fuchsia.Clone();
                 },
                 enumerable: true,
@@ -783,10 +787,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Gainsboro", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Gainsboro.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.gainsboro.Clone();
                 },
                 enumerable: true,
@@ -794,10 +798,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "GhostWhite", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color GhostWhite.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.ghostwhite.Clone();
                 },
                 enumerable: true,
@@ -805,10 +809,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Gold", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Gold.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.gold.Clone();
                 },
                 enumerable: true,
@@ -816,10 +820,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "GoldenRod", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color GoldenRod.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.goldenrod.Clone();
                 },
                 enumerable: true,
@@ -827,10 +831,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Gray", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Gray.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.gray.Clone();
                 },
                 enumerable: true,
@@ -838,10 +842,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Green", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Green.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.green.Clone();
                 },
                 enumerable: true,
@@ -849,10 +853,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "GreenYellow", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color GreenYellow.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.greenyellow.Clone();
                 },
                 enumerable: true,
@@ -860,10 +864,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "HoneyDew", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color HoneyDew.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.honeydew.Clone();
                 },
                 enumerable: true,
@@ -871,10 +875,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "HotPink", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color HotPink.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.hotpink.Clone();
                 },
                 enumerable: true,
@@ -882,10 +886,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "IndianRed", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color IndianRed.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.indianred.Clone();
                 },
                 enumerable: true,
@@ -893,10 +897,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Indigo", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Indigo.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.indigo.Clone();
                 },
                 enumerable: true,
@@ -904,10 +908,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Ivory", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Ivory.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.ivory.Clone();
                 },
                 enumerable: true,
@@ -915,10 +919,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Khaki", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Khaki.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.khaki.Clone();
                 },
                 enumerable: true,
@@ -926,10 +930,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Lavender", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Lavender.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.lavender.Clone();
                 },
                 enumerable: true,
@@ -937,10 +941,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "LavenderBlush", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color LavenderBlush.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.lavenderblush.Clone();
                 },
                 enumerable: true,
@@ -948,10 +952,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "LawnGreen", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color LawnGreen.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.lawngreen.Clone();
                 },
                 enumerable: true,
@@ -959,10 +963,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "LemonChiffon", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color LemonChiffon.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.lemonchiffon.Clone();
                 },
                 enumerable: true,
@@ -970,10 +974,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "LightBlue", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color LightBlue.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.lightblue.Clone();
                 },
                 enumerable: true,
@@ -981,10 +985,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "LightCoral", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color LightCoral.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.lightcoral.Clone();
                 },
                 enumerable: true,
@@ -992,10 +996,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "LightCyan", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color LightCyan.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.lightcyan.Clone();
                 },
                 enumerable: true,
@@ -1003,10 +1007,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "LightGoldenRodYellow", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color LightGoldenRodYellow.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.lightgoldenrodyellow.Clone();
                 },
                 enumerable: true,
@@ -1014,10 +1018,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "LightGray", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color LightGray.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.lightgray.Clone();
                 },
                 enumerable: true,
@@ -1025,10 +1029,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "LightGrey", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color LightGrey.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.lightgrey.Clone();
                 },
                 enumerable: true,
@@ -1036,10 +1040,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "LightGreen", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color LightGreen.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.lightgreen.Clone();
                 },
                 enumerable: true,
@@ -1047,10 +1051,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "LightPink", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color LightPink.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.lightpink.Clone();
                 },
                 enumerable: true,
@@ -1058,10 +1062,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "LightSalmon", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color LightSalmon.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.lightsalmon.Clone();
                 },
                 enumerable: true,
@@ -1069,10 +1073,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "LightSeaGreen", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color LightSeaGreen.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.lightseagreen.Clone();
                 },
                 enumerable: true,
@@ -1080,10 +1084,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "LightSkyBlue", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color LightSkyBlue.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.lightskyblue.Clone();
                 },
                 enumerable: true,
@@ -1091,10 +1095,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "LightSlateGray", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color LightSlateGray.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.lightslategray.Clone();
                 },
                 enumerable: true,
@@ -1102,10 +1106,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "LightSteelBlue", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color LightSteelBlue.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.lightsteelblue.Clone();
                 },
                 enumerable: true,
@@ -1113,10 +1117,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "LightYellow", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color LightYellow.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.lightyellow.Clone();
                 },
                 enumerable: true,
@@ -1124,10 +1128,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Lime", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Lime.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.lime.Clone();
                 },
                 enumerable: true,
@@ -1135,10 +1139,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "LimeGreen", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color LimeGreen.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.limegreen.Clone();
                 },
                 enumerable: true,
@@ -1146,10 +1150,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Linen", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Linen.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.linen.Clone();
                 },
                 enumerable: true,
@@ -1157,10 +1161,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Magenta", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Magenta.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.magenta.Clone();
                 },
                 enumerable: true,
@@ -1168,10 +1172,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Maroon", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Maroon.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.maroon.Clone();
                 },
                 enumerable: true,
@@ -1179,10 +1183,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "MediumAquaMarine", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color MediumAquaMarine.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.mediumaquamarine.Clone();
                 },
                 enumerable: true,
@@ -1190,10 +1194,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "MediumBlue", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color MediumBlue.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.mediumblue.Clone();
                 },
                 enumerable: true,
@@ -1201,10 +1205,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "MediumOrchid", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color MediumOrchid.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.mediumorchid.Clone();
                 },
                 enumerable: true,
@@ -1212,10 +1216,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "MediumPurple", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color MediumPurple.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.mediumpurple.Clone();
                 },
                 enumerable: true,
@@ -1223,10 +1227,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "MediumSeaGreen", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color MediumSeaGreen.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.mediumseagreen.Clone();
                 },
                 enumerable: true,
@@ -1234,10 +1238,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "MediumSlateBlue", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color MediumSlateBlue.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.mediumslateblue.Clone();
                 },
                 enumerable: true,
@@ -1245,10 +1249,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "MediumSpringGreen", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color MediumSpringGreen.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.mediumspringgreen.Clone();
                 },
                 enumerable: true,
@@ -1256,10 +1260,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "MediumTurquoise", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color MediumTurquoise.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.mediumturquoise.Clone();
                 },
                 enumerable: true,
@@ -1267,10 +1271,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "MediumVioletRed", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color MediumVioletRed.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.mediumvioletred.Clone();
                 },
                 enumerable: true,
@@ -1278,10 +1282,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "MidnightBlue", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color MidnightBlue.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.midnightblue.Clone();
                 },
                 enumerable: true,
@@ -1289,10 +1293,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "MintCream", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color MintCream.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.mintcream.Clone();
                 },
                 enumerable: true,
@@ -1300,10 +1304,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "MistyRose", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color MistyRose.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.mistyrose.Clone();
                 },
                 enumerable: true,
@@ -1311,10 +1315,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Moccasin", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Moccasin.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.moccasin.Clone();
                 },
                 enumerable: true,
@@ -1322,10 +1326,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "NavajoWhite", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color NavajoWhite.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.navajowhite.Clone();
                 },
                 enumerable: true,
@@ -1333,10 +1337,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Navy", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Navy.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.navy.Clone();
                 },
                 enumerable: true,
@@ -1344,10 +1348,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "OldLace", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color OldLace.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.oldlace.Clone();
                 },
                 enumerable: true,
@@ -1355,10 +1359,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Olive", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Olive.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.olive.Clone();
                 },
                 enumerable: true,
@@ -1366,10 +1370,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "OliveDrab", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color OliveDrab.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.olivedrab.Clone();
                 },
                 enumerable: true,
@@ -1377,10 +1381,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Orange", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Orange.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.orange.Clone();
                 },
                 enumerable: true,
@@ -1388,10 +1392,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "OrangeRed", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color OrangeRed.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.orangered.Clone();
                 },
                 enumerable: true,
@@ -1399,10 +1403,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Orchid", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Orchid.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.orchid.Clone();
                 },
                 enumerable: true,
@@ -1410,10 +1414,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "PaleGoldenRod", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color PaleGoldenRod.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.palegoldenrod.Clone();
                 },
                 enumerable: true,
@@ -1421,10 +1425,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "PaleGreen", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color PaleGreen.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.palegreen.Clone();
                 },
                 enumerable: true,
@@ -1432,10 +1436,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "PaleTurquoise", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color PaleTurquoise.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.paleturquoise.Clone();
                 },
                 enumerable: true,
@@ -1443,10 +1447,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "PaleVioletRed", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color PaleVioletRed.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.palevioletred.Clone();
                 },
                 enumerable: true,
@@ -1454,10 +1458,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "PapayaWhip", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color PapayaWhip.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.papayawhip.Clone();
                 },
                 enumerable: true,
@@ -1465,10 +1469,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "PeachPuff", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color PeachPuff.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.peachpuff.Clone();
                 },
                 enumerable: true,
@@ -1476,10 +1480,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Peru", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Peru.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.peru.Clone();
                 },
                 enumerable: true,
@@ -1487,10 +1491,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Pink", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Pink.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.pink.Clone();
                 },
                 enumerable: true,
@@ -1498,10 +1502,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Plum", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Plum.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.plum.Clone();
                 },
                 enumerable: true,
@@ -1509,10 +1513,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "PowderBlue", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color PowderBlue.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.powderblue.Clone();
                 },
                 enumerable: true,
@@ -1520,10 +1524,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Purple", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Purple.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.purple.Clone();
                 },
                 enumerable: true,
@@ -1531,10 +1535,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Red", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Red.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.red.Clone();
                 },
                 enumerable: true,
@@ -1542,10 +1546,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "RosyBrown", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color RosyBrown.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.rosybrown.Clone();
                 },
                 enumerable: true,
@@ -1553,10 +1557,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "RoyalBlue", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color RoyalBlue.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.royalblue.Clone();
                 },
                 enumerable: true,
@@ -1564,10 +1568,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "SaddleBrown", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color SaddleBrown.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.saddlebrown.Clone();
                 },
                 enumerable: true,
@@ -1575,10 +1579,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Salmon", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Salmon.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.salmon.Clone();
                 },
                 enumerable: true,
@@ -1586,10 +1590,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "SandyBrown", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color SandyBrown.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.sandybrown.Clone();
                 },
                 enumerable: true,
@@ -1597,10 +1601,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "SeaGreen", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color SeaGreen.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.seagreen.Clone();
                 },
                 enumerable: true,
@@ -1608,10 +1612,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "SeaShell", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color SeaShell.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.seashell.Clone();
                 },
                 enumerable: true,
@@ -1619,10 +1623,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Sienna", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Sienna.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.sienna.Clone();
                 },
                 enumerable: true,
@@ -1630,10 +1634,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Silver", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Silver.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.silver.Clone();
                 },
                 enumerable: true,
@@ -1641,10 +1645,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "SkyBlue", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color SkyBlue.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.skyblue.Clone();
                 },
                 enumerable: true,
@@ -1652,10 +1656,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "SlateBlue", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color SlateBlue.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.slateblue.Clone();
                 },
                 enumerable: true,
@@ -1663,10 +1667,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "SlateGray", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color SlateGray.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.slategray.Clone();
                 },
                 enumerable: true,
@@ -1674,10 +1678,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Snow", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Snow.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.snow.Clone();
                 },
                 enumerable: true,
@@ -1685,10 +1689,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "SpringGreen", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color SpringGreen.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.springgreen.Clone();
                 },
                 enumerable: true,
@@ -1696,10 +1700,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "SteelBlue", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color SteelBlue.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.steelblue.Clone();
                 },
                 enumerable: true,
@@ -1707,10 +1711,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Tan", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Tan.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.tan.Clone();
                 },
                 enumerable: true,
@@ -1718,10 +1722,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Teal", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Teal.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.teal.Clone();
                 },
                 enumerable: true,
@@ -1729,10 +1733,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Thistle", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Thistle.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.thistle.Clone();
                 },
                 enumerable: true,
@@ -1740,10 +1744,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Tomato", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Tomato.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.tomato.Clone();
                 },
                 enumerable: true,
@@ -1751,10 +1755,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Turquoise", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Turquoise.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.turquoise.Clone();
                 },
                 enumerable: true,
@@ -1762,10 +1766,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Violet", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Violet.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.violet.Clone();
                 },
                 enumerable: true,
@@ -1773,10 +1777,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Wheat", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Wheat.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.wheat.Clone();
                 },
                 enumerable: true,
@@ -1784,10 +1788,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "White", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color White.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.white.Clone();
                 },
                 enumerable: true,
@@ -1795,10 +1799,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "WhiteSmoke", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color WhiteSmoke.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.whitesmoke.Clone();
                 },
                 enumerable: true,
@@ -1806,10 +1810,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "Yellow", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color Yellow.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.yellow.Clone();
                 },
                 enumerable: true,
@@ -1817,10 +1821,10 @@ var EndGate;
             });
 
             Object.defineProperty(Color, "YellowGreen", {
-                get: /**
+                /**
                 * Returns a Color object set to the color named color YellowGreen.
                 */
-                function () {
+                get: function () {
                     return Color._namedColors.yellowgreen.Clone();
                 },
                 enumerable: true,

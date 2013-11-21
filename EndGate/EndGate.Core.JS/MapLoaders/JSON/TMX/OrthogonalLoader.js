@@ -1,19 +1,19 @@
+/// <reference path="../../../Graphics/ImageSource.ts" />
+/// <reference path="../../IMapLoader.ts" />
+/// <reference path="../../IMapLoadedResult.ts" />
+/// <reference path="../../IMapPreloadInfo.ts" />
+/// <reference path="../../IHookFunction.ts" />
+/// <reference path="../../../Graphics/TileMaps/SquareTileMap.ts" />
+/// <reference path="../../../Graphics/TileMaps/ITileDetails.ts" />
+/// <reference path="../../../Assets/TimeSpan.ts" />
+/// <reference path="../../../Extensions/Helpers.ts" />
+/// <reference path="../../../Utilities/EventHandler1.ts" />
+/// <reference path="ITMX.ts" />
+/// <reference path="ITMXTileset.ts" />
 var EndGate;
 (function (EndGate) {
     (function (MapLoaders) {
         (function (_) {
-            /// <reference path="../../../Graphics/ImageSource.ts" />
-            /// <reference path="../../IMapLoader.ts" />
-            /// <reference path="../../IMapLoadedResult.ts" />
-            /// <reference path="../../IMapPreloadInfo.ts" />
-            /// <reference path="../../IHookFunction.ts" />
-            /// <reference path="../../../Graphics/TileMaps/SquareTileMap.ts" />
-            /// <reference path="../../../Graphics/TileMaps/ITileDetails.ts" />
-            /// <reference path="../../../Assets/TimeSpan.ts" />
-            /// <reference path="../../../Extensions/Helpers.ts" />
-            /// <reference path="../../../Utilities/EventHandler1.ts" />
-            /// <reference path="ITMX.ts" />
-            /// <reference path="ITMXTileset.ts" />
             (function (TMX) {
                 var OrthogonalLoader = (function () {
                     function OrthogonalLoader() {
@@ -75,6 +75,7 @@ var EndGate;
                         var tilesetSources = {}, loadedCount = 0, onLoaded = function (source) {
                             onTilesetLoad(source);
 
+                            // If everything has loaded
                             if (++loadedCount === tilesets.length) {
                                 onComplete(tilesetSources);
                             }

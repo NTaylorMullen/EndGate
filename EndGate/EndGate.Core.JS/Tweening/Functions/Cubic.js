@@ -1,7 +1,7 @@
+/// <reference path="ITweeningFunction.ts" />
 var EndGate;
 (function (EndGate) {
     (function (Tweening) {
-        /// <reference path="ITweeningFunction.ts" />
         (function (Functions) {
             /**
             * Defines a Cubic tweening function collection that has an EaseIn, EaseOut, and EaseInOut function that can be used with Tween's.
@@ -10,10 +10,10 @@ var EndGate;
                 function Cubic() {
                 }
                 Object.defineProperty(Cubic, "EaseIn", {
-                    get: /**
+                    /**
                     * Gets the Cubic EaseIn function.
                     */
-                    function () {
+                    get: function () {
                         return Cubic._easeIn;
                     },
                     enumerable: true,
@@ -21,10 +21,10 @@ var EndGate;
                 });
 
                 Object.defineProperty(Cubic, "EaseOut", {
-                    get: /**
+                    /**
                     * Gets the Cubic EaseOut function.
                     */
-                    function () {
+                    get: function () {
                         return Cubic._easeOut;
                     },
                     enumerable: true,
@@ -32,10 +32,10 @@ var EndGate;
                 });
 
                 Object.defineProperty(Cubic, "EaseInOut", {
-                    get: /**
+                    /**
                     * Gets the Cubic EaseInOut function.
                     */
-                    function () {
+                    get: function () {
                         return Cubic._easeInOut;
                     },
                     enumerable: true,

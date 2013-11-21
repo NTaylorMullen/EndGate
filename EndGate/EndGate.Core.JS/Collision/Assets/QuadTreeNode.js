@@ -1,3 +1,7 @@
+/// <reference path="../Collidable.ts" />
+/// <reference path="../../Assets/Sizes/Size2d.ts" />
+/// <reference path="../../Assets/Vectors/Vector2d.ts" />
+/// <reference path="../../Bounds/BoundingRectangle.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -8,10 +12,6 @@ var EndGate;
 (function (EndGate) {
     (function (Collision) {
         (function (Assets) {
-            /// <reference path="../Collidable.ts" />
-            /// <reference path="../../Assets/Sizes/Size2d.ts" />
-            /// <reference path="../../Assets/Vectors/Vector2d.ts" />
-            /// <reference path="../../Bounds/BoundingRectangle.ts" />
             (function (_) {
                 var QuadTreeNode = (function (_super) {
                     __extends(QuadTreeNode, _super);
@@ -80,7 +80,7 @@ var EndGate;
                     };
 
                     QuadTreeNode.prototype.Partition = function () {
-                        var partitionedSize = new EndGate.Size2d(Math.round((this.Bounds).Size.Width * .5)), boundsPosition = this.Bounds.Position;
+                        var partitionedSize = new EndGate.Size2d(Math.round(this.Bounds.Size.Width * .5)), boundsPosition = this.Bounds.Position;
 
                         this._partitioned = true;
 
@@ -111,6 +111,7 @@ var EndGate;
                     };
 
                     QuadTreeNode.prototype.ReverseInsert = function (obj) {
+                        // Check if object has left the bounds of this node then go up another level
                         if (!this.Bounds.Contains(obj.Bounds)) {
                             if (this.Parent != null) {
                                 return this.Parent.ReverseInsert(obj);
@@ -132,16 +133,22 @@ var EndGate;
                         for (var i = 0; i < this._children.length; i++) {
                             child = this._children[i];
 
+                            // If child fully contains the query area then we need to
+                            // drill down until we find all of the query items
                             if (child.Bounds.Contains(queryArea)) {
                                 results = results.concat(child.Query(queryArea));
                                 break;
                             }
 
+                            // If the queryArea fully contains the node then everything
+                            // underneath it belongs to the query
                             if (queryArea.Contains(child.Bounds)) {
                                 results = results.concat(child.GetSubTreeContents());
                                 continue;
                             }
 
+                            // If a sub-node intersects partially with the query then we
+                            // need to query its children to find valid nodes
                             if (child.Bounds.Intersects(queryArea)) {
                                 results = results.concat(child.Query(queryArea));
                             }
@@ -170,7 +177,7 @@ var EndGate;
                         return results;
                     };
                     return QuadTreeNode;
-                })(Collision.Collidable);
+                })(EndGate.Collision.Collidable);
                 _.QuadTreeNode = QuadTreeNode;
             })(Assets._ || (Assets._ = {}));
             var _ = Assets._;

@@ -1,7 +1,7 @@
+/// <reference path="ITweeningFunction.ts" />
 var EndGate;
 (function (EndGate) {
     (function (Tweening) {
-        /// <reference path="ITweeningFunction.ts" />
         (function (Functions) {
             /**
             * Defines a Linear tweening function that has an EaseNone function that can be used with Tween's.
@@ -10,10 +10,10 @@ var EndGate;
                 function Linear() {
                 }
                 Object.defineProperty(Linear, "EaseNone", {
-                    get: /**
+                    /**
                     * Gets the Linear EaseNone function.
                     */
-                    function () {
+                    get: function () {
                         return Linear._easeNone;
                     },
                     enumerable: true,

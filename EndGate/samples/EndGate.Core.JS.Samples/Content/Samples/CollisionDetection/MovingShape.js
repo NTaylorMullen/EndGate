@@ -34,15 +34,16 @@ var CollisionDetection;
             this._collisionColorAlpha = 1;
 
             // Update the border color array
-            this._collisionColor[0] = (data.With).Graphic.Color.R;
-            this._collisionColor[1] = (data.With).Graphic.Color.G;
-            this._collisionColor[2] = (data.With).Graphic.Color.B;
+            this._collisionColor[0] = data.With.Graphic.Color.R;
+            this._collisionColor[1] = data.With.Graphic.Color.G;
+            this._collisionColor[2] = data.With.Graphic.Color.B;
 
             // When we call the base Collided function it essentially triggers the OnCollision function of the Collidable
             _super.prototype.Collided.call(this, data);
         };
 
         MovingShape.prototype.Update = function (gameTime) {
+            // Check if it's time to switch directions
             if (gameTime.Now.getTime() - this._lastChangedDirection >= this._directionInterval) {
                 // Reverse our velocity
                 this._velocity = this._velocity.Multiply(-1);

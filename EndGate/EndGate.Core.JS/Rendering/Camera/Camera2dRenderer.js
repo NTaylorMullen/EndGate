@@ -1,3 +1,7 @@
+/// <reference path="Camera2d.ts" />
+/// <reference path="../Renderer2d.ts" />
+/// <reference path="../../Assets/Sizes/Size2d.ts" />
+/// <reference path="Camera2dCanvasContextBuilder.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -6,10 +10,6 @@ var __extends = this.__extends || function (d, b) {
 };
 var EndGate;
 (function (EndGate) {
-    /// <reference path="Camera2d.ts" />
-    /// <reference path="../Renderer2d.ts" />
-    /// <reference path="../../Assets/Sizes/Size2d.ts" />
-    /// <reference path="Camera2dCanvasContextBuilder.ts" />
     (function (Rendering) {
         /**
         * Defines a camera rendering object that when used in conjunction with a Camera2d draws all objects in a camera relative position.
@@ -26,7 +26,7 @@ var EndGate;
                 _super.call(this, renderOnto);
 
                 this._camera = camera;
-                this._contextBuilder = new Rendering._.Camera2dCanvasContextBuilder(this._camera);
+                this._contextBuilder = new EndGate.Rendering._.Camera2dCanvasContextBuilder(this._camera);
 
                 this.OnRendererSizeChange.Bind(function (newSize) {
                     _this._contextBuilder._UpdateCanvasCenter(newSize);
@@ -55,7 +55,7 @@ var EndGate;
 
             Camera2dRenderer.prototype._ClearBuffer = function () {
                 var cameraScale = this._camera._GetDistanceScale();
-                (this._BufferContext).unModifiedClearRect(0, 0, this._BufferCanvas.width * cameraScale, this._BufferCanvas.height * cameraScale);
+                this._BufferContext.unModifiedClearRect(0, 0, this._BufferCanvas.width * cameraScale, this._BufferCanvas.height * cameraScale);
             };
 
             Camera2dRenderer.prototype.GetOnScreenRenderables = function (allRenderables) {
@@ -75,7 +75,7 @@ var EndGate;
                 return onscreen;
             };
             return Camera2dRenderer;
-        })(Rendering.Renderer2d);
+        })(EndGate.Rendering.Renderer2d);
         Rendering.Camera2dRenderer = Camera2dRenderer;
     })(EndGate.Rendering || (EndGate.Rendering = {}));
     var Rendering = EndGate.Rendering;

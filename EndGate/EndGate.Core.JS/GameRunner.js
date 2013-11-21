@@ -1,10 +1,10 @@
+/// <reference path="Interfaces/ITyped.ts" />
+/// <reference path="Loopers/Looper.ts" />
+/// <reference path="Loopers/RepaintLooper.ts" />
+/// <reference path="Loopers/TimedCallback.ts" />
+/// <reference path="Game.ts" />
 var EndGate;
 (function (EndGate) {
-    /// <reference path="Interfaces/ITyped.ts" />
-    /// <reference path="Loopers/Looper.ts" />
-    /// <reference path="Loopers/RepaintLooper.ts" />
-    /// <reference path="Loopers/TimedCallback.ts" />
-    /// <reference path="Game.ts" />
     (function (_) {
         var GameRunner = (function () {
             function GameRunner() {
@@ -53,9 +53,9 @@ var EndGate;
 
             GameRunner.prototype.TryLoopStart = function () {
                 if (this._callbackCount === 1) {
-                    this._updateLoop = new _.Loopers.Looper();
+                    this._updateLoop = new EndGate._.Loopers.Looper();
                     this._updateLoop.Start();
-                    this._drawLoop = new _.Loopers.RepaintLooper();
+                    this._drawLoop = new EndGate._.Loopers.RepaintLooper();
                     this._drawLoop.Start();
                 }
             };
@@ -70,7 +70,7 @@ var EndGate;
             };
 
             GameRunner.prototype.CreateAndCacheUpdateCallback = function (game) {
-                var updateCallback = new _.Loopers.TimedCallback(0, function () {
+                var updateCallback = new EndGate._.Loopers.TimedCallback(0, function () {
                     game._PrepareUpdate();
                 });
 
@@ -80,7 +80,7 @@ var EndGate;
             };
 
             GameRunner.prototype.CreateAndCacheDrawCallback = function (game) {
-                var drawCallback = new _.Loopers.LooperCallback(function () {
+                var drawCallback = new EndGate._.Loopers.LooperCallback(function () {
                     game._PrepareDraw();
                 });
 

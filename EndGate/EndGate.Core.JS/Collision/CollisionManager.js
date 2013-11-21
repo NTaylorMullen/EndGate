@@ -1,14 +1,14 @@
+/// <reference path="../Interfaces/IUpdateable.ts" />
+/// <reference path="../Interfaces/IDisposable.ts" />
+/// <reference path="../Interfaces/ITyped.ts" />
+/// <reference path="Assets/QuadTree.ts" />
+/// <reference path="CollisionConfiguration.ts" />
+/// <reference path="Collidable.ts" />
+/// <reference path="CollisionData.ts" />
+/// <reference path="../Utilities/EventHandler2.ts" />
+/// <reference path="../GameTime.ts" />
 var EndGate;
 (function (EndGate) {
-    /// <reference path="../Interfaces/IUpdateable.ts" />
-    /// <reference path="../Interfaces/IDisposable.ts" />
-    /// <reference path="../Interfaces/ITyped.ts" />
-    /// <reference path="Assets/QuadTree.ts" />
-    /// <reference path="CollisionConfiguration.ts" />
-    /// <reference path="Collidable.ts" />
-    /// <reference path="CollisionData.ts" />
-    /// <reference path="../Utilities/EventHandler2.ts" />
-    /// <reference path="../GameTime.ts" />
     (function (Collision) {
         /**
         * Defines a manager that will check for collisions between objects that it is monitoring.
@@ -21,16 +21,16 @@ var EndGate;
                 this._type = "CollisionManager";
                 this._collidables = [];
                 this._nonStaticCollidables = [];
-                this._quadTree = new Collision.Assets._.QuadTree(configuration);
+                this._quadTree = new EndGate.Collision.Assets._.QuadTree(configuration);
                 this._enabled = false;
                 this._disposed = false;
                 this._onCollision = new EndGate.EventHandler2();
             }
             Object.defineProperty(CollisionManager.prototype, "OnCollision", {
-                get: /**
+                /**
                 * Gets an event that is triggered when a collision happens among two of the monitored objects.  Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
-                function () {
+                get: function () {
                     return this._onCollision;
                 },
                 enumerable: true,
@@ -101,6 +101,7 @@ var EndGate;
                         candidates = this._quadTree.CollisionCandidates(collidable);
 
                         for (var j = 0; j < candidates.length; j++) {
+                            // If we're colliding with someone else
                             if (collidable._id !== candidates[j]._id && collidable.IsCollidingWith(candidates[j])) {
                                 colliding.push([collidable, candidates[j]]);
                             }
@@ -113,8 +114,8 @@ var EndGate;
                         if (!cacheMap[hash]) {
                             cacheMap[hash] = true;
 
-                            colliding[i][0].Collided(new Collision.CollisionData(colliding[i][1]));
-                            colliding[i][1].Collided(new Collision.CollisionData(colliding[i][0]));
+                            colliding[i][0].Collided(new EndGate.Collision.CollisionData(colliding[i][1]));
+                            colliding[i][1].Collided(new EndGate.Collision.CollisionData(colliding[i][0]));
 
                             this.OnCollision.Trigger(colliding[i][0], colliding[i][1]);
                         }

@@ -1,7 +1,7 @@
+/// <reference path="ITweeningFunction.ts" />
 var EndGate;
 (function (EndGate) {
     (function (Tweening) {
-        /// <reference path="ITweeningFunction.ts" />
         (function (Functions) {
             /**
             * Defines an Exponential tweening function collection that has an EaseIn, EaseOut, and EaseInOut function that can be used with Tween's.
@@ -10,10 +10,10 @@ var EndGate;
                 function Exponential() {
                 }
                 Object.defineProperty(Exponential, "EaseIn", {
-                    get: /**
+                    /**
                     * Gets the Exponential EaseIn function.
                     */
-                    function () {
+                    get: function () {
                         return Exponential._easeIn;
                     },
                     enumerable: true,
@@ -21,10 +21,10 @@ var EndGate;
                 });
 
                 Object.defineProperty(Exponential, "EaseOut", {
-                    get: /**
+                    /**
                     * Gets the Exponential EaseOut function.
                     */
-                    function () {
+                    get: function () {
                         return Exponential._easeOut;
                     },
                     enumerable: true,
@@ -32,10 +32,10 @@ var EndGate;
                 });
 
                 Object.defineProperty(Exponential, "EaseInOut", {
-                    get: /**
+                    /**
                     * Gets the Exponential EaseInOut function.
                     */
-                    function () {
+                    get: function () {
                         return Exponential._easeInOut;
                     },
                     enumerable: true,

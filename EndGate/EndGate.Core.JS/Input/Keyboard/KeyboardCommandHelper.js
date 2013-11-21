@@ -1,8 +1,8 @@
+/// <reference path="KeyboardCommand.ts" />
+/// <reference path="KeyboardCommandEvent.ts" />
 var EndGate;
 (function (EndGate) {
     (function (Input) {
-        /// <reference path="KeyboardCommand.ts" />
-        /// <reference path="KeyboardCommandEvent.ts" />
         (function (_) {
             var KeyboardCommandHelper = (function () {
                 function KeyboardCommandHelper() {

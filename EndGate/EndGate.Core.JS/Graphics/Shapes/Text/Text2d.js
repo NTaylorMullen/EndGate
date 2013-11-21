@@ -1,3 +1,10 @@
+/// <reference path="../../../Assets/Vectors/Vector2d.ts" />
+/// <reference path="../../Graphic2d.ts" />
+/// <reference path="../../Color.ts" />
+/// <reference path="../../../Utilities/NoopTripInvoker.ts" />
+/// <reference path="../../../Bounds/BoundingRectangle.ts" />
+/// <reference path="../Shape.ts" />
+/// <reference path="Font/FontSettings.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -6,13 +13,6 @@ var __extends = this.__extends || function (d, b) {
 };
 var EndGate;
 (function (EndGate) {
-    /// <reference path="../../../Assets/Vectors/Vector2d.ts" />
-    /// <reference path="../../Graphic2d.ts" />
-    /// <reference path="../../Color.ts" />
-    /// <reference path="../../../Utilities/NoopTripInvoker.ts" />
-    /// <reference path="../../../Bounds/BoundingRectangle.ts" />
-    /// <reference path="../Shape.ts" />
-    /// <reference path="Font/FontSettings.ts" />
     (function (Graphics) {
         /**
         * Defines a drawable text element.
@@ -20,7 +20,7 @@ var EndGate;
         var Text2d = (function (_super) {
             __extends(Text2d, _super);
             function Text2d(x, y, text, color) {
-                if (typeof color === "undefined") { color = Graphics.Color.Black; }
+                if (typeof color === "undefined") { color = EndGate.Graphics.Color.Black; }
                 _super.call(this, new EndGate.Vector2d(x, y), color);
                 this._type = "Text2d";
 
@@ -29,15 +29,15 @@ var EndGate;
                 this._drawBounds = new EndGate.Bounds.BoundingRectangle(this.Position, EndGate.Size2d.One);
                 this._recalculateBoundsSize = true;
 
-                this._fontSettings = new Graphics.Assets.FontSettings();
+                this._fontSettings = new EndGate.Graphics.Assets.FontSettings();
                 this.Align = "center";
                 this.Baseline = "middle";
             }
             Object.defineProperty(Text2d.prototype, "Align", {
-                get: /**
+                /**
                 * Gets or sets the text alignment of the Text2d.  Values can be "start", "end", "left", "center", or "right".
                 */
-                function () {
+                get: function () {
                     return this._State.TextAlign;
                 },
                 set: function (alignment) {
@@ -48,10 +48,10 @@ var EndGate;
             });
 
             Object.defineProperty(Text2d.prototype, "Baseline", {
-                get: /**
+                /**
                 * Gets or sets the text baseline of the Text2d.  Values can be "top", "hanging", "middle", "alphabetic", "ideographic", and "bottom".
                 */
-                function () {
+                get: function () {
                     return this._State.TextBaseline;
                 },
                 set: function (baseline) {
@@ -62,10 +62,10 @@ var EndGate;
             });
 
             Object.defineProperty(Text2d.prototype, "FontSettings", {
-                get: /**
+                /**
                 * Gets the Text2d's FontSetting's.
                 */
-                function () {
+                get: function () {
                     this._recalculateBoundsSize = true;
 
                     return this._fontSettings;
@@ -75,10 +75,10 @@ var EndGate;
             });
 
             Object.defineProperty(Text2d.prototype, "Text", {
-                get: /**
+                /**
                 * Gets or sets the current Text2d's text.
                 */
-                function () {
+                get: function () {
                     return this._text;
                 },
                 set: function (text) {
@@ -128,6 +128,7 @@ var EndGate;
                     context.strokeText(this._text, 0, 0);
                 }
 
+                // Only recalculate bounds if the text or font has changed since the last draw.
                 if (this._recalculateBoundsSize) {
                     this._recalculateBoundsSize = false;
                     textSize = context.measureText(this._text);
@@ -177,7 +178,7 @@ var EndGate;
                 return graphic;
             };
             return Text2d;
-        })(Graphics.Shape);
+        })(EndGate.Graphics.Shape);
         Graphics.Text2d = Text2d;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
     var Graphics = EndGate.Graphics;

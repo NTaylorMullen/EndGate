@@ -1,6 +1,6 @@
+/// <reference path="../Interfaces/ICloneable.ts" />
 var EndGate;
 (function (EndGate) {
-    /// <reference path="../Interfaces/ICloneable.ts" />
     (function (Sound) {
         /**
         * Defines a set of settings that are used to play AudioClip's a custom way.

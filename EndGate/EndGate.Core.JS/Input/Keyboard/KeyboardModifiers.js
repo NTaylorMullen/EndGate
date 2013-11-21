@@ -1,7 +1,7 @@
+/// <reference path="KeyboardCommand.ts" />
 var EndGate;
 (function (EndGate) {
     (function (Input) {
-        /// <reference path="KeyboardCommand.ts" />
         (function (Assets) {
             /**
             * Defines an object that is used to represent a keyboard modifier state to determine if Ctrl, Alt, or Shift is being pressed.
@@ -26,11 +26,11 @@ var EndGate;
                     return this.Ctrl === modifier.Ctrl && this.Alt === modifier.Alt && this.Shift === modifier.Shift;
                 };
 
-                KeyboardModifiers.BuildFromCommandString = /**
+                /**
                 * Builds a KeyboardModifiers object to represent the state of an expected keyCommand
                 * @param keyCommand The command to analyze.
                 */
-                function (keyCommand) {
+                KeyboardModifiers.BuildFromCommandString = function (keyCommand) {
                     var ctrl = (keyCommand.toLowerCase().indexOf("ctrl+") >= 0) ? true : false, alt = (keyCommand.toLowerCase().indexOf("alt+") >= 0) ? true : false, shift = (keyCommand.toLowerCase().indexOf("shift+") >= 0) ? true : false;
 
                     return new KeyboardModifiers(ctrl, alt, shift);

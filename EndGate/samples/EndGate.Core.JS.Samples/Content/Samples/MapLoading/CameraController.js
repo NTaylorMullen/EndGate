@@ -11,6 +11,7 @@ var MapLoading;
             this._lastMouseLocation = eg.Vector2d.Zero;
 
             mouse.OnMove.Bind(function (event) {
+                // If our mouse is outside of our stationary boundary then we should move the camera
                 if (!_this._stationaryBoundary.Contains(event.Position)) {
                     _this._moving = true;
                     _this._lastMouseLocation = event.Position;

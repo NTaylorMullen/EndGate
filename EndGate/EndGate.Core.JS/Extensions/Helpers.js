@@ -1,5 +1,5 @@
 function asyncLoop(action, count, onComplete) {
-    ((function loop(index) {
+    (function loop(index) {
         if (index < count) {
             action(function () {
                 loop(index + 1);
@@ -7,5 +7,5 @@ function asyncLoop(action, count, onComplete) {
         } else if (onComplete) {
             onComplete();
         }
-    })(0));
+    }(0));
 }

@@ -1,3 +1,8 @@
+/// <reference path="../../Assets/Sizes/Size2d.ts" />
+/// <reference path="../../Assets/Vectors/Vector2d.ts" />
+/// <reference path="../../Bounds/BoundingCircle.ts" />
+/// <reference path="../Color.ts" />
+/// <reference path="Shape.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -6,11 +11,6 @@ var __extends = this.__extends || function (d, b) {
 };
 var EndGate;
 (function (EndGate) {
-    /// <reference path="../../Assets/Sizes/Size2d.ts" />
-    /// <reference path="../../Assets/Vectors/Vector2d.ts" />
-    /// <reference path="../../Bounds/BoundingCircle.ts" />
-    /// <reference path="../Color.ts" />
-    /// <reference path="Shape.ts" />
     (function (Graphics) {
         /**
         * Defines a drawable circle.
@@ -54,10 +54,10 @@ var EndGate;
             };
 
             Circle.prototype._BuildPath = function (context) {
-                context.arc(0, 0, this.Radius, 0, (Math).twoPI);
+                context.arc(0, 0, this.Radius, 0, Math.twoPI);
             };
             return Circle;
-        })(Graphics.Shape);
+        })(EndGate.Graphics.Shape);
         Graphics.Circle = Circle;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
     var Graphics = EndGate.Graphics;

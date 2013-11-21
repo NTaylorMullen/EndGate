@@ -18,8 +18,8 @@ Copyright (C) Microsoft Corporation. All rights reserved.
   </PropertyGroup>
 
   <UsingTask TaskName="TypeScript.Tasks.VsTsc" AssemblyFile="$(VSToolsPath)\TypeScript\TypeScript.tasks.dll" />
+  <UsingTask TaskName="AssignTargetPath"       AssemblyName="Microsoft.Build.Tasks, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"/>
 
-  
   <PropertyGroup>
     <CompileDependsOn>
       CompileTypeScript;
@@ -33,15 +33,34 @@ Copyright (C) Microsoft Corporation. All rights reserved.
       TypeScriptCollectPublishFiles;
     </PublishPipelineCollectFilesCore>
   </PropertyGroup>
-  
+
+  <PropertyGroup>
+    <GetCopyToOutputDirectoryItemsDependsOn>
+      $(GetCopyToOutputDirectoryItemsDependsOn);
+      GetTypeScriptCopyToOutputDirectoryItems;
+    </GetCopyToOutputDirectoryItemsDependsOn>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <CfgPropertyPagesGuidsAddCSharp>{d4683cae-88c4-4b85-863d-ac8014f3ba36}</CfgPropertyPagesGuidsAddCSharp>
+    <CfgPropertyPagesGuidsAddVB>{d4683cae-88c4-4b85-863d-ac8014f3ba36}</CfgPropertyPagesGuidsAddVB>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Indicates to the language service that this project supports TypeScript -->
+    <TypeScriptEnabled>true</TypeScriptEnabled>
+
+    <!-- Controls Compile-on-Save in the IDE -->
+    <TypeScriptCompileOnSaveEnabled Condition="'$(TypeScriptCompileOnSaveEnabled)' == ''">true</TypeScriptCompileOnSaveEnabled>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(TypeScriptBuildConfigurations)' == ''">
-    <TypeScriptCompileOnSaveEnabled Condition="'$(TypeScriptEnableCompileOnSave)' != 'false'">true</TypeScriptCompileOnSaveEnabled>
+    <PreferredUILang Condition="'$(BuildingInsideVisualStudio)' == 'true' and '$(PreferredUILang)' == ''">$([System.Globalization.CultureInfo]::CurrentUICulture.Name)</PreferredUILang>
 
     <TypeScriptBuildConfigurations Condition="'$(TypeScriptRemoveComments)' == 'true'">$(TypeScriptBuildConfigurations) --removeComments</TypeScriptBuildConfigurations>
     <TypeScriptBuildConfigurations Condition="'$(TypeScriptNoImplicitAny)' == 'true'">$(TypeScriptBuildConfigurations) --noImplicitAny</TypeScriptBuildConfigurations>
-    <TypeScriptBuildConfigurations Condition="'$(TypeScriptNoResolve)' == 'true'">$(TypeScriptBuildConfigurations) --noResolve</TypeScriptBuildConfigurations>
     <TypeScriptBuildConfigurations Condition="'$(TypeScriptGeneratesDeclarations)' == 'true'">$(TypeScriptBuildConfigurations) --declaration</TypeScriptBuildConfigurations>
-    <TypeScriptBuildConfigurations Condition="'$(TypeScriptModuleKind)' != ''">$(TypeScriptBuildConfigurations) --module $(TypeScriptModuleKind)</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptModuleKind)' != '' and '$(TypeScriptModuleKind)' != 'none'">$(TypeScriptBuildConfigurations) --module $(TypeScriptModuleKind)</TypeScriptBuildConfigurations>
     <TypeScriptBuildConfigurations Condition="'$(TypeScriptOutFile)' != ''">$(TypeScriptBuildConfigurations) --out &quot;$(TypeScriptOutFile)&quot;</TypeScriptBuildConfigurations>
     <TypeScriptBuildConfigurations Condition="'$(TypeScriptOutDir)' != ''">$(TypeScriptBuildConfigurations) --outDir &quot;$(TypeScriptOutDir)&quot;</TypeScriptBuildConfigurations>
     <TypeScriptBuildConfigurations Condition="'$(TypeScriptSourceMap)' == 'true'">$(TypeScriptBuildConfigurations) --sourcemap</TypeScriptBuildConfigurations>
@@ -50,10 +69,15 @@ Copyright (C) Microsoft Corporation. All rights reserved.
     <TypeScriptBuildConfigurations Condition="'$(TypeScriptAdditionalFlags)' != ''">$(TypeScriptBuildConfigurations) $(TypeScriptAdditionalFlags)</TypeScriptBuildConfigurations>
     <TypeScriptBuildConfigurations Condition="'$(TypeScriptMapRoot)' != ''">$(TypeScriptBuildConfigurations) --mapRoot &quot;$(TypeScriptMapRoot)&quot;</TypeScriptBuildConfigurations>
     <TypeScriptBuildConfigurations Condition="'$(TypeScriptSourceRoot)' != ''">$(TypeScriptBuildConfigurations) --sourceRoot &quot;$(TypeScriptSourceRoot)&quot;</TypeScriptBuildConfigurations>
+    <TypeScriptBuildConfigurations Condition="'$(TypeScriptCodePage)' != ''">$(TypeScriptBuildConfigurations) --codepage $(TypeScriptCodePage)</TypeScriptBuildConfigurations>
+
+    <TypeScriptBuildConfigurations Condition="'$(PreferredUILang)' != ''">$(TypeScriptBuildConfigurations) --locale $(PreferredUILang)</TypeScriptBuildConfigurations>
   </PropertyGroup>
 
   <PropertyGroup>
+    <TypeScriptToolsVersion Condition="'$(TypeScriptToolsVersion)'==''">0.9</TypeScriptToolsVersion>
     <TscToolPath Condition="'$(TscToolPath)' == ''">$(MSBuildProgramFiles32)\Microsoft SDKs\TypeScript</TscToolPath>
+    <TscToolPath Condition="'$(TypeScriptToolsVersion)' != ''">$(TscToolPath)\$(TypeScriptToolsVersion)</TscToolPath>
     <TscToolExe Condition="'$(TscToolExe)' == ''">tsc.exe</TscToolExe>
     <TscYieldDuringToolExecution Condition="'$(TscYieldDuringToolExecution)' == ''">true</TscYieldDuringToolExecution>
   </PropertyGroup>
@@ -73,20 +97,33 @@ Copyright (C) Microsoft Corporation. All rights reserved.
       ToolPath="$(TscToolPath)"
       ToolExe="$(TscToolExe)"
       Configurations="$(TypeScriptBuildConfigurations)"
-      FullPathsToFiles="@(TypeScriptCompile)"
+      FullPathsToFiles="@(TypeScriptCompile->'%(FullPath)')"
       YieldDuringToolExecution="$(TscYieldDuringToolExecution)"
       OutFile="$(TypeScriptOutFile)"
       OutDir="$(TypeScriptOutDir)"
+      ProjectDir="$(ProjectDir)"
       >
       <Output TaskParameter="GeneratedJavascript" ItemName="GeneratedJavascript" />
     </VsTsc>
   </Target>
 
-  <Target Name="TypeScriptCollectPublishFiles">
+  <Target Name="TypeScriptCollectPublishFiles" DependsOnTargets="CompileTypeScript">
     <Message Text="Adding to FilesForPackagingFromProject: @(GeneratedJavascript->'%(Identity)')"/>
     <ItemGroup>
       <FilesForPackagingFromProject Include="@(GeneratedJavascript->'%(Identity)')"/>
     </ItemGroup>
   </Target>
-  
+
+  <Target Name="GetTypeScriptCopyToOutputDirectoryItems">
+    <AssignTargetPath Files="@(TypeScriptCompile)" RootFolder="$(MSBuildProjectDirectory)">
+      <Output TaskParameter="AssignedFiles" ItemName="TypeScriptCompileWithTargetPath" />
+    </AssignTargetPath>
+    <Message Text="Adding items with BuildAction=TypeScriptCompile to the same collections that will be populated (with items of other BuildActions) by the GetCopyToOutputDirectoryItems target"/>
+    <ItemGroup>
+      <AllItemsFullPathWithTargetPath            Include="@(TypeScriptCompileWithTargetPath->'%(FullPath)')" Condition="'%(TypeScriptCompileWithTargetPath.CopyToOutputDirectory)'=='Always' or '%(TypeScriptCompileWithTargetPath.CopyToOutputDirectory)'=='PreserveNewest'"/>
+      <_SourceItemsToCopyToOutputDirectoryAlways Include="@(TypeScriptCompileWithTargetPath->'%(FullPath)')" Condition="'%(TypeScriptCompileWithTargetPath.CopyToOutputDirectory)'=='Always'"/>
+      <_SourceItemsToCopyToOutputDirectory       Include="@(TypeScriptCompileWithTargetPath->'%(FullPath)')" Condition="'%(TypeScriptCompileWithTargetPath.CopyToOutputDirectory)'=='PreserveNewest'"/>
+    </ItemGroup>
+  </Target>
+
 </Project>

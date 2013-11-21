@@ -1,8 +1,8 @@
+/// <reference path="../Utilities/EventHandler1.ts" />
+/// <reference path="../Interfaces/IDisposable.ts" />
+/// <reference path="AudioSettings.ts" />
 var EndGate;
 (function (EndGate) {
-    /// <reference path="../Utilities/EventHandler1.ts" />
-    /// <reference path="../Interfaces/IDisposable.ts" />
-    /// <reference path="AudioSettings.ts" />
     (function (Sound) {
         var supportedAudioTypes = {
             mp3: 'audio/mpeg',
@@ -17,7 +17,7 @@ var EndGate;
         */
         var AudioClip = (function () {
             function AudioClip(source, settings) {
-                if (typeof settings === "undefined") { settings = Sound.AudioSettings.Default; }
+                if (typeof settings === "undefined") { settings = EndGate.Sound.AudioSettings.Default; }
                 this._disposed = false;
                 this._settings = settings.Clone();
                 this._canPlayWires = [];
@@ -34,10 +34,10 @@ var EndGate;
                 this._onComplete = new EndGate.EventHandler1();
             }
             Object.defineProperty(AudioClip.prototype, "OnComplete", {
-                get: /**
+                /**
                 * Gets an event that is triggered when the audio clip has completed, will not trigger if the audio clip is repeating.  Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
-                function () {
+                get: function () {
                     return this._onComplete;
                 },
                 enumerable: true,
@@ -45,10 +45,10 @@ var EndGate;
             });
 
             Object.defineProperty(AudioClip.prototype, "Volume", {
-                get: /**
+                /**
                 * Gets or sets the audio clip volume.
                 */
-                function () {
+                get: function () {
                     return this._settings.Volume;
                 },
                 set: function (percent) {
@@ -150,6 +150,7 @@ var EndGate;
             AudioClip.prototype.SetAudioSource = function (source) {
                 var sourceHolder, sourceType;
 
+                // If we've passed in a list of sources
                 if (!(source instanceof Array)) {
                     source = [source];
                 }

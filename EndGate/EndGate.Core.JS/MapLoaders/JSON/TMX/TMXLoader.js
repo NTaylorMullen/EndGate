@@ -1,17 +1,17 @@
+/// <reference path="../../IMapLoader.ts" />
+/// <reference path="../../IMapLoadedResult.ts" />
+/// <reference path="../../IMapPreloadInfo.ts" />
+/// <reference path="ITMX.ts" />
+/// <reference path="OrthogonalLoader.ts" />
 var EndGate;
 (function (EndGate) {
     (function (MapLoaders) {
         (function (_) {
-            /// <reference path="../../IMapLoader.ts" />
-            /// <reference path="../../IMapLoadedResult.ts" />
-            /// <reference path="../../IMapPreloadInfo.ts" />
-            /// <reference path="ITMX.ts" />
-            /// <reference path="OrthogonalLoader.ts" />
             (function (TMX) {
                 var TMXLoader = (function () {
                     function TMXLoader() {
                         this._orientationLoaders = {
-                            orthogonal: new TMX.OrthogonalLoader()
+                            orthogonal: new EndGate.MapLoaders._.TMX.OrthogonalLoader()
                         };
                     }
                     TMXLoader.prototype.Load = function (data, propertyHooks, onComplete) {

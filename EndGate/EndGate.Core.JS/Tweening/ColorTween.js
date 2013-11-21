@@ -1,3 +1,5 @@
+/// <reference path="Tween.ts" />
+/// <reference path="../Graphics/Color.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -6,8 +8,6 @@ var __extends = this.__extends || function (d, b) {
 };
 var EndGate;
 (function (EndGate) {
-    /// <reference path="Tween.ts" />
-    /// <reference path="../Graphics/Color.ts" />
     (function (Tweening) {
         /**
         * Defines a ColorTween class that is used to move a number from a start value to an end value.
@@ -30,7 +30,7 @@ var EndGate;
                 this.Current.B = this.TweeningFunction(this.From.B, this.To.B, this.Elapsed, this.Duration);
             };
             return ColorTween;
-        })(Tweening.Tween);
+        })(EndGate.Tweening.Tween);
         Tweening.ColorTween = ColorTween;
     })(EndGate.Tweening || (EndGate.Tweening = {}));
     var Tweening = EndGate.Tweening;

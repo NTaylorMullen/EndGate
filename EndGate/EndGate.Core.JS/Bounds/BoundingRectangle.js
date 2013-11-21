@@ -1,3 +1,7 @@
+/// <reference path="../Assets/Vectors/Helpers/Vector2dHelpers.ts" />
+/// <reference path="../Assets/Sizes/Size2d.ts" />
+/// <reference path="BoundingCircle.ts" />
+/// <reference path="Bounds2d.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -6,10 +10,6 @@ var __extends = this.__extends || function (d, b) {
 };
 var EndGate;
 (function (EndGate) {
-    /// <reference path="../Assets/Vectors/Helpers/Vector2dHelpers.ts" />
-    /// <reference path="../Assets/Sizes/Size2d.ts" />
-    /// <reference path="BoundingCircle.ts" />
-    /// <reference path="Bounds2d.ts" />
     (function (Bounds) {
         /**
         * Defines a rectangle that can be used to detect intersections.
@@ -38,10 +38,10 @@ var EndGate;
             };
 
             Object.defineProperty(BoundingRectangle.prototype, "TopLeft", {
-                get: /**
+                /**
                 * Gets the top left corner of the BoundingRectangle.
                 */
-                function () {
+                get: function () {
                     if (this.Rotation === 0) {
                         return new EndGate.Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);
                     }
@@ -53,10 +53,10 @@ var EndGate;
             });
 
             Object.defineProperty(BoundingRectangle.prototype, "TopRight", {
-                get: /**
+                /**
                 * Gets the top right corner of the BoundingRectangle.
                 */
-                function () {
+                get: function () {
                     if (this.Rotation === 0) {
                         return new EndGate.Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y - this.Size.HalfHeight);
                     }
@@ -68,10 +68,10 @@ var EndGate;
             });
 
             Object.defineProperty(BoundingRectangle.prototype, "BotLeft", {
-                get: /**
+                /**
                 * Gets the bottom left corner of the BoundingRectangle.
                 */
-                function () {
+                get: function () {
                     if (this.Rotation === 0) {
                         return new EndGate.Vector2d(this.Position.X - this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);
                     }
@@ -83,10 +83,10 @@ var EndGate;
             });
 
             Object.defineProperty(BoundingRectangle.prototype, "BotRight", {
-                get: /**
+                /**
                 * Gets the bottom right corner of the BoundingRectangle.
                 */
-                function () {
+                get: function () {
                     if (this.Rotation === 0) {
                         return new EndGate.Vector2d(this.Position.X + this.Size.HalfWidth, this.Position.Y + this.Size.HalfHeight);
                     }
@@ -131,6 +131,7 @@ var EndGate;
                         var myProjections = EndGate._.Vector2dHelpers.GetMinMaxProjections(axi, myVertices);
                         var theirProjections = EndGate._.Vector2dHelpers.GetMinMaxProjections(axi, theirVertices);
 
+                        // No collision
                         if (theirProjections.Max < myProjections.Min || myProjections.Max < theirProjections.Min) {
                             return false;
                         }
@@ -185,7 +186,7 @@ var EndGate;
                 return true;
             };
             return BoundingRectangle;
-        })(Bounds.Bounds2d);
+        })(EndGate.Bounds.Bounds2d);
         Bounds.BoundingRectangle = BoundingRectangle;
     })(EndGate.Bounds || (EndGate.Bounds = {}));
     var Bounds = EndGate.Bounds;

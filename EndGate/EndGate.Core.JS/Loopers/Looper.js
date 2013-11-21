@@ -1,9 +1,9 @@
+/// <reference path="../Interfaces/ITyped.ts" />
+/// <reference path="ILooper.ts" />
+/// <reference path="TimedCallback.ts" />
 var EndGate;
 (function (EndGate) {
     (function (_) {
-        /// <reference path="../Interfaces/ITyped.ts" />
-        /// <reference path="ILooper.ts" />
-        /// <reference path="TimedCallback.ts" />
         (function (Loopers) {
             var Looper = (function () {
                 function Looper() {

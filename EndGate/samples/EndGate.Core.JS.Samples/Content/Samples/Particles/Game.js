@@ -44,6 +44,7 @@ var Particles;
                 if (fn.indexOf("_") === -1) {
                     for (var fnEase in eg.Tweening.Functions[fn]) {
                         if (fnEase.indexOf("_") === -1) {
+                            // Default function is Linear
                             if (fn === "Linear") {
                                 this._tweenFunctionSelect.append($("<option value='" + fn + " - " + fnEase + "' selected='selected'>" + fn + " - " + fnEase + "</option>"));
                             } else {
@@ -55,7 +56,7 @@ var Particles;
             }
 
             this._tweenFunctionSelect.change(function () {
-                var tweeningFunctionSplit = (_this._tweenFunctionSelect.val()).split(" - ");
+                var tweeningFunctionSplit = _this._tweenFunctionSelect.val().split(" - ");
 
                 _this.Emitter.EmissionFunction = eg.Tweening.Functions[tweeningFunctionSplit[0]][tweeningFunctionSplit[1]];
             });

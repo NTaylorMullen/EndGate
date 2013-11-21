@@ -1,12 +1,12 @@
+/// <reference path="Functions/ITweeningFunction.ts" />
+/// <reference path="../Assets/TimeSpan.ts" />
+/// <reference path="../Utilities/EventHandler1.ts" />
+/// <reference path="../Interfaces/IDisposable.ts" />
+/// <reference path="../Interfaces/ICloneable.ts" />
+/// <reference path="../Interfaces/IUpdateable.ts" />
+/// <reference path="../GameTime.ts" />
 var EndGate;
 (function (EndGate) {
-    /// <reference path="Functions/ITweeningFunction.ts" />
-    /// <reference path="../Assets/TimeSpan.ts" />
-    /// <reference path="../Utilities/EventHandler1.ts" />
-    /// <reference path="../Interfaces/IDisposable.ts" />
-    /// <reference path="../Interfaces/ICloneable.ts" />
-    /// <reference path="../Interfaces/IUpdateable.ts" />
-    /// <reference path="../GameTime.ts" />
     (function (Tweening) {
         /**
         * Defines a base Tween class that is used to move a value from a start value to an end value.
@@ -31,10 +31,10 @@ var EndGate;
                 this._tweeningFunction = tweeningFunction;
             }
             Object.defineProperty(Tween.prototype, "OnChange", {
-                get: /**
+                /**
                 * Gets an event that is triggered when the tween has changed its Current value, occurs directly after a tween update.  Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
-                function () {
+                get: function () {
                     return this._onChange;
                 },
                 enumerable: true,
@@ -42,10 +42,10 @@ var EndGate;
             });
 
             Object.defineProperty(Tween.prototype, "OnComplete", {
-                get: /**
+                /**
                 * Gets an event that is triggered when the tween has completed transitioning the Current value, once triggered Elapsed will be equivalent to Duration and Current will be equivalent to To.  Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
-                function () {
+                get: function () {
                     return this._onComplete;
                 },
                 enumerable: true,
@@ -53,10 +53,10 @@ var EndGate;
             });
 
             Object.defineProperty(Tween.prototype, "From", {
-                get: /**
+                /**
                 * Gets or sets the From component of the tween.
                 */
-                function () {
+                get: function () {
                     return this._from;
                 },
                 set: function (from) {
@@ -67,10 +67,10 @@ var EndGate;
             });
 
             Object.defineProperty(Tween.prototype, "To", {
-                get: /**
+                /**
                 * Gets or sets the To component of the tween.
                 */
-                function () {
+                get: function () {
                     return this._to;
                 },
                 set: function (to) {
@@ -81,10 +81,10 @@ var EndGate;
             });
 
             Object.defineProperty(Tween.prototype, "Current", {
-                get: /**
+                /**
                 * Gets or sets the Current component of the tween.  The Current is the current value of the tween, the final value of Current will be equivalent to To when the tween has completed.
                 */
-                function () {
+                get: function () {
                     return this._current;
                 },
                 set: function (current) {
@@ -95,10 +95,10 @@ var EndGate;
             });
 
             Object.defineProperty(Tween.prototype, "Duration", {
-                get: /**
+                /**
                 * Gets or sets the Duration component of the tween.  The Duration is how long the tween will take to go From -> To.
                 */
-                function () {
+                get: function () {
                     return this._duration;
                 },
                 set: function (duration) {
@@ -109,10 +109,10 @@ var EndGate;
             });
 
             Object.defineProperty(Tween.prototype, "Elapsed", {
-                get: /**
+                /**
                 * Gets or the Elapsed component of the tween.  Elapsed represents how far along the tween is.  When Elapsed equals Duration the tween is completed.
                 */
-                function () {
+                get: function () {
                     return this._elapsed.Clone();
                 },
                 enumerable: true,
@@ -120,10 +120,10 @@ var EndGate;
             });
 
             Object.defineProperty(Tween.prototype, "TweeningFunction", {
-                get: /**
+                /**
                 * Gets or sets the TweeningFunction of the tween.  The TweeningFunction controls how the tween translates the Current value to the To value.
                 */
-                function () {
+                get: function () {
                     return this._tweeningFunction;
                 },
                 set: function (fn) {
