@@ -1,4 +1,4 @@
-/// <reference path="IRenderer.ts" />
+﻿/// <reference path="IRenderer.ts" />
 /// <reference path="IRenderable.ts" />
 /// <reference path="../Interfaces/IDisposable.ts" />
 /// <reference path="../Utilities/EventHandler1.ts" />
@@ -41,7 +41,7 @@ var EndGate;
             * Renders the provided renderables onto the renderOnto canvas.  Returns the canvas that was rendered onto.
             * @param renderables Array of items that are to be rendered, assumes Visible is set to true.
             */
-            Renderer2d.prototype.Render = function (renderables) {
+            Renderer2d.prototype.Render = function (preRender, renderables) {
                 // Check if our visible canvas has changed size
                 if (this._BufferCanvas.width !== this._visibleCanvas.width || this._BufferCanvas.height !== this._visibleCanvas.height) {
                     this.UpdateBufferSize();
@@ -53,6 +53,8 @@ var EndGate;
 
                 // Clear our buffer to prepare it for new drawings
                 this._ClearBuffer();
+
+                preRender(this._BufferContext);
 
                 // Sort the renderables by the ZIndex so we draw in the correct order (for layering);
                 renderables.sort(Renderer2d._zindexSort);

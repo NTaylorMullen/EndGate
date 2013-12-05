@@ -23,6 +23,7 @@ module EndGate.Rendering {
         private _actorMappings: IActorMapping[];
         private _renderer: _.IRenderer;
         private _onDraw: (context: CanvasRenderingContext2D) => void;
+        private _preDraw: (context: CanvasRenderingContext2D) => void;
         private _disposed: boolean;
         private _camera: Camera2d;
         private _drawArea: HTMLCanvasElement;
@@ -41,8 +42,8 @@ module EndGate.Rendering {
         * @param onDraw Callback to execute whenever the Scene's draw is triggered.
         * @param drawArea The game canvas to draw onto.
         */
-        constructor(onDraw: (context: CanvasRenderingContext2D) => void , drawArea: HTMLCanvasElement);
-        constructor(onDraw: (context: CanvasRenderingContext2D) => void = _ => { }, drawArea?: HTMLCanvasElement) {
+        constructor(onDraw: (context: CanvasRenderingContext2D) => void, onPreDraw: (context: CanvasRenderingContext2D) => void, drawArea: HTMLCanvasElement);
+        constructor(onDraw: (context: CanvasRenderingContext2D) => void = _ => { }, onPreDraw: (context: CanvasRenderingContext2D) => void = _ => { }, drawArea?: HTMLCanvasElement) {
             this._actorMappings = [];
             this._actors = [];
 
@@ -51,10 +52,11 @@ module EndGate.Rendering {
             }
 
             this._onDraw = onDraw;
+            this._preDraw = onPreDraw;
 
             this._drawArea = drawArea;
             this._camera = new Camera2d(new Vector2d(this._drawArea.width / 2, this._drawArea.height / 2), new Size2d(this._drawArea.width, this._drawArea.height));
-            this._renderer = new Camera2dRenderer(this._drawArea, this._camera);
+            this._renderer = new Camera2dRenderer(this._drawArea, this._camera, this._preDraw);
             this._disposed = false;
         }
 
@@ -109,7 +111,7 @@ module EndGate.Rendering {
         * Draws all actors within the Scene and triggers the Scene2d's onDraw callback.
         */
         public Draw(): void {
-            this._onDraw(this._renderer.Render(this._actors));
+            this._onDraw(this._renderer.Render(this._preDraw, this._actors));
         }
 
         /**

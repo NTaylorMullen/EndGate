@@ -49,7 +49,7 @@ module EndGate.Rendering {
         * Renders the provided renderables onto the renderOnto canvas.  Returns the canvas that was rendered onto.
         * @param renderables Array of items that are to be rendered, assumes Visible is set to true.
         */
-        public Render(renderables: IRenderable[]): CanvasRenderingContext2D {
+        public Render(preRender: (context: CanvasRenderingContext2D) => void, renderables: IRenderable[]): CanvasRenderingContext2D {
             // Check if our visible canvas has changed size
             if (this._BufferCanvas.width !== this._visibleCanvas.width || this._BufferCanvas.height !== this._visibleCanvas.height) {
                 this.UpdateBufferSize();
@@ -60,6 +60,8 @@ module EndGate.Rendering {
             this._visibleContext.drawImage(this._BufferCanvas, 0, 0);
             // Clear our buffer to prepare it for new drawings
             this._ClearBuffer();
+
+            preRender(this._BufferContext);
 
             // Sort the renderables by the ZIndex so we draw in the correct order (for layering);
             renderables.sort(Renderer2d._zindexSort);
