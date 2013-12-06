@@ -1,10 +1,10 @@
+/// <reference path="../Interfaces/IDisposable.ts" />
+/// <reference path="../Interfaces/ICloneable.ts" />
+/// <reference path="../Assets/Vectors/Vector2d.ts" />
+/// <reference path="../Assets/Sizes/Size2d.ts" />
+/// <reference path="../Utilities/EventHandler1.ts" />
 var EndGate;
 (function (EndGate) {
-    /// <reference path="../Interfaces/IDisposable.ts" />
-    /// <reference path="../Interfaces/ICloneable.ts" />
-    /// <reference path="../Assets/Vectors/Vector2d.ts" />
-    /// <reference path="../Assets/Sizes/Size2d.ts" />
-    /// <reference path="../Utilities/EventHandler1.ts" />
     (function (Graphics) {
         /**
         * Defines an image resource that can be used within Sprite's, SpriteAnimation's and other drawable graphics.
@@ -44,7 +44,7 @@ var EndGate;
                         this.ClipLocation = new EndGate.Vector2d(clipX, clipY);
                         this.ClipSize = new EndGate.Size2d(clipWidth, clipHeight);
                     } else {
-                        this.ClipSize = null;
+                        this.ClipSize = null; // Waiting for the image source OnLoad to set it
                     }
                 } else {
                     clipWidth = clipX;
@@ -83,10 +83,10 @@ var EndGate;
                 }
             }
             Object.defineProperty(ImageSource.prototype, "OnLoaded", {
-                get: /**
+                /**
                 * Gets an event that is triggered when the base image is finished loading.  Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
-                function () {
+                get: function () {
                     return this._onLoaded;
                 },
                 enumerable: true,
@@ -94,10 +94,10 @@ var EndGate;
             });
 
             Object.defineProperty(ImageSource.prototype, "Size", {
-                get: /**
+                /**
                 * Returns the base Size of the image source.
                 */
-                function () {
+                get: function () {
                     return this._size.Clone();
                 },
                 enumerable: true,

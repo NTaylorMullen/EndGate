@@ -19,8 +19,9 @@ var AudioHandling;
             // We now create our Sprite2d which is used to display our animation onto the canvas, this is what eventually gets added to the Scene
             this.Graphic = new eg.Graphics.Sprite2d(x, y, this._spriteSheet, frameWidth, frameHeight);
 
+            // Randomly rotate the Sprite2d to give a more distinct look to the animation
             if (rotateRandomly) {
-                this.Graphic.Rotation = Math.random() * (Math).twoPI + -Math.PI;
+                this.Graphic.Rotation = Math.random() * Math.twoPI + -Math.PI;
             }
 
             if (this._spriteSheet.IsLoaded()) {

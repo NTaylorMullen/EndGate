@@ -4,4 +4,4 @@ Math.roundTo = function (val, decimals) {
     return Math.round(val * multiplier) / multiplier;
 };
 
-(Math).twoPI = Math.PI * 2;
+Math.twoPI = Math.PI * 2;

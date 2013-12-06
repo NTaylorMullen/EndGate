@@ -1,9 +1,9 @@
+/// <reference path="../Assets/Vectors/Vector2d.ts" />
+/// <reference path="../Interfaces/IMoveable.ts" />
+/// <reference path="../Interfaces/IUpdateable.ts" />
+/// <reference path="../GameTime.ts" />
 var EndGate;
 (function (EndGate) {
-    /// <reference path="../Assets/Vectors/Vector2d.ts" />
-    /// <reference path="../Interfaces/IMoveable.ts" />
-    /// <reference path="../Interfaces/IUpdateable.ts" />
-    /// <reference path="../GameTime.ts" />
     (function (MovementControllers) {
         /**
         * Abstract class that holds moveable objects and synchronizes positions across them.

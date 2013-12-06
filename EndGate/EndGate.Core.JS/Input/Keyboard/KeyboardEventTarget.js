@@ -12,10 +12,10 @@ var EndGate;
                 this._tag = this._element.tagName;
             }
             Object.defineProperty(KeyboardEventTarget.prototype, "Id", {
-                get: /**
+                /**
                 * Gets the id of the target element.
                 */
-                function () {
+                get: function () {
                     return this._id;
                 },
                 enumerable: true,
@@ -23,10 +23,10 @@ var EndGate;
             });
 
             Object.defineProperty(KeyboardEventTarget.prototype, "Classes", {
-                get: /**
+                /**
                 * Gets a list of classes on the target element.
                 */
-                function () {
+                get: function () {
                     return this._classes;
                 },
                 enumerable: true,
@@ -34,10 +34,10 @@ var EndGate;
             });
 
             Object.defineProperty(KeyboardEventTarget.prototype, "Element", {
-                get: /**
+                /**
                 * Gets the element that caused the keyboard event.
                 */
-                function () {
+                get: function () {
                     return this._element;
                 },
                 enumerable: true,
@@ -45,10 +45,10 @@ var EndGate;
             });
 
             Object.defineProperty(KeyboardEventTarget.prototype, "Tag", {
-                get: /**
+                /**
                 * Gets the type of tag of the target element.
                 */
-                function () {
+                get: function () {
                     return this._tag;
                 },
                 enumerable: true,

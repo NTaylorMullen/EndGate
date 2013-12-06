@@ -1,3 +1,6 @@
+/// <reference path="../../Assets/Vectors/Vector2d.ts" />
+/// <reference path="../Graphic2d.ts" />
+/// <reference path="../Color.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -6,9 +9,6 @@ var __extends = this.__extends || function (d, b) {
 };
 var EndGate;
 (function (EndGate) {
-    /// <reference path="../../Assets/Vectors/Vector2d.ts" />
-    /// <reference path="../Graphic2d.ts" />
-    /// <reference path="../Color.ts" />
     (function (Graphics) {
         /**
         * Abstract drawable shape type that is used create customizable drawable graphics.
@@ -32,29 +32,29 @@ var EndGate;
                     _this._State.ShadowColor = color.toString();
                 };
 
-                this.ShadowColor = this._shadowColor = Graphics.Color.Black;
-                this.BorderColor = this._strokeStyle = Graphics.Color.Black;
+                this.ShadowColor = this._shadowColor = EndGate.Graphics.Color.Black;
+                this.BorderColor = this._strokeStyle = EndGate.Graphics.Color.Black;
 
                 if (typeof color !== "undefined") {
                     if (typeof color === "string") {
-                        color = new Graphics.Color(color);
+                        color = new EndGate.Graphics.Color(color);
                     }
 
                     this.Color = this._fillStyle = color;
                 } else {
-                    this.Color = this._fillStyle = Graphics.Color.Black;
+                    this.Color = this._fillStyle = EndGate.Graphics.Color.Black;
                 }
             }
             Object.defineProperty(Shape.prototype, "Color", {
-                get: /**
+                /**
                 * Gets or sets the current shape color.  Valid colors are strings like "red" or "rgb(255,0,0)".
                 */
-                function () {
+                get: function () {
                     return this._fillStyle;
                 },
                 set: function (color) {
                     if (typeof color === "string") {
-                        color = new Graphics.Color(color);
+                        color = new EndGate.Graphics.Color(color);
                     }
 
                     // Unbind old
@@ -72,10 +72,10 @@ var EndGate;
             });
 
             Object.defineProperty(Shape.prototype, "BorderThickness", {
-                get: /**
+                /**
                 * Gets or sets the current border thickness.
                 */
-                function () {
+                get: function () {
                     return this._State.LineWidth;
                 },
                 set: function (thickness) {
@@ -86,15 +86,15 @@ var EndGate;
             });
 
             Object.defineProperty(Shape.prototype, "BorderColor", {
-                get: /**
+                /**
                 * Gets or sets the current border color.  Valid colors are strings like "red" or "rgb(255,0,0)".
                 */
-                function () {
+                get: function () {
                     return this._strokeStyle;
                 },
                 set: function (color) {
                     if (typeof color === "string") {
-                        color = new Graphics.Color(color);
+                        color = new EndGate.Graphics.Color(color);
                     }
 
                     // Unbind old
@@ -112,15 +112,15 @@ var EndGate;
             });
 
             Object.defineProperty(Shape.prototype, "ShadowColor", {
-                get: /**
+                /**
                 * Gets or sets the current shadow color.  Valid colors are strings like "red" or "rgb(255,0,0)".
                 */
-                function () {
+                get: function () {
                     return this._shadowColor;
                 },
                 set: function (color) {
                     if (typeof color === "string") {
-                        color = new Graphics.Color(color);
+                        color = new EndGate.Graphics.Color(color);
                     }
 
                     // Unbind old
@@ -138,10 +138,10 @@ var EndGate;
             });
 
             Object.defineProperty(Shape.prototype, "ShadowX", {
-                get: /**
+                /**
                 * Gets or sets the current horizontal shadow position.
                 */
-                function () {
+                get: function () {
                     return this._State.ShadowOffsetX;
                 },
                 set: function (x) {
@@ -152,10 +152,10 @@ var EndGate;
             });
 
             Object.defineProperty(Shape.prototype, "ShadowY", {
-                get: /**
+                /**
                 * Gets or sets the current vertical shadow position.
                 */
-                function () {
+                get: function () {
                     return this._State.ShadowOffsetY;
                 },
                 set: function (y) {
@@ -166,10 +166,10 @@ var EndGate;
             });
 
             Object.defineProperty(Shape.prototype, "ShadowBlur", {
-                get: /**
+                /**
                 * Gets or sets the current shadow blur.
                 */
-                function () {
+                get: function () {
                     return this._State.ShadowBlur;
                 },
                 set: function (blur) {
@@ -237,7 +237,7 @@ var EndGate;
                 _super.prototype._Clone.call(this, graphic);
             };
             return Shape;
-        })(Graphics.Graphic2d);
+        })(EndGate.Graphics.Graphic2d);
         Graphics.Shape = Shape;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
     var Graphics = EndGate.Graphics;

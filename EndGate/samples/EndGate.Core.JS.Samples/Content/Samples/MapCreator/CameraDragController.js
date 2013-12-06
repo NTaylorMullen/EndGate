@@ -13,6 +13,7 @@ var MapCreator;
                 // Toggle the active flag
                 _this.Active = !_this.Active;
 
+                // Modify how the cursor appears above the game area
                 if (_this.Active) {
                     canvas.style.cursor = "move";
                 } else {
@@ -42,6 +43,7 @@ var MapCreator;
             });
 
             mouseHandler.OnMove.Bind(function (e) {
+                // Ensure that we're dragging, if we are start moving the camera
                 if (_this._dragging && _this._cameraStartPosition && _this.Active) {
                     camera.Position = _this._cameraStartPosition.Add(_this._downAt.Subtract(e.Position));
                 }

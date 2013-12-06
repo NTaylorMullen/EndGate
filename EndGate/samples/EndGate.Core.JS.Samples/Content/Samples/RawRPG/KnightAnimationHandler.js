@@ -29,6 +29,7 @@ var RawRPG;
             // Calculate the sign of the velocity. It essentially converts the axi of the vector2d to -1, 0 or -1
             var velocitySign = this._knight.MovementController.Velocity.Sign(), activeAnimation;
 
+            // Check if we're stopping our current animation
             if (moveEvent.StartMoving === false && this._animations[moveEvent.Direction] === this._currentAnimation) {
                 this._currentAnimation.Stop();
             }

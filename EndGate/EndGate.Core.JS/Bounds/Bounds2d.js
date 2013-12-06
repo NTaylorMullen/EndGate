@@ -1,9 +1,9 @@
+/// <reference path="../Interfaces/IMoveable.ts" />
+/// <reference path="../Assets/Vectors/Vector2d.ts" />
+/// <reference  path="BoundingRectangle.ts" />
+/// <reference  path="BoundingCircle.ts" />
 var EndGate;
 (function (EndGate) {
-    /// <reference path="../Interfaces/IMoveable.ts" />
-    /// <reference path="../Assets/Vectors/Vector2d.ts" />
-    /// <reference  path="BoundingRectangle.ts" />
-    /// <reference  path="BoundingCircle.ts" />
     (function (Bounds) {
         /**
         * Abstract bounds type that is used to detect intersections.

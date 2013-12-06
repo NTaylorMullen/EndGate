@@ -1,3 +1,13 @@
+/// <reference path="../../Assets/Sizes/Size2d.ts" />
+/// <reference path="../../Assets/TimeSpan.ts" />
+/// <reference path="../../Graphics/ImageSource.ts" />
+/// <reference path="../../Graphics/Grid/Grid.ts" />
+/// <reference path="../../Utilities/EventHandler2.ts" />
+/// <reference path="../../Utilities/EventHandler.ts" />
+/// <reference path="../../Extensions/Helpers.ts" />
+/// <reference path="ITileDetails.ts" />
+/// <reference path="TileMap.ts" />
+/// <reference path="SquareTile.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -6,16 +16,6 @@ var __extends = this.__extends || function (d, b) {
 };
 var EndGate;
 (function (EndGate) {
-    /// <reference path="../../Assets/Sizes/Size2d.ts" />
-    /// <reference path="../../Assets/TimeSpan.ts" />
-    /// <reference path="../../Graphics/ImageSource.ts" />
-    /// <reference path="../../Graphics/Grid/Grid.ts" />
-    /// <reference path="../../Utilities/EventHandler2.ts" />
-    /// <reference path="../../Utilities/EventHandler.ts" />
-    /// <reference path="../../Extensions/Helpers.ts" />
-    /// <reference path="ITileDetails.ts" />
-    /// <reference path="TileMap.ts" />
-    /// <reference path="SquareTile.ts" />
     (function (Graphics) {
         /**
         * Defines a structure that is proficient at creating diverse tile maps based off of a resource image.  Best drawn via a SceneryHandler.
@@ -52,10 +52,10 @@ var EndGate;
                 }, 0);
             }
             Object.defineProperty(SquareTileMap.prototype, "OnTileLoad", {
-                get: /**
+                /**
                 * Gets an event that is triggered when a tile has been loaded, first argument is the tile details for the loaded tile, second is the percent complete.  Once this SquareTileMap has been created and all tiles loaded this event will no longer be triggered. Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
-                function () {
+                get: function () {
                     return this._onTileLoad;
                 },
                 enumerable: true,
@@ -63,23 +63,23 @@ var EndGate;
             });
 
             Object.defineProperty(SquareTileMap.prototype, "OnLoaded", {
-                get: /**
+                /**
                 * Gets an event that is triggered when the square tile map has been loaded.  Once this SquareTileMap has been created and all tiles loaded this event will no longer be triggered. Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
-                function () {
+                get: function () {
                     return this._onLoaded;
                 },
                 enumerable: true,
                 configurable: true
             });
 
-            SquareTileMap.ExtractTiles = /**
+            /**
             * Helper function used to take a SpriteSheet image and create a one dimensional resource tile array.
             * @param imageSource The sprite sheet to extract the tile resources from.
             * @param tileWidth The width of the sprite sheet tiles.
             * @param tileHeight The height of the sprite sheet tiles.
             */
-            function (imageSource, tileWidth, tileHeight) {
+            SquareTileMap.ExtractTiles = function (imageSource, tileWidth, tileHeight) {
                 var resources = [], framesPerRow = Math.floor(imageSource.ClipSize.Width / tileWidth), rows = Math.floor(imageSource.ClipSize.Height / tileHeight);
 
                 for (var i = 0; i < rows; i++) {
@@ -183,7 +183,7 @@ var EndGate;
                 var action = function () {
                     var tile, tileGraphic = _this._Resources[resourceIndex];
 
-                    tile = new Graphics.Assets.SquareTile(tileGraphic, _this._grid.TileSize.Width, _this._grid.TileSize.Height);
+                    tile = new EndGate.Graphics.Assets.SquareTile(tileGraphic, _this._grid.TileSize.Width, _this._grid.TileSize.Height);
 
                     _this._grid.Fill(row, column, tile);
 
@@ -229,7 +229,7 @@ var EndGate;
                 }, this.RowLoadDelay.Milliseconds);
             };
             return SquareTileMap;
-        })(Graphics.TileMap);
+        })(EndGate.Graphics.TileMap);
         Graphics.SquareTileMap = SquareTileMap;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
     var Graphics = EndGate.Graphics;

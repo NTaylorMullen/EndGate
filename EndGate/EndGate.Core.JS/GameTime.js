@@ -16,10 +16,10 @@ var EndGate;
             this.Update();
         }
         Object.defineProperty(GameTime.prototype, "Elapsed", {
-            get: /**
+            /**
             * Gets the elapsed time since the last update.
             */
-            function () {
+            get: function () {
                 return this._elapsed;
             },
             enumerable: true,
@@ -27,10 +27,10 @@ var EndGate;
         });
 
         Object.defineProperty(GameTime.prototype, "Now", {
-            get: /**
+            /**
             * Gets the current date time at the start of the update.
             */
-            function () {
+            get: function () {
                 return this._lastUpdate;
             },
             enumerable: true,
@@ -38,10 +38,10 @@ var EndGate;
         });
 
         Object.defineProperty(GameTime.prototype, "Total", {
-            get: /**
+            /**
             * Gets the total amount of time surpassed since construction.
             */
-            function () {
+            get: function () {
                 return EndGate.TimeSpan.DateSpan(this._start, new Date());
             },
             enumerable: true,

@@ -1,15 +1,15 @@
+/// <reference path="../../Interfaces/IDisposable.ts" />
+/// <reference path="../../Interfaces/IUpdateable.ts" />
+/// <reference path="../../Bounds/BoundingRectangle.ts" />
+/// <reference path="../../Assets/Sizes/Size2d.ts" />
+/// <reference path="../../Assets/Vectors/Vector2d.ts" />
+/// <reference path="../../GameTime.ts" />
+/// <reference path="../CollisionConfiguration.ts" />
+/// <reference path="QuadTreeNode.ts" />
 var EndGate;
 (function (EndGate) {
     (function (Collision) {
         (function (Assets) {
-            /// <reference path="../../Interfaces/IDisposable.ts" />
-            /// <reference path="../../Interfaces/IUpdateable.ts" />
-            /// <reference path="../../Bounds/BoundingRectangle.ts" />
-            /// <reference path="../../Assets/Sizes/Size2d.ts" />
-            /// <reference path="../../Assets/Vectors/Vector2d.ts" />
-            /// <reference path="../../GameTime.ts" />
-            /// <reference path="../CollisionConfiguration.ts" />
-            /// <reference path="QuadTreeNode.ts" />
             (function (_) {
                 var QuadTree = (function () {
                     function QuadTree(configuration) {
@@ -18,7 +18,7 @@ var EndGate;
                         this._collidableMap = {};
                         this._updateableCollidableMap = {};
 
-                        this._root = new _.QuadTreeNode(new EndGate.Vector2d(configuration.InitialQuadTreeSize.HalfWidth, configuration.InitialQuadTreeSize.HalfHeight), configuration.InitialQuadTreeSize, configuration.MinQuadTreeNodeSize, null);
+                        this._root = new EndGate.Collision.Assets._.QuadTreeNode(new EndGate.Vector2d(configuration.InitialQuadTreeSize.HalfWidth, configuration.InitialQuadTreeSize.HalfHeight), configuration.InitialQuadTreeSize, configuration.MinQuadTreeNodeSize, null);
                     }
                     QuadTree.prototype.Insert = function (obj, staticPosition) {
                         if (typeof staticPosition === "undefined") { staticPosition = false; }
@@ -63,22 +63,22 @@ var EndGate;
                     };
 
                     QuadTree.prototype.Expand = function (cause) {
-                        var rootBounds = (this._root.Bounds), topLeftDistance = rootBounds.TopLeft.Distance(cause.Bounds.Position).Length(), topRightDistance = rootBounds.TopRight.Distance(cause.Bounds.Position).Length(), botLeftDistance = rootBounds.BotLeft.Distance(cause.Bounds.Position).Length(), botRightDistance = rootBounds.BotRight.Distance(cause.Bounds.Position).Length(), closestCornerDistance = Math.min(topLeftDistance, topRightDistance, botLeftDistance, botRightDistance), newSize = rootBounds.Size.Multiply(2), newRoot;
+                        var rootBounds = this._root.Bounds, topLeftDistance = rootBounds.TopLeft.Distance(cause.Bounds.Position).Length(), topRightDistance = rootBounds.TopRight.Distance(cause.Bounds.Position).Length(), botLeftDistance = rootBounds.BotLeft.Distance(cause.Bounds.Position).Length(), botRightDistance = rootBounds.BotRight.Distance(cause.Bounds.Position).Length(), closestCornerDistance = Math.min(topLeftDistance, topRightDistance, botLeftDistance, botRightDistance), newSize = rootBounds.Size.Multiply(2), newRoot;
 
                         if (closestCornerDistance === topLeftDistance) {
-                            newRoot = new _.QuadTreeNode(rootBounds.TopLeft, newSize, this._minNodeSize, null);
+                            newRoot = new EndGate.Collision.Assets._.QuadTreeNode(rootBounds.TopLeft, newSize, this._minNodeSize, null);
                             newRoot.Partition();
                             newRoot.BotRightChild = this._root;
                         } else if (closestCornerDistance === topRightDistance) {
-                            newRoot = new _.QuadTreeNode(rootBounds.TopRight, newSize, this._minNodeSize, null);
+                            newRoot = new EndGate.Collision.Assets._.QuadTreeNode(rootBounds.TopRight, newSize, this._minNodeSize, null);
                             newRoot.Partition();
                             newRoot.BotLeftChild = this._root;
                         } else if (closestCornerDistance === botLeftDistance) {
-                            newRoot = new _.QuadTreeNode(rootBounds.BotLeft, newSize, this._minNodeSize, null);
+                            newRoot = new EndGate.Collision.Assets._.QuadTreeNode(rootBounds.BotLeft, newSize, this._minNodeSize, null);
                             newRoot.Partition();
                             newRoot.TopRightChild = this._root;
                         } else if (closestCornerDistance === botRightDistance) {
-                            newRoot = new _.QuadTreeNode(rootBounds.BotRight, newSize, this._minNodeSize, null);
+                            newRoot = new EndGate.Collision.Assets._.QuadTreeNode(rootBounds.BotRight, newSize, this._minNodeSize, null);
                             newRoot.Partition();
                             newRoot.TopLeftChild = this._root;
                         }
@@ -97,10 +97,12 @@ var EndGate;
 
                             node.Remove(collidable);
 
+                            // If one of the collidables has drifted outside the root bounds, expand the quad tree
                             if (!this._root.Bounds.Contains(collidable.Bounds)) {
                                 this.Expand(collidable);
                                 newNode = this._root.Insert(collidable);
                             } else {
+                                // Check if object has left the bounds of this node and is not root
                                 if (!node.Bounds.Contains(collidable.Bounds) && node.Parent != null) {
                                     // We now belong to a parent
                                     newNode = node.Parent.ReverseInsert(collidable);

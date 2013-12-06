@@ -24,6 +24,7 @@ var MapLoading;
             this._loadHandler = new MapLoading.LoadHandler(this, this._loadDialog);
 
             this._loadMapButton.click(function () {
+                // Only allow clicks if we aren't already loading a map
                 if (!_this._loading) {
                     _this._loading = true;
 

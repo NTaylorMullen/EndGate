@@ -1,7 +1,7 @@
+/// <reference path="ITweeningFunction.ts" />
 var EndGate;
 (function (EndGate) {
     (function (Tweening) {
-        /// <reference path="ITweeningFunction.ts" />
         (function (Functions) {
             /**
             * Defines a Bounce tweening function collection that has an EaseIn, EaseOut, and EaseInOut function that can be used with Tween's.
@@ -10,10 +10,10 @@ var EndGate;
                 function Bounce() {
                 }
                 Object.defineProperty(Bounce, "EaseIn", {
-                    get: /**
+                    /**
                     * Gets the Bounce EaseIn function.
                     */
-                    function () {
+                    get: function () {
                         return Bounce._easeIn;
                     },
                     enumerable: true,
@@ -21,10 +21,10 @@ var EndGate;
                 });
 
                 Object.defineProperty(Bounce, "EaseOut", {
-                    get: /**
+                    /**
                     * Gets the Bounce EaseOut function.
                     */
-                    function () {
+                    get: function () {
                         return Bounce._easeOut;
                     },
                     enumerable: true,
@@ -32,10 +32,10 @@ var EndGate;
                 });
 
                 Object.defineProperty(Bounce, "EaseInOut", {
-                    get: /**
+                    /**
                     * Gets the Bounce EaseInOut function.
                     */
-                    function () {
+                    get: function () {
                         return Bounce._easeInOut;
                     },
                     enumerable: true,

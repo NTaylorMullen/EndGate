@@ -1,12 +1,12 @@
+/// <reference path="../../../Utilities/EventHandler.ts" />
+/// <reference path="../../../Assets/Vectors/Vector2d.ts" />
+/// <reference path="../../../Assets/Sizes/Size2d.ts" />
+/// <reference path="../../../Interfaces/IUpdateable.ts" />
+/// <reference path="../../../Interfaces/IDisposable.ts" />
+/// <reference path="../../../GameTime.ts" />
+/// <reference path="../../ImageSource.ts" />
 var EndGate;
 (function (EndGate) {
-    /// <reference path="../../../Utilities/EventHandler.ts" />
-    /// <reference path="../../../Assets/Vectors/Vector2d.ts" />
-    /// <reference path="../../../Assets/Sizes/Size2d.ts" />
-    /// <reference path="../../../Interfaces/IUpdateable.ts" />
-    /// <reference path="../../../Interfaces/IDisposable.ts" />
-    /// <reference path="../../../GameTime.ts" />
-    /// <reference path="../../ImageSource.ts" />
     (function (Graphics) {
         /**
         * Defines an animation that can be drawn to the screen.
@@ -41,10 +41,10 @@ var EndGate;
                 }
             }
             Object.defineProperty(SpriteAnimation.prototype, "OnComplete", {
-                get: /**
+                /**
                 * Gets an event that is triggered when the animation has completed, will not trigger if the animation is repeating.  Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
-                function () {
+                get: function () {
                     return this._onComplete;
                 },
                 enumerable: true,
@@ -52,10 +52,10 @@ var EndGate;
             });
 
             Object.defineProperty(SpriteAnimation.prototype, "Fps", {
-                get: /**
+                /**
                 * Gets or sets the current frames per second.
                 */
-                function () {
+                get: function () {
                     return this._fps;
                 },
                 set: function (newFps) {

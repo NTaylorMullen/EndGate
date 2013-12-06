@@ -53,6 +53,7 @@ var Camera;
         Game.prototype.Update = function (gameTime) {
             var cameraPosition, movementIncrementor = gameTime.Elapsed.Seconds * this._cameraMoveSpeed, zoomIncrementor = gameTime.Elapsed.Seconds * this._cameraZoomSpeed;
 
+            // Handle movement directions, these flags are controlled by the user based on what keys they press
             if (this._movingDirection.Up) {
                 this.Scene.Camera.Position.Y -= movementIncrementor;
             }
@@ -66,6 +67,7 @@ var Camera;
                 this.Scene.Camera.Position.X += movementIncrementor;
             }
 
+            // Handle zooming in, these flags are controlled by the user based on what keys they press
             if (this._movingDirection.ZoomingIn) {
                 this.Scene.Camera.Distance -= zoomIncrementor;
             } else if (this._movingDirection.ZoomingOut) {

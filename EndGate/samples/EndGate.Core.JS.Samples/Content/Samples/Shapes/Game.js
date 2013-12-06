@@ -34,13 +34,15 @@ var Shapes;
         Game.prototype.BuildShape = function (builder) {
             var shapeTypeName = $(builder).attr("shape"), shapeType = eg.Graphics[shapeTypeName], newShape;
 
+            // If there is no current shape
             if (!this.Shape) {
                 newShape = new shapeType(this._canvas.width / 2, this._canvas.height / 2, 200, 200);
             } else {
+                // Need to special case circles because of the Size difference (Size2d vs Radius)
                 if (shapeTypeName !== "Circle") {
-                    newShape = new shapeType(this.Shape.Position.X, this.Shape.Position.Y, (this.Shape).Radius * 2, (this.Shape).Radius * 2);
+                    newShape = new shapeType(this.Shape.Position.X, this.Shape.Position.Y, this.Shape.Radius * 2, this.Shape.Radius * 2);
                 } else {
-                    newShape = new shapeType(this.Shape.Position.X, this.Shape.Position.Y, Math.min((this.Shape).Size.Width, (this.Shape).Size.Height) / 2);
+                    newShape = new shapeType(this.Shape.Position.X, this.Shape.Position.Y, Math.min(this.Shape.Size.Width, this.Shape.Size.Height) / 2);
                 }
 
                 // Copy all of the previous shapes settings over to the new shape

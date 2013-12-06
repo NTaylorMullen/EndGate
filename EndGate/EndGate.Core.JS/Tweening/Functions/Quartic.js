@@ -1,7 +1,7 @@
+/// <reference path="ITweeningFunction.ts" />
 var EndGate;
 (function (EndGate) {
     (function (Tweening) {
-        /// <reference path="ITweeningFunction.ts" />
         (function (Functions) {
             /**
             * Defines a Quartic tweening function collection that has an EaseIn, EaseOut, and EaseInOut function that can be used with Tween's.
@@ -10,10 +10,10 @@ var EndGate;
                 function Quartic() {
                 }
                 Object.defineProperty(Quartic, "EaseIn", {
-                    get: /**
+                    /**
                     * Gets the Quartic EaseIn function.
                     */
-                    function () {
+                    get: function () {
                         return Quartic._easeIn;
                     },
                     enumerable: true,
@@ -21,10 +21,10 @@ var EndGate;
                 });
 
                 Object.defineProperty(Quartic, "EaseOut", {
-                    get: /**
+                    /**
                     * Gets the Quartic EaseOut function.
                     */
-                    function () {
+                    get: function () {
                         return Quartic._easeOut;
                     },
                     enumerable: true,
@@ -32,10 +32,10 @@ var EndGate;
                 });
 
                 Object.defineProperty(Quartic, "EaseInOut", {
-                    get: /**
+                    /**
                     * Gets the Quartic EaseInOut function.
                     */
-                    function () {
+                    get: function () {
                         return Quartic._easeInOut;
                     },
                     enumerable: true,

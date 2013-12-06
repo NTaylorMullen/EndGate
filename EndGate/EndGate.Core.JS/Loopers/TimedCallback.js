@@ -1,3 +1,5 @@
+/// <reference path="LooperCallback.ts" />
+/// <reference path="../Interfaces/ITyped.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -7,8 +9,6 @@ var __extends = this.__extends || function (d, b) {
 var EndGate;
 (function (EndGate) {
     (function (_) {
-        /// <reference path="LooperCallback.ts" />
-        /// <reference path="../Interfaces/ITyped.ts" />
         (function (Loopers) {
             var TimedCallback = (function (_super) {
                 __extends(TimedCallback, _super);
@@ -21,7 +21,7 @@ var EndGate;
                     this.Active = false;
                 }
                 return TimedCallback;
-            })(Loopers.LooperCallback);
+            })(EndGate._.Loopers.LooperCallback);
             Loopers.TimedCallback = TimedCallback;
         })(_.Loopers || (_.Loopers = {}));
         var Loopers = _.Loopers;

@@ -1,7 +1,7 @@
+/// <reference path="../Graphics/ImageSource.ts" />
+/// <reference path="../Sound/AudioPlayer.ts" />
 var EndGate;
 (function (EndGate) {
-    /// <reference path="../Graphics/ImageSource.ts" />
-    /// <reference path="../Sound/AudioPlayer.ts" />
     (function (Content) {
         /**
         * Defines a content manager that is used to preload AudioClip's and ImageSource's so that they can be used throughout a game.

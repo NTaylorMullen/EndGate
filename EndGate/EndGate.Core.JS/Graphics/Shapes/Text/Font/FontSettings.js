@@ -1,9 +1,9 @@
+/// <reference path="FontFamily.ts" />
+/// <reference path="FontVariant.ts" />
+/// <reference path="FontStyle.ts" />
 var EndGate;
 (function (EndGate) {
     (function (Graphics) {
-        /// <reference path="FontFamily.ts" />
-        /// <reference path="FontVariant.ts" />
-        /// <reference path="FontStyle.ts" />
         (function (Assets) {
             /**
             * Defines a set of font settings that are used to modify the appearance of text that is drawn via Text2d's.
@@ -17,20 +17,20 @@ var EndGate;
                 function FontSettings() {
                     this._cachedState = {
                         fontSize: "10px",
-                        fontFamily: Assets.FontFamily.TimesNewRoman,
-                        fontVariant: Assets.FontVariant.Normal,
+                        fontFamily: 21 /* TimesNewRoman */,
+                        fontVariant: 0 /* Normal */,
                         fontWeight: "",
-                        fontStyle: Assets.FontStyle.Normal
+                        fontStyle: 0 /* Normal */
                     };
 
                     this._refreshCache = true;
                     this._BuildFont();
                 }
                 Object.defineProperty(FontSettings.prototype, "FontSize", {
-                    get: /**
+                    /**
                     * Gets or sets the current font size.  Values can be things such as 20px.
                     */
-                    function () {
+                    get: function () {
                         return this._cachedState["fontSize"];
                     },
                     set: function (size) {
@@ -42,10 +42,10 @@ var EndGate;
                 });
 
                 Object.defineProperty(FontSettings.prototype, "FontFamily", {
-                    get: /**
+                    /**
                     * Gets or sets the font family.
                     */
-                    function () {
+                    get: function () {
                         return this._cachedState["fontFamily"];
                     },
                     set: function (family) {
@@ -57,10 +57,10 @@ var EndGate;
                 });
 
                 Object.defineProperty(FontSettings.prototype, "FontVariant", {
-                    get: /**
+                    /**
                     * Gets or sets the font variant.
                     */
-                    function () {
+                    get: function () {
                         return this._cachedState["fontVariant"];
                     },
                     set: function (variant) {
@@ -72,10 +72,10 @@ var EndGate;
                 });
 
                 Object.defineProperty(FontSettings.prototype, "FontWeight", {
-                    get: /**
+                    /**
                     * Gets or sets the current font weight.
                     */
-                    function () {
+                    get: function () {
                         return this._cachedState["fontWeight"];
                     },
                     set: function (weight) {
@@ -87,10 +87,10 @@ var EndGate;
                 });
 
                 Object.defineProperty(FontSettings.prototype, "FontStyle", {
-                    get: /**
+                    /**
                     * Gets or sets the current font style.
                     */
-                    function () {
+                    get: function () {
                         return this._cachedState["fontStyle"];
                     },
                     set: function (style) {
@@ -105,10 +105,10 @@ var EndGate;
                     var font;
 
                     if (this._refreshCache) {
-                        font = this._cachedState["fontWeight"] + " " + Assets.FontStyle[this._cachedState["fontStyle"]].replace("Normal", "") + " " + Assets.FontVariant[this._cachedState["fontVariant"]].replace("Normal", "") + " " + this._cachedState["fontSize"];
+                        font = this._cachedState["fontWeight"] + " " + EndGate.Graphics.Assets.FontStyle[this._cachedState["fontStyle"]].replace("Normal", "") + " " + EndGate.Graphics.Assets.FontVariant[this._cachedState["fontVariant"]].replace("Normal", "") + " " + this._cachedState["fontSize"];
 
                         if (this._cachedState["fontFamily"] !== undefined) {
-                            font += " " + Assets.FontFamily[this._cachedState["fontFamily"]];
+                            font += " " + EndGate.Graphics.Assets.FontFamily[this._cachedState["fontFamily"]];
                         }
 
                         this._cachedFont = font.replace(/^\s\s*/, '').replace(/\s\s*$/, '');

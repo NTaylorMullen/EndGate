@@ -1,9 +1,9 @@
+/// <reference path="ILooper.ts" />
+/// <reference path="../Extensions/WindowExtensions.ts" />
+/// <reference path="LooperCallback.ts" />
 var EndGate;
 (function (EndGate) {
     (function (_) {
-        /// <reference path="ILooper.ts" />
-        /// <reference path="../Extensions/WindowExtensions.ts" />
-        /// <reference path="LooperCallback.ts" />
         (function (Loopers) {
             // This looper uses the request animation frame to run its internal loop
             // The method has been aliased as "OnRepaintCompleted" via the WindowExtensions

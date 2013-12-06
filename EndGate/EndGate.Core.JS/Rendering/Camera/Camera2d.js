@@ -1,3 +1,6 @@
+/// <reference path="../../Assets/Sizes/Size2d.ts" />
+/// <reference path="../../Assets/Vectors/Vector2d.ts" />
+/// <reference path="../../Bounds/BoundingRectangle.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -6,9 +9,6 @@ var __extends = this.__extends || function (d, b) {
 };
 var EndGate;
 (function (EndGate) {
-    /// <reference path="../../Assets/Sizes/Size2d.ts" />
-    /// <reference path="../../Assets/Vectors/Vector2d.ts" />
-    /// <reference path="../../Bounds/BoundingRectangle.ts" />
     (function (Rendering) {
         /**
         * Defines a camera that is used to define a viewport.  Should be used in conjunction with a Camera2dRenderer to render graphics as if being viewed through a camera.

@@ -13,10 +13,10 @@ var EndGate;
             this.Height = typeof second !== "undefined" ? second : this.Width;
         }
         Object.defineProperty(Size2d, "Zero", {
-            get: /**
+            /**
             * Returns a Size2d with all its components set to zero.
             */
-            function () {
+            get: function () {
                 return new Size2d(0, 0);
             },
             enumerable: true,
@@ -24,10 +24,10 @@ var EndGate;
         });
 
         Object.defineProperty(Size2d, "One", {
-            get: /**
+            /**
             * Returns a Size2d with all its components set to one.
             */
-            function () {
+            get: function () {
                 return new Size2d(1, 1);
             },
             enumerable: true,
@@ -35,10 +35,10 @@ var EndGate;
         });
 
         Object.defineProperty(Size2d.prototype, "Radius", {
-            get: /**
+            /**
             * Gets the radius that encompasses the two dimensional size of this Size2d.
             */
-            function () {
+            get: function () {
                 return .5 * Math.sqrt(this.Width * this.Width + this.Height * this.Height);
             },
             enumerable: true,
@@ -46,10 +46,10 @@ var EndGate;
         });
 
         Object.defineProperty(Size2d.prototype, "HalfWidth", {
-            get: /**
+            /**
             * Gets half of the Width component of this Size2d.
             */
-            function () {
+            get: function () {
                 return this.Width / 2;
             },
             enumerable: true,
@@ -57,10 +57,10 @@ var EndGate;
         });
 
         Object.defineProperty(Size2d.prototype, "HalfHeight", {
-            get: /**
+            /**
             * Gets half of the Height component of this Size2d.
             */
-            function () {
+            get: function () {
                 return this.Height / 2;
             },
             enumerable: true,

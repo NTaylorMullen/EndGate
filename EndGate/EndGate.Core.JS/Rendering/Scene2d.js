@@ -1,14 +1,14 @@
+/// <reference path="../Interfaces/IDisposable.ts" />
+/// <reference path="../Interfaces/ITyped.ts" />
+/// <reference path="../GameTime.ts" />
+/// <reference path="../Graphics/Graphic2d.ts" />
+/// <reference path="../Assets/Sizes/Size2d.ts" />
+/// <reference path="../Assets/Vectors/Vector2d.ts" />
+/// <reference path="Camera/Camera2d.ts" />
+/// <reference path="IRenderer.ts" />
+/// <reference path="Camera/Camera2dRenderer.ts" />
 var EndGate;
 (function (EndGate) {
-    /// <reference path="../Interfaces/IDisposable.ts" />
-    /// <reference path="../Interfaces/ITyped.ts" />
-    /// <reference path="../GameTime.ts" />
-    /// <reference path="../Graphics/Graphic2d.ts" />
-    /// <reference path="../Assets/Sizes/Size2d.ts" />
-    /// <reference path="../Assets/Vectors/Vector2d.ts" />
-    /// <reference path="Camera/Camera2d.ts" />
-    /// <reference path="IRenderer.ts" />
-    /// <reference path="Camera/Camera2dRenderer.ts" />
     (function (Rendering) {
         /**
         * Defines a scene object that is used to maintain a list of renderable objects that are rendered onto a joint game area.
@@ -27,15 +27,15 @@ var EndGate;
                 this._onDraw = onDraw;
 
                 this._drawArea = drawArea;
-                this._camera = new Rendering.Camera2d(new EndGate.Vector2d(this._drawArea.width / 2, this._drawArea.height / 2), new EndGate.Size2d(this._drawArea.width, this._drawArea.height));
-                this._renderer = new Rendering.Camera2dRenderer(this._drawArea, this._camera);
+                this._camera = new EndGate.Rendering.Camera2d(new EndGate.Vector2d(this._drawArea.width / 2, this._drawArea.height / 2), new EndGate.Size2d(this._drawArea.width, this._drawArea.height));
+                this._renderer = new EndGate.Rendering.Camera2dRenderer(this._drawArea, this._camera);
                 this._disposed = false;
             }
             Object.defineProperty(Scene2d.prototype, "DrawArea", {
-                get: /**
+                /**
                 * Gets the canvas that the Scene2d uses as its game area.
                 */
-                function () {
+                get: function () {
                     return this._drawArea;
                 },
                 enumerable: true,
@@ -43,10 +43,10 @@ var EndGate;
             });
 
             Object.defineProperty(Scene2d.prototype, "Camera", {
-                get: /**
+                /**
                 * Gets the game camera.
                 */
-                function () {
+                get: function () {
                     return this._camera;
                 },
                 enumerable: true,

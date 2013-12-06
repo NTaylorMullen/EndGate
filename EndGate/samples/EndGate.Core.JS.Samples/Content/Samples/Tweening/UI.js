@@ -14,8 +14,9 @@ var Tweening;
             this._enabled = true;
 
             this._tweenPlay.click(function () {
+                // Only trigger the completion event if the UI is enabled
                 if (_this._enabled) {
-                    var tweeningFunctionSplit = (_this._tweenFunctionSelect.val()).split(" - ");
+                    var tweeningFunctionSplit = _this._tweenFunctionSelect.val().split(" - ");
 
                     _this.OnPlay.Trigger(_this._tweenTypeSelect.val(), eg.TimeSpan.FromSeconds(parseInt(_this._tweenDuration.val())), eg.Tweening.Functions[tweeningFunctionSplit[0]][tweeningFunctionSplit[1]]);
                 }

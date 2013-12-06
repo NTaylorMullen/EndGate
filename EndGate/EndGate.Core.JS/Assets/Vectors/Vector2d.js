@@ -14,10 +14,10 @@ var EndGate;
             this.Y = y || 0;
         }
         Object.defineProperty(Vector2d, "Zero", {
-            get: /**
+            /**
             * Returns a Vector2d with all its components set to zero.
             */
-            function () {
+            get: function () {
                 return new Vector2d(0, 0);
             },
             enumerable: true,
@@ -25,10 +25,10 @@ var EndGate;
         });
 
         Object.defineProperty(Vector2d, "One", {
-            get: /**
+            /**
             * Returns a Vector2d with all its components set to one.
             */
-            function () {
+            get: function () {
                 return new Vector2d(1, 1);
             },
             enumerable: true,

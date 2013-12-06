@@ -1,8 +1,8 @@
+/// <reference path="../Interfaces/IDisposable.ts" />
+/// <reference path="Mouse/MouseHandler.ts" />
+/// <reference path="Keyboard/KeyboardHandler.ts" />
 var EndGate;
 (function (EndGate) {
-    /// <reference path="../Interfaces/IDisposable.ts" />
-    /// <reference path="Mouse/MouseHandler.ts" />
-    /// <reference path="Keyboard/KeyboardHandler.ts" />
     (function (Input) {
         /**
         * Defines an all around Input handler which manages mouse and keyboard events.
@@ -14,8 +14,8 @@ var EndGate;
             */
             function InputManager(target) {
                 this._disposed = false;
-                this.Mouse = new Input.MouseHandler(target);
-                this.Keyboard = new Input.KeyboardHandler();
+                this.Mouse = new EndGate.Input.MouseHandler(target);
+                this.Keyboard = new EndGate.Input.KeyboardHandler();
             }
             /**
             * Disposes the MouseHandler and unbinds all bound events.

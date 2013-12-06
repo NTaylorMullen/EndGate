@@ -1,3 +1,8 @@
+/// <reference path="../../Assets/Sizes/Size2d.ts" />
+/// <reference path="../../Assets/Vectors/Vector2d.ts" />
+/// <reference path="../../Bounds/BoundingRectangle.ts" />
+/// <reference path="../Color.ts" />
+/// <reference path="Shape.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -6,11 +11,6 @@ var __extends = this.__extends || function (d, b) {
 };
 var EndGate;
 (function (EndGate) {
-    /// <reference path="../../Assets/Sizes/Size2d.ts" />
-    /// <reference path="../../Assets/Vectors/Vector2d.ts" />
-    /// <reference path="../../Bounds/BoundingRectangle.ts" />
-    /// <reference path="../Color.ts" />
-    /// <reference path="Shape.ts" />
     (function (Graphics) {
         /**
         * Defines a drawable rectangle.
@@ -58,7 +58,7 @@ var EndGate;
                 context.rect(-this.Size.HalfWidth, -this.Size.HalfHeight, this.Size.Width, this.Size.Height);
             };
             return Rectangle;
-        })(Graphics.Shape);
+        })(EndGate.Graphics.Shape);
         Graphics.Rectangle = Rectangle;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
     var Graphics = EndGate.Graphics;

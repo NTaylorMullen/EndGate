@@ -26,11 +26,9 @@ module EndGate.Input {
     },
         specialKeys: { [name: string]: string; } = {
             "27": "esc",
-            "27": "escape",
             "9": "tab",
             "32": "space",
             "13": "return",
-            "13": "enter",
             "8": "backspace",
             "45": "insert",
             "36": "home",

@@ -1,3 +1,5 @@
+/// <reference path="../../Graphics/ImageSource.ts" />
+/// <reference path="../../Graphics/Sprites/Sprite2d.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -7,8 +9,6 @@ var __extends = this.__extends || function (d, b) {
 var EndGate;
 (function (EndGate) {
     (function (Graphics) {
-        /// <reference path="../../Graphics/ImageSource.ts" />
-        /// <reference path="../../Graphics/Sprites/Sprite2d.ts" />
         (function (Assets) {
             /**
             * Defines a SquareTile that is used by the SquareTileMap.  Represents one tile within the tile map.
@@ -22,7 +22,7 @@ var EndGate;
                 * @param height The height of the tile.
                 */
                 function SquareTile(image, width, height) {
-                    _super.call(this, 0, 0, image, width, height);
+                    _super.call(this, 0, 0, image, width, height); // Set position to 0 because the tile gets updated when it gets added to the tile map
                 }
                 return SquareTile;
             })(EndGate.Graphics.Sprite2d);

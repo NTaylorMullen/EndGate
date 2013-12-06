@@ -25,7 +25,9 @@ var CollisionInspector;
                 // Find what shape we've clicked
                 var obj = _this.GetShapeAt(clickEvent.Position);
 
+                // If we've actually clicked an object
                 if (obj !== null) {
+                    // Move on left click
                     if (clickEvent.Button === "Left") {
                         _this._draggingObject = obj;
 
@@ -69,6 +71,7 @@ var CollisionInspector;
         Game.prototype.Update = function (gameTime) {
             var rotateSpeed, rotateDirection, difference;
 
+            // If we're currently dragging an object
             if (this._draggingObject !== null) {
                 this._draggingObject.Move(this._currentMousePosition.Add(this._dragOffset.Negate()));
             } else if (this._rotatingObject !== null) {

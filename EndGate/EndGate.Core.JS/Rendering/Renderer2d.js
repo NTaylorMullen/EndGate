@@ -1,10 +1,10 @@
+/// <reference path="IRenderer.ts" />
+/// <reference path="IRenderable.ts" />
+/// <reference path="../Interfaces/IDisposable.ts" />
+/// <reference path="../Utilities/EventHandler1.ts" />
+/// <reference path="../Assets/Sizes/Size2d.ts" />
 var EndGate;
 (function (EndGate) {
-    /// <reference path="IRenderer.ts" />
-    /// <reference path="IRenderable.ts" />
-    /// <reference path="../Interfaces/IDisposable.ts" />
-    /// <reference path="../Utilities/EventHandler1.ts" />
-    /// <reference path="../Assets/Sizes/Size2d.ts" />
     (function (Rendering) {
         /**
         * Defines a 2d renderer that uses a double buffer to draw graphics.
@@ -27,10 +27,10 @@ var EndGate;
                 this._disposed = false;
             }
             Object.defineProperty(Renderer2d.prototype, "OnRendererSizeChange", {
-                get: /**
+                /**
                 * Gets an event that is triggered when the renderOnto canvas changes size.  Functions can be bound or unbound to this event to be executed when the event triggers.
                 */
-                function () {
+                get: function () {
                     return this._onRendererSizeChange;
                 },
                 enumerable: true,
@@ -42,6 +42,7 @@ var EndGate;
             * @param renderables Array of items that are to be rendered, assumes Visible is set to true.
             */
             Renderer2d.prototype.Render = function (renderables) {
+                // Check if our visible canvas has changed size
                 if (this._BufferCanvas.width !== this._visibleCanvas.width || this._BufferCanvas.height !== this._visibleCanvas.height) {
                     this.UpdateBufferSize();
                 }

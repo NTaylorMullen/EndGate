@@ -19,10 +19,10 @@ var EndGate;
             this._collisionConfiguration = new EndGate.Collision.CollisionConfiguration(initialQuadTreeSize);
         }
         Object.defineProperty(GameConfiguration.prototype, "UpdateRate", {
-            get: /**
+            /**
             * Gets or sets the UpdateRate of the game.  Update rates are represented as X many updates per second.
             */
-            function () {
+            get: function () {
                 return this._updateRate;
             },
             set: function (updateRate) {
@@ -34,10 +34,10 @@ var EndGate;
         });
 
         Object.defineProperty(GameConfiguration.prototype, "CollisionConfiguration", {
-            get: /**
+            /**
             * Gets the CollisionConfiguration of the game.  These configurations are used to optimize the collision management performance.
             */
-            function () {
+            get: function () {
                 return this._collisionConfiguration;
             },
             enumerable: true,

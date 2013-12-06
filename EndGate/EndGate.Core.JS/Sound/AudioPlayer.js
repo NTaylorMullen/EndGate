@@ -1,7 +1,7 @@
+/// <reference path="AudioClip.ts" />
+/// <reference path="AudioSettings.ts" />
 var EndGate;
 (function (EndGate) {
-    /// <reference path="AudioClip.ts" />
-    /// <reference path="AudioSettings.ts" />
     (function (Sound) {
         /**
         * Defines an AudioPlayer that is mapped to a specific source.  Ultimately used to play the same sound simultaneously.
@@ -16,13 +16,13 @@ var EndGate;
                 }
             }
             AudioPlayer.prototype.BuildClip = function (settings) {
-                if (typeof settings === "undefined") { settings = Sound.AudioSettings.Default; }
-                return new Sound.AudioClip(this._source, settings);
+                if (typeof settings === "undefined") { settings = EndGate.Sound.AudioSettings.Default; }
+                return new EndGate.Sound.AudioClip(this._source, settings);
             };
 
             AudioPlayer.prototype.Play = function (settings) {
-                if (typeof settings === "undefined") { settings = Sound.AudioSettings.Default; }
-                var clip = new Sound.AudioClip(this._source, settings);
+                if (typeof settings === "undefined") { settings = EndGate.Sound.AudioSettings.Default; }
+                var clip = new EndGate.Sound.AudioClip(this._source, settings);
 
                 clip.Play();
 

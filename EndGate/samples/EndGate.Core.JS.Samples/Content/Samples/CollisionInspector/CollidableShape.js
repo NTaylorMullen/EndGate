@@ -55,7 +55,9 @@ var CollisionInspector;
         };
 
         CollidableShape.prototype.Update = function (gameTime) {
+            // If we're currently colliding
             if (this._lastCollision !== null) {
+                // Check if we're no longer colliding
                 if (!this._lastCollision.With.IsCollidingWith(this)) {
                     // Reset the border thickness to 0 (invisible)
                     this.Graphic.BorderThickness = 0;

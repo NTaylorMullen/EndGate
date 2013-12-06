@@ -1,3 +1,7 @@
+/// <reference path="../../Assets/Vectors/Vector2d.ts" />
+/// <reference path="../../Assets/Sizes/Size2d.ts" />
+/// <reference path="../Graphic2d.ts" />
+/// <reference path="../ImageSource.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -6,10 +10,6 @@ var __extends = this.__extends || function (d, b) {
 };
 var EndGate;
 (function (EndGate) {
-    /// <reference path="../../Assets/Vectors/Vector2d.ts" />
-    /// <reference path="../../Assets/Sizes/Size2d.ts" />
-    /// <reference path="../Graphic2d.ts" />
-    /// <reference path="../ImageSource.ts" />
     (function (Graphics) {
         /**
         * Defines a drawable sprite.  Sprites are used to draw images to the game screen.
@@ -68,7 +68,7 @@ var EndGate;
                 return graphic;
             };
             return Sprite2d;
-        })(Graphics.Graphic2d);
+        })(EndGate.Graphics.Graphic2d);
         Graphics.Sprite2d = Sprite2d;
     })(EndGate.Graphics || (EndGate.Graphics = {}));
     var Graphics = EndGate.Graphics;

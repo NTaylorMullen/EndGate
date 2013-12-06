@@ -1,8 +1,8 @@
+/// <reference path="KeyboardModifiers.ts" />
+/// <reference path="KeyboardCommand.ts" />
+/// <reference path="KeyboardEventTarget.ts" />
 var EndGate;
 (function (EndGate) {
-    /// <reference path="KeyboardModifiers.ts" />
-    /// <reference path="KeyboardCommand.ts" />
-    /// <reference path="KeyboardEventTarget.ts" />
     (function (Input) {
         var shiftValues = {
             "~": "`",
@@ -26,11 +26,9 @@ var EndGate;
             "|": "\\"
         }, specialKeys = {
             "27": "esc",
-            "27": "escape",
             "9": "tab",
             "32": "space",
             "13": "return",
-            "13": "enter",
             "8": "backspace",
             "45": "insert",
             "36": "home",
@@ -65,7 +63,7 @@ var EndGate;
             function KeyboardCommandEvent(keyEvent) {
                 var code, character;
 
-                this.Modifiers = new Input.Assets.KeyboardModifiers(keyEvent.ctrlKey, keyEvent.altKey, keyEvent.shiftKey);
+                this.Modifiers = new EndGate.Input.Assets.KeyboardModifiers(keyEvent.ctrlKey, keyEvent.altKey, keyEvent.shiftKey);
 
                 if (keyEvent.keyCode) {
                     code = keyEvent.keyCode;
@@ -84,7 +82,7 @@ var EndGate;
                 }
 
                 this.Key = character;
-                this.Target = new Input.KeyboardEventTarget(keyEvent.target);
+                this.Target = new EndGate.Input.KeyboardEventTarget(keyEvent.target);
             }
             /**
             * Determines if the KeyboardCommand matches the KeyboardCommandEvent

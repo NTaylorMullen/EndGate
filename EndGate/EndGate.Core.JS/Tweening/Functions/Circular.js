@@ -1,7 +1,7 @@
+/// <reference path="ITweeningFunction.ts" />
 var EndGate;
 (function (EndGate) {
     (function (Tweening) {
-        /// <reference path="ITweeningFunction.ts" />
         (function (Functions) {
             /**
             * Defines a Circular tweening function collection that has an EaseIn, EaseOut, and EaseInOut function that can be used with Tween's.
@@ -10,10 +10,10 @@ var EndGate;
                 function Circular() {
                 }
                 Object.defineProperty(Circular, "EaseIn", {
-                    get: /**
+                    /**
                     * Gets the Circular EaseIn function.
                     */
-                    function () {
+                    get: function () {
                         return Circular._easeIn;
                     },
                     enumerable: true,
@@ -21,10 +21,10 @@ var EndGate;
                 });
 
                 Object.defineProperty(Circular, "EaseOut", {
-                    get: /**
+                    /**
                     * Gets the Circular EaseOut function.
                     */
-                    function () {
+                    get: function () {
                         return Circular._easeOut;
                     },
                     enumerable: true,
@@ -32,10 +32,10 @@ var EndGate;
                 });
 
                 Object.defineProperty(Circular, "EaseInOut", {
-                    get: /**
+                    /**
                     * Gets the Circular EaseInOut function.
                     */
-                    function () {
+                    get: function () {
                         return Circular._easeInOut;
                     },
                     enumerable: true,

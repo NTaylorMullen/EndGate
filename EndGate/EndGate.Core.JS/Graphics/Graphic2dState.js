@@ -1,8 +1,8 @@
+/// <reference path="../Interfaces/ITyped.ts" />
 var EndGate;
 (function (EndGate) {
     (function (Graphics) {
         (function (Assets) {
-            /// <reference path="../Interfaces/ITyped.ts" />
             (function (_) {
                 var Graphic2dState = (function () {
                     function Graphic2dState() {

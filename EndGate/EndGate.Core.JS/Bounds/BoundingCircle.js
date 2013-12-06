@@ -1,3 +1,6 @@
+/// <reference path="../Assets/Vectors/Vector2d.ts" />
+/// <reference path="BoundingRectangle.ts" />
+/// <reference path="Bounds2d.ts" />
 var __extends = this.__extends || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -6,9 +9,6 @@ var __extends = this.__extends || function (d, b) {
 };
 var EndGate;
 (function (EndGate) {
-    /// <reference path="../Assets/Vectors/Vector2d.ts" />
-    /// <reference path="BoundingRectangle.ts" />
-    /// <reference path="Bounds2d.ts" />
     (function (Bounds) {
         /**
         * Defines a circle that can be used to detect intersections.
@@ -119,7 +119,7 @@ var EndGate;
                 return true;
             };
             return BoundingCircle;
-        })(Bounds.Bounds2d);
+        })(EndGate.Bounds.Bounds2d);
         Bounds.BoundingCircle = BoundingCircle;
     })(EndGate.Bounds || (EndGate.Bounds = {}));
     var Bounds = EndGate.Bounds;

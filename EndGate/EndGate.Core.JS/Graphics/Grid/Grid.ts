@@ -108,7 +108,7 @@ module EndGate.Graphics {
         public get GridLineColor(): Color {
             return this._gridLineColor;
         }
-        public set GridLineColor(color: any) {
+        public set GridLineColor(color) {
             if (typeof color === "string") {
                 color = new Color(<any>color);
             }

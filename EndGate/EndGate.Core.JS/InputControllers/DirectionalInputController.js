@@ -1,7 +1,7 @@
+/// <reference path="../Input/Keyboard/KeyboardHandler.ts" />
+/// <reference path="../MovementControllers/LinearDirections.ts" />
 var EndGate;
 (function (EndGate) {
-    /// <reference path="../Input/Keyboard/KeyboardHandler.ts" />
-    /// <reference path="../MovementControllers/LinearDirections.ts" />
     (function (InputControllers) {
         /**
         * Defines a DirectionalInputController that will monitor Up, Right, Left, and Down movement attempts.

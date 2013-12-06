@@ -22,7 +22,7 @@ var MapLoading;
 
             // Casting to any because the jquery declaration is wrong here
             // We use jquery to retrieve the map json from a url location
-            ($.getJSON(url, function (mapJson) {
+            $.getJSON(url, function (mapJson) {
                 // Use the JSONLoader to load the map json
                 var preloadInfo = eg.MapLoaders.JSONLoader.Load(mapJson, function (result) {
                     // We get an array of square tile maps that we then need to add to the scene
@@ -39,7 +39,7 @@ var MapLoading;
                 preloadInfo.OnPercentLoaded.Bind(function (percent) {
                     _this.UpdateLoadedPercent(percent);
                 });
-            })).fail(function () {
+            }).fail(function () {
                 alert("Unable to retrieve map data from the provided url.");
             });
         };
@@ -65,6 +65,7 @@ var MapLoading;
         LoadHandler.prototype.UpdateLoadedPercent = function (percent) {
             var percentVal = Math.round(percent * 100);
 
+            // Only update the percentage values if it has changed (after rounding).
             if (percentVal !== this._lastPercentValue) {
                 this._percentLoaded.html(percentVal.toString());
                 this._percentLoadedBar.css("width", percentVal.toString() + "%");
@@ -89,6 +90,7 @@ var MapLoading;
                 this._game.Scene.Add(this._mapLayers[i]);
             }
 
+            // Update the camera to be in the middle of the map
             if (this._mapLayers.length > 0) {
                 this._game.Scene.Camera.Position = this._mapLayers[0].Position;
             }
