@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{781B19E3-47EF-4A88-8F67-35BBA654B563}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
@@ -28,7 +30,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{3B69DE52
 	ProjectSection(SolutionItems) = preProject
 		build\Build.proj = build\Build.proj
 		build\EndGate.Versions.targets = build\EndGate.Versions.targets
-		build\Microsoft.TypeScript.targets = build\Microsoft.TypeScript.targets
 		build\MSBuild.Community.Tasks.dll = build\MSBuild.Community.Tasks.dll
 		build\MSBuild.Community.Tasks.targets = build\MSBuild.Community.Tasks.targets
 	EndProjectSection

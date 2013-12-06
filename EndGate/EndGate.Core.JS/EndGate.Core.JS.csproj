@@ -11,6 +11,7 @@
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
     <UseIISExpress>false</UseIISExpress>
+    <TypeScriptToolsVersion>0.9</TypeScriptToolsVersion>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -42,10 +43,16 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <PropertyGroup>
+    <RootNamespace>EndGate.Core.JS</RootNamespace>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptTarget>ES5</TypeScriptTarget>
     <TypeScriptSourceMap>false</TypeScriptSourceMap>
     <TypeScriptEnableCompileOnSave>true</TypeScriptEnableCompileOnSave>
+    <TypeScriptGeneratesDeclarations>True</TypeScriptGeneratesDeclarations>
+    <TypeScriptOutDir>Scripts</TypeScriptOutDir>
+    <TypeScriptOutFile>Scripts/endgate.js</TypeScriptOutFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <TypeScriptTarget>ES5</TypeScriptTarget>
@@ -163,6 +170,9 @@
       <DependentUpon>Range.ts</DependentUpon>
     </Content>
     <TypeScriptCompile Include="Tweening\ColorTween.ts" />
+    <Content Include="Scripts\endgate.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Tweening\ColorTween.js">
       <DependentUpon>ColorTween.ts</DependentUpon>
     </Content>
@@ -500,12 +510,6 @@
     <Content Include="Scripts\endgate.d.ts">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\endgate.js">
-      <DependentUpon>endgate.ts</DependentUpon>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\endgate.ts" />
-    <Content Include="Scripts\_references.js" />
     <CodeAnalysisDictionary Include="Sound\AudioClip.ts" />
     <Content Include="Sound\AudioClip.js">
       <DependentUpon>AudioClip.ts</DependentUpon>
@@ -542,8 +546,8 @@
     <Content Include="build.ps1" />
   </ItemGroup>
   <ItemGroup />
-  <Import Project="$(SolutionDir)\build\Microsoft.TypeScript.targets" Condition="Exists('$(SolutionDir)\build\Microsoft.TypeScript.targets')" />
-  <Target Name="BeforeBuild">
+  <Import Project="$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets')" />
+  <Target Name="AfterBuild">
     <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass .\build.ps1" WorkingDirectory="$(ProjectDir)" Condition=" '$(OS)' == 'Windows_NT'" />
   </Target>
 </Project>
