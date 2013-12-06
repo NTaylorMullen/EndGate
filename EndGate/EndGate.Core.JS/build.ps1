@@ -1,7 +1,4 @@
-#NOTE: This code sucks!!  I hacked it together it like crazy
-
 ######  CONFIG  ######
-$inpath = ".\"
 $outFolder = "Scripts"
 
 $outputDeclaration = "endgate.d.ts"

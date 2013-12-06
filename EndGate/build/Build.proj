@@ -71,6 +71,11 @@
       </Artifacts>
     </ItemGroup>
 
+    <WriteLinesToFile
+            File="$(ProjectArtifactsDir)\EndGate.Core.JS\Scripts\endgate.d.ts"
+            Lines="import eg = EndGate%3b"
+            Overwrite="false"/>
+
     <Copy SourceFiles="$(ProjectArtifactsDir)\EndGate.Core.JS\Scripts\endgate.d.ts" DestinationFiles="$(PackageSrcDir)\endgate-$(EndGateVersion).d.ts" />
     <Copy SourceFiles="$(ProjectArtifactsDir)\EndGate.Core.JS\Scripts\endgate.js" DestinationFiles="$(PackageSrcDir)\endgate-$(EndGateVersion).js" />
 

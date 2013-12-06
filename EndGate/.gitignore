@@ -27,3 +27,4 @@ PublishProfiles/
 endgate.js
 endgate.d.ts
 endgate.ts
+_references.js*
