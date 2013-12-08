@@ -17,6 +17,11 @@ module EndGate.Content {
             this._images = {};
             this._audioPlayers = {};
         }
+        /**
+        * Loads the image located at the provided source location as an ImageSource.  Returns the loaded ImageSource.
+        * @param src Source path to the base image.
+        */
+        public LoadImage(src: string): Graphics.ImageSource;
 
         /**
         * Loads the image located at the provided source location as an ImageSource.  Returns the loaded ImageSource.
@@ -32,7 +37,15 @@ module EndGate.Content {
         * @param height Height of the image source.
         */
         public LoadImage(name: string, src: string, width: number, height: number): Graphics.ImageSource;
-        public LoadImage(name: string, src: string, width?: number, height?: number): Graphics.ImageSource {
+        public LoadImage(name: string, src?: string, width?: number, height?: number): Graphics.ImageSource {
+
+            //handle passing in source path only
+            //build a name from the filename
+            if (src === undefined || src === null) {
+                src = name;
+                name = name.replace(/^.*[\\\/]/, '').split('.')[0];
+            }
+
             var imageSource = new Graphics.ImageSource(src, width, height);
 
             this._images[name] = imageSource;
@@ -66,6 +79,12 @@ module EndGate.Content {
 
             return false;
         }
+        /**
+        * Loads an AudioPlayer for the provided clip info.  Returns the loaded player for easy access.
+        * @param name The mapped name for the AudioPlayer.
+        * @param src Source path to an audio clip.
+        */
+        public LoadAudio(src: string): Sound.AudioPlayer;
 
         /**
         * Loads an AudioPlayer for the provided clip info.  Returns the loaded player for easy access.
@@ -79,7 +98,14 @@ module EndGate.Content {
         * @param src An array of source paths to audio clips.  Pass in multiple audio types of the same clip to ensure cross browser compatibility.
         */
         public LoadAudio(name: string, src: string[]): Sound.AudioPlayer;
-        public LoadAudio(name: string, src: any): Sound.AudioPlayer {
+        public LoadAudio(name: string, src?: any): Sound.AudioPlayer {
+            //handle passing in source path only
+            //build a name from the filename
+            if (src === undefined || src === null) {
+                src = name;
+                name = name.replace(/^.*[\\\/]/, '').split('.')[0];
+            }
+
             this._audioPlayers[name] = new Sound.AudioPlayer(src);
 
             return this._audioPlayers[name];
