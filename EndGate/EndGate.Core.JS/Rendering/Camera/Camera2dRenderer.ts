@@ -11,17 +11,15 @@ module EndGate.Rendering {
     export class Camera2dRenderer extends Renderer2d {
         private _camera: Camera2d;
         private _contextBuilder: _.Camera2dCanvasContextBuilder;
-        private _preRender: (context: CanvasRenderingContext2D) => void;
 
         /**
         * Creates a new instance of the Camera2dRenderer.
         * @param renderOnto The canvas to render onto.
         * @param camera The camera that ultimately decides what is drawn to the renderOnto canvas.
         */
-        constructor(renderOnto: HTMLCanvasElement, camera: Camera2d, preRender: (context: CanvasRenderingContext2D) => void = _ => { }) {
+        constructor(renderOnto: HTMLCanvasElement, camera: Camera2d) {
             super(renderOnto);
 
-            this._preRender = preRender;
             this._camera = camera;
             this._contextBuilder = new _.Camera2dCanvasContextBuilder(this._camera);
 
@@ -39,14 +37,14 @@ module EndGate.Rendering {
         * Renders the provided renderables onto the renderOnto canvas.  Returns the canvas that was rendered onto.
         * @param renderables Array of items that are to be rendered. 
         */
-        public Render(preRender: (context: CanvasRenderingContext2D) => void, renderables: IRenderable[]): CanvasRenderingContext2D {
+        public Render(preRender: (context: CanvasRenderingContext2D) => void = _ => { }, renderables: IRenderable[] = []): CanvasRenderingContext2D {
             var context,
                 inverseScale = this._camera._GetInverseDistanceScale();
 
             this._BufferContext.save();
             this._BufferContext.scale(inverseScale, inverseScale)
 
-            context = super.Render(this._preRender, this.GetOnScreenRenderables(renderables));
+            context = super.Render(preRender, this.GetOnScreenRenderables(renderables));
 
             this._BufferContext.restore();
 

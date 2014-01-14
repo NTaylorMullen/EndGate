@@ -31,7 +31,7 @@ var EndGate;
 
                 this._drawArea = drawArea;
                 this._camera = new EndGate.Rendering.Camera2d(new EndGate.Vector2d(this._drawArea.width / 2, this._drawArea.height / 2), new EndGate.Size2d(this._drawArea.width, this._drawArea.height));
-                this._renderer = new EndGate.Rendering.Camera2dRenderer(this._drawArea, this._camera, this._preDraw);
+                this._renderer = new EndGate.Rendering.Camera2dRenderer(this._drawArea, this._camera);
                 this._disposed = false;
             }
             Object.defineProperty(Scene2d.prototype, "DrawArea", {

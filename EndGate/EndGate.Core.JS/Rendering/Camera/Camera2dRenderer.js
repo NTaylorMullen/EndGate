@@ -21,13 +21,10 @@ var EndGate;
             * @param renderOnto The canvas to render onto.
             * @param camera The camera that ultimately decides what is drawn to the renderOnto canvas.
             */
-            function Camera2dRenderer(renderOnto, camera, preRender) {
-                if (typeof preRender === "undefined") { preRender = function (_) {
-                }; }
+            function Camera2dRenderer(renderOnto, camera) {
                 var _this = this;
                 _super.call(this, renderOnto);
 
-                this._preRender = preRender;
                 this._camera = camera;
                 this._contextBuilder = new EndGate.Rendering._.Camera2dCanvasContextBuilder(this._camera);
 
@@ -44,12 +41,15 @@ var EndGate;
             * @param renderables Array of items that are to be rendered.
             */
             Camera2dRenderer.prototype.Render = function (preRender, renderables) {
+                if (typeof preRender === "undefined") { preRender = function (_) {
+                }; }
+                if (typeof renderables === "undefined") { renderables = []; }
                 var context, inverseScale = this._camera._GetInverseDistanceScale();
 
                 this._BufferContext.save();
                 this._BufferContext.scale(inverseScale, inverseScale);
 
-                context = _super.prototype.Render.call(this, this._preRender, this.GetOnScreenRenderables(renderables));
+                context = _super.prototype.Render.call(this, preRender, this.GetOnScreenRenderables(renderables));
 
                 this._BufferContext.restore();
 

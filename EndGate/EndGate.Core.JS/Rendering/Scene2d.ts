@@ -56,7 +56,7 @@ module EndGate.Rendering {
 
             this._drawArea = drawArea;
             this._camera = new Camera2d(new Vector2d(this._drawArea.width / 2, this._drawArea.height / 2), new Size2d(this._drawArea.width, this._drawArea.height));
-            this._renderer = new Camera2dRenderer(this._drawArea, this._camera, this._preDraw);
+            this._renderer = new Camera2dRenderer(this._drawArea, this._camera);
             this._disposed = false;
         }
 
