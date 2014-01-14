@@ -61,6 +61,10 @@ module EndGate.Input {
         */
         public Key: string;
         /**
+        * The key that was hit.
+        */
+        public KeyCode: Keys;
+        /**
         * The modifier status.
         */
         public Modifiers: Assets.KeyboardModifiers;
@@ -98,6 +102,7 @@ module EndGate.Input {
             }
 
             this.Key = character;
+            this.KeyCode = (<Keys>code);
             this.Target = new KeyboardEventTarget(keyEvent.target);
         }
 

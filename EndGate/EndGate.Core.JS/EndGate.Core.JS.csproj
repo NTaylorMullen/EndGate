@@ -65,6 +65,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="Input\Keyboard\KeyboardEventTarget.ts" />
     <CodeAnalysisDictionary Include="Scripts\_references.ts" />
+    <TypeScriptCompile Include="Input\Keyboard\Keys.ts" />
     <TypeScriptCompile Include="Utilities\EventHandler1.ts" />
     <TypeScriptCompile Include="Tweening\Tween.ts" />
     <TypeScriptCompile Include="Assets\TimeSpan.ts" />
