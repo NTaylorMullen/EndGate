@@ -1,4 +1,4 @@
-/// <reference path="Camera2d.ts" />
+﻿/// <reference path="Camera2d.ts" />
 /// <reference path="../Renderer2d.ts" />
 /// <reference path="../../Assets/Sizes/Size2d.ts" />
 /// <reference path="Camera2dCanvasContextBuilder.ts" />
@@ -40,13 +40,16 @@ var EndGate;
             * Renders the provided renderables onto the renderOnto canvas.  Returns the canvas that was rendered onto.
             * @param renderables Array of items that are to be rendered.
             */
-            Camera2dRenderer.prototype.Render = function (renderables) {
+            Camera2dRenderer.prototype.Render = function (preRender, renderables) {
+                if (typeof preRender === "undefined") { preRender = function (_) {
+                }; }
+                if (typeof renderables === "undefined") { renderables = []; }
                 var context, inverseScale = this._camera._GetInverseDistanceScale();
 
                 this._BufferContext.save();
                 this._BufferContext.scale(inverseScale, inverseScale);
 
-                context = _super.prototype.Render.call(this, this.GetOnScreenRenderables(renderables));
+                context = _super.prototype.Render.call(this, preRender, this.GetOnScreenRenderables(renderables));
 
                 this._BufferContext.restore();
 

@@ -1,4 +1,4 @@
-/// <reference path="../Interfaces/IDisposable.ts" />
+﻿/// <reference path="../Interfaces/IDisposable.ts" />
 /// <reference path="../Interfaces/ITyped.ts" />
 /// <reference path="../GameTime.ts" />
 /// <reference path="../Graphics/Graphic2d.ts" />
@@ -14,8 +14,10 @@ var EndGate;
         * Defines a scene object that is used to maintain a list of renderable objects that are rendered onto a joint game area.
         */
         var Scene2d = (function () {
-            function Scene2d(onDraw, drawArea) {
+            function Scene2d(onDraw, onPreDraw, drawArea) {
                 if (typeof onDraw === "undefined") { onDraw = function (_) {
+                }; }
+                if (typeof onPreDraw === "undefined") { onPreDraw = function (_) {
                 }; }
                 this._actorMappings = [];
                 this._actors = [];
@@ -25,6 +27,7 @@ var EndGate;
                 }
 
                 this._onDraw = onDraw;
+                this._preDraw = onPreDraw;
 
                 this._drawArea = drawArea;
                 this._camera = new EndGate.Rendering.Camera2d(new EndGate.Vector2d(this._drawArea.width / 2, this._drawArea.height / 2), new EndGate.Size2d(this._drawArea.width, this._drawArea.height));
@@ -91,7 +94,7 @@ var EndGate;
             * Draws all actors within the Scene and triggers the Scene2d's onDraw callback.
             */
             Scene2d.prototype.Draw = function () {
-                this._onDraw(this._renderer.Render(this._actors));
+                this._onDraw(this._renderer.Render(this._preDraw, this._actors));
             };
 
             /**

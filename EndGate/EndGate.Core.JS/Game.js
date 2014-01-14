@@ -25,6 +25,8 @@ var EndGate;
 
             this.Scene = new EndGate.Rendering.Scene2d(function (context) {
                 _this.Draw(context);
+            }, function (context) {
+                _this.PreDraw(context);
             }, gameCanvas);
 
             this.Input = new EndGate.Input.InputManager(this.Scene.DrawArea);
@@ -83,6 +85,12 @@ var EndGate;
         * Triggered as fast as possible.  Determined by the current browsers repaint rate.
         */
         Game.prototype.Draw = function (context) {
+            // This is called by the scene
+        };
+        Game.prototype.PreDraw = function (context) {
+            // This is called by the scene
+        };
+        Game.prototype.PostDraw = function (context) {
             // This is called by the scene
         };
 

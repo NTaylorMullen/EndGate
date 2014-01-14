@@ -37,14 +37,14 @@ module EndGate.Rendering {
         * Renders the provided renderables onto the renderOnto canvas.  Returns the canvas that was rendered onto.
         * @param renderables Array of items that are to be rendered. 
         */
-        public Render(renderables: IRenderable[]): CanvasRenderingContext2D {
+        public Render(preRender: (context: CanvasRenderingContext2D) => void = _ => { }, renderables: IRenderable[] = []): CanvasRenderingContext2D {
             var context,
                 inverseScale = this._camera._GetInverseDistanceScale();
 
             this._BufferContext.save();
             this._BufferContext.scale(inverseScale, inverseScale)
 
-            context = super.Render(this.GetOnScreenRenderables(renderables));
+            context = super.Render(preRender, this.GetOnScreenRenderables(renderables));
 
             this._BufferContext.restore();
 
