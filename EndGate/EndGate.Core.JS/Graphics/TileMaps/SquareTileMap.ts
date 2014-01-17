@@ -25,9 +25,6 @@ module EndGate.Graphics {
         public RowLoadDelay: TimeSpan;
 
         private _grid: Graphics.Grid;
-        private _staticMap: boolean;
-        private _mapCache: HTMLCanvasElement;
-        private _mapCacheContext: CanvasRenderingContext2D;
         private _mappings: number[][];
         private _onTileLoad: EventHandler2<Assets.ITileDetails, number>;
         private _onLoaded: EventHandler;
@@ -73,7 +70,6 @@ module EndGate.Graphics {
 
             this._mappings = mappings;
             this._grid = new Graphics.Grid(0, 0, mappings.length, mappings[0].length, tileWidth, tileHeight, drawGridLines);
-            this._staticMap = staticMap;
             this._onTileLoad = new EventHandler2<Assets.ITileDetails, number>();
             this._onLoaded = new EventHandler();
             this._loaded = false;
@@ -82,13 +78,17 @@ module EndGate.Graphics {
             this.TileLoadDelay = TimeSpan.Zero;
             this.RowLoadDelay = TimeSpan.Zero;
 
-            if (this._staticMap) {
-                this.BuildCache();
-            }
-
             // Execute this on the next stack, to allow time for binding to the tile maps load events
             setTimeout(() => {
                 this.FillGridWith(mappings, () => {
+                    if (staticMap) {
+                        this._grid.Draw();
+                        // If static there's no need to call draw on any of the underlying grid objects
+                        this._grid.Draw = function () { };
+                    }
+
+                    this.AddChild(this._grid);
+
                     this._loaded = true;
                     this._onLoaded.Trigger();
                 });
@@ -140,17 +140,8 @@ module EndGate.Graphics {
         * Draws the SquareTileMap onto the given context.  If the SquareTileMap is part of a Scene2d or SceneryHandler the Draw function will be called automatically.
         * @param context The canvas context to draw the SquareTileMap onto.
         */
-        public Draw(context: CanvasRenderingContext2D): void {
-            //super._StartDraw(context);
-
-            if (!this._staticMap) {
-                this._grid.Draw(context);
-            }
-            else {
-                context.drawImage(this._mapCache, -this._mapCache.width / 2, -this._mapCache.height / 2);
-            }
-
-            //super._EndDraw(context);
+        public Draw(): void {
+            super.Draw();
         }
 
         /**
@@ -191,22 +182,6 @@ module EndGate.Graphics {
             return graphic;
         }
 
-        private BuildCache(): void {
-            var size: Size2d = this._grid.Size,
-                originalPosition = this._grid.Position;
-
-            this._mapCache = <HTMLCanvasElement>document.createElement("canvas");
-            this._mapCache.width = size.Width;
-            this._mapCache.height = size.Height;
-            this._mapCacheContext = this._mapCache.getContext("2d");
-            this._mapCacheContext.translate(size.HalfWidth, size.HalfHeight);
-        }
-
-        private CacheTile(tile: Assets.SquareTile): void {
-            // Draw the tile onto the map cache
-            //tile.Draw(this._mapCacheContext);
-        }
-
         private FillGridWith(mappings: number[][], onComplete: () => any): void {
             asyncLoop((next: () => void , rowsComplete: number) => {
                 this.AsyncBuildGridRow(rowsComplete, mappings, () => {
@@ -233,10 +208,6 @@ module EndGate.Graphics {
                     ResourceIndex: resourceIndex,
                     Parent: this
                 }, this._tilesBuilt / this._totalTiles);
-
-                if (this._staticMap) {
-                    this.CacheTile(tile);
-                }
 
                 onComplete(tile);
             };

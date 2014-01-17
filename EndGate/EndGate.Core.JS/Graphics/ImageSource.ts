@@ -3,6 +3,7 @@
 /// <reference path="../Assets/Vectors/Vector2d.ts" />
 /// <reference path="../Assets/Sizes/Size2d.ts" />
 /// <reference path="../Utilities/EventHandler1.ts" />
+/// <reference path="../Utilities/UtilityFunctions.ts" />
 
 module EndGate.Graphics {
 
@@ -17,13 +18,13 @@ module EndGate.Graphics {
         /**
         * Gets or sets the ClipSize.  Represents how large the image clip is within the base image.
         */
-        public ClipSize: Size2d;
+        public ClipSize: Size2d;        
         /**
-        * Gets the base image source.  Should not be modified once the ImageSource has been constructed
+        * Gets or sets the Size of the image source.
         */
-        public Source: PIXI.Texture;
+        public Size: Size2d;
 
-        private _size: Size2d;
+        private _source: PIXI.BaseTexture;
         private _loaded: boolean;
         private _onLoaded: EventHandler1<ImageSource>;
         private _loadWire: (e: PIXI.IEvent) => void;
@@ -64,7 +65,7 @@ module EndGate.Graphics {
         * @param clipWidth The width of the clip.  Ultimately this width is the width that is drawn to the screen.
         * @param clipHeight The height of the clip.  Ultimately this height is the height that is drawn to the screen.
         */
-        constructor(imageLocation: string, width: number, height: number, clipX: number, clipY: number, clipWidth: number, clipHeight: number);        
+        constructor(imageLocation: string, width: number, height: number, clipX: number, clipY: number, clipWidth: number, clipHeight: number);
         constructor(image: any, width?: number, height?: number, clipX: number = 0, clipY: number = 0, clipWidth: number = width, clipHeight: number = height) {
             var sizeDefined: boolean = typeof width !== "undefined", imageLocation: string;
 
@@ -73,22 +74,23 @@ module EndGate.Graphics {
             if (typeof image === "string") {
                 imageLocation = image;
                 this._loaded = false;
-                this.Source = PIXI.Texture.fromImage(imageLocation);
+                this._source = PIXI.BaseTexture.fromImage(imageLocation);
 
                 this._loadWire = (e: PIXI.IEvent) => {
                     this._loaded = true;
 
                     if (!sizeDefined) {
-                        this._size = new Size2d(this.Source.baseTexture.width, this.Source.baseTexture.height);
+                        this.Size = new Size2d(this._source.width, this._source.height);
                         this.ClipLocation = Vector2d.Zero;
-                        this.ClipSize = this._size.Clone();
+                        this.ClipSize = this.Size.Clone();
                     }
 
                     this._onLoaded.Trigger(this);
+                    _.Utilities.UtilityFunctions.MapToPixiSize(this, "Size", this._source);
                 };
 
                 if (sizeDefined) {
-                    this._size = new Size2d(width, height);
+                    this.Size = new Size2d(width, height);
                     this.ClipLocation = new Vector2d(clipX, clipY);
                     this.ClipSize = new Size2d(clipWidth, clipHeight);
                 }
@@ -101,34 +103,45 @@ module EndGate.Graphics {
                 clipX = width;
                 clipY = height;
 
-                this.Source = new PIXI.Texture(image, new PIXI.Rectangle(clipX, clipY, clipWidth, clipHeight));
+                this._source = image;
 
                 this._loaded = false;
 
-                if ((<any>this.Source.baseTexture.source).complete) {
+                if ((<any>this._source).hasLoaded) {
                     this._loadWire = (e: PIXI.IEvent) => {
                         this._loaded = true;
+
                         this._onLoaded.Trigger(this);
+                        _.Utilities.UtilityFunctions.MapToPixiSize(this, "Size", this._source);
                     };
 
-                    this._size = new Size2d(image.width, image.height);
+                    this.Size = new Size2d(image.width, image.height);
                 } else {
                     this._loadWire = (e: PIXI.IEvent) => {
                         this._loaded = true;
+
                         this._onLoaded.Trigger(this);
-                        this._size = new Size2d(image.width, image.height);
+                        this.Size = new Size2d(image.width, image.height);
+                        _.Utilities.UtilityFunctions.MapToPixiSize(this, "Size", this._source);
                     };
                 }
 
                 this.ClipLocation = new Vector2d(clipX, clipY);
                 this.ClipSize = new Size2d(clipWidth, clipHeight);
             }
-
-            if (!(<any>this.Source.baseTexture.source).complete) {
-                this.Source.baseTexture.addEventListener("update", this._loadWire);
+                
+            if (!(<any>this._source).hasLoaded) {// 
+                this._source.addEventListener("loaded", this._loadWire);
             } else {
                 setTimeout(this._loadWire, 0);
             }
+        }
+
+        /**
+        * Gets the base image source.  Should not be modified once the ImageSource has been constructed
+        */
+        public get Source(): PIXI.BaseTexture {
+            return this._source;
         }
 
         /**
@@ -136,13 +149,6 @@ module EndGate.Graphics {
         */
         public get OnLoaded(): EventHandler1<ImageSource> {
             return this._onLoaded;
-        }
-
-        /**
-        * Returns the base Size of the image source.
-        */
-        public get Size(): Size2d {
-            return this._size.Clone();
         }
 
         /**
@@ -160,15 +166,15 @@ module EndGate.Graphics {
         * @param clipHeight The height of the clip.
         */
         public Extract(clipX: number, clipY: number, clipWidth: number, clipHeight: number): ImageSource {
-            return new ImageSource(this.Source.baseTexture, clipX, clipY, clipWidth, clipHeight);
+            return new ImageSource(this._source, clipX, clipY, clipWidth, clipHeight);
         }
 
         /**
         * Disposes the image source and unbinds all bound events.
         */
         public Dispose(): void {
-            this.Source.removeEventListener("load", this._loadWire);
-            this.Source = null;
+            this._source.removeEventListener("load", this._loadWire);
+            this._source = null;
             this._onLoaded.Dispose();
         }
 
@@ -176,11 +182,48 @@ module EndGate.Graphics {
         * Returns an identical copy of this image source.  Uses existing base image source.
         */
         public Clone(): ImageSource {
-            if (this.ClipSize) {
-                return new ImageSource(this.Source.baseTexture, this.ClipLocation.X, this.ClipLocation.Y, this.ClipSize.Width, this.ClipSize.Height);
+            if (this._loaded) {
+                if (this.ClipSize) {
+                    return new ImageSource(this._source, this.ClipLocation.X, this.ClipLocation.Y, this.ClipSize.Width, this.ClipSize.Height);
+                } else {
+                    return new ImageSource(this._source);
+                }
             } else {
-                return new ImageSource(this.Source.baseTexture);
+                if (this.Size) {
+                    if (this.ClipSize) {
+                        return new ImageSource((<any>this._source.source).href, this.Size.Width, this.Size.Height, this.ClipLocation.X, this.ClipLocation.Y, this.ClipSize.Width, this.ClipSize.Height);
+                    } else {
+                        return new ImageSource((<any>this._source.source).href, this.Size.Width, this.Size.Height);
+                    }
+                } else {
+                    return new ImageSource((<any>this._source.source).href);
+                }
             }
+        }
+
+        /**
+        * Returns a Pixi texture object with the ImageSource's specified frame.
+        */
+        public ToTexture(): PIXI.Texture {
+            var texture: PIXI.Texture;
+
+            if (this._loaded) {
+                texture = new PIXI.Texture(this._source, new PIXI.Rectangle(this.ClipLocation.X, this.ClipLocation.Y, this.ClipSize.Width, this.ClipSize.Height));
+            } else {
+                if (this.Size) {
+                    this._source.width = this.Size.Width;
+                    this._source.height = this.Size.Height;
+
+                    texture = new PIXI.Texture(this._source, new PIXI.Rectangle(this.ClipLocation.X, this.ClipLocation.Y, this.ClipSize.Width, this.ClipSize.Height));
+                } else {
+                    throw new Error("Cannot convert to Texture, image has not finished loading, in order to turn the image into a texture pre-load specify a size");
+                }
+            }
+
+            _.Utilities.UtilityFunctions.MapToPixiVector(this, "ClipLocation", texture.frame);
+            _.Utilities.UtilityFunctions.MapToPixiSize(this, "ClipSize", texture.frame);
+
+            return texture;
         }
     }
 

@@ -11,7 +11,7 @@ module EndGate.Graphics {
     */
     export class Circle extends Shape {
         public _type: string = "Circle";
-         
+
         /**
         * Gets or sets the PIXIBase object that is used to render the Circle.
         */
@@ -46,6 +46,7 @@ module EndGate.Graphics {
             super(new PIXI.Graphics(), new Vector2d(x, y), color);
 
             this.Radius = radius;
+            this._dirty = true;
         }
 
         /**
@@ -56,7 +57,7 @@ module EndGate.Graphics {
         }
         public set Radius(radius: number) {
             this._radius = radius;
-            this._BuildGraphic();
+            this._dirty = true;
         }
 
         /**
@@ -71,14 +72,6 @@ module EndGate.Graphics {
         }
 
         /**
-        * Scale's the circle graphic.
-        * @param scale The value to multiply the graphic's size by.
-        */
-        public Scale(scale: number): void {
-            this.Radius *= scale;
-        }
-
-        /**
         * Returns a nearly identical copy of this Circle.  If this Circle belongs to a parent, the cloned Circle will not. If this Circle has children, all children will be cloned as well.  Lastly, the cloned Circle will not have the same event bindings as this one does.
         */
         public Clone(): Circle {
@@ -90,11 +83,9 @@ module EndGate.Graphics {
         }
 
         public _BuildGraphic(): void {
-            if (typeof this._radius !== "undefined") {
-                this._StartBuildGraphic();
-                this.PixiBase.drawCircle(0, 0, this.Radius);
-                this._EndBuildGraphic();
-            }
+            this._StartBuildGraphic();
+            this.PixiBase.drawCircle(0, 0, this.Radius);
+            this._EndBuildGraphic();
         }
     }
 }

@@ -6,6 +6,7 @@
 /// <reference path="../Assets/Vectors/Vector2d.ts" />
 /// <reference path="../Bounds/Bounds2d.ts" />
 /// <reference path="../Utilities/EventHandler1.ts" />
+/// <reference path="../Utilities/UtilityFunctions.ts" />
 /// <reference path="../Scripts/typings/pixi/pixi.d.ts" />
 
 module EndGate.Graphics {
@@ -19,7 +20,7 @@ module EndGate.Graphics {
     /**
     * Abstract drawable graphic type that is used create the base for graphics.
     */
-    export class Graphic2d implements _.ITyped, IMoveable, IDisposable, ICloneable {
+    export class Graphic2d implements _.ITyped, IMoveable, IDisposable, ICloneable, Rendering.IRenderable {
         public _type: string = "Graphic2d";
 
         /**
@@ -36,6 +37,11 @@ module EndGate.Graphics {
         * Gets or sets the Position of the Graphic2d.  The Position determines where the graphic will be drawn on the screen.
         */
         public Position: Vector2d;
+
+        /**
+        * Gets or sets the scaled size of the graphic.  Aka a Scale.X = 2 would indicate a graphic with twice the X size.
+        */
+        public Scale: Vector2d;
 
         public static _zindexSort: (a: Graphic2d, b: Graphic2d) => number = (a: Graphic2d, b: Graphic2d) => { return a.ZIndex - b.ZIndex; };
 
@@ -59,21 +65,24 @@ module EndGate.Graphics {
             this._zIndex = 0;
             this._children = [];
             this._childrenRemovalBindings = [];
+            this.Scale = eg.Vector2d.One;
             this.Parent = null;
             this._disposed = false;
             this._onDisposed = new EventHandler1<Graphic2d>();
             this._onZIndexChange = new EventHandler1<number>();
 
-            this._MonitorProperty(this.PixiBase.position, "x", () => {
-                return this.Position.X;
-            }, (newX: number) => {
-                    this.Position.X = newX;
+            _.Utilities.UtilityFunctions.MonitorProperty(this.PixiBase.scale, "x",
+                () => {
+                    return this.Scale.X;
+                }, val => {
+                    this.Scale.X = val
                 });
 
-            this._MonitorProperty(this.PixiBase.position, "y", () => {
-                return this.Position.Y;
-            }, (newY: number) => {
-                    this.Position.Y = newY;
+            _.Utilities.UtilityFunctions.MonitorProperty(this.PixiBase.scale, "y",
+                () => {
+                    return this.Scale.Y;
+                }, val => {
+                    this.Scale.Y = val
                 });
         }
 
@@ -226,14 +235,6 @@ module EndGate.Graphics {
         }
 
         /**
-        * Abstract: Should be overridden to scale the size of the Graphic2d.
-        * @param scale The value to multiply the graphic's size by.
-        */
-        public Scale(scale: number): void {
-            throw new Error("Scale is abstract, it must be implemented.");
-        }
-
-        /**
         * Abstract: Returns a nearly identical copy of this Graphic2d.  If this Graphic2d belongs to a parent, the cloned Graphic2d will not. If this Graphic2d has children, all children will be cloned as well.  Lastly, the cloned Graphic2d will not have the same event bindings as this one does.
         */
         public Clone(): Graphic2d {
@@ -250,6 +251,19 @@ module EndGate.Graphics {
             graphic.Rotation = this.Rotation;
             graphic.Visible = this.Visible;
             graphic.ZIndex = this.ZIndex;
+        }
+
+        /**
+        * Draws the graphic onto the given context.  If this shape is part of a scene the Draw function will be called automatically.
+        * @param context The canvas context to draw the graphic onto.
+        */
+        public Draw(): void {
+            this.PixiBase.position.x = this.Position.X;
+            this.PixiBase.position.y = this.Position.Y;
+
+            for (var i = 0, len = this._children.length; i < len; i++) {
+                this._children[i].Draw();
+            }
         }
 
         /**
@@ -280,15 +294,6 @@ module EndGate.Graphics {
             else {
                 throw new Error("Cannot dispose graphic more than once.");
             }
-        }
-
-        public _MonitorProperty(obj: any, property: string, getFn: () => any, setFn: (value: any) => void): void {
-            Object.defineProperty(obj, property, {
-                get: getFn,
-                set: setFn,
-                enumerable: true,
-                configurable: true
-            });
         }
     }
 

@@ -85,6 +85,10 @@ module EndGate.Graphics.Assets {
             this._cachedState["fontStyle"] = style;
         }
 
+        public _NeedsBuild(): boolean {
+            return this._refreshCache;
+        }
+
         public _BuildFont(): string {
             var font;
 

@@ -39,6 +39,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{F3427B
 		common\EndGate.Common.targets = common\EndGate.Common.targets
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "benchmarks", "benchmarks", "{8F032826-E00E-406A-8358-A0349918AF0A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EndGate.Core.JS.Benchmarks", "benchmarks\EndGate.Core.JS.Benchmarks\EndGate.Core.JS.Benchmarks.csproj", "{BBCA119B-BCC7-492D-B292-6A5332410FC0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BDAADAAA-4DD3-4FAA-891C-BD70C442B3BB} = {BDAADAAA-4DD3-4FAA-891C-BD70C442B3BB}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +64,10 @@ Global
 		{6FB8F9C4-0785-49E3-A77A-930789F61281}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6FB8F9C4-0785-49E3-A77A-930789F61281}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FB8F9C4-0785-49E3-A77A-930789F61281}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBCA119B-BCC7-492D-B292-6A5332410FC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBCA119B-BCC7-492D-B292-6A5332410FC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBCA119B-BCC7-492D-B292-6A5332410FC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBCA119B-BCC7-492D-B292-6A5332410FC0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,5 +75,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{95189D2C-5919-4DFD-A243-EEAD6DFF401D} = {C0BAA468-9EA0-4176-B9FD-151A0A8DF798}
 		{6FB8F9C4-0785-49E3-A77A-930789F61281} = {49EB18BE-1A16-4D27-A023-8917A910AAD3}
+		{BBCA119B-BCC7-492D-B292-6A5332410FC0} = {8F032826-E00E-406A-8358-A0349918AF0A}
 	EndGlobalSection
 EndGlobal

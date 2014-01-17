@@ -76,12 +76,12 @@ module Camera {
             }
 
             // Handle zooming in, these flags are controlled by the user based on what keys they press
-            if (this._movingDirection.ZoomingIn) {
+            /*if (this._movingDirection.ZoomingIn) {
                 this.Scene.Camera.Distance -= zoomIncrementor;
             }
             else if (this._movingDirection.ZoomingOut) {
                 this.Scene.Camera.Distance += zoomIncrementor;
-            }
+            }*/
 
             // Set the camera location (black circle) to the camera position so it's displayed in the center of the camera
             this._cameraLocation.Position = this.Scene.Camera.Position;
@@ -92,7 +92,7 @@ module Camera {
 
             // Update the HTML elements on the screen to show the camera position and the camera distance
             this._cameraPositionHolder.html(cameraPosition.toString());
-            this._cameraDistanceHolder.html(Math.round(this.Scene.Camera.Distance).toString());
+            //this._cameraDistanceHolder.html(Math.round(this.Scene.Camera.Distance).toString());
         }
 
         // Helper function to bind keys to the moving direction flags

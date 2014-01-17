@@ -1,6 +1,7 @@
 /// <reference path="Interfaces/IDisposable.ts" />
 /// <reference path="Interfaces/ITyped.ts" />
 /// <reference path="Interfaces/IUpdateable.ts" />
+/// <reference path="Rendering/IRenderable.ts" />
 /// <reference path="GameRunner.ts" />
 /// <reference path="GameConfiguration.ts" />
 /// <reference path="Collision/CollisionManager.ts" />
@@ -14,7 +15,7 @@ module EndGate {
     * Defines a virtual Game object that is meant to be derived from.  Games contain a multitude of management objects to control every aspect of the game.
     */
     export class Game implements _.ITyped, IUpdateable, IDisposable {
-        public _type: string = "Game";        
+        public _type: string = "Game";
 
         /**
         * The games configuration.  Used to modify settings such as the game update rate.
@@ -60,17 +61,19 @@ module EndGate {
             this._gameTime = new GameTime();
             this._ID = Game._gameIds++;
 
-            this.Scene = new Rendering.Scene2d(gameCanvas);
+            this.Scene = new Rendering.Scene2d(() => {
+                this.Draw();
+            }, gameCanvas);
 
             this.Input = new Input.InputManager(this.Scene.DrawArea);
             this.Content = new Content.ContentManager();
-            
+
             initialQuadTreeSize = this.Scene.Camera.Size;
 
             if (initialQuadTreeSize.Width % defaultMinQuadTreeSize.Width !== 0) {
                 initialQuadTreeSize = new Size2d(initialQuadTreeSize.Width % defaultMinQuadTreeSize.Width + initialQuadTreeSize.Width);
             }
-            
+
             this.Configuration = new GameConfiguration(GameRunnerInstance.Register(this), initialQuadTreeSize)
             this.CollisionManager = new Collision.CollisionManager(this.Configuration.CollisionConfiguration);
 
@@ -113,8 +116,6 @@ module EndGate {
 
             this.Scene.Draw();
             this._updateRequired = true;
-
-            this.Draw();
         }
 
         /**

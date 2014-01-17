@@ -15,6 +15,8 @@ module EndGate.Graphics {
         */
         public PixiBase: PIXI.Graphics;
 
+        public _dirty: boolean;
+
         private _fillColor: Color;
         private _strokeColor: Color;
         private _borderThickness: number;
@@ -44,9 +46,10 @@ module EndGate.Graphics {
             super(pixiBase, position);
 
             this._graphicChangedWire = () => {
-                this._BuildGraphic();
+                this._dirty = true;
             };
 
+            this._dirty = true;
             this.BorderColor = this._strokeColor = Color.Black;
             this._borderThickness = 0;
 
@@ -130,6 +133,19 @@ module EndGate.Graphics {
             this.BorderColor = color;
         }
 
+        /**
+        * Draws the shape onto the given context.  If this shape is part of a scene the Draw function will be called automatically.
+        * @param context The canvas context to draw the shape onto.
+        */
+        public Draw(): void {
+            super.Draw();
+
+            if (this._dirty) {
+                this._dirty = false;
+                this._BuildGraphic();
+            }
+        }
+
         // Should be called before any shape logic builds graphics
         public _StartBuildGraphic(): void {
             this.PixiBase.clear();
@@ -141,6 +157,11 @@ module EndGate.Graphics {
             this.PixiBase.beginFill(this._fillColor.toHexValue(), this._fillColor.A);
         }
 
+        // Should be called before any shape logic builds graphics
+        public _EndBuildGraphic(): void {
+            this.PixiBase.endFill();
+        }
+
         // Should be overridden to control what's built;
         public _BuildGraphic(): void {
             this._StartBuildGraphic();
@@ -148,11 +169,9 @@ module EndGate.Graphics {
             this._EndBuildGraphic();
         }
 
-        // Should be called before any shape logic builds graphics
-        public _EndBuildGraphic(): void {
-            this.PixiBase.endFill();
-        }
-
+        /**
+        * Triggers the OnDisposed event.  If this Shape is used with a Scene2d it will be removed from the scene when disposed.
+        */
         public Dispose(): void {
             super.Dispose();
 

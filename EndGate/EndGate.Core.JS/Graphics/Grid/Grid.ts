@@ -416,24 +416,6 @@ module EndGate.Graphics {
         }
 
         /**
-        * Draws the grid onto the given context.  If this grid is part of a scene the Draw function will be called automatically.
-        * @param context The canvas context to draw the grid onto.
-        */
-        public Draw(context: CanvasRenderingContext2D): void {
-            //super._StartDraw(context);
-
-            context.save();
-            //super._EndDraw(context);
-
-            if (this.DrawGridLines) {
-                for (var i = 0; i < this._gridLines.length; i++) {
-                    //this._gridLines[i].Draw(context);
-                }
-            }
-            context.restore();
-        }
-
-        /**
         * The bounding area that represents where the grid will draw.
         */
         public GetDrawBounds(): Bounds.Bounds2d {
@@ -442,14 +424,6 @@ module EndGate.Graphics {
             bounds.Rotation = this.Rotation;
 
             return bounds;
-        }
-
-        /**
-        * Scale is not implemented.
-        * @param scale The value to multiply the graphic's size by.
-        */
-        public Scale(scale: number): void {
-            throw new Error("Scale is not implemented for the Grid class.");
         }
 
         /**
@@ -496,17 +470,17 @@ module EndGate.Graphics {
                 bottomRight: Vector2d = new Vector2d(halfSize.Width, halfSize.Height);
 
             for (var i = 0; i < this._rows; i++) {
-                this._gridLines.push(new Line2d(topLeft.X, topLeft.Y + i * this._tileSize.Height, bottomRight.X, topLeft.Y + i * this._tileSize.Height, 1, this._gridLineColor));
+                this.AddGridLine(new Line2d(topLeft.X, topLeft.Y + i * this._tileSize.Height, bottomRight.X, topLeft.Y + i * this._tileSize.Height, 1, this._gridLineColor));
 
                 if (i === 0) {
                     for (var j = 0; j < this._columns; j++) {
-                        this._gridLines.push(new Line2d(topLeft.X + j * this._tileSize.Width, topLeft.Y, topLeft.X + j * this._tileSize.Width, bottomRight.Y, 1, this._gridLineColor));
+                        this.AddGridLine(new Line2d(topLeft.X + j * this._tileSize.Width, topLeft.Y, topLeft.X + j * this._tileSize.Width, bottomRight.Y, 1, this._gridLineColor));
                     }
                 }
             }
 
-            this._gridLines.push(new Line2d(topLeft.X, bottomRight.Y, bottomRight.X, bottomRight.Y, 1));
-            this._gridLines.push(new Line2d(bottomRight.X, topLeft.Y, bottomRight.X, bottomRight.Y, 1));
+            this.AddGridLine(new Line2d(topLeft.X, bottomRight.Y, bottomRight.X, bottomRight.Y, 1));
+            this.AddGridLine(new Line2d(bottomRight.X, topLeft.Y, bottomRight.X, bottomRight.Y, 1));
         }
 
         private GetInsideGridPosition(row: number, column: number): Vector2d {
@@ -519,6 +493,12 @@ module EndGate.Graphics {
 
         private ValidColumn(column: number): boolean {
             return column >= 0 && column < this._columns;
+        }
+
+        private AddGridLine(line: eg.Graphics.Line2d): void {
+            line.ZIndex = Number.MIN_VALUE;
+            this._gridLines.push(line);
+            this.AddChild(line);
         }
     }
 

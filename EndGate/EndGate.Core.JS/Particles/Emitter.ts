@@ -193,14 +193,6 @@ module EndGate.Particles {
         }
 
         /**
-        * Scale is not implemented.
-        * @param scale The value to multiply the graphic's size by.
-        */
-        public Scale(scale: number): void {
-            throw new Error("Scale is not implemented for the Emitter class.");
-        }
-
-        /**
         * Attempts to emit particles if the configured EmisisonInterval has passed since the last Emission.
         * @param gameTime The current game time object.
         */

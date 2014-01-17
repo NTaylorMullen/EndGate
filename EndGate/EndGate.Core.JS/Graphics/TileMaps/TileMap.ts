@@ -21,13 +21,6 @@ module EndGate.Graphics {
 
             this._Resources = resources;
         }
-
-        /**
-        * Scale is not implemented.
-        */
-        public Scale(scale: number): void {
-            throw new Error("Scale is not implemented for TileMaps.");
-        }
     }
 
 }

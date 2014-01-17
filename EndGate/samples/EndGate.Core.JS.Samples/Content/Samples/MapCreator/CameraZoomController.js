@@ -7,7 +7,7 @@ var MapCreator;
             // When we do a mouse scroll execute this event
             mouse.OnScroll.Bind(function (e) {
                 // the e.Direction.Y is 1, 0 or -1, if we multiply that by by our camera zoom speed every time this event gets executed we'll zoom by the speed amount
-                camera.Distance += e.Direction.Y * CameraZoomController._cameraZoomSpeed;
+                //camera.Distance += e.Direction.Y * CameraZoomController._cameraZoomSpeed;
             });
         }
         CameraZoomController._cameraZoomSpeed = 30;

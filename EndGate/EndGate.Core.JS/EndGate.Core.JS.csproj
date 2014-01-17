@@ -63,10 +63,12 @@
   </PropertyGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Game.ts" />
+    <TypeScriptCompile Include="Utilities\UtilityFunctions.ts" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Input\Keyboard\KeyboardEventTarget.ts" />
     <CodeAnalysisDictionary Include="Scripts\_references.ts" />
+    <TypeScriptCompile Include="Rendering\IRenderable.ts" />
     <TypeScriptCompile Include="Scripts\typings\pixi\pixi.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\pixi\webgl.d.ts" />
     <TypeScriptCompile Include="Utilities\EventHandler1.ts" />
@@ -528,12 +530,10 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(VSToolsPath)\TypeScript\Microsoft.TypeScript.targets')" />
-  <Target Name="AfterBuild">
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
-  <Import Project="$(SolutionDir)\build\Microsoft.TypeScript.targets" Condition="Exists('$(SolutionDir)\build\Microsoft.TypeScript.targets')" />
-  <Target Name="BeforeBuild">
+  <Target Name="AfterBuild">
     <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass .\build.ps1" WorkingDirectory="$(ProjectDir)" Condition=" '$(OS)' == 'Windows_NT'" />
   </Target>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

@@ -161,8 +161,8 @@
     <Content Include="Content\Samples\Particles\CustomSlider.js">
       <DependentUpon>CustomSlider.ts</DependentUpon>
     </Content>
-    <Content Include="Scripts\pixi-1.3.0.js" />
-    <Content Include="Scripts\pixi-1.3.0.min.js" />
+    <Content Include="Scripts\pixi-1.4.1.js" />
+    <Content Include="Scripts\pixi-1.4.1.min.js" />
     <Content Include="Views\Samples\Particles.cshtml" />
     <TypeScriptCompile Include="Content\Samples\MapLoading\CameraController.ts" />
     <Content Include="Content\Samples\MapLoading\CameraController.js">

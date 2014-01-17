@@ -24,6 +24,8 @@ module EndGate.Graphics {
         private _strokeColor: Color;
         private _borderThickness: number;
         private _graphicChangedWire: (color?: Color) => void;
+        private _dirty: boolean;
+        private _alignment: string;
 
         // For GetDrawBounds
         private _drawBounds: Bounds.BoundingRectangle;
@@ -54,10 +56,7 @@ module EndGate.Graphics {
         constructor(x: number, y: number, text: string, color: any = Color.Black) {
             super(new PIXI.Text(text, {}), new Vector2d(x, y));
 
-            // Save the built graphic and set it to a noop so it's not re-built tons of times during construction.
-            var savedBuildGraphic = this._BuildGraphic;
-            this._BuildGraphic = () => { };
-
+            this._dirty = true;
             this._text = text;
 
             this._drawBounds = new Bounds.BoundingRectangle(this.Position, Size2d.One);
@@ -66,10 +65,10 @@ module EndGate.Graphics {
 
             this.SetStyleProperty("font", this._fontSettings._BuildFont());
             this.PixiBase.anchor.x = this.PixiBase.anchor.y = .5;
-            this.Align = "center";
+            this._alignment = "center";
 
             this._graphicChangedWire = () => {
-                this._BuildGraphic();
+                this._dirty = true;
             };
 
             this.BorderColor = this._strokeColor = Color.Black;
@@ -85,11 +84,6 @@ module EndGate.Graphics {
             else {
                 this.Color = this._fillColor = Color.Black;
             }
-
-            // Set the BuildGraphic function to its appropriate values now that all data points have been constructed.
-            this._BuildGraphic = savedBuildGraphic;
-
-            this._BuildGraphic();
         }
 
         /**
@@ -98,7 +92,7 @@ module EndGate.Graphics {
         public get Color(): Color {
             return this._fillColor;
         }
-        public set Color(color: any) {
+        public set Color(color) {
             if (typeof color === "string") {
                 color = new Color(<any>color);
             }
@@ -129,7 +123,7 @@ module EndGate.Graphics {
         public get BorderColor(): Color {
             return this._strokeColor;
         }
-        public set BorderColor(color: any) {
+        public set BorderColor(color) {
             if (typeof color === "string") {
                 color = new Color(<any>color);
             }
@@ -164,10 +158,22 @@ module EndGate.Graphics {
         * Gets or sets the text alignment of the Text2d.  Values can be "start", "end", "left", "center", or "right".
         */
         public get Align(): string {
-            return this.GetStyleProperty("align");
+            return this._alignment;
         }
         public set Align(alignment: string) {
-            this.SetStyleProperty("align", alignment);
+            this._alignment = alignment;
+
+            switch (alignment.toLowerCase()) {
+                case "left":
+                    this.PixiBase.anchor.x = 0;
+                    break;
+                case "center":
+                    this.PixiBase.anchor.x = .5;
+                    break;
+                case "right":
+                    this.PixiBase.anchor.x = 1;
+                    break;
+            }
         }
 
         /**
@@ -188,12 +194,6 @@ module EndGate.Graphics {
             this.PixiBase.setText(text);
         }
 
-        public _BuildGraphic(): void {
-            this.SetStyleProperty("fill", this.Color.toString());
-            this.SetStyleProperty("strokeThickness", this.BorderThickness);
-            this.SetStyleProperty("stroke", this.BorderColor);
-        }
-
         /**
         * The bounding area that represents where the Text2d will draw.
         */
@@ -207,13 +207,20 @@ module EndGate.Graphics {
         }
 
         /**
-        * Scale's the fonts FontSize.
-        * @param scale The value to multiply the graphic's size by.
+        * Draws the text onto the given context.  If this Text2d is part of a scene the Draw function will be called automatically.
+        * @param context The canvas context to draw the text onto.
         */
-        public Scale(scale: number): void {
-            var size = parseInt(this.FontSettings.FontSize);
+        public Draw(): void {
+            super.Draw();
 
-            this.FontSettings.FontSize = this.FontSettings.FontSize.replace(size.toString(), (size * scale).toString());
+            if (this._fontSettings._NeedsBuild()) {
+                this.SetStyleProperty("font", this._fontSettings._BuildFont());
+            }
+
+            if (this._dirty) {
+                this._dirty = false;
+                this._BuildGraphic();
+            }
         }
 
         /**
@@ -232,6 +239,12 @@ module EndGate.Graphics {
             super._Clone(graphic);
 
             return graphic;
+        }
+
+        public _BuildGraphic(): void {
+            this.SetStyleProperty("fill", this.Color.toString());
+            this.SetStyleProperty("strokeThickness", this.BorderThickness);
+            this.SetStyleProperty("stroke", this.BorderColor);
         }
 
         private SetStyleProperty(property: string, value: any): void {

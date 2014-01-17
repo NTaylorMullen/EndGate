@@ -43,23 +43,11 @@ module EndGate.Graphics {
         */
         constructor(x: number, y: number, image: ImageSource, width: number, height: number);
         constructor(x: number, y: number, image: ImageSource, width: number = image.ClipSize.Width, height: number = image.ClipSize.Height) {
-            super(new PIXI.Sprite(image.Source), new Vector2d(x, y));
+            super(new PIXI.Sprite(image.ToTexture()), new Vector2d(x, y));
 
             this.Image = image;
             this.Size = new Size2d(width, height);
             this.PixiBase.anchor.x = this.PixiBase.anchor.y = .5;
-
-            this._MonitorProperty(this.PixiBase, "width", () => {
-                return this.Size.Width;
-            }, (width: number) => {
-                    this.Size.Width = width;
-                });
-
-            this._MonitorProperty(this.PixiBase, "height", () => {
-                this.Size.Height = height;
-            }, (height: number) => {
-                    this.Size.Height = height;
-                });
         }
 
         /**
@@ -74,12 +62,15 @@ module EndGate.Graphics {
         }
 
         /**
-        * Scale's the Sprite2d graphic.
-        * @param scale The value to multiply the graphic's size by.
+        * Draws the sprite onto the given context.  If this sprite is part of a scene the Draw function will be called automatically.
+        * @param context The canvas context to draw the sprite onto.
         */
-        public Scale(scale: number): void {
-            this.Size.Width *= scale;
-            this.Size.Height *= scale;
+        public Draw(): void {
+            this.PixiBase.width = this.Size.Width;
+            this.PixiBase.height = this.Size.Height;            
+            (<any>this.PixiBase).dirty = true;
+
+            super.Draw();
         }
 
         /**

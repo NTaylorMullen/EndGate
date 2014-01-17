@@ -12,18 +12,22 @@ module EndGate.Graphics {
     export class Line2d extends Graphic2d {
         public _type: string = "Line2d";
 
+        private static _initialVectors: Vector2d = new Vector2d(-1000, -1000);
+
         /**
         * Gets or sets the PIXIBase object that is used to render the Line2d.
         */
         public PixiBase: PIXI.Graphics;
 
-        private _position: Vector2d;
         private _from: Vector2d;
+        private _lastDrawFrom: Vector2d;
         private _to: Vector2d;
-        private _cachedPosition: Vector2d;
+        private _lastDrawTo: Vector2d;
+        private _lastDrawPosition: Vector2d;
         private _lineColor: Color;
         private _lineWidth: number;
         private _colorChangeWire: (color: Color) => void;
+        private _dirty: boolean;
 
         /**
         * Creates a new instance of the Line2d object with a line width of 1.
@@ -65,22 +69,21 @@ module EndGate.Graphics {
         constructor(fromX: number, fromY: number, toX: number, toY: number, lineWidth: number = 1, color?: any) {
             super(new PIXI.Graphics(), Vector2d.Zero);// Set to zero here then updated in the rest of the constructor (use same logic)
 
-            // Save the built graphic and set it to a noop so it's not re-built tons of times during construction.
-            var savedBuildGraphic = this._BuildGraphic;
-            this._BuildGraphic = () => { };
+            this._dirty = true;
 
-            // Set a dummy vector2d so that when setting the property it clears an invalid object
             this._to = this._from = Vector2d.Zero;
 
             this.From = new Vector2d(fromX, fromY);
             this.To = new Vector2d(toX, toY);
+            this._lastDrawFrom = this._lastDrawTo = Line2d._initialVectors;
             this.UpdatePosition();
+            this._lastDrawPosition = this.Position.Clone();
 
             this.LineWidth = lineWidth;
 
             this._colorChangeWire = (color: Color) => {
                 this._lineColor = color;
-                this._BuildGraphic();
+                this._dirty = true;
             };
 
             if (typeof color !== "undefined") {
@@ -92,11 +95,6 @@ module EndGate.Graphics {
             else {
                 this.Color = this._lineColor = Color.Black;
             }                        
-
-            // Set the BuildGraphic function to its appropriate values now that all data points have been constructed.
-            this._BuildGraphic = savedBuildGraphic;
-
-            this._BuildGraphic();
         }
 
         /**
@@ -105,35 +103,8 @@ module EndGate.Graphics {
         public get From(): Vector2d {
             return this._from;
         }
-        public set From(from: Vector2d) {
-            var previousX = this._from.X,
-                previousY = this._from.Y;
-
-            // Delete the old position to remove any property bindings on the vector2d
-            delete this._from.X;
-            delete this._from.Y;
-
-            // Reset the position to its previous values (the monitor should not be applying now)
-            this._from.X = previousX;
-            this._from.Y = previousY;
-
-            this._from = from;
-
-            // If our Position changes we need to update the underlying PIXI object to match
-            this._MonitorProperty(from, "X", () => {
-                return from.X;
-            }, (newX: number) => {
-                    from.X = newX;
-                    this.UpdatePosition();
-                });
-
-            this._MonitorProperty(from, "Y", () => {
-                return from.Y;
-            }, (newY: number) => {
-                    from.Y = newY;
-                    this.UpdatePosition();
-                });
-
+        public set From(newPosition: Vector2d) {
+            this._from = newPosition;
             this.UpdatePosition();
         }
 
@@ -143,74 +114,9 @@ module EndGate.Graphics {
         public get To(): Vector2d {
             return this._to;
         }
-        public set To(to: Vector2d) {
-            var previousX = this._to.X,
-                previousY = this._to.Y;
-
-            // Delete the old position to remove any property bindings on the vector2d
-            delete this._to.X;
-            delete this._to.Y;
-
-            // Reset the position to its previous values (the monitor should not be applying now)
-            this._to.X = previousX;
-            this._to.Y = previousY;
-
-            this._to = to;
-
-            // If our Position changes we need to update the underlying PIXI object to match
-            this._MonitorProperty(to, "X", () => {
-                return to.X;
-            }, (newX: number) => {
-                    to.X = newX;
-                    this.UpdatePosition();
-                });
-
-            this._MonitorProperty(to, "Y", () => {
-                return to.Y;
-            }, (newY: number) => {
-                    to.Y = newY;
-                    this.UpdatePosition();
-                });
-
+        public set To(newPosition: Vector2d) {
+            this._to = newPosition;
             this.UpdatePosition();
-        }
-
-        /**
-        * Gets or sets the Position of the Line2d.  The Position determines where the graphic will be drawn on the screen.
-        */
-        public get Position(): Vector2d {
-            return this._position;
-        }
-        public set Position(position: Vector2d) {
-            var previousX = this._position.X,
-                previousY = this._position.Y;
-
-            // Delete the old position to remove any property bindings on the vector2d
-            delete this._position.X;
-            delete this._position.Y;
-
-            // Reset the position to its previous values (the monitor should not be applying now)
-            this._position.X = previousX;
-            this._position.Y = previousY;
-
-            this._position = position;
-
-            // If our Position changes we need to update the underlying PIXI object to match
-            this._MonitorProperty(position, "X", () => {
-                return position.X;
-            }, (newX: number) => {
-                    position.X = newX;
-                    this.RefreshCache();
-                });
-
-            this._MonitorProperty(position, "Y", () => {
-                return position.Y;
-            }, (newY: number) => {
-                    position.Y = newY;
-                    this.RefreshCache();
-                });
-
-            this.RefreshCache();
         }
 
         /**
@@ -241,17 +147,40 @@ module EndGate.Graphics {
         }
         public set LineWidth(width: number) {
             this._lineWidth = width;
-            this._BuildGraphic();
-        }
+            this._dirty = true;
+        }        
 
-        public _BuildGraphic(): void {
-            this.PixiBase.clear();
+        /**
+        * Draws the line onto the given context.  If this Line2d is part of a scene the Draw function will be called automatically.
+        * @param context The canvas context to draw the line onto.
+        */
+        public Draw(): void {
+            if (!this._lastDrawPosition.Equivalent(this.Position)) {
+                this.RefreshCache();
+                this._lastDrawPosition = this.Position.Clone();
+                this._lastDrawFrom = this.From.Clone();
+                this._lastDrawTo = this.To.Clone();
+                this._dirty = true;
+            } else {
+                if (!this._lastDrawFrom.Equivalent(this.From)) {
+                    this._lastDrawFrom = this.From.Clone();
+                    this.UpdatePosition();
+                    this._dirty = true;
+                }
 
-            if (this._lineWidth > 0) {
-                this.PixiBase.lineStyle(this._lineWidth, this._lineColor.toHexValue(), this._lineColor.A);
-                this.PixiBase.moveTo(this._from.X - this.Position.X, this._from.Y - this.Position.Y);
-                this.PixiBase.lineTo(this._to.X - this.Position.X, this._to.Y - this.Position.Y);
+                if (!this._lastDrawTo.Equivalent(this.To)) {
+                    this._lastDrawTo = this.To.Clone();
+                    this.UpdatePosition();
+                    this._dirty = true;
+                }
             }
+
+            if (this._dirty) {
+                this._BuildGraphic();
+                this._dirty = false;
+            }
+
+            super.Draw();
         }
 
         /**
@@ -268,15 +197,6 @@ module EndGate.Graphics {
         }
 
         /**
-        * Scale's the Line2d graphic.
-        * @param scale The value to multiply the graphic's size by.
-        */
-        public Scale(scale: number): void {
-            this.From = this.Position.Add(this.From.Subtract(this.Position).Multiply(scale));
-            this.To = this.Position.Add(this.To.Subtract(this.Position).Multiply(scale));
-        }
-
-        /**
         * Returns a nearly identical copy of this Line2d.  If this Line2d belongs to a parent, the cloned Line2d will not. If this Line2d has children, all children will be cloned as well.  Lastly, the cloned Line2d will not have the same event bindings as this one does.
         */
         public Clone(): Line2d {
@@ -287,6 +207,9 @@ module EndGate.Graphics {
             return graphic;
         }
 
+        /**
+        * Triggers the OnDisposed event.  If this Line2d is used with a Scene2d it will be removed from the scene when disposed.
+        */
         public Dispose(): void {
             super.Dispose();
 
@@ -299,23 +222,30 @@ module EndGate.Graphics {
             this._lineColor.OnChange.Unbind(this._colorChangeWire);
 
             // Null out all objects so they can be garbage collected faster.
-            this._position = this._to = this._from = this._cachedPosition = this._lineColor = this._lineWidth = this._colorChangeWire = null;
+            this._lastDrawFrom = this._lastDrawPosition = this._lastDrawTo = this._to = this._from = this._lastDrawPosition = this._lineColor = this._lineWidth = this._colorChangeWire = null;
+        }
+
+        public _BuildGraphic(): void {
+            this.PixiBase.clear();
+
+            if (this._lineWidth > 0) {
+                this.PixiBase.lineStyle(this._lineWidth, this._lineColor.toHexValue(), this._lineColor.A);
+                this.PixiBase.moveTo(this._from.X - this.Position.X, this._from.Y - this.Position.Y);
+                this.PixiBase.lineTo(this._to.X - this.Position.X, this._to.Y - this.Position.Y);
+            }
         }
 
         private UpdatePosition(): void {
             this.Position = ((this._from.Add(this._to)).Divide(2));
-            this._BuildGraphic();
         }
 
         private RefreshCache(): void {
-            var difference = this.Position.Subtract(this._cachedPosition);
+            var difference = this.Position.Subtract(this._lastDrawPosition);
             if (!difference.IsZero()) {
                 this._from.X += difference.X;
                 this._from.Y += difference.Y;
                 this._to.X += difference.X;
                 this._to.Y += difference.Y;
-                this._cachedPosition = this.Position.Clone();
-                this._BuildGraphic();
             }
         }
     }
