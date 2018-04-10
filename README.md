@@ -1,18 +1,14 @@
 ## EndGate
-[EndGate] (http://endgate.net) is a [TypeScript] (http://www.typescriptlang.org/) powered game framework which was created for the sole purpose of making HTML5 game development maintainable, fun and easy.
+[EndGate](http://endgate.azurewebsites.net/) is a [TypeScript](http://www.typescriptlang.org/) powered game framework which was created for the sole purpose of making HTML5 game development maintainable, fun and easy.
 
 ## Resources to get started
-* [Tutorials] (http://endgate.net/Tutorials)
-* [Samples] (http://endgate.net/Samples)
-* [API Documentation] (http://endgate.net/api)
-* [Frequently Asked Questions] (http://endgate.net/faq)
-* [JabbR] (https://jabbr.net/#/rooms/EndGate)
-* [Twitter] (https://twitter.com/ntaylormullen)
+* [Tutorials](http://endgate.azurewebsites.net/Tutorials)
+* [Samples](http://endgate.azurewebsites.net/Samples)
+* [API Documentation](http://endgate.azurewebsites.net/api)
+* [Frequently Asked Questions](http://endgate.azurewebsites.net/faq)
+* [Twitter](https://twitter.com/ntaylormullen)
 
-For all this and more you can always visit the EndGate [homepage] (http://endgate.net).
-
-## Questions? 
-Post a question on [Stack Overflow] (http://stackoverflow.com/) or [Game Development Stack Exchange] (http://gamedev.stackexchange.com/) with the "EndGate" tag.  You can also come and join me and other contributors in the [EndGate room] (https://jabbr.net/#/rooms/EndGate) on [JabbR] (https://jabbr.net).
+For all this and more you can always visit the EndGate [homepage](http://endgate.azurewebsites.net/).
 
 ## A brief look
 **1**. Create a custom game object.
@@ -55,8 +51,8 @@ var game = new MyGame();
 ```
 
 ## Using EndGate in your project
-* Ensure you have AT LEAST TypeScript 0.9.0.1, you can get latest [here] (http://www.microsoft.com/en-us/download/details.aspx?id=34790)
-* Get EndGate directly or via nuget.  More details [here] (http://endgate.net/Download)
+* Ensure you have AT LEAST TypeScript 0.9.0.1, you can get latest [here](http://www.microsoft.com/en-us/download/details.aspx?id=34790)
+* Get EndGate directly or via nuget.  More details [here](http://endgate.azurewebsites.net/Download)
 * Add EndGate JavaScript to your web page:
 
 ```HTML
@@ -76,7 +72,7 @@ var game = new MyGame();
 ## Contributing
 EndGate was built with the intent of providing room to have many contributions.  With this goal in mind I have created base classes for much of the EndGate framework which can be derived from to create new and exciting features.  
 
-If you're looking to contribute to EndGate feel free to comment on an existing Issue (if you'd like to contribute the work for it) OR create a new issue with your suggested contribution.  If you'd like to speak to me in person or just hang out, always feel welcome to come join me in the [EndGate room] (https://jabbr.net/#/rooms/EndGate) on [JabbR] (https://jabbr.net).
+If you're looking to contribute to EndGate feel free to comment on an existing Issue (if you'd like to contribute the work for it) OR create a new issue with your suggested contribution.
 
 #### Looking to contribute but need a few ideas?  
 
